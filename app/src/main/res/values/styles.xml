@@ -1,11 +1,33 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+
+    <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->
+    <style name="WindowAnimationStyle">
+        <item name="android:activityOpenEnterAnimation">@anim/push_right_to_left_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/push_right_to_left_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/pop_left_to_right_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/pop_left_to_right_exit</item>
+
+        <item name="android:taskOpenEnterAnimation">@anim/push_right_to_left_enter</item>
+        <item name="android:taskOpenExitAnimation">@anim/push_right_to_left_exit</item>
+        <item name="android:taskCloseEnterAnimation">@anim/pop_left_to_right_enter</item>
+        <item name="android:taskCloseExitAnimation">@anim/pop_left_to_right_exit</item>
+    </style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
 </resources>

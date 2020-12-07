@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AutoScrollRecyclerView">
+        <attr name="speed_dp_sec" format="dimension|reference" />
+    </declare-styleable>
+</resources>
