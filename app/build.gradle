@@ -38,8 +38,13 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.android.volley:dc-volley:1.1.0' //web api 串接功能使用的 library
     implementation 'com.google.code.gson:gson:2.8.6' //json 格式處理轉換的 library
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20' //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
+    implementation 'com.makeramen:roundedimageview:2.3.0' //導圓角的 ImageView
+
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
 }

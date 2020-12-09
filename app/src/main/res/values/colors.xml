@@ -3,7 +3,13 @@
     <color name="colorPrimary">#00496B</color>
     <color name="colorPrimaryDark">#023851</color>
     <color name="colorAccent">#0073A8</color>
+    <color name="colorPrimaryDeepDark">#003047</color>
+    <color name="colorMenuLightBlue">#003A55</color>
+
 
     <color name="background">#F2F2F2</color>
     <color name="textColor">#555D76</color>
+
+    <!-- 线条颜色 -->
+    <color name="skinLine">#DDDDDD</color>
 </resources>
