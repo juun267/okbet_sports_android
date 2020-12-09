@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.normal.menu
+package org.cxct.sportlottery.ui.menu
 
 import android.os.Bundle
 import android.view.LayoutInflater

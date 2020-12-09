@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.normal
+package org.cxct.sportlottery.ui
 
 import android.os.Bundle
 import android.util.Log

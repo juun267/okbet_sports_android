@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.normal.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -134,7 +134,7 @@
 
             <fragment
                 android:id="@+id/fragment_menu"
-                android:name="org.cxct.sportlottery.ui.normal.menu.MenuFragment"
+                android:name="org.cxct.sportlottery.ui.menu.MenuFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_menu" />
