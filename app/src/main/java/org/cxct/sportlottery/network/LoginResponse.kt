@@ -12,7 +12,7 @@ data class LoginResponse(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val t: LoginData
+    val loginData: LoginData
 )
 
 @JsonClass(generateAdapter = true)
