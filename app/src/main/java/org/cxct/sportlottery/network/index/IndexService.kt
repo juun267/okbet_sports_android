@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network
+package org.cxct.sportlottery.network.index
 
 import retrofit2.http.Body
 import retrofit2.http.Headers

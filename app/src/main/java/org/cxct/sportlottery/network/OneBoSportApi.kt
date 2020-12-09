@@ -2,8 +2,12 @@ package org.cxct.sportlottery.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.cxct.sportlottery.network.index.IndexService
+import org.cxct.sportlottery.network.odds.OddsService
+import org.cxct.sportlottery.network.sport.SportService
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+
 
 private const val BASE_URL = "https://sports.cxct.org"
 
@@ -16,8 +20,16 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-object SportApi {
+object OneBoSportApi {
     val indexService: IndexService by lazy {
         retrofit.create(IndexService::class.java)
+    }
+
+    val sportService: SportService by lazy {
+        retrofit.create(SportService::class.java)
+    }
+
+    val oddsService: OddsService by lazy {
+        retrofit.create(OddsService::class.java)
     }
 }
