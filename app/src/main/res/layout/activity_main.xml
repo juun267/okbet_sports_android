@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:orientation="vertical"
+    app:navGraph="@navigation/home_navigation"
     tools:context=".ui.MainActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -37,6 +39,7 @@
                     tools:src="@drawable/ic_logo" />
 
                 <ImageView
+                    android:id="@+id/btn_menu"
                     android:layout_width="@dimen/tool_bar_height"
                     android:layout_height="@dimen/tool_bar_height"
                     android:layout_alignParentEnd="true"
@@ -96,33 +99,36 @@
                     android:id="@+id/tab_inPlay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout="@layout/tab_home_cate"/>
+                    android:layout="@layout/tab_home_cate" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tab_today"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout="@layout/tab_home_cate"/>
+                    android:layout="@layout/tab_home_cate" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tab_early"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout="@layout/tab_home_cate"/>
+                    android:layout="@layout/tab_home_cate" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tab_parlay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout="@layout/tab_home_cate"/>
+                    android:layout="@layout/tab_home_cate" />
 
             </com.google.android.material.tabs.TabLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <fragment
+                android:id="@+id/nav_host_fragment"
+                android:name="org.cxct.sportlottery.ui.game.GameFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/home_navigation" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
         <!-- 側邊導覽列 -->

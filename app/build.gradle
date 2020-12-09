@@ -49,7 +49,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.google.code.gson:gson:2.8.6' //json 格式處理轉換的 library
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20' //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20'
+    //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
     implementation 'com.makeramen:roundedimageview:2.3.0' //導圓角的 ImageView
 
 

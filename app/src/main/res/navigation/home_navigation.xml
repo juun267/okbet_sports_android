@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    app:startDestination="@id/首頁遊戲總覽">
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="org.cxct.sportlottery.ui.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" >
+        <action
+            android:id="@+id/action_mainActivity_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </activity>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="org.cxct.sportlottery.ui.menu.MenuFragment"
+        android:label="MenuFragment"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_投注記錄"
+            app:destination="@id/投注記錄" />
+        <action
+            android:id="@+id/action_menuFragment_to_賽果結算"
+            app:destination="@id/賽果結算" />
+        <action
+            android:id="@+id/action_menuFragment_to_placeholder4"
+            app:destination="@id/消息中心" />
+        <action
+            android:id="@+id/action_menuFragment_to_幫助中心"
+            app:destination="@id/幫助中心" />
+    </fragment>
+    <fragment
+        android:id="@+id/投注記錄"
+        android:label="BetRecordActivity" />
+    <fragment
+        android:id="@+id/賽果結算"
+        android:label="GameSettleActivity" />
+    <fragment
+        android:id="@+id/消息中心"
+        android:label="MsgCenterActivity" />
+    <fragment
+        android:id="@+id/幫助中心"
+        android:label="HelperActivity" />
+    <fragment android:id="@+id/LoginActivity" >
+        <action
+            android:id="@+id/action_LoginActivity_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/首頁遊戲總覽"
+        android:name="org.cxct.sportlottery.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_首頁遊戲總覽_to_投注大廳"
+            app:destination="@id/投注大廳" />
+    </fragment>
+    <fragment
+        android:id="@+id/投注大廳"
+        android:name="org.cxct.sportlottery.ui.game.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_投注大廳_to_投注二層"
+            app:destination="@id/投注二層" />
+        <action
+            android:id="@+id/action_投注大廳_to_投注單"
+            app:destination="@id/投注單" />
+    </fragment>
+    <fragment
+        android:id="@+id/投注二層"
+        android:name="org.cxct.sportlottery.ui.game.Game2Fragment"
+        android:label="fragment_game2"
+        tools:layout="@layout/fragment_game2" >
+        <action
+            android:id="@+id/action_投注二層_to_投注單"
+            app:destination="@id/投注單" />
+    </fragment>
+    <fragment
+        android:id="@+id/投注單"
+        android:name="org.cxct.sportlottery.ui.game.BetListDialog"
+        android:label="dialog_bet_list"
+        tools:layout="@layout/dialog_bet_list" />
+</navigation>
