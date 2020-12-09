@@ -25,6 +25,10 @@ android {
 
 }
 
+ext {
+    version_retrofit = "2.9.0"
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -45,4 +49,8 @@ dependencies {
 
     //Moshi
     implementation "com.squareup.moshi:moshi:1.11.0"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 }
