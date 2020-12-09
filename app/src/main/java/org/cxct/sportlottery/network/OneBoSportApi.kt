@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.cxct.sportlottery.network.index.IndexService
+import org.cxct.sportlottery.network.sport.SportService
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
