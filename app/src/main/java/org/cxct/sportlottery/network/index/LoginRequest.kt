@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network
+package org.cxct.sportlottery.network.index
 
 
 const val LOGIN_SOURCE_ANDROID = 2
