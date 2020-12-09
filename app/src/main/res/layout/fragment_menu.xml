@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorMenuLightBlue"
     android:orientation="vertical"
+    app:navGraph="@navigation/menu_navigation"
     tools:context=".ui.menu.MenuFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
