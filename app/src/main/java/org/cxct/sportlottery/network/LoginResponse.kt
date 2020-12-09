@@ -9,14 +9,14 @@ data class LoginResponse(
 
 data class T(
     val fullName: String,
-    val iconUrl: Any,
+    val iconUrl: String?,
     val lastLoginDate: Long,
     val lastLoginIp: String,
     val loginDate: Long,
     val loginIp: String,
-    val nickName: Any,
+    val nickName: String?,
     val platformId: Int,
-    val rechLevel: Any,
+    val rechLevel: String?,
     val testFlag: Int,
     val token: String,
     val uid: Int,
