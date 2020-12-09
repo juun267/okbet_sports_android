@@ -17,4 +17,7 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 object SportApi {
+    val indexService: IndexService by lazy {
+        retrofit.create(IndexService::class.java)
+    }
 }
