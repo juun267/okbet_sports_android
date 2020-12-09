@@ -5,7 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-private const val BASE_URL = "https://sports.cxct.org/api/front"
+private const val BASE_URL = "https://sports.cxct.org"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
