@@ -20,4 +20,8 @@ object SportApi {
     val indexService: IndexService by lazy {
         retrofit.create(IndexService::class.java)
     }
+
+    val sportService: SportService by lazy {
+        retrofit.create(SportService::class.java)
+    }
 }
