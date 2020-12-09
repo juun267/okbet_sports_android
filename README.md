@@ -8,3 +8,23 @@
 [H5 參考](https://sportsapi.cxct.org)
 
 [後台]( https://sportsadmin.cxct.org/#/login?redirect=%2Fsub-account-list)
+
+
+## Network
+
+[Retrofit Codelab](https://developer.android.com/codelabs/kotlin-android-training-internet-data#0)
+[Coroutines Codelab](https://codelabs.developers.google.com/codelabs/kotlin-coroutines/?hl=da#12)
+
+```
+viewModelScope.launch{
+    try{
+        val loginResponse = SportApi.IndexService.login(
+            LoginRequest(
+                account,
+                password,
+                loginsrc
+            )
+        )
+    }catch(e:Exception){}
+}
+```
