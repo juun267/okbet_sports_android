@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.match.MatchService
+import org.cxct.sportlottery.network.message.MessageService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.sport.SportService
 import retrofit2.Retrofit
@@ -32,6 +33,10 @@ object OneBoSportApi {
 
     val matchService: MatchService by lazy {
         retrofit.create(MatchService::class.java)
+    }
+
+    val messageService: MessageService by lazy {
+        retrofit.create(MessageService::class.java)
     }
 
     val oddsService: OddsService by lazy {
