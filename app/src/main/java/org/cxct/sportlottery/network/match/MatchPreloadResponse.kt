@@ -1,11 +1,11 @@
-package org.cxct.sportlottery.network.odds
+package org.cxct.sportlottery.network.match
 
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class OddsListResponse(
+data class MatchPreloadResponse(
     @Json(name = "code")
     val code: Int,
     @Json(name = "msg")
@@ -13,5 +13,5 @@ data class OddsListResponse(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val oddsListData: OddsListData
+    val matchPreloadData: MatchPreloadData
 )
