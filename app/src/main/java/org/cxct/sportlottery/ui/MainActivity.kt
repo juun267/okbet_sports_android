@@ -3,11 +3,15 @@ package org.cxct.sportlottery.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_home_cate.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.util.MetricsUtil
 
 class MainActivity : BaseActivity() {
     companion object {
@@ -29,7 +33,34 @@ class MainActivity : BaseActivity() {
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+        initToolBar()
+        initMenu()
         initTabLayout()
+    }
+
+    private fun initToolBar() {
+        iv_logo.setImageResource(R.drawable.ic_logo)
+
+        //側邊欄 開/關
+        btn_menu.setOnClickListener {
+            if (drawer_layout.isDrawerOpen(nav_right))
+                drawer_layout.closeDrawers()
+            else {
+                drawer_layout.openDrawer(nav_right)
+            }
+        }
+    }
+
+    private fun initMenu() {
+        try {
+            //選單選擇結束要收起選單
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
+
+            nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun initTabLayout() {

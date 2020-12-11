@@ -17,6 +17,8 @@ class MenuFragment : BaseFragment() {
         private const val TAG = "MenuFragment"
     }
 
+    private var mDownMenuListener: View.OnClickListener? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_menu, container, false)
     }
@@ -42,5 +44,12 @@ class MenuFragment : BaseFragment() {
                 ChangeLanguageDialog(this).show()
             }
         }
+    }
+
+    /**
+     * 選單選擇結束，需透過 listener 讓上層關閉 選單
+     */
+    fun setDownMenuListener(listener: View.OnClickListener?) {
+        mDownMenuListener = listener
     }
 }
