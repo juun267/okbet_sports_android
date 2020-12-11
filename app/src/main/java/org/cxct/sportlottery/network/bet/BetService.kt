@@ -1,11 +1,12 @@
 package org.cxct.sportlottery.network.bet
 
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
-import org.cxct.sportlottery.network.bet.add.BetAddResponse
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
-import org.cxct.sportlottery.network.bet.info.BetInfoResponse
+import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.bet.list.BetListResponse
+import org.cxct.sportlottery.network.bet.list.BetListResult
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -17,19 +18,19 @@ interface BetService {
     suspend fun getBetInfo(
         @Header("x-session-token") token: String,
         @Body betInfoRequest: BetInfoRequest
-    ): BetInfoResponse
+    ): Response<BetInfoResult>
 
     @Headers("x-session-platform-code:plat1")
     @POST("/api/front/match/bet/add")
     suspend fun addBet(
         @Header("x-session-token") token: String,
         @Body betAddRequest: BetAddRequest
-    ): BetAddResponse
+    ): Response<BetAddResult>
 
     @Headers("x-session-platform-code:plat1")
     @POST("/api/front/match/bet/list")
     suspend fun getBetList(
         @Header("x-session-token") token: String,
         @Body betListRequest: BetListRequest
-    ): BetListResponse
+    ): Response<BetListResult>
 }
