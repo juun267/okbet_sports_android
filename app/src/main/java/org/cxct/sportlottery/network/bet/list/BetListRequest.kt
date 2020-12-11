@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.bet
+package org.cxct.sportlottery.network.bet.list
 
 import org.cxct.sportlottery.common.IdParams
 import org.cxct.sportlottery.common.PagingParams

@@ -1,7 +1,9 @@
-package org.cxct.sportlottery.network.bet
+package org.cxct.sportlottery.network.bet.list
 
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
 import org.cxct.sportlottery.network.bet.info.BetInfoResponse
+import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.bet.list.BetListResponse
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.Headers
