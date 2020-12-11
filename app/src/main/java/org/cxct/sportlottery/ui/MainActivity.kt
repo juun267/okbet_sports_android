@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
@@ -10,6 +12,13 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 class MainActivity : BaseActivity() {
     companion object {
         private const val TAG = "MainActivity"
+
+        //切換語系，activity 要重啟才會生效
+        fun reStart(context: Context) {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
     }
 
     private lateinit var viewModel: MainViewModel

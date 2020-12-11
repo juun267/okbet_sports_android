@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'multi-languages'
 
 android {
     compileSdkVersion 29
@@ -77,4 +78,10 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
+    //multiLanguages //https://github.com/MichaelJokAr/MultiLanguages
+    implementation "com.github.jokar:multi-languages:0.1.4"
+}
+
+multiLanguages {
+    enable = true
 }
