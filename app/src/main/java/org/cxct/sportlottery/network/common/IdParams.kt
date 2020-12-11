@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.common
+package org.cxct.sportlottery.network.common
 
 data class IdParams(
     val userId: Int?,

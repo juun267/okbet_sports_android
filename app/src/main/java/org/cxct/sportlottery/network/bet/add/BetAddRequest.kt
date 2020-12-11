@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.network.bet.add
 
-import org.cxct.sportlottery.common.IdParams
+import org.cxct.sportlottery.network.common.IdParams
 import org.cxct.sportlottery.network.bet.Odd
 
 data class BetAddRequest(
