@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.network.bet
 
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResponse
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
 import org.cxct.sportlottery.network.bet.info.BetInfoResponse
 import org.cxct.sportlottery.network.bet.list.BetListRequest
@@ -16,6 +18,13 @@ interface BetService {
         @Header("x-session-token") token: String,
         @Body betInfoRequest: BetInfoRequest
     ): BetInfoResponse
+
+    @Headers("x-session-platform-code:plat1")
+    @POST("/api/front/match/bet/add")
+    suspend fun addBet(
+        @Header("x-session-token") token: String,
+        @Body betAddRequest: BetAddRequest
+    ): BetAddResponse
 
     @Headers("x-session-platform-code:plat1")
     @POST("/api/front/match/bet/list")
