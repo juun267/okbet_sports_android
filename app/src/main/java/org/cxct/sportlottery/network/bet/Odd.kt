@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.bet.info
+package org.cxct.sportlottery.network.bet
 
 data class Odd(
     val oid: String,
