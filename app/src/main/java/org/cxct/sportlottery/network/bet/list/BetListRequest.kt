@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.network.bet.list
 
-import org.cxct.sportlottery.common.IdParams
-import org.cxct.sportlottery.common.PagingParams
-import org.cxct.sportlottery.common.TimeRangeParams
+import org.cxct.sportlottery.network.common.IdParams
+import org.cxct.sportlottery.network.common.PagingParams
+import org.cxct.sportlottery.network.common.TimeRangeParams
 
 data class BetListRequest(
     val statusList: List<Int>,
