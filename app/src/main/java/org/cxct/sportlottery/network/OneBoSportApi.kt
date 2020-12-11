@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.message.MessageService
@@ -41,5 +42,9 @@ object OneBoSportApi {
 
     val oddsService: OddsService by lazy {
         retrofit.create(OddsService::class.java)
+    }
+
+    val betService: BetService by lazy {
+        retrofit.create(BetService::class.java)
     }
 }
