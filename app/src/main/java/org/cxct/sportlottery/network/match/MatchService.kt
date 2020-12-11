@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.match
 
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -11,5 +12,5 @@ interface MatchService {
     suspend fun getMatchPreload(
         @Header("x-session-token") token: String,
         @Body matchPreloadRequest: MatchPreloadRequest
-    ): MatchPreloadResponse
+    ): Response<MatchPreloadResult>
 }
