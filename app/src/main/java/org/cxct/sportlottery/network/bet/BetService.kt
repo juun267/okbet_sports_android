@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.bet.list
+package org.cxct.sportlottery.network.bet
 
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
 import org.cxct.sportlottery.network.bet.info.BetInfoResponse
