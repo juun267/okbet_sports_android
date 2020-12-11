@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.odds
 
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -11,5 +12,5 @@ interface OddsService {
     suspend fun getOddsList(
         @Header("x-session-token") token: String,
         @Body oddsListRequest: OddsListRequest
-    ): OddsListResponse
+    ): Response<OddsListResult>
 }

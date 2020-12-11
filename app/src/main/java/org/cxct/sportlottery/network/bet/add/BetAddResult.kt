@@ -1,11 +1,11 @@
-package org.cxct.sportlottery.network.bet.list
+package org.cxct.sportlottery.network.bet.add
 
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class BetListResponse(
+data class BetAddResult(
     @Json(name = "code")
     val code: Int,
     @Json(name = "msg")

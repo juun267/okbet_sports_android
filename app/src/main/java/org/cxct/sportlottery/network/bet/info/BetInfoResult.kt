@@ -1,11 +1,11 @@
-package org.cxct.sportlottery.network.sport
+package org.cxct.sportlottery.network.bet.info
 
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SportMenuResponse(
+data class BetInfoResult(
     @Json(name = "code")
     val code: Int,
     @Json(name = "msg")
@@ -13,5 +13,5 @@ data class SportMenuResponse(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val sportMenuData: SportMenuData
+    val betInfoData: BetInfoData
 )
