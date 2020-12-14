@@ -80,6 +80,12 @@ dependencies {
 
     //multiLanguages //https://github.com/MichaelJokAr/MultiLanguages
     implementation "com.github.jokar:multi-languages:0.1.4"
+
+    //live data
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+
+    //annotation
+    implementation 'androidx.annotation:annotation:1.1.0'
 }
 
 multiLanguages {
