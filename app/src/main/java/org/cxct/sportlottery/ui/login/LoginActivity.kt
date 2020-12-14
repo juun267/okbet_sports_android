@@ -26,7 +26,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(
+            this,
+            LoginViewModel.Factory(application)
+        ).get(LoginViewModel::class.java)
 
         loginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
@@ -46,13 +49,11 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        loginViewModel.loginResult.observe(this, {
+        loginViewModel.loginResult.observe(this, Observer {
             loading.visibility = View.GONE
 
-            if (it.isSuccessful) {
-                it.body()?.let { loginResult ->
-                    updateUiWithUser(loginResult.loginData.userName)
-                }
+            if (it != null && it.success) {
+                updateUiWithUser(it.loginData.userName)
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
