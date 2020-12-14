@@ -22,9 +22,11 @@ class LoginViewModel(private val application: Application) : ViewModel() {
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult?>()
 
-    private val loginRepository = LoginRepository(
-        application.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-    )
+    private val loginRepository by lazy {
+        LoginRepository(
+            application.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+        )
+    }
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
