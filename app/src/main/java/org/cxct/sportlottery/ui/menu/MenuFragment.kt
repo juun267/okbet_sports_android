@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
@@ -42,6 +44,12 @@ class MenuFragment : BaseFragment() {
         btn_change_language.setOnClickListener {
             context?.run {
                 ChangeLanguageDialog(this).show()
+            }
+        }
+
+        menu_game_result.setOnClickListener {
+            context?.run{
+                startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             }
         }
     }
