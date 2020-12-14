@@ -65,17 +65,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/colorMenuLightBlue"
-        app:layout_constraintBottom_toTopOf="@+id/ll_language_version"
+        app:layout_constraintBottom_toTopOf="@+id/btn_change_language"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/block_profile"
-        app:srlDragRate="0.3"
-        app:srlEnableLoadMore="true"
-        app:srlEnablePureScrollMode="true">
+        app:layout_constraintTop_toBottomOf="@+id/block_profile">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -232,7 +229,7 @@
 
         </ScrollView>
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/btn_change_language"
