@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res"><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_right_blue.xml" preprocessing="true" qualifiers=""><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxxhdpi/ic_right_blue.png" qualifiers="xxxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-mdpi/ic_right_blue.png" qualifiers="mdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-ldpi/ic_right_blue.png" qualifiers="ldpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxhdpi/ic_right_blue.png" qualifiers="xxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-hdpi/ic_right_blue.png" qualifiers="hdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xhdpi/ic_right_blue.png" qualifiers="xhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_right_blue.xml" qualifiers="anydpi-v21" type="drawable"/></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_right.xml" preprocessing="true" qualifiers=""><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxxhdpi/ic_right.png" qualifiers="xxxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-mdpi/ic_right.png" qualifiers="mdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-ldpi/ic_right.png" qualifiers="ldpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxhdpi/ic_right.png" qualifiers="xxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-hdpi/ic_right.png" qualifiers="hdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xhdpi/ic_right.png" qualifiers="xhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_right.xml" qualifiers="anydpi-v21" type="drawable"/></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_left_blue.xml" preprocessing="true" qualifiers=""><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxxhdpi/ic_left_blue.png" qualifiers="xxxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-mdpi/ic_left_blue.png" qualifiers="mdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-ldpi/ic_left_blue.png" qualifiers="ldpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxhdpi/ic_left_blue.png" qualifiers="xxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-hdpi/ic_left_blue.png" qualifiers="hdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xhdpi/ic_left_blue.png" qualifiers="xhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_left_blue.xml" qualifiers="anydpi-v21" type="drawable"/></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_left.xml" preprocessing="true" qualifiers=""><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxxhdpi/ic_left.png" qualifiers="xxxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-mdpi/ic_left.png" qualifiers="mdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-ldpi/ic_left.png" qualifiers="ldpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xxhdpi/ic_left.png" qualifiers="xxhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-hdpi/ic_left.png" qualifiers="hdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-xhdpi/ic_left.png" qualifiers="xhdpi-v4" type="drawable"/><generated-file path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_left.xml" qualifiers="anydpi-v21" type="drawable"/></file></source><source path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/rs/debug"/><source path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res"><file name="range_bg" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/range_bg.xml" qualifiers="" type="drawable"/><file name="green_circle" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/green_circle.xml" qualifiers="" type="drawable"/><file name="range_bg_right" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/range_bg_right.xml" qualifiers="" type="drawable"/><file name="range_bg_left" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/range_bg_left.xml" qualifiers="" type="drawable"/><file name="ic_right_selector" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_right_selector.xml" qualifiers="" type="drawable"/><file name="ic_left_selector" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_left_selector.xml" qualifiers="" type="drawable"/><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values-ldrtl/isrighttoleft.xml" qualifiers="ldrtl-v17"><bool name="cdr_is_right_to_left">true</bool></file><file name="layout_calendar_month" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_calendar_month.xml" qualifiers="" type="layout"/><file name="layout_calendar_week_days" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_calendar_week_days.xml" qualifiers="" type="layout"/><file name="layout_calendar_nav" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_calendar_nav.xml" qualifiers="" type="layout"/><file name="layout_calendar_day" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_calendar_day.xml" qualifiers="" type="layout"/><file name="dialog_time_picker" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/dialog_time_picker.xml" qualifiers="" type="layout"/><file name="layout_calendar_week" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_calendar_week.xml" qualifiers="" type="layout"/><file name="layout_pager_month" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_pager_month.xml" qualifiers="" type="layout"/><file name="layout_calendar_container" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_calendar_container.xml" qualifiers="" type="layout"/><file name="layout_calendar_main" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/layout/layout_calendar_main.xml" qualifiers="" type="layout"/><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values/isrighttoleft.xml" qualifiers=""><bool name="cdr_is_right_to_left">false</bool></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values/colors.xml" qualifiers=""><color name="selected_date_circle_color">#54B948</color><color name="title_color">#000</color><color name="date_color">#000</color><color name="week_color">#000</color><color name="default_date_color">#3b4144</color><color name="disable_date_color">#BDBDBD</color><color name="range_date_color">@color/default_date_color</color><color name="selected_date_color">#FFF</color><color name="range_bg_color">#B7C99D</color><color name="calendar_text">#474747</color></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values/dimens.xml" qualifiers=""><dimen name="text_size_title">16sp</dimen><dimen name="dateTitlePaddingBottom">5dp</dimen><dimen name="weekDaysPaddingBottom">0dp</dimen><dimen name="text_size_week">15sp</dimen><dimen name="weekRowMinHeight">8dp</dimen><dimen name="text_size_date">16dp</dimen><dimen name="dayOfMonthBoxSize">44dp</dimen><dimen name="dayOfMonthSize">24dp</dimen><dimen name="dayOfMonthMinWidth">50dp</dimen><dimen name="dayOfMonthMinHeight">0dp</dimen><dimen name="dayOfMonthPaddingBottom">0dp</dimen><dimen name="dayOfMonthImageSize">4dp</dimen><dimen name="dayOfMonthImageMarginTop">32dp</dimen><dimen name="strip_height">24dp</dimen><dimen name="dayOfMonthCircleWidth">34dp</dimen><dimen name="dayOfMonthCircleHeight">24dp</dimen><dimen name="dayOfMonthBoxHeight">34dp</dimen><dimen name="dayOfMonthBoxWidth">44dp</dimen></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values/styles.xml" qualifiers=""><style name="AppBaseTheme" parent="android:Theme.Light">
+        
+    </style><style name="AppTheme" parent="AppBaseTheme">
+        
+    </style><style name="WeekDayTitleStyle">
+        <item name="android:layout_width">@dimen/dayOfMonthBoxWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthBoxHeight</item>
+        <item name="android:textSize">@dimen/text_size_week</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/date_color</item>
+        <item name="android:paddingBottom">@dimen/dayOfMonthPaddingBottom</item>
+    </style><style name="DayOfMonthStyle">
+        <item name="android:layout_width">@dimen/dayOfMonthCircleWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthCircleHeight</item>
+        <item name="android:textSize">@dimen/text_size_date</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">@dimen/dayOfMonthMinHeight</item>
+        <item name="android:minWidth">@dimen/dayOfMonthMinWidth</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:paddingBottom">@dimen/dayOfMonthPaddingBottom</item>
+        <item name="android:textColor">@color/default_date_color</item>
+        <item name="android:layout_gravity">center</item>
+    </style><style name="ContainerDayOfWeek">
+        <item name="android:layout_width">@dimen/dayOfMonthBoxWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthBoxHeight</item>
+        <item name="android:gravity">center_vertical</item>
+    </style><style name="StripRange">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/strip_height</item>
+        <item name="android:background">@color/range_bg_color</item>
+        <item name="android:layout_gravity">center</item>
+    </style></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values/strings.xml" qualifiers=""><string name="cdrp_mon">一</string><string name="cdrp_tue">二</string><string name="cdrp_wed">三</string><string name="cdrp_thu">四</string><string name="cdrp_fri">五</string><string name="cdrp_sat">六</string><string name="cdrp_sun">日</string><string-array name="week_sun_sat">
+        <item>@string/cdrp_sun</item>
+        <item>@string/cdrp_mon</item>
+        <item>@string/cdrp_tue</item>
+        <item>@string/cdrp_wed</item>
+        <item>@string/cdrp_thu</item>
+        <item>@string/cdrp_fri</item>
+        <item>@string/cdrp_sat</item>
+    </string-array><string name="cancel">取消</string><string name="done">完成</string><string name="title_time_picker">選擇時間</string><string name="select_time">選擇一個時間</string></file><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values/attrs.xml" qualifiers=""><declare-styleable name="DateRangeMonthView">
+        <attr format="color" name="title_color"/>
+        <attr format="color" name="week_color"/>
+        <attr format="color" name="range_color"/>
+        <attr format="color" name="selected_date_circle_color"/>
+        <attr format="color" name="selected_date_color"/>
+        <attr format="color" name="default_date_color"/>
+        <attr format="color" name="range_date_color"/>
+        <attr format="color" name="disable_date_color"/>
+        <attr format="boolean" name="enable_time_selection"/>
+        <attr format="dimension" name="text_size_title"/>
+        <attr format="dimension" name="text_size_week"/>
+        <attr format="dimension" name="text_size_date"/>
+        <attr format="integer" name="header_bg"/>
+        <attr format="string" name="calendar_tag"/>
+        <attr format="integer" name="week_offset"/>
+        <attr format="boolean" name="editable"/>
+        <attr format="enum" name="date_selection_mode">
+            <enum name="free_range" value="0"/>
+            <enum name="single" value="1"/>
+            <enum name="fixed_range" value="2"/>
+        </attr>
+    </declare-styleable></file><file name="original" path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable-hdpi/original.jpg" qualifiers="hdpi-v4" type="drawable"/><file path="/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values-en/strings.xml" qualifiers="en"><string name="cdrp_mon">一</string><string name="cdrp_tue">二</string><string name="cdrp_wed">三</string><string name="cdrp_thu">四</string><string name="cdrp_fri">五</string><string name="cdrp_sat">六</string><string name="cdrp_sun">日</string><string-array name="week_sun_sat">
+        <item>@string/cdrp_sun</item>
+        <item>@string/cdrp_mon</item>
+        <item>@string/cdrp_tue</item>
+        <item>@string/cdrp_wed</item>
+        <item>@string/cdrp_thu</item>
+        <item>@string/cdrp_fri</item>
+        <item>@string/cdrp_sat</item>
+    </string-array><string name="cancel">Cancel</string><string name="done">Done</string><string name="title_time_picker">Select Time</string><string name="select_time">Select a Time</string></file></source><source path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/rs/debug"/><source path="/Users/cherylgao/sport-android/awesome-calendar/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/cherylgao/sport-android/awesome-calendar/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/cherylgao/sport-android/awesome-calendar/src/debug/res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="DateRangeMonthView">
+        <attr format="color" name="title_color"/>
+        <attr format="color" name="week_color"/>
+        <attr format="color" name="range_color"/>
+        <attr format="color" name="selected_date_circle_color"/>
+        <attr format="color" name="selected_date_color"/>
+        <attr format="color" name="default_date_color"/>
+        <attr format="color" name="range_date_color"/>
+        <attr format="color" name="disable_date_color"/>
+        <attr format="boolean" name="enable_time_selection"/>
+        <attr format="dimension" name="text_size_title"/>
+        <attr format="dimension" name="text_size_week"/>
+        <attr format="dimension" name="text_size_date"/>
+        <attr format="integer" name="header_bg"/>
+        <attr format="string" name="calendar_tag"/>
+        <attr format="integer" name="week_offset"/>
+        <attr format="boolean" name="editable"/>
+        <attr format="enum" name="date_selection_mode">
+            <enum name="free_range" value="0"/>
+            <enum name="single" value="1"/>
+            <enum name="fixed_range" value="2"/>
+        </attr>
+    </declare-styleable></configuration></mergedItems></merger>

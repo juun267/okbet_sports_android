@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="week_sun_sat">
+        <item>@string/cdrp_sun</item>
+        <item>@string/cdrp_mon</item>
+        <item>@string/cdrp_tue</item>
+        <item>@string/cdrp_wed</item>
+        <item>@string/cdrp_thu</item>
+        <item>@string/cdrp_fri</item>
+        <item>@string/cdrp_sat</item>
+    </string-array>
+    <bool name="cdr_is_right_to_left">false</bool>
+    <color name="calendar_text">#474747</color>
+    <color name="date_color">#000</color>
+    <color name="default_date_color">#3b4144</color>
+    <color name="disable_date_color">#BDBDBD</color>
+    <color name="range_bg_color">#B7C99D</color>
+    <color name="range_date_color">@color/default_date_color</color>
+    <color name="selected_date_circle_color">#54B948</color>
+    <color name="selected_date_color">#FFF</color>
+    <color name="title_color">#000</color>
+    <color name="week_color">#000</color>
+    <dimen name="dateTitlePaddingBottom">5dp</dimen>
+    <dimen name="dayOfMonthBoxHeight">34dp</dimen>
+    <dimen name="dayOfMonthBoxSize">44dp</dimen>
+    <dimen name="dayOfMonthBoxWidth">44dp</dimen>
+    <dimen name="dayOfMonthCircleHeight">24dp</dimen>
+    <dimen name="dayOfMonthCircleWidth">34dp</dimen>
+    <dimen name="dayOfMonthImageMarginTop">32dp</dimen>
+    <dimen name="dayOfMonthImageSize">4dp</dimen>
+    <dimen name="dayOfMonthMinHeight">0dp</dimen>
+    <dimen name="dayOfMonthMinWidth">50dp</dimen>
+    <dimen name="dayOfMonthPaddingBottom">0dp</dimen>
+    <dimen name="dayOfMonthSize">24dp</dimen>
+    <dimen name="strip_height">24dp</dimen>
+    <dimen name="text_size_date">16dp</dimen>
+    <dimen name="text_size_title">16sp</dimen>
+    <dimen name="text_size_week">15sp</dimen>
+    <dimen name="weekDaysPaddingBottom">0dp</dimen>
+    <dimen name="weekRowMinHeight">8dp</dimen>
+    <string name="cancel">取消</string>
+    <string name="cdrp_fri">五</string>
+    <string name="cdrp_mon">一</string>
+    <string name="cdrp_sat">六</string>
+    <string name="cdrp_sun">日</string>
+    <string name="cdrp_thu">四</string>
+    <string name="cdrp_tue">二</string>
+    <string name="cdrp_wed">三</string>
+    <string name="done">完成</string>
+    <string name="select_time">選擇一個時間</string>
+    <string name="title_time_picker">選擇時間</string>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="ContainerDayOfWeek">
+        <item name="android:layout_width">@dimen/dayOfMonthBoxWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthBoxHeight</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="DayOfMonthStyle">
+        <item name="android:layout_width">@dimen/dayOfMonthCircleWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthCircleHeight</item>
+        <item name="android:textSize">@dimen/text_size_date</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">@dimen/dayOfMonthMinHeight</item>
+        <item name="android:minWidth">@dimen/dayOfMonthMinWidth</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:paddingBottom">@dimen/dayOfMonthPaddingBottom</item>
+        <item name="android:textColor">@color/default_date_color</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <style name="StripRange">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/strip_height</item>
+        <item name="android:background">@color/range_bg_color</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <style name="WeekDayTitleStyle">
+        <item name="android:layout_width">@dimen/dayOfMonthBoxWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthBoxHeight</item>
+        <item name="android:textSize">@dimen/text_size_week</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/date_color</item>
+        <item name="android:paddingBottom">@dimen/dayOfMonthPaddingBottom</item>
+    </style>
+    <declare-styleable name="DateRangeMonthView">
+        <attr format="color" name="title_color"/>
+        <attr format="color" name="week_color"/>
+        <attr format="color" name="range_color"/>
+        <attr format="color" name="selected_date_circle_color"/>
+        <attr format="color" name="selected_date_color"/>
+        <attr format="color" name="default_date_color"/>
+        <attr format="color" name="range_date_color"/>
+        <attr format="color" name="disable_date_color"/>
+        <attr format="boolean" name="enable_time_selection"/>
+        <attr format="dimension" name="text_size_title"/>
+        <attr format="dimension" name="text_size_week"/>
+        <attr format="dimension" name="text_size_date"/>
+        <attr format="integer" name="header_bg"/>
+        <attr format="string" name="calendar_tag"/>
+        <attr format="integer" name="week_offset"/>
+        <attr format="boolean" name="editable"/>
+        <attr format="enum" name="date_selection_mode">
+            <enum name="free_range" value="0"/>
+            <enum name="single" value="1"/>
+            <enum name="fixed_range" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

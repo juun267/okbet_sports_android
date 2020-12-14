@@ -8,7 +8,11 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+<<<<<<< HEAD
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
+=======
+import org.cxct.sportlottery.ui.bet_record.BetRecordActivity
+>>>>>>> [add] bet record activity, vm and xml. add menu item on click event.
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
@@ -56,6 +60,11 @@ class MenuFragment : BaseFragment() {
                 startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             }
         }
+        
+        menu_bet_history.setOnClickListener {
+            startActivity(Intent(context, BetRecordActivity::class.java))
+        }
+
     }
 
     /**

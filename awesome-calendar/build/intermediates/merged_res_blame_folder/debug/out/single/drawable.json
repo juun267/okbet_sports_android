@@ -1,0 +1,246 @@
+[
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_seekbar_track_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_seekbar_track_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/ic_right_blue.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_right_blue.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_dark.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_item_background_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_textfield_search_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_textfield_search_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ic_voice_search_api_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ic_voice_search_api_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ratingbar_indicator_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ratingbar_indicator_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_light.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_list_selector_background_transition_holo_light.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_btn_colored_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/range_bg.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/range_bg.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_dialog_material_background.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_light.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_dark.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_checkbox_checked_to_unchecked_mtrl_animation.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_checkbox_checked_to_unchecked_mtrl_animation.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/ic_right.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_right.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_btn_radio_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_btn_radio_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ratingbar_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ratingbar_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_cab_background_internal_bg.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_cab_background_internal_bg.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/ic_left.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_left.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ic_ab_back_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ic_ab_back_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_tab_indicator_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_tab_indicator_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_seekbar_tick_mark_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_seekbar_tick_mark_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_switch_thumb_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_switch_thumb_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_checkbox_unchecked_mtrl.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_checkbox_unchecked_mtrl.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/green_circle.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/green_circle.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_btn_check_material_anim.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_btn_check_material_anim.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_btn_borderless_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_btn_borderless_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/ic_left_selector.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_left_selector.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ratingbar_small_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ratingbar_small_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/ic_left_blue.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_left_blue.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_btn_radio_material_anim.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_btn_radio_material_anim.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_checkbox_checked_mtrl.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_checkbox_checked_mtrl.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_btn_default_mtrl_shape.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_btn_default_mtrl_shape.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/notification_bg_low.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/0f7164defc0da74bb6bed47b5f91db5c/core-1.1.0/res/drawable/notification_bg_low.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_radio_on_mtrl.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_radio_on_mtrl.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/tooltip_frame_dark.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/tooltip_frame_dark.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_seekbar_thumb_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_seekbar_thumb_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ic_clear_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ic_clear_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_text_cursor_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_text_cursor_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/ic_right_selector.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/ic_right_selector.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_list_selector_holo_light.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_list_selector_holo_light.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/notification_icon_background.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/0f7164defc0da74bb6bed47b5f91db5c/core-1.1.0/res/drawable/notification_icon_background.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/tooltip_frame_light.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/tooltip_frame_light.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/notification_tile_bg.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/0f7164defc0da74bb6bed47b5f91db5c/core-1.1.0/res/drawable/notification_tile_bg.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ic_menu_overflow_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ic_menu_overflow_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_cab_background_top_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_cab_background_top_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_radio_off_mtrl.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_radio_off_mtrl.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/range_bg_right.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/range_bg_right.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_list_selector_holo_dark.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_list_selector_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_checkbox_unchecked_to_checked_mtrl_animation.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_checkbox_unchecked_to_checked_mtrl_animation.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/range_bg_left.xml",
+        "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/drawable/range_bg_left.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ic_go_search_api_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ic_go_search_api_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_vector_test.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/aadf64a1d8bd16ddfbbaf49ec50f1277/jetified-appcompat-resources-1.1.0/res/drawable/abc_vector_test.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_radio_on_to_off_mtrl_animation.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_radio_on_to_off_mtrl_animation.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_edit_text_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_list_divider_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_list_divider_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/btn_radio_off_to_on_mtrl_animation.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/btn_radio_off_to_on_mtrl_animation.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_btn_check_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_btn_check_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ic_search_api_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ic_search_api_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_spinner_textfield_background_material.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/notification_bg.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/0f7164defc0da74bb6bed47b5f91db5c/core-1.1.0/res/drawable/notification_bg.xml"
+    },
+    {
+        "merged": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/drawable/abc_ic_arrow_drop_right_black_24dp.xml",
+        "source": "/Users/cherylgao/.gradle/caches/transforms-2/files-2.1/c44031bbd59f200dcf1c14a186eb86d6/appcompat-1.1.0/res/drawable/abc_ic_arrow_drop_right_black_24dp.xml"
+    }
+]
