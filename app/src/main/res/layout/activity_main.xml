@@ -37,6 +37,34 @@
                     android:scaleType="centerInside"
                     tools:src="@drawable/ic_logo" />
 
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="72dp"
+                    android:layout_height="28dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@id/btn_logout"
+                    android:background="@drawable/bg_square_shape_15dp_primary_dark"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="@string/btn_login"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textSize18sp" />
+
+                <Button
+                    android:id="@+id/btn_logout"
+                    android:layout_width="72dp"
+                    android:layout_height="28dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toStartOf="@id/btn_menu"
+                    android:background="@drawable/bg_square_shape_15dp_primary_dark"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="@string/btn_logout"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textSize18sp" />
+
                 <ImageView
                     android:id="@+id/btn_menu"
                     android:layout_width="@dimen/tool_bar_height"
@@ -92,7 +120,7 @@
                     android:id="@+id/tab_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout="@layout/tab_home_cate"/>
+                    android:layout="@layout/tab_home_cate" />
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tab_inPlay"

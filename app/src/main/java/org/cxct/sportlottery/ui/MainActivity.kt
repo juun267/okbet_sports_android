@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_home_cate.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.LoginActivity
+import org.cxct.sportlottery.ui.login.NAME_LOGIN
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
@@ -26,6 +28,12 @@ class MainActivity : BaseActivity() {
     }
 
     private lateinit var viewModel: MainViewModel
+
+    private val loginRepository by lazy {
+        LoginRepository(
+            application.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +56,23 @@ class MainActivity : BaseActivity() {
             else {
                 drawer_layout.openDrawer(nav_right)
             }
+        }
+
+        btn_login.setOnClickListener {
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+        }
+
+        btn_logout.setOnClickListener {
+            loginRepository.logout()
+            reStart(this@MainActivity)
+        }
+
+        if (loginRepository.token.value.isNullOrEmpty()) {
+            btn_login.visibility = View.VISIBLE
+            btn_logout.visibility = View.GONE
+        } else {
+            btn_login.visibility = View.GONE
+            btn_logout.visibility = View.VISIBLE
         }
     }
 

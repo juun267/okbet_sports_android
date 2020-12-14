@@ -31,4 +31,12 @@ class LoginRepository(private val sharedPref: SharedPreferences) {
 
         return loginResponse.body()
     }
+
+    fun logout() {
+        with(sharedPref.edit()) {
+            remove(KEY_TOKEN)
+            remove(KEY_USERNAME)
+            apply()
+        }
+    }
 }

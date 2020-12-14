@@ -9,8 +9,11 @@
     <string name="loading">loading</string>
 
     <string name="home_tab_all">All</string>
-    <string name="home_tab_in_play">In play</string>
+    <string name="home_tab_in_play">Live</string>
     <string name="home_tab_today">Today</string>
     <string name="home_tab_early">Early</string>
     <string name="home_tab_parlay">Parlay</string>
+
+    <string name="btn_login">Login</string>
+    <string name="btn_logout">Logout</string>
 </resources>
