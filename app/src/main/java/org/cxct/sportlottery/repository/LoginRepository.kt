@@ -12,7 +12,7 @@ const val KEY_USERNAME = "user_name"
 
 class LoginRepository(private val sharedPref: SharedPreferences) {
     val token = sharedPref.liveData(KEY_TOKEN, "")
-    val userName = sharedPref.liveData(KEY_TOKEN, "")
+    val userName = sharedPref.liveData(KEY_USERNAME, "")
 
     suspend fun login(userName: String, password: String): LoginResult? {
         val loginResponse = OneBoSportApi.indexService.login(
