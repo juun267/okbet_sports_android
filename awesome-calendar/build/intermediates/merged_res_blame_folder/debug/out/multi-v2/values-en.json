@@ -1,0 +1,52 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values-en/strings.xml",
+                    "from": {
+                        "startLines": "17,27,13,9,14,15,12,10,11,28,30,29",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "627,953,509,353,548,587,470,392,431,995,1091,1033",
+                        "endLines": "25,27,13,9,14,15,12,10,11,28,30,29",
+                        "endColumns": "19,41,38,38,38,38,38,38,38,37,53,57",
+                        "endOffsets": "947,990,543,387,582,621,504,426,465,1028,1140,1086"
+                    },
+                    "to": {
+                        "startLines": "2,11,12,13,14,15,16,17,18,19,20,21",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,380,422,461,500,539,578,617,656,695,733,787",
+                        "endLines": "10,11,12,13,14,15,16,17,18,19,20,21",
+                        "endColumns": "19,41,38,38,38,38,38,38,38,37,53,57",
+                        "endOffsets": "375,417,456,495,534,573,612,651,690,728,782,840"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/cherylgao/sport-android/awesome-calendar/build/intermediates/res/merged/debug/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "/Users/cherylgao/sport-android/awesome-calendar/src/main/res/values-en/strings.xml",
+                    "from": {
+                        "startLines": "17,27,13,9,14,15,12,10,11,28,30,29",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "627,953,509,353,548,587,470,392,431,995,1091,1033",
+                        "endLines": "25,27,13,9,14,15,12,10,11,28,30,29",
+                        "endColumns": "19,41,38,38,38,38,38,38,38,37,53,57",
+                        "endOffsets": "947,990,543,387,582,621,504,426,465,1028,1140,1086"
+                    },
+                    "to": {
+                        "startLines": "2,11,12,13,14,15,16,17,18,19,20,21",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,380,422,461,500,539,578,617,656,695,733,787",
+                        "endLines": "10,11,12,13,14,15,16,17,18,19,20,21",
+                        "endColumns": "19,41,38,38,38,38,38,38,38,37,53,57",
+                        "endOffsets": "375,417,456,495,534,573,612,651,690,728,782,840"
+                    }
+                }
+            ]
+        }
+    ]
+}
