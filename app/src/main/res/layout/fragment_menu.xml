@@ -80,14 +80,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/menu_bet_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:id="@+id/tv_jilu"
@@ -115,14 +115,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
                     android:background="@color/colorPrimaryDeepDark" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/menu_game_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:id="@+id/tv_game_result"
@@ -143,7 +142,6 @@
                         android:src="@drawable/ic_enter_horizontal"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_game_result"
                         app:layout_constraintEnd_toEndOf="parent"
-
                         app:layout_constraintTop_toTopOf="@+id/tv_game_result" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -151,14 +149,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
                     android:background="@color/colorPrimaryDeepDark" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/menu_news"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:id="@+id/tv_news"
@@ -187,14 +184,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
                     android:background="@color/colorPrimaryDeepDark" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/menu_help"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:id="@+id/tv_help"
@@ -222,7 +218,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
                     android:background="@color/colorPrimaryDeepDark" />
 
             </LinearLayout>

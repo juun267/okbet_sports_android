@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.bet_record.BetRecordActivity
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
@@ -43,6 +45,9 @@ class MenuFragment : BaseFragment() {
             context?.run {
                 ChangeLanguageDialog(this).show()
             }
+        }
+        menu_bet_history.setOnClickListener {
+            startActivity(Intent(context, BetRecordActivity::class.java))
         }
     }
 
