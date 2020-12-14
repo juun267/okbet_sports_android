@@ -12,25 +12,32 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.databinding.DataBindingUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.ui.MainActivity
 
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var loginBinding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_login)
-
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+
+        loginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+
+        loginBinding.apply {
+            loginViewModel = this@LoginActivity.loginViewModel
+            lifecycleOwner = this@LoginActivity
+        }
 
         loginViewModel.loginFormState.observe(this, Observer {
             val loginState = it ?: return@Observer
 
-            login.isEnabled = loginState.isDataValid
             if (loginState.usernameError != null) {
                 username.error = getString(loginState.usernameError)
             }
