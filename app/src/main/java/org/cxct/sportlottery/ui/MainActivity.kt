@@ -4,14 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_home_cate.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.LoginActivity
-import org.cxct.sportlottery.ui.login.NAME_LOGIN
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
@@ -29,17 +28,24 @@ class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: MainViewModel
 
-    private val loginRepository by lazy {
-        LoginRepository(
-            application.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            MainViewModel.Factory(application)
+        ).get(MainViewModel::class.java)
+
+        viewModel.token.observe(this, {
+            if (it.isNullOrEmpty()) {
+                btn_login.visibility = View.VISIBLE
+                btn_logout.visibility = View.GONE
+            } else {
+                btn_login.visibility = View.GONE
+                btn_logout.visibility = View.VISIBLE
+            }
+        })
 
         initToolBar()
         initMenu()
@@ -63,23 +69,15 @@ class MainActivity : BaseActivity() {
         }
 
         btn_logout.setOnClickListener {
-            loginRepository.logout()
-            reStart(this@MainActivity)
-        }
-
-        if (loginRepository.token.value.isNullOrEmpty()) {
-            btn_login.visibility = View.VISIBLE
-            btn_logout.visibility = View.GONE
-        } else {
-            btn_login.visibility = View.GONE
-            btn_logout.visibility = View.VISIBLE
+            viewModel.logout()
         }
     }
 
     private fun initMenu() {
         try {
             //選單選擇結束要收起選單
-            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
