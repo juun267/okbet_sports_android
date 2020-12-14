@@ -54,7 +54,6 @@ class LoginActivity : AppCompatActivity() {
 
             if (it != null && it.success) {
                 updateUiWithUser(it.loginData.userName)
-                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
                 showLoginFailed(R.string.login_failed)
