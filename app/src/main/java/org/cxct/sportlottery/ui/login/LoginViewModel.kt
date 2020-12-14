@@ -1,29 +1,30 @@
 package org.cxct.sportlottery.ui.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.content.Context
 import android.util.Patterns
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.MD5Util
-import retrofit2.Response
 
 
-class LoginViewModel() : ViewModel() {
+const val NAME_LOGIN = "login"
+
+class LoginViewModel(private val application: Application) : ViewModel() {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
-
-    val loginResult: LiveData<Response<LoginResult>>
+    val loginResult: LiveData<LoginResult?>
         get() = _loginResult
 
     private val _loginFormState = MutableLiveData<LoginFormState>()
+    private val _loginResult = MutableLiveData<LoginResult?>()
 
-    private val _loginResult = MutableLiveData<Response<LoginResult>>()
+    private val loginRepository = LoginRepository(
+        application.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    )
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
@@ -37,13 +38,7 @@ class LoginViewModel() : ViewModel() {
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
-            val loginResponse = OneBoSportApi.indexService.login(
-                LoginRequest(
-                    username,
-                    MD5Util.MD5Encode(password)
-                )
-            )
-            _loginResult.postValue(loginResponse)
+            _loginResult.postValue(loginRepository.login(username, MD5Util.MD5Encode(password)))
         }
     }
 
@@ -57,5 +52,15 @@ class LoginViewModel() : ViewModel() {
 
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
+    }
+
+    class Factory(private val application: Application) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return LoginViewModel(application) as T
+            }
+            throw IllegalAccessException("Unable to construct view model")
+        }
     }
 }
