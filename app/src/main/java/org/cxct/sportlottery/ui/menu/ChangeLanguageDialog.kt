@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.dialog_change_language.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.MainActivity
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.util.LanguageManager
 
 /**

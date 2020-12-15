@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui
+package org.cxct.sportlottery.ui.home
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_home_cate.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
