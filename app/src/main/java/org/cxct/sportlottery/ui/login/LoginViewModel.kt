@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.login
 
-import android.app.Application
-import android.content.Context
 import android.util.Patterns
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
@@ -11,9 +9,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.MD5Util
 
 
-const val NAME_LOGIN = "login"
-
-class LoginViewModel(private val application: Application) : ViewModel() {
+class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
     val loginResult: LiveData<LoginResult?>
@@ -21,12 +17,6 @@ class LoginViewModel(private val application: Application) : ViewModel() {
 
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult?>()
-
-    private val loginRepository by lazy {
-        LoginRepository(
-            application.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
-        )
-    }
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
@@ -54,15 +44,5 @@ class LoginViewModel(private val application: Application) : ViewModel() {
 
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
-    }
-
-    class Factory(private val application: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return LoginViewModel(application) as T
-            }
-            throw IllegalAccessException("Unable to construct view model")
-        }
     }
 }
