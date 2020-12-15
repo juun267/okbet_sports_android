@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
+import org.cxct.sportlottery.manager.RequestManager
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
@@ -31,5 +32,6 @@ class MultiLanguagesApplication : Application() {
             return@init LanguageManager.getSetLanguageLocale(context)
         }
         MultiLanguage.setApplicationLanguage(this)
+        RequestManager.init(this)
     }
 }

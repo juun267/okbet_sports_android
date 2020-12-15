@@ -8,7 +8,11 @@ import retrofit2.http.POST
 
 interface IndexService {
 
+    companion object {
+        const val LOGIN = "/api/front/index/login"
+    }
+
     @Headers("x-session-platform-code:plat1")
-    @POST("/api/front/index/login")
+    @POST(LOGIN)
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResult>
 }
