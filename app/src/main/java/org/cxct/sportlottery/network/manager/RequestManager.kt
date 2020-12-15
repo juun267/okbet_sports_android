@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.manager
+package org.cxct.sportlottery.network.manager
 
 import android.content.Context
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor

@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
-import org.cxct.sportlottery.manager.RequestManager
+import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.MainViewModel
 import org.cxct.sportlottery.ui.login.LoginViewModel
