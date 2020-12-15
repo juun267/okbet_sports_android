@@ -61,7 +61,6 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
 
     }
 
-
     private fun interceptRequestWhenDebug(
         chain: Interceptor.Chain,
         path: String,
@@ -71,39 +70,33 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
         var response: Response? = null
         if (BuildConfig.DEBUG) {
             val request = chain.request()
-            if (path.contains(INDEX_LOGIN)) {
-                response = getMockJsonData(request, "index_login.mock")
+
+            when {
+                path.contains(INDEX_LOGIN) -> {
+                    response = getMockJsonData(request, "index_login.mock")
+                }
+                path.contains(MESSAGE_LIST) -> {
+                    response = getMockJsonData(request, "message_list.mock")
+                }
+                path.contains(MATCH_BET_INFO) -> {
+                    response = getMockJsonData(request, "match_bet_info.mock")
+                }
+                path.contains(MATCH_BET_ADD) -> {
+                    response = getMockJsonData(request, "match_bet_add.mock")
+                }
+                path.contains(MATCH_BET_LIST) -> {
+                    response = getMockJsonData(request, "match_bet_list.mock")
+                }
+                path.contains(MATCH_PRELOAD) -> {
+                    response = getMockJsonData(request, "match_preload.mock")
+                }
+                path.contains(MATCH_ODDS_LIST) -> {
+                    response = getMockJsonData(request, "match_odds_list.mock")
+                }
+                path.contains(SPORT_MENU) -> {
+                    response = getMockJsonData(request, "sport_menu.mock")
+                }
             }
-
-            if (path.contains(MESSAGE_LIST)) {
-                response = getMockJsonData(request, "message_list.mock")
-            }
-
-            if (path.contains(MATCH_BET_INFO)) {
-                response = getMockJsonData(request, "match_bet_info.mock")
-            }
-
-            if (path.contains(MATCH_BET_ADD)) {
-                response = getMockJsonData(request, "match_bet_add.mock")
-            }
-
-            if (path.contains(MATCH_BET_LIST)) {
-                response = getMockJsonData(request, "match_bet_list.mock")
-            }
-
-            if (path.contains(MATCH_PRELOAD)) {
-                response = getMockJsonData(request, "match_preload.mock")
-            }
-
-            if (path.contains(MATCH_ODDS_LIST)) {
-                response = getMockJsonData(request, "match_odds_list.mock")
-            }
-
-            if (path.contains(SPORT_MENU)) {
-                response = getMockJsonData(request, "sport_menu.mock")
-            }
-
-
         }
         return response
     }
