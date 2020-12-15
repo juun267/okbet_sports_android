@@ -3,17 +3,18 @@ package org.cxct.sportlottery.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_home_cate.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
     companion object {
@@ -27,7 +28,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private lateinit var viewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModel()
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
@@ -35,12 +36,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(
-            this,
-            MainViewModel.Factory(application)
-        ).get(MainViewModel::class.java)
-
-        viewModel.token.observe(this) {
+        mainViewModel.token.observe(this) {
             if (it.isNullOrEmpty()) {
                 btn_login.visibility = View.VISIBLE
                 btn_logout.visibility = View.GONE
@@ -51,7 +47,7 @@ class MainActivity : BaseActivity() {
         }
 
         //TODO simon test 檢查跑馬燈 result
-        viewModel.messageListResult.observe(this) {
+        mainViewModel.messageListResult.observe(this) {
             hideLoading()
             val titleList: MutableList<String> = mutableListOf()
             it?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
@@ -69,6 +65,7 @@ class MainActivity : BaseActivity() {
 
         initToolBar()
         initMenu()
+        initRvMarquee()
         initTabLayout()
         getAnnouncement()
     }
@@ -90,7 +87,7 @@ class MainActivity : BaseActivity() {
         }
 
         btn_logout.setOnClickListener {
-            viewModel.logout()
+            mainViewModel.logout()
         }
     }
 
@@ -105,6 +102,12 @@ class MainActivity : BaseActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    //公告
+    private fun initRvMarquee() {
+        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_marquee.adapter = mMarqueeAdapter
     }
 
     private fun initTabLayout() {
@@ -135,6 +138,6 @@ class MainActivity : BaseActivity() {
 
     private fun getAnnouncement() {
         loading()
-        viewModel.getAnnouncement()
+        mainViewModel.getAnnouncement(LanguageManager.getSelectLanguage(this).key)
     }
 }

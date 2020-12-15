@@ -29,3 +29,50 @@ viewModelScope.launch{
     }catch(e:Exception){}
 }
 ```
+
+
+## Dependency Injection
+
+[Koin](https://insert-koin.io/)
+
+須先在MyApplication定義依賴注入關係
+
+```
+class MyApplication : Application(){
+    private val viewModelModule = module{
+        viewModel{ YourViewModel(get())} //這裡的get是指將傳入view model的repository
+    }
+
+    private val repoModule = module{
+        single{ YourRepository(get())} //這裡的get是指將傳入repositroy的androidContext
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin {
+            androidContext(this@MultiLanguagesApplication)
+            modules(
+                listOf(
+                    viewModelModule,
+                     repoModule
+                 )
+             )
+        }
+    }
+}
+```
+
+之後在Activity注入ViewModel
+
+```
+private val mainViewModel: MainViewModel by viewModel()
+```
+
+
+## Mock
+
+Mock Request Data Instructions :
+1. assets -> mock_api資料夾內添加副檔名為.mock的文件
+2. 添加判斷式 MockApiInterceptor -> fun interceptRequestWhenDebug
+3. build.gradle -> buildConfigField 修改參數

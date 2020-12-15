@@ -8,6 +8,10 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'armeabi'//, 'x86'
+        }
+
         applicationId "org.cxct.sportlottery"
         minSdkVersion 21
         targetSdkVersion 29
@@ -19,28 +23,29 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("../signKey/key3.jks")
-            storePassword "desheng@2020"
-            keyAlias "fungame"
-            keyPassword "desheng@2020"
+            //TODO
+//            storeFile file("../signKey/key3.jks")
+//            storePassword "desheng@2020"
+//            keyAlias "fungame"
+//            keyPassword "desheng@2020"
         }
     }
 
     buildTypes {
-        release {
-            ndk {
-                abiFilters 'arm64-v8a', 'armeabi-v7a', 'armeabi'//, 'x86'
-            }
+        debug {
+            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+        }
 
+        release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
             signingConfig signingConfigs.release
-
-            lintOptions {
-                disable 'MissingTranslation'
-            }
+            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
         }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
     }
 
     flavorDimensions "single"
@@ -74,6 +79,17 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    // release apk時，不將.mock包入apk
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == 'release') {
+            variant.mergeAssetsProvider.configure {
+                doLast {
+                    delete(fileTree(dir: outputDir, includes: ['**/*.mock']))
+                }
+            }
+        }
+    }
 }
 
 ext {
@@ -95,7 +111,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
-    
 
     //導圓角的 ImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
@@ -106,6 +121,8 @@ dependencies {
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.squareup.okhttp3:okhttp:4.7.2"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.1.1'
 
     //ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
@@ -122,6 +139,11 @@ dependencies {
 
     //annotation
     implementation 'androidx.annotation:annotation:1.1.0'
+
+    //koin
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
 }
 
 multiLanguages {
