@@ -1,0 +1,37 @@
+{
+	"success": true,
+	"msg": "8cua52",
+	"code": 860,
+	"t": {
+		"sport": {
+			"code": "94328",
+			"name": "越泽.沈"
+		},
+		"leagueOdds": [{
+			"league": {
+				"id": "171",
+				"name": "越泽.沈"
+			},
+			"matchOdds": [{
+				"matchInfo": {
+					"id": "171",
+					"homeName": "越泽.沈",
+					"awayName": "越泽.沈",
+					"startTime": "2020-12-10",
+					"endTime": "2020-12-10",
+					"status": 528,
+					"playCateNum": 475
+				},
+				"odds": {
+					"mapKey": {
+						"id": "",
+						"spread": "",
+						"odds": 0,
+						"status": 0,
+						"producerId": 0,
+					}
+				}
+			}]
+		}]
+	}
+}

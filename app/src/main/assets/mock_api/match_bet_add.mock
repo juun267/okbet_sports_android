@@ -1,0 +1,32 @@
+{
+	"success": true,
+	"msg": "b8urx3",
+	"code": 891,
+	"rows": [{
+		"matchOdds": [{
+			"oddsId": "171",
+			"matchId": "171",
+			"homeName": "越泽.沈",
+			"homeId": "171",
+			"awayName": "越泽.沈",
+			"awayId": "171",
+			"playCateName": "越泽.沈",
+			"playName": "越泽.沈",
+			"spread": "35914d",
+			"odds": 352,
+			"leagueName": "越泽.沈",
+			"playId": 460,
+			"oddsType": "7c6w3w",
+			"playCateId": 514,
+			"startTime": "2020-12-10",
+			"status": 930
+		}],
+		"stake": 676,
+		"status": 607,
+		"orderNo": "ccfrgy",
+		"parlay": 130,
+		"parlayType": "89h4id",
+		"eventType": 939
+	}],
+	"total": 401
+}
