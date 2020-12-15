@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.login
 
-import android.content.Intent
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,20 +14,15 @@ import androidx.databinding.DataBindingUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
-import org.cxct.sportlottery.ui.MainActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var loginBinding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        loginViewModel = ViewModelProvider(
-            this,
-            LoginViewModel.Factory(application)
-        ).get(LoginViewModel::class.java)
 
         loginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 

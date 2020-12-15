@@ -4,12 +4,27 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.MainViewModel
+import org.cxct.sportlottery.ui.login.LoginViewModel
 import org.cxct.sportlottery.util.LanguageManager
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 /**
  * App 內部切換語系
  */
 class MultiLanguagesApplication : Application() {
+    private val viewModelModule = module {
+        viewModel { MainViewModel(get()) }
+        viewModel { LoginViewModel(get()) }
+    }
+
+    private val repoModule = module {
+        single { LoginRepository(get()) }
+    }
 
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
@@ -31,5 +46,15 @@ class MultiLanguagesApplication : Application() {
             return@init LanguageManager.getSetLanguageLocale(context)
         }
         MultiLanguage.setApplicationLanguage(this)
+
+        startKoin {
+            androidContext(this@MultiLanguagesApplication)
+            modules(
+                listOf(
+                    viewModelModule,
+                    repoModule
+                )
+            )
+        }
     }
 }
