@@ -112,6 +112,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
 
+    //伸縮抽屜layout https://github.com/cachapa/ExpandableLayout
+    implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2' 
+
     //導圓角的 ImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
