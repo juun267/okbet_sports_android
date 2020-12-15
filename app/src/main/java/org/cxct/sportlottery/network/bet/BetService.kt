@@ -12,31 +12,28 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+
+const val MATCH_BET_INFO = "/api/front/match/bet/info"
+const val MATCH_BET_ADD = "/api/front/match/bet/add"
+const val MATCH_BET_LIST = "/api/front/match/bet/list"
+
 interface BetService {
-
-    companion object {
-        const val match_bet_info = "/api/front/match/bet/info"
-        const val match_bet_add = "/api/front/match/bet/add"
-        const val match_bet_list = "/api/front/match/bet/list"
-    }
-
-
     @Headers("x-session-platform-code:plat1")
-    @POST(match_bet_info)
+    @POST(MATCH_BET_INFO)
     suspend fun getBetInfo(
         @Header("x-session-token") token: String,
         @Body betInfoRequest: BetInfoRequest
     ): Response<BetInfoResult>
 
     @Headers("x-session-platform-code:plat1")
-    @POST(match_bet_add)
+    @POST(MATCH_BET_ADD)
     suspend fun addBet(
         @Header("x-session-token") token: String,
         @Body betAddRequest: BetAddRequest
     ): Response<BetAddResult>
 
     @Headers("x-session-platform-code:plat1")
-    @POST(match_bet_list)
+    @POST(MATCH_BET_LIST)
     suspend fun getBetList(
         @Header("x-session-token") token: String,
         @Body betListRequest: BetListRequest

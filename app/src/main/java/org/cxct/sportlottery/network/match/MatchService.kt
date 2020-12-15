@@ -6,14 +6,12 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+const val MATCH_PRELOAD = "/api/front/match/preload"
+
 interface MatchService {
 
-    companion object {
-        const val match_preload = "/api/front/match/preload"
-    }
-
     @Headers("x-session-platform-code:plat1")
-    @POST("/api/front/match/preload")
+    @POST(MATCH_PRELOAD)
     suspend fun getMatchPreload(
         @Header("x-session-token") token: String,
         @Body matchPreloadRequest: MatchPreloadRequest

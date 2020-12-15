@@ -8,12 +8,14 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.network.bet.BetService
-import org.cxct.sportlottery.network.index.IndexService
-import org.cxct.sportlottery.network.match.MatchService
-import org.cxct.sportlottery.network.message.MessageService
-import org.cxct.sportlottery.network.odds.OddsService
-import org.cxct.sportlottery.network.sport.SportService
+import org.cxct.sportlottery.network.bet.MATCH_BET_ADD
+import org.cxct.sportlottery.network.bet.MATCH_BET_INFO
+import org.cxct.sportlottery.network.bet.MATCH_BET_LIST
+import org.cxct.sportlottery.network.index.INDEX_LOGIN
+import org.cxct.sportlottery.network.match.MATCH_PRELOAD
+import org.cxct.sportlottery.network.message.MESSAGE_LIST
+import org.cxct.sportlottery.network.odds.MATCH_ODDS_LIST
+import org.cxct.sportlottery.network.sport.SPORT_MENU
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import org.cxct.sportlottery.util.JsonMapUtil
 import org.json.JSONObject
@@ -69,38 +71,37 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
         var response: Response? = null
         if (BuildConfig.DEBUG) {
             val request = chain.request()
-            if (path.contains(IndexService.index_login)) {
+            if (path.contains(INDEX_LOGIN)) {
                 response = getMockJsonData(request, "index_login.mock")
             }
 
-            if (path.contains(MessageService.message_list)){
+            if (path.contains(MESSAGE_LIST)) {
                 response = getMockJsonData(request, "message_list.mock")
             }
 
-            if (path.contains(BetService.match_bet_info)){
+            if (path.contains(MATCH_BET_INFO)) {
                 response = getMockJsonData(request, "match_bet_info.mock")
             }
 
-            if (path.contains(BetService.match_bet_add)){
+            if (path.contains(MATCH_BET_ADD)) {
                 response = getMockJsonData(request, "match_bet_add.mock")
             }
 
-            if (path.contains(BetService.match_bet_list)){
+            if (path.contains(MATCH_BET_LIST)) {
                 response = getMockJsonData(request, "match_bet_list.mock")
             }
 
-            if (path.contains(MatchService.match_preload)){
+            if (path.contains(MATCH_PRELOAD)) {
                 response = getMockJsonData(request, "match_preload.mock")
             }
 
-            if (path.contains(OddsService.match_odds_list)){
+            if (path.contains(MATCH_ODDS_LIST)) {
                 response = getMockJsonData(request, "match_odds_list.mock")
             }
 
-            if (path.contains(SportService.sport_menu)){
+            if (path.contains(SPORT_MENU)) {
                 response = getMockJsonData(request, "sport_menu.mock")
             }
-
 
 
         }
