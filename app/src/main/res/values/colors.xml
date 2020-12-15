@@ -12,6 +12,8 @@
 
     <!-- 线条颜色 -->
     <color name="skinLine">#DDDDDD</color>
+    <color name="bright_gray">#CCCCCC</color>
+    <color name="dark_gray">#E7E7E7</color>
     <color name="golden">#ECA906</color>
 
     <color name="transparent">#00000000</color>
@@ -25,4 +27,9 @@
     <color name="transparent_white_80">#ccffffff</color>
     <color name="transparent_white_90">#e6ffffff</color>
     <color name="transparent_gray_90">#E6D0D0D0</color>
+
+    <!--  背景顏色  -->
+    <color name="tool_bar_background">#00496b</color>
+    <color name="tool_bar_text_color">#EAA909</color>
+    <color name="back_button_menu">#023851</color>
 </resources>

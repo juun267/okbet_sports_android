@@ -16,6 +16,7 @@
     <string name="btn_login">登录</string>
     <string name="btn_logout">登出</string>
     <string name="no_announcement">暂无公告</string>
+    <string name="results_toolbar_title">賽果結算</string>
 
     <!--login need translate later-->
     <string name="title_activity_login">LoginActivity</string>
