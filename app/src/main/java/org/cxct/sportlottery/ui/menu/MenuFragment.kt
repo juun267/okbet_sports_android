@@ -32,9 +32,9 @@ class MenuFragment : BaseFragment() {
 
     private fun initView() {
         tv_language.text = when(LanguageManager.getSelectLanguage(tv_language.context)) {
-            LanguageManager.Language.AUTO -> getString(R.string.language_auto)
-            LanguageManager.Language.CN -> getString(R.string.language_cn)
+            LanguageManager.Language.ZH -> getString(R.string.language_cn)
             LanguageManager.Language.EN -> getString(R.string.language_en)
+            else -> getString(R.string.language_en)
         }
     }
 

@@ -4,12 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_home_cate.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,23 +30,27 @@ class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModel()
 
+    private val mMarqueeAdapter = MarqueeAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainViewModel.token.observe(this, {
-            if (it.isNullOrEmpty()) {
-                btn_login.visibility = View.VISIBLE
-                btn_logout.visibility = View.GONE
-            } else {
-                btn_login.visibility = View.GONE
-                btn_logout.visibility = View.VISIBLE
-            }
-        })
-
         initToolBar()
         initMenu()
+        initRvMarquee()
         initTabLayout()
+        refreshView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getAnnouncement()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        rv_marquee.stopAuto()
     }
 
     private fun initToolBar() {
@@ -64,6 +71,7 @@ class MainActivity : BaseActivity() {
 
         btn_logout.setOnClickListener {
             mainViewModel.logout()
+            getAnnouncement()
         }
     }
 
@@ -78,6 +86,12 @@ class MainActivity : BaseActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    //公告
+    private fun initRvMarquee() {
+        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_marquee.adapter = mMarqueeAdapter
     }
 
     private fun initTabLayout() {
@@ -104,5 +118,40 @@ class MainActivity : BaseActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun refreshView() {
+        mainViewModel.token.observe(this) {
+            if (it.isNullOrEmpty()) {
+                btn_login.visibility = View.VISIBLE
+                btn_logout.visibility = View.GONE
+            } else {
+                btn_login.visibility = View.GONE
+                btn_logout.visibility = View.VISIBLE
+            }
+        }
+
+        mainViewModel.messageListResult.observe(this) {
+            hideLoading()
+            val titleList: MutableList<String> = mutableListOf()
+            it?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
+
+            if (it?.success == true && titleList.size > 0) {
+                rv_marquee.startAuto() //啟動跑馬燈
+            } else {
+                rv_marquee.stopAuto() //停止跑馬燈
+            }
+
+            mMarqueeAdapter.setData(titleList)
+
+            //20190916 記錄問題: 因為 marqueeAdapter 的 itemCount 設回 MAX_VALUE
+            //所以當 "暫無公告" 時，需要滑到開頭，才不會 recycleView stopAuto 停留在不對的位置
+            rv_marquee.scrollToPosition(0)
+        }
+    }
+
+    private fun getAnnouncement() {
+        loading()
+        mainViewModel.getAnnouncement(LanguageManager.getSelectLanguage(this).key)
     }
 }
