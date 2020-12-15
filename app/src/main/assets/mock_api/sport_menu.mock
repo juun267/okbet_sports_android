@@ -1,0 +1,62 @@
+{
+	"success": true,
+	"msg": "q68ext",
+	"code": 641,
+	"t": {
+		"inPlay": [{
+			"name": "越泽.沈",
+			"code": "94328",
+			"num": 522,
+			"sortNum": 642,
+			"play": [{
+				"code": "94328",
+				"name": "越泽.沈",
+				"num": 206
+			}]
+		}],
+		"today": [{
+			"name": "越泽.沈",
+			"code": "94328",
+			"num": 295,
+			"sortNum": 256,
+			"play": [{
+				"code": "94328",
+				"name": "越泽.沈",
+				"num": 507
+			}]
+		}],
+		"early": [{
+			"name": "越泽.沈",
+			"code": "94328",
+			"num": 942,
+			"sortNum": 384,
+			"play": [{
+				"code": "94328",
+				"name": "越泽.沈",
+				"num": 554
+			}]
+		}],
+		"parlay": [{
+			"name": "越泽.沈",
+			"code": "94328",
+			"num": 126,
+			"sortNum": 26,
+			"play": [{
+				"code": "94328",
+				"name": "越泽.沈",
+				"num": 55
+			}]
+		}],
+		"atStart": [{
+			"name": "越泽.沈",
+			"code": "94328",
+			"num": 738,
+			"sortNum": 68,
+			"play": [{
+				"code": "94328",
+				"name": "越泽.沈",
+				"num": 251
+			}]
+		}]
+	}
+}

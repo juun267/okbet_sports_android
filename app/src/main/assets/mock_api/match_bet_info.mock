@@ -1,0 +1,34 @@
+{
+	"success": true,
+	"msg": "olhkrb",
+	"code": 848,
+	"t": {
+		"matchOdds": [{
+			"homeName": "越泽.沈",
+			"awayName": "越泽.沈",
+			"startTime": "2020-12-10",
+			"leagueId": "171",
+			"oddsId": "171",
+			"matchId": "171",
+			"leagueName": "越泽.沈",
+			"playId": 775,
+			"playCode": "94328",
+			"playName": "越泽.沈",
+			"odds": 882,
+			"oddsType": "ouxpf3",
+			"playCateId": 291,
+			"playCateName": "越泽.沈",
+			"spread": "y3axpt",
+			"inplay": 164,
+			"producerId": 960,
+			"status": 672
+		}],
+		"parlayOdds": [{
+			"min": 622,
+			"max": 721,
+			"num": 831,
+			"odds": 31,
+			"parlayType": "v1g52o"
+		}]
+	}
+}

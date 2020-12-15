@@ -7,8 +7,13 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface MessageService {
+
+    companion object {
+        const val message_list = "/api/front/message/list"
+    }
+
     @Headers("x-session-platform-code:plat1")
-    @GET("/api/front/message/list")
+    @GET(message_list)
     suspend fun getMessageList(
         @Header("x-session-token") token: String,
         @Query("messageType") messageType: String,

@@ -1,0 +1,20 @@
+{
+	"success": true,
+	"msg": "9mrlbh",
+	"code": 175,
+	"t": {
+		"num": 39,
+		"datas": [{
+			"code": "94328",
+			"matchs": [{
+				"id": "171",
+				"homeName": "越泽.沈",
+				"awayName": "越泽.沈",
+				"startTime": "2020-12-10",
+				"endTime": "2020-12-10",
+				"status": 740,
+				"playCateNum": 188
+			}]
+		}]
+	}
+}
