@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 
@@ -65,7 +66,7 @@ class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder>() {
         mDataList = dataList?: mutableListOf()
 
         if (mDataList.isEmpty()) {
-            mDataList.add("(暂无公告)")
+            mDataList.add("(${MultiLanguagesApplication.appContext.getString(R.string.no_announcement)})")
 
         } else {
             //多兩個欄位，當開頭跟結尾的空白過場

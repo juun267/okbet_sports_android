@@ -36,38 +36,21 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainViewModel.token.observe(this) {
-            if (it.isNullOrEmpty()) {
-                btn_login.visibility = View.VISIBLE
-                btn_logout.visibility = View.GONE
-            } else {
-                btn_login.visibility = View.GONE
-                btn_logout.visibility = View.VISIBLE
-            }
-        }
-
-        //TODO simon test 檢查跑馬燈 result
-        mainViewModel.messageListResult.observe(this) {
-            hideLoading()
-            val titleList: MutableList<String> = mutableListOf()
-            it?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
-            if (it?.success == true && titleList.size > 0) {
-                rv_marquee.startAuto() //啟動跑馬燈
-                mMarqueeAdapter.setData(titleList)
-
-                //20190916 記錄問題: 因為 marqueeAdapter 的 itemCount 設回 MAX_VALUE
-                //所以當 "暫無公告" 時，需要滑到開頭，才不會 recycleView stopAuto 停留在不對的位置
-                rv_marquee.scrollToPosition(0)
-            } else {
-                rv_marquee.stopAuto() //停止跑馬燈
-            }
-        }
-
         initToolBar()
         initMenu()
         initRvMarquee()
         initTabLayout()
+        refreshView()
+    }
+
+    override fun onResume() {
+        super.onResume()
         getAnnouncement()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        rv_marquee.stopAuto()
     }
 
     private fun initToolBar() {
@@ -88,6 +71,7 @@ class MainActivity : BaseActivity() {
 
         btn_logout.setOnClickListener {
             mainViewModel.logout()
+            getAnnouncement()
         }
     }
 
@@ -133,6 +117,36 @@ class MainActivity : BaseActivity() {
             tabParlay?.tv_number?.text = "0"
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun refreshView() {
+        mainViewModel.token.observe(this) {
+            if (it.isNullOrEmpty()) {
+                btn_login.visibility = View.VISIBLE
+                btn_logout.visibility = View.GONE
+            } else {
+                btn_login.visibility = View.GONE
+                btn_logout.visibility = View.VISIBLE
+            }
+        }
+
+        mainViewModel.messageListResult.observe(this) {
+            hideLoading()
+            val titleList: MutableList<String> = mutableListOf()
+            it?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
+
+            if (it?.success == true && titleList.size > 0) {
+                rv_marquee.startAuto() //啟動跑馬燈
+            } else {
+                rv_marquee.stopAuto() //停止跑馬燈
+            }
+
+            mMarqueeAdapter.setData(titleList)
+
+            //20190916 記錄問題: 因為 marqueeAdapter 的 itemCount 設回 MAX_VALUE
+            //所以當 "暫無公告" 時，需要滑到開頭，才不會 recycleView stopAuto 停留在不對的位置
+            rv_marquee.scrollToPosition(0)
         }
     }
 

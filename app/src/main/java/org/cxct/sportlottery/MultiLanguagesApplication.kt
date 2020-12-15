@@ -18,6 +18,10 @@ import org.koin.dsl.module
  * App 內部切換語系
  */
 class MultiLanguagesApplication : Application() {
+    companion object {
+        lateinit var appContext: Context
+    }
+
     private val viewModelModule = module {
         viewModel { MainViewModel(get()) }
         viewModel { LoginViewModel(get()) }
@@ -42,6 +46,8 @@ class MultiLanguagesApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        appContext = applicationContext
+
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
             return@init LanguageManager.getSetLanguageLocale(context)
