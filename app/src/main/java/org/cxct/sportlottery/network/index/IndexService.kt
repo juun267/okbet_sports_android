@@ -5,13 +5,12 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+
+const val INDEX_LOGIN = "/api/front/index/login"
+
 interface IndexService {
 
-    companion object {
-        const val index_login = "/api/front/index/login"
-    }
-
     @Headers("x-session-platform-code:plat1")
-    @POST(index_login)
+    @POST(INDEX_LOGIN)
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResult>
 }

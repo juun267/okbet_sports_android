@@ -6,14 +6,12 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+const val MATCH_ODDS_LIST = "/api/front/match/odds/list"
+
 interface OddsService {
 
-    companion object {
-        const val match_odds_list = "/api/front/match/odds/list"
-    }
-
     @Headers("x-session-platform-code:plat1")
-    @POST(match_odds_list)
+    @POST(MATCH_ODDS_LIST)
     suspend fun getOddsList(
         @Header("x-session-token") token: String,
         @Body oddsListRequest: OddsListRequest

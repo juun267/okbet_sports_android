@@ -5,14 +5,12 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 
+const val SPORT_MENU = "/api/front/sport/menu"
+
 interface SportService {
 
-    companion object {
-        const val sport_menu = "/api/front/sport/menu"
-    }
-
     @Headers("x-session-platform-code:plat1")
-    @GET(sport_menu)
+    @GET(SPORT_MENU)
     suspend fun getMenu(
         @Header("x-session-token") token: String
     ): Response<SportMenuResult>
