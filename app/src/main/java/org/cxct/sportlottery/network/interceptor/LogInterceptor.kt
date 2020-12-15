@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.interceptor
+package org.cxct.sportlottery.network.interceptor
 
 import android.util.Log
 import okhttp3.Headers

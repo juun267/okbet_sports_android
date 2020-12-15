@@ -1,13 +1,13 @@
-package org.cxct.sportlottery.manager
+package org.cxct.sportlottery.network.manager
 
 import android.content.Context
-import org.cxct.sportlottery.interceptor.RequestInterceptor
+import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.interceptor.LogInterceptor
-import org.cxct.sportlottery.interceptor.MockApiInterceptor
+import org.cxct.sportlottery.network.interceptor.LogInterceptor
+import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit

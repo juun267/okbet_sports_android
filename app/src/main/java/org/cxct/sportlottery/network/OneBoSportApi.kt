@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.network
 
-import org.cxct.sportlottery.manager.RequestManager
+import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.match.MatchService

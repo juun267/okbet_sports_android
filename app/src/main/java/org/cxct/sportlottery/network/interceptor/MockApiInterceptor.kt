@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.interceptor
+package org.cxct.sportlottery.network.interceptor
 
 import android.content.Context
 import android.text.TextUtils
