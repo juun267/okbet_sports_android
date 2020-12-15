@@ -27,12 +27,12 @@ class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() 
     }
 
     //獲取系統公告
-    fun getAnnouncement(xLang: String) {
+    fun getAnnouncement() {
         viewModelScope.launch {
             val token = loginRepository.token.value
             val messageType = "1" //消息类型 1:系统公告 2:赛事公告
             val messageResponse = OneBoSportApi.messageService.getMessageList(
-                token, xLang, messageType
+                token, messageType
             )
 
             if (messageResponse.isSuccessful) {

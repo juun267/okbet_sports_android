@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.cxct.sportlottery.util.LanguageManager
 
 import java.io.IOException
 import kotlin.jvm.Throws
@@ -33,6 +34,7 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
         // header
         // ex : builder.addHeader("appKey", BuildConfig.APP_KEY)
 
+        builder.addHeader("x-lang", LanguageManager.getSelectLanguage(context).key)
 
         val httpUrl = urlBuilder.build()
         val newRequest = builder.url(httpUrl).build()

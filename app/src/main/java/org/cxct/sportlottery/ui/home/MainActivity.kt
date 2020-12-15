@@ -151,6 +151,6 @@ class MainActivity : BaseActivity() {
 
     private fun getAnnouncement() {
         loading()
-        mainViewModel.getAnnouncement(LanguageManager.getSelectLanguage(this).key)
+        mainViewModel.getAnnouncement()
     }
 }
