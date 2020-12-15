@@ -18,29 +18,46 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file("../signKey/key3.jks")
-            storePassword "desheng@2020"
-            keyAlias "fungame"
-            keyPassword "desheng@2020"
-        }
+//        release {
+//            storeFile file("../signKey/key3.jks")
+//            storePassword "desheng@2020"
+//            keyAlias "fungame"
+//            keyPassword "desheng@2020"
+//        }
     }
 
     buildTypes {
+
+        debug {
+            ndk {
+                abiFilters 'arm64-v8a', 'armeabi-v7a', 'armeabi'//, 'x86'
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+            lintOptions {
+                disable 'MissingTranslation'
+            }
+            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+        }
+
         release {
             ndk {
                 abiFilters 'arm64-v8a', 'armeabi-v7a', 'armeabi'//, 'x86'
             }
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            signingConfig signingConfigs.release
-
+//            signingConfig signingConfigs.release
             lintOptions {
                 disable 'MissingTranslation'
             }
+            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+
         }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
     }
 
     flavorDimensions "single"
@@ -74,6 +91,18 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    // release apk時，不將.mock包入apk
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == 'release') {
+            variant.mergeAssetsProvider.configure {
+                doLast {
+                    delete(fileTree(dir: outputDir, includes: ['**/*.mock']))
+                }
+            }
+        }
+    }
+
 }
 
 ext {
@@ -105,6 +134,8 @@ dependencies {
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.squareup.okhttp3:okhttp:4.7.2"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.1.1'
 
     //ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'

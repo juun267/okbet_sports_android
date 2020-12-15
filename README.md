@@ -29,3 +29,8 @@ viewModelScope.launch{
     }catch(e:Exception){}
 }
 ```
+
+Mock Request Data Instructions :
+1. assets -> mock_api資料夾內添加副檔名為.mock的文件
+2. 添加判斷式 MockApiInterceptor -> fun interceptRequestWhenDebug
+3. build.gradle -> buildConfigField 修改參數
