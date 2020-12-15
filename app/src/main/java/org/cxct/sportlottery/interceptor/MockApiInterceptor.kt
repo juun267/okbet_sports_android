@@ -21,19 +21,27 @@ import kotlin.jvm.Throws
 
 class MockApiInterceptor(private val context: Context) : Interceptor {
 
+    companion object {
+        private val TAG = MockApiInterceptor::class.java.simpleName
+    }
+
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        var response: Response?
         val path = chain.request().url.toUri().path
+        var response: Response?
+
         response = interceptRequestWhenDebug(chain, path)
+
         if (response == null) {
             response = chain.proceed(chain.request())
         }
+
         return response
     }
 
     private fun interceptRequestWhenDebug(chain: Interceptor.Chain, path: String): Response? {
         var response: Response? = null
+
         if (BuildConfig.DEBUG) {
             val request = chain.request()
 
@@ -67,22 +75,31 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
         return response
     }
 
+    private fun getMockJsonData(request: Request, fileName: String): Response? {
+        val assetManager = context.assets
+        val data: String?
 
-    private fun getHttpSuccessResponse(
-        request: Request,
-        dataJson: String?
-    ): Response {
+        data = try {
+            readStringFromInputStream(assetManager.open("mock_api/$fileName"))
+        } catch (e: IOException) {
+            Log.e(TAG, "getMockJsonData exception: $e")
+            return null
+        }
+
+        return getHttpSuccessResponse(request, data)
+    }
+
+    private fun getHttpSuccessResponse(request: Request, dataJson: String?): Response {
         return if (TextUtils.isEmpty(dataJson)) {
-            Log.w(
-                TAG,
-                "getHttpSuccessResponse: dataJson is empty!"
-            )
+            Log.w(TAG, "getHttpSuccessResponse: dataJson is empty!")
+
             Response.Builder()
                 .code(500)
                 .protocol(Protocol.HTTP_1_0)
                 .request(request)
                 .build()
         } else {
+
             Response.Builder()
                 .code(200)
                 .message(dataJson!!)
@@ -92,27 +109,4 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 .body(dataJson.toResponseBody("application/json".toMediaType())).build()
         }
     }
-
-
-    private fun getMockJsonData(
-        request: Request,
-        fileName: String
-    ): Response? {
-        val data: String?
-        val assetManager = context.assets
-        data = try {
-            readStringFromInputStream(assetManager.open("mock_api/$fileName"))
-        } catch (e: IOException) {
-            Log.e(TAG, "getMockJsonData exception: $e")
-            return null
-        }
-        val response: Response
-        response = getHttpSuccessResponse(request, data)
-        return response
-    }
-
-    companion object {
-        private val TAG = MockApiInterceptor::class.java.simpleName
-    }
-
 }
