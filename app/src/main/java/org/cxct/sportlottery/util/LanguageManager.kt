@@ -41,7 +41,7 @@ object LanguageManager {
             Language.ZHT.key -> Locale.TRADITIONAL_CHINESE
             Language.EN.key -> Locale.ENGLISH
             Language.VI.key -> Locale.forLanguageTag("vi_VN")
-            else -> getSystemLocale(context)
+            else -> Locale.ENGLISH //預設使用英文
         }
     }
 
@@ -62,7 +62,7 @@ object LanguageManager {
     }
 
     fun saveSelectLanguage(context: Context?, select: Language) {
-        SPUtil.getInstance(context).saveLanguage(select.name)
+        SPUtil.getInstance(context).saveLanguage(select.key)
         MultiLanguage.setApplicationLanguage(context)
     }
 }
