@@ -121,6 +121,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun refreshView() {
+        //登入資料
         mainViewModel.token.observe(this) {
             if (it.isNullOrEmpty()) {
                 btn_login.visibility = View.VISIBLE
@@ -131,6 +132,7 @@ class MainActivity : BaseActivity() {
             }
         }
 
+        //公告訊息
         mainViewModel.messageListResult.observe(this) {
             hideLoading()
             val titleList: MutableList<String> = mutableListOf()
@@ -143,10 +145,6 @@ class MainActivity : BaseActivity() {
             }
 
             mMarqueeAdapter.setData(titleList)
-
-            //20190916 記錄問題: 因為 marqueeAdapter 的 itemCount 設回 MAX_VALUE
-            //所以當 "暫無公告" 時，需要滑到開頭，才不會 recycleView stopAuto 停留在不對的位置
-            rv_marquee.scrollToPosition(0)
         }
     }
 
