@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
-import org.cxct.sportlottery.R
 import java.util.*
 
 object LanguageManager {
 
-    enum class Language { AUTO, CN, EN }
+    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi") }
 
     /**
      * 获取系统的locale
@@ -22,10 +21,11 @@ object LanguageManager {
 
     fun getSelectLanguage(context: Context): Language {
         return when (SPUtil.getInstance(context).getSelectLanguage()) {
-            Language.AUTO.name -> Language.AUTO
-            Language.CN.name -> Language.CN
-            Language.EN.name ->  Language.EN
-            else -> Language.AUTO
+            Language.ZH.key -> Language.ZH
+            Language.ZHT.key -> Language.ZHT
+            Language.EN.key ->  Language.EN
+            Language.VI.key -> Language.VI
+            else -> Language.EN
         }
     }
 
@@ -37,9 +37,10 @@ object LanguageManager {
      */
     fun getSetLanguageLocale(context: Context?): Locale {
         return when (SPUtil.getInstance(context).getSelectLanguage()) {
-            Language.AUTO.name -> getSystemLocale(context)
-            Language.CN.name -> Locale.CHINA
-            Language.EN.name -> Locale.ENGLISH
+            Language.ZH.key -> Locale.SIMPLIFIED_CHINESE
+            Language.ZHT.key -> Locale.TRADITIONAL_CHINESE
+            Language.EN.key -> Locale.ENGLISH
+            Language.VI.key -> Locale.forLanguageTag("vi_VN")
             else -> getSystemLocale(context)
         }
     }

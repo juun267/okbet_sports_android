@@ -2,13 +2,16 @@ package org.cxct.sportlottery.ui
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import android.util.Log
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.login.NAME_LOGIN
+import org.cxct.sportlottery.util.LanguageManager
 
-class MainViewModel(application: Application) : ViewModel() {
+class MainViewModel(private val application: Application) : ViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
     }
@@ -19,11 +22,38 @@ class MainViewModel(application: Application) : ViewModel() {
         )
     }
 
+    val messageListResult: LiveData<MessageListResult?>
+        get() = _messageListResult
+
+    private val _messageListResult = MutableLiveData<MessageListResult?>()
+
     init {
     }
 
     fun logout() {
         loginRepository.logout()
+    }
+
+    //獲取系統公告
+    fun getAnnouncement() {
+        viewModelScope.launch {
+            val token = loginRepository.token.value
+            val xLang = LanguageManager.getSelectLanguage(application).key
+            val messageType = "1" //消息类型 1:系统公告 2:赛事公告
+            val messageResponse = OneBoSportApi.messageService.getMessageList(
+                token, xLang, messageType
+            )
+
+            if (messageResponse.isSuccessful) {
+                Log.e("simon test", messageResponse.message())
+                _messageListResult.postValue(messageResponse.body())
+            } else {
+                val errorBody = messageResponse.errorBody()
+                val errorResult = MessageListResult(-1, errorBody.toString(), mutableListOf(), false, 0)
+                _messageListResult.postValue(errorResult)
+            }
+        }
+
     }
 
     override fun onCleared() {

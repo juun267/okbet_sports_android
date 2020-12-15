@@ -23,19 +23,15 @@ class ChangeLanguageDialog(context: Context) : AlertDialog(context) {
 
     private fun initView() {
         when(LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.AUTO -> rBtn_auto.isChecked = true
-            LanguageManager.Language.CN -> rBtn_chinese.isChecked = true
+            LanguageManager.Language.ZH -> rBtn_chinese.isChecked = true
             LanguageManager.Language.EN -> rBtn_english.isChecked = true
+            else -> rBtn_english.isChecked = true
         }
     }
 
     private fun initEvent() {
-        rBtn_auto.setOnClickListener {
-            selectLanguage(LanguageManager.Language.AUTO)
-        }
-
         rBtn_chinese.setOnClickListener {
-            selectLanguage(LanguageManager.Language.CN)
+            selectLanguage(LanguageManager.Language.ZH)
         }
 
         rBtn_english.setOnClickListener {
