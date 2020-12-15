@@ -95,7 +95,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
-    
 
     //導圓角的 ImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
@@ -122,6 +121,11 @@ dependencies {
 
     //annotation
     implementation 'androidx.annotation:annotation:1.1.0'
+
+    //koin
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
 }
 
 multiLanguages {
