@@ -12,38 +12,28 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
+const val BASE_URL = "https://sports.cxct.org"
+const val CONNECT_TIMEOUT: Long = 15 * 1000
+const val WRITE_TIMEOUT: Long = 15 * 1000
+const val READ_TIMEOUT: Long = 15 * 1000
+
 class RequestManager private constructor(context: Context) {
+
+    var retrofit: Retrofit
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    private val BASE_URL = "https://sports.cxct.org"
-
-    var retrofit: Retrofit
-
     companion object {
-        const val CONNECT_TIMEOUT: Long = 15 * 1000
-        const val WRITE_TIMEOUT: Long = 15 * 1000
-        const val READ_TIMEOUT: Long = 15 * 1000
-
-        private var instance: RequestManager? = null
-        private var staticContext: Context? = null
-
-        fun init(c: Context) {
-            staticContext = c
+        private lateinit var staticContext: Context
+        val instance: RequestManager by lazy {
+            RequestManager(staticContext)
         }
 
-        fun getInstance(): RequestManager {
-            if (staticContext == null) {
-                throw RuntimeException("You must initialize this manager before getting instance")
-            }
-            if (instance == null) {
-                instance = RequestManager(staticContext!!)
-            }
-            return instance!!
+        fun init(context: Context) {
+            staticContext = context
         }
-
     }
 
     init {
@@ -52,7 +42,6 @@ class RequestManager private constructor(context: Context) {
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
             .addInterceptor(RequestInterceptor(context))
-
 
         okHttpClientBuilder.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
@@ -67,5 +56,4 @@ class RequestManager private constructor(context: Context) {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
-
 }
