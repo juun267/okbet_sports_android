@@ -11,6 +11,9 @@ import org.cxct.sportlottery.network.sport.SportService
 
 
 object OneBoSportApi {
+    val retrofit by lazy {
+        RequestManager.instance.retrofit
+    }
 
     val indexService: IndexService by lazy {
         RequestManager.instance
