@@ -31,6 +31,30 @@ viewModelScope.launch{
 ```
 
 
+### Error Handling
+
+- 先利用ErrorUtils parse response取得apiError
+- 轉換apiError為當前response所對應的result
+- Observe result並根據成功或失敗更新view
+
+```
+viewModelScope.launch{
+    val response = SportApi.Service.doSomething()
+
+    if(response.isSuccessful){
+
+    }else{
+        val apiError = ErrorUtils.parseError(response)
+        apiError?.let{
+             if(it.success!=null && it.code!=null && it.message!=null){
+                return Result(it.success,it.code,it.message,null) //data will be nullable
+             }
+        }
+    }
+}
+```
+
+
 ## Dependency Injection
 
 [Koin](https://insert-koin.io/)
