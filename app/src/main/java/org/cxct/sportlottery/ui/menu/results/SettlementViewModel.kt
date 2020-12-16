@@ -1,13 +1,11 @@
 package org.cxct.sportlottery.ui.menu.results
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import org.cxct.sportlottery.ui.login.LoginViewModel
+import org.cxct.sportlottery.repository.LoginRepository
 
-class SettlementViewModel (private val application: Application): ViewModel() {
+class SettlementViewModel (private val loginRepository: LoginRepository): ViewModel() {
     val settlementFilter: LiveData<SettlementFilter>
     get() = _settlementFilter
 
@@ -16,16 +14,5 @@ class SettlementViewModel (private val application: Application): ViewModel() {
     //test
     val settlementData: LiveData<List<SettlementItem>>
     get() = _settlementData
-    private var _settlementData = MutableLiveData<List<SettlementItem>>(listOf(SettlementItem("FT"), SettlementItem("BM"))) //TODO Dean : 串接api資料
-    //
-
-    class Factory(private val application: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(SettlementViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return SettlementViewModel(application) as T
-            }
-            throw IllegalAccessException("Unable to construct view model")
-        }
-    }
+    private var _settlementData = MutableLiveData<List<SettlementItem>>(listOf(SettlementItem("FT",false), SettlementItem("BM",false), SettlementItem("KK",false), SettlementItem("DD",true),SettlementItem("KK",false),SettlementItem("KK",false),SettlementItem("KK",false),SettlementItem("KK",false),SettlementItem("KK",false),SettlementItem("KK",false))) //TODO Dean : 串接api資料
 }
