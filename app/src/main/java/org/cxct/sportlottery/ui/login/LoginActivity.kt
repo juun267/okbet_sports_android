@@ -46,10 +46,14 @@ class LoginActivity : AppCompatActivity() {
             loading.visibility = View.GONE
 
             if (it != null && it.success) {
-                updateUiWithUser(it.loginData.userName)
+                it.loginData?.let { loginData ->
+                    updateUiWithUser(loginData.userName)
+                }
                 finish()
             } else {
-                showLoginFailed(R.string.login_failed)
+                it?.let { loginResult ->
+                    showLoginFailed(loginResult.msg)
+                }
             }
         })
 
@@ -105,8 +109,8 @@ class LoginActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    private fun showLoginFailed(error: String) {
+        Toast.makeText(applicationContext, error, Toast.LENGTH_SHORT).show()
     }
 }
 

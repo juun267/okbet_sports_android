@@ -13,5 +13,5 @@ data class LoginResult(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val loginData: LoginData
+    val loginData: LoginData?
 )
