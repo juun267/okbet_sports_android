@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.index.IndexService
+import org.cxct.sportlottery.network.league.LeagueService
 import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.message.MessageService
 import org.cxct.sportlottery.network.odds.OddsService
@@ -10,6 +11,9 @@ import org.cxct.sportlottery.network.sport.SportService
 
 
 object OneBoSportApi {
+    val retrofit by lazy {
+        RequestManager.instance.retrofit
+    }
 
     val indexService: IndexService by lazy {
         RequestManager.instance
@@ -45,5 +49,11 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(BetService::class.java)
+    }
+
+    val leagueService: LeagueService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(LeagueService::class.java)
     }
 }
