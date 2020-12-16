@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login
 
+import android.content.Context
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.text.Editable
@@ -14,10 +15,12 @@ import androidx.databinding.DataBindingUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
+import org.cxct.sportlottery.interfaces.OnCheckConnectClickListener
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     private val loginViewModel: LoginViewModel by viewModel()
     private lateinit var loginBinding: ActivityLoginBinding
 
@@ -90,10 +93,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupLoginButton() {
-        login.setOnClickListener {
-            loading.visibility = View.VISIBLE
-            loginViewModel.login(username.text.toString(), password.text.toString())
-        }
+
+        login.setOnClickListener(OnCheckConnectClickListener(this, object : OnCheckConnectClickListener.Doing {
+            override fun onClick() {
+                loading.visibility = View.VISIBLE
+                loginViewModel.login(username.text.toString(), password.text.toString())
+            }
+        }))
+
     }
 
     private fun updateUiWithUser(displayName: String) {
