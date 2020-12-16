@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="item"
+            type="org.cxct.sportlottery.ui.menu.results.SettlementItem" />
+        <variable
             name="viewModel"
             type="org.cxct.sportlottery.ui.menu.results.SettlementViewModel" />
     </data>
@@ -46,7 +49,7 @@
                     android:gravity="start|center_vertical"
                     android:textSize="@dimen/textSize16sp"
                     android:textColor="@android:color/white"
-                    android:text="Miền Bắc"
+                    android:text="@{item.gameType}"
                     tools:text="Miền Bắc" />
 
             </LinearLayout>
@@ -65,8 +68,8 @@
                 android:gravity="center"
                 android:textSize="@dimen/textSize14sp"
                 android:textColor="@android:color/white"
-                android:text="Miền Bắc"
-                tools:text="Miền Bắc" />
+                android:text="@string/first_half_game"
+                tools:text="@string/first_half_game" />
                 <TextView
                     android:id="@+id/tv_second_half"
                     android:layout_width="0dp"
@@ -76,8 +79,19 @@
                     android:gravity="center"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@android:color/white"
-                    android:text="Miền Bắc"
-                    tools:text="Miền Bắc" />
+                    android:text="@string/second_half_game"
+                    tools:text="@string/second_half_game" />
+                <TextView
+                    android:id="@+id/tv_full_game"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/full_game"
+                    tools:text="@string/full_game" />
                 <TextView
                     android:id="@+id/tv_end_game"
                     android:layout_width="0dp"
@@ -87,15 +101,15 @@
                     android:gravity="center"
                     android:textSize="@dimen/textSize14sp"
                     android:textColor="@android:color/white"
-                    android:text="Miền Bắc"
-                    tools:text="Miền Bắc" />
+                    android:text="@string/game_result"
+                    tools:text="@string/game_result" />
 
         </LinearLayout>
 
         </LinearLayout>
 
         <net.cachapa.expandablelayout.ExpandableLayout
-            android:id="@+id/block_drawer_game"
+            android:id="@+id/block_drawer_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:el_duration="500"
@@ -104,16 +118,16 @@
             tools:el_expanded="true">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_game_list"
+                android:id="@+id/rv_game_result"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:clipToPadding="false"
-                tools:itemCount="3"
-                tools:layoutManager="android.support.v7.widget.GridLayoutManager"
-
-                tools:spanCount="2" />
+                tools:itemCount="5"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/content_game_result_rv"
+                />
 
         </net.cachapa.expandablelayout.ExpandableLayout>
 

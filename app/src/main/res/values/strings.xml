@@ -16,7 +16,13 @@
     <string name="btn_login">登录</string>
     <string name="btn_logout">登出</string>
     <string name="no_announcement">暂无公告</string>
+    <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>
+    <string name="first_half_game">上半场</string>
+    <string name="second_half_game">下半场</string>
+    <string name="full_game">全场</string>
+    <string name="game_result">赛果</string>
+    <string name="verse">VS</string>
 
     <!--login need translate later-->
     <string name="title_activity_login">LoginActivity</string>

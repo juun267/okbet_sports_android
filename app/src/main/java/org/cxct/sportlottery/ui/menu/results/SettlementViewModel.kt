@@ -13,6 +13,12 @@ class SettlementViewModel (private val application: Application): ViewModel() {
 
     private var _settlementFilter = MutableLiveData<SettlementFilter>()
 
+    //test
+    val settlementData: LiveData<List<SettlementItem>>
+    get() = _settlementData
+    private var _settlementData = MutableLiveData<List<SettlementItem>>(listOf(SettlementItem("FT"), SettlementItem("BM"))) //TODO Dean : 串接api資料
+    //
+
     class Factory(private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(SettlementViewModel::class.java)) {
