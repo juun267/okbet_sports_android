@@ -46,6 +46,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        rv_marquee.startAuto()
     }
 
     override fun onPause() {
