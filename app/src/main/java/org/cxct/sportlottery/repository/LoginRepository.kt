@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import liveData
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
 
@@ -27,14 +28,23 @@ class LoginRepository(private val androidContext: Context) {
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
                 with(sharedPref.edit()) {
-                    putString(KEY_TOKEN, it.loginData.token)
-                    putString(KEY_USERNAME, it.loginData.userName)
+                    putString(KEY_TOKEN, it.loginData?.token)
+                    putString(KEY_USERNAME, it.loginData?.userName)
                     apply()
+                }
+            }
+            return loginResponse.body()
+
+        } else {
+            val apiError = ErrorUtils.parseError(loginResponse)
+            apiError?.let {
+                if (it.success != null && it.code != null && it.msg != null) {
+                    return LoginResult(it.code, it.msg, it.success, null)
                 }
             }
         }
 
-        return loginResponse.body()
+        return null
     }
 
     fun logout() {
