@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
@@ -47,12 +48,18 @@ abstract class BaseActivity : AppCompatActivity() {
     fun hideSoftKeyboard(activity: Activity) {
         try {
             val inputMethodManager = activity.getSystemService(
-                    Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                Activity.INPUT_METHOD_SERVICE
+            ) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                    activity.currentFocus?.windowToken, 0)
+                activity.currentFocus?.windowToken, 0
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun onNetworkUnavailable() {
+        Toast.makeText(applicationContext, R.string.connect_first, Toast.LENGTH_SHORT).show()
     }
 
 }
