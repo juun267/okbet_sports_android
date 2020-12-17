@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ContentGameResultRvBinding
 
-class GameResultRvAdapter(private val viewModel: SettlementViewModel): RecyclerView.Adapter<ResultItemViewHolder>() {
+class GameResultRvAdapter(): RecyclerView.Adapter<ResultItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultItemViewHolder {
         val viewLayout = LayoutInflater.from(parent.context)
         val binding = ContentGameResultRvBinding.inflate(viewLayout, parent, false)
@@ -17,7 +17,6 @@ class GameResultRvAdapter(private val viewModel: SettlementViewModel): RecyclerV
     }
 
     override fun onBindViewHolder(holder: ResultItemViewHolder, position: Int) {
-        holder.bind(viewModel, "") //TODO Dean : send item (item data)
     }
 
 }

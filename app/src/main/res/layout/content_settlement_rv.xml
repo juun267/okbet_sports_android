@@ -8,10 +8,6 @@
         <variable
             name="item"
             type="org.cxct.sportlottery.ui.menu.results.SettlementItem" />
-
-        <variable
-            name="viewModel"
-            type="org.cxct.sportlottery.ui.menu.results.SettlementViewModel" />
     </data>
 
     <LinearLayout
@@ -49,7 +45,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="start|center_vertical"
-                    android:text="@{item.gameType}"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/textSize16sp"
                     tools:text="Miền Bắc" />
@@ -117,7 +112,6 @@
 
         <net.cachapa.expandablelayout.ExpandableLayout
             android:id="@+id/block_drawer_result"
-            setExpanded="@{item.expanded}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:el_duration="500"
