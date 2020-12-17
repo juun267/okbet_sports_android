@@ -4,6 +4,8 @@ import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.INDEX_LOGIN
 import org.cxct.sportlottery.network.index.LoginResult
+import org.cxct.sportlottery.network.message.MESSAGE_LIST
+import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SPORT_MENU
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import retrofit2.Converter
@@ -34,6 +36,10 @@ object ErrorUtils {
                     (url.contains(INDEX_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MESSAGE_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MessageListResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
