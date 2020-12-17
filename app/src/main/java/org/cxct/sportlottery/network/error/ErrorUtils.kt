@@ -2,6 +2,8 @@ package org.cxct.sportlottery.network.error
 
 import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.MATCH_BET_INFO
+import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.index.INDEX_LOGIN
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.message.MESSAGE_LIST
@@ -40,6 +42,10 @@ object ErrorUtils {
                     (url.contains(MESSAGE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MessageListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(MATCH_BET_INFO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BetInfoResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
