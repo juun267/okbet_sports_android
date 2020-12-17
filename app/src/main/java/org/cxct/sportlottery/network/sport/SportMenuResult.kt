@@ -13,5 +13,5 @@ data class SportMenuResult(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val sportMenuData: SportMenuData
+    val sportMenuData: SportMenuData?
 )
