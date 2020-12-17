@@ -6,25 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.fragment_bet_record_search.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BetRecordSearchFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-//        return inflater.inflate(R.layout.fragment_bet_record_search, container, false)
-        val binding: FragmentBetRecordSearchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_record_search, container, false)
-        setOnClick(binding)
-        return binding.root
-    }
+    private val betRecordSearchViewModel: BetRecordSearchViewModel by viewModel()
 
-    private fun setOnClick(binding: FragmentBetRecordSearchBinding) {
-        binding.tvBetStatus.setOnClickListener  {
-            view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment("hello123"))
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding: FragmentBetRecordSearchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_record_search, container, false)
+        binding.apply {
+            betRecordSearchViewModel = this@BetRecordSearchFragment.betRecordSearchViewModel
+            lifecycleOwner = this@BetRecordSearchFragment //TODO Cheryl: 用法學習！
         }
 
+//        setOnClick()
+        return binding.root
     }
+/*
+
+    private fun setOnClick() {
+        tv_bet_status.setOnClickListener  {
+//            view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment("hello123"))
+        }
+    }
+*/
 
 }
