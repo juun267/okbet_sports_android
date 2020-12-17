@@ -13,5 +13,5 @@ data class MatchPreloadResult(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val matchPreloadData: MatchPreloadData
+    val matchPreloadData: MatchPreloadData?
 )
