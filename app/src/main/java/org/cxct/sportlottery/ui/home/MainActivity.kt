@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.observe
@@ -124,6 +125,7 @@ class MainActivity : BaseActivity() {
     private fun refreshView() {
         //登入資料
         mainViewModel.token.observe(this) {
+            Log.e("simon test", "token: $it")
             if (it.isNullOrEmpty()) {
                 btn_login.visibility = View.VISIBLE
                 btn_logout.visibility = View.GONE
@@ -163,7 +165,7 @@ class MainActivity : BaseActivity() {
 
     private fun queryData() {
         getAnnouncement()
-        getSportMenu()
+//        getSportMenu() //TODO 等待API調整
     }
 
     private fun getAnnouncement() {
