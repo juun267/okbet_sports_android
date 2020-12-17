@@ -14,6 +14,8 @@ import org.cxct.sportlottery.network.match.MATCH_PRELOAD
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MESSAGE_LIST
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.MATCH_ODDS_LIST
+import org.cxct.sportlottery.network.odds.OddsListResult
 import org.cxct.sportlottery.network.sport.SPORT_MENU
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import retrofit2.Converter
@@ -64,6 +66,10 @@ object ErrorUtils {
                     (url.contains(MATCH_PRELOAD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MatchPreloadResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_ODDS_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsListResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
