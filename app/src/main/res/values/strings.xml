@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="language_cn">简体中文</string>
     <string name="language_en">English</string>
@@ -7,16 +8,23 @@
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
 
+    <!-- Home page-->
+    <string name="btn_login">登录</string>
+    <string name="btn_logout">登出</string>
+    <string name="no_announcement">暂无公告</string>
+
     <string name="home_tab_all">全部</string>
     <string name="home_tab_in_play">滚球</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
 
-    <!-- Home page-->
-    <string name="btn_login">登录</string>
-    <string name="btn_logout">登出</string>
-    <string name="no_announcement">暂无公告</string>
+    <string name="game_soon">即将开赛</string>
+    <string name="game_football">足球</string>
+    <string name="game_basketball">篮球</string>
+    <string name="game_tennis">网球</string>
+    <string name="game_badminton">羽毛球</string>
+    <string name="game_volleyball">排球</string>
 
     <!--login need translate later-->
     <string name="title_activity_login">LoginActivity</string>
