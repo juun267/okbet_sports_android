@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 
 class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() {
@@ -14,13 +15,15 @@ class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() 
         loginRepository.token
     }
 
+    private val _messageListResult = MutableLiveData<MessageListResult?>()
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
-    private val _messageListResult = MutableLiveData<MessageListResult?>()
 
-    init {
-    }
+    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
+    val sportMenuResult: LiveData<SportMenuResult?>
+        get() = _sportMenuResult
+
 
     fun logout() {
         loginRepository.logout()
@@ -39,8 +42,25 @@ class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() 
                 _messageListResult.postValue(messageResponse.body())
             } else {
                 val errorBody = messageResponse.errorBody()
-                val errorResult = MessageListResult(-1, errorBody.toString(), mutableListOf(), false, 0)
+                val errorResult =
+                    MessageListResult(-1, errorBody.toString(), mutableListOf(), false, 0)
                 _messageListResult.postValue(errorResult)
+            }
+        }
+    }
+
+    //獲取體育菜單
+    fun getSportMenu() {
+        viewModelScope.launch {
+            val token = loginRepository.token.value
+            val sportMenuResponse = OneBoSportApi.sportService.getMenu(token)
+
+            if (sportMenuResponse.isSuccessful) {
+                _sportMenuResult.postValue(sportMenuResponse.body())
+            } else {
+                val errorBody = sportMenuResponse.errorBody()
+                val errorResult = SportMenuResult(-1, errorBody.toString(), false, null)
+                _sportMenuResult.postValue(errorResult)
             }
         }
     }
