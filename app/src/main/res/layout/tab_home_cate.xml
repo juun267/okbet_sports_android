@@ -6,15 +6,14 @@
     android:gravity="center"
     android:orientation="vertical"
     android:background="@drawable/effect_ripple_rectangle_golden"
-    android:padding="4dp"
-    tools:background="@color/colorPrimaryDark">
+    android:padding="4dp">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:textColor="@color/color_select_golden_white"
+        android:textColor="@color/color_select_golden_black"
         android:textSize="14sp"
         tools:text="全部" />
 
