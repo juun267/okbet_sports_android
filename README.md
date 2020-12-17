@@ -33,9 +33,9 @@ viewModelScope.launch{
 
 ### Error Handling
 
-- 先利用ErrorUtils parse response取得apiError
-- 轉換apiError為當前response所對應的result
-- Observe result並根據成功或失敗更新view
+- ErrorUtils parseError會回傳Api Service相對應result (ex. login api -> LoginResult)
+- Error Result只會代 success,msg,code三個欄位，資料欄位皆為null
+- 如果回傳Error Result為空，表示發生無法預期的錯誤，之後可能會送出log紀錄
 
 ```
 viewModelScope.launch{
@@ -44,12 +44,7 @@ viewModelScope.launch{
     if(response.isSuccessful){
 
     }else{
-        val apiError = ErrorUtils.parseError(response)
-        apiError?.let{
-             if(it.success!=null && it.code!=null && it.message!=null){
-                return Result(it.success,it.code,it.message,null) //data will be nullable
-             }
-        }
+        val result = ErrorUtils.parseError(response)
     }
 }
 ```
