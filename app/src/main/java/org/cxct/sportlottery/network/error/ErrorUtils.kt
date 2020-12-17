@@ -4,8 +4,10 @@ import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.MATCH_BET_ADD
 import org.cxct.sportlottery.network.bet.MATCH_BET_INFO
+import org.cxct.sportlottery.network.bet.MATCH_BET_LIST
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
+import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.index.INDEX_LOGIN
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.message.MESSAGE_LIST
@@ -52,6 +54,10 @@ object ErrorUtils {
                     (url.contains(MATCH_BET_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BetAddResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(MATCH_BET_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BetListResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
