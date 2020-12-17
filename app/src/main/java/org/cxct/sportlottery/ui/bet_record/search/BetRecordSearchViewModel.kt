@@ -10,9 +10,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.MD5Util
 import retrofit2.Response
 
 
-class BetRecordSearchViewModel() : ViewModel() {
+class BetRecordSearchViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+    fun onClick(){
+
+    }
 }

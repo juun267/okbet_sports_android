@@ -43,4 +43,15 @@
     <string name="please_choose_bet_state">请选择注单状态</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="please_choose_start_date">请选择开始日期</string>
+    <string name="please_choose_end_date">请选择结束日期</string>
+    <string name="today">今日</string>
+    <string name="yesterday">昨日</string>
+    <string name="past_30_days">过去30日</string>
+    <string name="champion_play">冠军玩法</string>
+    <string name="search">查询</string>
+    <string name="order_number">注单编号</string>
+    <string name="bet_type">投注玩法</string>
+    <string name="total_bet_money">总投注额</string>
+    <string name="status">状态</string>
 </resources>
