@@ -5,6 +5,7 @@
     <color name="colorAccent">#0073A8</color>
     <color name="colorPrimaryDeepDark">#003047</color>
     <color name="colorMenuLightBlue">#003A55</color>
+    <color name="blue">#223549</color>
 
 
     <color name="background">#F2F2F2</color>
@@ -25,4 +26,26 @@
     <color name="transparent_white_80">#ccffffff</color>
     <color name="transparent_white_90">#e6ffffff</color>
     <color name="transparent_gray_90">#E6D0D0D0</color>
+
+    <!--白色系-->
+    <color name="white">#FFFFFF</color>
+
+    <!--灰色系-->
+    <color name="gray">#d4d4d4</color>
+    <color name="gray2">#c6c4c7</color>
+    <color name="gray3">#666666</color>
+    <color name="gray4">#585867</color>
+    <color name="gray5">#f3f4f6</color>
+    <color name="gray6">#202020</color>
+
+
+    <!--紅色系-->
+    <color name="red">#ff4c2c</color>
+
+    <!--橘色系-->
+    <color name="orange">#ef9823</color>
+
+    <!--綠色系-->
+    <color name="green">#3eca71</color>
+
 </resources>
