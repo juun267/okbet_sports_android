@@ -34,7 +34,7 @@ interface BetService {
     @Headers("x-session-platform-code:plat1")
     @POST(MATCH_BET_LIST)
     suspend fun getBetList(
-        @Header("x-session-token") token: String,
+        @Header("x-session-token") token: String?,
         @Body betListRequest: BetListRequest
     ): Response<BetListResult>
 }

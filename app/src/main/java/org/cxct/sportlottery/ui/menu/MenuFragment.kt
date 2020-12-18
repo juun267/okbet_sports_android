@@ -9,7 +9,9 @@ import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
+import org.cxct.sportlottery.ui.base.ToolBarActivity
 import org.cxct.sportlottery.ui.bet_record.BetRecordActivity
+import org.cxct.sportlottery.ui.bet_record.search.BetRecordSearchFragment
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
@@ -59,7 +61,8 @@ class MenuFragment : BaseFragment() {
         }
 
         menu_bet_history.setOnClickListener {
-            startActivity(Intent(context, BetRecordActivity::class.java))
+//            val activity = ToolBarActivity(BetRecordSearchFragment())::class.java
+            startActivity(Intent(context, ToolBarActivity::class.java))
         }
 
     }

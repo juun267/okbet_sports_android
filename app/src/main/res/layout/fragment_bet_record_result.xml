@@ -7,7 +7,7 @@
     tools:context=".ui.bet_record.search.result.BetRecordResultFragment">
 
     <TextView
-        android:id="@+id/tv_bet_status"
+        android:id="@+id/tv_bet_status2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
