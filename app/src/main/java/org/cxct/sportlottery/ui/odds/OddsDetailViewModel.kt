@@ -18,8 +18,4 @@ class OddsDetailViewModel(private val oddsRepository: OddsRepository) : ViewMode
         }
     }
 
-    fun timeTransform(stamp:Long): String? {
-        return TimeUtil.StampToDate(stamp)
-    }
-
 }
