@@ -54,7 +54,7 @@
             tools:textColor="@color/green" />
 
         <TextView
-            android:id="@+id/tv_bet_status"
+            android:id="@+id/tv_bet_status2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
