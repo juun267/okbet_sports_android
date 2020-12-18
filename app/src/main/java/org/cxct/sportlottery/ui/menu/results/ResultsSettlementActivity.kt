@@ -32,7 +32,7 @@ class ResultsSettlementActivity : AppCompatActivity() {
         val spinnerGameTypeItem = mutableListOf<String>()
         settlementViewModel.settlementData.value?.let {list ->
             settlementRvAdapter.setData(list)
-            list.forEach { spinnerGameTypeItem.add(it.gameType) }
+            list.forEach { spinnerGameTypeItem.add(getString(GameType.valueOf(it.gameType).string)) }
         }
         spinner_game_type.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerGameTypeItem)
         spinner_game_type.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
@@ -48,5 +48,27 @@ class ResultsSettlementActivity : AppCompatActivity() {
                 settlementViewModel.settlementFilter.value?.gameType = spinnerGameTypeItem[position]
             }
         }
+        val spinnerLeagueItem = mutableListOf<String>("塞浦路斯甲级联赛", "以色列杯")
+        spinner_game_zone.let { it.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerLeagueItem)
+        it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                settlementViewModel.settlementFilter.value?.gameZone = spinnerLeagueItem[position]
+                settlementViewModel.setGameTypeFilter(spinnerLeagueItem[position])
+            }
+        }}
+
+        //observe
+        settlementViewModel.settlementData.observe(this, Observer {
+            settlementRvAdapter.setData(it)
+        })
+
     }
 }
