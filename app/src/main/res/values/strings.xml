@@ -18,13 +18,7 @@
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
-
     <string name="game_soon">即将开赛</string>
-    <string name="game_football">足球</string>
-    <string name="game_basketball">篮球</string>
-    <string name="game_tennis">网球</string>
-    <string name="game_badminton">羽毛球</string>
-    <string name="game_volleyball">排球</string>
 
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>

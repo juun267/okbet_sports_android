@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/game_football"
+                android:text="@string/football"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/game_basketball"
+                android:text="@string/basketball"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     app:hgCard_icon="@drawable/ic_tennis"
-                    app:hgCard_title="@string/game_tennis"
+                    app:hgCard_title="@string/tennis"
                     tools:hgCard_count="72" />
 
                 <org.cxct.sportlottery.ui.home.HomeGameCard
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     app:hgCard_icon="@drawable/ic_badminton"
-                    app:hgCard_title="@string/game_badminton"
+                    app:hgCard_title="@string/badminton"
                     tools:hgCard_count="2" />
 
                 <org.cxct.sportlottery.ui.home.HomeGameCard
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     app:hgCard_icon="@drawable/ic_volleyball"
-                    app:hgCard_title="@string/game_volleyball"
+                    app:hgCard_title="@string/volleyball"
                     tools:hgCard_count="32" />
 
             </LinearLayout>
