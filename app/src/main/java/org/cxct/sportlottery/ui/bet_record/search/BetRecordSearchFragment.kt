@@ -155,5 +155,4 @@ class BetSpinnerAdapter(private val context: Context, private val dataList: Muta
         return 0
     }
 
-
 }
