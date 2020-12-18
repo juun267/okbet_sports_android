@@ -8,10 +8,12 @@
 
 
     <color name="background">#e7e7e7</color>
-    <color name="textColor">#555D76</color>
+    <color name="textColorLight">#4a4a4a</color>
+    <color name="textColorDark">#202020</color>
+    <color name="textOrange">#cb4700</color>
 
     <!-- 线条颜色 -->
-    <color name="skinLine">#DDDDDD</color>
+    <color name="lineGray">#dcdcdc</color>
     <color name="golden">#ECA906</color>
 
     <color name="transparent">#00000000</color>
