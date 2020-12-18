@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.activity_results_settlement.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityResultsSettlementBinding
@@ -29,14 +30,14 @@ class ResultsSettlementActivity : AppCompatActivity() {
             rv_results.adapter = settlementRvAdapter
         }
 
-        settlementViewModel.settlementData.observe(this, {
+        settlementViewModel.settlementData.observe(this) {
             settlementRvAdapter.mDataList = it
 
             val spinnerGameTypeItem = it.map { settlementItem ->
                 getString(GameType.valueOf(settlementItem.gameType).string)
             }.toMutableList()
             setupSpinnerGameType(spinnerGameTypeItem)
-        })
+        }
         settlementViewModel.getSettlementData()
     }
 
