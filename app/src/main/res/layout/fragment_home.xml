@@ -180,32 +180,32 @@
                 android:id="@+id/drawer_early"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hgDrawer_count="744"
-                app:hgDrawer_title="@string/home_tab_early" />
+                app:hgDrawer_title="@string/home_tab_early"
+                tools:hgDrawer_count="744" />
 
             <org.cxct.sportlottery.ui.home.HomeGameDrawer
                 android:id="@+id/drawer_in_play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                app:hgDrawer_count="6"
-                app:hgDrawer_title="@string/home_tab_in_play" />
+                app:hgDrawer_title="@string/home_tab_in_play"
+                tools:hgDrawer_count="6" />
 
             <org.cxct.sportlottery.ui.home.HomeGameDrawer
                 android:id="@+id/drawer_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                app:hgDrawer_count="63"
-                app:hgDrawer_title="@string/home_tab_today" />
+                app:hgDrawer_title="@string/home_tab_today"
+                tools:hgDrawer_count="63" />
 
             <org.cxct.sportlottery.ui.home.HomeGameDrawer
                 android:id="@+id/drawer_parlay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                app:hgDrawer_count="750"
-                app:hgDrawer_title="@string/home_tab_parlay" />
+                app:hgDrawer_title="@string/home_tab_parlay"
+                tools:hgDrawer_count="750" />
 
         </LinearLayout>
 
