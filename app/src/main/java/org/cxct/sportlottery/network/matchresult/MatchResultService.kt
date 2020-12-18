@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.network.matchresult
 
+import org.cxct.sportlottery.network.matchresult.list.MatchResultListRequest
+import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayListResult
 import retrofit2.Response
 import retrofit2.http.*
