@@ -13,7 +13,7 @@
     <color name="textOrange">#cb4700</color>
 
     <!-- 线条颜色 -->
-    <color name="lineGray">#dcdcdc</color>
+    <color name="lineGray">#f2f2f2</color>
     <color name="bright_gray">#CCCCCC</color>
     <color name="dark_gray">#E7E7E7</color>
     <color name="golden">#ECA906</color>
