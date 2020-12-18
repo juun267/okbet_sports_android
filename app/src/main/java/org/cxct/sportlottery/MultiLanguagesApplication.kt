@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.login.LoginViewModel
+import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,6 +27,7 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
         viewModel { MainViewModel(get()) }
         viewModel { LoginViewModel(get()) }
+        viewModel { SettlementViewModel(get()) }
     }
 
     private val repoModule = module {

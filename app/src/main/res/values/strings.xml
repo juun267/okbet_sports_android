@@ -26,6 +26,19 @@
     <string name="game_badminton">羽毛球</string>
     <string name="game_volleyball">排球</string>
 
+    <!--  results settlement  -->
+    <string name="results_toolbar_title">賽果結算</string>
+    <string name="first_half_game">上半场</string>
+    <string name="second_half_game">下半场</string>
+    <string name="full_game">全场</string>
+    <string name="game_result">赛果</string>
+    <string name="verse">VS</string>
+    <string name="football">足球</string>
+    <string name="basketball">篮球</string>
+    <string name="tennis">网球</string>
+    <string name="badminton">羽毛球</string>
+    <string name="volleyball">排球</string>
+
     <!--login need translate later-->
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
