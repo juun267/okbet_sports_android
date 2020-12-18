@@ -23,6 +23,11 @@
     <string name="full_game">全场</string>
     <string name="game_result">赛果</string>
     <string name="verse">VS</string>
+    <string name="football">足球</string>
+    <string name="basketball">篮球</string>
+    <string name="tennis">网球</string>
+    <string name="badminton">羽毛球</string>
+    <string name="volleyball">排球</string>
 
     <!--login need translate later-->
     <string name="title_activity_login">LoginActivity</string>

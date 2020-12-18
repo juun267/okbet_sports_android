@@ -34,7 +34,6 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
                 block_drawer_result.collapse(false)
             }
             block_type.setOnClickListener {
-                Log.e("Dean" , "click")
                 this.block_drawer_result.let { expandableLayout ->  expandableLayout.setExpanded(!(expandableLayout.isExpanded), true) }
                 mIsOpenList[viewHolder.adapterPosition] = !mIsOpenList[viewHolder.adapterPosition]
             }
