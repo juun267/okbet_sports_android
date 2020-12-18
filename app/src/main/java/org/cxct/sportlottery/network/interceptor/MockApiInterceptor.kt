@@ -79,6 +79,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(MATCH_RESULT_LIST) -> {
                     response = getMockJsonData(request, "match_result_list.mock")
                 }
+                path.contains(MATCH_RESULT_PLAY_LIST) -> {
+                    response = getMockJsonData(request, "match_result_play_list.mock")
+                }
             }
         }
         return response
