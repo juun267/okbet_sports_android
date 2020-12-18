@@ -25,6 +25,10 @@ class BetRecordActivity : BaseActivity() {
     }
 
     private fun setUpNav(binding: ActivityBetRecordBinding) {
+        setUpDrawerLayout(binding)
+    }
+
+    private fun setUpDrawerLayout(binding: ActivityBetRecordBinding) {
         drawerLayout = binding.drawerLayout
         val navController = this.findNavController(R.id.fragment_host_bet_record)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
