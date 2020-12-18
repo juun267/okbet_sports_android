@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:padding="6dp"
-        android:background="@drawable/fillet_5dp_white">
+        android:background="@drawable/fillet_5dp_white"
+        android:padding="6dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/card_football"
@@ -129,36 +129,36 @@
                     android:id="@+id/card_game_soon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:hgCard_icon="@drawable/ic_game_soon"
                     app:hgCard_title="@string/game_soon"
-                    tools:hgCard_count="13"
-                    app:hgCard_icon="@drawable/ic_game_soon"/>
+                    tools:hgCard_count="13" />
 
                 <org.cxct.sportlottery.ui.home.HomeGameCard
                     android:id="@+id/card_tennis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
+                    app:hgCard_icon="@drawable/ic_tennis"
                     app:hgCard_title="@string/game_tennis"
-                    tools:hgCard_count="72"
-                    app:hgCard_icon="@drawable/ic_tennis"/>
+                    tools:hgCard_count="72" />
 
                 <org.cxct.sportlottery.ui.home.HomeGameCard
                     android:id="@+id/card_badminton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
+                    app:hgCard_icon="@drawable/ic_badminton"
                     app:hgCard_title="@string/game_badminton"
-                    tools:hgCard_count="2"
-                    app:hgCard_icon="@drawable/ic_badminton"/>
+                    tools:hgCard_count="2" />
 
                 <org.cxct.sportlottery.ui.home.HomeGameCard
                     android:id="@+id/card_volleyball"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
+                    app:hgCard_icon="@drawable/ic_volleyball"
                     app:hgCard_title="@string/game_volleyball"
-                    tools:hgCard_count="32"
-                    app:hgCard_icon="@drawable/ic_volleyball"/>
+                    tools:hgCard_count="32" />
 
             </LinearLayout>
 
@@ -167,16 +167,45 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="@drawable/fillet_5dp_white">
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- TODO simon test 抽屜選單-->
+            <org.cxct.sportlottery.ui.home.HomeGameDrawer
+                android:id="@+id/drawer_early"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hgDrawer_count="744"
+                app:hgDrawer_title="@string/home_tab_early" />
+
+            <org.cxct.sportlottery.ui.home.HomeGameDrawer
+                android:id="@+id/drawer_in_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:hgDrawer_count="6"
+                app:hgDrawer_title="@string/home_tab_in_play" />
+
+            <org.cxct.sportlottery.ui.home.HomeGameDrawer
+                android:id="@+id/drawer_today"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:hgDrawer_count="63"
+                app:hgDrawer_title="@string/home_tab_today" />
+
+            <org.cxct.sportlottery.ui.home.HomeGameDrawer
+                android:id="@+id/drawer_parlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:hgDrawer_count="750"
+                app:hgDrawer_title="@string/home_tab_parlay" />
 
         </LinearLayout>
 
