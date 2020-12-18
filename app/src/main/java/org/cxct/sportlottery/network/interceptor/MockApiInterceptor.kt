@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.index.INDEX_LOGIN
 import org.cxct.sportlottery.network.league.LEAGUE_LIST
 import org.cxct.sportlottery.network.match.MATCH_PRELOAD
 import org.cxct.sportlottery.network.message.MESSAGE_LIST
+import org.cxct.sportlottery.network.odds.MATCH_ODDS_Detail
 import org.cxct.sportlottery.network.odds.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.sport.SPORT_MENU
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
@@ -67,6 +68,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(MATCH_ODDS_LIST) -> {
                     response = getMockJsonData(request, "match_odds_list.mock")
+                }
+                path.contains(MATCH_ODDS_Detail) -> {
+                    response = getMockJsonData(request, "match_odds_detail.mock")
                 }
                 path.contains(SPORT_MENU) -> {
                     response = getMockJsonData(request, "sport_menu.mock")

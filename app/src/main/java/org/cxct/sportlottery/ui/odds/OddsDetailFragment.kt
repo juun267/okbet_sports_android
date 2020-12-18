@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.ui.home.HomeFragment
+import org.cxct.sportlottery.util.TimeUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -46,6 +48,7 @@ class OddsDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         dataBinding.apply {
             oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
             lifecycleOwner = this@OddsDetailFragment
@@ -55,13 +58,18 @@ class OddsDetailFragment : Fragment() {
         for (i in 0 until 6) {
             tab_cat.addTab(tab_cat.newTab())
         }
-
         tab_cat.getTabAt(0)?.text = "受欢迎的"
         tab_cat.getTabAt(1)?.text = "所有盘口"
         tab_cat.getTabAt(2)?.text = "让球/大小"
         tab_cat.getTabAt(3)?.text = "波胆"
         tab_cat.getTabAt(4)?.text = "进球"
         tab_cat.getTabAt(5)?.text = "特殊投注TEST"
+
+        oddsDetailViewModel.getOddsDetail("sr:match:24369586", "EU")
+
+        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
+            tv_time.text = TimeUtil.stampToDate(it?.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
+        })
 
     }
 

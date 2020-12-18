@@ -1,0 +1,23 @@
+{
+	"success": true,
+	"msg": "ok",
+	"code": 0,
+	"t": {
+		"league": {
+			"id": "sr:tournament:217",
+			"name": "德国杯"
+		},
+		"matchOdds": {
+			"matchInfo": {
+				"id": "sr:match:24369586",
+				"homeName": "荷尔斯泰因基尔",
+				"awayName": "拜仁慕尼黑",
+				"startTime": 1610567100000,
+				"endTime": null,
+				"status": 0,
+				"playCateNum": null
+			},
+			"odds": {}
+		}
+	}
+}

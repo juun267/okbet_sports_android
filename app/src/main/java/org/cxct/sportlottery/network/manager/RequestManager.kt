@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.interceptor.LogInterceptor
 import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
+import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -23,6 +24,7 @@ class RequestManager private constructor(context: Context) {
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
+        .add(NullValueAdapter())
         .build()
 
     companion object {
@@ -49,6 +51,8 @@ class RequestManager private constructor(context: Context) {
         if (BuildConfig.MOCK) {
             okHttpClientBuilder.addInterceptor(MockApiInterceptor(context))
         }
+
+
 
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
