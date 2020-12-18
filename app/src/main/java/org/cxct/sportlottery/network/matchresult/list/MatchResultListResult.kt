@@ -11,7 +11,7 @@ data class MatchResultListResult(
     @Json(name = "msg")
     val msg: String,
     @Json(name = "rows")
-    val rows: List<Row>,
+    val rows: List<Row>?,
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "total")
