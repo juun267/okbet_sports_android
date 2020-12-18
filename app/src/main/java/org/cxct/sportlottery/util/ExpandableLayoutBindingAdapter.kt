@@ -6,7 +6,7 @@ import net.cachapa.expandablelayout.ExpandableLayout
 object ExpandableLayoutBindingAdapter {
     @JvmStatic
     @BindingAdapter("setExpanded")
-    fun ExpandableLayout.expanded(expanded: Boolean){
+    fun ExpandableLayout.expanded(expanded: Boolean) {
         setExpanded(expanded, true)
     }
 }

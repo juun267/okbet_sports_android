@@ -21,7 +21,11 @@ class MenuFragment : BaseFragment() {
 
     private var mDownMenuListener: View.OnClickListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 
@@ -33,7 +37,7 @@ class MenuFragment : BaseFragment() {
     }
 
     private fun initView() {
-        tv_language.text = when(LanguageManager.getSelectLanguage(tv_language.context)) {
+        tv_language.text = when (LanguageManager.getSelectLanguage(tv_language.context)) {
             LanguageManager.Language.ZH -> getString(R.string.language_cn)
             LanguageManager.Language.EN -> getString(R.string.language_en)
             else -> getString(R.string.language_en)
@@ -48,7 +52,7 @@ class MenuFragment : BaseFragment() {
         }
 
         menu_game_result.setOnClickListener {
-            context?.run{
+            context?.run {
                 startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             }
         }

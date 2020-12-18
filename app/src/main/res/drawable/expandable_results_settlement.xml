@@ -3,10 +3,7 @@
     <item>
         <layer-list>
             <item android:drawable="@drawable/bg_frame_up_5dp_light_blue" />
-            <item android:drawable="@drawable/ic_arrow_gray"
-                android:gravity="start|center_vertical"
-                android:left="10dp"
-                />
+            <item android:drawable="@drawable/ic_arrow_gray" android:gravity="start|center_vertical" android:left="10dp" />
         </layer-list>
     </item>
 </selector>
