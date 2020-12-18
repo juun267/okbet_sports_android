@@ -46,10 +46,6 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
 
         builder.addHeader("x-lang", LanguageManager.getSelectLanguage(context).key)
 
-        token.value?.let {
-            builder.addHeader("x-session-token", it)
-        }
-
 
         val httpUrl = urlBuilder.build()
         val newRequest = builder.url(httpUrl).build()

@@ -15,13 +15,6 @@ class OddsRepository {
 
         if (oddsDetailResponse.isSuccessful) {
             return oddsDetailResponse.body()
-        } else {
-            val apiError = ErrorUtils.parseError(oddsDetailResponse)
-            apiError?.let {
-                if (it.success != null && it.code != null && it.msg != null) {
-                    return OddsDetailResult(it.code, it.msg, it.success, null)
-                }
-            }
         }
 
         return null
