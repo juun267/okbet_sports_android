@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.bet_record
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,10 +21,10 @@ class BetRecordActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityBetRecordBinding>(this, R.layout.activity_bet_record)
 
-        setUpDrawerLayout(binding)
+        setUpNav(binding)
     }
 
-    private fun setUpDrawerLayout(binding: ActivityBetRecordBinding) {
+    private fun setUpNav(binding: ActivityBetRecordBinding) {
         drawerLayout = binding.drawerLayout
         val navController = this.findNavController(R.id.fragment_host_bet_record)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)

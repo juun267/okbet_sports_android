@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.base.ToolBarActivity">
+
+    <data>
+        <variable name="activity"
+            type="org.cxct.sportlottery.ui.base.ToolBarActivity"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- toolBar -->
+                <LinearLayout
+                    android:id="@+id/toolBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tool_bar_height"
+                    android:orientation="horizontal"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                    <ImageView
+                        android:id="@+id/btn_toolbar_back"
+                        android:layout_width="@dimen/tool_bar_height"
+                        android:layout_height="@dimen/tool_bar_height"
+                        android:contentDescription="@null"
+                        android:scaleType="centerInside"
+                        android:onClick="@{() -> activity.onBackPressed()}"
+                        android:src="@drawable/ic_baseline_arrow_back_ios_new_24"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_toolbar_title"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        android:text="@string/bet_record"/>
+
+                    <ImageView
+                        android:id="@+id/btn_toolbar_menu"
+                        android:layout_width="@dimen/tool_bar_height"
+                        android:layout_height="@dimen/tool_bar_height"
+                        android:background="@color/colorPrimaryDark"
+                        android:contentDescription="@null"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_menu" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+
+                    <fragment
+                        android:id="@+id/container"
+                        android:name="androidx.navigation.fragment.NavHostFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:defaultNavHost="true"
+                        app:navGraph="@navigation/bet_record_navigation" />
+
+                </FrameLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <!-- 側邊導覽列 -->
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/nav_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end">
+            </com.google.android.material.navigation.NavigationView>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+    </FrameLayout>
+</layout>

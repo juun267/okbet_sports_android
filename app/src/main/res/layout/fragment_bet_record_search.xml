@@ -6,16 +6,20 @@
 
     <data>
         <variable
-            name="betRecordSearchViewModel"
-            type="org.cxct.sportlottery.ui.bet_record.search.BetRecordSearchViewModel" />
+            name="betRecordViewModel"
+            type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
+
+        <variable name="model"
+            type="org.cxct.sportlottery.network.bet.list.BetListRequest"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_bet_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -24,31 +28,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+            <!--            android:onClick="@{() -> betRecordViewModel.chooseBetStatus()}"-->
 
             <TextView
                 android:id="@+id/tv_bet_status"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:padding="16dp"
                 android:text="@string/please_choose_bet_state"
                 android:textColor="@color/white"
-                android:onClick="@{() -> betRecordSearchViewModel.onClick()}"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/image_view"
+                />
 
             <Spinner
                 android:id="@+id/spinner_bet_state"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:layout_height="0dp"
+                android:background="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <ImageView
+                android:id="@+id/image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_baseline_arrow_drop_down_24"
                 android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_baseline_arrow_drop_down_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_bet_status"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/white" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -57,9 +73,10 @@
             android:layout_margin="16dp"
             android:background="@drawable/bg_square_shape_4dp_gray_stroke"
             android:orientation="horizontal"
+            android:onClick="@{() -> betRecordViewModel.chooseDate()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/ll_bet_status">
 
             <TextView
                 android:id="@+id/tv_start_date"
@@ -67,7 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="@string/please_choose_start_date"
+                android:hint="@string/please_choose_start_date"
+                android:text="@{model.timeRangeParams.startTime.toString()}"
                 android:textColor="@color/gray2" />
 
             <ImageView
@@ -96,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
+                android:hint="@string/please_choose_end_date"
                 android:text="@string/please_choose_end_date"
                 android:textColor="@color/gray2" />
 
@@ -117,6 +136,7 @@
             android:layout_marginHorizontal="16dp"
             android:background="@drawable/bg_square_shape_4dp_menu_blue"
             android:text="@string/today"
+            android:onClick="@{() -> betRecordViewModel.setToday()}"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
@@ -130,6 +150,7 @@
             android:background="@drawable/bg_square_shape_4dp_menu_blue"
             android:text="@string/yesterday"
             android:textColor="@color/white"
+            android:onClick="@{() -> betRecordViewModel.setYesterday()}"
             app:layout_constraintStart_toEndOf="@+id/btn_today"
             app:layout_constraintTop_toTopOf="@+id/btn_today"
             app:layout_constraintEnd_toStartOf="@id/btn_past30days"/>
@@ -142,6 +163,7 @@
             android:text="@string/past_30_days"
             android:textColor="@color/white"
             android:layout_marginHorizontal="16dp"
+            android:onClick="@{() -> betRecordViewModel.setPast30Days()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_yesterday"
             app:layout_constraintTop_toTopOf="@+id/btn_today" />
@@ -171,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/champion_play"
-                android:textColor="@color/gray2" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -183,6 +205,7 @@
             android:text="@string/search"
             android:textColor="@color/white"
             android:backgroundTint="@color/orange"
+            android:onClick="@{() -> betRecordViewModel.searchBetRecordHistory(betRecordViewModel.betListRequest)}"
             app:layout_constraintEnd_toEndOf="@+id/btn_past30days"
             app:layout_constraintStart_toStartOf="@+id/btn_yesterday"
             app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
