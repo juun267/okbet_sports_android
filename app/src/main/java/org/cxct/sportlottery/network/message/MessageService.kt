@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.network.message
 
+import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-const val MESSAGE_LIST = "/api/front/message/list"
 
 interface MessageService {
 

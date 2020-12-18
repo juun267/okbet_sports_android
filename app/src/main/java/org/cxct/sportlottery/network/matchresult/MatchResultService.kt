@@ -1,13 +1,13 @@
 package org.cxct.sportlottery.network.matchresult
 
+import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListRequest
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayListResult
 import retrofit2.Response
 import retrofit2.http.*
 
-const val MATCH_RESULT_LIST = "/api/front/match/result/list"
-const val MATCH_RESULT_PLAY_LIST = "/api/front/match/result/play/list"
 
 interface MatchResultService {
 
