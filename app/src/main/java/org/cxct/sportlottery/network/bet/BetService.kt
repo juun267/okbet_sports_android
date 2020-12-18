@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.bet
 
+import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
+import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
+import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
@@ -12,10 +15,6 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-
-const val MATCH_BET_INFO = "/api/front/match/bet/info"
-const val MATCH_BET_ADD = "/api/front/match/bet/add"
-const val MATCH_BET_LIST = "/api/front/match/bet/list"
 
 interface BetService {
     @Headers("x-session-platform-code:plat1")

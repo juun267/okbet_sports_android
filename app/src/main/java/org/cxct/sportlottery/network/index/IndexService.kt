@@ -1,12 +1,11 @@
 package org.cxct.sportlottery.network.index
 
+import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
-
-const val INDEX_LOGIN = "/api/front/index/login"
 
 interface IndexService {
 

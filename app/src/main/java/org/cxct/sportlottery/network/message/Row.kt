@@ -7,11 +7,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Row(
     @Json(name = "addTime")
-    val addTime: Long,
+    val addTime: String,
     @Json(name = "content")
     val content: String,
     @Json(name = "endTime")
-    val endTime: Long,
+    val endTime: String,
     @Json(name = "id")
     val id: Int,
     @Json(name = "matchId")
@@ -21,11 +21,11 @@ data class Row(
     @Json(name = "platformId")
     val platformId: Int,
     @Json(name = "startTime")
-    val startTime: Long,
+    val startTime: String,
     @Json(name = "title")
     val title: String,
     @Json(name = "updateTime")
-    val updateTime: Long,
+    val updateTime: String,
     @Json(name = "url")
     val url: Int?
 )

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.odds
 
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header

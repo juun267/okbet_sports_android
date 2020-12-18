@@ -7,16 +7,18 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.network.bet.MATCH_BET_ADD
-import org.cxct.sportlottery.network.bet.MATCH_BET_INFO
-import org.cxct.sportlottery.network.bet.MATCH_BET_LIST
-import org.cxct.sportlottery.network.index.INDEX_LOGIN
-import org.cxct.sportlottery.network.league.LEAGUE_LIST
-import org.cxct.sportlottery.network.match.MATCH_PRELOAD
-import org.cxct.sportlottery.network.message.MESSAGE_LIST
 import org.cxct.sportlottery.network.odds.MATCH_ODDS_Detail
-import org.cxct.sportlottery.network.odds.MATCH_ODDS_LIST
-import org.cxct.sportlottery.network.sport.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
+import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
+import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
+import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
+import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
+import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import java.io.IOException
 import kotlin.jvm.Throws
@@ -77,6 +79,12 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(LEAGUE_LIST) -> {
                     response = getMockJsonData(request, "league_list.mock")
+                }
+                path.contains(MATCH_RESULT_LIST) -> {
+                    response = getMockJsonData(request, "match_result_list.mock")
+                }
+                path.contains(MATCH_RESULT_PLAY_LIST) -> {
+                    response = getMockJsonData(request, "match_result_play_list.mock")
                 }
             }
         }
