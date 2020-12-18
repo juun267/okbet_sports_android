@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.card_home_game.view.*
+import kotlinx.android.synthetic.main.home_game_card.view.*
 import org.cxct.sportlottery.R
 
 class HomeGameCard @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     init {
-        val view = LayoutInflater.from(context).inflate(R.layout.card_home_game, this, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.home_game_card, this, false)
         addView(view)
 
         try {

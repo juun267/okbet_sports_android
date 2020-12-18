@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:background="@color/background"
     tools:context=".ui.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
+        android:padding="6dp"
         android:background="@drawable/fillet_5dp_white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,5 +165,21 @@
         </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@drawable/fillet_5dp_white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- TODO simon test 抽屜選單-->
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
