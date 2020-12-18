@@ -8,7 +8,7 @@
 
         <variable
             name="oddsDetailViewModel"
-            type="org.cxct.sportlottery.ui.OddsDetailViewModel" />
+            type="org.cxct.sportlottery.ui.odds.OddsDetailViewModel" />
     </data>
 
     <LinearLayout
@@ -118,18 +118,38 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:gravity="center"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:background="@drawable/bg_radius_5_main_sombre"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="更多"
                 android:textColor="@color/text_faint"
                 android:textSize="12sp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:drawablePadding="4dp"
-                android:background="@drawable/bg_radius_5_main_sombre"
                 app:drawableEndCompat="@drawable/ic_arrow_down_white_alpha5" />
 
         </RelativeLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_cat"
+            style="@style/TabTextSize"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorColor="@color/text_focus"
+            app:tabIndicatorHeight="2dp"
+            app:tabMinWidth="0dp"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="10dp"
+            app:tabPaddingStart="10dp"
+            app:tabRippleColor="@color/tab_ripple"
+            app:tabSelectedTextColor="@color/text_focus"
+            app:tabTextColor="@color/text_tab_default" />
 
     </LinearLayout>
 

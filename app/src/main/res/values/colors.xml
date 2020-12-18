@@ -17,10 +17,12 @@
     <color name="textColor">#555D76</color>
 
     <color name="text_faint">#80FFFFFF</color>
+    <color name="text_tab_default">#202020</color>
     <color name="text_focus">#FF9900</color>
+
     <color name="button_focus">#F98B00</color>
 
-
+    <color name="tab_ripple">#1AF98B00</color>
 
 
     <!-- 线条颜色 -->
