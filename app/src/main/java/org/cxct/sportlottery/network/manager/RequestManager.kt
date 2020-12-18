@@ -6,16 +6,16 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.network.Constants.BASE_URL
+import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
+import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
+import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
 import org.cxct.sportlottery.network.interceptor.LogInterceptor
 import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "https://sports.cxct.org"
-const val CONNECT_TIMEOUT: Long = 15 * 1000
-const val WRITE_TIMEOUT: Long = 15 * 1000
-const val READ_TIMEOUT: Long = 15 * 1000
 
 class RequestManager private constructor(context: Context) {
 
