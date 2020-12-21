@@ -13,7 +13,6 @@ interface MatchService {
     @Headers("x-session-platform-code:plat1")
     @POST(MATCH_PRELOAD)
     suspend fun getMatchPreload(
-        @Header("x-session-token") token: String,
         @Body matchPreloadRequest: MatchPreloadRequest
     ): Response<MatchPreloadResult>
 }

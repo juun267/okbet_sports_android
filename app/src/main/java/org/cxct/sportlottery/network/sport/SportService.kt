@@ -12,6 +12,5 @@ interface SportService {
     @Headers("x-session-platform-code:plat1")
     @GET(SPORT_MENU)
     suspend fun getMenu(
-        @Header("x-session-token") token: String?
     ): Response<SportMenuResult>
 }

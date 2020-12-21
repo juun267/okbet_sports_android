@@ -16,7 +16,6 @@ interface OddsService {
     @Headers("x-session-platform-code:plat1")
     @POST(MATCH_ODDS_LIST)
     suspend fun getOddsList(
-        @Header("x-session-token") token: String,
         @Body oddsListRequest: OddsListRequest
     ): Response<OddsListResult>
 

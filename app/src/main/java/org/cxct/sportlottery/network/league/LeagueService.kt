@@ -13,7 +13,6 @@ interface LeagueService {
     @Headers("x-session-platform-code:plat1")
     @POST(LEAGUE_LIST)
     suspend fun getLeagueList(
-        @Header("x-session-token") token: String,
         @Body leagueListRequest: LeagueListRequest
     ): Response<LeagueListResponse>
 }

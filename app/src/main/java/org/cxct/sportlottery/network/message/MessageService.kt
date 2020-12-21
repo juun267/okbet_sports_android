@@ -13,7 +13,6 @@ interface MessageService {
     @Headers("x-session-platform-code:plat1")
     @GET(MESSAGE_LIST)
     suspend fun getMessageList(
-        @Header("x-session-token") token: String?,
         @Query("messageType") messageType: String,
         @Query("userId") userId: Int? = null,
         @Query("platformId") platformId: Int? = null
