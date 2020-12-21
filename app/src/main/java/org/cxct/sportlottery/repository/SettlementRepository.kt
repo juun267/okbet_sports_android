@@ -18,16 +18,27 @@ class SettlementRepository(private val androidContext: Context) {
 
     val token = sharedPref.liveData(KEY_TOKEN, "")
 
-    suspend fun resultList(pagingParams: PagingParams, timeRangeParams: TimeRangeParams, gameType: String): MatchResultListResult? {
+    suspend fun resultList(
+        pagingParams: PagingParams,
+        timeRangeParams: TimeRangeParams,
+        gameType: String
+    ): MatchResultListResult? {
         val resultResponse = OneBoSportApi.matchResultService.getMatchResultList(
-            token.value ?: "", MatchResultListRequest(gameType = gameType, pagingParams = pagingParams, timeRangeParams = timeRangeParams)
+            token.value ?: "",
+            MatchResultListRequest(
+                gameType = gameType,
+                page = pagingParams.page,
+                pageSize = pagingParams.pageSize,
+                startTime = timeRangeParams.startTime,
+                endTime = timeRangeParams.endTime
+            )
         )
-        if (resultResponse.isSuccessful){
+        if (resultResponse.isSuccessful) {
             return resultResponse.body()
-        }else{
+        } else {
             val apiError = ErrorUtils.parseError(resultResponse)
             apiError?.let {
-                if (it.success != null && it.code != null && it.msg != null){
+                if (it.success != null && it.code != null && it.msg != null) {
                     return MatchResultListResult(it.code, it.msg, null, it.success, 0)
                 }
             }
