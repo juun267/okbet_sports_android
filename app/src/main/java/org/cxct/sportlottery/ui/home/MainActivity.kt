@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
@@ -36,6 +37,7 @@ class MainActivity : BaseActivity<BaseViewModel>() {
     }
 
     override val viewModel by inject<MainViewModel>()
+    private lateinit var mainBinding: ActivityMainBinding
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
@@ -182,7 +184,7 @@ class MainActivity : BaseActivity<BaseViewModel>() {
 
     private fun queryData() {
         getAnnouncement()
-//        getSportMenu() //TODO 等待API調整
+        getSportMenu()
     }
 
     private fun getAnnouncement() {
