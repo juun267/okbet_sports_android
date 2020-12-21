@@ -15,20 +15,26 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-private const val ARG_PARAM = "param"
+private const val GAME_TYPE = "gameType"
+private const val MATCH_ID = "matchId"
+private const val ODDS_TYPE = "oddsType"
 
 class OddsDetailFragment : Fragment() {
 
     companion object {
-        fun newInstance(param: String) =
+        fun newInstance(gameType: String, matchId: String, oddsType: String) =
             HomeFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM, param)
+                    putString(GAME_TYPE, gameType)
+                    putString(MATCH_ID, matchId)
+                    putString(ODDS_TYPE, oddsType)
                 }
             }
     }
 
-    private var param: String? = null
+    private var gameType: String? = null
+    private var matchId: String? = null
+    private var oddsType: String? = null
 
     private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
 
@@ -37,7 +43,7 @@ class OddsDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param = it.getString(ARG_PARAM)
+            gameType = it.getString(GAME_TYPE)
         }
     }
 
@@ -55,21 +61,24 @@ class OddsDetailFragment : Fragment() {
         }
 
         //test
-        for (i in 0 until 6) {
-            tab_cat.addTab(tab_cat.newTab())
+//        oddsDetailViewModel.getOddsDetail("sr:match:24369586", "EU")
+        matchId?.let { matchId ->
+            oddsType?.let { oddsType ->
+                oddsDetailViewModel.getOddsDetail(matchId, oddsType)
+                oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
+                    tv_time.text = TimeUtil.stampToDate(it?.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
+                })
+            }
         }
-        tab_cat.getTabAt(0)?.text = "受欢迎的"
-        tab_cat.getTabAt(1)?.text = "所有盘口"
-        tab_cat.getTabAt(2)?.text = "让球/大小"
-        tab_cat.getTabAt(3)?.text = "波胆"
-        tab_cat.getTabAt(4)?.text = "进球"
-        tab_cat.getTabAt(5)?.text = "特殊投注TEST"
 
-        oddsDetailViewModel.getOddsDetail("sr:match:24369586", "EU")
-
-        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
-            tv_time.text = TimeUtil.stampToDate(it?.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
-        })
+        gameType?.let { gameType ->
+            oddsDetailViewModel.getPlayCateList(gameType)
+            oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { response ->
+                for (element in response!!.rows) {
+                    tab_cat.addTab(tab_cat.newTab().setText(element.name))
+                }
+            })
+        }
 
     }
 
