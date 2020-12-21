@@ -29,7 +29,10 @@ object Constants {
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
 
     //sport
-    const val SPORT_MENU = "/api/front/sport/menu"
+    const val SPORT_MENU = "/api/front/sport/menu";
+
+    //play category list
+    const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list";
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
