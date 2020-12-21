@@ -31,7 +31,6 @@ class ResultsSettlementActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         settlementBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_results_settlement)
         settlementBinding.apply {
@@ -41,8 +40,11 @@ class ResultsSettlementActivity : AppCompatActivity() {
             rv_date.adapter = settlementDateRvAdapter
         }
 
+        initView()
+
         settlementViewModel.matchResultListResult.observe(this) {
             settlementRvAdapter.mDataList = it?.rows ?: listOf()
+            settlementRvAdapter.gameType = gameType
             val spinnerGameZoneItem = it?.rows?.map { rows ->
                 rows.league.name
             }?.toMutableList()
@@ -80,6 +82,11 @@ class ResultsSettlementActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun initView() {
+        spinner_game_type.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("${getString(R.string.football)}"))
+        spinner_game_zone.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("${getString(R.string.league)}"))
     }
 
     private fun setupSpinnerGameType(spinnerGameTypeItem: MutableList<String>) {

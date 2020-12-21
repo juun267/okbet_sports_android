@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.menu.results
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_settlement_rv.view.*
@@ -18,6 +19,10 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
 
             notifyDataSetChanged()
         }
+    var gameType = ""
+    set(value){
+        field = value
+    }
 
     private var mIsOpenList: MutableList<Boolean> = mutableListOf()
 
@@ -31,6 +36,25 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
     override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
         viewHolder.itemView.apply {
             tv_type.text = mDataList[position].league.name
+            when (gameType){
+                GameType.FT.key -> { //上半場, 全場
+                    tv_first_half.visibility = View.VISIBLE
+                    tv_second_half.visibility = View.GONE
+                    tv_end_game.visibility = View.GONE
+                    tv_full_game.visibility = View.VISIBLE
+                }
+                GameType.BK.key -> { //上半場, 下半場, 賽果
+                    tv_first_half.visibility = View.VISIBLE
+                    tv_second_half.visibility = View.VISIBLE
+                    tv_end_game.visibility = View.VISIBLE
+                    tv_full_game.visibility = View.GONE
+                }
+                //TODO Dean : 待確認
+                GameType.TN.key -> ""
+                GameType.BM.key -> ""
+                GameType.VB.key -> ""
+                else -> ""
+            }
 
             if (mIsOpenList[position]) { //TODO Dean : 箭頭旋轉
                 block_drawer_result.expand(false)
