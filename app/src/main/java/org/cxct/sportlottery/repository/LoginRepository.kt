@@ -25,7 +25,7 @@ class LoginRepository(private val androidContext: Context) {
             LoginRequest(userName, password)
         )
 
-        if (loginResponse.isSuccessful) {
+        return if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
                 with(sharedPref.edit()) {
                     putString(KEY_TOKEN, it.loginData?.token)
@@ -33,18 +33,12 @@ class LoginRepository(private val androidContext: Context) {
                     apply()
                 }
             }
-            return loginResponse.body()
+            loginResponse.body()
 
         } else {
-            val apiError = ErrorUtils.parseError(loginResponse)
-            apiError?.let {
-                if (it.success != null && it.code != null && it.msg != null) {
-                    return LoginResult(it.code, it.msg, it.success, null)
-                }
-            }
+            ErrorUtils.parseError(loginResponse)
         }
 
-        return null
     }
 
     fun logout() {

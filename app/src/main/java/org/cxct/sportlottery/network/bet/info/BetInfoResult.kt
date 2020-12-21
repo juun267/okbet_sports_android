@@ -13,5 +13,5 @@ data class BetInfoResult(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val betInfoData: BetInfoData
+    val betInfoData: BetInfoData?
 )

@@ -13,5 +13,5 @@ data class OddsListResult(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val oddsListData: OddsListData
+    val oddsListData: OddsListData?
 )
