@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_settlement_rv.view.*
 import org.cxct.sportlottery.databinding.ContentSettlementRvBinding
+import org.cxct.sportlottery.network.matchresult.list.Row
 
 class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewHolder>() {
 
-    var mDataList = listOf<SettlementItem>()
+    var mDataList = listOf<Row>()
         set(value) {
             field = value
 
@@ -29,7 +30,7 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
 
     override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
         viewHolder.itemView.apply {
-            tv_type.text = mDataList[position].gameType
+            tv_type.text = mDataList[position].league.name
 
             if (mIsOpenList[position]) { //TODO Dean : 箭頭旋轉
                 block_drawer_result.expand(false)

@@ -7,6 +7,7 @@ import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.login.LoginViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
@@ -32,6 +33,7 @@ class MultiLanguagesApplication : Application() {
 
     private val repoModule = module {
         single { LoginRepository(get()) }
+        single { SettlementRepository(get()) }
     }
 
     override fun attachBaseContext(base: Context) {
