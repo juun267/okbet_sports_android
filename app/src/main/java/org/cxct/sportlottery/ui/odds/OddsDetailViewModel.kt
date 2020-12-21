@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,19 +13,26 @@ import org.cxct.sportlottery.util.TimeUtil
 
 class OddsDetailViewModel(private val oddsRepository: OddsRepository, private val playCateListRepository: PlayCateListRepository) : ViewModel() {
 
-    val oddsDetailResult = MutableLiveData<OddsDetailResult?>()
+    private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
 
-    val playCateListResult = MutableLiveData<PlayCateListResult?>()
+    private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
+
+    val playCateListResult: LiveData<PlayCateListResult?>
+        get() = _playCateListResult
+
+    val oddsDetailResult: LiveData<OddsDetailResult?>
+        get() = _oddsDetailResult
+
 
     fun getOddsDetail(matchId: String, oddsType: String) {
         viewModelScope.launch {
-            oddsDetailResult.postValue(oddsRepository.getOddsDetail(matchId, oddsType))
+            _oddsDetailResult.postValue(oddsRepository.getOddsDetail(matchId, oddsType))
         }
     }
 
     fun getPlayCateList(gameType: String) {
         viewModelScope.launch {
-            playCateListResult.postValue(playCateListRepository.getPlayCateList(gameType))
+            _playCateListResult.postValue(playCateListRepository.getPlayCateList(gameType))
         }
     }
 
