@@ -5,6 +5,7 @@
     <color name="colorAccent">#0073A8</color>
     <color name="colorPrimaryDeepDark">#003047</color>
     <color name="colorMenuLightBlue">#003A55</color>
+    <color name="colorDateLightGray">#B7B7B7</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -49,4 +50,5 @@
     <color name="tool_bar_background">#00496b</color>
     <color name="tool_bar_text_color">#EAA909</color>
     <color name="back_button_menu">#023851</color>
+    <color name="date_select_orange">#F98B00</color>
 </resources>
