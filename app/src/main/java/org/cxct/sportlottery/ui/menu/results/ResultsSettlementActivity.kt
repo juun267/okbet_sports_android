@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.menu.results
 
+import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,6 +12,8 @@ import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.activity_results_settlement.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityResultsSettlementBinding
+import org.cxct.sportlottery.network.common.PagingParams
+import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ResultsSettlementActivity : AppCompatActivity() {
@@ -30,15 +34,14 @@ class ResultsSettlementActivity : AppCompatActivity() {
             rv_results.adapter = settlementRvAdapter
         }
 
-        settlementViewModel.settlementData.observe(this) {
-            settlementRvAdapter.mDataList = it
-
-            val spinnerGameTypeItem = it.map { settlementItem ->
-                getString(GameType.valueOf(settlementItem.gameType).string)
-            }.toMutableList()
-            setupSpinnerGameType(spinnerGameTypeItem)
+        settlementViewModel.matchResultListResult.observe(this) {
+            settlementRvAdapter.mDataList = it?.rows ?: listOf()
+            val spinnerGameTypeItem = it?.rows?.map { rows ->
+                rows.league.name
+            }?.toMutableList()
+            setupSpinnerGameType(spinnerGameTypeItem ?: mutableListOf())
         }
-        settlementViewModel.getSettlementData()
+        settlementViewModel.getSettlementData(gameType = "FT", pagingParams = PagingParams(1,30), timeRangeParams = TimeRangeParams())
     }
 
     private fun setupSpinnerGameType(spinnerGameTypeItem: MutableList<String>) {

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.OddsRepository
 import org.cxct.sportlottery.repository.PlayCateListRepository
 import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
+import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.login.LoginViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
@@ -39,6 +40,7 @@ class MultiLanguagesApplication : Application() {
         single { LoginRepository(get()) }
         single { OddsRepository() }
         single { PlayCateListRepository() }
+        single { SettlementRepository(get()) }
     }
 
     override fun attachBaseContext(base: Context) {
