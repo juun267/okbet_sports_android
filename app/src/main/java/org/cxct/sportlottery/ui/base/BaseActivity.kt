@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
     companion object {
         private const val TAG = "BaseActivity"
     }
+
+    protected abstract val viewModel: VM
 
     private var loadingView: View? = null
 

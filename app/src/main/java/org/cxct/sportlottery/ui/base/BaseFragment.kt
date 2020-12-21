@@ -14,14 +14,14 @@ open class BaseFragment : Fragment() {
     }
 
     open fun loading(message: String?) {
-        if (activity is BaseActivity)
-            (activity as BaseActivity).loading(message)
+        if (activity is BaseActivity<*>)
+            (activity as BaseActivity<*>).loading(message)
     }
 
     /*关闭加载界面*/
     open fun hideLoading() {
-        if (activity is BaseActivity)
-            (activity as BaseActivity).hideLoading()
+        if (activity is BaseActivity<*>)
+            (activity as BaseActivity<*>).hideLoading()
     }
 
     protected fun hideKeyboard() {

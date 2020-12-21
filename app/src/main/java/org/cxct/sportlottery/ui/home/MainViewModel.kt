@@ -2,15 +2,15 @@ package org.cxct.sportlottery.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class MainViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
     }
