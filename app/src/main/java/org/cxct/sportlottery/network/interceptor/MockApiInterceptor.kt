@@ -7,12 +7,12 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.network.odds.MATCH_ODDS_Detail
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_DETAIL
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
@@ -71,7 +71,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(MATCH_ODDS_LIST) -> {
                     response = getMockJsonData(request, "match_odds_list.mock")
                 }
-                path.contains(MATCH_ODDS_Detail) -> {
+                path.contains(MATCH_ODDS_DETAIL) -> {
                     response = getMockJsonData(request, "match_odds_detail.mock")
                 }
                 path.contains(SPORT_MENU) -> {
