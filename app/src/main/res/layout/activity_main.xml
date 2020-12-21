@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="mainViewModel"
             type="org.cxct.sportlottery.ui.home.MainViewModel" />
@@ -59,7 +61,8 @@
                         android:includeFontPadding="false"
                         android:text="@string/btn_login"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/textSize18sp" />
+                        android:textSize="@dimen/textSize18sp"
+                        android:visibility="@{mainViewModel.token.empty ? View.VISIBLE : View.GONE }" />
 
                     <Button
                         android:id="@+id/btn_logout"
@@ -73,7 +76,8 @@
                         android:includeFontPadding="false"
                         android:text="@string/btn_logout"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/textSize18sp" />
+                        android:textSize="@dimen/textSize18sp"
+                        android:visibility="@{mainViewModel.token.empty ? View.GONE : View.VISIBLE }" />
 
                     <ImageView
                         android:id="@+id/btn_menu"
@@ -134,7 +138,6 @@
                         android:background="@android:color/white"
                         app:tabGravity="fill"
                         app:tabIndicatorHeight="0dp"
-
                         app:tabMode="scrollable">
 
                         <com.google.android.material.tabs.TabItem
