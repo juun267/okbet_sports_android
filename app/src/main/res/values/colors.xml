@@ -14,7 +14,9 @@
     <color name="main_sombre">#1A2938</color>
 
     <color name="background">#e7e7e7</color>
-    <color name="textColor">#555D76</color>
+    <color name="textColorLight">#4a4a4a</color>
+    <color name="textColorDark">#202020</color>
+    <color name="textOrange">#cb4700</color>
 
     <color name="text_faint">#80FFFFFF</color>
     <color name="text_tab_default">#202020</color>
@@ -26,7 +28,7 @@
 
 
     <!-- 线条颜色 -->
-    <color name="skinLine">#DDDDDD</color>
+    <color name="lineGray">#f2f2f2</color>
     <color name="bright_gray">#CCCCCC</color>
     <color name="dark_gray">#E7E7E7</color>
     <color name="golden">#ECA906</color>
