@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -139,29 +142,41 @@ class MainActivity : BaseActivity<BaseViewModel>() {
             queryData()
         }
 
-        //公告訊息
-        viewModel.messageListResult.observe(this) {
-            val titleList: MutableList<String> = mutableListOf()
-            it?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
 
-            if (it?.success == true && titleList.size > 0) {
-                rv_marquee.startAuto() //啟動跑馬燈
-            } else {
-                rv_marquee.stopAuto() //停止跑馬燈
+        viewModel.baseResult.observe(this, Observer {
+            hideLoading()
+
+            when (it) {
+                is MessageListResult? -> {
+                    updateUiWithResult(it)
+                }
+                is SportMenuResult? -> {
+                    updateUiWithResult(it)
+                }
             }
+        })
+    }
 
-            mMarqueeAdapter.setData(titleList)
+    private fun updateUiWithResult(messageListResult: MessageListResult?) {
+        val titleList: MutableList<String> = mutableListOf()
+        messageListResult?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
+
+        if (messageListResult?.success == true && titleList.size > 0) {
+            rv_marquee.startAuto() //啟動跑馬燈
+        } else {
+            rv_marquee.stopAuto() //停止跑馬燈
         }
 
-        viewModel.sportMenuResult.observe(this) {
-            hideLoading()
-            if (it?.success == true) {
-                //TODO simon test 刷新 運動彩票頁籤
-                Toast.makeText(this, "獲取體育菜單成功", Toast.LENGTH_SHORT).show()
-            } else {
-                //獲取體育菜單失敗，就跳轉到登入頁 (可能是 token 過期)
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
+        mMarqueeAdapter.setData(titleList)
+    }
+
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
+        if (sportMenuResult?.success == true) {
+            //TODO simon test 刷新 運動彩票頁籤
+            Toast.makeText(this, "獲取體育菜單成功", Toast.LENGTH_SHORT).show()
+        } else {
+            //獲取體育菜單失敗，就跳轉到登入頁 (可能是 token 過期)
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
