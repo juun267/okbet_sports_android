@@ -1,27 +1,27 @@
 package org.cxct.sportlottery.ui.login
 
-import android.content.Context
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.interfaces.OnCheckConnectClickListener
+import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 
 
-class LoginActivity : BaseActivity() {
-    private val loginViewModel: LoginViewModel by viewModel()
+class LoginActivity : BaseActivity<LoginViewModel>() {
+
+    override val viewModel by inject<LoginViewModel>()
+
     private lateinit var loginBinding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +30,11 @@ class LoginActivity : BaseActivity() {
         loginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
         loginBinding.apply {
-            loginViewModel = this@LoginActivity.loginViewModel
+            loginViewModel = this@LoginActivity.viewModel
             lifecycleOwner = this@LoginActivity
         }
 
-        loginViewModel.loginFormState.observe(this, Observer {
+        viewModel.loginFormState.observe(this, Observer {
             val loginState = it ?: return@Observer
 
             if (loginState.usernameError != null) {
@@ -45,17 +45,12 @@ class LoginActivity : BaseActivity() {
             }
         })
 
-        loginViewModel.loginResult.observe(this, Observer {
+        viewModel.baseResult.observe(this, Observer {
             loading.visibility = View.GONE
 
-            if (it != null && it.success) {
-                it.loginData?.let { loginData ->
-                    updateUiWithUser(loginData.userName)
-                }
-                finish()
-            } else {
-                it?.let { loginResult ->
-                    showLoginFailed(loginResult.msg)
+            when (it) {
+                is LoginResult? -> {
+                    updateUiWithResult(it)
                 }
             }
         })
@@ -67,7 +62,7 @@ class LoginActivity : BaseActivity() {
 
     private fun setupUserName() {
         username.afterTextChanged {
-            loginViewModel.loginDataChanged(
+            viewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
@@ -77,7 +72,7 @@ class LoginActivity : BaseActivity() {
     private fun setupPassword() {
         password.apply {
             afterTextChanged {
-                loginViewModel.loginDataChanged(
+                viewModel.loginDataChanged(
                     username.text.toString(),
                     password.text.toString()
                 )
@@ -86,7 +81,7 @@ class LoginActivity : BaseActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
+                        viewModel.login(
                             username.text.toString(),
                             password.text.toString()
                         )
@@ -98,13 +93,30 @@ class LoginActivity : BaseActivity() {
 
     private fun setupLoginButton() {
 
-        login.setOnClickListener(OnCheckConnectClickListener(this, object : OnCheckConnectClickListener.Doing {
-            override fun onClick() {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
-            }
-        }))
+        login.setOnClickListener(
+            OnCheckConnectClickListener(
+                this,
+                object : OnCheckConnectClickListener.Doing {
+                    override fun onClick() {
+                        loading.visibility = View.VISIBLE
+                        viewModel.login(username.text.toString(), password.text.toString())
+                    }
+                })
+        )
 
+    }
+
+    private fun updateUiWithResult(loginResult: LoginResult?) {
+        if (loginResult != null && loginResult.success) {
+            loginResult.loginData?.let { loginData ->
+                updateUiWithUser(loginData.userName)
+            }
+            finish()
+        } else {
+            loginResult?.let { loginFailedResult ->
+                showLoginFailed(loginFailedResult.msg)
+            }
+        }
     }
 
     private fun updateUiWithUser(displayName: String) {

@@ -1,21 +1,47 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.Activity
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
     companion object {
         private const val TAG = "BaseActivity"
     }
 
+    protected abstract val viewModel: VM
+
     private var loadingView: View? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        onTokenStateObserved()
+    }
+
+    private fun onTokenStateObserved() {
+        viewModel.baseResult.observe(this, Observer {
+            when (it.code) {
+                2014 -> {
+                    //TODO deal response code 2014
+                }
+                2015 -> {
+                    //TODO deal response code 2015
+                }
+                2018 -> {
+                    //TODO deal response code 2018
+                }
+            }
+        })
+    }
 
     /*弹出加载界面*/
     open fun loading() {
