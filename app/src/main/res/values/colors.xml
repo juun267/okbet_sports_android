@@ -6,6 +6,9 @@
     <color name="colorPrimaryDeepDark">#003047</color>
     <color name="colorMenuLightBlue">#003A55</color>
     <color name="colorDateLightGray">#B7B7B7</color>
+    <color name="colorDarkBlack">#333333</color>
+    <color name="colorLightBlack">#202020</color>
+    <color name="colorWhiteGray">#707070</color>
 
 
     <color name="background">#e7e7e7</color>

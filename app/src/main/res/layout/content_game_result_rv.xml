@@ -3,16 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="org.cxct.sportlottery.ui.menu.results.SettlementViewModel" />
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:orientation="vertical"
@@ -26,31 +19,34 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp">
 
                 <TextView
+                    android:id="@+id/tv_home_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/colorMenuLightBlue"
+                    android:textColor="@color/colorLightBlack"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="域堡" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/verse" />
+                    android:text="@string/verse"
+                    android:textColor="@color/colorDarkBlack"/>
 
                 <TextView
+                    android:id="@+id/tv_away_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/colorMenuLightBlue"
+                    android:textColor="@color/colorLightBlack"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="赫尔辛格" />
             </LinearLayout>
@@ -60,27 +56,56 @@
                 android:layout_height="match_parent"
                 android:background="@color/skinLine" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="top|center_horizontal"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/colorMenuLightBlue"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="1-0" />
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/tv_first_half_score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="top|center_horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/colorWhiteGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="1-0" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/colorMenuLightBlue"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="3-0" />
+                <TextView
+                    android:id="@+id/tv_second_half_score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/colorWhiteGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="3-0" />
+                <TextView
+                    android:id="@+id/tv_full_game_score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/colorWhiteGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="3-0" />
+                <TextView
+                    android:id="@+id/tv_end_game_score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/colorWhiteGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="3-0" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -97,17 +122,26 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/ic_more"
+                    />
 
                 <TextView
-                    android:id="@+id/tv_detail"
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="center"
                     app:layout_constraintEnd_toStartOf="@+id/line2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:text="@color/colorWhiteGray"
                     tools:text="15/12 01:00" />
             </LinearLayout>
 
