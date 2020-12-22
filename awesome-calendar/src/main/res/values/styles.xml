@@ -20,8 +20,8 @@
     </style>
 
     <style name="WeekDayTitleStyle">
-        <item name="android:layout_width">@dimen/dayOfMonthBoxSize</item>
-        <item name="android:layout_height">@dimen/dayOfMonthBoxSize</item>
+        <item name="android:layout_width">@dimen/dayOfMonthBoxWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthBoxHeight</item>
         <item name="android:textSize">@dimen/text_size_week</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/date_color</item>
@@ -29,8 +29,8 @@
     </style>
 
     <style name="DayOfMonthStyle">
-        <item name="android:layout_width">@dimen/dayOfMonthSize</item>
-        <item name="android:layout_height">@dimen/dayOfMonthSize</item>
+        <item name="android:layout_width">@dimen/dayOfMonthCircleWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthCircleHeight</item>
         <item name="android:textSize">@dimen/text_size_date</item>
         <item name="android:gravity">center</item>
         <item name="android:minHeight">@dimen/dayOfMonthMinHeight</item>
@@ -42,8 +42,8 @@
     </style>
 
     <style name="ContainerDayOfWeek">
-        <item name="android:layout_width">@dimen/dayOfMonthBoxSize</item>
-        <item name="android:layout_height">@dimen/dayOfMonthBoxSize</item>
+        <item name="android:layout_width">@dimen/dayOfMonthBoxWidth</item>
+        <item name="android:layout_height">@dimen/dayOfMonthBoxHeight</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
