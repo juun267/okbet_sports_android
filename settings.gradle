@@ -1,2 +1,3 @@
+include ':awesome-calendar'
 rootProject.name='SportLottery'
 include ':app'
