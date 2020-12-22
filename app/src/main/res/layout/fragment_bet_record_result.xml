@@ -34,6 +34,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:gravity="center"
             android:text="@string/order_number"
             android:textColor="@color/gray4" />
@@ -43,6 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:text="@string/bet_type"
             android:textColor="@color/gray4" />
 
@@ -50,6 +56,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:gravity="center"
             android:text="@string/total_bet_money"
             android:textColor="@color/gray4" />
@@ -58,14 +67,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:gravity="center"
             android:text="@string/status"
             android:textColor="@color/gray4" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bet_record"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/item_bet_record_result"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 </androidx.constraintlayout.widget.ConstraintLayout>
