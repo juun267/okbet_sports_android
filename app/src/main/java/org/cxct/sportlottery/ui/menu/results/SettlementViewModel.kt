@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.matchresult.list.MatchResultListRequest
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SettlementRepository
 
 class SettlementViewModel(private val settlementRepository: SettlementRepository) : ViewModel() {
@@ -23,6 +21,8 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     private var _settlementFilter = MutableLiveData<SettlementFilter>()
     private val _settlementData = MutableLiveData<List<SettlementItem>>()
     private val _matchResultListResult = MutableLiveData<MatchResultListResult?>()
+
+    lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
     fun getSettlementData(
         gameType: String,
@@ -38,6 +38,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
                 SettlementItem("VB", false)
             )
         )
+        requestListener.requestIng(true)
         viewModelScope.launch {
             _matchResultListResult.postValue(
                 settlementRepository.resultList(

@@ -35,7 +35,8 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
 
     override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
         viewHolder.itemView.apply {
-            tv_type.text = mDataList[position].league.name
+            val data = mDataList[position]
+            tv_type.text = data.league.name
             when (gameType){
                 GameType.FT.key -> { //上半場, 全場
                     tv_first_half.visibility = View.VISIBLE
@@ -73,6 +74,11 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
             }
 
             rv_game_result.adapter = GameResultRvAdapter()
+            (rv_game_result.adapter as GameResultRvAdapter).apply {
+                this.gameType = this@SettlementRvAdapter.gameType
+                mDataList = data.list.toMutableList()
+            }
+
         }
     }
 

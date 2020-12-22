@@ -12,11 +12,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityResultsSettlementBinding
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ResultsSettlementActivity : AppCompatActivity() {
+class ResultsSettlementActivity : BaseActivity() {
     private lateinit var settlementBinding: ActivityResultsSettlementBinding
     private val settlementViewModel: SettlementViewModel by viewModel()
     private val settlementRvAdapter by lazy {
@@ -28,6 +29,10 @@ class ResultsSettlementActivity : AppCompatActivity() {
     private val pagingParams by lazy { PagingParams(null, null) }
     private var timeRangeParams: TimeRangeParams = TimeRangeParams()
     private var gameType = "FT"
+
+    interface RequestListener{
+        fun requestIng(loading: Boolean)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +46,10 @@ class ResultsSettlementActivity : AppCompatActivity() {
         }
 
         initView()
+        initEvent()
 
         settlementViewModel.matchResultListResult.observe(this) {
+            hideLoading()
             settlementRvAdapter.mDataList = it?.rows ?: listOf()
             settlementRvAdapter.gameType = gameType
             val spinnerGameZoneItem = it?.rows?.map { rows ->
@@ -87,6 +94,15 @@ class ResultsSettlementActivity : AppCompatActivity() {
     private fun initView() {
         spinner_game_type.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("${getString(R.string.football)}"))
         spinner_game_zone.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("${getString(R.string.league)}"))
+    }
+
+    private fun initEvent() {
+        settlementViewModel.requestListener = object : RequestListener{
+            override fun requestIng(loading: Boolean) {
+                loading()
+            }
+
+        }
     }
 
     private fun setupSpinnerGameType(spinnerGameTypeItem: MutableList<String>) {
