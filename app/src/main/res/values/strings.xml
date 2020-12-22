@@ -43,4 +43,5 @@
     <string name="total_bet_money">总投注额</string>
     <string name="status">状态</string>
     <string name="bet_record">投注记录</string>
+    <string name="select_all">全选</string>
 </resources>

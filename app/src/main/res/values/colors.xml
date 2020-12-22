@@ -6,6 +6,8 @@
     <color name="colorPrimaryDeepDark">#003047</color>
     <color name="colorMenuLightBlue">#003A55</color>
     <color name="blue">#223549</color>
+    <color name="blue2">#c8d7e8</color>
+    <color name="blue_transparent_40">#64c8d7e8</color>
 
 
     <color name="background">#F2F2F2</color>
