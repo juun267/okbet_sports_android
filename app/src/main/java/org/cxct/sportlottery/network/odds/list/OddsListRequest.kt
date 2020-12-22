@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.odds
+package org.cxct.sportlottery.network.odds.list
 
 data class OddsListRequest(
     val gameType: String,

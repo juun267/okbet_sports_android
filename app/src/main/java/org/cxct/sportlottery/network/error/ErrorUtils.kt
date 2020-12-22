@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.odds.OddsListResult
+import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import retrofit2.Converter
 import retrofit2.Response
