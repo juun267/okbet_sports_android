@@ -7,7 +7,7 @@ import org.cxct.sportlottery.network.common.BaseResult
 
 
 @JsonClass(generateAdapter = true)
-data class LeagueListResponse(
+data class LeagueListResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")

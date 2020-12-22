@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.index.LoginResult
-import org.cxct.sportlottery.network.league.LeagueListResponse
+import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.OddsListResult
@@ -79,7 +79,7 @@ object ErrorUtils {
                     }
                     (url.contains(LEAGUE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return LeagueListResponse(it.code, it.msg, null, it.success, null) as T
+                        return LeagueListResult(it.code, it.msg, null, it.success, null) as T
                     }
                 }
             }
