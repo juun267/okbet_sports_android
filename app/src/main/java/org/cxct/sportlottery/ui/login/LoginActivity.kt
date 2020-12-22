@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.interfaces.OnCheckConnectClickListener
+import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.koin.android.ext.android.inject
 
@@ -44,17 +45,12 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
             }
         })
 
-        viewModel.loginResult.observe(this, Observer {
+        viewModel.baseResult.observe(this, Observer {
             loading.visibility = View.GONE
 
-            if (it != null && it.success) {
-                it.loginData?.let { loginData ->
-                    updateUiWithUser(loginData.userName)
-                }
-                finish()
-            } else {
-                it?.let { loginResult ->
-                    showLoginFailed(loginResult.msg)
+            when (it) {
+                is LoginResult? -> {
+                    updateUiWithResult(it)
                 }
             }
         })
@@ -97,13 +93,30 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
 
     private fun setupLoginButton() {
 
-        login.setOnClickListener(OnCheckConnectClickListener(this, object : OnCheckConnectClickListener.Doing {
-            override fun onClick() {
-                loading.visibility = View.VISIBLE
-                viewModel.login(username.text.toString(), password.text.toString())
-            }
-        }))
+        login.setOnClickListener(
+            OnCheckConnectClickListener(
+                this,
+                object : OnCheckConnectClickListener.Doing {
+                    override fun onClick() {
+                        loading.visibility = View.VISIBLE
+                        viewModel.login(username.text.toString(), password.text.toString())
+                    }
+                })
+        )
 
+    }
+
+    private fun updateUiWithResult(loginResult: LoginResult?) {
+        if (loginResult != null && loginResult.success) {
+            loginResult.loginData?.let { loginData ->
+                updateUiWithUser(loginData.userName)
+            }
+            finish()
+        } else {
+            loginResult?.let { loginFailedResult ->
+                showLoginFailed(loginFailedResult.msg)
+            }
+        }
     }
 
     private fun updateUiWithUser(displayName: String) {
