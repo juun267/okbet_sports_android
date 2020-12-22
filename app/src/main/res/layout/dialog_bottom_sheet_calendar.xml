@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:padding="12dp"
+    android:orientation="vertical">
+<!--    com.archit.calendardaterangepicker.customviews.DateRangeCalendarView-->
+    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        custom:calendar_tag="Test"
+        custom:date_selection_mode="free_range"
+        custom:disable_date_color="#ABABAB"
+        custom:editable="true"
+        custom:enable_time_selection="false"
+        custom:range_color="@color/blue_transparent_40"
+        custom:selected_date_circle_color="@color/blue2"
+        custom:text_size_date ="10sp"
+        custom:week_offset="0"/>
+
+    <!--
+        <CalendarView
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    -->
+
+</LinearLayout>

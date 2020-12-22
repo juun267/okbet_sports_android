@@ -9,8 +9,6 @@
             name="betRecordViewModel"
             type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
 
-        <variable name="model"
-            type="org.cxct.sportlottery.network.bet.list.BetListRequest"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,16 +37,6 @@
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/image_view"
-                />
-
-            <Spinner
-                android:id="@+id/spinner_bet_state"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@null"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 />
 
             <ImageView
@@ -84,7 +72,6 @@
                 android:layout_weight="1"
                 android:padding="16dp"
                 android:hint="@string/please_choose_start_date"
-                android:text="@{model.timeRangeParams.startTime.toString()}"
                 android:textColor="@color/gray2" />
 
             <ImageView
@@ -114,7 +101,6 @@
                 android:layout_weight="1"
                 android:padding="16dp"
                 android:hint="@string/please_choose_end_date"
-                android:text="@string/please_choose_end_date"
                 android:textColor="@color/gray2" />
 
             <ImageView

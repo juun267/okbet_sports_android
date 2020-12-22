@@ -130,15 +130,7 @@ class BetRecordViewModel(private val loginRepository: LoginRepository) : ViewMod
             val apiError = ErrorUtils.parseError(betListResponse)
             apiError?.let {
                 if (it.success != null && it.code != null && it.msg != null) {
-                    _betRecordResult.postValue(
-                        BetListResult(
-                            it.code,
-                            it.msg,
-                            success = it.success,
-                            rows = listOf(),
-                            total = 0
-                        )
-                    )
+                    _betRecordResult.postValue(BetListResult(it.code, it.msg, success = it.success, rows = listOf(), total = 0))
                 }
             }
         }
