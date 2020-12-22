@@ -4,6 +4,7 @@
     <dimen name="tool_bar_text_size">16dp</dimen>
 
     <!--文字大小sp都改成dp-->
+    <dimen name="textSize8sp">8dp</dimen>
     <dimen name="textSize10sp">10dp</dimen>
     <dimen name="textSize11sp">11dp</dimen>
     <dimen name="textSize12sp">12dp</dimen>

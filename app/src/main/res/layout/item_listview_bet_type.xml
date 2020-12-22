@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="8dp"
+    android:paddingVertical="4dp"
     android:paddingStart="24dp"
     android:paddingEnd="4dp"
+    android:id="@+id/linear_layout"
+    android:background="@drawable/selector_bg_white_blue"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
@@ -14,9 +16,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         tools:text="未确认"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize12sp"
+        android:textColor="@color/blue3"
         android:paddingStart="28dp"
         android:paddingEnd="4dp"
-        android:buttonTint="@color/gray6" />
+        android:buttonTint="@color/blue3" />
 
 </LinearLayout>
