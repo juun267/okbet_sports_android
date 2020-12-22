@@ -2,13 +2,13 @@
 <resources>
 
     <!-- dateTitleLayout -->
-    <dimen name="text_size_title">22sp</dimen>
+    <dimen name="text_size_title">16sp</dimen>
     <dimen name="dateTitlePaddingBottom">5dp</dimen>
     <!-- weekLayout -->
     <dimen name="weekDaysPaddingBottom">0dp</dimen>
     <dimen name="text_size_week">15sp</dimen>
     <!-- weekRowLayout -->
-    <dimen name="weekRowMinHeight">44dp</dimen>
+    <dimen name="weekRowMinHeight">8dp</dimen>
     <dimen name="text_size_date">16dp</dimen>
     <dimen name="dayOfMonthBoxSize">44dp</dimen>
     <dimen name="dayOfMonthSize">24dp</dimen>
@@ -20,4 +20,9 @@
 
     <dimen name="strip_height">24dp</dimen>
 
+    <dimen name="dayOfMonthCircleWidth">34dp</dimen>
+    <dimen name="dayOfMonthCircleHeight">24dp</dimen>
+
+    <dimen name="dayOfMonthBoxHeight">34dp</dimen>
+    <dimen name="dayOfMonthBoxWidth">44dp</dimen>
 </resources>

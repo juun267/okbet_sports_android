@@ -43,11 +43,11 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     }
 
     private fun initViews(context: Context, attrs: AttributeSet?) {
-        locale = context.resources.configuration.locale
+        locale = Locale.getDefault()
         calendarStyleAttr = CalendarStyleAttrImpl(context, attrs)
         val layoutInflater = LayoutInflater.from(context)
         layoutInflater.inflate(layout.layout_calendar_container, this, true)
-        val rlHeaderCalendar = findViewById<RelativeLayout>(R.id.rlHeaderCalendar)
+        val rlHeaderCalendar = findViewById<LinearLayout>(R.id.rlHeaderCalendar)
         rlHeaderCalendar.background = calendarStyleAttr.headerBg
         tvYearTitle = findViewById(R.id.tvYearTitle)
         tvYearTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, calendarStyleAttr.textSizeTitle)
@@ -118,7 +118,13 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
         val currentCalendarMonth = mDateRangeCalendarManager.getVisibleMonthDataList()[position]
         var dateText = DateFormatSymbols(locale).months[currentCalendarMonth[Calendar.MONTH]]
         dateText = dateText.substring(0, 1).toUpperCase() + dateText.subSequence(1, dateText.length)
-        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
+//        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
+        val yearTitle: String
+        if (locale.displayLanguage == "en") {
+            yearTitle = "${currentCalendarMonth[Calendar.YEAR]} $dateText"
+        } else {
+            yearTitle = "${currentCalendarMonth[Calendar.YEAR]}年 ${currentCalendarMonth[Calendar.MONTH]+1}月"
+        }
         tvYearTitle.text = yearTitle
         tvYearTitle.setTextColor(calendarStyleAttr.titleColor)
     }

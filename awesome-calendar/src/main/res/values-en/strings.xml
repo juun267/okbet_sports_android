@@ -1,4 +1,12 @@
 <resources>
+<!--    <string name="cdrp_mon">Mon</string>-->
+<!--    <string name="cdrp_tue">Tue</string>-->
+<!--    <string name="cdrp_wed">Wed</string>-->
+<!--    <string name="cdrp_thu">Thu</string>-->
+<!--    <string name="cdrp_fri">Fri</string>-->
+<!--    <string name="cdrp_sat">Sat</string>-->
+<!--    <string name="cdrp_sun">Sun</string>-->
+
     <string name="cdrp_mon">一</string>
     <string name="cdrp_tue">二</string>
     <string name="cdrp_wed">三</string>
@@ -17,9 +25,8 @@
         <item>@string/cdrp_sat</item>
     </string-array>
 
-    <string name="cancel">取消</string>
-    <string name="done">完成</string>
-    <string name="title_time_picker">選擇時間</string>
-    <string name="select_time">選擇一個時間</string>
-
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="title_time_picker">Select Time</string>
+    <string name="select_time">Select a Time</string>
 </resources>
