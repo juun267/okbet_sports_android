@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
  * 遊戲右側功能選單
  */
-class MenuFragment : BaseFragment() {
+class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     companion object {
         private const val TAG = "MenuFragment"
     }

@@ -15,12 +15,9 @@ import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.interfaces.OnCheckConnectClickListener
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.koin.android.ext.android.inject
 
 
-class LoginActivity : BaseActivity<LoginViewModel>() {
-
-    override val viewModel by inject<LoginViewModel>()
+class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private lateinit var loginBinding: ActivityLoginBinding
 
