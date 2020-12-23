@@ -9,9 +9,10 @@ import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.activity_tool_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityToolBarBinding
+import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import org.cxct.sportlottery.ui.bet_record.search.BetRecordSearchFragment
 
-class ToolBarActivity : BaseActivity() {
+class ToolBarActivity : BaseActivity<BetRecordViewModel>(BetRecordViewModel::class) {
 
     private lateinit var drawerLayout: DrawerLayout
 
@@ -20,7 +21,6 @@ class ToolBarActivity : BaseActivity() {
 //        setContentView(R.layout.activity_tool_bar)
         val binding = DataBindingUtil.setContentView<ActivityToolBarBinding>(this, R.layout.activity_tool_bar)
 //        binding.lifecycleOwner = this
-        binding.activity = this
 
         drawerLayout = binding.drawerLayout
         bindNavHost()

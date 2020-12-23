@@ -17,8 +17,6 @@ import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
-import org.cxct.sportlottery.ui.bet_record.ToolBarActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 

@@ -7,6 +7,7 @@ import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import org.cxct.sportlottery.repository.OddsRepository
 import org.cxct.sportlottery.repository.PlayCateListRepository
 import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
@@ -33,6 +34,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { LoginViewModel(get()) }
         viewModel { OddsDetailViewModel(get(),get()) }
         viewModel { SettlementViewModel(get()) }
+        viewModel { BetRecordViewModel(get()) }
     }
 
     private val repoModule = module {

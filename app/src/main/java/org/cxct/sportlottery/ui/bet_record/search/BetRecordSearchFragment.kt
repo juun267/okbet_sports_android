@@ -31,8 +31,6 @@ import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
-import org.cxct.sportlottery.ui.bet_record.ToolBarActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 

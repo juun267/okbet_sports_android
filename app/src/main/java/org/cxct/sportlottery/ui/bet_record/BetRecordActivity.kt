@@ -12,7 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
 
-class BetRecordActivity : BaseActivity() {
+class BetRecordActivity : BaseActivity<BetRecordViewModel>(BetRecordViewModel::class) {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration : AppBarConfiguration
