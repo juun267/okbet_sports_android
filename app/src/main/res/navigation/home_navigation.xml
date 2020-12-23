@@ -12,12 +12,29 @@
         <action
             android:id="@+id/action_homeFragment_to_gameFragment"
             app:destination="@id/gameFragment" />
+            <argument
+                android:name="matchType"
+                android:defaultValue="0"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
         android:name="org.cxct.sportlottery.ui.game.GameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" >
+        <argument
+            android:name="matchType"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_gameFragment_to_gameFragment"
+            app:destination="@id/gameFragment">
+            <argument
+                android:name="matchType"
+                android:defaultValue="0"
+                app:argType="integer" />
+        </action>
         <action
             android:id="@+id/action_gameFragment_to_game2Fragment"
             app:destination="@id/game2Fragment" />
