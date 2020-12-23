@@ -1,86 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.bet_record.search.result.BetRecordResultFragment">
 
-    <TextView
-        android:id="@+id/tv_bet_status2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
-        android:background="@color/blue"
-        android:gravity="center"
-        android:textColor="@color/white"
-        tools:text="已结算注单"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray5"
-        android:orientation="horizontal"
-        android:paddingVertical="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_bet_status2">
+        android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/tv_bet_status2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
+            android:paddingVertical="8dp"
+            android:background="@color/blue"
             android:gravity="center"
-            android:text="@string/order_number"
-            android:textColor="@color/gray4" />
+            android:textColor="@color/white"
+            tools:text="已结算注单"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:text="@string/bet_type"
-            android:textColor="@color/gray4" />
+            android:background="@color/gray5"
+            android:orientation="horizontal"
+            android:paddingVertical="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_bet_status2">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:gravity="center"
-            android:text="@string/total_bet_money"
-            android:textColor="@color/gray4" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:maxLines="1"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                android:gravity="center"
+                android:text="@string/order_number"
+                android:textColor="@color/gray4" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:gravity="center"
-            android:text="@string/status"
-            android:textColor="@color/gray4" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                android:text="@string/bet_type"
+                android:textColor="@color/gray4" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_bet_record"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:listitem="@layout/item_bet_record_result"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:maxLines="1"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                android:gravity="center"
+                android:text="@string/total_bet_money"
+                android:textColor="@color/gray4" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:maxLines="1"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                android:gravity="center"
+                android:text="@string/status"
+                android:textColor="@color/gray4" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bet_record"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_bet_record_result"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 

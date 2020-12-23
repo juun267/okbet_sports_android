@@ -6,14 +6,14 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class BetListResult(
-    @Json(name = "code")
-    val code: Int,
-    @Json(name = "msg")
-    val msg: String,
-    @Json(name = "rows")
-    val rows: List<Row>,
     @Json(name = "success")
     val success: Boolean,
+    @Json(name = "msg")
+    val msg: String,
+    @Json(name = "code")
+    val code: Int,
+    @Json(name = "rows")
+    val rows: List<Row>,
     @Json(name = "total")
     val total: Int
 )
