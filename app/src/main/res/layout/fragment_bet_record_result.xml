@@ -4,12 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.bet_record.search.result.BetRecordResultFragment">
 
+    <data>
+        <variable
+            name="betRecordViewModel"
+            type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_bet_status2"
+            android:id="@+id/tv_bet_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="8dp"
@@ -30,7 +36,7 @@
             android:paddingVertical="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_bet_status2">
+            app:layout_constraintTop_toBottomOf="@id/tv_bet_status">
 
             <TextView
                 android:layout_width="0dp"
@@ -83,7 +89,8 @@
             android:layout_height="0dp"
             tools:listitem="@layout/item_bet_record_result"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

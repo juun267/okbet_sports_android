@@ -8,7 +8,6 @@
         <variable
             name="betRecordViewModel"
             type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
