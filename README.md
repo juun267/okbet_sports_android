@@ -82,10 +82,22 @@ class MyApplication : Application(){
 }
 ```
 
-之後在Activity注入ViewModel
+目前會在BaseActivity/BaseFragment透過泛型方式統一注入ViewModel
 
 ```
-private val mainViewModel: MainViewModel by viewModel()
+abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
+
+    val viewModel: T by viewModel(clazz = clazz)
+}
+```
+
+繼承BaseActivity/BaseFragment只需要傳入泛型就可以取得對應ViewModel
+
+```
+class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
+
+    viewmodel.doSomthing()
+}
 ```
 
 

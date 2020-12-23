@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
+import kotlin.reflect.KClass
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
+abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
     companion object {
         private const val TAG = "BaseActivity"
     }
 
-    protected abstract val viewModel: VM
+    val viewModel: T by viewModel(clazz = clazz)
 
     private var loadingView: View? = null
 
