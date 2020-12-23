@@ -1,16 +1,13 @@
-package org.cxct.sportlottery.ui.base
+package org.cxct.sportlottery.ui.bet_record
 
 import android.os.Bundle
-import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import kotlinx.android.synthetic.main.activity_tool_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityToolBarBinding
-import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
-import org.cxct.sportlottery.ui.bet_record.search.BetRecordSearchFragment
+import org.cxct.sportlottery.ui.base.BaseActivity
 
 class ToolBarActivity : BaseActivity<BetRecordViewModel>(BetRecordViewModel::class) {
 
