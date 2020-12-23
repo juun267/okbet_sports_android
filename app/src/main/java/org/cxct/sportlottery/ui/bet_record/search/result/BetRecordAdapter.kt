@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.bet_record.search.result
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,13 +19,14 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     enum class ItemType {
         ITEM, FOOTER
     }
-    private val adaoterScrope = CoroutineScope(Dispatchers.Default)
+
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: List<Row>?) {
-        adaoterScrope.launch {
-            val items = when(list) {
+        adapterScope.launch {
+            val items = when (list) {
                 null -> listOf(DataItem.Footer)
-                else -> list.map { DataItem.Item(it)} + listOf(DataItem.Footer)
+                else -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
             }
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
@@ -37,9 +37,7 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            else -> {
-                FooterViewHolder.from(parent)
-            }
+            else -> FooterViewHolder.from(parent)
         }
     }
 
@@ -50,37 +48,27 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
                 holder.bind(data.row, clickListener)
             }
 
-            is FooterViewHolder -> {
-            }
+            is FooterViewHolder -> {}
         }
     }
 
-
-
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is DataItem.Item  -> ItemType.ITEM.ordinal
+            is DataItem.Item -> ItemType.ITEM.ordinal
             else -> ItemType.FOOTER.ordinal
         }
     }
 
-    class ItemViewHolder private constructor(val binding: ItemBetRecordResultBinding): RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder private constructor(val binding: ItemBetRecordResultBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Row, clickListener: ItemClickListener) {
             binding.row = data
             binding.clickListener = clickListener
             binding.executePendingBindings()
-//            binding.tvOrderNumber.text = data.orderNo
-            /*
-            itemView.apply {
-                tv_order_number.text = data.orderNo
-            }
-            */
         }
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-//                val view = layoutInflater.inflate(R.layout.item_bet_record_result, parent, false)
                 val binding = ItemBetRecordResultBinding.inflate(layoutInflater, parent, false)
                 return ItemViewHolder(binding)
             }
@@ -88,10 +76,9 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
 
     }
 
-    class FooterViewHolder(view: View): RecyclerView.ViewHolder(view) {
-//        val tvNoData: TextView = view.findViewById(R.id.tv_no_data)
+    class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
-             fun from(parent: ViewGroup) =
+            fun from(parent: ViewGroup) =
                 FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
         }
     }
@@ -118,11 +105,11 @@ sealed class DataItem {
 
     abstract val orderNum: String
 
-    data class Item(val row: Row): DataItem() {
+    data class Item(val row: Row) : DataItem() {
         override val orderNum = row.orderNo
     }
 
-    object Footer: DataItem() {
+    object Footer : DataItem() {
         override val orderNum: String = ""
     }
 }
