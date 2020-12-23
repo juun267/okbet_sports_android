@@ -5,11 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
-import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.repository.LoginRepository
 import java.text.SimpleDateFormat
@@ -117,22 +120,15 @@ class BetRecordViewModel(private val loginRepository: LoginRepository) : ViewMod
     }
 
     private suspend fun getBetList(betListRequest: BetListRequest) {
-        val betListResponse =
-            OneBoSportApi.betService.getBetList(loginRepository.token.value, betListRequest)
-
-        //        val statusList: List<Int>, //状态 0：未确认，1：未结算，2：全赢，3：赢半，4：全输，5：输半，6：和，7：已取消
-        //        val gameType: String? = null,
-        //        val pagingParams: PagingParams? = null,
-        //        val timeRangeParams: TimeRangeParams? = null,
-        //        val idParams: IdParams? = null
+        val betListResponse = OneBoSportApi.betService.getBetList(loginRepository.token.value, betListRequest)
 
         if (betListResponse.isSuccessful) {
-            _betRecordResult.postValue(betListResponse.body())
+          _betRecordResult.postValue(betListResponse.body())
         } else {
             val apiError = ErrorUtils.parseError(betListResponse)
             apiError?.let {
                 if (it.success != null && it.code != null && it.msg != null) {
-                    _betRecordResult.postValue(BetListResult(it.code, it.msg, success = it.success, rows = listOf(), total = 0))
+                    _betRecordResult.postValue(BetListResult(success = it.success, it.msg, it.code, rows = listOf(), total = 0))
                 }
             }
         }

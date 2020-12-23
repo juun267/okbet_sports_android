@@ -252,7 +252,7 @@ class BetRecordSearchFragment : Fragment() {
             }
 
             val startTimeStamp = betRecordViewModel.dateToTimeStamp(tv_start_date.text.toString(), true)
-            val endTimeStamp = betRecordViewModel.dateToTimeStamp(tv_start_date.text.toString(), false)
+            val endTimeStamp = betRecordViewModel.dateToTimeStamp(tv_end_date.text.toString(), false)
             val betListRequest = BetListRequest(statusList = statusList, startTime = startTimeStamp.toString(), endTime = endTimeStamp.toString())
             betRecordViewModel.searchBetRecordHistory(betListRequest)
         }
