@@ -16,13 +16,11 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
-import org.koin.android.ext.android.inject
 
-class MainActivity : BaseActivity<BaseViewModel>() {
+class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
         private const val TAG = "MainActivity"
@@ -35,7 +33,6 @@ class MainActivity : BaseActivity<BaseViewModel>() {
         }
     }
 
-    override val viewModel by inject<MainViewModel>()
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
