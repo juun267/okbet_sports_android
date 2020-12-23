@@ -34,6 +34,11 @@ import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+fun timeStampToDate(time: Long?): String? {
+    if (time == null) return null
+    return formatter.format(time)
+}
 
 class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 
@@ -210,11 +215,6 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             if (endTime != null) tv_end_date.text = timeStampToDate(endTime)
         })
         */
-    }
-
-    private fun timeStampToDate(time: Long?): String? {
-        if (time == null) return null
-        return simpleDateFormat.format(time)
     }
 
     private fun setOnClick() {

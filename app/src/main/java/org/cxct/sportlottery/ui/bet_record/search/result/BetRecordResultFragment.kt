@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -19,8 +20,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
-
-    private val rvAdapter = BetRecordAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentBetRecordResultBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_record_result, container, false)
@@ -38,10 +37,15 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun initRv() {
+        val rvAdapter = BetRecordAdapter(ItemClickListener {
+            it.let { orderNum ->
+                Log.e(">>>", "orderNum = $orderNum")
+            }
+        })
         rv_bet_record.adapter = rvAdapter
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
             it?.let {
-                rvAdapter.dataList = it.rows ?: listOf()
+                rvAdapter.addFooterAndSubmitList(it.rows)
             }
         })
     }
