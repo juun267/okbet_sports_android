@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
+import org.cxct.sportlottery.network.match.MatchType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -70,27 +71,30 @@ class MainViewModel(
     fun getMatchPreload() {
         viewModelScope.launch {
             try {
-                val earlyRequest = MatchPreloadRequest("EARLY")
+                val earlyRequest = MatchPreloadRequest(MatchType.EARLY.typeStr)
                 val earlyResponse = OneBoSportApi.matchService.getMatchPreload(earlyRequest)
                 if (earlyResponse.isSuccessful) {
+                    earlyResponse.body()?.matchType = MatchType.EARLY
                     mBaseResult.postValue(earlyResponse.body())
                 } else {
                     val result = ErrorUtils.parseError(earlyResponse)
                     mBaseResult.postValue(result)
                 }
 
-                val inPlayRequest = MatchPreloadRequest("INPLAY")
+                val inPlayRequest = MatchPreloadRequest(MatchType.INPLAY.typeStr)
                 val inPlayResponse = OneBoSportApi.matchService.getMatchPreload(inPlayRequest)
                 if (inPlayResponse.isSuccessful) {
+                    inPlayResponse.body()?.matchType = MatchType.INPLAY
                     mBaseResult.postValue(inPlayResponse.body())
                 } else {
                     val result = ErrorUtils.parseError(inPlayResponse)
                     mBaseResult.postValue(result)
                 }
 
-                val todayRequest = MatchPreloadRequest("TODAY")
+                val todayRequest = MatchPreloadRequest(MatchType.TODAY.typeStr)
                 val todayResponse = OneBoSportApi.matchService.getMatchPreload(todayRequest)
                 if (todayResponse.isSuccessful) {
+                    todayResponse.body()?.matchType = MatchType.TODAY
                     mBaseResult.postValue(todayResponse.body())
                 } else {
                     val result = ErrorUtils.parseError(todayResponse)

@@ -16,4 +16,8 @@ data class MatchPreloadResult(
     override val success: Boolean,
     @Json(name = "t")
     val matchPreloadData: MatchPreloadData?
-) : BaseResult()
+) : BaseResult() {
+
+    //記錄：用來判斷是哪種 matchType 的請求，以利後續 UI 刷新
+    var matchType: MatchType? = null
+}
