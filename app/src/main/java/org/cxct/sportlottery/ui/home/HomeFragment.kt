@@ -5,17 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
-import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.koin.android.ext.android.inject
+import org.cxct.sportlottery.ui.base.BaseFragment
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
-    private val mainViewModel by activityViewModels<BaseViewModel>() //TODO simon test 研究如何引入 activity 的 viewModel
-    private val homeViewModel by inject<HomeViewModel>()
     private lateinit var homeBinding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -25,8 +20,7 @@ class HomeFragment : Fragment() {
 
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         homeBinding.apply {
-//            mainViewModel = this@HomeFragment.mainViewModel as MainViewModel
-            homeViewModel = this@HomeFragment.homeViewModel
+            mainViewModel = this@HomeFragment.viewModel
             lifecycleOwner = this@HomeFragment
         }
         return homeBinding.root
@@ -39,6 +33,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun queryData() {
-        homeViewModel.getMatchPreload()
+        viewModel.getMatchPreload()
     }
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.error.ErrorUtils
-import org.cxct.sportlottery.network.sport.Sport
+import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -56,7 +56,9 @@ class MainViewModel(
             try {
                 val sportMenuResult = sportMenuRepository.getSportMenu()
                 mBaseResult.postValue(sportMenuResult)
-                _asStartCount.postValue(sumByNum(sportMenuResult?.sportMenuData?.atStart))
+
+                val count = sportMenuResult?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+                _asStartCount.postValue(count)
             } catch (e: Exception) {
                 e.printStackTrace()
                 //TODO simon test review API error handling
@@ -64,11 +66,40 @@ class MainViewModel(
         }
     }
 
-    fun sumByNum(list: List<Sport>?): Int {
-        return list?.sumBy { it.num } ?: 0
-    }
+    //按赛事类型预加载各体育赛事
+    fun getMatchPreload() {
+        viewModelScope.launch {
+            try {
+                val earlyRequest = MatchPreloadRequest("EARLY")
+                val earlyResponse = OneBoSportApi.matchService.getMatchPreload(earlyRequest)
+                if (earlyResponse.isSuccessful) {
+                    mBaseResult.postValue(earlyResponse.body())
+                } else {
+                    val result = ErrorUtils.parseError(earlyResponse)
+                    mBaseResult.postValue(result)
+                }
 
-    override fun onCleared() {
-        super.onCleared()
+                val inPlayRequest = MatchPreloadRequest("INPLAY")
+                val inPlayResponse = OneBoSportApi.matchService.getMatchPreload(inPlayRequest)
+                if (inPlayResponse.isSuccessful) {
+                    mBaseResult.postValue(inPlayResponse.body())
+                } else {
+                    val result = ErrorUtils.parseError(inPlayResponse)
+                    mBaseResult.postValue(result)
+                }
+
+                val todayRequest = MatchPreloadRequest("TODAY")
+                val todayResponse = OneBoSportApi.matchService.getMatchPreload(todayRequest)
+                if (todayResponse.isSuccessful) {
+                    mBaseResult.postValue(todayResponse.body())
+                } else {
+                    val result = ErrorUtils.parseError(todayResponse)
+                    mBaseResult.postValue(result)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                //TODO simon test review API error handling
+            }
+        }
     }
 }
