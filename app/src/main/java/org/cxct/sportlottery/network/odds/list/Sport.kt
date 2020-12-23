@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.odds
+package org.cxct.sportlottery.network.odds.list
 
 
 import com.squareup.moshi.Json

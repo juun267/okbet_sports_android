@@ -3,17 +3,18 @@ package org.cxct.sportlottery.network.bet.add
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
 data class BetAddResult(
     @Json(name = "code")
-    val code: Int,
+    override val code: Int,
     @Json(name = "msg")
-    val msg: String,
+    override val msg: String,
     @Json(name = "rows")
-    val rows: List<Row>,
+    val rows: List<Row>?,
     @Json(name = "success")
-    val success: Boolean,
+    override val success: Boolean,
     @Json(name = "total")
-    val total: Int
-)
+    val total: Int?
+) : BaseResult()

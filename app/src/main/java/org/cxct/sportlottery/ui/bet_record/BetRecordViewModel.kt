@@ -15,11 +15,12 @@ import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class BetRecordViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class BetRecordViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
 
     val betListRequest: LiveData<BetListRequest>
         get() = _betListRequest
@@ -120,7 +121,7 @@ class BetRecordViewModel(private val loginRepository: LoginRepository) : ViewMod
     }
 
     private suspend fun getBetList(betListRequest: BetListRequest) {
-        val betListResponse = OneBoSportApi.betService.getBetList(loginRepository.token.value, betListRequest)
+        val betListResponse = OneBoSportApi.betService.getBetList(betListRequest)
 
         if (betListResponse.isSuccessful) {
           _betRecordResult.postValue(betListResponse.body())
@@ -128,7 +129,7 @@ class BetRecordViewModel(private val loginRepository: LoginRepository) : ViewMod
             val apiError = ErrorUtils.parseError(betListResponse)
             apiError?.let {
                 if (it.success != null && it.code != null && it.msg != null) {
-                    _betRecordResult.postValue(BetListResult(success = it.success, it.msg, it.code, rows = listOf(), total = 0))
+                    _betRecordResult.postValue(BetListResult(success = it.success, msg = it.msg, code = it.code, rows = listOf(), total = 0))
                 }
             }
         }

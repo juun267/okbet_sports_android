@@ -12,11 +12,13 @@ import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_DETAIL
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import java.io.IOException
@@ -70,6 +72,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(MATCH_ODDS_LIST) -> {
                     response = getMockJsonData(request, "match_odds_list.mock")
                 }
+                path.contains(MATCH_ODDS_DETAIL) -> {
+                    response = getMockJsonData(request, "match_odds_detail.mock")
+                }
                 path.contains(SPORT_MENU) -> {
                     response = getMockJsonData(request, "sport_menu.mock")
                 }
@@ -81,6 +86,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(MATCH_RESULT_PLAY_LIST) -> {
                     response = getMockJsonData(request, "match_result_play_list.mock")
+                }
+                path.contains(PLAYCATE_TYPE_LIST) -> {
+                    response = getMockJsonData(request, "playcate_type_list.mock")
                 }
             }
         }

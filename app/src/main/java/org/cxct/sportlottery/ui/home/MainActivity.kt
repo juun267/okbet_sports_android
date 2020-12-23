@@ -6,19 +6,22 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.tab_home_cate.view.*
+import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+
     companion object {
         private const val TAG = "MainActivity"
 
@@ -30,7 +33,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private val mainViewModel: MainViewModel by viewModel()
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
@@ -72,7 +74,7 @@ class MainActivity : BaseActivity() {
         }
 
         btn_logout.setOnClickListener {
-            mainViewModel.logout()
+            viewModel.logout()
             getAnnouncement()
         }
     }
@@ -124,7 +126,7 @@ class MainActivity : BaseActivity() {
 
     private fun refreshView() {
         //登入資料
-        mainViewModel.token.observe(this) {
+        viewModel.token.observe(this) {
             Log.e("simon test", "token: $it")
             if (it.isNullOrEmpty()) {
                 btn_login.visibility = View.VISIBLE
@@ -137,29 +139,41 @@ class MainActivity : BaseActivity() {
             queryData()
         }
 
-        //公告訊息
-        mainViewModel.messageListResult.observe(this) {
-            val titleList: MutableList<String> = mutableListOf()
-            it?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
 
-            if (it?.success == true && titleList.size > 0) {
-                rv_marquee.startAuto() //啟動跑馬燈
-            } else {
-                rv_marquee.stopAuto() //停止跑馬燈
+        viewModel.baseResult.observe(this, Observer {
+            hideLoading()
+
+            when (it) {
+                is MessageListResult? -> {
+                    updateUiWithResult(it)
+                }
+                is SportMenuResult? -> {
+                    updateUiWithResult(it)
+                }
             }
+        })
+    }
 
-            mMarqueeAdapter.setData(titleList)
+    private fun updateUiWithResult(messageListResult: MessageListResult?) {
+        val titleList: MutableList<String> = mutableListOf()
+        messageListResult?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
+
+        if (messageListResult?.success == true && titleList.size > 0) {
+            rv_marquee.startAuto() //啟動跑馬燈
+        } else {
+            rv_marquee.stopAuto() //停止跑馬燈
         }
 
-        mainViewModel.sportMenuResult.observe(this) {
-            hideLoading()
-            if (it?.success == true) {
-                //TODO simon test 刷新 運動彩票頁籤
-                Toast.makeText(this, "獲取體育菜單成功", Toast.LENGTH_SHORT).show()
-            } else {
-                //獲取體育菜單失敗，就跳轉到登入頁 (可能是 token 過期)
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
+        mMarqueeAdapter.setData(titleList)
+    }
+
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
+        if (sportMenuResult?.success == true) {
+            //TODO simon test 刷新 運動彩票頁籤
+            Toast.makeText(this, "獲取體育菜單成功", Toast.LENGTH_SHORT).show()
+        } else {
+            //獲取體育菜單失敗，就跳轉到登入頁 (可能是 token 過期)
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
@@ -169,11 +183,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun getAnnouncement() {
-        mainViewModel.getAnnouncement()
+        viewModel.getAnnouncement()
     }
 
     private fun getSportMenu() {
         loading()
-        mainViewModel.getSportMenu()
+        viewModel.getSportMenu()
     }
 }

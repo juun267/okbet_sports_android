@@ -4,19 +4,16 @@ import android.util.Patterns
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MD5Util
 
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
-    val loginResult: LiveData<LoginResult?>
-        get() = _loginResult
 
     private val _loginFormState = MutableLiveData<LoginFormState>()
-    private val _loginResult = MutableLiveData<LoginResult?>()
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
@@ -30,7 +27,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
-            _loginResult.postValue(loginRepository.login(username, MD5Util.MD5Encode(password)))
+            val result = loginRepository.login(username, MD5Util.MD5Encode(password))
+            mBaseResult.postValue(result)
         }
     }
 

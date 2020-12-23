@@ -14,7 +14,7 @@ open class OnCheckConnectClickListener(private var context: Context, private var
     @Override
     override fun onClick(v: View?) {
         if (NetworkStatusManager.getInstance().isUnavailable()) {
-            (context as BaseActivity).onNetworkUnavailable()
+            (context as BaseActivity<*>).onNetworkUnavailable()
             return
         }
         doing.onClick()
