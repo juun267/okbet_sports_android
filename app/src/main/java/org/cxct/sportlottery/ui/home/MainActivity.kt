@@ -3,15 +3,15 @@ package org.cxct.sportlottery.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
@@ -33,17 +33,23 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private lateinit var mainBinding: ActivityMainBinding
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        mainBinding.apply {
+            mainViewModel = this@MainActivity.viewModel
+            lifecycleOwner = this@MainActivity
+        }
 
         initToolBar()
         initMenu()
         initRvMarquee()
-        initTabLayout()
+        refreshTabLayout(null)
         refreshView()
     }
 
@@ -98,27 +104,34 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         rv_marquee.adapter = mMarqueeAdapter
     }
 
-    private fun initTabLayout() {
+    private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
+            val countInPlay = sportMenuResult?.sportMenuData?.inPlay?.sumBy { it.num } ?: 0
+            val countToday = sportMenuResult?.sportMenuData?.today?.sumBy { it.num } ?: 0
+            val countEarly = sportMenuResult?.sportMenuData?.early?.sumBy { it.num } ?: 0
+            val countParlay = sportMenuResult?.sportMenuData?.parlay?.sumBy { it.num } ?: 0
+            val countAsStart = sportMenuResult?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tab_all)
-            tabAll?.tv_number?.text = "0"
+            tabAll?.tv_number?.text =
+                (countInPlay + countToday + countEarly + countParlay + countAsStart).toString()
 
             val tabInPlay = tabLayout.getTabAt(1)?.customView
             tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
-            tabInPlay?.tv_number?.text = "0"
+            tabInPlay?.tv_number?.text = countInPlay.toString()
 
             val tabToday = tabLayout.getTabAt(2)?.customView
             tabToday?.tv_title?.setText(R.string.home_tab_today)
-            tabToday?.tv_number?.text = "0"
+            tabToday?.tv_number?.text = countToday.toString()
 
             val tabEarly = tabLayout.getTabAt(3)?.customView
             tabEarly?.tv_title?.setText(R.string.home_tab_early)
-            tabEarly?.tv_number?.text = "0"
+            tabEarly?.tv_number?.text = countEarly.toString()
 
             val tabParlay = tabLayout.getTabAt(4)?.customView
             tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
-            tabParlay?.tv_number?.text = "0"
+            tabParlay?.tv_number?.text = countParlay.toString()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -127,15 +140,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun refreshView() {
         //登入資料
         viewModel.token.observe(this) {
-            Log.e("simon test", "token: $it")
-            if (it.isNullOrEmpty()) {
-                btn_login.visibility = View.VISIBLE
-                btn_logout.visibility = View.GONE
-            } else {
-                btn_login.visibility = View.GONE
-                btn_logout.visibility = View.VISIBLE
-            }
-
+            //TODO simon test review 登入成功後刷新資料，之後再看要如何修改
             queryData()
         }
 
@@ -169,17 +174,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {
-            //TODO simon test 刷新 運動彩票頁籤
-            Toast.makeText(this, "獲取體育菜單成功", Toast.LENGTH_SHORT).show()
-        } else {
-            //獲取體育菜單失敗，就跳轉到登入頁 (可能是 token 過期)
-            startActivity(Intent(this, LoginActivity::class.java))
+            refreshTabLayout(sportMenuResult)
         }
     }
 
     private fun queryData() {
         getAnnouncement()
-//        getSportMenu() //TODO 等待API調整
+        getSportMenu()
     }
 
     private fun getAnnouncement() {
