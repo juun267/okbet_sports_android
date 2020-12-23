@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.repository
 
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 
@@ -12,11 +13,11 @@ class OddsRepository {
             OddsDetailRequest(matchId, oddsType)
         )
 
-        if (oddsDetailResponse.isSuccessful) {
-            return oddsDetailResponse.body()
+        return if (oddsDetailResponse.isSuccessful) {
+            oddsDetailResponse.body()
+        } else {
+            ErrorUtils.parseError(oddsDetailResponse)
         }
-
-        return null
     }
 
 }

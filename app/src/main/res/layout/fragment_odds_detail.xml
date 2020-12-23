@@ -114,6 +114,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_more"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
@@ -150,6 +151,12 @@
             app:tabRippleColor="@color/tab_ripple"
             app:tabSelectedTextColor="@color/text_focus"
             app:tabTextColor="@color/text_tab_default" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="10dp"
+            android:id="@+id/rv_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 

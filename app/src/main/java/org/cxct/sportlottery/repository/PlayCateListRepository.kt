@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.repository
 
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import java.lang.Error
 
 class PlayCateListRepository {
 
@@ -9,11 +11,11 @@ class PlayCateListRepository {
 
         val playCateListRepository = OneBoSportApi.playCateListService.getPlayCateList(gameType)
 
-        if (playCateListRepository.isSuccessful) {
-            return playCateListRepository.body()
+        return if (playCateListRepository.isSuccessful) {
+            playCateListRepository.body()
+        } else {
+            ErrorUtils.parseError(playCateListRepository)
         }
-
-        return null
     }
 
 }

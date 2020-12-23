@@ -5,9 +5,11 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MatchOdd(
-    @Json(name = "matchInfo")
-    val matchInfo: MatchInfo,
+data class CateDetailData(
+    @Json(name = "name")
+    val name: String,
     @Json(name = "odds")
-    val odds: Map<String, CateDetailData>
+    val odds: List<Odd>,
+    @Json(name = "typeCodes")
+    val typeCodes: String
 )
