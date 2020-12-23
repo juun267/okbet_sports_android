@@ -175,9 +175,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
-        } else {
-            //獲取體育菜單失敗，就跳轉到登入頁 (可能是 token 過期)
-            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
