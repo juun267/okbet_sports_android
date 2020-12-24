@@ -12,10 +12,7 @@ import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 
-class MainViewModel(
-    private val loginRepository: LoginRepository,
-    private val sportMenuRepository: SportMenuRepository
-) : BaseViewModel() {
+class MainViewModel(private val loginRepository: LoginRepository, private val sportMenuRepository: SportMenuRepository) : BaseViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
     }
