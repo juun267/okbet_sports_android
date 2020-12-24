@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu.results
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,17 +9,38 @@ import kotlinx.android.synthetic.main.content_game_result_rv.view.*
 import kotlinx.android.synthetic.main.content_settlement_rv.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.matchresult.list.Match
+import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
+import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import java.text.SimpleDateFormat
 import java.util.*
 
 class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
+    private var mIsOpenList: MutableList<Boolean> = mutableListOf()
     var mDataList: MutableList<Match> = mutableListOf()
         set(value) {
             field = value
+            if (mIsOpenList.size != value.size) {
+                mIsOpenList = MutableList(value.size) { false }
+                mGameDetailData?.gameResultRvPosition?.let { mIsOpenList[it] = true }
+            }
             notifyDataSetChanged()
         }
 
     var gameType = ""
+
+    var positionKey = -1
+
+    var mGameDetailData: SettlementRvData? = null
+        set(value) {
+            field = value
+            value?.gameResultRvPosition?.let { notifyItemChanged(it) }
+        }
+
+    interface GameResultDetailListener {
+        fun getGameResultDetail(gameResultRvPosition: Int, matchId: String)
+    }
+
+    var mGameResultDetailListener: GameResultDetailListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultItemViewHolder {
         val viewLayout = LayoutInflater.from(parent.context)
@@ -53,6 +75,9 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
                 else -> ""
             }
 
+            //判斷詳情展開或關閉
+            el_game_result_detail.setExpanded(mIsOpenList[position], false)
+
             val data = mDataList[position]
             tv_home_name.text = data.matchInfo.homeName
             tv_away_name.text = data.matchInfo.awayName
@@ -69,15 +94,37 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             }
 
             val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat(
-                "yyyy${context.getString(R.string.year)}MM${context.getString(R.string.month)}dd${context.getString(
+            val dateFormat = SimpleDateFormat("yyyy${context.getString(R.string.year)}MM${context.getString(R.string.month)}dd${context.getString(
                     R.string.day
-                )} HH:mm"
-            )
+                )} HH:mm")
             tv_time.text = dateFormat.format(data.matchInfo.startTime.let {
                 calendar.timeInMillis = it.toLong()
                 calendar.time
             })
+
+            //詳情資料 RecyclerView
+            mGameDetailData?.let {
+                rv_time_line_detail.adapter = GameResultDetailAdapter()
+                (rv_time_line_detail.adapter as GameResultDetailAdapter).setData(
+                    gameType,
+                    mDataList[position].matchStatusList,
+                    mGameDetailData?.settlementRvMap?.get(RvPosition(positionKey, position))
+                )
+            }
+
+            el_game_result_detail.setExpanded(mIsOpenList[position], false)
+
+            ll_game_detail.setOnClickListener {
+                mIsOpenList[position] = !mIsOpenList[position] //切換展開或關閉
+                //若沒有取過資料才打api
+                if (mGameDetailData?.settlementRvMap?.get(RvPosition(positionKey, position)) == null) {
+                    mGameResultDetailListener?.getGameResultDetail(gameResultRvPosition = position, matchId = data.matchInfo.id)
+                } else
+                    el_game_result_detail.setExpanded(
+                        mIsOpenList[position],
+                        false
+                    ) //若無需獲取資料則直接展開或收闔
+            }
         }
     }
 }

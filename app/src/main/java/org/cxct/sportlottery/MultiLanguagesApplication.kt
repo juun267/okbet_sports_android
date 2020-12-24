@@ -40,7 +40,7 @@ class MultiLanguagesApplication : Application() {
         single { LoginRepository(get()) }
         single { OddsRepository() }
         single { PlayCateListRepository() }
-        single { SettlementRepository(get()) }
+        single { SettlementRepository() }
     }
 
     override fun attachBaseContext(base: Context) {

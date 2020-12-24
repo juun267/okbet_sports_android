@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.menu.results
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -30,7 +31,7 @@ class ResultsSettlementActivity : BaseActivity() {
     private var timeRangeParams: TimeRangeParams = TimeRangeParams()
     private var gameType = "FT"
 
-    interface RequestListener{
+    interface RequestListener {
         fun requestIng(loading: Boolean)
     }
 
@@ -52,6 +53,21 @@ class ResultsSettlementActivity : BaseActivity() {
             hideLoading()
             settlementRvAdapter.mDataList = it?.rows ?: listOf()
             settlementRvAdapter.gameType = gameType
+            settlementRvAdapter.mSettlementRvListener = object :
+                SettlementRvAdapter.SettlementRvListener {
+                override fun getGameResultDetail(
+                    settleRvPosition: Int,
+                    gameResultRvPosition: Int,
+                    matchId: String
+                ) {
+                    settlementViewModel.getSettlementDetailData(
+                        settleRvPosition = settleRvPosition,
+                        gameResultRvPosition = gameResultRvPosition,
+                        matchId = matchId
+                    )
+                }
+
+            }
             val spinnerGameZoneItem = it?.rows?.map { rows ->
                 rows.league.name
             }?.toMutableList()
@@ -62,6 +78,11 @@ class ResultsSettlementActivity : BaseActivity() {
             pagingParams = pagingParams,
             timeRangeParams = setupTimeApiFormat(0)
         )
+
+        settlementViewModel.gameResultDetailResult.observe(this) {
+            hideLoading()
+            settlementRvAdapter.mGameDetail = it //set Game Detail Data
+        }
 
         settlementDateRvAdapter.mDateList = setupWeekList(System.currentTimeMillis())
         settlementDateRvAdapter.refreshDateListener = object :
@@ -92,12 +113,20 @@ class ResultsSettlementActivity : BaseActivity() {
     }
 
     private fun initView() {
-        spinner_game_type.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("${getString(R.string.football)}"))
-        spinner_game_zone.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf("${getString(R.string.league)}"))
+        spinner_game_type.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            listOf("${getString(R.string.football)}")
+        )
+        spinner_game_zone.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            listOf("${getString(R.string.league)}")
+        )
     }
 
     private fun initEvent() {
-        settlementViewModel.requestListener = object : RequestListener{
+        settlementViewModel.requestListener = object : RequestListener {
             override fun requestIng(loading: Boolean) {
                 loading()
             }
@@ -105,7 +134,7 @@ class ResultsSettlementActivity : BaseActivity() {
         }
     }
 
-    private fun setupSpinnerGameType(spinnerGameTypeItem: MutableList<String>) {
+    private fun setupSpinnerGameType(spinnerGameTypeItem: MutableList<String>) { //TODO Dean : review
         spinner_game_type.let {
 
             it.adapter = ArrayAdapter(
