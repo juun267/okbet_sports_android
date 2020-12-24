@@ -15,15 +15,15 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         FIRST, OTHER
     }
 
+    enum class SituationType {
+        YELLOW_CARD, CORNER_KICK
+    }
+
     private var mDataList: List<MatchStatus>? = null //罰牌, 角球資料於不同api中取得
     private var mDetailData: MatchResultPlayListResult? = null
     private var gameType: String = ""
 
-    fun setData(
-        gameType: String,
-        mDataList: List<MatchStatus>,
-        mDetailData: MatchResultPlayListResult?
-    ) {
+    fun setData(gameType: String, mDataList: List<MatchStatus>, mDetailData: MatchResultPlayListResult?) {
         this.gameType = gameType
         this.mDataList = mDataList
         this.mDetailData = mDetailData
@@ -51,61 +51,12 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is DetailFirstItemViewHolder -> {
-                holder.itemView.apply {
-                    //顯示 足球：罰牌角球，
-                    ll_game_detail_first_item.visibility = View.VISIBLE
-
-                    //罰牌、角球，若null則不顯示
-                    mDataList?.let { matchStatus ->
-                        tv_first_half_card.text =
-                            "${matchStatus.find { it.status == 6 }?.homeYellowCards?.toString()} - ${matchStatus.find { it.status == 6 }?.awayYellowCards?.toString()}}".let {
-                                if (it.contains(
-                                        "null",
-                                        false
-                                    )
-                                ) return@let "" else it
-                            }
-                        tv_full_game_card.text =
-                            "${matchStatus.find { it.status == 100 }?.homeYellowCards?.toString()} - ${matchStatus.find { it.status == 100 }?.awayYellowCards?.toString()}".let {
-                                if (it.contains(
-                                        "null",
-                                        false
-                                    )
-                                ) return@let "" else it
-                            }
-                        tv_first_half_corner.text =
-                            "${matchStatus.find { it.status == 6 }?.homeCornerKicks?.toString()} - ${matchStatus.find { it.status == 6 }?.awayCornerKicks?.toString()}".let {
-                                if (it.contains(
-                                        "null",
-                                        false
-                                    )
-                                ) return@let "" else it
-                            }
-                        tv_full_game_corner.text =
-                            "${matchStatus.find { it.status == 100 }?.homeCornerKicks?.toString()} - ${matchStatus.find { it.status == 100 }?.awayCornerKicks?.toString()}".let {
-                                if (it.contains(
-                                        "null",
-                                        false
-                                    )
-                                ) return@let "" else it
-                            }
-                    }
-                    mDetailData?.let {
-                        val data = it.rows?.get(position)
-                        tv_play_cate_name.text = data?.playCateName
-                        tv_play_name.text = data?.playName
-                    }
-                }
+                setupDetailFirstItem(holder.itemView)
+                setupDetailItem(itemView = holder.itemView, position = position)
             }
             else -> {
-                holder.itemView.apply {
-                    ll_game_detail_first_item.visibility = View.GONE
-                    mDetailData?.let {
-                        val data = it.rows?.get(position)
-                        tv_play_cate_name.text = data?.playCateName
-                        tv_play_name.text = data?.playName
-                    }
-                }
+                holder.itemView.ll_game_detail_first_item.visibility = View.GONE
+                setupDetailItem(itemView = holder.itemView, position = position)
             }
         }
 
@@ -118,7 +69,45 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         }
     }
 
+    private fun setupDetailFirstItem(itemView: View) {
+        val firstHalf = mDataList?.find { it.status == 6 }
+        val fullGame = mDataList?.find { it.status == 100 }
+        fun getSituation(matchStatus: MatchStatus?, situationType: SituationType): String {
+            when (situationType) {
+                SituationType.YELLOW_CARD -> {
+                    matchStatus.let {
+                        return if (it?.homeYellowCards == null || it.awayYellowCards == null)
+                            ""
+                        else
+                            "${it.homeYellowCards} - ${it.awayYellowCards}"
+                    }
+                }
+                SituationType.CORNER_KICK -> {
+                    matchStatus.let {
+                        return if (it?.homeCornerKicks == null || it.awayCornerKicks == null)
+                            ""
+                        else
+                            "${it.homeCornerKicks} - ${it.awayCornerKicks}"
+                    }
+                }
+            }
+        }
+        itemView.apply {
+            ll_game_detail_first_item.visibility = View.VISIBLE
+            tv_first_half_card.text = getSituation(firstHalf, SituationType.YELLOW_CARD)
+            tv_full_game_card.text = getSituation(fullGame, SituationType.YELLOW_CARD)
+            tv_first_half_corner.text = getSituation(firstHalf, SituationType.CORNER_KICK)
+            tv_full_game_corner.text = getSituation(fullGame, SituationType.CORNER_KICK)
+        }
+    }
 
+    private fun setupDetailItem(itemView: View, position: Int) {
+        itemView.apply {
+            val data = mDetailData?.rows?.get(position)
+            tv_play_cate_name.text = data?.playCateName
+            tv_play_name.text = data?.playName
+        }
+    }
 }
 
 class DetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
