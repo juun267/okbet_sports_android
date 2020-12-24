@@ -79,34 +79,31 @@ class OddsDetailFragment : Fragment() {
 
         matchId?.let { matchId ->
             oddsType?.let { oddsType ->
-
                 oddsDetailViewModel.getOddsDetail(matchId, oddsType)
-                oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
-
-                            tv_time.text = TimeUtil.stampToDate(it!!.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
-                            it.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
-                                oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
-                            }
-
-                })
-
             }
         }
 
-        gameType?.let { gameType ->
-            oddsDetailViewModel.getPlayCateList(gameType)
-            oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer {
-                when(it){
-                    is PlayCateListResult -> {
-                        for (element in it.rows) {
-                            tab_cat.addTab(tab_cat.newTab().setText(element.name), false)
-                        }
-                        tab()
-                    }
+        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
+            tv_time.text = TimeUtil.stampToDate(it!!.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
+            it.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+                oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
+            }
 
+            gameType?.let { gameType ->
+                oddsDetailViewModel.getPlayCateList(gameType)
+            }
+        })
+
+        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+            when (result) {
+                is PlayCateListResult -> {
+                    for (element in result.rows) {
+                        tab_cat.addTab(tab_cat.newTab().setText(element.name), false)
+                    }
+                    tab()
                 }
-            })
-        }
+            }
+        })
 
     }
 

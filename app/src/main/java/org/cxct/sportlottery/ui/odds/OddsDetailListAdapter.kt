@@ -21,20 +21,32 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
     //需要再確認代號
     enum class GameType(val value: String, val layout: Int, val type: Int) {
         HDP("HDP", R.layout.content_odds_detail_list_hdp, 0),//让球
-        TG("TG", R.layout.content_odds_detail_list_hdp, 1),//进球
+        TG("TG", 0, 1),//进球
         CS("CS", R.layout.content_odds_detail_list_cs, 2),//波胆
+        FG("FG", R.layout.content_odds_detail_list_fg_lg, 3),//首先进球
+        LG("LG", R.layout.content_odds_detail_list_fg_lg, 4),//最后进球
     }
 
     override fun getItemViewType(position: Int): Int {
 
         val type = oddsDetailListData[position].gameType
 
-        if (checkKey(type, GameType.HDP.value)) {
-            return GameType.HDP.type
-        } else if (checkKey(type, GameType.CS.value)) {
-            return GameType.CS.type
-        } else {
-            return -1
+        when {
+            checkKey(type, GameType.HDP.value) -> {
+                return GameType.HDP.type
+            }
+            checkKey(type, GameType.CS.value) -> {
+                return GameType.CS.type
+            }
+            type == GameType.FG.value -> {
+                return GameType.FG.type
+            }
+            type == GameType.LG.value -> {
+                return GameType.LG.type
+            }
+            else -> {
+                return -1
+            }
         }
     }
 
@@ -46,6 +58,8 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             GameType.HDP.type -> layout = GameType.HDP.layout
             GameType.TG.type -> layout = GameType.TG.layout
             GameType.CS.type -> layout = GameType.CS.layout
+            GameType.FG.type -> layout = GameType.FG.layout
+            GameType.LG.type -> layout = GameType.LG.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -104,16 +118,15 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             when (viewType) {
 
                 GameType.HDP.type -> {
-                    val rv_game = itemView.findViewById<RecyclerView>(R.id.rv_game)
-                    rv_game.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-                    rv_game.apply {
+                    val rv_bet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+                    rv_bet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+                    rv_bet.apply {
                         adapter = TypeHDPAdapter(oddsDetail.oddArrayList)
                         layoutManager = LinearLayoutManager(itemView.context)
                     }
                 }
 
                 GameType.CS.type -> {
-
                     itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
                     val homeList = ArrayList<Odd>()
@@ -133,7 +146,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                                 awayList.add(element)
                             }
                         } else {
-                           val tv_odds = itemView.findViewById<TextView>(R.id.tv_odds)
+                            val tv_odds = itemView.findViewById<TextView>(R.id.tv_odds)
                             tv_odds.text = element.odds.toString()
                             tv_odds.setOnClickListener {
                                 tv_odds.isSelected = !tv_odds.isSelected
@@ -141,7 +154,6 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
 
                                 //TODO 添加至投注單
                             }
-
                         }
                     }
 
@@ -159,10 +171,16 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                         adapter = TypeCSAdapter(awayList)
                         layoutManager = LinearLayoutManager(itemView.context)
                     }
-
-
                 }
 
+                GameType.FG.type, GameType.LG.type -> {
+                    val rv_bet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+                    rv_bet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+                    rv_bet.apply {
+                        adapter = TypeFGLGAdapter(oddsDetail.oddArrayList)
+                        layoutManager = LinearLayoutManager(itemView.context)
+                    }
+                }
             }
 
             for (element in oddsDetail.typeCodes) {

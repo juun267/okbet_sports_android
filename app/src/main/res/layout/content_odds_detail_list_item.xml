@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="讓球"
+        android:text=""
         android:textColor="@color/textColorDark"
         android:textSize="16sp" />
 
