@@ -208,14 +208,6 @@
                     app:hgDrawer_title="@string/home_tab_today"
                     tools:hgDrawer_count="63" />
 
-                <org.cxct.sportlottery.ui.home.HomeGameDrawer
-                    android:id="@+id/drawer_parlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    app:hgDrawer_title="@string/home_tab_parlay"
-                    tools:hgDrawer_count="750" />
-
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
