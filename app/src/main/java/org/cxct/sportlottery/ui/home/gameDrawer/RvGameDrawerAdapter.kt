@@ -62,8 +62,7 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             team2.text = data.match?.awayName
             tv_time.text = TimeUtil.timeFormat(data.match?.startTime, "dd/MM hh:mm")
 
-            line_bottom.visibility =
-                if (data.isShowBottomLine) View.VISIBLE else View.INVISIBLE
+            line_bottom.visibility = if (data.isShowBottomLine) View.VISIBLE else View.INVISIBLE
 
             setOnClickListener {
                 if (data.match != null)
@@ -78,7 +77,6 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun setData(dataList: MutableList<GameEntity>?) {
         mDataList = dataList ?: mutableListOf()
-
         notifyDataSetChanged()//更新資料
     }
 
