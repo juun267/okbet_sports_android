@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
+import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.match.MatchType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
@@ -24,6 +25,20 @@ class MainViewModel(
     private val _asStartCount = MutableLiveData<Int>()
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
+
+
+    private val _earlyGameResult = MutableLiveData<MatchPreloadResult>()
+    val earlyGameResult: LiveData<MatchPreloadResult>
+        get() = _earlyGameResult
+
+    private val _inPlayGameResult = MutableLiveData<MatchPreloadResult>()
+    val inPlayGameResult: LiveData<MatchPreloadResult>
+        get() = _inPlayGameResult
+
+    private val _todayGameResult = MutableLiveData<MatchPreloadResult>()
+    val todayGameResult: LiveData<MatchPreloadResult>
+        get() = _todayGameResult
+
 
     fun logout() {
         loginRepository.logout()
@@ -74,7 +89,7 @@ class MainViewModel(
                 val earlyRequest = MatchPreloadRequest(MatchType.EARLY.typeStr)
                 val earlyResponse = OneBoSportApi.matchService.getMatchPreload(earlyRequest)
                 if (earlyResponse.isSuccessful) {
-                    earlyResponse.body()?.matchType = MatchType.EARLY
+                    _earlyGameResult.postValue(earlyResponse.body())
                     mBaseResult.postValue(earlyResponse.body())
                 } else {
                     val result = ErrorUtils.parseError(earlyResponse)
@@ -84,7 +99,7 @@ class MainViewModel(
                 val inPlayRequest = MatchPreloadRequest(MatchType.INPLAY.typeStr)
                 val inPlayResponse = OneBoSportApi.matchService.getMatchPreload(inPlayRequest)
                 if (inPlayResponse.isSuccessful) {
-                    inPlayResponse.body()?.matchType = MatchType.INPLAY
+                    _inPlayGameResult.postValue(inPlayResponse.body())
                     mBaseResult.postValue(inPlayResponse.body())
                 } else {
                     val result = ErrorUtils.parseError(inPlayResponse)
@@ -94,7 +109,7 @@ class MainViewModel(
                 val todayRequest = MatchPreloadRequest(MatchType.TODAY.typeStr)
                 val todayResponse = OneBoSportApi.matchService.getMatchPreload(todayRequest)
                 if (todayResponse.isSuccessful) {
-                    todayResponse.body()?.matchType = MatchType.TODAY
+                    _todayGameResult.postValue(todayResponse.body())
                     mBaseResult.postValue(todayResponse.body())
                 } else {
                     val result = ErrorUtils.parseError(todayResponse)
