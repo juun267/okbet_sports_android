@@ -24,13 +24,21 @@ class HomeGameDrawer @JvmOverloads constructor(
             view.tv_title.text = typedArray.getText(R.styleable.HomeGameDrawer_hgDrawer_title)
             view.tv_count.text = typedArray.getText(R.styleable.HomeGameDrawer_hgDrawer_count)
 
-
+            //展開/收合
             view.titleBar.setOnClickListener {
                 view.expandableLayout.toggle()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun setTitle(title: String?) {
+        tv_title.text = title
+    }
+
+    fun setCount(count: String?) {
+        tv_count.text = count
     }
 
 }
