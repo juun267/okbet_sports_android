@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ResultsSettlementActivity : BaseActivity() {
+class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementViewModel::class) {
     private lateinit var settlementBinding: ActivityResultsSettlementBinding
     private val settlementViewModel: SettlementViewModel by viewModel()
     private val settlementRvAdapter by lazy {

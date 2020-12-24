@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/effect_ripple_rectangle_golden"
     android:padding="4dp">
 
     <TextView

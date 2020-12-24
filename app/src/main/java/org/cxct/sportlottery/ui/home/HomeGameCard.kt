@@ -25,4 +25,11 @@ class HomeGameCard @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
     }
 
+    fun setTitle(title: String?) {
+        tv_title.text = title
+    }
+
+    fun setCount(count: String?) {
+        tv_count.text = count
+    }
 }

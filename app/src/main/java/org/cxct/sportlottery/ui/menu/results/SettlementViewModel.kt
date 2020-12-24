@@ -12,8 +12,9 @@ import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.repository.SettlementRepository
+import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class SettlementViewModel(private val settlementRepository: SettlementRepository) : ViewModel() {
+class SettlementViewModel(private val settlementRepository: SettlementRepository) : BaseViewModel() {
     val settlementFilter: LiveData<SettlementFilter>
         get() = _settlementFilter
     val settlementData: LiveData<List<SettlementItem>>

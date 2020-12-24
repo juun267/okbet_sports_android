@@ -2,28 +2,24 @@ package org.cxct.sportlottery.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.error.ErrorUtils
+import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.SportMenuRepository
+import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+
+class MainViewModel(private val loginRepository: LoginRepository, private val sportMenuRepository: SportMenuRepository) : BaseViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
     }
 
-    private val _messageListResult = MutableLiveData<MessageListResult?>()
-    val messageListResult: LiveData<MessageListResult?>
-        get() = _messageListResult
-
-
-    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
-    val sportMenuResult: LiveData<SportMenuResult?>
-        get() = _sportMenuResult
-
+    private val _asStartCount = MutableLiveData<Int>()
+    val asStartCount: LiveData<Int> //即將開賽的數量
+        get() = _asStartCount
 
     fun logout() {
         loginRepository.logout()
@@ -32,18 +28,21 @@ class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() 
     //獲取系統公告
     fun getAnnouncement() {
         viewModelScope.launch {
-            val messageType = "1" //消息类型 1:系统公告 2:赛事公告
-            val messageResponse = OneBoSportApi.messageService.getMessageList(
-                messageType
-            )
+            try {
+                val messageType = "1" //消息类型 1:系统公告 2:赛事公告
+                val messageResponse = OneBoSportApi.messageService.getMessageList(
+                    messageType
+                )
 
-            if (messageResponse.isSuccessful) {
-                _messageListResult.postValue(messageResponse.body())
-            } else {
-                val errorBody = messageResponse.errorBody()
-                val errorResult =
-                    MessageListResult(-1, errorBody.toString(), mutableListOf(), false, 0)
-                _messageListResult.postValue(errorResult)
+                if (messageResponse.isSuccessful) {
+                    mBaseResult.postValue(messageResponse.body())
+                } else {
+                    val result = ErrorUtils.parseError(messageResponse)
+                    mBaseResult.postValue(result)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                //TODO simon test review API error handling
             }
         }
     }
@@ -51,19 +50,53 @@ class MainViewModel(private val loginRepository: LoginRepository) : ViewModel() 
     //獲取體育菜單
     fun getSportMenu() {
         viewModelScope.launch {
-            val sportMenuResponse = OneBoSportApi.sportService.getMenu()
+            try {
+                val sportMenuResult = sportMenuRepository.getSportMenu()
+                mBaseResult.postValue(sportMenuResult)
 
-            if (sportMenuResponse.isSuccessful) {
-                _sportMenuResult.postValue(sportMenuResponse.body())
-            } else {
-                val errorBody = sportMenuResponse.errorBody()
-                val errorResult = SportMenuResult(-1, errorBody.toString(), false, null)
-                _sportMenuResult.postValue(errorResult)
+                val count = sportMenuResult?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+                _asStartCount.postValue(count)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                //TODO simon test review API error handling
             }
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    //按赛事类型预加载各体育赛事
+    fun getMatchPreload() {
+        viewModelScope.launch {
+            try {
+                val earlyRequest = MatchPreloadRequest("EARLY")
+                val earlyResponse = OneBoSportApi.matchService.getMatchPreload(earlyRequest)
+                if (earlyResponse.isSuccessful) {
+                    mBaseResult.postValue(earlyResponse.body())
+                } else {
+                    val result = ErrorUtils.parseError(earlyResponse)
+                    mBaseResult.postValue(result)
+                }
+
+                val inPlayRequest = MatchPreloadRequest("INPLAY")
+                val inPlayResponse = OneBoSportApi.matchService.getMatchPreload(inPlayRequest)
+                if (inPlayResponse.isSuccessful) {
+                    mBaseResult.postValue(inPlayResponse.body())
+                } else {
+                    val result = ErrorUtils.parseError(inPlayResponse)
+                    mBaseResult.postValue(result)
+                }
+
+                val todayRequest = MatchPreloadRequest("TODAY")
+                val todayResponse = OneBoSportApi.matchService.getMatchPreload(todayRequest)
+                if (todayResponse.isSuccessful) {
+                    mBaseResult.postValue(todayResponse.body())
+                } else {
+                    val result = ErrorUtils.parseError(todayResponse)
+                    mBaseResult.postValue(result)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                //TODO simon test review API error handling
+            }
+        }
     }
 }
