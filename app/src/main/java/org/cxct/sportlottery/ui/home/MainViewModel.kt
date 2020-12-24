@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.match.MatchType
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -26,6 +27,26 @@ class MainViewModel(
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
 
+    private val _allFootballCount = MutableLiveData<Int>()
+    val allFootballCount: LiveData<Int> //全部足球比賽的數量
+        get() = _allFootballCount
+
+    private val _allBasketballCount = MutableLiveData<Int>()
+    val allBasketballCount: LiveData<Int> //全部籃球比賽的數量
+        get() = _allBasketballCount
+
+    private val _allTennisCount = MutableLiveData<Int>()
+    val allTennisCount: LiveData<Int> //全部網球比賽的數量
+        get() = _allTennisCount
+
+    private val _allBadmintonCount = MutableLiveData<Int>()
+    val allBadmintonCount: LiveData<Int> //全部羽毛球比賽的數量
+        get() = _allBadmintonCount
+
+    private val _allVolleyballCount = MutableLiveData<Int>()
+    val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
+        get() = _allVolleyballCount
+
 
     private val _earlyGameResult = MutableLiveData<MatchPreloadResult>()
     val earlyGameResult: LiveData<MatchPreloadResult>
@@ -38,6 +59,7 @@ class MainViewModel(
     private val _todayGameResult = MutableLiveData<MatchPreloadResult>()
     val todayGameResult: LiveData<MatchPreloadResult>
         get() = _todayGameResult
+
 
 
     fun logout() {
@@ -73,8 +95,14 @@ class MainViewModel(
                 val sportMenuResult = sportMenuRepository.getSportMenu()
                 mBaseResult.postValue(sportMenuResult)
 
-                val count = sportMenuResult?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
-                _asStartCount.postValue(count)
+                val asStartCount = sportMenuResult?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+                _asStartCount.postValue(asStartCount)
+
+                _allFootballCount.postValue(getAllGameCount("FT", sportMenuResult))
+                _allBasketballCount.postValue(getAllGameCount("BK", sportMenuResult))
+                _allTennisCount.postValue(getAllGameCount("TN", sportMenuResult))
+                _allBadmintonCount.postValue(getAllGameCount("", sportMenuResult)) //TODO simon test review 不知道羽毛球的 code 是什麼
+                _allVolleyballCount.postValue(getAllGameCount("VB", sportMenuResult))
             } catch (e: Exception) {
                 e.printStackTrace()
                 //TODO simon test review API error handling
@@ -120,5 +148,15 @@ class MainViewModel(
                 //TODO simon test review API error handling
             }
         }
+    }
+
+    private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
+        val inPlayCount = sportMenuResult?.sportMenuData?.inPlay?.find { it.code == goalCode }?.num?: 0
+        val todayCount = sportMenuResult?.sportMenuData?.today?.find { it.code == goalCode }?.num?: 0
+        val earlyCount = sportMenuResult?.sportMenuData?.early?.find { it.code == goalCode }?.num?: 0
+        val parlayCount = sportMenuResult?.sportMenuData?.parlay?.find { it.code == goalCode }?.num?: 0
+        val atStartCount = sportMenuResult?.sportMenuData?.atStart?.find { it.code == goalCode }?.num?: 0
+
+        return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
     }
 }

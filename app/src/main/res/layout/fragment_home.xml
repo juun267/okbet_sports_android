@@ -51,13 +51,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:text="@{mainViewModel.allFootballCount.toString()}"
                     android:textColor="@android:color/white"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="@id/label_football"
                     app:layout_constraintEnd_toStartOf="@id/iv_football"
                     app:layout_constraintStart_toEndOf="@id/label_football"
-                    app:layout_constraintTop_toTopOf="@id/label_football"
-                    tools:text="644" />
+                    app:layout_constraintTop_toTopOf="@id/label_football" />
 
                 <ImageView
                     android:id="@+id/iv_football"
@@ -102,13 +102,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:text="@{mainViewModel.allBasketballCount.toString()}"
                     android:textColor="@android:color/white"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="@id/label_basketball"
                     app:layout_constraintEnd_toStartOf="@id/iv_basketball"
                     app:layout_constraintStart_toEndOf="@id/label_basketball"
-                    app:layout_constraintTop_toTopOf="@id/label_basketball"
-                    tools:text="644" />
+                    app:layout_constraintTop_toTopOf="@id/label_basketball" />
 
                 <ImageView
                     android:id="@+id/iv_basketball"
@@ -147,27 +147,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
+                        app:hgCard_count="@{mainViewModel.allTennisCount.toString()}"
                         app:hgCard_icon="@drawable/ic_tennis"
-                        app:hgCard_title="@string/tennis"
-                        tools:hgCard_count="72" />
+                        app:hgCard_title="@string/tennis" />
 
                     <org.cxct.sportlottery.ui.home.HomeGameCard
                         android:id="@+id/card_badminton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
+                        app:hgCard_count="@{mainViewModel.allBadmintonCount.toString()}"
                         app:hgCard_icon="@drawable/ic_badminton"
-                        app:hgCard_title="@string/badminton"
-                        tools:hgCard_count="2" />
+                        app:hgCard_title="@string/badminton" />
 
                     <org.cxct.sportlottery.ui.home.HomeGameCard
                         android:id="@+id/card_volleyball"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
+                        app:hgCard_count="@{mainViewModel.allVolleyballCount.toString()}"
                         app:hgCard_icon="@drawable/ic_volleyball"
-                        app:hgCard_title="@string/volleyball"
-                        tools:hgCard_count="32" />
+                        app:hgCard_title="@string/volleyball" />
 
                 </LinearLayout>
 

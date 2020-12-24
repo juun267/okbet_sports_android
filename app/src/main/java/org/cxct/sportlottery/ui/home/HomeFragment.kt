@@ -33,8 +33,35 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initEvent()
         refreshView()
         queryData()
+    }
+
+    private fun initEvent() {
+        card_football.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_basketball.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_game_soon.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_tennis.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_badminton.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_volleyball.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
     }
 
     private fun queryData() {
