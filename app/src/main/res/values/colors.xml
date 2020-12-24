@@ -22,6 +22,7 @@
     <color name="text_tab_default">#202020</color>
     <color name="text_focus">#FF9900</color>
     <color name="text_spread">#FF4B2C</color>
+    <color name="text_brownish_gray">#666666</color>
 
     <color name="button_focus">#F98B00</color>
     <color name="button_unfocus">#F7F7F7</color>

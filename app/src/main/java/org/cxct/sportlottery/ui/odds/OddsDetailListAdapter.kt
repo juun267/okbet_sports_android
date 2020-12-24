@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.R.string
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,22 +9,30 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
+
 
 class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetailListData>) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+
+    private lateinit var code: String
 
     //需要再確認代號
     enum class GameType(val value: String, val layout: Int, val type: Int) {
         HDP("HDP", R.layout.content_odds_detail_list_hdp, 0),//让球
         TG("TG", R.layout.content_odds_detail_list_hdp, 1),//进球
-        CS("CS", R.layout.content_odds_detail_list_hdp, 2),//波胆
+        CS("CS", R.layout.content_odds_detail_list_cs, 2),//波胆
     }
 
     override fun getItemViewType(position: Int): Int {
 
-        if (oddsDetailListData[position].gameType == GameType.HDP.value || oddsDetailListData[position].gameType.contains(GameType.HDP.value)) {
+        val type = oddsDetailListData[position].gameType
+
+        if (checkKey(type, GameType.HDP.value)) {
             return GameType.HDP.type
+        } else if (checkKey(type, GameType.CS.value)) {
+            return GameType.CS.type
         } else {
             return -1
         }
@@ -35,8 +44,8 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
 
         when (viewType) {
             GameType.HDP.type -> layout = GameType.HDP.layout
-            GameType.HDP.type -> layout = GameType.HDP.layout
-            GameType.HDP.type -> layout = GameType.HDP.layout
+            GameType.TG.type -> layout = GameType.TG.layout
+            GameType.CS.type -> layout = GameType.CS.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -58,7 +67,11 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
         notifyDataSetChanged()
     }
 
-    private lateinit var code: String
+
+    private fun checkKey(type: String, value: String): Boolean {
+        return type == value || type.contains(value)
+    }
+
 
     inner class ViewHolder(itemView: View, var viewType: Int) : RecyclerView.ViewHolder(itemView) {
 
@@ -87,21 +100,76 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyDataSetChanged()
             }
+
             when (viewType) {
+
                 GameType.HDP.type -> {
-                    val rvGame = itemView.findViewById<RecyclerView>(R.id.rv_game)
-                    rvGame.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE;
-                    rvGame.apply {
+                    val rv_game = itemView.findViewById<RecyclerView>(R.id.rv_game)
+                    rv_game.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+                    rv_game.apply {
                         adapter = TypeHDPAdapter(oddsDetail.oddArrayList)
                         layoutManager = LinearLayoutManager(itemView.context)
                     }
                 }
+
+                GameType.CS.type -> {
+
+                    itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+
+                    val homeList = ArrayList<Odd>()
+                    val drawList = ArrayList<Odd>()
+                    val awayList = ArrayList<Odd>()
+
+                    for (element in oddsDetail.oddArrayList) {
+                        if (element.name.contains(" - ")) {
+                            val stringArray: List<String> = element.name.split(" - ")
+                            if (stringArray[0].toInt() > stringArray[1].toInt()) {
+                                homeList.add(element)
+                            }
+                            if (stringArray[0].toInt() == stringArray[1].toInt()) {
+                                drawList.add(element)
+                            }
+                            if (stringArray[0].toInt() < stringArray[1].toInt()) {
+                                awayList.add(element)
+                            }
+                        } else {
+                           val tv_odds = itemView.findViewById<TextView>(R.id.tv_odds)
+                            tv_odds.text = element.odds.toString()
+                            tv_odds.setOnClickListener {
+                                tv_odds.isSelected = !tv_odds.isSelected
+                                element.isSelect = tv_odds.isSelected
+
+                                //TODO 添加至投注單
+                            }
+
+                        }
+                    }
+
+                    itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
+                        adapter = TypeCSAdapter(homeList)
+                        layoutManager = LinearLayoutManager(itemView.context)
+                    }
+
+                    itemView.findViewById<RecyclerView>(R.id.rv_draw).apply {
+                        adapter = TypeCSAdapter(drawList)
+                        layoutManager = LinearLayoutManager(itemView.context)
+                    }
+
+                    itemView.findViewById<RecyclerView>(R.id.rv_away).apply {
+                        adapter = TypeCSAdapter(awayList)
+                        layoutManager = LinearLayoutManager(itemView.context)
+                    }
+
+
+                }
+
             }
+
             for (element in oddsDetail.typeCodes) {
-                if(element == code){
+                if (element == code) {
                     setVisibility(true)
                     break
-                }else{
+                } else {
                     setVisibility(false)
                 }
             }
