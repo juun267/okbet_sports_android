@@ -21,6 +21,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private lateinit var loginBinding: ActivityLoginBinding
 
+    private val observerLogin = Observer<LoginResult> {
+        loading.visibility = View.GONE
+        updateUiWithResult(it)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,16 +44,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
             if (loginState.passwordError != null) {
                 password.error = getString(loginState.passwordError)
-            }
-        })
-
-        viewModel.baseResult.observe(this, Observer {
-            loading.visibility = View.GONE
-
-            when (it) {
-                is LoginResult? -> {
-                    updateUiWithResult(it)
-                }
             }
         })
 
@@ -81,7 +76,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                         viewModel.login(
                             username.text.toString(),
                             password.text.toString()
-                        )
+                        ).observe(this@LoginActivity, observerLogin)
                 }
                 false
             }
@@ -89,7 +84,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupLoginButton() {
-
         login.setOnClickListener(
             OnCheckConnectClickListener(
                 this,
@@ -97,22 +91,21 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     override fun onClick() {
                         loading.visibility = View.VISIBLE
                         viewModel.login(username.text.toString(), password.text.toString())
+                            .observe(this@LoginActivity, observerLogin)
                     }
                 })
         )
 
     }
 
-    private fun updateUiWithResult(loginResult: LoginResult?) {
-        if (loginResult != null && loginResult.success) {
+    private fun updateUiWithResult(loginResult: LoginResult) {
+        if (loginResult.success) {
             loginResult.loginData?.let { loginData ->
                 updateUiWithUser(loginData.userName)
             }
             finish()
         } else {
-            loginResult?.let { loginFailedResult ->
-                showLoginFailed(loginFailedResult.msg)
-            }
+            showLoginFailed(loginResult.msg)
         }
     }
 

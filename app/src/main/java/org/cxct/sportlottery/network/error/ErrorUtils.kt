@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.error
 
+import androidx.annotation.Nullable
 import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
@@ -27,6 +28,7 @@ import java.io.IOException
 
 object ErrorUtils {
 
+    @Nullable
     fun <T> parseError(response: Response<T>): T? {
         val converter: Converter<ResponseBody, APIError> = OneBoSportApi.retrofit
             .responseBodyConverter(APIError::class.java, arrayOfNulls<Annotation>(0))
