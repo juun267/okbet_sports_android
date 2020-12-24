@@ -55,10 +55,14 @@ class TypeHDPAdapter(private val oddsList: List<Odd>) :
 
             val rl_params: RelativeLayout.LayoutParams = rl_content.layoutParams as RelativeLayout.LayoutParams
 
-            if (position % 2 != 0 && position != oddsList.size - 1) {
-                val params: RecyclerView.LayoutParams = itemView.layoutParams as RecyclerView.LayoutParams
-                params.setMargins(0, 0, 0, 2)
-                itemView.layoutParams = params
+            if (position % 2 != 0) {
+
+                if(position != oddsList.size - 1){
+                    val params: RecyclerView.LayoutParams = itemView.layoutParams as RecyclerView.LayoutParams
+                    params.setMargins(0, 0, 0, 2)
+                    itemView.layoutParams = params
+                }
+
                 rl_params.setMargins(0, 5.dp, 0, 10.dp)
             } else {
                 rl_params.setMargins(0, 10.dp, 0, 5.dp)
