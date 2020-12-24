@@ -49,6 +49,32 @@ viewModelScope.launch{
 }
 ```
 
+###Base View Model
+
+- 把上述API呼叫與Error Handling放到BaseViewModel
+- 之後可以透過doNetwork{}傳入API suspend fun來執行
+- doNetwork會自己處理token狀態與unknown Exception
+- doNetwork會回傳live data <non-null result>，使用者只需要處理這個result成功與失敗
+
+```
+val result = doNetwork{
+    OneBoSportApi.indexService.login(
+                LoginRequest(userName, password)
+            )
+}
+```
+
+```
+result.observe(this,{
+    if(it.isSuccessful){
+        ...
+    }else{
+        ...
+    }
+})
+```
+
+
 
 ## Dependency Injection
 
