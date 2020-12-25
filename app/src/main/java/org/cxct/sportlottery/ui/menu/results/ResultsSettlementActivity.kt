@@ -27,8 +27,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     private val settlementDateRvAdapter by lazy {
         SettlementDateRvAdapter()
     }
-    private val pagingParams by lazy { PagingParams(null, null) }
-
     private var gameType = "FT"
 
     interface RequestListener {
@@ -75,7 +73,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
         settlementViewModel.getSettlementData(
             gameType = gameType,
-            pagingParams = pagingParams,
+            null,
             timeRangeParams = setupTimeApiFormat(0)
         )
 
@@ -96,7 +94,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                     else -> {
                         settlementViewModel.getSettlementData(
                             gameType,
-                            pagingParams,
+                            null,
                             setupTimeApiFormat(0)
                         )
                     }

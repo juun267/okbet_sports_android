@@ -7,8 +7,9 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 data class BetListRequest(
     val statusList: List<Int>,
     val gameType: String? = null,
-    val pagingParams: PagingParams? = null,
     val idParams: IdParams? = null,
     override val startTime: String? = null,
     override val endTime: String? = null,
-) : TimeRangeParams
+    override val page: Int? = null,
+    override val pageSize: Int? = null,
+) : TimeRangeParams, PagingParams
