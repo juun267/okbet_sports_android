@@ -10,12 +10,44 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 
 class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private lateinit var homeBinding: FragmentHomeBinding
+
+    private val observerEarlyGame = Observer<MatchPreloadResult> {
+        drawer_early.setCount(it.matchPreloadData?.num.toString())
+        drawer_early.setRvGameData(it.matchPreloadData)
+        drawer_early.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
+            override fun onClick(select: GameEntity) {
+                //TODO simon test review 設定點擊事件跳轉畫面
+            }
+        })
+    }
+
+    private val observerInPlayGame = Observer<MatchPreloadResult> {
+        drawer_in_play.setCount(it.matchPreloadData?.num.toString())
+        drawer_in_play.setRvGameData(it.matchPreloadData)
+        drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
+            override fun onClick(select: GameEntity) {
+                //TODO simon test review 設定點擊事件跳轉畫面
+            }
+        })
+    }
+
+    private val observerTodayGame = Observer<MatchPreloadResult> {
+        drawer_today.setCount(it.matchPreloadData?.num.toString())
+        drawer_today.setRvGameData(it.matchPreloadData)
+        drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
+            override fun onClick(select: GameEntity) {
+                //TODO simon test review 設定點擊事件跳轉畫面
+            }
+        })
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +66,6 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         initEvent()
-        refreshView()
         queryData()
     }
 
@@ -65,40 +96,9 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun queryData() {
-        viewModel.getMatchPreload("EARLY")
-        viewModel.getMatchPreload("INPLAY")
-        viewModel.getMatchPreload("TODAY")
+        viewModel.getMatchPreload("EARLY").observe(viewLifecycleOwner, observerEarlyGame)
+        viewModel.getMatchPreload("INPLAY").observe(viewLifecycleOwner, observerInPlayGame)
+        viewModel.getMatchPreload("TODAY").observe(viewLifecycleOwner, observerTodayGame)
     }
 
-    private fun refreshView() {
-        viewModel.earlyGameResult.observe(viewLifecycleOwner, Observer {
-            drawer_early.setCount(it.matchPreloadData?.num.toString())
-            drawer_early.setRvGameData(it.matchPreloadData)
-            drawer_early.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-                override fun onClick(select: GameEntity) {
-                    //TODO simon test review 設定點擊事件跳轉畫面
-                }
-            })
-        })
-
-        viewModel.inPlayGameResult.observe(viewLifecycleOwner, Observer {
-            drawer_in_play.setCount(it.matchPreloadData?.num.toString())
-            drawer_in_play.setRvGameData(it.matchPreloadData)
-            drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-                override fun onClick(select: GameEntity) {
-                    //TODO simon test review 設定點擊事件跳轉畫面
-                }
-            })
-        })
-
-        viewModel.todayGameResult.observe(viewLifecycleOwner, Observer {
-            drawer_today.setCount(it.matchPreloadData?.num.toString())
-            drawer_today.setRvGameData(it.matchPreloadData)
-            drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-                override fun onClick(select: GameEntity) {
-                    //TODO simon test review 設定點擊事件跳轉畫面
-                }
-            })
-        })
-    }
 }

@@ -42,19 +42,6 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
         get() = _allVolleyballCount
 
 
-    private val _earlyGameResult = MutableLiveData<MatchPreloadResult>()
-    val earlyGameResult: LiveData<MatchPreloadResult>
-        get() = _earlyGameResult
-
-    private val _inPlayGameResult = MutableLiveData<MatchPreloadResult>()
-    val inPlayGameResult: LiveData<MatchPreloadResult>
-        get() = _inPlayGameResult
-
-    private val _todayGameResult = MutableLiveData<MatchPreloadResult>()
-    val todayGameResult: LiveData<MatchPreloadResult>
-        get() = _todayGameResult
-
-
     fun logout() {
         loginRepository.logout()
     }
