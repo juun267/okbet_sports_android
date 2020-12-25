@@ -56,7 +56,6 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
         get() = _todayGameResult
 
 
-
     fun logout() {
         loginRepository.logout()
     }
@@ -74,14 +73,19 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
         val sportMenuResult = doNetwork {
             sportMenuRepository.getSportMenu()
         }
-        val asStartCount = liveDataResult.value?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+        val asStartCount = sportMenuResult.value?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
         _asStartCount.postValue(asStartCount)
-        _allFootballCount.postValue(getAllGameCount("FT", sportMenuResult))
-        _allBasketballCount.postValue(getAllGameCount("BK", sportMenuResult))
-        _allTennisCount.postValue(getAllGameCount("TN", sportMenuResult))
-        _allBadmintonCount.postValue(getAllGameCount("", sportMenuResult)) //TODO simon test review 不知道羽毛球的 code 是什麼
-        _allVolleyballCount.postValue(getAllGameCount("VB", sportMenuResult))
-        return liveDataResult
+        _allFootballCount.postValue(getAllGameCount("FT", sportMenuResult.value))
+        _allBasketballCount.postValue(getAllGameCount("BK", sportMenuResult.value))
+        _allTennisCount.postValue(getAllGameCount("TN", sportMenuResult.value))
+        _allBadmintonCount.postValue(
+            getAllGameCount(
+                "",
+                sportMenuResult.value
+            )
+        ) //TODO simon test review 不知道羽毛球的 code 是什麼
+        _allVolleyballCount.postValue(getAllGameCount("VB", sportMenuResult.value))
+        return sportMenuResult
     }
 
     //按赛事类型预加载各体育赛事
