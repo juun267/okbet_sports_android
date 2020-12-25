@@ -31,65 +31,68 @@
                 android:layout_height="wrap_content">
 
                 <!-- toolBar -->
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/toolBar"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/tool_bar_height"
                     android:background="@drawable/bg_gradient_dark"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     app:layout_scrollFlags="scroll|enterAlways">
 
                     <ImageView
                         android:id="@+id/iv_logo"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
+                        android:layout_weight="1"
                         android:adjustViewBounds="true"
                         android:contentDescription="@null"
-                        android:scaleType="centerInside"
+                        android:scaleType="fitStart"
                         android:src="@drawable/ic_logo" />
 
                     <Button
                         android:id="@+id/btn_login"
-                        android:layout_width="72dp"
-                        android:layout_height="28dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:layout_toStartOf="@id/btn_logout"
-                        android:background="@drawable/bg_square_shape_15dp_primary_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@null"
                         android:gravity="center"
-                        android:includeFontPadding="false"
+                        android:minWidth="48dp"
                         android:text="@string/btn_login"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/textSize18sp"
+                        android:visibility="@{mainViewModel.token.empty ? View.VISIBLE : View.GONE }" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@android:color/white"
                         android:visibility="@{mainViewModel.token.empty ? View.VISIBLE : View.GONE }" />
 
                     <Button
-                        android:id="@+id/btn_logout"
-                        android:layout_width="72dp"
-                        android:layout_height="28dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:layout_toStartOf="@id/btn_menu"
-                        android:background="@drawable/bg_square_shape_15dp_primary_dark"
+                        android:id="@+id/btn_register"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
                         android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="@string/btn_logout"
+                        android:minWidth="48dp"
+                        android:text="@string/btn_register"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/textSize18sp"
-                        android:visibility="@{mainViewModel.token.empty ? View.GONE : View.VISIBLE }" />
+                        android:visibility="@{mainViewModel.token.empty ? View.VISIBLE : View.GONE }" />
 
-                    <ImageView
-                        android:id="@+id/btn_menu"
-                        android:layout_width="@dimen/tool_bar_height"
-                        android:layout_height="@dimen/tool_bar_height"
-                        android:layout_alignParentEnd="true"
-                        android:background="@color/colorPrimaryDark"
-                        android:contentDescription="@null"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_menu" />
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/iv_head"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_head"
+                        android:visibility="@{mainViewModel.token.empty ? View.GONE : View.VISIBLE }"
+                        app:riv_oval="true" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -125,7 +128,7 @@
                             android:clipChildren="false"
                             app:speed_dp_sec="60dp"
                             tools:itemCount="1"
-                            tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/content_marquee" />
 
                     </LinearLayout>

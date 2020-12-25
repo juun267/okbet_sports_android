@@ -76,8 +76,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
-        //側邊欄 開/關
-        btn_menu.setOnClickListener {
+        //頭像 當 側邊欄 開/關
+        iv_head.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right))
                 drawer_layout.closeDrawers()
             else {
@@ -89,9 +89,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         }
 
-        btn_logout.setOnClickListener {
-            viewModel.logout()
-            getAnnouncement()
+        btn_register.setOnClickListener {
+            //TODO simon test 跳轉註冊頁面
+//            viewModel.logout()
+//            getAnnouncement()
         }
     }
 
