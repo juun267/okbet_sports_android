@@ -37,16 +37,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
-    private val observerMessageList = Observer<MessageListResult> {
-        hideLoading()
-        updateUiWithResult(it)
-    }
-
-    private val observerSportMenu = Observer<SportMenuResult> {
-        hideLoading()
-        updateUiWithResult(it)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -154,6 +144,15 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             //TODO simon test review 登入成功後刷新資料，之後再看要如何修改
             queryData()
         }
+        viewModel.messageListResult.observe(this, Observer {
+            hideLoading()
+            updateUiWithResult(it)
+        })
+
+        viewModel.sportMenuResult.observe(this, Observer {
+            hideLoading()
+            updateUiWithResult(it)
+        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
@@ -181,11 +180,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun getAnnouncement() {
-        viewModel.getAnnouncement().observe(this, observerMessageList)
+        viewModel.getAnnouncement()
     }
 
     private fun getSportMenu() {
         loading()
-        viewModel.getSportMenu().observe(this, observerSportMenu)
+        viewModel.getSportMenu()
     }
 }
