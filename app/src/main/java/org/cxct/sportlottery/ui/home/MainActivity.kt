@@ -155,11 +155,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         })
     }
 
-    private fun updateUiWithResult(messageListResult: MessageListResult?) {
+    private fun updateUiWithResult(messageListResult: MessageListResult) {
         val titleList: MutableList<String> = mutableListOf()
-        messageListResult?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
+        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
 
-        if (messageListResult?.success == true && titleList.size > 0) {
+        if (messageListResult.success && titleList.size > 0) {
             rv_marquee.startAuto() //啟動跑馬燈
         } else {
             rv_marquee.stopAuto() //停止跑馬燈
@@ -168,8 +168,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         mMarqueeAdapter.setData(titleList)
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
-        if (sportMenuResult?.success == true) {
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult) {
+        if (sportMenuResult.success) {
             refreshTabLayout(sportMenuResult)
         }
     }

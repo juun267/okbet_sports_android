@@ -19,10 +19,10 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
         loginRepository.token
     }
 
-    val messageListResult: LiveData<MessageListResult?>
+    val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
 
-    val sportMenuResult: LiveData<SportMenuResult?>
+    val sportMenuResult: LiveData<SportMenuResult>
         get() = _sportMenuResult
 
     val matchPreloadEarly: LiveData<MatchPreloadResult>
@@ -34,8 +34,8 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
-    private val _messageListResult = MutableLiveData<MessageListResult?>()
-    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
+    private val _messageListResult = MutableLiveData<MessageListResult>()
+    private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadEarly = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
