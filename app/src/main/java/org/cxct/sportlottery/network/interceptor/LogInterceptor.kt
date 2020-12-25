@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.network.interceptor
 
-import android.util.Log
 import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Response
 import okio.Buffer
 import org.json.JSONObject
+import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
@@ -32,16 +32,11 @@ class LogInterceptor @JvmOverloads constructor(private val logger: Logger = Logg
                             var end = (i + 1) * maxLogSize
                             end =
                                 if (end > message.length) message.length else end
-                            if (i != 0)
-                                Log.e(
-                                    LogInterceptor::class.java.simpleName,
-                                    "\n" + message.substring(start, end)
-                                )
-                            else
-                                Log.e(
-                                    LogInterceptor::class.java.simpleName,
-                                    message.substring(start, end)
-                                )
+                            if (i != 0) {
+                                Timber.i("\n%s", message.substring(start, end))
+                            } else {
+                                Timber.i("%s", message.substring(start, end))
+                            }
                         }
                     }
                 }
