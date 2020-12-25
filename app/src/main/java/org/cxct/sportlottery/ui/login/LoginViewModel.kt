@@ -2,8 +2,8 @@ package org.cxct.sportlottery.ui.login
 
 import android.util.Patterns
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MD5Util
@@ -25,10 +25,12 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
         }
     }
 
-    fun login(username: String, password: String) {
-        viewModelScope.launch {
-            val result = loginRepository.login(username, MD5Util.MD5Encode(password))
-            mBaseResult.postValue(result)
+    fun login(username: String, password: String): LiveData<LoginResult> {
+        return doNetwork {
+            loginRepository.login(
+                username,
+                MD5Util.MD5Encode(password)
+            )
         }
     }
 

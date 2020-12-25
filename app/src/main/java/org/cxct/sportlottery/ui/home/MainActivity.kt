@@ -37,6 +37,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
+    private val observerMessageList = Observer<MessageListResult> {
+        hideLoading()
+        updateUiWithResult(it)
+    }
+
+    private val observerSportMenu = Observer<SportMenuResult> {
+        hideLoading()
+        updateUiWithResult(it)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -66,8 +76,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
-        //側邊欄 開/關
-        btn_menu.setOnClickListener {
+        //頭像 當 側邊欄 開/關
+        iv_head.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right))
                 drawer_layout.closeDrawers()
             else {
@@ -79,9 +89,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         }
 
-        btn_logout.setOnClickListener {
-            viewModel.logout()
-            getAnnouncement()
+        btn_register.setOnClickListener {
+            //TODO simon test 跳轉註冊頁面
+//            viewModel.logout()
+//            getAnnouncement()
         }
     }
 
@@ -143,20 +154,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             //TODO simon test review 登入成功後刷新資料，之後再看要如何修改
             queryData()
         }
-
-
-        viewModel.baseResult.observe(this, Observer {
-            hideLoading()
-
-            when (it) {
-                is MessageListResult? -> {
-                    updateUiWithResult(it)
-                }
-                is SportMenuResult? -> {
-                    updateUiWithResult(it)
-                }
-            }
-        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
@@ -184,11 +181,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun getAnnouncement() {
-        viewModel.getAnnouncement()
+        viewModel.getAnnouncement().observe(this, observerMessageList)
     }
 
     private fun getSportMenu() {
         loading()
-        viewModel.getSportMenu()
+        viewModel.getSportMenu().observe(this, observerSportMenu)
     }
 }
