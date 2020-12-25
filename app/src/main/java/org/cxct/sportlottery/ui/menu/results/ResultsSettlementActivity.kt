@@ -99,7 +99,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                         )
                     }
                     else -> {
-                        timeRangeParams = setupTimeApiFormat(0)
+                        timeRangeParams = setupTimeApiFormat(date)
                         settlementViewModel.getSettlementData(
                             gameType,
                             pagingParams,
@@ -159,6 +159,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
     }
 
+    //設置聯賽列表
     private fun setupSpinnerGameZone(spinnerLeagueItem: MutableList<String>) {
         spinner_game_zone.let {
 
@@ -192,7 +193,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         val weekList = mutableListOf<String>()
         weekList.add(getString(R.string.home_tab_today))
         for (day in 1..6) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            calendar.add(Calendar.DAY_OF_MONTH, -1)
             val month = calendar.get(Calendar.MONTH) + 1
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val week = calendar.get(Calendar.DAY_OF_WEEK)
@@ -220,7 +221,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         //startTime:yyyy-MM-dd 00:00:00 endTime:yyyy-MM-dd 23:59:59
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
-        calendar.add(Calendar.DAY_OF_MONTH, addDay)
+        calendar.add(Calendar.DAY_OF_MONTH, -addDay)
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
         val day = calendar.get(Calendar.DAY_OF_MONTH)
