@@ -55,6 +55,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
                     gameType = gameType
                 )
             )
+            requestListener.requestIng(false)
         }
     }
 
@@ -66,13 +67,23 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
                     this.settleRvPosition = settleRvPosition
                     this.gameResultRvPosition = gameResultRvPosition
                     this.settlementRvMap?.put(RvPosition(settleRvPosition, gameResultRvPosition), result)
+                    requestListener.requestIng(false)
                 }
                 _gameResultDetailResult.value = _gameResultDetailResult.value //touch observe
             }
         }
     }
 
-    fun setGameTypeFilter(gameType: String) {
+    fun setGameTypeFilter(gameTypePosition: Int, gameZone: List<String>?, filterKeyWord: String?) {
         //TODO Dean : 篩選後更新_settlementData
+        val gameType: String = GameType.values().find { it.ordinal == gameTypePosition }?.let { it.key } ?: ""
+        if (_settlementFilter.value == null)
+            _settlementFilter.value = SettlementFilter(gameType = gameType, gameZone = null, filterKeyWord = filterKeyWord)
+    }
+
+    fun setGameTypeFilter(gameTypePosition: Int) {
+        //TODO Dean : 篩選後更新_settlementData
+        GameType.values().find { it.ordinal == gameTypePosition }?.let { _settlementFilter.value?.gameType = it.key }
+        _settlementFilter.value = _settlementFilter.value //touch observe
     }
 }
