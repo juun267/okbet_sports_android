@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.menu.results
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.activity_results_settlement.*
@@ -18,6 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+//TODO Dean : 篩選邏輯完成後,進行重構整理
 class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementViewModel::class) {
     private lateinit var settlementBinding: ActivityResultsSettlementBinding
     private val settlementViewModel: SettlementViewModel by viewModel()
@@ -47,6 +46,8 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         initView()
         initEvent()
 
+        setupSpinnerGameType() //設置體育種類列表
+
         settlementViewModel.matchResultListResult.observe(this) {
             settlementRvAdapter.mDataList = it?.rows ?: listOf()
             settlementRvAdapter.gameType = gameType
@@ -70,17 +71,22 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             }?.toMutableList()
             setupSpinnerGameZone(spinnerGameZoneItem ?: mutableListOf())
         }
-        settlementViewModel.getSettlementData(
+
+        settlementViewModel.setGameTypeFilter(spinner_game_type.selectedItemPosition, null, null)
+        //TODO Dean : 問題第一次進來的時候不會觸發loadingView
+        /*settlementViewModel.getSettlementData(
             gameType = gameType,
             null,
             timeRangeParams = setupTimeApiFormat(0)
-        )
+        )*/
 
         settlementViewModel.gameResultDetailResult.observe(this) {
             settlementRvAdapter.mGameDetail = it //set Game Detail Data
         }
 
+        //日期選擇初始化
         settlementDateRvAdapter.mDateList = setupWeekList(System.currentTimeMillis())
+        timeRangeParams = setupTimeApiFormat(0)
         settlementDateRvAdapter.refreshDateListener = object :
             SettlementDateRvAdapter.RefreshDateListener {
             override fun refreshDate(date: Int) {
@@ -99,6 +105,12 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 }
             }
 
+        }
+
+        settlementViewModel.apply {
+            settlementFilter.observe(this@ResultsSettlementActivity) {
+                getSettlementData(gameType = it.gameType, pagingParams = pagingParams, timeRangeParams = timeRangeParams)
+            }
         }
     }
 
@@ -123,30 +135,28 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 else
                     hideLoading()
             }
+        }
+        spinner_game_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
 
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                GameType.values().find { it.ordinal == position }?.let { gameType = it.key }
+            }
         }
     }
 
-    private fun setupSpinnerGameType(spinnerGameTypeItem: MutableList<String>) { //TODO Dean : review
+    private fun setupSpinnerGameType() { //TODO Dean : review, 加入聯賽篩選後需重新順一次流程
         spinner_game_type.let {
-
-            it.adapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                spinnerGameTypeItem
-            )
+            val spinnerGameTypeItem = mutableListOf<String>()
+            GameType.values().forEach { gameType -> spinnerGameTypeItem.add(getString(gameType.string)) }
+            it.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerGameTypeItem)
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    settlementViewModel.settlementFilter.value?.gameType =
-                        spinnerGameTypeItem[position]
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    settlementViewModel.setGameTypeFilter(position)
                 }
             }
         }
@@ -162,15 +172,11 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    settlementViewModel.settlementFilter.value?.gameZone =
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    //TODO Dean : review filter, 聯賽篩選UI更換
+                    /*settlementViewModel.settlementFilter.value?.gameZone =
                         spinnerLeagueItem[position]
-                    settlementViewModel.setGameTypeFilter(spinnerLeagueItem[position])
+                    settlementViewModel.setGameTypeFilter(spinnerLeagueItem[position])*/
                 }
             }
         }
