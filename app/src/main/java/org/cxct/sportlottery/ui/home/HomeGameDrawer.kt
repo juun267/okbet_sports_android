@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.home_game_drawer.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.home.gameDrawer.ItemType
@@ -49,7 +48,7 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
         tv_count.text = count
     }
 
-    fun setOnSelectItemListener(onSelectItemListener: OnSelectItemListener<Match>?) {
+    fun setOnSelectItemListener(onSelectItemListener: OnSelectItemListener<GameEntity>?) {
         homeGameDrawerAdapter.setOnSelectItemListener(onSelectItemListener)
     }
 
@@ -57,13 +56,13 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
         val gameDataList = mutableListOf<GameEntity>()
         matchPreloadData?.datas?.forEach { data ->
             //TODO simon test review gameName 之後 API 會帶
-            val headerEntity = GameEntity(ItemType.HEADER, getGameName(data.code))
+            val headerEntity = GameEntity(ItemType.HEADER, data.code, getGameName(data.code))
             gameDataList.add(headerEntity)
 
             data.matchs.forEachIndexed { index, match ->
 
                 val itemEntity = GameEntity(
-                    ItemType.ITEM, getGameName(data.code), match, index != data.matchs.lastIndex
+                    ItemType.ITEM, data.code, getGameName(data.code), match, index != data.matchs.lastIndex
                 )
                 gameDataList.add(itemEntity)
             }
