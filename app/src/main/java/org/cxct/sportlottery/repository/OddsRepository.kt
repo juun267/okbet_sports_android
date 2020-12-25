@@ -1,9 +1,8 @@
 package org.cxct.sportlottery.repository
 
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.error.ErrorUtils
-import org.cxct.sportlottery.network.odds.OddsDetailRequest
-import org.cxct.sportlottery.network.odds.OddsDetailResult
+import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
+import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 
 class OddsRepository {
 

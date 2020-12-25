@@ -11,5 +11,5 @@ interface LeagueService {
     @POST(LEAGUE_LIST)
     suspend fun getLeagueList(
         @Body leagueListRequest: LeagueListRequest
-    ): Response<LeagueListResponse>
+    ): Response<LeagueListResult>
 }

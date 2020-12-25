@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import liveData
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
+import retrofit2.Response
 
 const val NAME_LOGIN = "login"
 const val KEY_TOKEN = "token"
@@ -20,7 +20,7 @@ class LoginRepository(private val androidContext: Context) {
     val token = sharedPref.liveData(KEY_TOKEN, "")
     val userName = sharedPref.liveData(KEY_USERNAME, "")
 
-    suspend fun login(userName: String, password: String): LoginResult? {
+    suspend fun login(userName: String, password: String): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.login(
             LoginRequest(userName, password)
         )
@@ -33,18 +33,9 @@ class LoginRepository(private val androidContext: Context) {
                     apply()
                 }
             }
-            return loginResponse.body()
-
-        } else {
-            val apiError = ErrorUtils.parseError(loginResponse)
-            apiError?.let {
-                if (it.success != null && it.code != null && it.msg != null) {
-                    return LoginResult(it.code, it.msg, it.success, null)
-                }
-            }
         }
 
-        return null
+        return loginResponse
     }
 
     fun logout() {
