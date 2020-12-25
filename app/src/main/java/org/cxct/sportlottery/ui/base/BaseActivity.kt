@@ -26,12 +26,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        onTokenStateObserved()
+        onTokenStateChanged()
+        onNetworkException()
     }
 
-    private fun onTokenStateObserved() {
-        viewModel.baseResult.observe(this, Observer {
-            when (it.code) {
+    private fun onTokenStateChanged() {
+        viewModel.code.observe(this, Observer {
+            when (it) {
                 2014 -> {
                     //TODO deal response code 2014
                 }
@@ -42,6 +43,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     //TODO deal response code 2018
                 }
             }
+        })
+    }
+
+    private fun onNetworkException() {
+        viewModel.networkException.observe(this, Observer {
+            //TODO show network exception message
         })
     }
 

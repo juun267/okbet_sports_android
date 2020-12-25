@@ -65,7 +65,9 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun queryData() {
-        viewModel.getMatchPreload()
+        viewModel.getMatchPreload("EARLY")
+        viewModel.getMatchPreload("INPLAY")
+        viewModel.getMatchPreload("TODAY")
     }
 
     private fun refreshView() {

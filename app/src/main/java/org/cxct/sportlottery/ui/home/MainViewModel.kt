@@ -2,12 +2,10 @@ package org.cxct.sportlottery.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
+import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.match.MatchType
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
@@ -64,86 +62,34 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
     }
 
     //獲取系統公告
-    fun getAnnouncement() {
-        viewModelScope.launch {
-            try {
-                val messageType = "1" //消息类型 1:系统公告 2:赛事公告
-                val messageResponse = OneBoSportApi.messageService.getMessageList(
-                    messageType
-                )
-
-                if (messageResponse.isSuccessful) {
-                    mBaseResult.postValue(messageResponse.body())
-                } else {
-                    val result = ErrorUtils.parseError(messageResponse)
-                    mBaseResult.postValue(result)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                //TODO simon test review API error handling
-            }
+    fun getAnnouncement(): LiveData<MessageListResult> {
+        val messageType = "1"
+        return doNetwork {
+            OneBoSportApi.messageService.getMessageList(messageType)
         }
     }
 
     //獲取體育菜單
-    fun getSportMenu() {
-        viewModelScope.launch {
-            try {
-                val sportMenuResult = sportMenuRepository.getSportMenu()
-                mBaseResult.postValue(sportMenuResult)
-
-                val asStartCount = sportMenuResult?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
-                _asStartCount.postValue(asStartCount)
-
-                _allFootballCount.postValue(getAllGameCount("FT", sportMenuResult))
-                _allBasketballCount.postValue(getAllGameCount("BK", sportMenuResult))
-                _allTennisCount.postValue(getAllGameCount("TN", sportMenuResult))
-                _allBadmintonCount.postValue(getAllGameCount("", sportMenuResult)) //TODO simon test review 不知道羽毛球的 code 是什麼
-                _allVolleyballCount.postValue(getAllGameCount("VB", sportMenuResult))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                //TODO simon test review API error handling
-            }
+    fun getSportMenu(): LiveData<SportMenuResult> {
+        val sportMenuResult = doNetwork {
+            sportMenuRepository.getSportMenu()
         }
+        val asStartCount = liveDataResult.value?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+        _asStartCount.postValue(asStartCount)
+        _allFootballCount.postValue(getAllGameCount("FT", sportMenuResult))
+        _allBasketballCount.postValue(getAllGameCount("BK", sportMenuResult))
+        _allTennisCount.postValue(getAllGameCount("TN", sportMenuResult))
+        _allBadmintonCount.postValue(getAllGameCount("", sportMenuResult)) //TODO simon test review 不知道羽毛球的 code 是什麼
+        _allVolleyballCount.postValue(getAllGameCount("VB", sportMenuResult))
+        return liveDataResult
     }
 
     //按赛事类型预加载各体育赛事
-    fun getMatchPreload() {
-        viewModelScope.launch {
-            try {
-                val earlyRequest = MatchPreloadRequest(MatchType.EARLY.typeStr)
-                val earlyResponse = OneBoSportApi.matchService.getMatchPreload(earlyRequest)
-                if (earlyResponse.isSuccessful) {
-                    _earlyGameResult.postValue(earlyResponse.body())
-                    mBaseResult.postValue(earlyResponse.body())
-                } else {
-                    val result = ErrorUtils.parseError(earlyResponse)
-                    mBaseResult.postValue(result)
-                }
+    fun getMatchPreload(matchType: String): LiveData<MatchPreloadResult> {
+        val request = MatchPreloadRequest(matchType)
 
-                val inPlayRequest = MatchPreloadRequest(MatchType.INPLAY.typeStr)
-                val inPlayResponse = OneBoSportApi.matchService.getMatchPreload(inPlayRequest)
-                if (inPlayResponse.isSuccessful) {
-                    _inPlayGameResult.postValue(inPlayResponse.body())
-                    mBaseResult.postValue(inPlayResponse.body())
-                } else {
-                    val result = ErrorUtils.parseError(inPlayResponse)
-                    mBaseResult.postValue(result)
-                }
-
-                val todayRequest = MatchPreloadRequest(MatchType.TODAY.typeStr)
-                val todayResponse = OneBoSportApi.matchService.getMatchPreload(todayRequest)
-                if (todayResponse.isSuccessful) {
-                    _todayGameResult.postValue(todayResponse.body())
-                    mBaseResult.postValue(todayResponse.body())
-                } else {
-                    val result = ErrorUtils.parseError(todayResponse)
-                    mBaseResult.postValue(result)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                //TODO simon test review API error handling
-            }
+        return doNetwork {
+            OneBoSportApi.matchService.getMatchPreload(request)
         }
     }
 
