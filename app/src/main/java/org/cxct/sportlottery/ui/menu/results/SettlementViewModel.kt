@@ -34,7 +34,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
 
     fun getSettlementData(
         gameType: String,
-        pagingParams: PagingParams,
+        pagingParams: PagingParams? ,
         timeRangeParams: TimeRangeParams
     ) {
         _settlementData.postValue(

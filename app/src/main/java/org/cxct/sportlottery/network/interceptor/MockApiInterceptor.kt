@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
@@ -89,6 +90,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(PLAYCATE_TYPE_LIST) -> {
                     response = getMockJsonData(request, "playcate_type_list.mock")
+                }
+                path.contains(OUTRIGHT_RESULT_LIST) -> {
+                    response = getMockJsonData(request, "outright_result_list.mock")
                 }
             }
         }

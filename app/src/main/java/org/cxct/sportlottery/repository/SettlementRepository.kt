@@ -15,15 +15,15 @@ import org.cxct.sportlottery.ui.menu.results.GameType
 class SettlementRepository() {
 
     suspend fun resultList(
-        pagingParams: PagingParams,
+        pagingParams: PagingParams?,
         timeRangeParams: TimeRangeParams,
         gameType: String
     ): MatchResultListResult? {
         val resultResponse = OneBoSportApi.matchResultService.getMatchResultList(
             MatchResultListRequest(
                 gameType = gameType,
-                page = pagingParams.page,
-                pageSize = pagingParams.pageSize,
+                page = pagingParams?.page,
+                pageSize = pagingParams?.pageSize,
                 startTime = timeRangeParams.startTime,
                 endTime = timeRangeParams.endTime
             )

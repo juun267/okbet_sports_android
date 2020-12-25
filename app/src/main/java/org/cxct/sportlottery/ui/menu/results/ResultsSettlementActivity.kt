@@ -27,8 +27,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     private val settlementDateRvAdapter by lazy {
         SettlementDateRvAdapter()
     }
-    private val pagingParams by lazy { PagingParams(null, null) }
-    private var timeRangeParams: TimeRangeParams = TimeRangeParams()
     private var gameType = "FT"
 
     interface RequestListener {
@@ -75,7 +73,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
         settlementViewModel.getSettlementData(
             gameType = gameType,
-            pagingParams = pagingParams,
+            null,
             timeRangeParams = setupTimeApiFormat(0)
         )
 
@@ -91,19 +89,13 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 //0:今日, 1:明天, 2:後天 ... 7:冠軍
                 when (date) {
                     7 -> {
-                        timeRangeParams = TimeRangeParams()
-                        settlementViewModel.getSettlementData(
-                            gameType,
-                            pagingParams,
-                            timeRangeParams
-                        )
+                        //TODO get outright result
                     }
                     else -> {
-                        timeRangeParams = setupTimeApiFormat(0)
                         settlementViewModel.getSettlementData(
                             gameType,
-                            pagingParams,
-                            timeRangeParams
+                            null,
+                            setupTimeApiFormat(0)
                         )
                     }
                 }
@@ -227,9 +219,12 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val startTimeStamp = timeFormat.parse("$year-$month-$day 00:00:00").time
         val endTimeStamp = timeFormat.parse("$year-$month-$day 23:59:59").time
-        return TimeRangeParams(
-            startTime = startTimeStamp.toString(),
-            endTime = endTimeStamp.toString()
-        )
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
+                get() = endTimeStamp.toString()
+
+        }
     }
 }
