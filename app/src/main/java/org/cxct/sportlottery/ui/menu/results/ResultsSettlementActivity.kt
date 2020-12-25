@@ -48,7 +48,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         initEvent()
 
         settlementViewModel.matchResultListResult.observe(this) {
-            hideLoading()
             settlementRvAdapter.mDataList = it?.rows ?: listOf()
             settlementRvAdapter.gameType = gameType
             settlementRvAdapter.mSettlementRvListener = object :
@@ -78,7 +77,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         )
 
         settlementViewModel.gameResultDetailResult.observe(this) {
-            hideLoading()
             settlementRvAdapter.mGameDetail = it //set Game Detail Data
         }
 
@@ -120,7 +118,10 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     private fun initEvent() {
         settlementViewModel.requestListener = object : RequestListener {
             override fun requestIng(loading: Boolean) {
-                loading()
+                if (loading)
+                    loading()
+                else
+                    hideLoading()
             }
 
         }
