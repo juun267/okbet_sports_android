@@ -1,214 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:background="@color/background"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="mainViewModel"
+            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:background="@drawable/fillet_5dp_white"
-        android:padding="6dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:background="@color/background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card_football"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/fillet_4dp_home_game_item_dark"
-            app:layout_constraintEnd_toStartOf="@id/card_basketball"
-            app:layout_constraintHorizontal_weight="1.4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/label_football"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/football"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_football_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@id/label_football"
-                app:layout_constraintEnd_toStartOf="@id/iv_football"
-                app:layout_constraintStart_toEndOf="@id/label_football"
-                app:layout_constraintTop_toTopOf="@id/label_football"
-                tools:text="644" />
-
-            <ImageView
-                android:id="@+id/iv_football"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="21dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_football"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card_basketball"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:background="@drawable/fillet_4dp_home_game_item_dark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/card_football"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/label_basketball"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/basketball"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_basketball_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@id/label_basketball"
-                app:layout_constraintEnd_toStartOf="@id/iv_basketball"
-                app:layout_constraintStart_toEndOf="@id/label_basketball"
-                app:layout_constraintTop_toTopOf="@id/label_basketball"
-                tools:text="644" />
-
-            <ImageView
-                android:id="@+id/iv_basketball"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="21dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_basketball"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:layout_constraintTop_toBottomOf="@id/card_basketball">
+            android:layout_margin="6dp"
+            android:background="@drawable/fillet_5dp_white"
+            android:padding="6dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_football"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fillet_4dp_home_game_item_dark"
+                app:layout_constraintEnd_toStartOf="@id/card_basketball"
+                app:layout_constraintHorizontal_weight="1.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/label_football"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/football"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_football_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@{mainViewModel.allFootballCount.toString()}"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    app:layout_constraintBottom_toBottomOf="@id/label_football"
+                    app:layout_constraintEnd_toStartOf="@id/iv_football"
+                    app:layout_constraintStart_toEndOf="@id/label_football"
+                    app:layout_constraintTop_toTopOf="@id/label_football" />
+
+                <ImageView
+                    android:id="@+id/iv_football"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_football"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_basketball"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/fillet_4dp_home_game_item_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@id/card_football"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/label_basketball"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/basketball"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_basketball_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@{mainViewModel.allBasketballCount.toString()}"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    app:layout_constraintBottom_toBottomOf="@id/label_basketball"
+                    app:layout_constraintEnd_toStartOf="@id/iv_basketball"
+                    app:layout_constraintStart_toEndOf="@id/label_basketball"
+                    app:layout_constraintTop_toTopOf="@id/label_basketball" />
+
+                <ImageView
+                    android:id="@+id/iv_basketball"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_basketball"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:layout_constraintTop_toBottomOf="@id/card_basketball">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <org.cxct.sportlottery.ui.home.HomeGameCard
+                        android:id="@+id/card_game_soon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:hgCard_count="@{mainViewModel.asStartCount.toString()}"
+                        app:hgCard_icon="@drawable/ic_game_soon"
+                        app:hgCard_title="@string/game_soon" />
+
+                    <org.cxct.sportlottery.ui.home.HomeGameCard
+                        android:id="@+id/card_tennis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        app:hgCard_count="@{mainViewModel.allTennisCount.toString()}"
+                        app:hgCard_icon="@drawable/ic_tennis"
+                        app:hgCard_title="@string/tennis" />
+
+                    <org.cxct.sportlottery.ui.home.HomeGameCard
+                        android:id="@+id/card_badminton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        app:hgCard_count="@{mainViewModel.allBadmintonCount.toString()}"
+                        app:hgCard_icon="@drawable/ic_badminton"
+                        app:hgCard_title="@string/badminton" />
+
+                    <org.cxct.sportlottery.ui.home.HomeGameCard
+                        android:id="@+id/card_volleyball"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        app:hgCard_count="@{mainViewModel.allVolleyballCount.toString()}"
+                        app:hgCard_icon="@drawable/ic_volleyball"
+                        app:hgCard_title="@string/volleyball" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <org.cxct.sportlottery.ui.home.HomeGameCard
-                    android:id="@+id/card_game_soon"
-                    android:layout_width="wrap_content"
+                <org.cxct.sportlottery.ui.home.HomeGameDrawer
+                    android:id="@+id/drawer_early"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hgCard_icon="@drawable/ic_game_soon"
-                    app:hgCard_title="@string/game_soon"
-                    tools:hgCard_count="13" />
+                    app:hgDrawer_title="@string/home_tab_early"
+                    tools:hgDrawer_count="744" />
 
-                <org.cxct.sportlottery.ui.home.HomeGameCard
-                    android:id="@+id/card_tennis"
-                    android:layout_width="wrap_content"
+                <org.cxct.sportlottery.ui.home.HomeGameDrawer
+                    android:id="@+id/drawer_in_play"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    app:hgCard_icon="@drawable/ic_tennis"
-                    app:hgCard_title="@string/tennis"
-                    tools:hgCard_count="72" />
+                    android:layout_marginTop="6dp"
+                    app:hgDrawer_title="@string/home_tab_in_play"
+                    tools:hgDrawer_count="6" />
 
-                <org.cxct.sportlottery.ui.home.HomeGameCard
-                    android:id="@+id/card_badminton"
-                    android:layout_width="wrap_content"
+                <org.cxct.sportlottery.ui.home.HomeGameDrawer
+                    android:id="@+id/drawer_today"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    app:hgCard_icon="@drawable/ic_badminton"
-                    app:hgCard_title="@string/badminton"
-                    tools:hgCard_count="2" />
-
-                <org.cxct.sportlottery.ui.home.HomeGameCard
-                    android:id="@+id/card_volleyball"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    app:hgCard_icon="@drawable/ic_volleyball"
-                    app:hgCard_title="@string/volleyball"
-                    tools:hgCard_count="32" />
+                    android:layout_marginTop="6dp"
+                    app:hgDrawer_title="@string/home_tab_today"
+                    tools:hgDrawer_count="63" />
 
             </LinearLayout>
 
-        </HorizontalScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <org.cxct.sportlottery.ui.home.HomeGameDrawer
-                android:id="@+id/drawer_early"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:hgDrawer_title="@string/home_tab_early"
-                tools:hgDrawer_count="744" />
-
-            <org.cxct.sportlottery.ui.home.HomeGameDrawer
-                android:id="@+id/drawer_in_play"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                app:hgDrawer_title="@string/home_tab_in_play"
-                tools:hgDrawer_count="6" />
-
-            <org.cxct.sportlottery.ui.home.HomeGameDrawer
-                android:id="@+id/drawer_today"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                app:hgDrawer_title="@string/home_tab_today"
-                tools:hgDrawer_count="63" />
-
-            <org.cxct.sportlottery.ui.home.HomeGameDrawer
-                android:id="@+id/drawer_parlay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                app:hgDrawer_title="@string/home_tab_parlay"
-                tools:hgDrawer_count="750" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</LinearLayout>
+</layout>

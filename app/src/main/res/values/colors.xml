@@ -5,6 +5,9 @@
     <color name="colorAccent">#0073A8</color>
     <color name="colorPrimaryDeepDark">#003047</color>
     <color name="colorMenuLightBlue">#003A55</color>
+    <color name="colorDateLightGray">#B7B7B7</color>
+    <color name="colorDarkBlack">#333333</color>
+    <color name="colorWhiteGray">#707070</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -17,6 +20,7 @@
     <color name="textColorLight">#4a4a4a</color>
     <color name="textColorDark">#202020</color>
     <color name="textOrange">#cb4700</color>
+    <color name="textGray">#666666</color>
 
     <color name="text_faint">#80FFFFFF</color>
     <color name="text_tab_default">#202020</color>
@@ -35,6 +39,7 @@
     <color name="bright_gray">#CCCCCC</color>
     <color name="dark_gray">#E7E7E7</color>
     <color name="golden">#ECA906</color>
+    <color name="light_gray">#DDDDDD</color>
 
     <color name="transparent">#00000000</color>
     <color name="transparent_black_10">#26000000</color>
@@ -52,4 +57,5 @@
     <color name="tool_bar_background">#00496b</color>
     <color name="tool_bar_text_color">#EAA909</color>
     <color name="back_button_menu">#023851</color>
+    <color name="date_select_orange">#F98B00</color>
 </resources>

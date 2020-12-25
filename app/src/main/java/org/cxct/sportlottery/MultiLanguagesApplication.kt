@@ -10,11 +10,12 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.OddsRepository
 import org.cxct.sportlottery.repository.PlayCateListRepository
 import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
+import org.cxct.sportlottery.repository.SettlementRepository
+import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.login.LoginViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
 import org.cxct.sportlottery.util.LanguageManager
-import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -29,7 +30,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val viewModelModule = module {
-        viewModel { MainViewModel(get()) }
+        viewModel { MainViewModel(get(), get()) }
         viewModel { LoginViewModel(get()) }
         viewModel { OddsDetailViewModel(get(),get()) }
         viewModel { SettlementViewModel(get()) }
@@ -37,8 +38,10 @@ class MultiLanguagesApplication : Application() {
 
     private val repoModule = module {
         single { LoginRepository(get()) }
+        single { SportMenuRepository() }
         single { OddsRepository() }
         single { PlayCateListRepository() }
+        single { SettlementRepository() }
     }
 
     override fun attachBaseContext(base: Context) {

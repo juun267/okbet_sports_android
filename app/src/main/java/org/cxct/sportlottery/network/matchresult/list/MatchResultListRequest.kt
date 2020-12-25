@@ -5,6 +5,8 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 
 data class MatchResultListRequest(
     val gameType: String,
-    val pagingParams: PagingParams? = null,
-    val timeRangeParams: TimeRangeParams? = null
+    val page: Int?,
+    val pageSize: Int?,
+    val startTime: String?,
+    val endTime: String?,
 )

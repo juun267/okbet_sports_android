@@ -1,61 +1,102 @@
 package org.cxct.sportlottery.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.FragmentHomeBinding
+import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.match.Match
+import org.cxct.sportlottery.ui.base.BaseFragment
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var homeBinding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+
+        homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        homeBinding.apply {
+            mainViewModel = this@HomeFragment.viewModel
+            lifecycleOwner = this@HomeFragment
+        }
+        return homeBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initEvent()
+        refreshView()
+        queryData()
+    }
+
+    private fun initEvent() {
+        card_football.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_basketball.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_game_soon.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_tennis.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_badminton.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+
+        card_volleyball.setOnClickListener {
+            //TODO simon test 實作點擊跳轉事件
+        }
+    }
+
+    private fun queryData() {
+        viewModel.getMatchPreload()
+    }
+
+    private fun refreshView() {
+        viewModel.earlyGameResult.observe(viewLifecycleOwner, Observer {
+            drawer_early.setCount(it.matchPreloadData?.num.toString())
+            drawer_early.setRvGameData(it.matchPreloadData)
+            drawer_early.setOnSelectItemListener(object : OnSelectItemListener<Match> {
+                override fun onClick(select: Match) {
+                    //TODO simon test review 設定點擊事件跳轉畫面
                 }
-            }
+            })
+        })
+
+        viewModel.inPlayGameResult.observe(viewLifecycleOwner, Observer {
+            drawer_in_play.setCount(it.matchPreloadData?.num.toString())
+            drawer_in_play.setRvGameData(it.matchPreloadData)
+            drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<Match> {
+                override fun onClick(select: Match) {
+                    //TODO simon test review 設定點擊事件跳轉畫面
+                }
+            })
+        })
+
+        viewModel.todayGameResult.observe(viewLifecycleOwner, Observer {
+            drawer_today.setCount(it.matchPreloadData?.num.toString())
+            drawer_today.setRvGameData(it.matchPreloadData)
+            drawer_today.setOnSelectItemListener(object : OnSelectItemListener<Match> {
+                override fun onClick(select: Match) {
+                    //TODO simon test review 設定點擊事件跳轉畫面
+                }
+            })
+        })
     }
 }
