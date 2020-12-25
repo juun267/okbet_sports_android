@@ -76,6 +76,7 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
             "FT" -> context.getString(R.string.football)
             "BK" -> context.getString(R.string.basketball)
             "TN" -> context.getString(R.string.tennis)
+            "BM" -> context.getString(R.string.badminton)
             "VB" -> context.getString(R.string.volleyball)
             else -> null
         }

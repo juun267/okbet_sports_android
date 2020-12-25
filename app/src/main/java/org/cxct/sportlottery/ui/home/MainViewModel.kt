@@ -65,7 +65,7 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
             _allFootballCount.postValue(getAllGameCount("FT", result))
             _allBasketballCount.postValue(getAllGameCount("BK", result))
             _allTennisCount.postValue(getAllGameCount("TN", result))
-            _allBadmintonCount.postValue(getAllGameCount("", result)) //TODO simon test review 不知道羽毛球的 code 是什麼
+            _allBadmintonCount.postValue(getAllGameCount("BM", result))
             _allVolleyballCount.postValue(getAllGameCount("VB", result))
 
             response
