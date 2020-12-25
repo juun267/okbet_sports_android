@@ -109,6 +109,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 
         settlementViewModel.apply {
             settlementFilter.observe(this@ResultsSettlementActivity) {
+                gameType = it.gameType
                 getSettlementData(gameType = it.gameType, pagingParams = pagingParams, timeRangeParams = timeRangeParams)
             }
         }
@@ -136,12 +137,14 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                     hideLoading()
             }
         }
+
+        //日期選擇
         spinner_game_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                GameType.values().find { it.ordinal == position }?.let { gameType = it.key }
+                settlementViewModel.setGameTypeFilter(position)
             }
         }
     }
@@ -151,14 +154,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             val spinnerGameTypeItem = mutableListOf<String>()
             GameType.values().forEach { gameType -> spinnerGameTypeItem.add(getString(gameType.string)) }
             it.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerGameTypeItem)
-            it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    settlementViewModel.setGameTypeFilter(position)
-                }
-            }
         }
     }
 
