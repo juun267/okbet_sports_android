@@ -34,6 +34,9 @@ object Constants {
     //play category list
     const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list"
 
+    //outright
+    const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000
