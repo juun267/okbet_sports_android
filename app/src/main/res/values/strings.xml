@@ -40,6 +40,7 @@
     <string name="news_center">消息中心</string>
     <string name="help_center">帮助中心</string>
     <string name="sign_out">退出登录</string>
+    <string name="label_version">版本号 Ver %s</string>
 
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>

@@ -114,8 +114,8 @@
                 android:id="@+id/menu_sign_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvTitle="@string/sign_out"
-                app:cvIcon="@drawable/ic_logout"/>
+                app:cvIcon="@drawable/ic_logout"
+                app:cvTitle="@string/sign_out" />
 
         </LinearLayout>
 
@@ -128,15 +128,15 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="15dp"
-        android:paddingEnd="10dp"
         android:paddingTop="15dp"
+        android:paddingEnd="10dp"
         android:paddingBottom="15dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_language_set"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/ic_language_set" />
 
         <TextView
             android:id="@+id/tv_language"
@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:gravity="end"
-            tools:text="版本号 Ver 1.0"
+            android:text="@string/label_version"
             android:textColor="@color/textGrayLight"
             android:textSize="@dimen/textSize12sp" />
 
