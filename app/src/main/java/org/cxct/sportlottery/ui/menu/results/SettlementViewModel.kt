@@ -34,7 +34,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
 
     fun getSettlementData(
         gameType: String,
-        pagingParams: PagingParams? ,
+        pagingParams: PagingParams?,
         timeRangeParams: TimeRangeParams
     ) {
         _settlementData.postValue(
@@ -84,6 +84,14 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     fun setGameTypeFilter(gameTypePosition: Int) {
         //TODO Dean : 篩選後更新_settlementData
         GameType.values().find { it.ordinal == gameTypePosition }?.let { _settlementFilter.value?.gameType = it.key }
+        _settlementFilter.value = _settlementFilter.value //touch observe
+    }
+
+    fun setLeagueFilter(gameLeaguePosition: Set<Int>) {
+        //TODO Dean : 篩選後更新_settlementData
+        _settlementFilter.value?.let {
+            it.gameZone = gameLeaguePosition
+        }
         _settlementFilter.value = _settlementFilter.value //touch observe
     }
 }

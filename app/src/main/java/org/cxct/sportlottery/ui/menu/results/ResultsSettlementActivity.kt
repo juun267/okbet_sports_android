@@ -18,10 +18,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_league_type.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
+import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityResultsSettlementBinding
-import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,7 +31,7 @@ import java.util.*
 //TODO Dean : 篩選邏輯完成後,進行重構整理
 class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementViewModel::class) {
     private lateinit var settlementBinding: ActivityResultsSettlementBinding
-    lateinit var settlementLeagueBottomeSheet: BottomSheetDialog
+    lateinit var settlementLeagueBottomSheet: BottomSheetDialog
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
@@ -42,9 +42,10 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     private val settlementDateRvAdapter by lazy {
         SettlementDateRvAdapter()
     }
-    private var gameType = "FT"
+    private var gameType = ""
     private val selectNameList = mutableListOf<String>()
-    private var timeRangeParams = setupTimeApiFormat(0)
+    private var timeRangeParams = setupTimeApiFormat(0) //預設為當日
+    private var leagueSelectedSet: MutableSet<Int> = mutableSetOf()
 
     interface RequestListener {
         fun requestIng(loading: Boolean)
@@ -85,7 +86,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 
             }
             bottomSheetLeagueItemDataList = it?.rows?.map { rows ->
-                LeagueItemData(null, rows.league.name, false)
+                LeagueItemData(null, rows.league.name, true)
             }?.toMutableList<LeagueItemData>() ?: mutableListOf()
 
 //            setupSpinnerGameZone(spinnerGameZoneItem ?: mutableListOf()) //TODO Dean : 舊的篩選器UI
@@ -129,8 +130,15 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 
         settlementViewModel.apply {
             settlementFilter.observe(this@ResultsSettlementActivity) {
-                gameType = it.gameType
-                getSettlementData(gameType = it.gameType, pagingParams = null, timeRangeParams = timeRangeParams)
+                if (gameType != it.gameType) {
+                    //比賽種類有變
+                    gameType = it.gameType
+                    getSettlementData(gameType = it.gameType, pagingParams = null, timeRangeParams = timeRangeParams)
+                } else {
+                    matchResultListResult.value?.rows?.filterIndexed { index, row ->
+                        it.gameZone?.contains(index) ?: false
+                    }
+                }
             }
         }
     }
@@ -148,7 +156,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         )
 
         tv_league.text = getString(R.string.league)
-        initLeagueSelector()
     }
 
     private fun initEvent() {
@@ -162,7 +169,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
 
         ll_game_league.setOnClickListener {
-            settlementLeagueBottomeSheet.show()
+            settlementLeagueBottomSheet.show()
         }
 
         //日期選擇
@@ -185,30 +192,22 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
     }
 
-    private fun initLeagueSelector() {
-        //TODO Dean : 看有沒有font-family可以做使用, 此處文字的style沒有與Zeplin相符
-        settleLeagueBottomSheet()
-        leagueSelectorEvent()
-    }
-
     private fun settleLeagueBottomSheet() {
+        //TODO Dean : 看有沒有font-family可以做使用, 此處文字的style沒有與Zeplin相符
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_league_type, null)
-        settlementLeagueBottomeSheet = BottomSheetDialog(this@ResultsSettlementActivity)
-        settlementLeagueBottomeSheet.apply {
+        settlementLeagueBottomSheet = BottomSheetDialog(this@ResultsSettlementActivity)
+        settlementLeagueBottomSheet.apply {
             setContentView(bottomSheetView)
             settlementLeagueAdapter = SettlementLeagueAdapter(lv_league.context, mutableListOf()) //先預設為空, 等待api獲取資料
             lv_league.adapter = settlementLeagueAdapter
+
         }
-/*        settlementLeagueBottomeSheet = BottomSheetDialog(this)
-        settlementLeagueBottomeSheet.setContentView(bottomSheetView)
-        settlementLeagueAdapter = SettlementLeagueAdapter(lv_league.context, mutableListOf()) //先預設為空, 等待api獲取資料
-        settlementLeagueBottomeSheet.lv_league.adapter = settlementLeagueAdapter*/
 
         //避免bottomSheet的滑動與listView發生衝突
-        settlementLeagueBottomeSheet.behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        settlementLeagueBottomSheet.behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    settlementLeagueBottomeSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    settlementLeagueBottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
                 }
             }
 
@@ -217,26 +216,29 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     }
 
     private fun leagueSelectorEvent() {
-        val cbAll = settlementLeagueBottomeSheet.layout_all.checkbox_select_all
+        val cbAll = settlementLeagueBottomSheet.layout_all.checkbox_select_all
 
         //全選按鈕
         cbAll.setOnClickListener {
             selectNameList.clear()
-            bottomSheetLeagueItemDataList.forEach {
+            bottomSheetLeagueItemDataList.forEachIndexed { index, it ->
                 it.isSelected = cbAll.isChecked
 
                 if (it.isSelected) {
                     selectNameList.add(it.name)
+                    leagueSelectedSet.add(index)
                 } else {
                     selectNameList.remove(it.name)
+                    leagueSelectedSet.remove(index)
                 }
             }
+            settlementViewModel.setLeagueFilter(leagueSelectedSet)
             settlementLeagueAdapter.notifyDataSetChanged()
 //            tv_bet_status.text = selectNameList.joinToString(",") //TODO Dean : 確認該如何去做顯示
         }
 
         //取消選擇
-        val tvCancel = settlementLeagueBottomeSheet.layout_all.tv_cancel_selections
+        val tvCancel = settlementLeagueBottomSheet.layout_all.tv_cancel_selections
         tvCancel.setOnClickListener {
             selectNameList.clear()
             cbAll.isChecked = false
@@ -244,25 +246,31 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             bottomSheetLeagueItemDataList.forEach {
                 it.isSelected = false
             }
+            leagueSelectedSet.clear()
+            settlementViewModel.setLeagueFilter(leagueSelectedSet)
             settlementLeagueAdapter.notifyDataSetChanged()
 //            tv_bet_status.text = selectNameList.joinToString(",")
         }
     }
 
     private fun setupLeagueList(leagueList: MutableList<LeagueItemData>) {
-        settlementLeagueBottomeSheet.apply {
+        settleLeagueBottomSheet()
+        leagueSelectorEvent()
+        settlementLeagueBottomSheet.apply {
             settlementLeagueAdapter = SettlementLeagueAdapter(lv_league.context, leagueList)
             lv_league.adapter = settlementLeagueAdapter
 
-            val cbAll = settlementLeagueBottomeSheet.layout_all.checkbox_select_all
+            val cbAll = settlementLeagueBottomSheet.layout_all.checkbox_select_all
             settlementLeagueAdapter.setOnItemCheckedListener(object : OnSelectItemWithPositionListener<LeagueItemData> {
                 override fun onClick(select: LeagueItemData, position: Int) {
                     if (select.isSelected) {
                         selectNameList.add(select.name)
+                        leagueSelectedSet.add(position)
                     } else {
                         selectNameList.remove(select.name)
+                        leagueSelectedSet.remove(position)
                     }
-
+                    settlementViewModel.setLeagueFilter(leagueSelectedSet)
                     //判斷全選按鈕是否需選取
                     var selectCount = 0
                     bottomSheetLeagueItemDataList.forEach {
@@ -272,9 +280,8 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                     cbAll.isChecked = selectCount == bottomSheetLeagueItemDataList.size
 //                tv_bet_status.text = selectNameList.joinToString(",") //TODO Dean : 確認該如何去做顯示
                 }
-
             })
-
+            checkbox_select_all.performClick() //預設為聯盟全選
         }
     }
 
@@ -353,7 +360,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     }
 }
 
-data class LeagueItemData(val code: Int? = null, val name: String = "", var isSelected: Boolean = false)
+data class LeagueItemData(val code: Int? = null, val name: String = "", var isSelected: Boolean = true)
 
 interface OnSelectItemWithPositionListener<LeagueItemData> {
     fun onClick(select: LeagueItemData, position: Int)
