@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
@@ -39,16 +39,9 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             drawer_early.setRvGameData(it.matchPreloadData)
             drawer_early.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
-                    //TODO simon test review 設定點擊事件跳轉畫面
+                    toOddsDetail(select)
                 }
             })
-    private val observerEarlyGame = Observer<MatchPreloadResult> {
-        drawer_early.setCount(it.matchPreloadData?.num.toString())
-        drawer_early.setRvGameData(it.matchPreloadData)
-        drawer_early.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-            override fun onClick(select: GameEntity) {
-                toOddsDetail(select, (requireActivity() as MainActivity).getScrollViewHeight())
-            }
         })
 
         viewModel.matchPreloadInPlay.observe(this.viewLifecycleOwner, Observer {
@@ -56,7 +49,7 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             drawer_in_play.setRvGameData(it.matchPreloadData)
             drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
-                    //TODO simon test review 設定點擊事件跳轉畫面
+                    toOddsDetail(select)
                 }
             })
         })
@@ -66,7 +59,7 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             drawer_today.setRvGameData(it.matchPreloadData)
             drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
-                    //TODO simon test review 設定點擊事件跳轉畫面
+                    toOddsDetail(select)
                 }
             })
         })
@@ -105,16 +98,26 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.getMatchPreload()
     }
 
-    private fun toOddsDetail(select: GameEntity, height: Int) {
+    private fun switchFragment(fragment: Fragment) {
+        parentFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, 0)
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun toOddsDetail(select: GameEntity) {
         switchFragment(
             OddsDetailFragment.newInstance(
                 select.code,
                 select.name,
                 select.match!!.id,
                 "EU",
-                height
+                (requireActivity() as MainActivity).getScrollView().getChildAt(0).height
             )
         )
+        (requireActivity() as MainActivity).getScrollView().scrollTo(0, 0)
+        (requireActivity() as MainActivity).getAppBarLayout().setExpanded(true, true)
     }
 
 }

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
@@ -188,4 +189,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         loading()
         viewModel.getSportMenu()
     }
+
+    fun getScrollView(): NestedScrollView {
+        return mainBinding.scrollView
+    }
+
+    fun getAppBarLayout():AppBarLayout{
+        return mainBinding.appBarLayout
+    }
+
 }

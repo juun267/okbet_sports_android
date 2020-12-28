@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -71,7 +72,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsDetailListData[position])
+        holder.bindModel(oddsDetailListData[position], position)
     }
 
 
@@ -106,12 +107,19 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
 
         private val tv_name = itemView.findViewById<TextView>(R.id.tv_name)
         private val ll_item = itemView.findViewById<LinearLayout>(R.id.ll_item)
+        private val iv_arrow_up = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
 
-        fun bindModel(oddsDetail: OddsDetailListData) {
+        fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
             tv_name.text = oddsDetail.name
             ll_item.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
-                notifyDataSetChanged()
+                notifyItemChanged(position)
+            }
+
+            if (oddsDetail.isExpand) {
+                iv_arrow_up.animate().rotation(180f).setDuration(200).start()
+            } else {
+                iv_arrow_up.animate().rotation(0f).setDuration(200).start()
             }
 
             when (viewType) {

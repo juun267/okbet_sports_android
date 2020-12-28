@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
@@ -82,7 +82,7 @@ class OddsDetailFragment : Fragment() {
     }
 
 
-    private fun dataBinding(){
+    private fun dataBinding() {
         dataBinding.apply {
             view = this@OddsDetailFragment
             oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
@@ -98,11 +98,12 @@ class OddsDetailFragment : Fragment() {
             rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
         }
 
+        (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         list()
     }
 
 
-    private fun getData(){
+    private fun getData() {
         matchId?.let { matchId ->
             oddsType?.let { oddsType ->
                 oddsDetailViewModel.getOddsDetail(matchId, oddsType)
@@ -110,8 +111,10 @@ class OddsDetailFragment : Fragment() {
         }
 
         oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
-            tv_time.text = TimeUtil.stampToDate(it!!.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
-            it.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+
+            tv_time.text = TimeUtil.stampToDate(it?.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
+
+            it.oddsDetailData.matchOdd.odds.forEach { (key, value) ->
                 oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
             }
 
