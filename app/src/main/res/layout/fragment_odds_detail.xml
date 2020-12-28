@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.login.LoginActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <variable
+            name="view"
+            type="org.cxct.sportlottery.ui.odds.OddsDetailFragment" />
+
         <variable
             name="oddsDetailViewModel"
             type="org.cxct.sportlottery.ui.odds.OddsDetailViewModel" />
@@ -14,6 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -27,6 +32,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:gravity="center_vertical"
+                android:onClick="@{() -> view.back()}"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -35,10 +41,11 @@
                     android:src="@drawable/ic_back_white_small" />
 
                 <TextView
+                    android:id="@+id/tv_type_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="足球"
+                    android:text=""
                     android:textColor="@color/text_focus"
                     android:textSize="14sp" />
 
@@ -54,7 +61,6 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -63,9 +69,11 @@
             android:background="@color/main_dark">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/tv_more"
+                android:layout_marginEnd="5dp"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:orientation="vertical">
 
@@ -153,10 +161,11 @@
             app:tabTextColor="@color/text_tab_default" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:paddingTop="10dp"
             android:id="@+id/rv_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:paddingTop="10dp" />
 
     </LinearLayout>
 

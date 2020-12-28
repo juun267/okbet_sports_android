@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.R.string
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

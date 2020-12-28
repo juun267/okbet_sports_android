@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -45,6 +46,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val observerSportMenu = Observer<SportMenuResult> {
         hideLoading()
         updateUiWithResult(it)
+    }
+
+    fun getScrollViewHeight(): Int {
+        return findViewById<NestedScrollView>(R.id.scrollView).getChildAt(0).height
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
