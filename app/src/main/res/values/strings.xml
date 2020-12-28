@@ -35,6 +35,8 @@
 
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>
+    <string name="select_all_league">选择所有联赛</string>
+    <string name="select_cancel">取消选择</string>
     <string name="first_half_game">上半场</string>
     <string name="second_half_game">下半场</string>
     <string name="full_game">全场</string>

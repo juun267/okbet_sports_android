@@ -11,6 +11,8 @@
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="gray">#EEEEEE</color>
+    <color name="lightGray">#999999</color>
 
     <color name="main">#445E77</color>
     <color name="main_dark">#223549</color>
@@ -55,4 +57,7 @@
     <color name="tool_bar_text_color">#EAA909</color>
     <color name="back_button_menu">#023851</color>
     <color name="date_select_orange">#F98B00</color>
+
+    <color name="blue2">#c8d7e8</color>
+    <color name="blue3">#445e77</color>
 </resources>
