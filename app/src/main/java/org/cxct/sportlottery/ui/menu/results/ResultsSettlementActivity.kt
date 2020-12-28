@@ -44,6 +44,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     }
     private var gameType = "FT"
     private val selectNameList = mutableListOf<String>()
+    private var timeRangeParams = setupTimeApiFormat(0)
 
     interface RequestListener {
         fun requestIng(loading: Boolean)
@@ -105,7 +106,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 
         //日期選擇初始化
         settlementDateRvAdapter.mDateList = setupWeekList(System.currentTimeMillis())
-        timeRangeParams = setupTimeApiFormat(0)
         settlementDateRvAdapter.refreshDateListener = object :
             SettlementDateRvAdapter.RefreshDateListener {
             override fun refreshDate(date: Int) {
@@ -115,10 +115,11 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                         //TODO get outright result
                     }
                     else -> {
+                        timeRangeParams = setupTimeApiFormat(date)
                         settlementViewModel.getSettlementData(
                             gameType,
                             null,
-                            setupTimeApiFormat(date)
+                            timeRangeParams
                         )
                     }
                 }
@@ -129,7 +130,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         settlementViewModel.apply {
             settlementFilter.observe(this@ResultsSettlementActivity) {
                 gameType = it.gameType
-                getSettlementData(gameType = it.gameType, pagingParams = pagingParams, timeRangeParams = timeRangeParams)
+                getSettlementData(gameType = it.gameType, pagingParams = null, timeRangeParams = timeRangeParams)
             }
         }
     }
