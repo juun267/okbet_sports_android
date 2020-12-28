@@ -52,6 +52,10 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
+        btn_close.setOnClickListener {
+            mDownMenuListener?.onClick(btn_close)
+        }
+
         menu_game_result.setOnClickListener {
             startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             mDownMenuListener?.onClick(menu_game_result)
