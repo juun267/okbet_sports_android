@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.LanguageManager
@@ -63,7 +64,9 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         menu_sign_out.setOnClickListener {
             viewModel.logout()
-            //TODO simon test review 登出跳轉畫面流程候補
+            context?.run {
+                MainActivity.reStart(this)
+            }
         }
     }
 
