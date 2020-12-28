@@ -1,7 +1,8 @@
 package org.cxct.sportlottery.ui.base
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import retrofit2.Response
@@ -17,15 +18,13 @@ abstract class BaseViewModel : ViewModel() {
     private val _code = MutableLiveData<Int>()
     private val _networkException = MutableLiveData<Boolean>()
 
-    fun <T> doNetwork(apiFun: suspend () -> Response<T>): LiveData<T> {
-        val result = MutableLiveData<T>()
-
-        viewModelScope.launch {
+    suspend fun <T> doNetwork(apiFun: suspend () -> Response<T>): T {
+        val apiResult = viewModelScope.async {
             try {
                 val response = apiFun()
 
                 if (response.isSuccessful) {
-                    result.postValue(response.body())
+                    return@async response.body()
                 } else {
                     val errorResult = ErrorUtils.parseError(response)
 
@@ -33,13 +32,15 @@ abstract class BaseViewModel : ViewModel() {
 
                     errorResult?.let {
                         _code.postValue((it as BaseResult).code)
-                        result.postValue(it)
+                        return@async it
                     }
                 }
             } catch (e: Exception) {
                 _networkException.postValue(true)
             }
         }
-        return result
+
+        @Suppress("UNCHECKED_CAST")
+        return (apiResult as Deferred<T>).await()
     }
 }

@@ -37,16 +37,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
-    private val observerMessageList = Observer<MessageListResult> {
-        hideLoading()
-        updateUiWithResult(it)
-    }
-
-    private val observerSportMenu = Observer<SportMenuResult> {
-        hideLoading()
-        updateUiWithResult(it)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -154,13 +144,22 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             //TODO simon test review 登入成功後刷新資料，之後再看要如何修改
             queryData()
         }
+        viewModel.messageListResult.observe(this, Observer {
+            hideLoading()
+            updateUiWithResult(it)
+        })
+
+        viewModel.sportMenuResult.observe(this, Observer {
+            hideLoading()
+            updateUiWithResult(it)
+        })
     }
 
-    private fun updateUiWithResult(messageListResult: MessageListResult?) {
+    private fun updateUiWithResult(messageListResult: MessageListResult) {
         val titleList: MutableList<String> = mutableListOf()
-        messageListResult?.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
+        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
 
-        if (messageListResult?.success == true && titleList.size > 0) {
+        if (messageListResult.success && titleList.size > 0) {
             rv_marquee.startAuto() //啟動跑馬燈
         } else {
             rv_marquee.stopAuto() //停止跑馬燈
@@ -169,8 +168,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         mMarqueeAdapter.setData(titleList)
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
-        if (sportMenuResult?.success == true) {
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult) {
+        if (sportMenuResult.success) {
             refreshTabLayout(sportMenuResult)
         }
     }
@@ -181,11 +180,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun getAnnouncement() {
-        viewModel.getAnnouncement().observe(this, observerMessageList)
+        viewModel.getAnnouncement()
     }
 
     private fun getSportMenu() {
         loading()
-        viewModel.getSportMenu().observe(this, observerSportMenu)
+        viewModel.getSportMenu()
     }
 }
