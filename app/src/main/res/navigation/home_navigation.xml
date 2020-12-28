@@ -14,8 +14,7 @@
             app:destination="@id/gameFragment">
             <argument
                 android:name="matchType"
-                android:defaultValue="0"
-                app:argType="integer" />
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
     </fragment>
     <fragment
@@ -25,15 +24,13 @@
         tools:layout="@layout/fragment_game">
         <argument
             android:name="matchType"
-            android:defaultValue="0"
-            app:argType="integer" />
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
         <action
             android:id="@+id/action_gameFragment_to_gameFragment"
             app:destination="@id/gameFragment">
             <argument
                 android:name="matchType"
-                android:defaultValue="0"
-                app:argType="integer" />
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
         <action
             android:id="@+id/action_gameFragment_to_game2Fragment"
