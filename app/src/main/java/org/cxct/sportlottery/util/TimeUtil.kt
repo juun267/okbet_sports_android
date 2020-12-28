@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
-import android.util.Log
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,7 +28,7 @@ object TimeUtil {
             dateFormat.timeZone = timeZone
             formattedTime = dateFormat.format(Date(time!!))
         } catch (e: Exception) {
-            Log.e(TAG, "解析日期失敗!!!")
+            Timber.e("解析日期失敗!!! \n$e")
             e.printStackTrace()
         }
         return formattedTime

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.base
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
@@ -13,6 +12,7 @@ import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import kotlin.reflect.KClass
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
     companion object {
@@ -73,7 +73,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     /*关闭加载界面*/
     open fun hideLoading() {
         if (loadingView == null) {
-            Log.e(TAG, "loadingView不存在")
+            Timber.d("loadingView不存在")
         } else {
             loadingView?.rl_loading?.visibility = View.GONE
         }
