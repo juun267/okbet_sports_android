@@ -14,4 +14,9 @@
         <attr name="hgDrawer_title" format="string" />
         <attr name="hgDrawer_count" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="CustomView">
+        <attr name="cvTitle" format="string" />
+        <attr name="cvIcon" format="reference" />
+    </declare-styleable>
 </resources>
