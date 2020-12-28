@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
@@ -147,26 +148,21 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position == 0) {
-                    navController.popBackStack(R.id.homeFragment, false)
-                } else {
-                    when (navController.currentDestination?.id) {
-                        R.id.homeFragment -> {
-                            val action =
-                                HomeFragmentDirections.actionHomeFragmentToGameFragment(
-                                    tab?.position ?: 0
-                                )
-                            navController.navigate(action)
-                        }
-                        R.id.gameFragment -> {
-                            val action =
-                                GameFragmentDirections.actionGameFragmentToGameFragment(
-                                    tab?.position ?: 0
-                                )
-                            val navOptions =
-                                NavOptions.Builder().setLaunchSingleTop(true).build()
-                            navController.navigate(action, navOptions)
-                        }
+                when (tab?.position) {
+                    0 -> {
+                        navController.popBackStack(R.id.homeFragment, false)
+                    }
+                    1 -> {
+                        navGameFragment(MatchType.IN_PLAY)
+                    }
+                    2 -> {
+                        navGameFragment(MatchType.TODAY)
+                    }
+                    3 -> {
+                        navGameFragment(MatchType.EARLY)
+                    }
+                    4 -> {
+                        navGameFragment(MatchType.PARLAY)
                     }
                 }
             }
@@ -177,6 +173,27 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+    }
+
+    private fun navGameFragment(matchType: MatchType) {
+        when (navController.currentDestination?.id) {
+            R.id.homeFragment -> {
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToGameFragment(
+                        matchType
+                    )
+                navController.navigate(action)
+            }
+            R.id.gameFragment -> {
+                val action =
+                    GameFragmentDirections.actionGameFragmentToGameFragment(
+                        matchType
+                    )
+                val navOptions =
+                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                navController.navigate(action, navOptions)
+            }
+        }
     }
 
     override fun onBackPressed() {
