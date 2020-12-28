@@ -53,9 +53,13 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_game_result.setOnClickListener {
-            context?.run {
-                startActivity(Intent(activity, ResultsSettlementActivity::class.java))
-            }
+            startActivity(Intent(activity, ResultsSettlementActivity::class.java))
+            mDownMenuListener?.onClick(menu_game_result)
+        }
+
+        menu_sign_out.setOnClickListener {
+            viewModel.logout()
+            //TODO simon test review 登出跳轉畫面流程候補
         }
     }
 
