@@ -33,9 +33,9 @@ class LogInterceptor @JvmOverloads constructor(private val logger: Logger = Logg
                             end =
                                 if (end > message.length) message.length else end
                             if (i != 0) {
-                                Timber.i("\n%s", message.substring(start, end))
+                                Timber.d("\n%s", message.substring(start, end))
                             } else {
-                                Timber.i("%s", message.substring(start, end))
+                                Timber.d("%s", message.substring(start, end))
                             }
                         }
                     }
