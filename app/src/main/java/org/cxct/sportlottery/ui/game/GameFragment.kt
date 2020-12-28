@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.MainViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,7 +21,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [GameFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GameFragment : Fragment() {
+class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     // TODO: Rename and change types of parameters
 
     val args: GameFragmentArgs by navArgs()
