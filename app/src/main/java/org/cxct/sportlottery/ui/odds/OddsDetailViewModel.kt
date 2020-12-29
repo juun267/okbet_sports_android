@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
-import org.cxct.sportlottery.repository.OddsRepository
-import org.cxct.sportlottery.repository.PlayCateListRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class OddsDetailViewModel(private val oddsRepository: OddsRepository, private val playCateListRepository: PlayCateListRepository) : BaseViewModel() {
+class OddsDetailViewModel : BaseViewModel() {
 
     private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
     private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
@@ -24,14 +24,18 @@ class OddsDetailViewModel(private val oddsRepository: OddsRepository, private va
 
     fun getOddsDetail(matchId: String, oddsType: String) {
         viewModelScope.launch {
-            val result = oddsRepository.getOddsDetail(matchId, oddsType)
+            val result = doNetwork {
+                OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId, oddsType))
+            }
             _oddsDetailResult.postValue(result)
         }
     }
 
     fun getPlayCateList(gameType: String) {
         viewModelScope.launch {
-            val result = playCateListRepository.getPlayCateList(gameType)
+            val result = doNetwork {
+                OneBoSportApi.playCateListService.getPlayCateList(gameType)
+            }
             _playCateListResult.postValue(result)
         }
     }

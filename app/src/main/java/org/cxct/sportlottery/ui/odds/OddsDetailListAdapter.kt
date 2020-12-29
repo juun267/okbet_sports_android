@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import java.lang.Exception
 
 
 class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetailListData>) :
@@ -190,13 +192,21 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                 }
             }
 
+
             for (element in oddsDetail.typeCodes) {
-                if (element == code) {
-                    setVisibility(true)
-                    break
-                } else {
-                    setVisibility(false)
+
+                try {
+                    if (element == code) {
+                        setVisibility(true)
+                        break
+                    } else {
+                        setVisibility(false)
+                    }
+                } catch (e: Exception) {
+                    //確認oddsType後即可正常運行 目前僅限oddsType = EU (by home fragment)
+                    e.printStackTrace()
                 }
+
             }
         }
     }

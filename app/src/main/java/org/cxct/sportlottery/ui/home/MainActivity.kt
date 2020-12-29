@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
+import timber.log.Timber
 
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
@@ -58,11 +60,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        rv_marquee.stopAuto()
     }
 
     private fun initToolBar() {
@@ -196,6 +193,24 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     fun getAppBarLayout():AppBarLayout{
         return mainBinding.appBarLayout
+    }
+
+    fun getHeight():Int{
+
+        var statusbar_height = 0
+        val resourceId = applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusbar_height = applicationContext.resources.getDimensionPixelSize(resourceId)
+        }
+
+        var nv_height = 0
+        val nv_resourceId = applicationContext.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        if (nv_resourceId > 0) {
+            nv_height = applicationContext.resources.getDimensionPixelSize(resourceId)
+        }
+
+       return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height*2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusbar_height - nv_height
+
     }
 
 }

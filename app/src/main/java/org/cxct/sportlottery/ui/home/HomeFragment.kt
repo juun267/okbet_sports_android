@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,6 +16,7 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+
 
 class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
@@ -107,17 +110,23 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun toOddsDetail(select: GameEntity) {
+
+        (requireActivity() as MainActivity).getScrollView().smoothScrollTo(0, 0)
+        (requireActivity() as MainActivity).getAppBarLayout().setExpanded(true, true)
+
         switchFragment(
             OddsDetailFragment.newInstance(
                 select.code,
                 select.name,
                 select.match!!.id,
                 "EU",
-                (requireActivity() as MainActivity).getScrollView().getChildAt(0).height
+                (requireActivity() as MainActivity).getScrollView().getChildAt(0).height,
+                (requireActivity() as MainActivity).getHeight()
             )
         )
-        (requireActivity() as MainActivity).getScrollView().scrollTo(0, 0)
-        (requireActivity() as MainActivity).getAppBarLayout().setExpanded(true, true)
     }
+
+
+
 
 }

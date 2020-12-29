@@ -1,12 +1,16 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -15,30 +19,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class OddsDetailFragment : Fragment() {
+class OddsDetailFragment : Fragment(), Animation.AnimationListener  {
 
     companion object {
         const val GAME_TYPE = "gameType"
         const val TYPE_NAME = "typeName"
         const val MATCH_ID = "matchId"
         const val ODDS_TYPE = "oddsType"
+        const val SCROLL_HEIGHT = "scrollHeight"
         const val HEIGHT = "height"
 
-        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String, height: Int) =
+        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String, scrollHeight: Int, height: Int) =
             OddsDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(GAME_TYPE, gameType)
                     putString(TYPE_NAME, typeName)
                     putString(MATCH_ID, matchId)
                     putString(ODDS_TYPE, oddsType)
+                    putInt(SCROLL_HEIGHT, scrollHeight)
                     putInt(HEIGHT, height)
                 }
             }
@@ -51,6 +60,7 @@ class OddsDetailFragment : Fragment() {
     private var matchId: String? = null
     private var oddsType: String? = null
     private var height: Int? = null
+    private var scrollHeight: Int? = null
 
     private val oddsDetailListData = ArrayList<OddsDetailListData>()
 
@@ -64,6 +74,7 @@ class OddsDetailFragment : Fragment() {
             matchId = it.getString(MATCH_ID)
             oddsType = it.getString(ODDS_TYPE)
             height = it.getInt(HEIGHT)
+            scrollHeight = it.getInt(SCROLL_HEIGHT)
         }
     }
 
@@ -179,6 +190,44 @@ class OddsDetailFragment : Fragment() {
             }
         })
         this.view?.startAnimation(animation)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
+            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
+                back()
+                return@OnKeyListener true
+            }
+            false
+        })
+    }
+
+
+    override fun onAnimationRepeat(animation: Animation?) {
+
+    }
+
+
+    override fun onAnimationEnd(animation: Animation?) {
+        scrollHeight?.let {
+            rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
+        }
+    }
+
+
+    override fun onAnimationStart(animation: Animation?) {
+
+    }
+
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
+        val animat = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
+        animat.setAnimationListener(this)
+        return animat
     }
 
 }
