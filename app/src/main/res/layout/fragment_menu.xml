@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorMenuLightBlue"
+    android:background="@color/main_light"
     android:orientation="vertical"
-    app:navGraph="@navigation/menu_navigation"
     tools:context=".ui.menu.MenuFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/block_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDeepDark"
+        android:background="@color/main_dark"
         android:orientation="vertical"
-        android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_head"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_head"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -34,202 +36,90 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_money"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toTopOf="@+id/iv_head"
-            tools:text="jerremy" />
+            tools:text="Player001" />
 
         <TextView
             android:id="@+id/tv_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:textColor="#E2AB61"
-            android:textSize="@dimen/textSize14sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/pumpkinOrange"
+            android:textSize="@dimen/textSize16sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
             tools:text="￥275.00" />
 
         <ImageView
             android:id="@+id/btn_close"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_menu_close"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            android:contentDescription="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close_gray_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_head" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorMenuLightBlue"
-        app:layout_constraintBottom_toTopOf="@+id/btn_change_language"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/block_profile">
+        android:layout_weight="1">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_bet_history"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                app:cvTitle="@string/betting_record" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/menu_bet_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_game_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitle="@string/game_settlement" />
 
-                    <TextView
-                        android:id="@+id/tv_jilu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:text="投注纪录"
-                        android:textColor="#ffffff"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitle="@string/profile_center" />
 
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="14dp"
-                        android:src="@drawable/ic_enter_horizontal"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_jilu"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_jilu" />
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitle="@string/news_center" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitle="@string/help_center" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@color/colorPrimaryDeepDark" />
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_sign_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_logout"
+                app:cvTitle="@string/sign_out" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/menu_game_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_game_result"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:text="赛果结算"
-                        android:textColor="#ffffff"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="14dp"
-                        android:src="@drawable/ic_enter_horizontal"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_game_result"
-                        app:layout_constraintEnd_toEndOf="parent"
-
-                        app:layout_constraintTop_toTopOf="@+id/tv_game_result" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@color/colorPrimaryDeepDark" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/menu_news"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
-
-                    <TextView
-                        android:id="@+id/tv_news"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:text="消息中心"
-                        android:textColor="#ffffff"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="14dp"
-                        android:src="@drawable/ic_enter_horizontal"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_news"
-                        app:layout_constraintEnd_toEndOf="parent"
-
-                        app:layout_constraintTop_toTopOf="@+id/tv_news" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@color/colorPrimaryDeepDark" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/menu_help"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
-
-                    <TextView
-                        android:id="@+id/tv_help"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:text="帮助中心"
-                        android:textColor="#ffffff"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="14dp"
-                        android:src="@drawable/ic_enter_horizontal"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_help"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_help" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@color/colorPrimaryDeepDark" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/btn_change_language"
@@ -237,37 +127,37 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:paddingStart="15dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="15dp">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="14dp"
-            android:src="@drawable/ic_head" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_language_set" />
 
         <TextView
             android:id="@+id/tv_language"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="7dp"
             android:layout_weight="1"
             android:text="@string/language_cn"
-            android:textColor="#ffffff"
-            android:textSize="12dp" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize12sp" />
 
         <TextView
+            android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:gravity="end"
-            android:text="版本号 Ver 1.0"
-            android:textColor="#94969F"
-            android:textSize="12dp" />
+            android:text="@string/label_version"
+            android:textColor="@color/textGrayLight"
+            android:textSize="@dimen/textSize12sp" />
 
     </LinearLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

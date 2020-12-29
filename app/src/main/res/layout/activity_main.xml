@@ -202,7 +202,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="end">
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_menu"
                 android:name="org.cxct.sportlottery.ui.menu.MenuFragment"
                 android:layout_width="match_parent"

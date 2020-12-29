@@ -4,14 +4,9 @@
         <attr name="speed_dp_sec" format="dimension|reference" />
     </declare-styleable>
 
-    <declare-styleable name="HomeGameCard">
-        <attr name="hgCard_title" format="string" />
-        <attr name="hgCard_count" format="string" />
-        <attr name="hgCard_icon" format="integer" />
-    </declare-styleable>
-
-    <declare-styleable name="HomeGameDrawer">
-        <attr name="hgDrawer_title" format="string" />
-        <attr name="hgDrawer_count" format="string" />
+    <declare-styleable name="CustomView">
+        <attr name="cvTitle" format="string" />
+        <attr name="cvCount" format="string" />
+        <attr name="cvIcon" format="reference" />
     </declare-styleable>
 </resources>
