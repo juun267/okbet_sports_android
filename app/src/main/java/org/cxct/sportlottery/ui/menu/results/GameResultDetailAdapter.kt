@@ -104,7 +104,7 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     private fun setupDetailItem(itemView: View, position: Int) {
         itemView.apply {
             val data = mDetailData?.rows?.get(position)
-            tv_play_cate_name.text = data?.playCateName
+            tv_play_cate_name.text = "${data?.playCateName} ${data?.spread}"
             tv_play_name.text = data?.playName
         }
     }
