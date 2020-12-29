@@ -8,16 +8,30 @@
         android:id="@+id/homeFragment"
         android:name="org.cxct.sportlottery.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
+            app:destination="@id/gameFragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
         android:name="org.cxct.sportlottery.ui.game.GameFragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game" >
+        tools:layout="@layout/fragment_game">
+        <argument
+            android:name="matchType"
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        <action
+            android:id="@+id/action_gameFragment_to_gameFragment"
+            app:destination="@id/gameFragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
         <action
             android:id="@+id/action_gameFragment_to_game2Fragment"
             app:destination="@id/game2Fragment" />
@@ -29,7 +43,7 @@
         android:id="@+id/game2Fragment"
         android:name="org.cxct.sportlottery.ui.game.Game2Fragment"
         android:label="fragment_game2"
-        tools:layout="@layout/fragment_game2" >
+        tools:layout="@layout/fragment_game2">
         <action
             android:id="@+id/action_game2Fragment_to_betListDialog"
             app:destination="@id/betListDialog" />

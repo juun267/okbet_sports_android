@@ -1,62 +1,352 @@
 {
-	"success": true,
-	"msg": "q68ext",
-	"code": 641,
-	"t": {
-		"inPlay": [{
-			"name": "越泽.沈",
-			"code": "94328",
-			"num": 522,
-			"sortNum": 642,
-			"play": [{
-				"code": "94328",
-				"name": "越泽.沈",
-				"num": 206
-			}]
-		}],
-		"today": [{
-			"name": "越泽.沈",
-			"code": "94328",
-			"num": 295,
-			"sortNum": 256,
-			"play": [{
-				"code": "94328",
-				"name": "越泽.沈",
-				"num": 507
-			}]
-		}],
-		"early": [{
-			"name": "越泽.沈",
-			"code": "94328",
-			"num": 942,
-			"sortNum": 384,
-			"play": [{
-				"code": "94328",
-				"name": "越泽.沈",
-				"num": 554
-			}]
-		}],
-		"parlay": [{
-			"name": "越泽.沈",
-			"code": "94328",
-			"num": 126,
-			"sortNum": 26,
-			"play": [{
-				"code": "94328",
-				"name": "越泽.沈",
-				"num": 55
-			}]
-		}],
-		"atStart": [{
-			"name": "越泽.沈",
-			"code": "94328",
-			"num": 738,
-			"sortNum": 68,
-			"play": [{
-				"code": "94328",
-				"name": "越泽.沈",
-				"num": 251
-			}]
-		}]
-	}
+  "success": true,
+  "msg": "ok",
+  "code": 0,
+  "t": {
+    "inPlay": [
+      {
+        "name": "足球",
+        "code": "FT",
+        "num": 3,
+        "sortNum": 1,
+        "play": null
+      },
+      {
+        "name": "篮球",
+        "code": "BK",
+        "num": 2,
+        "sortNum": 2,
+        "play": null
+      },
+      {
+        "name": "羽球",
+        "code": "BM",
+        "num": 1,
+        "sortNum": 5,
+        "play": null
+      }
+    ],
+    "today": [
+      {
+        "name": "足球",
+        "code": "FT",
+        "num": 96,
+        "sortNum": 1,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 277
+          },
+          {
+            "code": "OE",
+            "name": "入球数&单/双",
+            "num": 239
+          },
+          {
+            "code": "TG",
+            "name": "总入球数",
+            "num": 239
+          },
+          {
+            "code": "HT/FT",
+            "name": "半场/全场",
+            "num": 217
+          },
+          {
+            "code": "CS",
+            "name": "波胆",
+            "num": 239
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 67
+          }
+        ]
+      },
+      {
+        "name": "篮球",
+        "code": "BK",
+        "num": 6,
+        "sortNum": 2,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 58
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 18
+          }
+        ]
+      },
+      {
+        "name": "网球",
+        "code": "TN",
+        "num": 3,
+        "sortNum": 3,
+        "play": [
+          {
+            "code": "CS",
+            "name": "盘数波胆",
+            "num": 0
+          },
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 3
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 8
+          }
+        ]
+      },
+      {
+        "name": "排球",
+        "code": "VB",
+        "num": 8,
+        "sortNum": 4,
+        "play": [
+          {
+            "code": "CS",
+            "name": "盘数波胆",
+            "num": 12
+          },
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 16
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 15
+          }
+        ]
+      }
+    ],
+    "early": [
+      {
+        "name": "足球",
+        "code": "FT",
+        "num": 358,
+        "sortNum": 1,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 277
+          },
+          {
+            "code": "OE",
+            "name": "入球数&单/双",
+            "num": 239
+          },
+          {
+            "code": "TG",
+            "name": "总入球数",
+            "num": 239
+          },
+          {
+            "code": "HT/FT",
+            "name": "半场/全场",
+            "num": 217
+          },
+          {
+            "code": "CS",
+            "name": "波胆",
+            "num": 239
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 67
+          }
+        ]
+      },
+      {
+        "name": "篮球",
+        "code": "BK",
+        "num": 58,
+        "sortNum": 2,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 58
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 18
+          }
+        ]
+      },
+      {
+        "name": "排球",
+        "code": "VB",
+        "num": 14,
+        "sortNum": 4,
+        "play": [
+          {
+            "code": "CS",
+            "name": "盘数波胆",
+            "num": 12
+          },
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 16
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 15
+          }
+        ]
+      }
+    ],
+    "parlay": [
+      {
+        "name": "足球",
+        "code": "FT",
+        "num": 457,
+        "sortNum": 1,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 280
+          },
+          {
+            "code": "OE",
+            "name": "入球数&单/双",
+            "num": 242
+          },
+          {
+            "code": "TG",
+            "name": "总入球数",
+            "num": 239
+          },
+          {
+            "code": "HT/FT",
+            "name": "半场/全场",
+            "num": 217
+          },
+          {
+            "code": "CS",
+            "name": "波胆",
+            "num": 239
+          }
+        ]
+      },
+      {
+        "name": "篮球",
+        "code": "BK",
+        "num": 66,
+        "sortNum": 2,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 59
+          }
+        ]
+      },
+      {
+        "name": "网球",
+        "code": "TN",
+        "num": 3,
+        "sortNum": 3,
+        "play": [
+          {
+            "code": "CS",
+            "name": "盘数波胆",
+            "num": 0
+          },
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 3
+          }
+        ]
+      },
+      {
+        "name": "排球",
+        "code": "VB",
+        "num": 22,
+        "sortNum": 4,
+        "play": [
+          {
+            "code": "CS",
+            "name": "盘数波胆",
+            "num": 12
+          },
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 16
+          }
+        ]
+      },
+      {
+        "name": "羽球",
+        "code": "BM",
+        "num": 1,
+        "sortNum": 5,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 1
+          }
+        ]
+      }
+    ],
+    "atStart": [
+      {
+        "name": "足球",
+        "code": "FT",
+        "num": 2,
+        "sortNum": 1,
+        "play": [
+          {
+            "code": "HDP&OU",
+            "name": "让球&大小盘",
+            "num": 277
+          },
+          {
+            "code": "OE",
+            "name": "入球数&单/双",
+            "num": 239
+          },
+          {
+            "code": "TG",
+            "name": "总入球数",
+            "num": 239
+          },
+          {
+            "code": "HT/FT",
+            "name": "半场/全场",
+            "num": 217
+          },
+          {
+            "code": "CS",
+            "name": "波胆",
+            "num": 239
+          },
+          {
+            "code": "OUTRIGHT",
+            "name": "冠军",
+            "num": 67
+          }
+        ]
+      }
+    ]
+  }
 }

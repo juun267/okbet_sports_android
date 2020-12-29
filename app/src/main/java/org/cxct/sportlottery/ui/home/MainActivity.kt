@@ -7,15 +7,20 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
@@ -36,6 +41,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private lateinit var mainBinding: ActivityMainBinding
 
     private val mMarqueeAdapter = MarqueeAdapter()
+
+    private val navController by lazy {
+        findNavController(R.id.homeFragment)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +145,61 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> {
+                        navController.popBackStack(R.id.homeFragment, false)
+                    }
+                    1 -> {
+                        navGameFragment(MatchType.IN_PLAY)
+                    }
+                    2 -> {
+                        navGameFragment(MatchType.TODAY)
+                    }
+                    3 -> {
+                        navGameFragment(MatchType.EARLY)
+                    }
+                    4 -> {
+                        navGameFragment(MatchType.PARLAY)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+    }
+
+    private fun navGameFragment(matchType: MatchType) {
+        when (navController.currentDestination?.id) {
+            R.id.homeFragment -> {
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToGameFragment(
+                        matchType
+                    )
+                navController.navigate(action)
+            }
+            R.id.gameFragment -> {
+                val action =
+                    GameFragmentDirections.actionGameFragmentToGameFragment(
+                        matchType
+                    )
+                val navOptions =
+                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                navController.navigate(action, navOptions)
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        tabLayout.getTabAt(0)?.select()
     }
 
     private fun refreshView() {
