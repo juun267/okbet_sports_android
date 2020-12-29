@@ -29,7 +29,7 @@
             android:focusable="true"
             android:gravity="center"
             android:text="@string/inbox"
-            android:textColor="@color/button_focus"
+            android:textColor="@color/pumpkinOrange"
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:focusable="true"
             android:gravity="center"
             android:text="@string/unread_letters"
-            android:textColor="@color/button_focus"
+            android:textColor="@color/pumpkinOrange"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
