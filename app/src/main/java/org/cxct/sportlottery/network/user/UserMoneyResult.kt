@@ -13,5 +13,5 @@ data class UserMoneyResult(
     @Json(name = "success")
     val success: Boolean,
     @Json(name = "t")
-    val money: Double
+    val money: Double?
 )
