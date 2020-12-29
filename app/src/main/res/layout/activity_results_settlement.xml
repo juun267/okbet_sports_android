@@ -113,6 +113,7 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/et_key_word"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:paddingStart="10dp"

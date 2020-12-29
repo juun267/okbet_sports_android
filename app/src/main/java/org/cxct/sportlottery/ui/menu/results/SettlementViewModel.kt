@@ -65,8 +65,19 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         }
     }
 
+    /**
+     * 設置聯盟篩選條件
+     */
     fun setLeagueFilter(gameLeaguePosition: MutableSet<Int>) {
         gameLeagueSet = gameLeaguePosition
+        filterResult()
+    }
+
+    /**
+     * 設置關鍵字篩選條件
+     */
+    fun setKeyWordFilter(keyWord: String){
+        gameKeyWord = keyWord
         filterResult()
     }
 

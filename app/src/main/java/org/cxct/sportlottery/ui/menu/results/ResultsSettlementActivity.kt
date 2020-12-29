@@ -24,6 +24,7 @@ import org.cxct.sportlottery.databinding.ActivityResultsSettlementBinding
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -138,6 +139,10 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 
         ll_game_league.setOnClickListener {
             settlementLeagueBottomSheet.show()
+        }
+
+        et_key_word.afterTextChanged {
+            settlementViewModel.setKeyWordFilter(it)
         }
 
         //日期選擇
