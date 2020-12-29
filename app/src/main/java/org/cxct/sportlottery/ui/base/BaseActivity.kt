@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.base
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
@@ -13,6 +12,7 @@ import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import kotlin.reflect.KClass
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
     companion object {
@@ -26,12 +26,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        onTokenStateObserved()
+        onTokenStateChanged()
+        onNetworkException()
     }
 
-    private fun onTokenStateObserved() {
-        viewModel.baseResult.observe(this, Observer {
-            when (it.code) {
+    private fun onTokenStateChanged() {
+        viewModel.code.observe(this, Observer {
+            when (it) {
                 2014 -> {
                     //TODO deal response code 2014
                 }
@@ -42,6 +43,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     //TODO deal response code 2018
                 }
             }
+        })
+    }
+
+    private fun onNetworkException() {
+        viewModel.networkException.observe(this, Observer {
+            //TODO show network exception message
         })
     }
 
@@ -66,7 +73,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     /*关闭加载界面*/
     open fun hideLoading() {
         if (loadingView == null) {
-            Log.e(TAG, "loadingView不存在")
+            Timber.d("loadingView不存在")
         } else {
             loadingView?.rl_loading?.visibility = View.GONE
         }

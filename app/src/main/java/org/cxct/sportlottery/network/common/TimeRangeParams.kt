@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.network.common
 
-data class TimeRangeParams(
-    var startTime: Long? = null,
-    var endTime: Long? = null
-)
-
+interface TimeRangeParams {
+    val startTime: String?
+    val endTime: String?
+}

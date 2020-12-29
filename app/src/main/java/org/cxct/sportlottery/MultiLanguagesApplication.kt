@@ -6,11 +6,8 @@ import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
-import org.cxct.sportlottery.repository.OddsRepository
-import org.cxct.sportlottery.repository.PlayCateListRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.login.LoginViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
@@ -20,6 +17,9 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import timber.log.Timber
+import timber.log.Timber.DebugTree
+
 
 /**
  * App 內部切換語系
@@ -42,6 +42,7 @@ class MultiLanguagesApplication : Application() {
         single { SportMenuRepository() }
         single { OddsRepository() }
         single { PlayCateListRepository() }
+        single { SettlementRepository() }
     }
 
     override fun attachBaseContext(base: Context) {
@@ -78,5 +79,13 @@ class MultiLanguagesApplication : Application() {
         }
         RequestManager.init(this)
         NetworkStatusManager.init(this)
+
+        setupTimber()
+    }
+
+    private fun setupTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        }
     }
 }

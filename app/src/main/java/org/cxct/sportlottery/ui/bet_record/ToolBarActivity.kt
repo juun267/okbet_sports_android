@@ -22,7 +22,6 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class ToolBarActivity : BaseActivity<BetRecordViewModel>(BetRecordViewModel::class) {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityToolBarBinding>(this, R.layout.activity_tool_bar)
@@ -48,11 +47,6 @@ class ToolBarActivity : BaseActivity<BetRecordViewModel>(BetRecordViewModel::cla
                 drawer_layout.openDrawer(nav_right)
             }
         }
-    }
-
-    override fun onDestroy() {
-        Log.e(">>>", "onDestroy")
-        super.onDestroy()
     }
 
     private fun initMenu() {

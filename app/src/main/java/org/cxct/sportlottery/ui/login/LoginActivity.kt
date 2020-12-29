@@ -42,14 +42,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         })
 
-        viewModel.baseResult.observe(this, Observer {
+        viewModel.loginResult.observe(this, Observer {
             loading.visibility = View.GONE
-
-            when (it) {
-                is LoginResult? -> {
-                    updateUiWithResult(it)
-                }
-            }
+            updateUiWithResult(it)
         })
 
         setupUserName()
@@ -89,7 +84,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupLoginButton() {
-
         login.setOnClickListener(
             OnCheckConnectClickListener(
                 this,
@@ -103,16 +97,14 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     }
 
-    private fun updateUiWithResult(loginResult: LoginResult?) {
-        if (loginResult != null && loginResult.success) {
+    private fun updateUiWithResult(loginResult: LoginResult) {
+        if (loginResult.success) {
             loginResult.loginData?.let { loginData ->
                 updateUiWithUser(loginData.userName)
             }
             finish()
         } else {
-            loginResult?.let { loginFailedResult ->
-                showLoginFailed(loginFailedResult.msg)
-            }
+            showLoginFailed(loginResult.msg)
         }
     }
 

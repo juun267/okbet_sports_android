@@ -8,5 +8,6 @@ data class BetAddRequest(
     val stakeList: List<Stake>,
     val oddsChangeOption: Int,
     val oddsType: String,
-    val idParams: IdParams? = null
-)
+    override val userId: Int? = null,
+    override val platformId: Int? = null
+) : IdParams

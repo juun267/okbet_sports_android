@@ -51,8 +51,8 @@ object MetricsUtil {
         return metrics.heightPixels // 螢幕寬度（畫素
     }
 
-    //20200521 右側導覽列寬度為螢幕寬度一半
+    //側邊欄寬度(依螢幕寬比例)
     fun getMenuWidth(): Int {
-        return getScreenWidth() / 2
+        return (getScreenWidth() * 0.6).toInt()
     }
 }

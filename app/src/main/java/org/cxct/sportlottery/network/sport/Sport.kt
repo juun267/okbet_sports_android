@@ -16,4 +16,6 @@ data class Sport(
     val play: List<Play>?,
     @Json(name = "sortNum")
     val sortNum: Int
-)
+) {
+    var isSelected: Boolean = false
+}

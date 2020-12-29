@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.error
 
+import androidx.annotation.Nullable
 import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
@@ -9,6 +10,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddResult
@@ -19,6 +21,7 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import retrofit2.Converter
 import retrofit2.Response
@@ -27,6 +30,7 @@ import java.io.IOException
 
 object ErrorUtils {
 
+    @Nullable
     fun <T> parseError(response: Response<T>): T? {
         val converter: Converter<ResponseBody, APIError> = OneBoSportApi.retrofit
             .responseBodyConverter(APIError::class.java, arrayOfNulls<Annotation>(0))
@@ -80,6 +84,16 @@ object ErrorUtils {
                     (url.contains(LEAGUE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LeagueListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(OUTRIGHT_RESULT_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OutrightResultListResult(
+                            it.code,
+                            it.msg,
+                            null,
+                            it.success,
+                            null
+                        ) as T
                     }
                 }
             }

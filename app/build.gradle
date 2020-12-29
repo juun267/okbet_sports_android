@@ -3,13 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'multi-languages'
 apply plugin: 'kotlin-kapt'
-
-// Adding the apply plugin statement for safeargs
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
-
-// Adding the apply plugin statement for safeargs
-apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
@@ -156,6 +149,9 @@ dependencies {
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
+
+    //timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //calendar of date range picker
     implementation project(':awesome-calendar')

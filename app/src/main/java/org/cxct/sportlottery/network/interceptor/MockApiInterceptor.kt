@@ -2,7 +2,6 @@ package org.cxct.sportlottery.network.interceptor
 
 import android.content.Context
 import android.text.TextUtils
-import android.util.Log
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -18,9 +17,11 @@ import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
+import timber.log.Timber
 import java.io.IOException
 import kotlin.jvm.Throws
 
@@ -90,6 +91,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(PLAYCATE_TYPE_LIST) -> {
                     response = getMockJsonData(request, "playcate_type_list.mock")
                 }
+                path.contains(OUTRIGHT_RESULT_LIST) -> {
+                    response = getMockJsonData(request, "outright_result_list.mock")
+                }
             }
         }
         return response
@@ -102,7 +106,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
         data = try {
             readStringFromInputStream(assetManager.open("mock_api/$fileName"))
         } catch (e: IOException) {
-            Log.e(TAG, "getMockJsonData exception: $e")
+            Timber.e("getMockJsonData exception: $e")
             return null
         }
 
@@ -111,7 +115,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
 
     private fun getHttpSuccessResponse(request: Request, dataJson: String?): Response {
         return if (TextUtils.isEmpty(dataJson)) {
-            Log.w(TAG, "getHttpSuccessResponse: dataJson is empty!")
+            Timber.w("getHttpSuccessResponse: dataJson is empty!")
 
             Response.Builder()
                 .code(500)
