@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_menu.*
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.LanguageManager
@@ -16,10 +18,6 @@ import org.cxct.sportlottery.util.LanguageManager
  * 遊戲右側功能選單
  */
 class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
-    companion object {
-        private const val TAG = "MenuFragment"
-    }
-
     private var mDownMenuListener: View.OnClickListener? = null
 
     override fun onCreateView(
@@ -43,6 +41,8 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             LanguageManager.Language.EN -> getString(R.string.language_en)
             else -> getString(R.string.language_en)
         }
+
+        tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
     private fun initEvent() {
@@ -52,9 +52,19 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
+        btn_close.setOnClickListener {
+            mDownMenuListener?.onClick(btn_close)
+        }
+
         menu_game_result.setOnClickListener {
+            startActivity(Intent(activity, ResultsSettlementActivity::class.java))
+            mDownMenuListener?.onClick(menu_game_result)
+        }
+
+        menu_sign_out.setOnClickListener {
+            viewModel.logout()
             context?.run {
-                startActivity(Intent(activity, ResultsSettlementActivity::class.java))
+                MainActivity.reStart(this)
             }
         }
     }
