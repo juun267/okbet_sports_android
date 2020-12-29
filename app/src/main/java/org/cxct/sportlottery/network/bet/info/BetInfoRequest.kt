@@ -6,5 +6,6 @@ import org.cxct.sportlottery.network.bet.Odd
 data class BetInfoRequest(
     val oddsType: String,
     val oddsList: List<Odd>,
-    val idParams: IdParams? = null
-)
+    override val userId: Int? = null,
+    override val platformId: Int? = null
+) : IdParams

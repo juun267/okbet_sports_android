@@ -8,12 +8,11 @@ import kotlinx.android.synthetic.main.home_game_rv_header.view.*
 import kotlinx.android.synthetic.main.home_game_rv_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.util.TimeUtil
 
 class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var mOnSelectItemListener: OnSelectItemListener<Match>? = null
+    private var mOnSelectItemListener: OnSelectItemListener<GameEntity>? = null
     private var mDataList: MutableList<GameEntity> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -52,7 +51,7 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private fun updateViewHolderUI(viewHolder: HeaderViewHolder, data: GameEntity) {
         viewHolder.itemView.apply {
-            tv_game.text = data.gameName
+            tv_game.text = data.name
         }
     }
 
@@ -66,12 +65,12 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setOnClickListener {
                 if (data.match != null)
-                    mOnSelectItemListener?.onClick(data.match)
+                    mOnSelectItemListener?.onClick(data)
             }
         }
     }
 
-    fun setOnSelectItemListener(onSelectItemListener: OnSelectItemListener<Match>?) {
+    fun setOnSelectItemListener(onSelectItemListener: OnSelectItemListener<GameEntity>?) {
         mOnSelectItemListener = onSelectItemListener
     }
 
