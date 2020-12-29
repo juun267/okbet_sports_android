@@ -23,10 +23,10 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
 
         try {
             val typedArray = context.theme
-                .obtainStyledAttributes(attrs, R.styleable.HomeGameDrawer, 0, 0)
+                .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
 
-            view.tv_title.text = typedArray.getText(R.styleable.HomeGameDrawer_hgDrawer_title)
-            view.tv_count.text = typedArray.getText(R.styleable.HomeGameDrawer_hgDrawer_count)
+            view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
+            view.tv_count.text = typedArray.getText(R.styleable.CustomView_cvCount)
 
             rv_game.layoutManager = LinearLayoutManager(context)
             rv_game.adapter = homeGameDrawerAdapter

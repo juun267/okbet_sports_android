@@ -10,13 +10,13 @@ import org.cxct.sportlottery.ui.home.HomeGameCard
  */
 object BindingUtil {
     @JvmStatic
-    @BindingAdapter("hgCard_count")
+    @BindingAdapter("cvTitle")
     fun setTitle(view: HomeGameCard, title: String?) {
         view.setTitle(title)
     }
 
     @JvmStatic
-    @BindingAdapter("hgCard_count")
+    @BindingAdapter("cvCount")
     fun setCount(view: HomeGameCard, count: String?) {
         view.setCount(count)
     }
