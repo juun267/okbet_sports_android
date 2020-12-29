@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.bet_record.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -26,9 +24,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.common.IdParams
-import org.cxct.sportlottery.network.common.PagingParams
-import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import java.text.SimpleDateFormat
@@ -46,7 +41,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     lateinit var betStatusBottomSheet: BottomSheetDialog
     private lateinit var betStatusLvAdapter: BetStatusLvAdapter
 
-    private val betStatusList = mutableListOf<BetTypeItemData>()
+    private var betStatusList = listOf<BetTypeItemData>()
     private var simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -78,7 +73,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         betStatusBottomSheet = BottomSheetDialog(this.requireContext())
         betStatusBottomSheet.setContentView(bottomSheetView)
 
-        //避免bottomSheet的滑動與listView發生衝突
+        //避免bottomSheet與listView的滑動發生衝突
         betStatusBottomSheet.behavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
@@ -121,14 +116,10 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     }
 
-
-    private fun Map<Int, String>.addValueToArray(array: MutableList<BetTypeItemData>) =
-        this.forEach {
-            array.add(BetTypeItemData(it.key, it.value, false))
-        }
-
     private fun initListView() {
-        viewModel.statusNameMap.addValueToArray(betStatusList)
+        betStatusList = viewModel.statusNameMap.map {
+            BetTypeItemData(it.key, it.value, false)
+        }
 
         val selectNameList = mutableListOf<String>()
         betStatusLvAdapter = BetStatusLvAdapter(betStatusBottomSheet.lv_bet_type.context, betStatusList)
@@ -188,14 +179,6 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     private fun setObserver() {
 
-        viewModel.betRecordResult.observe(viewLifecycleOwner, {
-            if (it.success) {
-                view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment())
-            } else {
-                Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-            }
-        })
-
         /*
         betRecordViewModel.betListRequest.observe(viewLifecycleOwner, {
             val request = it ?: return@observe
@@ -254,6 +237,15 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             val endTimeStamp = viewModel.dateToTimeStamp(tv_end_date.text.toString(), false)
             val betListRequest = BetListRequest(statusList = statusList, startTime = startTimeStamp.toString(), endTime = endTimeStamp.toString())
             viewModel.searchBetRecordHistory(betListRequest)
+
+            viewModel.betRecordResult.observe(viewLifecycleOwner, {
+                if (it.success) {
+                    view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment())
+                } else {
+                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                }
+            })
+
         }
     }
 
@@ -272,7 +264,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
 data class BetTypeItemData(val code: Int? = null, val name: String = "", var isSelected: Boolean = false)
 
-class BetStatusLvAdapter(private val context: Context, private val dataList: MutableList<BetTypeItemData>) : BaseAdapter() {
+class BetStatusLvAdapter(private val context: Context, private val dataList: List<BetTypeItemData>) : BaseAdapter() {
 
     private var mOnSelectItemListener: OnSelectItemListener<BetTypeItemData>? = null
 

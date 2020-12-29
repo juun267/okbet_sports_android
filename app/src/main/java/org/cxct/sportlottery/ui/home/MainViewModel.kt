@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,10 +13,7 @@ import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 
-class MainViewModel(
-    private val loginRepository: LoginRepository,
-    private val sportMenuRepository: SportMenuRepository
-) : BaseViewModel() {
+class MainViewModel(private val loginRepository: LoginRepository, private val sportMenuRepository: SportMenuRepository) : BaseViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
     }
