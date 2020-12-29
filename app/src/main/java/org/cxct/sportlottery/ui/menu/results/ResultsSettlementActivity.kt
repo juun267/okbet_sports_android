@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.menu.results
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,7 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityResultsSettlementBinding
 import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -68,38 +68,14 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         setupSpinnerGameType() //設置體育種類列表
 
         settlementViewModel.matchResultListResult.observe(this) {
-            settlementRvAdapter.mDataList = it?.rows ?: listOf()
-            settlementRvAdapter.gameType = gameType
-            settlementRvAdapter.mSettlementRvListener = object :
-                SettlementRvAdapter.SettlementRvListener {
-                override fun getGameResultDetail(
-                    settleRvPosition: Int,
-                    gameResultRvPosition: Int,
-                    matchId: String
-                ) {
-                    settlementViewModel.getSettlementDetailData(
-                        settleRvPosition = settleRvPosition,
-                        gameResultRvPosition = gameResultRvPosition,
-                        matchId = matchId
-                    )
-                }
+            setSettleRvData(it?.rows)
 
-            }
             bottomSheetLeagueItemDataList = it?.rows?.map { rows ->
                 LeagueItemData(null, rows.league.name, true)
             }?.toMutableList<LeagueItemData>() ?: mutableListOf()
 
-//            setupSpinnerGameZone(spinnerGameZoneItem ?: mutableListOf()) //TODO Dean : 舊的篩選器UI
             setupLeagueList(bottomSheetLeagueItemDataList ?: mutableListOf<LeagueItemData>())
         }
-
-        settlementViewModel.setGameTypeFilter(spinner_game_type.selectedItemPosition, null, null)
-        //TODO Dean : 問題第一次進來的時候不會觸發loadingView
-        /*settlementViewModel.getSettlementData(
-            gameType = gameType,
-            null,
-            timeRangeParams = setupTimeApiFormat(0)
-        )*/
 
         settlementViewModel.gameResultDetailResult.observe(this) {
             settlementRvAdapter.mGameDetail = it //set Game Detail Data
@@ -129,16 +105,8 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
 
         settlementViewModel.apply {
-            settlementFilter.observe(this@ResultsSettlementActivity) {
-                if (gameType != it.gameType) {
-                    //比賽種類有變
-                    gameType = it.gameType
-                    getSettlementData(gameType = it.gameType, pagingParams = null, timeRangeParams = timeRangeParams)
-                } else {
-                    matchResultListResult.value?.rows?.filterIndexed { index, row ->
-                        it.gameZone?.contains(index) ?: false
-                    }
-                }
+            matchResultList.observe(this@ResultsSettlementActivity) {
+                setSettleRvData(it)
             }
         }
     }
@@ -178,12 +146,13 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                settlementViewModel.setGameTypeFilter(position)
+                val selectType = GameType.values().find { it.ordinal == position }?.key ?: ""
+                settlementViewModel.getSettlementData(selectType, null, timeRangeParams)
             }
         }
     }
 
-    private fun setupSpinnerGameType() { //TODO Dean : review, 加入聯賽篩選後需重新順一次流程
+    private fun setupSpinnerGameType() {
         spinner_game_type.let {
             val spinnerGameTypeItem = mutableListOf<String>()
             GameType.values().forEach { gameType -> spinnerGameTypeItem.add(getString(gameType.string)) }
@@ -234,7 +203,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             }
             settlementViewModel.setLeagueFilter(leagueSelectedSet)
             settlementLeagueAdapter.notifyDataSetChanged()
-//            tv_bet_status.text = selectNameList.joinToString(",") //TODO Dean : 確認該如何去做顯示
         }
 
         //取消選擇
@@ -249,7 +217,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             leagueSelectedSet.clear()
             settlementViewModel.setLeagueFilter(leagueSelectedSet)
             settlementLeagueAdapter.notifyDataSetChanged()
-//            tv_bet_status.text = selectNameList.joinToString(",")
         }
     }
 
@@ -276,32 +243,28 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                     bottomSheetLeagueItemDataList.forEach {
                         if (it.isSelected) selectCount++
                     }
-                    Log.e("Dean", "cbAll.isChecked = ${cbAll.isChecked} , selectCount = $selectCount , bottomSheetLeagueItemDataList.size = ${bottomSheetLeagueItemDataList.size}")
                     cbAll.isChecked = selectCount == bottomSheetLeagueItemDataList.size
-//                tv_bet_status.text = selectNameList.joinToString(",") //TODO Dean : 確認該如何去做顯示
                 }
             })
             checkbox_select_all.performClick() //預設為聯盟全選
         }
     }
 
-    //設置聯賽列表
-    private fun setupSpinnerGameZone(spinnerLeagueItem: MutableList<String>) {
-        spinner_game_zone.let {
-
-            it.adapter =
-                ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerLeagueItem)
-            it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
-
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    //TODO Dean : review filter, 聯賽篩選UI更換
-                    /*settlementViewModel.settlementFilter.value?.gameZone =
-                        spinnerLeagueItem[position]
-                    settlementViewModel.setGameTypeFilter(spinnerLeagueItem[position])*/
-                }
+    /**
+     * 設置比賽資料
+     * result : MatchResultListResult.row: List<Row>
+     */
+    private fun setSettleRvData(result: List<Row>?) {
+        settlementRvAdapter.mDataList = result ?: listOf()
+        settlementRvAdapter.gameType = gameType
+        settlementRvAdapter.mSettlementRvListener = object :
+            SettlementRvAdapter.SettlementRvListener {
+            override fun getGameResultDetail(
+                settleRvPosition: Int, gameResultRvPosition: Int, matchId: String
+            ) {
+                settlementViewModel.getSettlementDetailData(settleRvPosition = settleRvPosition, gameResultRvPosition = gameResultRvPosition, matchId = matchId)
             }
+
         }
     }
 
@@ -388,9 +351,7 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 data.isSelected = isChecked
                 ll_game_league_item.isSelected = isChecked
-                Log.e("Dean", "ll_game_league_item = ${ll_game_league_item.isSelected}")
                 notifyDataSetChanged()
-                Log.e("Dean", "mOnSelectItemListener = $mOnSelectItemListener")
                 mOnSelectItemListener?.onClick(data, position)
             }
         }

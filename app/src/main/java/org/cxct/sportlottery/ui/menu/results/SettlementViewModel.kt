@@ -1,34 +1,33 @@
 package org.cxct.sportlottery.ui.menu.results
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
+import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class SettlementViewModel(private val settlementRepository: SettlementRepository) : BaseViewModel() {
-    val settlementFilter: LiveData<SettlementFilter>
-        get() = _settlementFilter
-    val settlementData: LiveData<List<SettlementItem>>
-        get() = _settlementData
     val matchResultListResult: LiveData<MatchResultListResult?>
         get() = _matchResultListResult
     val gameResultDetailResult: LiveData<SettlementRvData?>
         get() = _gameResultDetailResult
+    val matchResultList: LiveData<List<Row>>
+        get() = _matchResultList
 
-
-    private var _settlementFilter = MutableLiveData<SettlementFilter>()
-    private val _settlementData = MutableLiveData<List<SettlementItem>>()
     private val _matchResultListResult = MutableLiveData<MatchResultListResult?>()
     private var _gameResultDetailResult = MutableLiveData<SettlementRvData?>(SettlementRvData(-1, -1, mutableMapOf()))
+    private val _matchResultList = MutableLiveData<List<Row>>()
+
+
+    private var gameLeagueSet = mutableSetOf<Int>()
+    private var gameKeyWord = ""
 
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
@@ -37,15 +36,6 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         pagingParams: PagingParams?,
         timeRangeParams: TimeRangeParams
     ) {
-        _settlementData.postValue(
-            listOf(
-                SettlementItem("FT", false),
-                SettlementItem("BK", false),
-                SettlementItem("TN", false),
-                SettlementItem("BM", true),
-                SettlementItem("VB", false)
-            )
-        )
         requestListener.requestIng(true)
         viewModelScope.launch {
             _matchResultListResult.postValue(
@@ -55,6 +45,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
                     gameType = gameType
                 )
             )
+            filterResult()
             requestListener.requestIng(false)
         }
     }
@@ -74,24 +65,24 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         }
     }
 
-    fun setGameTypeFilter(gameTypePosition: Int, gameZone: List<String>?, filterKeyWord: String?) {
-        //TODO Dean : 篩選後更新_settlementData
-        val gameType: String = GameType.values().find { it.ordinal == gameTypePosition }?.let { it.key } ?: ""
-        if (_settlementFilter.value == null)
-            _settlementFilter.value = SettlementFilter(gameType = gameType, gameZone = null, filterKeyWord = filterKeyWord)
+    fun setLeagueFilter(gameLeaguePosition: MutableSet<Int>) {
+        gameLeagueSet = gameLeaguePosition
+        filterResult()
     }
 
-    fun setGameTypeFilter(gameTypePosition: Int) {
-        //TODO Dean : 篩選後更新_settlementData
-        GameType.values().find { it.ordinal == gameTypePosition }?.let { _settlementFilter.value?.gameType = it.key }
-        _settlementFilter.value = _settlementFilter.value //touch observe
-    }
-
-    fun setLeagueFilter(gameLeaguePosition: Set<Int>) {
-        //TODO Dean : 篩選後更新_settlementData
-        _settlementFilter.value?.let {
-            it.gameZone = gameLeaguePosition
+    /**
+     * 依選擇聯盟、關鍵字進行篩選做資料顯示
+     */
+    private fun filterResult() {
+        val resultList = mutableListOf<Row>()
+        _matchResultListResult.value?.rows?.forEachIndexed { index, row ->
+            if (gameLeagueSet.contains(index)) {
+                if (gameKeyWord.isNullOrEmpty())
+                    resultList.add(row)
+                else if (row.league.name.contains(gameKeyWord))
+                    resultList.add(row)
+            }
         }
-        _settlementFilter.value = _settlementFilter.value //touch observe
+        _matchResultList.postValue(resultList)
     }
 }
