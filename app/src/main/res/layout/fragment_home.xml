@@ -182,36 +182,36 @@
                         android:id="@+id/card_game_soon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:hgCard_count="@{mainViewModel.asStartCount.toString()}"
-                        app:hgCard_icon="@drawable/ic_game_soon"
-                        app:hgCard_title="@string/game_soon" />
+                        app:cvCount="@{mainViewModel.asStartCount.toString()}"
+                        app:cvIcon="@drawable/ic_game_soon"
+                        app:cvTitle="@string/game_soon" />
 
                     <org.cxct.sportlottery.ui.home.HomeGameCard
                         android:id="@+id/card_tennis"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        app:hgCard_count="@{mainViewModel.allTennisCount.toString()}"
-                        app:hgCard_icon="@drawable/ic_tennis"
-                        app:hgCard_title="@string/tennis" />
+                        app:cvCount="@{mainViewModel.allTennisCount.toString()}"
+                        app:cvIcon="@drawable/ic_tennis"
+                        app:cvTitle="@string/tennis" />
 
                     <org.cxct.sportlottery.ui.home.HomeGameCard
                         android:id="@+id/card_badminton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        app:hgCard_count="@{mainViewModel.allBadmintonCount.toString()}"
-                        app:hgCard_icon="@drawable/ic_badminton"
-                        app:hgCard_title="@string/badminton" />
+                        app:cvCount="@{mainViewModel.allBadmintonCount.toString()}"
+                        app:cvIcon="@drawable/ic_badminton"
+                        app:cvTitle="@string/badminton" />
 
                     <org.cxct.sportlottery.ui.home.HomeGameCard
                         android:id="@+id/card_volleyball"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        app:hgCard_count="@{mainViewModel.allVolleyballCount.toString()}"
-                        app:hgCard_icon="@drawable/ic_volleyball"
-                        app:hgCard_title="@string/volleyball" />
+                        app:cvCount="@{mainViewModel.allVolleyballCount.toString()}"
+                        app:cvIcon="@drawable/ic_volleyball"
+                        app:cvTitle="@string/volleyball" />
 
                 </LinearLayout>
 
@@ -233,24 +233,24 @@
                     android:id="@+id/drawer_early"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hgDrawer_title="@string/home_tab_early"
-                    tools:hgDrawer_count="744" />
+                    app:cvTitle="@string/home_tab_early"
+                    tools:cvCount="744" />
 
                 <org.cxct.sportlottery.ui.home.HomeGameDrawer
                     android:id="@+id/drawer_in_play"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    app:hgDrawer_title="@string/home_tab_in_play"
-                    tools:hgDrawer_count="6" />
+                    app:cvTitle="@string/home_tab_in_play"
+                    tools:cvCount="6" />
 
                 <org.cxct.sportlottery.ui.home.HomeGameDrawer
                     android:id="@+id/drawer_today"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    app:hgDrawer_title="@string/home_tab_today"
-                    tools:hgDrawer_count="63" />
+                    app:cvTitle="@string/home_tab_today"
+                    tools:cvCount="63" />
 
             </LinearLayout>
 
