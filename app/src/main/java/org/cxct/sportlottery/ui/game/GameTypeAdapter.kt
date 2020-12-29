@@ -9,7 +9,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.sport.Sport
 
-class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
+class GameTypeAdapter(private val gameTypeListener: GameTypeListener) :
+    RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
     var data = listOf<Sport>()
         set(value) {
             field = value
@@ -20,7 +21,8 @@ class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item)
+
+        holder.bind(item, gameTypeListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +31,7 @@ class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Sport) {
+        fun bind(item: Sport, gameTypeListener: GameTypeListener) {
             itemView.type_game_count.text = item.num.toString()
 
             itemView.type_game_text.text = item.name
@@ -52,8 +54,10 @@ class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
                 }
             }
 
+            itemView.isSelected = item.isSelected
+
             itemView.setOnClickListener {
-                itemView.isSelected = !itemView.isSelected
+                gameTypeListener.onClick(item)
             }
         }
 
@@ -67,4 +71,8 @@ class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
             }
         }
     }
+}
+
+class GameTypeListener(val clickListener: (sport: Sport) -> Unit) {
+    fun onClick(sport: Sport) = clickListener(sport)
 }

@@ -5,13 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.Sport
+import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import timber.log.Timber
 
 
 class MainViewModel(private val loginRepository: LoginRepository, private val sportMenuRepository: SportMenuRepository) : BaseViewModel() {
@@ -95,7 +99,26 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
             _allBadmintonCount.postValue(getAllGameCount("BM", result))
             _allVolleyballCount.postValue(getAllGameCount("VB", result))
 
+            result.sportMenuData?.let {
+                initSportMenuSelectedState(it)
+            }
+
             _sportMenuResult.postValue(result)
+        }
+    }
+
+    private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
+        sportMenuData.inPlay.map { sport ->
+            sport.isSelected = (sportMenuData.inPlay.indexOf(sport) == 0)
+        }
+        sportMenuData.today.map { sport ->
+            sport.isSelected = (sportMenuData.today.indexOf(sport) == 0)
+        }
+        sportMenuData.early.map { sport ->
+            sport.isSelected = (sportMenuData.early.indexOf(sport) == 0)
+        }
+        sportMenuData.parlay.map { sport ->
+            sport.isSelected = (sportMenuData.parlay.indexOf(sport) == 0)
         }
     }
 
@@ -124,6 +147,74 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
             _matchPreloadInPlay.postValue(resultInPlay)
             _matchPreloadToday.postValue(resultToday)
         }
+    }
+
+    fun getLeagueList(matchType: MatchType, sport: Sport) {
+        updateSportSelectedState(matchType, sport)
+        getLeagueList(matchType)
+    }
+
+    fun getLeagueList(matchType: MatchType) {
+        var gameType: String? = null
+
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                gameType = _sportMenuResult.value?.sportMenuData?.inPlay?.find {
+                    it.isSelected
+                }?.code
+            }
+            MatchType.TODAY -> {
+                gameType = _sportMenuResult.value?.sportMenuData?.today?.find {
+                    it.isSelected
+                }?.code
+            }
+            MatchType.EARLY -> {
+                gameType = _sportMenuResult.value?.sportMenuData?.early?.find {
+                    it.isSelected
+                }?.code
+            }
+            MatchType.PARLAY -> {
+                gameType = _sportMenuResult.value?.sportMenuData?.parlay?.find {
+                    it.isSelected
+                }?.code
+            }
+            else -> {
+            }
+        }
+
+
+        Timber.d("post $gameType ${matchType.postValue}")
+    }
+
+    private fun updateSportSelectedState(matchType: MatchType, sport: Sport) {
+        val result = _sportMenuResult.value
+
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                result?.sportMenuData?.inPlay?.map {
+                    it.isSelected = (it == sport)
+                }
+            }
+            MatchType.TODAY -> {
+                result?.sportMenuData?.today?.map {
+                    it.isSelected = (it == sport)
+                }
+            }
+            MatchType.EARLY -> {
+                result?.sportMenuData?.early?.map {
+                    it.isSelected = (it == sport)
+                }
+            }
+            MatchType.PARLAY -> {
+                result?.sportMenuData?.parlay?.map {
+                    it.isSelected = (it == sport)
+                }
+            }
+            else -> {
+            }
+        }
+
+        _sportMenuResult.postValue(result)
     }
 
     private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
