@@ -145,6 +145,10 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             settlementViewModel.setKeyWordFilter(it)
         }
 
+        btn_refresh.setOnClickListener {
+            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+        }
+
         //日期選擇
         spinner_game_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -152,7 +156,8 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectType = GameType.values().find { it.ordinal == position }?.key ?: ""
-                settlementViewModel.getSettlementData(selectType, null, timeRangeParams)
+                gameType = selectType
+                settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
             }
         }
     }
