@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/main_light"
-    android:foreground="@drawable/effect_ripple_rectangle"
+    android:background="@drawable/effect_ripple_rectangle"
+    android:clickable="true"
+    android:focusable="true"
     android:minHeight="50dp"
+    tools:background="@color/main_light"
     tools:context="org.cxct.sportlottery.ui.menu.MenuItem">
 
     <TextView
