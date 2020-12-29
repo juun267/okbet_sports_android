@@ -51,6 +51,10 @@ class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
                     itemView.type_game_img.setImageResource(R.drawable.selector_gametype_row_vb)
                 }
             }
+
+            itemView.setOnClickListener {
+                itemView.isSelected = !itemView.isSelected
+            }
         }
 
         companion object {
