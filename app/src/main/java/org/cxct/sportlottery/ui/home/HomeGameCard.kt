@@ -15,11 +15,11 @@ class HomeGameCard @JvmOverloads constructor(context: Context, attrs: AttributeS
 
         try {
             val typedArray = context.theme
-                .obtainStyledAttributes(attrs, R.styleable.HomeGameCard, 0, 0)
+                .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
 
-            view.tv_title.text = typedArray.getText(R.styleable.HomeGameCard_hgCard_title)
-            view.tv_count.text = typedArray.getText(R.styleable.HomeGameCard_hgCard_count)
-            view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.HomeGameCard_hgCard_icon, -1))
+            view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
+            view.tv_count.text = typedArray.getText(R.styleable.CustomView_cvCount)
+            view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, -1))
         } catch (e: Exception) {
             e.printStackTrace()
         }

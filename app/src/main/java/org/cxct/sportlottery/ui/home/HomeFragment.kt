@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 
@@ -34,7 +33,7 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.matchPreloadEarly.observe(this.viewLifecycleOwner, Observer {
-            drawer_early.setCount(it.matchPreloadData?.num.toString())
+            drawer_early.setCount(it.matchPreloadData?.num?.toString())
             drawer_early.setRvGameData(it.matchPreloadData)
             drawer_early.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
@@ -44,7 +43,7 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.matchPreloadInPlay.observe(this.viewLifecycleOwner, Observer {
-            drawer_in_play.setCount(it.matchPreloadData?.num.toString())
+            drawer_in_play.setCount(it.matchPreloadData?.num?.toString())
             drawer_in_play.setRvGameData(it.matchPreloadData)
             drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
@@ -54,7 +53,7 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.matchPreloadToday.observe(this.viewLifecycleOwner, Observer {
-            drawer_today.setCount(it.matchPreloadData?.num.toString())
+            drawer_today.setCount(it.matchPreloadData?.num?.toString())
             drawer_today.setRvGameData(it.matchPreloadData)
             drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {

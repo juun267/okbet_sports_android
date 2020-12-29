@@ -23,10 +23,10 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
 
         try {
             val typedArray = context.theme
-                .obtainStyledAttributes(attrs, R.styleable.HomeGameDrawer, 0, 0)
+                .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
 
-            view.tv_title.text = typedArray.getText(R.styleable.HomeGameDrawer_hgDrawer_title)
-            view.tv_count.text = typedArray.getText(R.styleable.HomeGameDrawer_hgDrawer_count)
+            view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
+            view.tv_count.text = typedArray.getText(R.styleable.CustomView_cvCount)
 
             rv_game.layoutManager = LinearLayoutManager(context)
             rv_game.adapter = homeGameDrawerAdapter
@@ -55,14 +55,12 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
     fun setRvGameData(matchPreloadData: MatchPreloadData?) {
         val gameDataList = mutableListOf<GameEntity>()
         matchPreloadData?.datas?.forEach { data ->
-            //TODO simon test review gameName 之後 API 會帶
-            val headerEntity = GameEntity(ItemType.HEADER, data.code, getGameName(data.code))
+            val headerEntity = GameEntity(ItemType.HEADER, data.code, data.name)
             gameDataList.add(headerEntity)
 
             data.matchs.forEachIndexed { index, match ->
-
                 val itemEntity = GameEntity(
-                    ItemType.ITEM, data.code, getGameName(data.code), match, index != data.matchs.lastIndex
+                    ItemType.ITEM, data.code, data.name, match, index != data.matchs.lastIndex
                 )
                 gameDataList.add(itemEntity)
             }
@@ -70,17 +68,5 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
 
         homeGameDrawerAdapter.setData(gameDataList)
     }
-
-    private fun getGameName(code: String?): String? {
-        return when (code) {
-            "FT" -> context.getString(R.string.football)
-            "BK" -> context.getString(R.string.basketball)
-            "TN" -> context.getString(R.string.tennis)
-            "BM" -> context.getString(R.string.badminton)
-            "VB" -> context.getString(R.string.volleyball)
-            else -> null
-        }
-    }
-
 
 }
