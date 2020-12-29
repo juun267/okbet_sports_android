@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.util.SpaceItemDecoration
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -22,52 +23,61 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
-    // TODO: Rename and change types of parameters
-
-    val args: GameFragmentArgs by navArgs()
-
-    private var param1: String? = null
-    private var param2: String? = null
+    private val args: GameFragmentArgs by navArgs()
+    private val gameTypeAdapter = GameTypeAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game, container, false)
+        return inflater.inflate(R.layout.fragment_game, container, false).apply {
+
+            this.hall_game_type_list.apply {
+                this.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                this.adapter = gameTypeAdapter
+                addItemDecoration(
+                    SpaceItemDecoration(
+                        context,
+                        R.dimen.recyclerview_item_dec_spec
+                    )
+                )
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Toast.makeText(context, "type is ${args.matchType}", Toast.LENGTH_SHORT).show()
+
+        viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
+            when (args.matchType) {
+                MatchType.IN_PLAY -> {
+                    gameTypeAdapter.data = it.sportMenuData?.inPlay ?: listOf()
+                }
+                MatchType.TODAY -> {
+                    gameTypeAdapter.data = it.sportMenuData?.today ?: listOf()
+                }
+                MatchType.EARLY -> {
+                    gameTypeAdapter.data = it.sportMenuData?.early ?: listOf()
+                }
+                MatchType.PARLAY -> {
+                    gameTypeAdapter.data = it.sportMenuData?.parlay ?: listOf()
+                }
+                else -> {
+                }
+            }
+        })
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BetFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GameFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() {
+        }
     }
 }
