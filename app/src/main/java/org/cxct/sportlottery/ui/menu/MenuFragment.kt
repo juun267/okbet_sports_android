@@ -47,9 +47,7 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initEvent() {
         btn_change_language.setOnClickListener {
-            context?.run {
-                ChangeLanguageDialog(this).show()
-            }
+            ChangeLanguageDialog().show(parentFragmentManager, null)
         }
 
         btn_close.setOnClickListener {
