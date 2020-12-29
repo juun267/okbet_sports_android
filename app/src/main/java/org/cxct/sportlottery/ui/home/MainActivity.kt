@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
@@ -99,9 +100,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun initMenu() {
         try {
+            //關閉側邊欄滑動行為
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
             //選單選擇結束要收起選單
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
