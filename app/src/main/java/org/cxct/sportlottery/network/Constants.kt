@@ -37,6 +37,10 @@ object Constants {
     //outright
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
 
+    //infoCenter
+    const val USER_NOTICE_LIST = "/api/front/user/notice/list"
+    const val USER_NOTICE_READED = "/api/front/user/notice/readed/\${id}"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000
