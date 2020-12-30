@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.menu.results
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayListRes
 
 class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ViewHolderType {
-        FT, BK, BM, VB, TN, OTHER
+        FT, BK, BVT, OTHER
     }
 
     enum class SituationType {
@@ -47,6 +48,10 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.content_game_detail_result_bk_rv, parent, false)
             )
+            ViewHolderType.BVT.ordinal -> BVTDetailFirstItemViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.content_game_detail_result_bvt_rv, parent, false)
+            )
             else -> DetailItemViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.content_game_detail_result_ft_rv, parent, false)
@@ -69,6 +74,10 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 setupBkDetailFirstItem(holder.itemView)
                 setupDetailItem(itemView = holder.itemView, position = position)
             }
+            is BVTDetailFirstItemViewHolder -> {
+                setupBVTDetailFirstItem(holder.itemView)
+                setupDetailItem(itemView = holder.itemView, position = position)
+            }
             else -> {
                 holder.itemView.ll_game_detail_first_item.visibility = View.GONE
                 setupDetailItem(itemView = holder.itemView, position = position)
@@ -83,7 +92,8 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 when (gameType) {
                     GameType.FT.key -> ViewHolderType.FT.ordinal
                     GameType.BK.key -> ViewHolderType.BK.ordinal
-                    else -> ViewHolderType.BK.ordinal //TODO Dean : TN, BM, VB
+                    GameType.BM.key, GameType.VB.key, GameType.TN.key -> ViewHolderType.BVT.ordinal
+                    else -> -1
                 }
             }
             else -> ViewHolderType.OTHER.ordinal
@@ -169,6 +179,53 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         }
     }
 
+    private fun setupBVTDetailFirstItem(itemView: View) {
+        val firstPlat = mDataList?.find { it.status == 8 }
+        val secondPlat = mDataList?.find { it.status == 9 }
+        val thirdPlat = mDataList?.find { it.status == 10 }
+        val fourthPlat = mDataList?.find { it.status == 11 }
+        val fifthPlat = mDataList?.find { it.status == 12 }
+
+        itemView.apply {
+            ll_game_detail_first_item.visibility = View.VISIBLE
+
+            mMatchInfo?.let {
+                tv_home_name.text = it.homeName
+                tv_away_name.text = it.awayName
+            }
+
+            //第一盤
+            firstPlat?.let {
+                tv_home_first.text = it.homeScore?.toString() ?: ""
+                tv_away_first.text = it.awayScore?.toString() ?: ""
+            }
+
+            //第二盤
+            secondPlat?.let {
+                tv_home_second.text = it.homeScore?.toString() ?: ""
+                tv_away_second.text = it.awayScore?.toString() ?: ""
+            }
+
+            //第三盤
+            thirdPlat?.let {
+                tv_home_third.text = it.homeScore?.toString() ?: ""
+                tv_away_third.text = it.awayScore?.toString() ?: ""
+            }
+
+            //第四盤
+            fourthPlat?.let {
+                tv_home_fourth.text = it.homeScore?.toString() ?: ""
+                tv_away_fourth.text = it.awayScore?.toString() ?: ""
+            }
+
+            //第五盤
+            fifthPlat?.let {
+                tv_home_over_time.text = it.homeScore?.toString() ?: ""
+                tv_away_over_time.text = it.awayScore?.toString() ?: ""
+            }
+        }
+    }
+
     private fun setupDetailItem(itemView: View, position: Int) {
         itemView.apply {
             val data = mDetailData?.rows?.get(position)
@@ -182,6 +239,9 @@ class FtDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(item
 }
 
 class BkDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+}
+
+class BVTDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 }
 
 class DetailItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -57,6 +57,11 @@
     <string name="third_section">第三节</string>
     <string name="fourth_section">第四节</string>
     <string name="over_time">加时</string>
+    <string name="first_plat">第一盘</string>
+    <string name="second_plat">第二盘</string>
+    <string name="third_plat">第三盘</string>
+    <string name="fourth_plat">第四盘</string>
+    <string name="fifth_plat">第五盘</string>
 
     <!--login need translate later-->
     <string name="title_activity_login">LoginActivity</string>

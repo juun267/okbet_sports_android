@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.menu.results
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -166,7 +167,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             settlementGameTypeAdapter.setOnItemCheckedListener(object : OnSelectItemWithPositionListener<GameTypeItemData> {
                 override fun onClick(select: GameTypeItemData, position: Int) {
                     gameType = GameType.values()[position].key
-                    tv_game_type.text = select.name
+                    this@ResultsSettlementActivity.tv_game_type.text = select.name
                     settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
                 }
 
