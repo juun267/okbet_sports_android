@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_tool_bar.*
-import kotlinx.android.synthetic.main.view_tool_bar.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityToolBarBinding
 import org.cxct.sportlottery.ui.base.BaseActivity

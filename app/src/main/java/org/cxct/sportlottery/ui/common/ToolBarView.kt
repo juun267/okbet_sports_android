@@ -14,8 +14,6 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class ToolBarView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
-    //    lateinit var drawerLayout: DrawerLayout
-
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_tool_bar_drawer_layout, this, false)
         val typeArray = context.theme.obtainStyledAttributes(attrs, R.styleable.ToolBarView, 0, 0)
@@ -36,26 +34,6 @@ class ToolBarView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         val graph = myNavHostFragment.navController.navInflater.inflate(navigation)
         myNavHostFragment.navController.graph = graph
     }
-
-    /*
-        private fun addDrawerLayout() {
-            drawerLayout = DrawerLayout(context)
-            val fl = FrameLayout(context)
-            fl.id = R.id.frame_layout
-            val navList = ListView(context)
-
-            val lp = DrawerLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-
-            lp.gravity = Gravity.START
-
-            navList.layoutParams = lp
-
-            drawerLayout.addView(fl, FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-            drawerLayout.addView(navList)
-
-            addView(drawerLayout)
-        }
-    */
 
     private fun initMenu() {
         try {
