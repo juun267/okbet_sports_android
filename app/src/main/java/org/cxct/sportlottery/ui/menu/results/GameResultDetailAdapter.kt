@@ -25,6 +25,22 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         YELLOW_CARD, CORNER_KICK
     }
 
+/*    enum class StatusType(val code: Int) {
+        FIRST_HALF(6), //上半場
+        SECOND_HALF(7), //下半場
+        FIRST_SECTION(13), //第一節
+        SECOND_SECTION(14), //第二節
+        THIRD_SECTION(15), //第三節
+        FOURTH_SECTION(16), //第四節
+        OVER_TIME(110), //加時
+        FIRST_PLAT(8), //第一盤
+        SECOND_PLAT(9), //第二盤
+        THIRD_PLAT(10), //第三盤
+        FOURTH_PLAT(11), //第四盤
+        FIFTH_PLAT(12), //第五盤
+        END_GAME(100), //完賽(賽果)
+    }*/
+
     private var mMatchInfo: MatchInfo? = null //籃球用主隊客隊名稱
     private var mDataList: List<MatchStatus>? = null //罰牌, 角球資料於不同api中取得
     private var mDetailData: MatchResultPlayListResult? = null
@@ -101,8 +117,8 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     private fun setupFtDetailFirstItem(itemView: View) {
-        val firstHalf = mDataList?.find { it.status == 6 }
-        val fullGame = mDataList?.find { it.status == 100 } ?: mDataList?.find { it.status == 110 }
+        val firstHalf = mDataList?.find { it.status == StatusType.FIRST_HALF.code }
+        val fullGame = mDataList?.find { it.status == StatusType.OVER_TIME.code } ?: mDataList?.find { it.status == StatusType.END_GAME.code }
         fun getSituation(matchStatus: MatchStatus?, situationType: SituationType): String {
             when (situationType) {
                 SituationType.YELLOW_CARD -> {
@@ -133,11 +149,11 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     private fun setupBkDetailFirstItem(itemView: View) {
-        val firstSection = mDataList?.find { it.status == 13 }
-        val secondSection = mDataList?.find { it.status == 14 }
-        val thirdSection = mDataList?.find { it.status == 15 }
-        val fourthSection = mDataList?.find { it.status == 16 }
-        val overSection = mDataList?.find { it.status == 110 }
+        val firstSection = mDataList?.find { it.status == StatusType.FIRST_SECTION.code }
+        val secondSection = mDataList?.find { it.status == StatusType.SECOND_SECTION.code }
+        val thirdSection = mDataList?.find { it.status == StatusType.THIRD_SECTION.code }
+        val fourthSection = mDataList?.find { it.status == StatusType.FOURTH_SECTION.code }
+        val overSection = mDataList?.find { it.status == StatusType.OVER_TIME.code }
 
         itemView.apply {
             ll_game_detail_first_item.visibility = View.VISIBLE
@@ -180,11 +196,11 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     private fun setupBVTDetailFirstItem(itemView: View) {
-        val firstPlat = mDataList?.find { it.status == 8 }
-        val secondPlat = mDataList?.find { it.status == 9 }
-        val thirdPlat = mDataList?.find { it.status == 10 }
-        val fourthPlat = mDataList?.find { it.status == 11 }
-        val fifthPlat = mDataList?.find { it.status == 12 }
+        val firstPlat = mDataList?.find { it.status == StatusType.FIRST_PLAT.code }
+        val secondPlat = mDataList?.find { it.status == StatusType.SECOND_PLAT.code }
+        val thirdPlat = mDataList?.find { it.status == StatusType.THIRD_PLAT.code }
+        val fourthPlat = mDataList?.find { it.status == StatusType.FOURTH_PLAT.code }
+        val fifthPlat = mDataList?.find { it.status == StatusType.FIFTH_PLAT.code }
 
         itemView.apply {
             ll_game_detail_first_item.visibility = View.VISIBLE

@@ -91,11 +91,11 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             tv_home_name.text = data.matchInfo.homeName
             tv_away_name.text = data.matchInfo.awayName
 
-            val firstHalf = data.matchStatusList.find { it.status == 6 }
-            val secondHalf = data.matchStatusList.find { it.status == 7 }
+            val firstHalf = data.matchStatusList.find { it.status == StatusType.FIRST_HALF.code }
+            val secondHalf = data.matchStatusList.find { it.status == StatusType.SECOND_HALF.code }
             //110: 加時, 有加時先取加時
-            val endGame = data.matchStatusList.find { it.status == 110 } ?: data.matchStatusList.find { it.status == 100 }
-            val fullGame = data.matchStatusList.find { it.status == 110 } ?: data.matchStatusList.find { it.status == 100 }
+            val endGame = data.matchStatusList.find { it.status == StatusType.OVER_TIME.code } ?: data.matchStatusList.find { it.status == StatusType.END_GAME.code }
+            val fullGame = data.matchStatusList.find { it.status == StatusType.OVER_TIME.code } ?: data.matchStatusList.find { it.status == StatusType.END_GAME.code }
 
             data.matchStatusList.let {
                 tv_first_half_score.text = firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
