@@ -31,15 +31,13 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
         viewModel { MainViewModel(get(), get()) }
         viewModel { LoginViewModel(get()) }
-        viewModel { OddsDetailViewModel(get(),get()) }
+        viewModel { OddsDetailViewModel() }
         viewModel { SettlementViewModel(get()) }
     }
 
     private val repoModule = module {
         single { LoginRepository(get()) }
         single { SportMenuRepository() }
-        single { OddsRepository() }
-        single { PlayCateListRepository() }
         single { SettlementRepository() }
     }
 

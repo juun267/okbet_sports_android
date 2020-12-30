@@ -15,10 +15,14 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
 
-class MainViewModel(private val loginRepository: LoginRepository, private val sportMenuRepository: SportMenuRepository) : BaseViewModel() {
+class MainViewModel(
+    private val loginRepository: LoginRepository,
+    private val sportMenuRepository: SportMenuRepository
+) : BaseViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
     }
@@ -70,7 +74,14 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
 
 
     fun logout() {
-        loginRepository.logout()
+        viewModelScope.launch {
+            val result = doNetwork {
+                loginRepository.logout()
+            }
+
+            //TODO change timber to actual logout ui to da
+            Timber.d("logout result is ${result.success} ${result.code} ${result.msg}")
+        }
     }
 
     //獲取系統公告
@@ -86,9 +97,15 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
 
     //獲取體育菜單
     fun getSportMenu() {
+        val now = TimeUtil.getNowTimeStamp()
+        val todayStart = TimeUtil.getTodayStartTimeStamp()
+
         viewModelScope.launch {
             val result = doNetwork {
-                sportMenuRepository.getSportMenu()
+                sportMenuRepository.getSportMenu(
+                    now.toString(),
+                    todayStart.toString()
+                )
             }
 
             val asStartCount = result?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
@@ -218,11 +235,16 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
     }
 
     private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
-        val inPlayCount = sportMenuResult?.sportMenuData?.inPlay?.find { it.code == goalCode }?.num ?: 0
-        val todayCount = sportMenuResult?.sportMenuData?.today?.find { it.code == goalCode }?.num ?: 0
-        val earlyCount = sportMenuResult?.sportMenuData?.early?.find { it.code == goalCode }?.num ?: 0
-        val parlayCount = sportMenuResult?.sportMenuData?.parlay?.find { it.code == goalCode }?.num ?: 0
-        val atStartCount = sportMenuResult?.sportMenuData?.atStart?.find { it.code == goalCode }?.num ?: 0
+        val inPlayCount =
+            sportMenuResult?.sportMenuData?.inPlay?.find { it.code == goalCode }?.num ?: 0
+        val todayCount =
+            sportMenuResult?.sportMenuData?.today?.find { it.code == goalCode }?.num ?: 0
+        val earlyCount =
+            sportMenuResult?.sportMenuData?.early?.find { it.code == goalCode }?.num ?: 0
+        val parlayCount =
+            sportMenuResult?.sportMenuData?.parlay?.find { it.code == goalCode }?.num ?: 0
+        val atStartCount =
+            sportMenuResult?.sportMenuData?.atStart?.find { it.code == goalCode }?.num ?: 0
 
         return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
     }

@@ -73,7 +73,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
         settlementViewModel.getSettlementData(
             gameType = gameType,
-            null,
+            pagingParams = null,
             timeRangeParams = setupTimeApiFormat(0)
         )
 
