@@ -42,16 +42,12 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
 
-    val leagueListMsg: LiveData<String>
-        get() = _leagueListMsg
-
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadEarly = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
-    private val _leagueListMsg = MutableLiveData<String>()
 
     private val _asStartCount = MutableLiveData<Int>()
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -239,8 +235,6 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
 
             if (result.success) {
                 _leagueListResult.postValue(result)
-            } else {
-                _leagueListMsg.postValue(result.msg)
             }
         }
     }

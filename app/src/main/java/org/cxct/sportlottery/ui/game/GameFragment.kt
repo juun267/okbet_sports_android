@@ -54,7 +54,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getLeagueList(args.matchType)
 
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
 
@@ -76,13 +75,14 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.leagueListResult.observe(this.viewLifecycleOwner,
+            object : Observer<LeagueListResult> {
+                override fun onChanged(t: LeagueListResult?) {
+                    Timber.d("${t?.total}")
+                }
+            })
 
-        })
-
-        viewModel.leagueListMsg.observe(this.viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
+        viewModel.getLeagueList(args.matchType)
     }
 
     companion object {
