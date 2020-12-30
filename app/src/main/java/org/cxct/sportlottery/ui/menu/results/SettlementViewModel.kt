@@ -77,7 +77,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     /**
      * 設置關鍵字篩選條件
      */
-    fun setKeyWordFilter(keyWord: String){
+    fun setKeyWordFilter(keyWord: String) {
         gameKeyWord = keyWord
         filterResult()
     }
@@ -86,15 +86,8 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
      * 依選擇聯盟、關鍵字進行篩選做資料顯示
      */
     private fun filterResult() {
-        val resultList = mutableListOf<Row>()
-        _matchResultListResult.value?.rows?.forEachIndexed { index, row ->
-            if (gameLeagueSet.contains(index)) {
-                if (gameKeyWord.isNullOrEmpty())
-                    resultList.add(row)
-                else if (row.league.name.contains(gameKeyWord))
-                    resultList.add(row)
-            }
-        }
-        _matchResultList.postValue(resultList)
+        _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
+            gameLeagueSet.contains(index) && (gameKeyWord.isNullOrEmpty() || row.league.name.contains(gameKeyWord))
+        })
     }
 }
