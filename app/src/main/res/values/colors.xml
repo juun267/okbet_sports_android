@@ -15,6 +15,7 @@
     <color name="lightGray">#999999</color>
 
     <color name="main">#445E77</color>
+    <color name="main_light">#2c3e50</color>
     <color name="main_dark">#223549</color>
     <color name="main_sombre">#1A2938</color>
 
@@ -23,12 +24,18 @@
     <color name="textColorDark">#202020</color>
     <color name="textOrange">#cb4700</color>
     <color name="textGray">#666666</color>
+    <color name="textGolden">#e0a556</color>
+    <color name="textGrayLight">#94969f</color>
 
     <color name="text_faint">#80FFFFFF</color>
     <color name="text_tab_default">#202020</color>
     <color name="text_focus">#FF9900</color>
+    <color name="text_spread">#FF4B2C</color>
+    <color name="text_brownish_gray">#666666</color>
 
     <color name="button_focus">#F98B00</color>
+    <color name="button_unfocus">#F7F7F7</color>
+    <color name="pumpkinOrange">#F98B00</color>
 
     <color name="tab_ripple">#1AF98B00</color>
 

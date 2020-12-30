@@ -6,6 +6,8 @@ import liveData
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
+import org.cxct.sportlottery.network.index.LogoutRequest
+import org.cxct.sportlottery.network.index.LogoutResult
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
@@ -38,11 +40,17 @@ class LoginRepository(private val androidContext: Context) {
         return loginResponse
     }
 
-    fun logout() {
-        with(sharedPref.edit()) {
-            remove(KEY_TOKEN)
-            remove(KEY_USERNAME)
-            apply()
+    suspend fun logout(): Response<LogoutResult> {
+        val logoutResponse = OneBoSportApi.indexService.logout(LogoutRequest())
+
+        if (logoutResponse.isSuccessful) {
+            with(sharedPref.edit()) {
+                remove(KEY_TOKEN)
+                remove(KEY_USERNAME)
+                apply()
+            }
         }
+
+        return logoutResponse
     }
 }
