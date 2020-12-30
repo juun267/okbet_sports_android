@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.user.UserMoneyResult
 import retrofit2.Converter
 import retrofit2.Response
 import java.io.IOException
@@ -94,6 +96,10 @@ object ErrorUtils {
                             it.success,
                             null
                         ) as T
+                    }
+                    (url.contains(USER_MONEY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return UserMoneyResult(it.code, it.msg, it.success, null) as T
                     }
                 }
             }

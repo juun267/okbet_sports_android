@@ -37,6 +37,9 @@ object Constants {
     //outright
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
 
+    //user
+    const val USER_MONEY = "/api/front/user/money"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000
