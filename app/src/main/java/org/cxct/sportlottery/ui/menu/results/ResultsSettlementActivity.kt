@@ -15,7 +15,10 @@ import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_game_type.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_league_type.*
+import kotlinx.android.synthetic.main.home_game_rv_header.*
+import kotlinx.android.synthetic.main.item_listview_settlement_game_type.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
@@ -34,6 +37,8 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     private lateinit var settlementBinding: ActivityResultsSettlementBinding
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
+    lateinit var settlementGameTypeBottomSheet: BottomSheetDialog
+    private lateinit var settlementGameTypeAdapter: SettlementGameTypeAdapter
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
     private val settlementViewModel: SettlementViewModel by viewModel()
@@ -63,7 +68,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             rv_date.adapter = settlementDateRvAdapter
         }
 
-        initView()
         initEvent()
 
         setupSpinnerGameType() //設置體育種類列表
@@ -112,21 +116,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         }
     }
 
-    private fun initView() {
-        spinner_game_type.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            listOf("${getString(R.string.football)}")
-        )
-        spinner_game_zone.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            listOf("${getString(R.string.league)}")
-        )
-
-        tv_league.text = getString(R.string.league)
-    }
-
     private fun initEvent() {
         settlementViewModel.requestListener = object : RequestListener {
             override fun requestIng(loading: Boolean) {
@@ -141,6 +130,10 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             settlementLeagueBottomSheet.show()
         }
 
+        ll_game_type.setOnClickListener {
+            settlementGameTypeBottomSheet.show()
+        }
+
         et_key_word.afterTextChanged {
             settlementViewModel.setKeyWordFilter(it)
         }
@@ -148,31 +141,42 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         btn_refresh.setOnClickListener {
             settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
         }
-
-        //日期選擇
-        spinner_game_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectType = GameType.values().find { it.ordinal == position }?.key ?: ""
-                gameType = selectType
-                settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
-            }
-        }
     }
 
     private fun setupSpinnerGameType() {
-        spinner_game_type.let {
-            val spinnerGameTypeItem = mutableListOf<String>()
-            GameType.values().forEach { gameType -> spinnerGameTypeItem.add(getString(gameType.string)) }
-            it.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerGameTypeItem)
+        initSettleGameTypeBottomSheet()
+        setupSettleGameTypeBottomSheet()
+    }
 
+    private fun initSettleGameTypeBottomSheet() {
+        tv_game_type.text = getString(GameType.values()[0].string)
+        gameType = GameType.values()[0].key
+        settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+    }
+
+    private fun setupSettleGameTypeBottomSheet() {
+        val gameTypeBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_game_type, null)
+        settlementGameTypeBottomSheet = BottomSheetDialog(this@ResultsSettlementActivity)
+        settlementGameTypeBottomSheet.apply {
+            setContentView(gameTypeBottomSheetView)
+            val gameTypeItem = mutableListOf<GameTypeItemData>()
+            GameType.values().forEach { gameType -> gameTypeItem.add(GameTypeItemData(null, getString(gameType.string))) }
+            settlementGameTypeAdapter = SettlementGameTypeAdapter(lv_game_type.context, gameTypeItem)
+            lv_game_type.adapter = settlementGameTypeAdapter
+            settlementGameTypeAdapter.setOnItemCheckedListener(object : OnSelectItemWithPositionListener<GameTypeItemData> {
+                override fun onClick(select: GameTypeItemData, position: Int) {
+                    gameType = GameType.values()[position].key
+                    tv_game_type.text = select.name
+                    settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+                }
+
+            })
         }
     }
 
     private fun settleLeagueBottomSheet() {
         //TODO Dean : 看有沒有font-family可以做使用, 此處文字的style沒有與Zeplin相符
+        tv_league.text = getString(R.string.league)
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_league_type, null)
         settlementLeagueBottomSheet = BottomSheetDialog(this@ResultsSettlementActivity)
         settlementLeagueBottomSheet.apply {
@@ -334,6 +338,7 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 }
 
 data class LeagueItemData(val code: Int? = null, val name: String = "", var isSelected: Boolean = true)
+data class GameTypeItemData(val code: Int? = null, val name: String = "")
 
 interface OnSelectItemWithPositionListener<LeagueItemData> {
     fun onClick(select: LeagueItemData, position: Int)
@@ -363,6 +368,52 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
                 ll_game_league_item.isSelected = isChecked
                 notifyDataSetChanged()
                 mOnSelectItemListener?.onClick(data, position)
+            }
+        }
+
+        return view
+    }
+
+    override fun getCount(): Int {
+        return dataList.size
+    }
+
+    override fun getItem(position: Int): Any? {
+        return null
+    }
+
+    override fun getItemId(position: Int): Long {
+        return 0
+    }
+
+}
+
+class SettlementGameTypeAdapter(private val context: Context, private val dataList: MutableList<GameTypeItemData>) : BaseAdapter() {
+
+    private var mOnSelectItemListener: OnSelectItemWithPositionListener<GameTypeItemData>? = null
+    private var selectedPosition = 0
+
+    fun setOnItemCheckedListener(onSelectItemListener: OnSelectItemWithPositionListener<GameTypeItemData>) {
+        this.mOnSelectItemListener = onSelectItemListener
+    }
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.item_listview_settlement_game_type, parent, false)
+        val data = dataList[position]
+
+        view.apply {
+            tv_game_type.text = data.name
+            if (position == selectedPosition)
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+            else
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            ll_game_type_item.setOnClickListener {
+                if (selectedPosition != position) {
+                    //                data.isSelected = !data.isSelected
+                    selectedPosition = position
+                    notifyDataSetChanged()
+                    mOnSelectItemListener?.onClick(data, position)
+                }
             }
         }
 

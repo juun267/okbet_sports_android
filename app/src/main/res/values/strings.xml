@@ -38,6 +38,7 @@
     <string name="select_all_league">选择所有联赛</string>
     <string name="select_cancel">取消选择</string>
     <string name="search">搜寻</string>
+    <string name="game_type">球种</string>
     <string name="first_half_game">上半场</string>
     <string name="second_half_game">下半场</string>
     <string name="full_game">全场</string>6
