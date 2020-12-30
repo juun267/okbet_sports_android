@@ -91,10 +91,11 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             tv_home_name.text = data.matchInfo.homeName
             tv_away_name.text = data.matchInfo.awayName
 
-            val firstHalf = data.matchStatusList.find { it.status == 6 }
-            val secondHalf = data.matchStatusList.find { it.status == 7 }
-            val endGame = data.matchStatusList.find { it.status == 100 }
-            val fullGame = data.matchStatusList.find { it.status == 100 }
+            val firstHalf = data.matchStatusList.find { it.status == StatusType.FIRST_HALF.code }
+            val secondHalf = data.matchStatusList.find { it.status == StatusType.SECOND_HALF.code }
+            //110: 加時, 有加時先取加時
+            val endGame = data.matchStatusList.find { it.status == StatusType.OVER_TIME.code } ?: data.matchStatusList.find { it.status == StatusType.END_GAME.code }
+            val fullGame = data.matchStatusList.find { it.status == StatusType.OVER_TIME.code } ?: data.matchStatusList.find { it.status == StatusType.END_GAME.code }
 
             data.matchStatusList.let {
                 tv_first_half_score.text = firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
@@ -104,7 +105,7 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             }
 
             val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("yyyy${context.getString(R.string.year)}MM${context.getString(R.string.month)}dd${context.getString(R.string.day)} HH:mm")
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
             tv_time.text = dateFormat.format(data.matchInfo.startTime.let {
                 calendar.timeInMillis = it.toLong()
                 calendar.time
@@ -139,6 +140,7 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
                 rv_time_line_detail.adapter = GameResultDetailAdapter()
                 (rv_time_line_detail.adapter as GameResultDetailAdapter).setData(
                     gameType,
+                    mDataList[position].matchInfo,
                     mDataList[position].matchStatusList,
                     mGameDetailData?.settlementRvMap?.get(RvPosition(positionKey, position))
                 )

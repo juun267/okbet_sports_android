@@ -3,7 +3,9 @@
     <item>
         <layer-list>
             <item android:drawable="@drawable/bg_frame_up_5dp_light_blue" />
-            <item android:drawable="@drawable/ic_arrow_gray" android:gravity="start|center_vertical" android:left="10dp" />
+            <item android:gravity="start|center_vertical" android:left="10dp">
+                <rotate android:drawable="@drawable/ic_arrow_dark" android:fromDegrees="180" android:pivotX="50%" android:pivotY="50%" />
+            </item>
         </layer-list>
     </item>
 </selector>
