@@ -13,36 +13,9 @@
             type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <!-- toolBar -->
-        <org.cxct.sportlottery.ui.common.ToolBarView
-            android:id="@+id/tool_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:title="@string/bet_record"
-            app:fragmentNavGraph="@navigation/bet_record_navigation"/>
-<!--
-        <FrameLayout
-            android:id="@+id/frag_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-
-            <fragment
-                android:id="@+id/container"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/bet_record_navigation" />
-
-        </FrameLayout>
-        -->
-<!--
+        android:layout_height="match_parent">
 
         <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/drawer_layout"
@@ -54,10 +27,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- toolBar -->
+
+                <org.cxct.sportlottery.ui.common.ToolBarView
+                    android:id="@+id/tool_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+
+                    <fragment
+                        android:id="@+id/container"
+                        android:name="androidx.navigation.fragment.NavHostFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:defaultNavHost="true"
+                        app:navGraph="@navigation/bet_record_navigation" />
+
+                </FrameLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            &lt;!&ndash; 側邊導覽列 &ndash;&gt;
+            <!-- 側邊導覽列 -->
             <com.google.android.material.navigation.NavigationView
                 android:id="@+id/nav_right"
                 android:layout_width="wrap_content"
@@ -66,7 +60,6 @@
             </com.google.android.material.navigation.NavigationView>
 
         </androidx.drawerlayout.widget.DrawerLayout>
--->
 
-    </LinearLayout>
+    </FrameLayout>
 </layout>

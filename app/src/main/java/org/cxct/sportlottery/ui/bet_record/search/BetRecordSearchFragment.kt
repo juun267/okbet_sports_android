@@ -59,10 +59,10 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         initBottomSheetDialog()
         initListView()
         setOnClick()
-        setTv()
+        setObserver()
     }
 
-    private fun setTv() {
+    private fun setObserver() {
         viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
                 tv_bet_status.text = list.joinToString(",") { it.name }
         })
@@ -216,11 +216,14 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 if (!it.hasStartDate) tv_start_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
                 if (!it.hasEndDate) tv_end_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
 
-                if (it.hasStatus && it.hasStartDate && it.hasEndDate)
+                if (it.hasStatus && it.hasStartDate && it.hasEndDate) {
+                    loading()
                     viewModel.searchBetRecordHistory(statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
+                }
             })
 
             viewModel.betRecordResult.observe(viewLifecycleOwner, {
+                hideLoading()
                 if (it.success) {
                     view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment())
                 } else {
