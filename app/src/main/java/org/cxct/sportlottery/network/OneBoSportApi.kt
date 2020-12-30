@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.sport.SportService
+import org.cxct.sportlottery.network.user.UserService
 
 
 object OneBoSportApi {
@@ -76,5 +77,11 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(OutrightService::class.java)
+    }
+
+    val userService: UserService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(UserService::class.java)
     }
 }

@@ -10,6 +10,8 @@
     <color name="colorWhiteGray">#707070</color>
 
     <color name="black">#000000</color>
+    <color name="gray">#EEEEEE</color>
+    <color name="lightGray">#999999</color>
 
     <color name="main">#445E77</color>
     <color name="main_light">#2c3e50</color>
@@ -27,7 +29,11 @@
     <color name="text_faint">#80FFFFFF</color>
     <color name="text_tab_default">#202020</color>
     <color name="text_focus">#FF9900</color>
+    <color name="text_spread">#FF4B2C</color>
+    <color name="text_brownish_gray">#666666</color>
 
+    <color name="button_focus">#F98B00</color>
+    <color name="button_unfocus">#F7F7F7</color>
     <color name="pumpkinOrange">#F98B00</color>
 
     <color name="tab_ripple">#1AF98B00</color>
@@ -61,7 +67,7 @@
     <color name="white">#FFFFFF</color>
 
     <!--灰色系-->
-    <color name="gray">#d4d4d4</color>
+    <color name="gray1">#d4d4d4</color>
     <color name="gray2">#c6c4c7</color>
     <color name="gray3">#666666</color>
     <color name="gray4">#585867</color>
@@ -87,4 +93,5 @@
     <color name="blue3">#445e77</color>
 
     <color name="date_select_orange">#F98B00</color>
+
 </resources>

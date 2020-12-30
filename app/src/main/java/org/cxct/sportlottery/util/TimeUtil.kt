@@ -44,4 +44,15 @@ object TimeUtil {
         return if (timeType == TimeType.START) startTimeStamp else endTimeStamp
     }
 
+    fun getNowTimeStamp(): Long {
+        val date = Calendar.getInstance().time
+        return date.time / 1000
+    }
+
+    fun getTodayStartTimeStamp(): Long {
+        val format = "yyyy-MM-dd"
+        val date = Calendar.getInstance().time
+        val timeFormat = timeFormat(date.time, format)
+        return SimpleDateFormat(format).parse(timeFormat).time / 1000
+    }
 }

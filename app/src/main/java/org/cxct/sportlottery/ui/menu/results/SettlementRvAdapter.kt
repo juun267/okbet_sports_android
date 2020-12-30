@@ -66,10 +66,12 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
                     tv_end_game.visibility = View.VISIBLE
                     tv_full_game.visibility = View.GONE
                 }
-                //TODO Dean : 待確認
-                GameType.TN.key -> ""
-                GameType.BM.key -> ""
-                GameType.VB.key -> ""
+                GameType.TN.key, GameType.BM.key, GameType.VB.key -> {
+                    tv_first_half.visibility = View.GONE
+                    tv_second_half.visibility = View.GONE
+                    tv_end_game.visibility = View.VISIBLE
+                    tv_full_game.visibility = View.GONE
+                }
                 else -> ""
             }
 

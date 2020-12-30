@@ -4,12 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
@@ -18,6 +23,7 @@ import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
@@ -59,7 +65,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         initMenu()
         initRvMarquee()
         refreshTabLayout(null)
-        refreshView()
+        initObserve()
     }
 
     override fun onResume() {
@@ -97,9 +103,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun initMenu() {
         try {
+            //關閉側邊欄滑動行為
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
             //選單選擇結束要收起選單
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
@@ -202,12 +210,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         tabLayout.getTabAt(0)?.select()
     }
 
-    private fun refreshView() {
-        //登入資料
+    private fun initObserve() {
         viewModel.token.observe(this) {
-            //TODO simon test review 登入成功後刷新資料，之後再看要如何修改
+            //登入成功後要做的事
             queryData()
+            updateAvatar()
+            updateMenuFragmentUI()
         }
+
         viewModel.messageListResult.observe(this, Observer {
             hideLoading()
             updateUiWithResult(it)
@@ -238,6 +248,22 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun updateAvatar() {
+        Glide.with(this)
+            .load(sLoginData?.iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .into(iv_head) //載入頭像
+    }
+
+    private fun updateMenuFragmentUI() {
+        try {
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            menuFrag.updateUI()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     private fun queryData() {
         getAnnouncement()
         getSportMenu()
@@ -251,4 +277,31 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         loading()
         viewModel.getSportMenu()
     }
+
+    fun getScrollView(): NestedScrollView {
+        return mainBinding.scrollView
+    }
+
+    fun getAppBarLayout(): AppBarLayout {
+        return mainBinding.appBarLayout
+    }
+
+    fun getHeight(): Int {
+
+        var statusBarHeight = 0
+        val resourceId = applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusBarHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
+        }
+
+        var navHeight = 0
+        val navResourceId = applicationContext.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        if (navResourceId > 0) {
+            navHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
+        }
+
+        return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height * 2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusBarHeight - navHeight
+
+    }
+
 }

@@ -183,7 +183,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_square_shape_4dp_menu_blue"
-            android:text="@string/search"
+            android:text="@string/inquire"
             android:textColor="@color/white"
             android:backgroundTint="@color/orange"
             app:layout_constraintEnd_toEndOf="@+id/btn_past30days"

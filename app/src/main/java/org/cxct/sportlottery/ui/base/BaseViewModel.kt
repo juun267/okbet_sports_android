@@ -36,6 +36,7 @@ abstract class BaseViewModel : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 _networkException.postValue(true)
             }
         }

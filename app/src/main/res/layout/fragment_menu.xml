@@ -49,12 +49,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:text="￥0.00"
             android:textColor="@color/pumpkinOrange"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            tools:text="￥275.00" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
         <ImageView
             android:id="@+id/btn_close"

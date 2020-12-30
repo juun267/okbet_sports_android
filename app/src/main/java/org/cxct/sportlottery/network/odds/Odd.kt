@@ -7,6 +7,8 @@ import com.squareup.moshi.JsonClass
 data class Odd(
     @Json(name = "id")
     val id: String,
+    @Json(name = "name")
+    val name: String,
     @Json(name = "odds")
     val odds: Double,
     @Json(name = "producerId")
@@ -14,5 +16,9 @@ data class Odd(
     @Json(name = "spread")
     val spread: String?,
     @Json(name = "status")
-    val status: Int
+    val status: Int,
+
+    var isSelect: Boolean = false
+
+
 )
