@@ -39,7 +39,7 @@ object Constants {
 
     //infoCenter
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
-    const val USER_NOTICE_READED = "/api/front/user/notice/readed/\${id}"
+    const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
