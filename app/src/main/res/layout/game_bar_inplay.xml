@@ -48,6 +48,7 @@
         tools:textColor="@android:color/white" />
 
     <Button
+        android:id="@+id/inplay_ou"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginEnd="5dp"

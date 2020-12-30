@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -42,12 +43,18 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
 
+    val curPlayType: LiveData<PlayType>
+        get() = _curPlayType
+
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadEarly = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
+    private val _curPlayType = MutableLiveData<PlayType>().apply {
+        value = PlayType.OU
+    }
 
     private val _asStartCount = MutableLiveData<Int>()
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -237,6 +244,10 @@ class MainViewModel(private val loginRepository: LoginRepository, private val sp
                 _leagueListResult.postValue(result)
             }
         }
+    }
+
+    fun setPlayType(playType: PlayType) {
+        _curPlayType.postValue(playType)
     }
 
     private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
