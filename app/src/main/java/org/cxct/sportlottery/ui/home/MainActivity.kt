@@ -214,10 +214,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.token.observe(this) {
             //登入成功後要做的事
             queryData()
-            Glide.with(this)
-                .load(sLoginData?.iconUrl)
-                .apply(RequestOptions().placeholder(R.drawable.ic_head))
-                .into(iv_head) //載入頭像
+            updateAvatar()
+            updateMenuFragmentUI()
         }
 
         viewModel.messageListResult.observe(this, Observer {
@@ -247,6 +245,22 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun updateUiWithResult(sportMenuResult: SportMenuResult) {
         if (sportMenuResult.success) {
             refreshTabLayout(sportMenuResult)
+        }
+    }
+
+    private fun updateAvatar() {
+        Glide.with(this)
+            .load(sLoginData?.iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .into(iv_head) //載入頭像
+    }
+
+    private fun updateMenuFragmentUI() {
+        try {
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            menuFrag.updateUI()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

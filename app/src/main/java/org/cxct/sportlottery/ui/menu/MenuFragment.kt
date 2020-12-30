@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
@@ -20,22 +23,27 @@ import org.cxct.sportlottery.util.LanguageManager
 class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView()
+        updateUI()
         initEvent()
     }
 
-    private fun initView() {
+    fun updateUI() {
+        Glide.with(this)
+            .load(sLoginData?.iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .into(iv_head) //載入頭像
+
+        tv_name.text = sLoginData?.userName
+
+        updateMoney()
+
         tv_language.text = when (LanguageManager.getSelectLanguage(tv_language.context)) {
             LanguageManager.Language.ZH -> getString(R.string.language_cn)
             LanguageManager.Language.EN -> getString(R.string.language_en)
@@ -43,6 +51,11 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
+    }
+
+    fun updateMoney() {
+        tv_money.text = "￥0.00"
+        //TODO simon test 刷新餘額
     }
 
     private fun initEvent() {
