@@ -14,4 +14,4 @@ data class InfoCenterResult(
     override val code: Int,
     @Json(name = "rows")
     val infoCenterData: InfoCenterData?
-): BaseResult()
+) : BaseResult()
