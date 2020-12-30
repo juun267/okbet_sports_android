@@ -116,6 +116,7 @@
             android:padding="5dp">
 
             <Button
+                android:id="@+id/btn_first_page"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
@@ -129,6 +130,7 @@
                 android:textSize="@dimen/textSize14sp" />
 
             <Button
+                android:id="@+id/btn_previous_page"
                 android:layout_width="20dp"
                 android:layout_height="42dp"
                 android:layout_margin="10dp"
@@ -139,6 +141,7 @@
                 android:textSize="@dimen/textSize14sp" />
 
             <Button
+                android:id="@+id/btn_next_page"
                 android:layout_width="20dp"
                 android:layout_height="42dp"
                 android:layout_marginTop="10dp"
@@ -151,6 +154,7 @@
                 android:textSize="@dimen/textSize14sp" />
 
             <Button
+                android:id="@+id/btn_last_page"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
                 android:layout_marginTop="10dp"
@@ -166,6 +170,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txv_page_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
