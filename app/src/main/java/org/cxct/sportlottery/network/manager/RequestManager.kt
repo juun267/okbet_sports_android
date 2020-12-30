@@ -1,8 +1,9 @@
 package org.cxct.sportlottery.network.manager
 
+import android.annotation.SuppressLint
 import android.content.Context
-import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.BuildConfig
@@ -12,12 +13,16 @@ import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
 import org.cxct.sportlottery.network.interceptor.LogInterceptor
 import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
+import org.cxct.sportlottery.network.interceptor.RequestInterceptor
+import org.cxct.sportlottery.network.odds.CateDetailData
 import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
 
+@SuppressLint("CheckResult")
 class RequestManager private constructor(context: Context) {
 
     var retrofit: Retrofit
@@ -39,6 +44,9 @@ class RequestManager private constructor(context: Context) {
     }
 
     init {
+
+        moshi.adapter<Map<String, CateDetailData>>(Types.newParameterizedType(MutableMap::class.java, String::class.java, CateDetailData::class.java))
+
         val okHttpClientBuilder = OkHttpClient.Builder()
             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)

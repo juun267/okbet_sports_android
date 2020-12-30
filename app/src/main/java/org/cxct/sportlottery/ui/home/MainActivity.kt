@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
@@ -251,4 +253,31 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         loading()
         viewModel.getSportMenu()
     }
+
+    fun getScrollView(): NestedScrollView {
+        return mainBinding.scrollView
+    }
+
+    fun getAppBarLayout():AppBarLayout{
+        return mainBinding.appBarLayout
+    }
+
+    fun getHeight():Int{
+
+        var statusBarHeight = 0
+        val resourceId = applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusBarHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
+        }
+
+        var navHeight = 0
+        val navResourceId = applicationContext.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        if (navResourceId > 0) {
+            navHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
+        }
+
+       return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height*2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusBarHeight - navHeight
+
+    }
+
 }
