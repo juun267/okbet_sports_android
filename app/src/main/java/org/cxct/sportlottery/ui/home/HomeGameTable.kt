@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.home_game_drawer.view.*
+import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.match.MatchPreloadData
@@ -13,12 +13,12 @@ import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.home.gameDrawer.ItemType
 import org.cxct.sportlottery.ui.home.gameDrawer.RvGameDrawerAdapter
 
-class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
+class HomeGameTable @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     private val homeGameDrawerAdapter = RvGameDrawerAdapter()
 
     init {
-        val view = LayoutInflater.from(context).inflate(R.layout.home_game_drawer, this, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.home_game_table, this, false)
         addView(view)
 
         try {
@@ -30,11 +30,6 @@ class HomeGameDrawer @JvmOverloads constructor(context: Context, attrs: Attribut
 
             rv_game.layoutManager = LinearLayoutManager(context)
             rv_game.adapter = homeGameDrawerAdapter
-
-            //展開/收合
-            view.titleBar.setOnClickListener {
-                view.expandableLayout.toggle()
-            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
