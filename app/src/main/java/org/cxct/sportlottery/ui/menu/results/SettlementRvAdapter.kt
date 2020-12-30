@@ -124,7 +124,6 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
     }
 
     override fun getItemCount(): Int {
-//        return mTitleList.size
         return mDataList.size
     }
 
