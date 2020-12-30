@@ -19,10 +19,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel::class), Animation.AnimationListener {
+class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener {
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -56,6 +58,8 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
+    private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -86,7 +90,7 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
     private fun dataBinding() {
         dataBinding.apply {
             view = this@OddsDetailFragment
-            oddsDetailViewModel = this@OddsDetailFragment.viewModel
+            oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
             lifecycleOwner = this@OddsDetailFragment
         }
     }
@@ -97,6 +101,7 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
 
         height?.let {
             rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
+            rv_detail.setHasFixedSize(true)
         }
 
         (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -111,11 +116,11 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
     private fun getData() {
         matchId?.let { matchId ->
             oddsType?.let { oddsType ->
-                viewModel.getOddsDetail(matchId, oddsType)
+                oddsDetailViewModel.getOddsDetail(matchId, oddsType)
             }
         }
 
-        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
+        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
 
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 tv_time.text = TimeUtil.stampToDate(time.toLong())
@@ -126,11 +131,11 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
             }
 
             gameType?.let { gameType ->
-                viewModel.getPlayCateList(gameType)
+                oddsDetailViewModel.getPlayCateList(gameType)
             }
         })
 
-        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
                     for (element in result.rows) {
@@ -152,7 +157,7 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(viewModel.playCateListResult.value!!.rows[tab!!.position].code)
+                (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(oddsDetailViewModel.playCateListResult.value!!.rows[tab!!.position].code)
             }
         }
         )
