@@ -72,6 +72,9 @@ class MainViewModel(
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
 
+    private val _userMoney = MutableLiveData<Double?>()
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = _userMoney
 
     fun logout() {
         viewModelScope.launch {
@@ -247,5 +250,14 @@ class MainViewModel(
             sportMenuResult?.sportMenuData?.atStart?.find { it.code == goalCode }?.num ?: 0
 
         return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
+    }
+
+    fun getMoney() {
+        viewModelScope.launch {
+            val userMoneyResult = doNetwork {
+                OneBoSportApi.userService.getMoney()
+            }
+            _userMoney.postValue(userMoneyResult.money)
+        }
     }
 }

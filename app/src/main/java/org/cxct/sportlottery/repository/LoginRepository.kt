@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import liveData
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.index.LoginData
 import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.index.LogoutRequest
@@ -13,6 +14,8 @@ import retrofit2.Response
 const val NAME_LOGIN = "login"
 const val KEY_TOKEN = "token"
 const val KEY_USERNAME = "user_name"
+
+var sLoginData: LoginData? = null
 
 class LoginRepository(private val androidContext: Context) {
     private val sharedPref: SharedPreferences by lazy {
@@ -29,6 +32,8 @@ class LoginRepository(private val androidContext: Context) {
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
+                sLoginData = it.loginData
+
                 with(sharedPref.edit()) {
                     putString(KEY_TOKEN, it.loginData?.token)
                     putString(KEY_USERNAME, it.loginData?.userName)

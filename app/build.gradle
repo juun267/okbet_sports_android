@@ -152,6 +152,9 @@ dependencies {
 
     //timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    //glide 處理圖片加載(支援.gif檔)
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
 }
 
 multiLanguages {

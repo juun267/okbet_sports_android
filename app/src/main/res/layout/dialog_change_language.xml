@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".ui.menu.ChangeLanguageDialog">
 
-    <RadioGroup
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/gray"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/language_setting"
+        android:textColor="@color/textColorDark"
+        android:textSize="@dimen/textSize16sp" />
 
-        <RadioButton
-            android:id="@+id/rBtn_chinese"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/language_cn"/>
+    <Button
+        android:id="@+id/btn_chinese"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/effect_ripple_rectangle_blue_light"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="@string/language_cn"
+        android:textColor="@color/textColorDark"
+        android:textSize="@dimen/textSize14sp" />
 
-        <RadioButton
-            android:id="@+id/rBtn_english"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/language_en"/>
-
-    </RadioGroup>
+    <Button
+        android:id="@+id/btn_english"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/effect_ripple_rectangle_blue_light"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="@string/language_en"
+        android:textColor="@color/textColorDark"
+        android:textSize="@dimen/textSize14sp" />
 
 </LinearLayout>
