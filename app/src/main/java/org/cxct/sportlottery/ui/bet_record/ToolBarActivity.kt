@@ -52,8 +52,7 @@ class ToolBarActivity : BaseActivity<BetRecordViewModel>(BetRecordViewModel::cla
     private fun initMenu() {
         try {
             //選單選擇結束要收起選單
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬

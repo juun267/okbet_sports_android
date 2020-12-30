@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.item_listview_bet_type_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import java.text.SimpleDateFormat
@@ -59,8 +58,14 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
         initBottomSheetDialog()
         initListView()
-        setObserver()
         setOnClick()
+        setTv()
+    }
+
+    private fun setTv() {
+        viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
+                tv_bet_status.text = list.joinToString(",") { it.name }
+        })
     }
 
     private fun initBottomSheetDialog() {
@@ -70,9 +75,9 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     private fun betStatusBottomSheet() {
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bet_status, null)
-        betStatusBottomSheet = BottomSheetDialog(this.requireContext())
+        betStatusBottomSheet = BottomSheetDialog(requireContext())
         betStatusBottomSheet.setContentView(bottomSheetView)
-
+        viewModel.clearStatusList()
         //避免bottomSheet與listView的滑動發生衝突
         betStatusBottomSheet.behavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
@@ -89,6 +94,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar, null)
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
         calendarBottomSheet.setContentView(bottomSheetView)
+        calendarBottomSheet.calendar.setSelectableDateRange(getDateInCalendar(30).first, getDateInCalendar(30).second)
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(startDate: Calendar) {
                 setStartEndDateText(simpleDateFormat.format(startDate.time), "")
@@ -108,7 +114,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         tv_end_date.text = endDate
     }
 
-    private fun getDateCalendar(minusDays: Int? = null): Pair<Calendar, Calendar> { //<startDate, EndDate>
+    private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
         val todayCalendar = Calendar.getInstance()
         val minusDaysCalendar = Calendar.getInstance()
         if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
@@ -121,7 +127,6 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             BetTypeItemData(it.key, it.value, false)
         }
 
-        val selectNameList = mutableListOf<String>()
         betStatusLvAdapter = BetStatusLvAdapter(betStatusBottomSheet.lv_bet_type.context, betStatusList)
         betStatusBottomSheet.lv_bet_type.adapter = betStatusLvAdapter
 
@@ -129,75 +134,48 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         val cbAll = betStatusBottomSheet.layout_all.checkbox_select_all
         betStatusLvAdapter.setOnItemCheckedListener(object : OnSelectItemListener<BetTypeItemData> {
             override fun onClick(select: BetTypeItemData) {
-                if (select.isSelected) {
-                    selectNameList.add(select.name)
-                } else {
-                    selectNameList.remove(select.name)
-                }
-
+                addOrDelete(select)
                 //判斷全選按鈕是否需選取
                 var selectCount = 0
                 betStatusList.forEach {
                     if (it.isSelected) selectCount++
                 }
                 cbAll.isChecked = selectCount == betStatusList.size
-                tv_bet_status.text = selectNameList.joinToString(",")
             }
-
         })
 
         //全選按鈕
         cbAll.setOnClickListener {
-            selectNameList.clear()
+            viewModel.clearStatusList()
             betStatusList.forEach {
                 it.isSelected = cbAll.isChecked
-
-                if (it.isSelected) {
-                    selectNameList.add(it.name)
-                } else {
-                    selectNameList.remove(it.name)
-                }
+                addOrDelete(it)
             }
             betStatusLvAdapter.notifyDataSetChanged()
-            tv_bet_status.text = selectNameList.joinToString(",")
         }
 
         //取消選擇
         val tvCancel = betStatusBottomSheet.layout_all.tv_cancel_selections
         tvCancel.setOnClickListener {
-            selectNameList.clear()
+            viewModel.clearStatusList()
             cbAll.isChecked = false
 
             betStatusList.forEach {
                 it.isSelected = false
+                addOrDelete(it)
             }
+
             betStatusLvAdapter.notifyDataSetChanged()
-            tv_bet_status.text = selectNameList.joinToString(",")
         }
 
     }
 
-    private fun setObserver() {
-
-        /*
-        betRecordViewModel.betListRequest.observe(viewLifecycleOwner, {
-            val request = it ?: return@observe
-            //status
-            var statusStr = ""
-            it.statusList?.forEach { statusCode ->
-                statusStr += betRecordViewModel.statusNameMap[statusCode]
-            }
-            if (statusStr.isNotEmpty()) tv_bet_status.text = statusStr
-
-            //startTime
-            val startTime = request.timeRangeParams?.startTime
-            if (startTime != null) tv_start_date.text = timeStampToDate(startTime)
-
-            //endTime
-            val endTime = it.timeRangeParams?.endTime
-            if (endTime != null) tv_end_date.text = timeStampToDate(endTime)
-        })
-        */
+    private fun addOrDelete(item: BetTypeItemData) {
+        if (item.isSelected) {
+            viewModel.addSelectStatus(item)
+        } else {
+            viewModel.deleteSelectStatus(item)
+        }
     }
 
     private fun setOnClick() {
@@ -216,27 +194,31 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         btn_today.setOnClickListener {
-            setCalendarDate(getDateCalendar())
+            setCalendarDate(getDateInCalendar())
         }
 
         btn_yesterday.setOnClickListener {
-            setCalendarDate(getDateCalendar(1))
+            setCalendarDate(getDateInCalendar(1))
         }
 
         btn_past30days.setOnClickListener {
-            setCalendarDate(getDateCalendar(30))
+            setCalendarDate(getDateInCalendar(30))
         }
 
         btn_search.setOnClickListener {
-            val statusList = mutableListOf<Int>()
-            betStatusList.filter { it.isSelected }.forEach {
-                if (it.code != null) statusList.add(it.code)
-            }
 
-            val startTimeStamp = viewModel.dateToTimeStamp(tv_start_date.text.toString(), true)
-            val endTimeStamp = viewModel.dateToTimeStamp(tv_end_date.text.toString(), false)
-            val betListRequest = BetListRequest(statusList = statusList, startTime = startTimeStamp.toString(), endTime = endTimeStamp.toString())
-            viewModel.searchBetRecordHistory(betListRequest)
+            val statusList = betStatusList.filter { it.isSelected && (it.code!=null) }.map {it.code!!}
+
+            viewModel.checkRequestState(tv_start_date.text.toString(), tv_end_date.text.toString())
+
+            viewModel.betListRequestState.observe(viewLifecycleOwner, {
+                if (!it.hasStatus) tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+                if (!it.hasStartDate) tv_start_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+                if (!it.hasEndDate) tv_end_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+
+                if (it.hasStatus && it.hasStartDate && it.hasEndDate)
+                    viewModel.searchBetRecordHistory(statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
+            })
 
             viewModel.betRecordResult.observe(viewLifecycleOwner, {
                 if (it.success) {

@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
+import kotlinx.android.synthetic.main.fragment_bet_record_result.tv_bet_status
+import kotlinx.android.synthetic.main.fragment_bet_record_search.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordResultBinding
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
@@ -34,18 +36,23 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initTv()
         initRv()
+    }
+
+    private fun initTv() {
+        viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
+            tv_bet_status.text = list.joinToString(",") { it.name }
+        })
     }
 
     private fun initRv() {
         val rvAdapter = BetRecordAdapter(ItemClickListener {
             it.let { orderNum ->
-                Log.e(">>>", "orderNum = $orderNum")
             }
         })
         rv_bet_record.adapter = rvAdapter
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
-            Log.e(">>>", "observe")
             it?.let {
                 rvAdapter.addFooterAndSubmitList(it.rows)
             }
