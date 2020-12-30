@@ -107,91 +107,28 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             itemView.layoutParams = param
         }
 
-        private val tv_name = itemView.findViewById<TextView>(R.id.tv_name)
-        private val ll_item = itemView.findViewById<LinearLayout>(R.id.ll_item)
-        private val iv_arrow_up = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
+        private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
+        private val llItem = itemView.findViewById<LinearLayout>(R.id.ll_item)
+        private val ivArrowUp = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
 
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
-            tv_name.text = oddsDetail.name
-            ll_item.setOnClickListener {
+            tvName.text = oddsDetail.name
+            llItem.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(position)
             }
 
             if (oddsDetail.isExpand) {
-                iv_arrow_up.animate().rotation(180f).setDuration(200).start()
+                ivArrowUp.animate().rotation(180f).setDuration(200).start()
             } else {
-                iv_arrow_up.animate().rotation(0f).setDuration(200).start()
+                ivArrowUp.animate().rotation(0f).setDuration(200).start()
             }
 
             when (viewType) {
-
-                GameType.HDP.type -> {
-                    val rv_bet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
-                    rv_bet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-                    rv_bet.apply {
-                        adapter = TypeHDPAdapter(oddsDetail.oddArrayList)
-                        layoutManager = LinearLayoutManager(itemView.context)
-                    }
-                }
-
-                GameType.CS.type -> {
-                    itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
-                    val homeList = ArrayList<Odd>()
-                    val drawList = ArrayList<Odd>()
-                    val awayList = ArrayList<Odd>()
-
-                    for (element in oddsDetail.oddArrayList) {
-                        if (element.name.contains(" - ")) {
-                            val stringArray: List<String> = element.name.split(" - ")
-                            if (stringArray[0].toInt() > stringArray[1].toInt()) {
-                                homeList.add(element)
-                            }
-                            if (stringArray[0].toInt() == stringArray[1].toInt()) {
-                                drawList.add(element)
-                            }
-                            if (stringArray[0].toInt() < stringArray[1].toInt()) {
-                                awayList.add(element)
-                            }
-                        } else {
-                            val tv_odds = itemView.findViewById<TextView>(R.id.tv_odds)
-                            tv_odds.text = element.odds.toString()
-                            tv_odds.setOnClickListener {
-                                tv_odds.isSelected = !tv_odds.isSelected
-                                element.isSelect = tv_odds.isSelected
-
-                                //TODO 添加至投注單
-                            }
-                        }
-                    }
-
-                    itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
-                        adapter = TypeCSAdapter(homeList)
-                        layoutManager = LinearLayoutManager(itemView.context)
-                    }
-
-                    itemView.findViewById<RecyclerView>(R.id.rv_draw).apply {
-                        adapter = TypeCSAdapter(drawList)
-                        layoutManager = LinearLayoutManager(itemView.context)
-                    }
-
-                    itemView.findViewById<RecyclerView>(R.id.rv_away).apply {
-                        adapter = TypeCSAdapter(awayList)
-                        layoutManager = LinearLayoutManager(itemView.context)
-                    }
-                }
-
-                GameType.FG.type, GameType.LG.type -> {
-                    val rv_bet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
-                    rv_bet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-                    rv_bet.apply {
-                        adapter = TypeFGLGAdapter(oddsDetail.oddArrayList)
-                        layoutManager = LinearLayoutManager(itemView.context)
-                    }
-                }
+                GameType.HDP.type -> hdp(oddsDetail)
+                GameType.CS.type -> cs(oddsDetail)
+                GameType.FG.type, GameType.LG.type -> fg(oddsDetail)
             }
-
 
             for (element in oddsDetail.typeCodes) {
 
@@ -209,6 +146,72 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
 
             }
         }
+
+        private fun fg(oddsDetail: OddsDetailListData) {
+            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet.apply {
+                adapter = TypeFGLGAdapter(oddsDetail.oddArrayList)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+        }
+
+        private fun cs(oddsDetail: OddsDetailListData) {
+            itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+
+            val homeList = ArrayList<Odd>()
+            val drawList = ArrayList<Odd>()
+            val awayList = ArrayList<Odd>()
+
+            for (element in oddsDetail.oddArrayList) {
+                if (element.name.contains(" - ")) {
+                    val stringArray: List<String> = element.name.split(" - ")
+                    if (stringArray[0].toInt() > stringArray[1].toInt()) {
+                        homeList.add(element)
+                    }
+                    if (stringArray[0].toInt() == stringArray[1].toInt()) {
+                        drawList.add(element)
+                    }
+                    if (stringArray[0].toInt() < stringArray[1].toInt()) {
+                        awayList.add(element)
+                    }
+                } else {
+                    val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
+                    tvOdds.text = element.odds.toString()
+                    tvOdds.setOnClickListener {
+                        tvOdds.isSelected = !tvOdds.isSelected
+                        element.isSelect = tvOdds.isSelected
+
+                        //TODO 添加至投注單
+                    }
+                }
+            }
+
+            itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
+                adapter = TypeCSAdapter(homeList)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+
+            itemView.findViewById<RecyclerView>(R.id.rv_draw).apply {
+                adapter = TypeCSAdapter(drawList)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+
+            itemView.findViewById<RecyclerView>(R.id.rv_away).apply {
+                adapter = TypeCSAdapter(awayList)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+        }
+
+        private fun hdp(oddsDetail: OddsDetailListData) {
+            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet.apply {
+                adapter = TypeHDPAdapter(oddsDetail.oddArrayList)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+        }
+
     }
 
 

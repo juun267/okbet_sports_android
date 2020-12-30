@@ -24,13 +24,16 @@ import kotlinx.coroutines.delay
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.HomeFragment
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class OddsDetailFragment : Fragment(), Animation.AnimationListener  {
+class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel::class), Animation.AnimationListener {
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -52,8 +55,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener  {
                 }
             }
     }
-
-    private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
 
     private var gameType: String? = null
     private var typeName: String? = null
@@ -96,7 +97,7 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener  {
     private fun dataBinding() {
         dataBinding.apply {
             view = this@OddsDetailFragment
-            oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
+            oddsDetailViewModel = this@OddsDetailFragment.viewModel
             lifecycleOwner = this@OddsDetailFragment
         }
     }
@@ -110,31 +111,37 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener  {
         }
 
         (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        list()
+
+        rv_detail.apply {
+            adapter = OddsDetailListAdapter(oddsDetailListData)
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
 
     private fun getData() {
         matchId?.let { matchId ->
             oddsType?.let { oddsType ->
-                oddsDetailViewModel.getOddsDetail(matchId, oddsType)
+                viewModel.getOddsDetail(matchId, oddsType)
             }
         }
 
-        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
+        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
 
-            tv_time.text = TimeUtil.stampToDate(it?.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
+            it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
+                tv_time.text = TimeUtil.stampToDate(time.toLong())
+            }
 
-            it.oddsDetailData.matchOdd.odds.forEach { (key, value) ->
+            it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                 oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
             }
 
             gameType?.let { gameType ->
-                oddsDetailViewModel.getPlayCateList(gameType)
+                viewModel.getPlayCateList(gameType)
             }
         })
 
-        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
                     for (element in result.rows) {
@@ -156,19 +163,11 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener  {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(oddsDetailViewModel.playCateListResult.value!!.rows[tab!!.position].code)
+                (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(viewModel.playCateListResult.value!!.rows[tab!!.position].code)
             }
         }
         )
         tab_cat.getTabAt(0)?.select()
-    }
-
-
-    private fun list() {
-        rv_detail.apply {
-            adapter = OddsDetailListAdapter(oddsDetailListData)
-            layoutManager = LinearLayoutManager(requireContext())
-        }
     }
 
 

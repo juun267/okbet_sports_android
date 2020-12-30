@@ -62,6 +62,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         rv_marquee.startAuto()
     }
 
+    override fun onPause() {
+        super.onPause()
+        rv_marquee.stopAuto()
+    }
+
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
@@ -197,19 +202,19 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     fun getHeight():Int{
 
-        var statusbar_height = 0
+        var statusBarHeight = 0
         val resourceId = applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0) {
-            statusbar_height = applicationContext.resources.getDimensionPixelSize(resourceId)
+            statusBarHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
         }
 
-        var nv_height = 0
-        val nv_resourceId = applicationContext.resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        if (nv_resourceId > 0) {
-            nv_height = applicationContext.resources.getDimensionPixelSize(resourceId)
+        var navHeight = 0
+        val navResourceId = applicationContext.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        if (navResourceId > 0) {
+            navHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
         }
 
-       return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height*2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusbar_height - nv_height
+       return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height*2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusBarHeight - navHeight
 
     }
 
