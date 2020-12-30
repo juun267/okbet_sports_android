@@ -18,15 +18,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/game_yellow_card"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="@string/game_yellow_card" />
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:text="@string/game_yellow_card"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="@string/game_yellow_card" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="1dp"
@@ -72,15 +79,22 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/game_corner_kick"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="@string/game_corner_kick" />
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:text="@string/game_corner_kick"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="@string/game_corner_kick" />
+            </LinearLayout>
+
 
             <View
                 android:layout_width="1dp"
@@ -126,15 +140,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_play_cate_name"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/textColorDark"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="让球" />
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_play_cate_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="让球" />
+        </LinearLayout>
+
 
         <View
             android:layout_width="1dp"
@@ -144,7 +165,7 @@
         <TextView
             android:id="@+id/tv_play_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/textGray"

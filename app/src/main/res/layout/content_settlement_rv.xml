@@ -23,9 +23,6 @@
             android:id="@+id/block_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/expandable_results_settlement"
             android:orientation="horizontal"
@@ -35,19 +32,19 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:paddingStart="30dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:paddingStart="30dp">
 
                 <TextView
                     android:id="@+id/tv_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:maxLines="1"
                     android:ellipsize="end"
                     android:gravity="start|center_vertical"
-                    android:textColor="@android:color/white"
+                    android:maxLines="1"
+                    android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize16sp"
                     tools:text="Miền Bắc" />
 
@@ -56,9 +53,9 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:paddingEnd="12dp"
-                android:layout_weight="1">
+                android:paddingEnd="12dp">
 
                 <TextView
                     android:id="@+id/tv_first_half"
@@ -68,7 +65,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/first_half_game"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="@string/first_half_game" />
 
@@ -80,7 +77,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/second_half_game"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="@string/second_half_game" />
 
@@ -92,7 +89,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/full_game"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="@string/full_game" />
 
@@ -104,7 +101,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/game_result"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="@string/game_result" />
 
@@ -125,8 +122,6 @@
                 android:id="@+id/rv_game_result"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"

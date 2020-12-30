@@ -10,6 +10,7 @@ object Constants {
 
     //index
     const val INDEX_LOGIN = "/api/front/index/login"
+    const val INDEX_LOGOUT = "/api/front/index/logout"
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
@@ -29,13 +30,16 @@ object Constants {
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
 
     //sport
-    const val SPORT_MENU = "/api/front/sport/menu"
+    const val SPORT_MENU = "/api/front/sport/mobile/menu"
 
     //play category list
     const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list"
 
     //outright
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
+
+    //user
+    const val USER_MONEY = "/api/front/user/money"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

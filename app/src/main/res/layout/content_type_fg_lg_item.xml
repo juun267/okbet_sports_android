@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white">
+
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:textColor="@color/textColorDark"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_odds"
+        android:layout_width="64dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:background="@drawable/select_button_radius_5_odds"
+        android:gravity="center"
+        android:textColor="@color/color_select_text_odds"
+        android:textSize="14sp" />
+
+
+</RelativeLayout>

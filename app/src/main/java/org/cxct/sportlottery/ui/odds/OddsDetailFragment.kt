@@ -1,42 +1,69 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.HomeFragment
+import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-private const val GAME_TYPE = "gameType"
-private const val MATCH_ID = "matchId"
-private const val ODDS_TYPE = "oddsType"
-
-class OddsDetailFragment : Fragment() {
+class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel::class), Animation.AnimationListener {
 
     companion object {
-        fun newInstance(gameType: String, matchId: String, oddsType: String) =
-            HomeFragment().apply {
+        const val GAME_TYPE = "gameType"
+        const val TYPE_NAME = "typeName"
+        const val MATCH_ID = "matchId"
+        const val ODDS_TYPE = "oddsType"
+        const val SCROLL_HEIGHT = "scrollHeight"
+        const val HEIGHT = "height"
+
+        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String, scrollHeight: Int, height: Int) =
+            OddsDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(GAME_TYPE, gameType)
+                    putString(TYPE_NAME, typeName)
                     putString(MATCH_ID, matchId)
                     putString(ODDS_TYPE, oddsType)
+                    putInt(SCROLL_HEIGHT, scrollHeight)
+                    putInt(HEIGHT, height)
                 }
             }
     }
 
     private var gameType: String? = null
+    private var typeName: String? = null
     private var matchId: String? = null
     private var oddsType: String? = null
+    private var height: Int? = null
+    private var scrollHeight: Int? = null
 
-    private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
+    private val oddsDetailListData = ArrayList<OddsDetailListData>()
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
@@ -44,42 +71,162 @@ class OddsDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             gameType = it.getString(GAME_TYPE)
+            typeName = it.getString(TYPE_NAME)
+            matchId = it.getString(MATCH_ID)
+            oddsType = it.getString(ODDS_TYPE)
+            height = it.getInt(HEIGHT)
+            scrollHeight = it.getInt(SCROLL_HEIGHT)
         }
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false);
         return dataBinding.root
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        dataBinding()
+        initUI()
+        getData()
+    }
 
+
+    private fun dataBinding() {
         dataBinding.apply {
-            oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
+            view = this@OddsDetailFragment
+            oddsDetailViewModel = this@OddsDetailFragment.viewModel
             lifecycleOwner = this@OddsDetailFragment
         }
+    }
 
-        //test
-//        oddsDetailViewModel.getOddsDetail("sr:match:24369586", "EU")
+
+    private fun initUI() {
+        tv_type_name.text = typeName
+
+        height?.let {
+            rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
+        }
+
+        (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+        rv_detail.apply {
+            adapter = OddsDetailListAdapter(oddsDetailListData)
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+
+    private fun getData() {
         matchId?.let { matchId ->
             oddsType?.let { oddsType ->
-                oddsDetailViewModel.getOddsDetail(matchId, oddsType)
-                oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
-                    tv_time.text = TimeUtil.stampToDate(it?.oddsDetailData?.matchOdd?.matchInfo?.startTime!!.toLong())
-                })
+                viewModel.getOddsDetail(matchId, oddsType)
             }
         }
 
-        gameType?.let { gameType ->
-            oddsDetailViewModel.getPlayCateList(gameType)
-            oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { response ->
-                for (element in response!!.rows) {
-                    tab_cat.addTab(tab_cat.newTab().setText(element.name))
-                }
-            })
-        }
+        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
 
+            it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
+                tv_time.text = TimeUtil.stampToDate(time.toLong())
+            }
+
+            it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+                oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
+            }
+
+            gameType?.let { gameType ->
+                viewModel.getPlayCateList(gameType)
+            }
+        })
+
+        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+            when (result) {
+                is PlayCateListResult -> {
+                    for (element in result.rows) {
+                        tab_cat.addTab(tab_cat.newTab().setText(element.name), false)
+                    }
+                    tab()
+                }
+            }
+        })
+    }
+
+
+    private fun tab() {
+        tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(viewModel.playCateListResult.value!!.rows[tab!!.position].code)
+            }
+        }
+        )
+        tab_cat.getTabAt(0)?.select()
+    }
+
+
+    fun back() {
+        //比照h5特別處理退出動畫
+        val animation: Animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
+        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
+                ft.remove(this@OddsDetailFragment)
+                ft.commit()
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+        })
+        this.view?.startAnimation(animation)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
+            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
+                back()
+                return@OnKeyListener true
+            }
+            false
+        })
+    }
+
+
+    override fun onAnimationRepeat(animation: Animation?) {
+
+    }
+
+
+    override fun onAnimationEnd(animation: Animation?) {
+        scrollHeight?.let {
+            rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
+        }
+    }
+
+
+    override fun onAnimationStart(animation: Animation?) {
+
+    }
+
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
+        val animat = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
+        animat.setAnimationListener(this)
+        return animat
     }
 
 }

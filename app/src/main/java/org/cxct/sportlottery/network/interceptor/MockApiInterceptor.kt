@@ -7,6 +7,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
+import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import timber.log.Timber
 import java.io.IOException
@@ -93,6 +95,12 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(OUTRIGHT_RESULT_LIST) -> {
                     response = getMockJsonData(request, "outright_result_list.mock")
+                }
+                path.contains(USER_MONEY) -> {
+                    response = getMockJsonData(request, "user_money.mock")
+                }
+                path.contains(INDEX_LOGOUT) -> {
+                    response = getMockJsonData(request, "index_logout.mock")
                 }
             }
         }
