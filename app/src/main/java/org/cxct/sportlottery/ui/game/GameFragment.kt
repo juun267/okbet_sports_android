@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,6 +74,14 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 else -> {
                 }
             }
+        })
+
+        viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+
+        })
+
+        viewModel.leagueListMsg.observe(this.viewLifecycleOwner, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }
 
