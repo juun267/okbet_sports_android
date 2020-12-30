@@ -47,6 +47,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
             )
             filterResult()
             requestListener.requestIng(false)
+            _gameResultDetailResult.value = SettlementRvData(-1, -1, mutableMapOf())  //要清空聯賽列表中比賽詳情的點選狀態
         }
     }
 
