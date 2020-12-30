@@ -10,6 +10,7 @@ object Constants {
 
     //index
     const val INDEX_LOGIN = "/api/front/index/login"
+    const val INDEX_LOGOUT = "/api/front/index/logout"
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
