@@ -12,6 +12,8 @@ import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
@@ -62,7 +65,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         initMenu()
         initRvMarquee()
         refreshTabLayout(null)
-        refreshView()
+        initObserve()
     }
 
     override fun onResume() {
@@ -207,12 +210,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         tabLayout.getTabAt(0)?.select()
     }
 
-    private fun refreshView() {
-        //登入資料
+    private fun initObserve() {
         viewModel.token.observe(this) {
-            //TODO simon test review 登入成功後刷新資料，之後再看要如何修改
+            //登入成功後要做的事
             queryData()
+            Glide.with(this)
+                .load(sLoginData?.iconUrl)
+                .apply(RequestOptions().placeholder(R.drawable.ic_head))
+                .into(iv_head) //載入頭像
         }
+
         viewModel.messageListResult.observe(this, Observer {
             hideLoading()
             updateUiWithResult(it)
@@ -261,11 +268,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         return mainBinding.scrollView
     }
 
-    fun getAppBarLayout():AppBarLayout{
+    fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
     }
 
-    fun getHeight():Int{
+    fun getHeight(): Int {
 
         var statusBarHeight = 0
         val resourceId = applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -279,7 +286,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             navHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
         }
 
-       return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height*2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusBarHeight - navHeight
+        return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height * 2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusBarHeight - navHeight
 
     }
 
