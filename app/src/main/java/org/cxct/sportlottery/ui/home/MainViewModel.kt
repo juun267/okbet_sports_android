@@ -74,7 +74,14 @@ class MainViewModel(
 
 
     fun logout() {
-        loginRepository.logout()
+        viewModelScope.launch {
+            val result = doNetwork {
+                loginRepository.logout()
+            }
+
+            //TODO change timber to actual logout ui to da
+            Timber.d("logout result is ${result.success} ${result.code} ${result.msg}")
+        }
     }
 
     //獲取系統公告
