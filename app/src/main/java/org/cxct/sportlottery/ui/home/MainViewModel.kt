@@ -236,6 +236,15 @@ class MainViewModel(
         _sportMenuResult.postValue(result)
     }
 
+    fun updateDateSelectedState(string: String) {
+        val dateEarly: MutableList<Pair<String, Boolean>> = mutableListOf()
+
+        _curDateEarly.value?.forEach {
+            dateEarly.add(Pair(it.first, (it.first == string)))
+        }
+        _curDateEarly.postValue(dateEarly)
+    }
+
     private fun getLeagueList(gameType: String, matchType: String) {
         viewModelScope.launch {
             val result = doNetwork {
