@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="language_setting">语系设定</string>
     <string name="language_cn">简体中文</string>
     <string name="language_en">English</string>
 
@@ -44,9 +45,13 @@
 
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>
+    <string name="select_all_league">选择所有联赛</string>
+    <string name="select_cancel">取消选择</string>
+    <string name="search">搜寻</string>
+    <string name="game_type">球种</string>
     <string name="first_half_game">上半场</string>
     <string name="second_half_game">下半场</string>
-    <string name="full_game">全场</string>
+    <string name="full_game">全场</string>6
     <string name="game_result">赛果</string>
     <string name="game_yellow_card">罚牌</string>
     <string name="game_corner_kick">角球</string>
@@ -56,6 +61,17 @@
     <string name="tennis">网球</string>
     <string name="badminton">羽毛球</string>
     <string name="volleyball">排球</string>
+    <string name="section">节</string>
+    <string name="first_section">第一节</string>
+    <string name="second_section">第二节</string>
+    <string name="third_section">第三节</string>
+    <string name="fourth_section">第四节</string>
+    <string name="over_time">加时</string>
+    <string name="first_plat">第一盘</string>
+    <string name="second_plat">第二盘</string>
+    <string name="third_plat">第三盘</string>
+    <string name="fourth_plat">第四盘</string>
+    <string name="fifth_plat">第五盘</string>
 
     <!--login need translate later-->
     <string name="title_activity_login">LoginActivity</string>
@@ -80,4 +96,8 @@
     <string name="btn_end_page">尾页</string>
     <string name="info_center_promot">当前 %1$d/%2$d  每页 %3$d 笔   共 %4$d 条</string>
 
+    <!--game hall-->
+    <string name="inplay_row_title">滚球</string>
+    <string name="inplay_row_btn_double">1 X 2</string>
+    <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
 </resources>

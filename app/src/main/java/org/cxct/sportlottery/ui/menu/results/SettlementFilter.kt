@@ -4,8 +4,8 @@ import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 
 data class SettlementFilter(
-    var gameType: String? = null,
-    var gameZone: String? = null,
+    var gameType: String = "FT",
+    var gameZone: Set<Int>? = null,
     val filterKeyWord: String? = null
 )
 

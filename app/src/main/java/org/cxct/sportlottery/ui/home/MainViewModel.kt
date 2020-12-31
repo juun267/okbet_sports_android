@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.league.LeagueListRequest
+import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -17,6 +20,7 @@ import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
+
 
 
 class MainViewModel(
@@ -42,11 +46,21 @@ class MainViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
+    val leagueListResult: LiveData<LeagueListResult>
+        get() = _leagueListResult
+
+    val curPlayType: LiveData<PlayType>
+        get() = _curPlayType
+
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadEarly = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
+    private val _leagueListResult = MutableLiveData<LeagueListResult>()
+    private val _curPlayType = MutableLiveData<PlayType>().apply {
+        value = PlayType.OU
+    }
 
     private val _asStartCount = MutableLiveData<Int>()
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -72,6 +86,9 @@ class MainViewModel(
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
 
+    private val _userMoney = MutableLiveData<Double?>()
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = _userMoney
 
     fun logout() {
         viewModelScope.launch {
@@ -199,8 +216,9 @@ class MainViewModel(
             }
         }
 
-
-        Timber.d("post $gameType ${matchType.postValue}")
+        gameType?.let {
+            getLeagueList(gameType, matchType.postValue)
+        }
     }
 
     private fun updateSportSelectedState(matchType: MatchType, sport: Sport) {
@@ -234,6 +252,26 @@ class MainViewModel(
         _sportMenuResult.postValue(result)
     }
 
+    private fun getLeagueList(gameType: String, matchType: String) {
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.leagueService.getLeagueList(
+                    LeagueListRequest(
+                        gameType, matchType
+                    )
+                )
+            }
+
+            if (result.success) {
+                _leagueListResult.postValue(result)
+            }
+        }
+    }
+
+    fun setPlayType(playType: PlayType) {
+        _curPlayType.postValue(playType)
+    }
+
     private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
         val inPlayCount =
             sportMenuResult?.sportMenuData?.inPlay?.find { it.code == goalCode }?.num ?: 0
@@ -247,5 +285,14 @@ class MainViewModel(
             sportMenuResult?.sportMenuData?.atStart?.find { it.code == goalCode }?.num ?: 0
 
         return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
+    }
+
+    fun getMoney() {
+        viewModelScope.launch {
+            val userMoneyResult = doNetwork {
+                OneBoSportApi.userService.getMoney()
+            }
+            _userMoney.postValue(userMoneyResult.money)
+        }
     }
 }

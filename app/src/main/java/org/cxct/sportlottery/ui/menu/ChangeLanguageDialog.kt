@@ -1,50 +1,43 @@
 package org.cxct.sportlottery.ui.menu
 
-import android.content.Context
+import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.dialog_change_language.*
+import android.view.LayoutInflater
+import android.view.View
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.dialog_change_language.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.util.LanguageManager
 
-/**
- * TODO 語言切換 sample，之後再調整
- */
-class ChangeLanguageDialog(context: Context) : AlertDialog(context) {
+class ChangeLanguageDialog : BottomSheetDialogFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_change_language)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        val view = LayoutInflater.from(context).inflate(R.layout.dialog_change_language, null)
+        dialog.setContentView(view)
 
-        initView()
-        initEvent()
+        initEvent(view)
+        return dialog
     }
 
-    private fun initView() {
-        when(LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> rBtn_chinese.isChecked = true
-            LanguageManager.Language.EN -> rBtn_english.isChecked = true
-            else -> rBtn_english.isChecked = true
+    private fun initEvent(rootView: View?) {
+        rootView?.apply {
+            btn_chinese?.setOnClickListener {
+                selectLanguage(LanguageManager.Language.ZH)
+            }
+
+            btn_english?.setOnClickListener {
+                selectLanguage(LanguageManager.Language.EN)
+            }
         }
     }
-
-    private fun initEvent() {
-        rBtn_chinese.setOnClickListener {
-            selectLanguage(LanguageManager.Language.ZH)
-        }
-
-        rBtn_english.setOnClickListener {
-            selectLanguage(LanguageManager.Language.EN)
-        }
-    }
-
 
     private fun selectLanguage(select: LanguageManager.Language) {
-        LanguageManager.saveSelectLanguage(context, select)
-        MainActivity.reStart(context)
+        activity?.run {
+            LanguageManager.saveSelectLanguage(this, select)
+            MainActivity.reStart(this)
+        }
     }
-
-
 
 }
