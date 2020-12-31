@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
+import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
@@ -20,10 +21,13 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         get() = _gameResultDetailResult
     val matchResultList: LiveData<List<Row>>
         get() = _matchResultList
+    val outRightListResult: LiveData<OutrightResultListResult>
+        get() = _outRightListResult
 
     private val _matchResultListResult = MutableLiveData<MatchResultListResult?>()
     private var _gameResultDetailResult = MutableLiveData<SettlementRvData?>(SettlementRvData(-1, -1, mutableMapOf()))
     private val _matchResultList = MutableLiveData<List<Row>>()
+    private var _outRightListResult = MutableLiveData<OutrightResultListResult>()
 
 
     private var gameLeagueSet = mutableSetOf<Int>()
@@ -40,7 +44,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
             _matchResultListResult.postValue(result)
             filterResult()
             requestListener.requestIng(false)
-            _gameResultDetailResult.value = SettlementRvData(-1, -1, mutableMapOf())  //要清空聯賽列表中比賽詳情的點選狀態
+            reSetDetailStatus()
         }
     }
 
@@ -56,6 +60,18 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
                 this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
                 requestListener.requestIng(false)
             })
+        }
+    }
+
+    fun getOutrightResultList(gameType: String) {
+        requestListener.requestIng(true)
+        viewModelScope.launch {
+            val result = doNetwork {
+                settlementRepository.resultOutRightList(gameType = gameType)
+            }
+            _outRightListResult.postValue(result)
+            filterResult()
+            reSetDetailStatus()
         }
     }
 
@@ -82,5 +98,12 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
             gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.contains(gameKeyWord))
         })
+    }
+
+    /**
+     * 重新獲取聯賽資料時須要清空內部比賽詳情點選狀態及資料
+     */
+    private fun reSetDetailStatus() {
+        _gameResultDetailResult.value = SettlementRvData(-1, -1, mutableMapOf())  //要清空聯賽列表中比賽詳情的點選狀態
     }
 }
