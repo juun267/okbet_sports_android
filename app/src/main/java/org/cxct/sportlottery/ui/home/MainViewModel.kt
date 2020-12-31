@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.home
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
@@ -22,8 +24,8 @@ import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
 
-
 class MainViewModel(
+    private val androidContext: Context,
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository
 ) : BaseViewModel() {
@@ -52,6 +54,9 @@ class MainViewModel(
     val curPlayType: LiveData<PlayType>
         get() = _curPlayType
 
+    val curDateEarly: LiveData<List<Pair<String, Boolean>>>
+        get() = _curDateEarly
+
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadEarly = MutableLiveData<MatchPreloadResult>()
@@ -61,6 +66,7 @@ class MainViewModel(
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU
     }
+    private val _curDateEarly = MutableLiveData<List<Pair<String, Boolean>>>()
 
     private val _asStartCount = MutableLiveData<Int>()
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -294,5 +300,16 @@ class MainViewModel(
             }
             _userMoney.postValue(userMoneyResult.money)
         }
+    }
+
+    fun getEarlyDateRow() {
+        val oneWeekDate = TimeUtil.getOneWeekDate().toMutableList()
+        oneWeekDate.add(androidContext.getString(R.string.date_row_other))
+
+        val dateEarly = oneWeekDate.map {
+            Pair(it, oneWeekDate.indexOf(it) == 0)
+        }
+
+        _curDateEarly.postValue(dateEarly)
     }
 }

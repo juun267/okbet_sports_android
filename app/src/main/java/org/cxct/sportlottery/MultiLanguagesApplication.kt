@@ -29,7 +29,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val viewModelModule = module {
-        viewModel { MainViewModel(get(), get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
         viewModel { LoginViewModel(get()) }
         viewModel { OddsDetailViewModel() }
         viewModel { SettlementViewModel(get()) }
