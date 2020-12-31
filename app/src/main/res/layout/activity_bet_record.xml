@@ -2,74 +2,28 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.bet_record.BetRecordActivityOld">
+    tools:context=".ui.bet_record.BetRecordActivity">
 
     <data>
+        <variable name="activity"
+            type="org.cxct.sportlottery.ui.bet_record.BetRecordActivity"/>
 
         <variable
             name="betRecordViewModel"
             type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
     </data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <org.cxct.sportlottery.ui.common.ToolBarView
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!--
-
-                &lt;!&ndash; toolBar &ndash;&gt;
-                <RelativeLayout
-                    android:id="@+id/toolBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/tool_bar_height"
-                    android:background="@color/colorPrimary"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/btn_menu"
-                        android:layout_width="@dimen/tool_bar_height"
-                        android:layout_height="@dimen/tool_bar_height"
-                        android:layout_alignParentEnd="true"
-                        android:background="@color/colorPrimaryDark"
-                        android:contentDescription="@null"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_menu" />
-
-                </RelativeLayout>
-            -->
-            <fragment
-                android:id="@+id/fragment_host_bet_record"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/bet_record_navigation" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- 側邊導覽列 -->
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_right"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="end">
+            app:title="@string/bet_record"
+            app:fragmentNavGraph="@navigation/bet_record_navigation"/>
 
-            <fragment
-                android:id="@+id/fragment_menu"
-                android:name="org.cxct.sportlottery.ui.menu.MenuFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout="@layout/fragment_menu" />
-
-        </com.google.android.material.navigation.NavigationView>
-
-    </androidx.drawerlayout.widget.DrawerLayout>
+    </LinearLayout>
 </layout>

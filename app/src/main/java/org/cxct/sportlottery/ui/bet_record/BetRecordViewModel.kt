@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet_record
 
+import android.util.Log
 import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,9 +29,8 @@ class BetRecordViewModel : BaseViewModel() {
     val betRecordResult: LiveData<BetListResult>
         get() = _betRecordResult
 
-    private val _selectStatusList = MutableLiveData<MutableList<BetTypeItemData>>()
-    init {
-        _selectStatusList.value = mutableListOf()
+    private val _selectStatusList = MutableLiveData<MutableList<BetTypeItemData>>().apply {
+        mutableListOf<BetTypeItemData>()
     }
 
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
@@ -62,57 +62,16 @@ class BetRecordViewModel : BaseViewModel() {
         _selectStatusList.value = _selectStatusList.value
     }
 
-    private suspend fun getBetList(betListRequest: BetListRequest) {
-        val betListResponse = OneBoSportApi.betService.getBetList(betListRequest)
-
-        if (betListResponse.isSuccessful) {
-          _betRecordResult.postValue(betListResponse.body())
-        } else {
-            val apiError = ErrorUtils.parseError(betListResponse)
-            apiError?.let {
-                    _betRecordResult.postValue(BetListResult(success = it.success, msg = it.msg, code = it.code, rows = listOf(), total = 0))
-            }
-        }
-    }
-
-    fun searchBetRecordHistory(statusList: List<Int>, startDate: String, endDate: String) {
+    fun getBetList(statusList: List<Int>, startDate: String, endDate: String) {
         viewModelScope.launch {
             val betListRequest = BetListRequest(statusList = statusList,
                                                 startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START).toString(),
                                                 endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END).toString())
-            getBetList(betListRequest)
-        }
-    }
-}
-
-class ListLiveData<T> : LiveData<MutableList<T>?>() {
-    fun addAll(items: List<T>?) {
-        if (value != null && items != null) {
-            value!!.addAll(items)
-            value = value
+            val result = doNetwork {
+                OneBoSportApi.betService.getBetList(betListRequest)
+            }
+            _betRecordResult.postValue(result)
         }
     }
 
-    fun add(items: T?) {
-        if (value != null && items != null) {
-            value!!.add(items)
-            value = value
-        }
-    }
-
-    fun clear() {
-        if (value != null) {
-            value!!.clear()
-            value = value
-        }
-    }
-
-    public override fun setValue(value: MutableList<T>?) {
-        super.setValue(value)
-    }
-
-    @Nullable
-    override fun getValue(): MutableList<T>? {
-        return super.getValue()
-    }
 }

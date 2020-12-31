@@ -218,7 +218,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
                 if (it.hasStatus && it.hasStartDate && it.hasEndDate) {
                     loading()
-                    viewModel.searchBetRecordHistory(statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
+                    viewModel.getBetList(statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
                 }
             })
 
