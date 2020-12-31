@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
+import kotlinx.android.synthetic.main.game_bar_date.view.*
 import kotlinx.android.synthetic.main.game_bar_inplay.*
 import kotlinx.android.synthetic.main.game_bar_inplay.view.*
 import org.cxct.sportlottery.R
@@ -33,6 +34,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val gameTypeAdapter = GameTypeAdapter(GameTypeListener {
         viewModel.getLeagueList(args.matchType, it)
     })
+    private val gameTimeAdapter = GameDateAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,18 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 this.adapter = gameTypeAdapter
+                addItemDecoration(
+                    SpaceItemDecoration(
+                        context,
+                        R.dimen.recyclerview_item_dec_spec
+                    )
+                )
+            }
+
+            this.date_row_list.apply {
+                this.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                this.adapter = gameTimeAdapter
                 addItemDecoration(
                     SpaceItemDecoration(
                         context,
@@ -102,7 +116,12 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             inplay_1x2.isSelected = (it == PlayType.X12)
         })
 
+        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer {
+            gameTimeAdapter.data = it
+        })
+
         viewModel.getLeagueList(args.matchType)
+        viewModel.getEarlyDateRow()
     }
 
     private fun setupInPlayFilter(sportList: List<Sport>) {
@@ -114,24 +133,32 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         hall_inplay_row.visibility = View.VISIBLE
         inplay_sport.text = selectSportName
+
+        hall_date_row.visibility = View.GONE
     }
 
     private fun setupTodayFilter(sportList: List<Sport>) {
         gameTypeAdapter.data = sportList
 
         hall_inplay_row.visibility = View.GONE
+
+        hall_date_row.visibility = View.GONE
     }
 
     private fun setupEarlyFilter(sportList: List<Sport>) {
         gameTypeAdapter.data = sportList
 
         hall_inplay_row.visibility = View.GONE
+
+        hall_date_row.visibility = View.VISIBLE
     }
 
     private fun setupParlayFilter(sportList: List<Sport>) {
         gameTypeAdapter.data = sportList
 
         hall_inplay_row.visibility = View.GONE
+
+        hall_date_row.visibility = View.VISIBLE
     }
 
     companion object {
