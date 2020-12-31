@@ -55,4 +55,16 @@ object TimeUtil {
         val timeFormat = timeFormat(date.time, format)
         return SimpleDateFormat(format).parse(timeFormat).time / 1000
     }
+
+    fun getOneWeekDate(): List<String> {
+        val weekDateList = mutableListOf<String>()
+        val calendar = Calendar.getInstance()
+        val format = "yyyy-MM-dd"
+
+        repeat(7) {
+            calendar.add(Calendar.DATE, 1)
+            weekDateList.add(timeFormat(calendar.time.time, format))
+        }
+        return weekDateList
+    }
 }
