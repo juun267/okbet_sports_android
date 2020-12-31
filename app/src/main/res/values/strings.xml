@@ -83,4 +83,9 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <!--game hall-->
+    <string name="inplay_row_title">滚球</string>
+    <string name="inplay_row_btn_double">1 X 2</string>
+    <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
 </resources>

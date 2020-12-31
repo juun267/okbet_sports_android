@@ -8,12 +8,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
+import kotlinx.android.synthetic.main.game_bar_inplay.*
+import kotlinx.android.synthetic.main.game_bar_inplay.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 
 
 /**
@@ -48,32 +55,83 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     )
                 )
             }
+
+            this.inplay_ou.setOnClickListener {
+                viewModel.setPlayType(PlayType.OU)
+            }
+
+            this.inplay_1x2.setOnClickListener {
+                viewModel.setPlayType(PlayType.X12)
+            }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getLeagueList(args.matchType)
+
 
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
 
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    gameTypeAdapter.data = it.sportMenuData?.inPlay ?: listOf()
+                    setupInPlayFilter(it.sportMenuData?.inPlay ?: listOf())
                 }
                 MatchType.TODAY -> {
-                    gameTypeAdapter.data = it.sportMenuData?.today ?: listOf()
+                    setupTodayFilter(it.sportMenuData?.today ?: listOf())
                 }
                 MatchType.EARLY -> {
-                    gameTypeAdapter.data = it.sportMenuData?.early ?: listOf()
+                    setupEarlyFilter(it.sportMenuData?.early ?: listOf())
                 }
                 MatchType.PARLAY -> {
-                    gameTypeAdapter.data = it.sportMenuData?.parlay ?: listOf()
+                    setupParlayFilter(it.sportMenuData?.parlay ?: listOf())
                 }
                 else -> {
                 }
             }
         })
+
+        viewModel.leagueListResult.observe(this.viewLifecycleOwner,
+            object : Observer<LeagueListResult> {
+                override fun onChanged(t: LeagueListResult?) {
+                    Timber.d("${t?.total}")
+                }
+            })
+
+        viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
+            inplay_ou.isSelected = (it === PlayType.OU)
+            inplay_1x2.isSelected = (it == PlayType.X12)
+        })
+
+        viewModel.getLeagueList(args.matchType)
+    }
+
+    private fun setupInPlayFilter(sportList: List<Sport>) {
+        val selectSportName = sportList.find { sport ->
+            sport.isSelected
+        }?.name
+
+        gameTypeAdapter.data = sportList
+
+        hall_inplay_row.visibility = View.VISIBLE
+        inplay_sport.text = selectSportName
+    }
+
+    private fun setupTodayFilter(sportList: List<Sport>) {
+        gameTypeAdapter.data = sportList
+
+        hall_inplay_row.visibility = View.GONE
+    }
+
+    private fun setupEarlyFilter(sportList: List<Sport>) {
+        gameTypeAdapter.data = sportList
+
+        hall_inplay_row.visibility = View.GONE
+    }
+
+    private fun setupParlayFilter(sportList: List<Sport>) {
+        gameTypeAdapter.data = sportList
+
+        hall_inplay_row.visibility = View.GONE
     }
 
     companion object {
