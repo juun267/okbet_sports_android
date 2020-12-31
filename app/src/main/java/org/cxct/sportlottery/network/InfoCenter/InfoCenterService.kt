@@ -16,7 +16,6 @@ interface InfoCenterService {
 
     @POST(USER_NOTICE_READED)
     suspend fun setMsgReaded(
-        @Path("id") msgId: String,
-        @Body infoCenterRequest: InfoCenterRequest
+        @Path("id") msgId: String
     ): Response<InfoCenterResult>
 }
