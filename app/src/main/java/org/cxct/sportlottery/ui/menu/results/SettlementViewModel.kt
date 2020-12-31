@@ -31,20 +31,13 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
 
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
-    fun getSettlementData(
-        gameType: String,
-        pagingParams: PagingParams?,
-        timeRangeParams: TimeRangeParams
-    ) {
+    fun getSettlementData(gameType: String, pagingParams: PagingParams?, timeRangeParams: TimeRangeParams) {
         requestListener.requestIng(true)
         viewModelScope.launch {
-            _matchResultListResult.postValue(
-                settlementRepository.resultList(
-                    pagingParams = pagingParams,
-                    timeRangeParams = timeRangeParams,
-                    gameType = gameType
-                )
-            )
+            val result = doNetwork {
+                settlementRepository.resultList(pagingParams = pagingParams, timeRangeParams = timeRangeParams, gameType = gameType)
+            }
+            _matchResultListResult.postValue(result)
             filterResult()
             requestListener.requestIng(false)
             _gameResultDetailResult.value = SettlementRvData(-1, -1, mutableMapOf())  //要清空聯賽列表中比賽詳情的點選狀態
@@ -54,15 +47,15 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     fun getSettlementDetailData(settleRvPosition: Int, gameResultRvPosition: Int, matchId: String) {
         requestListener.requestIng(true)
         viewModelScope.launch {
-            settlementRepository.resultPlayList(matchId)?.let { result ->
-                _gameResultDetailResult.value?.apply {
-                    this.settleRvPosition = settleRvPosition
-                    this.gameResultRvPosition = gameResultRvPosition
-                    this.settlementRvMap?.put(RvPosition(settleRvPosition, gameResultRvPosition), result)
-                    requestListener.requestIng(false)
-                }
-                _gameResultDetailResult.value = _gameResultDetailResult.value //touch observe
+            val result = doNetwork {
+                settlementRepository.resultPlayList(matchId)
             }
+            _gameResultDetailResult.postValue(_gameResultDetailResult.value?.apply {
+                this.settleRvPosition = settleRvPosition
+                this.gameResultRvPosition = gameResultRvPosition
+                this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
+                requestListener.requestIng(false)
+            })
         }
     }
 
@@ -87,7 +80,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
      */
     private fun filterResult() {
         _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
-            gameLeagueSet.contains(index) && (gameKeyWord.isNullOrEmpty() || row.league.name.contains(gameKeyWord))
+            gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.contains(gameKeyWord))
         })
     }
 }
