@@ -58,75 +58,21 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settlementBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_results_settlement)
+
+        bindingViewModel()
+        initEvent()
+        setupSpinnerGameType() //設置體育種類列表
+        observeData()
+        initTimeSelector()
+    }
+
+    private fun bindingViewModel() {
+        settlementBinding = DataBindingUtil.setContentView(this, R.layout.activity_results_settlement)
         settlementBinding.apply {
             settlementViewModel = this@ResultsSettlementActivity.settlementViewModel
             lifecycleOwner = this@ResultsSettlementActivity
             rv_results.adapter = settlementRvAdapter
             rv_date.adapter = settlementDateRvAdapter
-        }
-
-        initEvent()
-
-        setupSpinnerGameType() //設置體育種類列表
-
-        settlementViewModel.matchResultListResult.observe(this) {
-            setSettleRvData(it.rows)
-
-            bottomSheetLeagueItemDataList = it.rows?.map { rows ->
-                LeagueItemData(null, rows.league.name, true)
-            }?.toMutableList<LeagueItemData>() ?: mutableListOf()
-
-            setupLeagueList(bottomSheetLeagueItemDataList)
-        }
-
-        settlementViewModel.outRightListResult.observe(this) {
-            bottomSheetLeagueItemDataList = it.rows?.map { rows ->
-                LeagueItemData(null, rows.season.name, true)
-            }?.toMutableList<LeagueItemData>() ?: mutableListOf()
-
-            setupLeagueList(bottomSheetLeagueItemDataList)
-        }
-
-        settlementViewModel.gameResultDetailResult.observe(this) {
-            settlementRvAdapter.mGameDetail = it //set Game Detail Data
-        }
-
-        //日期選擇初始化
-        settlementDateRvAdapter.mDateList = setupWeekList(System.currentTimeMillis())
-        settlementDateRvAdapter.refreshDateListener = object :
-            SettlementDateRvAdapter.RefreshDateListener {
-            override fun refreshDate(date: Int) {
-                //0:今日, 1:明天, 2:後天 ... 7:冠軍
-                when (date) {
-                    7 -> {
-                        //TODO get outright result
-                        settleType = SettleType.OUTRIGHT
-                        settlementViewModel.getOutrightResultList(gameType)
-                    }
-                    else -> {
-                        settleType = SettleType.MATCH
-                        timeRangeParams = setupTimeApiFormat(date)
-                        settlementViewModel.getSettlementData(
-                            gameType,
-                            null,
-                            timeRangeParams
-                        )
-                    }
-                }
-            }
-
-        }
-
-        settlementViewModel.apply {
-            matchResultList.observe(this@ResultsSettlementActivity) {
-                setSettleRvData(it)
-            }
-
-            outRightList.observe(this@ResultsSettlementActivity) {
-                setSettleRvOutRightData(it)
-            }
         }
     }
 
@@ -160,6 +106,72 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     private fun setupSpinnerGameType() {
         initSettleGameTypeBottomSheet()
         setupSettleGameTypeBottomSheet()
+    }
+
+    private fun observeData() {
+        settlementViewModel.apply {
+            //獲取賽果資料,更新聯賽列表
+            matchResultListResult.observe(this@ResultsSettlementActivity) {
+                setSettleRvData(it.rows)
+
+                bottomSheetLeagueItemDataList = it.rows?.map { rows ->
+                    LeagueItemData(null, rows.league.name, true)
+                }?.toMutableList<LeagueItemData>() ?: mutableListOf()
+
+                setupLeagueList(bottomSheetLeagueItemDataList)
+            }
+
+            //比賽詳情
+            gameResultDetailResult.observe(this@ResultsSettlementActivity) {
+                settlementRvAdapter.mGameDetail = it //set Game Detail Data
+            }
+
+            //獲取冠軍資料,更新聯賽列表
+            outRightListResult.observe(this@ResultsSettlementActivity) {
+                bottomSheetLeagueItemDataList = it.rows?.map { rows ->
+                    LeagueItemData(null, rows.season.name, true)
+                }?.toMutableList<LeagueItemData>() ?: mutableListOf()
+
+                setupLeagueList(bottomSheetLeagueItemDataList)
+            }
+
+            //過濾後賽果資料
+            matchResultList.observe(this@ResultsSettlementActivity) {
+                setSettleRvData(it)
+            }
+
+            //過濾後冠軍資料
+            outRightList.observe(this@ResultsSettlementActivity) {
+                setSettleRvOutRightData(it)
+            }
+        }
+    }
+
+    private fun initTimeSelector() {
+        //日期選擇初始化
+        settlementDateRvAdapter.mDateList = setupWeekList(System.currentTimeMillis())
+        settlementDateRvAdapter.refreshDateListener = object :
+            SettlementDateRvAdapter.RefreshDateListener {
+            override fun refreshDate(date: Int) {
+                //0:今日, 1:明天, 2:後天 ... 7:冠軍
+                when (date) {
+                    7 -> {
+                        //TODO get outright result
+                        settleType = SettleType.OUTRIGHT
+                        settlementViewModel.getOutrightResultList(gameType)
+                    }
+                    else -> {
+                        settleType = SettleType.MATCH
+                        timeRangeParams = setupTimeApiFormat(date)
+                        settlementViewModel.getSettlementData(
+                            gameType,
+                            null,
+                            timeRangeParams
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun initSettleGameTypeBottomSheet() {
