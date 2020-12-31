@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.menu.results
 
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.RotateDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -122,6 +124,7 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         true
                     )
                 }
+                rotateTitleBlock(block_type)
             }
         }
     }
@@ -184,8 +187,14 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         true
                     )
                 }
+                rotateTitleBlock(ll_type)
             }
         }
+    }
+
+    private fun rotateTitleBlock(block: View){
+        val drawable = block.background
+        ((drawable as LayerDrawable).getDrawable(1) as RotateDrawable).level += 10000
     }
 
     override fun getItemCount(): Int {
