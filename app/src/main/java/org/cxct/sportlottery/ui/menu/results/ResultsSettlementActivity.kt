@@ -2,12 +2,9 @@ package org.cxct.sportlottery.ui.menu.results
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
@@ -18,7 +15,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_game_type.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_league_type.*
-import kotlinx.android.synthetic.main.home_game_rv_header.*
 import kotlinx.android.synthetic.main.item_listview_settlement_game_type.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*

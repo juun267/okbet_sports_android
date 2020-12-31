@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.menu.results
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,29 +75,36 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
             }
 
             if (mIsOpenList[position]) { //TODO Dean : 箭頭旋轉
+                setupDetailRv(this, position)
                 block_drawer_result.expand(false)
             } else {
                 block_drawer_result.collapse(false)
             }
 
             block_type.setOnClickListener {
+                setupDetailRv(this, position)
+                mIsOpenList[viewHolder.adapterPosition] = !mIsOpenList[viewHolder.adapterPosition]
                 this.block_drawer_result.let { expandableLayout ->
                     expandableLayout.setExpanded(
-                        !(expandableLayout.isExpanded),
+                        mIsOpenList[viewHolder.adapterPosition],
                         true
                     )
                 }
-                mIsOpenList[viewHolder.adapterPosition] = !mIsOpenList[viewHolder.adapterPosition]
             }
+        }
+    }
 
+    private fun setupDetailRv(itemView: View, itemPosition: Int) {
+        itemView.apply {
+            val data = mDataList[itemPosition]
             rv_game_result.adapter = GameResultRvAdapter()
             (rv_game_result.adapter as GameResultRvAdapter).apply {
                 //下一層需要用到gameResultRvPosition判斷哪一個detail被點擊需展開，需在set mDataList前先賦值
-                if (position == mGameDetail?.settleRvPosition)
+                if (itemPosition == mGameDetail?.settleRvPosition)
                     mGameDetailData = this@SettlementRvAdapter.mGameDetail
 
                 gameType = this@SettlementRvAdapter.gameType
-                positionKey = position
+                positionKey = itemPosition
                 mDataList = data.list.toMutableList()
                 mGameResultDetailListener =
                     object : GameResultRvAdapter.GameResultDetailListener {
@@ -107,7 +113,7 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
                             matchId: String
                         ) {
                             mSettlementRvListener?.getGameResultDetail(
-                                position,
+                                itemPosition,
                                 gameResultRvPosition,
                                 matchId
                             )
