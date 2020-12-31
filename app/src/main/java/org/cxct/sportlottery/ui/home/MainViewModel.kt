@@ -23,7 +23,6 @@ import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
 
-
 class MainViewModel(
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository
@@ -118,7 +117,7 @@ class MainViewModel(
                 )
             }
 
-            val asStartCount = result?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+            val asStartCount = result.sportMenuData?.atStart?.sumBy { it.num } ?: 0
             _asStartCount.postValue(asStartCount)
             _allFootballCount.postValue(getAllGameCount("FT", result))
             _allBasketballCount.postValue(getAllGameCount("BK", result))

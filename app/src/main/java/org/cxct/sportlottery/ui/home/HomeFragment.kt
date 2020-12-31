@@ -37,7 +37,6 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         initEvent()
         initObserve()
-        queryData()
     }
 
     private fun initEvent() {
@@ -67,7 +66,12 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.matchPreloadInPlay.observe(this.viewLifecycleOwner, Observer {
+        viewModel.token.observe(viewLifecycleOwner, Observer {
+            //登入、登出 token 改變重新接資料
+            queryData()
+        })
+
+        viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
             drawer_in_play.setCount(it.matchPreloadData?.num?.toString())
             drawer_in_play.setRvGameData(it.matchPreloadData)
             drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
