@@ -5,7 +5,6 @@
     tools:context=".ui.login.LoginActivity">
 
     <data>
-
         <variable
             name="loginViewModel"
             type="org.cxct.sportlottery.ui.login.LoginViewModel" />

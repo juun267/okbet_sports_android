@@ -1,0 +1,25 @@
+<resources>
+    <string name="cdrp_mon">一</string>
+    <string name="cdrp_tue">二</string>
+    <string name="cdrp_wed">三</string>
+    <string name="cdrp_thu">四</string>
+    <string name="cdrp_fri">五</string>
+    <string name="cdrp_sat">六</string>
+    <string name="cdrp_sun">日</string>
+
+    <string-array name="week_sun_sat">
+        <item>@string/cdrp_sun</item>
+        <item>@string/cdrp_mon</item>
+        <item>@string/cdrp_tue</item>
+        <item>@string/cdrp_wed</item>
+        <item>@string/cdrp_thu</item>
+        <item>@string/cdrp_fri</item>
+        <item>@string/cdrp_sat</item>
+    </string-array>
+
+    <string name="cancel">取消</string>
+    <string name="done">完成</string>
+    <string name="title_time_picker">選擇時間</string>
+    <string name="select_time">選擇一個時間</string>
+
+</resources>

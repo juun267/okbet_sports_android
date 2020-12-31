@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".MultiLanguagesApplication"
         android:allowBackup="true"
@@ -14,10 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.menu.results.ResultsSettlementActivity" />
+        <activity android:name=".ui.bet_record.BetRecordActivity"/>
+        <activity
+            android:name=".ui.bet_record.BetRecordActivityOld"
+            android:theme="@style/ActionBarTheme" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" />
-
         <activity android:name=".ui.home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

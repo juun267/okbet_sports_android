@@ -10,6 +10,16 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
     </style>
 
+    <!-- Base application theme. -->
+    <style name="ActionBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
+
     <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->
     <style name="WindowAnimationStyle">
         <item name="android:activityOpenEnterAnimation">@anim/push_right_to_left_enter</item>
@@ -23,7 +33,8 @@
         <item name="android:taskCloseExitAnimation">@anim/pop_left_to_right_exit</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen"
+        parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
