@@ -34,6 +34,16 @@ object TimeUtil {
         return formattedTime
     }
 
+    enum class TimeType {
+        START, END
+    }
+    fun dateToTimeStamp(date: String, timeType: TimeType = TimeType.START): Long? {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val startTimeStamp = formatter.parse("$date 00:00:00")?.time
+        val endTimeStamp = formatter.parse("$date 23:59:59")?.time
+        return if (timeType == TimeType.START) startTimeStamp else endTimeStamp
+    }
+
     fun getNowTimeStamp(): Long {
         val date = Calendar.getInstance().time
         return date.time / 1000

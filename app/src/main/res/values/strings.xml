@@ -96,8 +96,40 @@
     <string name="btn_end_page">尾页</string>
     <string name="info_center_promot">当前 %1$d/%2$d  每页 %3$d 笔   共 %4$d 条</string>
 
+    <string name="please_choose_bet_state">请选择注单状态</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="please_choose_start_date">请选择开始日期</string>
+    <string name="please_choose_end_date">请选择结束日期</string>
+    <string name="today">今日</string>
+    <string name="yesterday">昨日</string>
+    <string name="past_30_days">过去30日</string>
+    <string name="champion_play">冠军玩法</string>
+    <string name="inquire">查询</string>
+    <string name="order_number">注单编号</string>
+    <string name="bet_type">投注玩法</string>
+    <string name="total_bet_money">总投注额</string>
+    <string name="status">状态</string>
+    <string name="bet_record">投注记录</string>
+    <string name="select_all">全选</string>
+    <string name="start_date">开始日期</string>
+    <string name="end_date">结束日期</string>
+    <string name="cancel_select">取消选择</string>
+    <string name="no_data">沒有資料了</string>
+    <string name="at_symbol">\u0040%s</string>
+    <string name="plus_symbol">+%s</string>
+    <string name="minus_symbol">-%s</string>
+    <string name="not_start_yet">未开始</string>
+    <string name="game_playing">比赛中</string>
+    <string name="ended">已结束</string>
+    <string name="suspend">延期</string>
+    <string name="canceled">已取消</string>
+
+
+
     <!--game hall-->
     <string name="inplay_row_title">滚球</string>
     <string name="inplay_row_btn_double">1 X 2</string>
     <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
+
 </resources>

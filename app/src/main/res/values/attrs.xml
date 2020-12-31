@@ -9,4 +9,10 @@
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="ToolBarView">
+        <attr name="title" format="string" />
+        <attr format="reference" name="fragmentNavGraph"/>
+    </declare-styleable>
+
 </resources>

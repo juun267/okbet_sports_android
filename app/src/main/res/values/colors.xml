@@ -9,8 +9,8 @@
     <color name="colorDarkBlack">#333333</color>
     <color name="colorWhiteGray">#707070</color>
 
-    <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="gray">#EEEEEE</color>
     <color name="lightGray">#999999</color>
 
     <color name="main">#445E77</color>
@@ -44,7 +44,6 @@
     <color name="dark_gray">#E7E7E7</color>
     <color name="golden">#ECA906</color>
     <color name="light_gray">#DDDDDD</color>
-    <color name="gray">#eeeeee</color>
 
     <color name="transparent">#00000000</color>
     <color name="transparent_black_10">#26000000</color>
@@ -63,8 +62,36 @@
     <color name="tool_bar_text_color">#EAA909</color>
     <color name="back_button_menu">#023851</color>
     <color name="gray_background_color">#E6E6E6</color>
-    <color name="date_select_orange">#F98B00</color>
 
+    <!--白色系-->
+    <color name="white">#FFFFFF</color>
+
+    <!--灰色系-->
+    <color name="gray1">#d4d4d4</color>
+    <color name="gray2">#c6c4c7</color>
+    <color name="gray3">#666666</color>
+    <color name="gray4">#585867</color>
+    <color name="gray5">#f3f4f6</color>
+    <color name="gray6">#202020</color>
+    <color name="gray7">#e7e7e7</color>
+
+
+    <!--紅色系-->
+    <color name="red">#ff4c2c</color>
+
+    <!--橘色系-->
+    <color name="orange">#ef9823</color>
+
+    <!--綠色系-->
+    <color name="green">#3eca71</color>
+    <color name="gray8">#4a4a4a</color>
+
+    <!-- 藍色系 -->
+    <color name="blue_transparent_40">#64c8d7e8</color>
+    <color name="blue">#223549</color>
     <color name="blue2">#c8d7e8</color>
     <color name="blue3">#445e77</color>
+
+    <color name="date_select_orange">#F98B00</color>
+
 </resources>
