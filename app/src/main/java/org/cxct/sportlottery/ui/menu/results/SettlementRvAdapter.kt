@@ -4,12 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_settlement_out_right_rv.view.*
 import kotlinx.android.synthetic.main.content_settlement_rv.view.*
+import org.cxct.sportlottery.databinding.ContentSettlementOutRightRvBinding
 import org.cxct.sportlottery.databinding.ContentSettlementRvBinding
 import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
+import java.text.SimpleDateFormat
+import java.util.*
 
-class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewHolder>() {
+class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mDataList = listOf<Row>()
         set(value) {
@@ -20,10 +24,20 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
 
             notifyDataSetChanged()
         }
-    var gameType = ""
+
+    var mOutRightDatList = listOf<org.cxct.sportlottery.network.outright.Row>()
         set(value) {
             field = value
+
+            mIsOpenList =
+                MutableList(value.size) { false }//創建一個跟 DataList 一樣的 size，value 都為 true 的 List
+
+            notifyDataSetChanged()
         }
+
+    var gameType = ""
+
+    var settleType: SettleType = SettleType.MATCH
 
     var mGameDetail: SettlementRvData? = null
         set(value) {
@@ -42,14 +56,32 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
     private var mIsOpenList: MutableList<Boolean> = mutableListOf()
 
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutView = LayoutInflater.from(viewGroup.context)
-        val binding = ContentSettlementRvBinding.inflate(layoutView, viewGroup, false)
-        return ItemViewHolder(binding)
+        return when (settleType) {
+            SettleType.MATCH -> {
+                ContentSettlementRvBinding.inflate(layoutView, viewGroup, false)
+                ItemViewHolder(ContentSettlementRvBinding.inflate(layoutView, viewGroup, false))
+            }
+            SettleType.OUTRIGHT -> {
+                OutRightItemViewHolder(ContentSettlementOutRightRvBinding.inflate(layoutView, viewGroup, false))
+            }
+        }
     }
 
-    override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
-        viewHolder.itemView.apply {
+    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        when (viewHolder) {
+            is ItemViewHolder -> {
+                setupData(viewHolder.itemView, position)
+            }
+            is OutRightItemViewHolder -> {
+                setupOutRightData(viewHolder.itemView, position)
+            }
+        }
+    }
+
+    private fun setupData(itemView: View, position: Int) {
+        itemView.apply {
             val data = mDataList[position]
             tv_type.text = data.league.name
             when (gameType) {
@@ -83,10 +115,10 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
 
             block_type.setOnClickListener {
                 setupDetailRv(this, position)
-                mIsOpenList[viewHolder.adapterPosition] = !mIsOpenList[viewHolder.adapterPosition]
+                mIsOpenList[position] = !mIsOpenList[position]
                 this.block_drawer_result.let { expandableLayout ->
                     expandableLayout.setExpanded(
-                        mIsOpenList[viewHolder.adapterPosition],
+                        mIsOpenList[position],
                         true
                     )
                 }
@@ -123,11 +155,51 @@ class SettlementRvAdapter() : RecyclerView.Adapter<SettlementRvAdapter.ItemViewH
         }
     }
 
-    override fun getItemCount(): Int {
-        return mDataList.size
+    private fun setupOutRightData(itemView: View, position: Int) {
+        itemView.apply {
+            val data = mOutRightDatList[position]
+            tv_league.text = data.season.name
+
+            //TODO Dean : 之後可以寫成Util
+            val calendar = Calendar.getInstance()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+            tv_date.text = dateFormat.format(data.season.start.let {
+                calendar.timeInMillis = it.toLong()
+                calendar.time
+            })
+
+            tv_ranking.text = data.resultList[0].playCateName
+            tv_winner.text = data.resultList[0].playName
+
+            if (mIsOpenList[position]) { //TODO Dean : 箭頭旋轉
+                ep_champion.expand(false)
+            } else {
+                ep_champion.collapse(false)
+            }
+            ll_type.setOnClickListener {
+                mIsOpenList[position] = !mIsOpenList[position]
+                this.ep_champion.let { expandableLayout ->
+                    expandableLayout.setExpanded(
+                        mIsOpenList[position],
+                        true
+                    )
+                }
+            }
+        }
     }
 
-    class ItemViewHolder internal constructor(private val binding: ContentSettlementRvBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    override fun getItemCount(): Int {
+        return when (settleType) {
+            SettleType.MATCH -> mDataList.size
+            SettleType.OUTRIGHT -> mOutRightDatList.size
+        }
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return settleType.ordinal
+    }
+
+    class ItemViewHolder internal constructor(private val binding: ContentSettlementRvBinding) : RecyclerView.ViewHolder(binding.root)
+
+    class OutRightItemViewHolder internal constructor(private val binding: ContentSettlementOutRightRvBinding) : RecyclerView.ViewHolder(binding.root)
 }

@@ -15,20 +15,24 @@ import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class SettlementViewModel(private val settlementRepository: SettlementRepository) : BaseViewModel() {
-    val matchResultListResult: LiveData<MatchResultListResult?>
+    val matchResultListResult: LiveData<MatchResultListResult>
         get() = _matchResultListResult
-    val gameResultDetailResult: LiveData<SettlementRvData?>
+    val gameResultDetailResult: LiveData<SettlementRvData>
         get() = _gameResultDetailResult
     val matchResultList: LiveData<List<Row>>
         get() = _matchResultList
     val outRightListResult: LiveData<OutrightResultListResult>
         get() = _outRightListResult
+    val outRightList: LiveData<List<org.cxct.sportlottery.network.outright.Row>>
+        get() = _outRightList
 
-    private val _matchResultListResult = MutableLiveData<MatchResultListResult?>()
-    private var _gameResultDetailResult = MutableLiveData<SettlementRvData?>(SettlementRvData(-1, -1, mutableMapOf()))
+    private val _matchResultListResult = MutableLiveData<MatchResultListResult>()
+    private var _gameResultDetailResult = MutableLiveData<SettlementRvData>(SettlementRvData(-1, -1, mutableMapOf()))
     private val _matchResultList = MutableLiveData<List<Row>>()
     private var _outRightListResult = MutableLiveData<OutrightResultListResult>()
+    private val _outRightList = MutableLiveData<List<org.cxct.sportlottery.network.outright.Row>>()
 
+    private var dataType = SettleType.MATCH
 
     private var gameLeagueSet = mutableSetOf<Int>()
     private var gameKeyWord = ""
@@ -36,6 +40,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
     fun getSettlementData(gameType: String, pagingParams: PagingParams?, timeRangeParams: TimeRangeParams) {
+        dataType = SettleType.MATCH
         requestListener.requestIng(true)
         viewModelScope.launch {
             val result = doNetwork {
@@ -64,6 +69,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     }
 
     fun getOutrightResultList(gameType: String) {
+        dataType = SettleType.OUTRIGHT
         requestListener.requestIng(true)
         viewModelScope.launch {
             val result = doNetwork {
@@ -71,6 +77,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
             }
             _outRightListResult.postValue(result)
             filterResult()
+            requestListener.requestIng(false)
             reSetDetailStatus()
         }
     }
@@ -95,9 +102,18 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
      * 依選擇聯盟、關鍵字進行篩選做資料顯示
      */
     private fun filterResult() {
-        _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
-            gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.contains(gameKeyWord))
-        })
+        when (dataType) {
+            SettleType.MATCH -> {
+                _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
+                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.contains(gameKeyWord))
+                })
+            }
+            SettleType.OUTRIGHT -> {
+                _outRightList.postValue(_outRightListResult.value?.rows?.filterIndexed { index, row ->
+                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.season.name.contains(gameKeyWord))
+                })
+            }
+        }
     }
 
     /**

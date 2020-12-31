@@ -104,6 +104,7 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
                 tv_full_game_score.text = fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
             }
 
+            //TODO Dean : 之後可以寫成Util
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
             tv_time.text = dateFormat.format(data.matchInfo.startTime.let {

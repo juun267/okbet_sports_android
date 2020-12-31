@@ -50,6 +50,8 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     private var timeRangeParams = setupTimeApiFormat(0) //預設為當日
     private var leagueSelectedSet: MutableSet<Int> = mutableSetOf()
 
+    private var settleType = SettleType.MATCH
+
     interface RequestListener {
         fun requestIng(loading: Boolean)
     }
@@ -70,13 +72,21 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         setupSpinnerGameType() //設置體育種類列表
 
         settlementViewModel.matchResultListResult.observe(this) {
-            setSettleRvData(it?.rows)
+            setSettleRvData(it.rows)
 
-            bottomSheetLeagueItemDataList = it?.rows?.map { rows ->
+            bottomSheetLeagueItemDataList = it.rows?.map { rows ->
                 LeagueItemData(null, rows.league.name, true)
             }?.toMutableList<LeagueItemData>() ?: mutableListOf()
 
-            setupLeagueList(bottomSheetLeagueItemDataList ?: mutableListOf<LeagueItemData>())
+            setupLeagueList(bottomSheetLeagueItemDataList)
+        }
+
+        settlementViewModel.outRightListResult.observe(this) {
+            bottomSheetLeagueItemDataList = it.rows?.map { rows ->
+                LeagueItemData(null, rows.season.name, true)
+            }?.toMutableList<LeagueItemData>() ?: mutableListOf()
+
+            setupLeagueList(bottomSheetLeagueItemDataList)
         }
 
         settlementViewModel.gameResultDetailResult.observe(this) {
@@ -92,8 +102,11 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 when (date) {
                     7 -> {
                         //TODO get outright result
+                        settleType = SettleType.OUTRIGHT
+                        settlementViewModel.getOutrightResultList(gameType)
                     }
                     else -> {
+                        settleType = SettleType.MATCH
                         timeRangeParams = setupTimeApiFormat(date)
                         settlementViewModel.getSettlementData(
                             gameType,
@@ -109,6 +122,10 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         settlementViewModel.apply {
             matchResultList.observe(this@ResultsSettlementActivity) {
                 setSettleRvData(it)
+            }
+
+            outRightList.observe(this@ResultsSettlementActivity) {
+                setSettleRvOutRightData(it)
             }
         }
     }
@@ -164,7 +181,14 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 override fun onClick(select: GameTypeItemData, position: Int) {
                     gameType = GameType.values()[position].key
                     this@ResultsSettlementActivity.tv_game_type.text = select.name
-                    settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+                    when (settleType) {
+                        SettleType.MATCH -> {
+                            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+                        }
+                        SettleType.OUTRIGHT -> {
+                            settlementViewModel.getOutrightResultList(gameType)
+                        }
+                    }
                 }
 
             })
@@ -262,12 +286,13 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
     }
 
     /**
-     * 設置比賽資料
+     * 設置賽果資料
      * result : MatchResultListResult.row: List<Row>
      */
     private fun setSettleRvData(result: List<Row>?) {
-        settlementRvAdapter.mDataList = result ?: listOf()
         settlementRvAdapter.gameType = gameType
+        settlementRvAdapter.settleType = settleType
+        settlementRvAdapter.mDataList = result ?: listOf()
         settlementRvAdapter.mSettlementRvListener = object :
             SettlementRvAdapter.SettlementRvListener {
             override fun getGameResultDetail(
@@ -277,6 +302,15 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
             }
 
         }
+    }
+
+    /**
+     * 設置賽果冠軍資料
+     * result : OutRightListResult.row: List<Row>
+     */
+    private fun setSettleRvOutRightData(result: List<org.cxct.sportlottery.network.outright.Row>?) {
+        settlementRvAdapter.settleType = settleType
+        settlementRvAdapter.mOutRightDatList = result ?: listOf()
     }
 
     /**
