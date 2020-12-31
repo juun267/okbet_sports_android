@@ -34,7 +34,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val gameTypeAdapter = GameTypeAdapter(GameTypeListener {
         viewModel.getLeagueList(args.matchType, it)
     })
-    private val gameTimeAdapter = GameDateAdapter(GameDateListener {
+    private val gameDateAdapter = GameDateAdapter(GameDateListener {
         viewModel.updateDateSelectedState(it)
     })
 
@@ -48,29 +48,9 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     ): View? {
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
-            this.hall_game_type_list.apply {
-                this.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                this.adapter = gameTypeAdapter
-                addItemDecoration(
-                    SpaceItemDecoration(
-                        context,
-                        R.dimen.recyclerview_item_dec_spec
-                    )
-                )
-            }
+            setupSportTypeRow(this)
 
-            this.date_row_list.apply {
-                this.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                this.adapter = gameTimeAdapter
-                addItemDecoration(
-                    SpaceItemDecoration(
-                        context,
-                        R.dimen.recyclerview_item_dec_spec
-                    )
-                )
-            }
+            setupDateRow(this)
 
             this.inplay_ou.setOnClickListener {
                 viewModel.setPlayType(PlayType.OU)
@@ -80,6 +60,35 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 viewModel.setPlayType(PlayType.X12)
             }
         }
+    }
+
+    private fun setupSportTypeRow(view: View) {
+        view.hall_game_type_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = gameTypeAdapter
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec
+                )
+            )
+        }
+    }
+
+    private fun setupDateRow(view: View) {
+        view.date_row_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = gameDateAdapter
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec
+                )
+            )
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -119,7 +128,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer {
-            gameTimeAdapter.data = it
+            gameDateAdapter.data = it
         })
 
         viewModel.getLeagueList(args.matchType)
@@ -135,7 +144,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         hall_inplay_row.visibility = View.VISIBLE
         inplay_sport.text = selectSportName
-
         hall_date_row.visibility = View.GONE
     }
 
@@ -143,7 +151,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
-
         hall_date_row.visibility = View.GONE
     }
 
@@ -151,7 +158,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
-
         hall_date_row.visibility = View.VISIBLE
     }
 
@@ -159,7 +165,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
-
         hall_date_row.visibility = View.VISIBLE
     }
 
