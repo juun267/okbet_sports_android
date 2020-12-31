@@ -31,12 +31,16 @@ import timber.log.Timber
  */
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
-    private val gameTypeAdapter = GameTypeAdapter(GameTypeListener {
-        viewModel.getLeagueList(args.matchType, it)
-    })
-    private val gameDateAdapter = GameDateAdapter(GameDateListener {
-        viewModel.updateDateSelectedState(it)
-    })
+    private val gameTypeAdapter by lazy {
+        GameTypeAdapter(GameTypeListener {
+            viewModel.getLeagueList(args.matchType, it)
+        })
+    }
+    private val gameDateAdapter by lazy {
+        GameDateAdapter(GameDateListener {
+            viewModel.updateDateSelectedState(it)
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +97,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
 
