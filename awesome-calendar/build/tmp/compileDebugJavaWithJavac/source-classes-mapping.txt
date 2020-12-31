@@ -1,2 +1,0 @@
-com/archit/calendardaterangepicker/BuildConfig.java
- com.archit.calendardaterangepicker.BuildConfig
