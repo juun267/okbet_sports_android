@@ -15,12 +15,21 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel
     private val infoCenterViewModel: InfoCenterViewModel by viewModel()
     var adapter = InfoCenterAdapter()
 
+    var mNextRequestPage = 1
+    var pageSize = 10
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_center)
 
+
         initLiveData()
         initRecyclerView()
+        initData()
+    }
+
+    private fun initData() {
+        infoCenterViewModel.getUserMsgList(1,pageSize)
     }
 
     private fun initLiveData() {
@@ -32,7 +41,7 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel
         //打開訊息->變成已讀
         infoCenterViewModel.setMsgReadResult.observe(this@InfoCenterActivity, Observer {
             val apiResult = it ?: return@Observer
-            if(!apiResult.success){ //TODO Bill 之後改成跳窗顯示 等公版
+            if(!apiResult.success){ //之後改成跳窗顯示 等公版
                 Toast.makeText(this@InfoCenterActivity,"${apiResult.msg}",Toast.LENGTH_SHORT)
             }else{
                 Toast.makeText(this@InfoCenterActivity,"${apiResult.msg}",Toast.LENGTH_SHORT)
