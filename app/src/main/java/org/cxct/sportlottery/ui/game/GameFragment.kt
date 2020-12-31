@@ -34,7 +34,9 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val gameTypeAdapter = GameTypeAdapter(GameTypeListener {
         viewModel.getLeagueList(args.matchType, it)
     })
-    private val gameTimeAdapter = GameDateAdapter()
+    private val gameTimeAdapter = GameDateAdapter(GameDateListener {
+        viewModel.updateDateSelectedState(it)
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
