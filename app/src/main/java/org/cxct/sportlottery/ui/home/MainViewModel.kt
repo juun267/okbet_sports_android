@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.home
 
-
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
