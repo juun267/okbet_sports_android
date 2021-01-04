@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.network.InfoCenter
 
+import org.cxct.sportlottery.network.common.PagingParams
+
 data class InfoCenterRequest(
-    val page: Int,//当前页
-    val pageSize: Int//每页条数
-)
+    override val page: Int? = null,//当前页
+    override val pageSize: Int? = null,//每页条数
+) : PagingParams
