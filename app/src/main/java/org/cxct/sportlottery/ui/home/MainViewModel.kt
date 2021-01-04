@@ -23,7 +23,6 @@ import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
 
-
 class MainViewModel(
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository
@@ -38,14 +37,8 @@ class MainViewModel(
     val sportMenuResult: LiveData<SportMenuResult>
         get() = _sportMenuResult
 
-    val matchPreloadEarly: LiveData<MatchPreloadResult>
-        get() = _matchPreloadEarly
-
     val matchPreloadInPlay: LiveData<MatchPreloadResult>
         get() = _matchPreloadInPlay
-
-    val matchPreloadToday: LiveData<MatchPreloadResult>
-        get() = _matchPreloadToday
 
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
@@ -55,9 +48,7 @@ class MainViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
-    private val _matchPreloadEarly = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
-    private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU
@@ -126,7 +117,7 @@ class MainViewModel(
                 )
             }
 
-            val asStartCount = result?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+            val asStartCount = result.sportMenuData?.atStart?.sumBy { it.num } ?: 0
             _asStartCount.postValue(asStartCount)
             _allFootballCount.postValue(getAllGameCount("FT", result))
             _allBasketballCount.postValue(getAllGameCount("BK", result))
@@ -157,30 +148,15 @@ class MainViewModel(
         }
     }
 
-    //按赛事类型预加载各体育赛事
-    fun getMatchPreload() {
+    fun getInPlayMatchPreload() {
         viewModelScope.launch {
-            val resultEarly = doNetwork {
-                OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest("EARLY")
-                )
-            }
-
             val resultInPlay = doNetwork {
                 OneBoSportApi.matchService.getMatchPreload(
                     MatchPreloadRequest("INPLAY")
                 )
             }
 
-            val resultToday = doNetwork {
-                OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest("TODAY")
-                )
-            }
-
-            _matchPreloadEarly.postValue(resultEarly)
             _matchPreloadInPlay.postValue(resultInPlay)
-            _matchPreloadToday.postValue(resultToday)
         }
     }
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/fillet_5dp_white"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeGameDrawer">
+    tools:context=".ui.home.HomeGameTable">
 
     <LinearLayout
         android:id="@+id/titleBar"
@@ -37,29 +36,12 @@
 
     </LinearLayout>
 
-    <net.cachapa.expandablelayout.ExpandableLayout
-        android:id="@+id/expandableLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:el_duration="500"
-        app:el_parallax="0.5"
-        tools:el_expanded="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_game"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:itemCount="3"
-                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/home_game_rv_item" />
-
-        </LinearLayout>
-
-    </net.cachapa.expandablelayout.ExpandableLayout>
+        tools:itemCount="3"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/home_game_rv_item" />
 
 </LinearLayout>
