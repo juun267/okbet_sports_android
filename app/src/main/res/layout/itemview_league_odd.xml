@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -18,10 +19,12 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="洪都拉斯國際聯賽" />
 
         <TextView
             android:id="@+id/league_odd_count"
@@ -30,10 +33,12 @@
             android:layout_marginEnd="15dp"
             android:background="@android:color/white"
             android:gravity="center"
+            android:textColor="@android:color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -41,12 +46,15 @@
         android:id="@+id/league_odd_sub_expand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/league_odd_layout">
+        app:layout_constraintTop_toBottomOf="@id/league_odd_layout"
+        tools:el_expanded="true">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/league_odd_sub_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:itemCount="3"
+            tools:listitem="@layout/itemview_match_odd" />
     </net.cachapa.expandablelayout.ExpandableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
