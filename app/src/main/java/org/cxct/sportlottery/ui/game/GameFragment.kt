@@ -7,20 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
+import kotlinx.android.synthetic.main.game_bar_date.view.*
 import kotlinx.android.synthetic.main.game_bar_inplay.*
 import kotlinx.android.synthetic.main.game_bar_inplay.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.league.LeagueAdapter
+import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import timber.log.Timber
 
 
 /**
@@ -30,9 +32,24 @@ import timber.log.Timber
  */
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
-    private val gameTypeAdapter = GameTypeAdapter(GameTypeListener {
-        viewModel.getLeagueList(args.matchType, it)
-    })
+    private val gameTypeAdapter by lazy {
+        GameTypeAdapter(GameTypeListener {
+            viewModel.getLeagueList(args.matchType, it)
+        })
+    }
+    private val gameDateAdapter by lazy {
+        GameDateAdapter(GameDateListener {
+            viewModel.updateDateSelectedState(it)
+        })
+    }
+
+    private val leagueOddAdapter by lazy {
+        LeagueOddAdapter()
+    }
+
+    private val leagueAdapter by lazy {
+        LeagueAdapter()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,17 +61,13 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     ): View? {
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
-            this.hall_game_type_list.apply {
-                this.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                this.adapter = gameTypeAdapter
-                addItemDecoration(
-                    SpaceItemDecoration(
-                        context,
-                        R.dimen.recyclerview_item_dec_spec
-                    )
-                )
-            }
+            setupSportTypeRow(this)
+
+            setupDateRow(this)
+
+            setupOddsList(this)
+
+            setupLeagueList(this)
 
             this.inplay_ou.setOnClickListener {
                 viewModel.setPlayType(PlayType.OU)
@@ -66,9 +79,64 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun setupSportTypeRow(view: View) {
+        view.hall_game_type_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = gameTypeAdapter
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec
+                )
+            )
+        }
+    }
+
+    private fun setupDateRow(view: View) {
+        view.date_row_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = gameDateAdapter
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec
+                )
+            )
+        }
+    }
+
+    private fun setupOddsList(view: View) {
+        view.hall_odds_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.adapter = leagueOddAdapter
+            this.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+    }
+
+    private fun setupLeagueList(view: View) {
+        view.hall_league_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.adapter = leagueAdapter
+            this.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
 
@@ -90,19 +158,35 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.leagueListResult.observe(this.viewLifecycleOwner,
-            object : Observer<LeagueListResult> {
-                override fun onChanged(t: LeagueListResult?) {
-                    Timber.d("${t?.total}")
-                }
-            })
+        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                hall_league_list.visibility = View.GONE
+                hall_odds_list.visibility = View.VISIBLE
+
+                leagueOddAdapter.data = it.oddsListData?.leagueOdds ?: listOf()
+            }
+        })
+
+        viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                hall_odds_list.visibility = View.GONE
+                hall_league_list.visibility = View.VISIBLE
+
+                leagueAdapter.data = it.rows ?: listOf()
+            }
+        })
 
         viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
             inplay_ou.isSelected = (it === PlayType.OU)
             inplay_1x2.isSelected = (it == PlayType.X12)
         })
 
+        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer {
+            gameDateAdapter.data = it
+        })
+
         viewModel.getLeagueList(args.matchType)
+        viewModel.getEarlyDateRow()
     }
 
     private fun setupInPlayFilter(itemList: List<Item>) {
@@ -114,24 +198,28 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         hall_inplay_row.visibility = View.VISIBLE
         inplay_sport.text = selectSportName
+        hall_date_row.visibility = View.GONE
     }
 
     private fun setupTodayFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
+        hall_date_row.visibility = View.GONE
     }
 
     private fun setupEarlyFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
+        hall_date_row.visibility = View.VISIBLE
     }
 
     private fun setupParlayFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
+        hall_date_row.visibility = View.VISIBLE
     }
 
     companion object {

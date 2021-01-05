@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import java.lang.Exception
 
