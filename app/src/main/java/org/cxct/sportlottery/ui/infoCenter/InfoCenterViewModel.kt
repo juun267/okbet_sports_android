@@ -24,8 +24,10 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
     fun getUserMsgList(page: Int, pageSize: Int) {
         viewModelScope.launch {
             try {
-                _userMsgList.value =
-                    infoCenterRepository.getUserNoticeList(page, pageSize).body()?.infoCenterData
+                val result = doNetwork {
+                    infoCenterRepository.getUserNoticeList(page, pageSize)
+                }
+                _userMsgList.value = result.infoCenterData
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -35,11 +37,13 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
     fun setMsgRead(msgId: String) {
         try {
             viewModelScope.launch {
-                _setMsgReadResult.value = infoCenterRepository.setMsgReaded(msgId).body()
+                val result = doNetwork {
+                    infoCenterRepository.setMsgReaded(msgId)
+                }
+                _setMsgReadResult.value = result
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
 }
