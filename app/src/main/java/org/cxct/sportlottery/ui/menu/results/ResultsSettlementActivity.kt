@@ -29,7 +29,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-//TODO Dean : 篩選邏輯完成後,進行重構整理
 class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementViewModel::class) {
     private lateinit var settlementBinding: ActivityResultsSettlementBinding
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
@@ -156,7 +155,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 //0:今日, 1:明天, 2:後天 ... 7:冠軍
                 when (date) {
                     7 -> {
-                        //TODO get outright result
                         settleType = SettleType.OUTRIGHT
                         settlementViewModel.getOutrightResultList(gameType)
                     }

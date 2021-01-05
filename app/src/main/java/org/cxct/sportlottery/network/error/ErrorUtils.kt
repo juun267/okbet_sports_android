@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
+import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.index.LogoutResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
+import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
@@ -111,7 +113,11 @@ object ErrorUtils {
                     }
                     (url.contains(USER_NOTICE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return InfoCenterResult(it.code, it.msg, it.success,null,null) as T
+                        return InfoCenterResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(MATCH_RESULT_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchResultListResult(it.code, it.msg, null, it.success, null) as T
                     }
                 }
             }

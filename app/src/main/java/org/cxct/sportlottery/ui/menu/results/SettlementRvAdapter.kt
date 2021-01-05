@@ -23,6 +23,7 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             mIsOpenList =
                 MutableList(value.size) { false }//創建一個跟 DataList 一樣的 size，value 都為 true 的 List
+            mAdapterList = MutableList(value.size) { null } //創建一個跟 DataList 一樣的 size，用來儲存下一層所使用的Adapter
 
             notifyDataSetChanged()
         }
@@ -56,6 +57,7 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var mSettlementRvListener: SettlementRvListener? = null
 
     private var mIsOpenList: MutableList<Boolean> = mutableListOf()
+    private var mAdapterList: MutableList<GameResultRvAdapter?> = mutableListOf()
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -108,12 +110,11 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 else -> ""
             }
 
-            if (mIsOpenList[position]) { //TODO Dean : 箭頭旋轉
+            if (mIsOpenList[position]) {
                 setupDetailRv(this, position)
-                block_drawer_result.expand(false)
-            } else {
-                block_drawer_result.collapse(false)
             }
+
+            block_drawer_result.setExpanded(mIsOpenList[position], false)
 
             block_type.setOnClickListener {
                 setupDetailRv(this, position)
@@ -132,15 +133,22 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private fun setupDetailRv(itemView: View, itemPosition: Int) {
         itemView.apply {
             val data = mDataList[itemPosition]
-            rv_game_result.adapter = GameResultRvAdapter()
+            if (mAdapterList[itemPosition] == null) {
+                val newGameResultRvAdapter = GameResultRvAdapter()
+                newGameResultRvAdapter.let {
+                    mAdapterList[itemPosition] = it
+                    it.mDataList = data.list.toMutableList()
+                }
+            }
+            rv_game_result.adapter = mAdapterList[itemPosition]
+
             (rv_game_result.adapter as GameResultRvAdapter).apply {
                 //下一層需要用到gameResultRvPosition判斷哪一個detail被點擊需展開，需在set mDataList前先賦值
-                if (itemPosition == mGameDetail?.settleRvPosition)
+                if (itemPosition == mGameDetail?.settleRvPosition && mGameDetailData == null)
                     mGameDetailData = this@SettlementRvAdapter.mGameDetail
 
                 gameType = this@SettlementRvAdapter.gameType
                 positionKey = itemPosition
-                mDataList = data.list.toMutableList()
                 mGameResultDetailListener =
                     object : GameResultRvAdapter.GameResultDetailListener {
                         override fun getGameResultDetail(
@@ -174,11 +182,8 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             tv_ranking.text = data.resultList[0].playCateName
             tv_winner.text = data.resultList[0].playName
 
-            if (mIsOpenList[position]) { //TODO Dean : 箭頭旋轉
-                ep_champion.expand(false)
-            } else {
-                ep_champion.collapse(false)
-            }
+            ep_champion.setExpanded(mIsOpenList[position], false)
+
             ll_type.setOnClickListener {
                 mIsOpenList[position] = !mIsOpenList[position]
                 this.ep_champion.let { expandableLayout ->
@@ -192,7 +197,7 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    private fun rotateTitleBlock(block: View){
+    private fun rotateTitleBlock(block: View) {
         val drawable = block.background
         ((drawable as LayerDrawable).getDrawable(1) as RotateDrawable).level += 10000
     }

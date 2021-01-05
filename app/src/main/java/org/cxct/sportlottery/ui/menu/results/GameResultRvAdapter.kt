@@ -31,7 +31,10 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
     var mGameDetailData: SettlementRvData? = null
         set(value) {
             field = value
-            value?.gameResultRvPosition?.let { notifyItemChanged(it) }
+            value?.gameResultRvPosition?.let {
+                mIsOpenList[it] = true
+                notifyItemChanged(it)
+            }
         }
 
     interface GameResultDetailListener {
@@ -115,11 +118,11 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             //判斷詳情展開或關閉
             el_game_result_detail.setExpanded(mIsOpenList[position], false)
 
-            when(mIsOpenList[position]){
+            when (mIsOpenList[position]) {
                 true -> {
                     iv_switch.setImageResource(R.drawable.ic_more_on)
                 }
-                false ->{
+                false -> {
                     iv_switch.setImageResource(R.drawable.ic_more)
                 }
             }
@@ -131,11 +134,11 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             val data = mDataList[position]
             ll_game_detail.setOnClickListener {
                 mIsOpenList[position] = !mIsOpenList[position] //切換展開或關閉
-                when(mIsOpenList[position]){
+                when (mIsOpenList[position]) {
                     true -> {
                         iv_switch.setImageResource(R.drawable.ic_more_on)
                     }
-                    false ->{
+                    false -> {
                         iv_switch.setImageResource(R.drawable.ic_more)
                     }
                 }
@@ -164,6 +167,10 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
                 )
             }
         }
+    }
+
+    fun refreshData() {
+        notifyDataSetChanged()
     }
 }
 

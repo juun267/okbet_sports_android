@@ -106,13 +106,19 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4">
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/tv_home_name"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
+                    android:paddingStart="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="6dp"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -127,6 +133,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -140,7 +148,9 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4">
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:gravity="center">
 
 
                 <TextView
@@ -149,6 +159,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -164,6 +176,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -179,6 +193,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -194,6 +210,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text=""
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -216,13 +234,19 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4">
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/tv_away_name"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
+                    android:paddingStart="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="6dp"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -237,6 +261,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -250,7 +276,9 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4">
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:gravity="center">
 
 
                 <TextView
@@ -259,6 +287,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -274,6 +304,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -289,6 +321,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text="0"
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -304,6 +338,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:text=""
                     android:textColor="@color/textGray"
                     android:textSize="@dimen/textSize14sp" />
@@ -329,7 +365,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp">
 
             <TextView
                 android:id="@+id/tv_play_cate_name"
@@ -350,8 +390,11 @@
             android:id="@+id/tv_play_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:textColor="@color/textGray"
             android:textSize="@dimen/textSize14sp"
             tools:text="RS巴西体育工会" />
