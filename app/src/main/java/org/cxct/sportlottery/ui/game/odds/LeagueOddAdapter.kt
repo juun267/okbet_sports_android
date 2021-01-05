@@ -36,12 +36,10 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
         fun bind(item: LeagueOdd) {
             itemView.league_odd_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
+            itemView.league_odd_sub_expand.setExpanded(item.isExpand, false)
             itemView.setOnClickListener {
-                if (itemView.league_odd_sub_expand.isExpanded) {
-                    itemView.league_odd_sub_expand.collapse()
-                } else {
-                    itemView.league_odd_sub_expand.expand()
-                }
+                item.isExpand = !item.isExpand
+                itemView.league_odd_sub_expand.setExpanded(item.isExpand, true)
             }
 
             setupMatchOddList(item)

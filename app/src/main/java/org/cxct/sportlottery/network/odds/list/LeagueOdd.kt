@@ -11,4 +11,6 @@ data class LeagueOdd(
     val league: League,
     @Json(name = "matchOdds")
     val matchOdds: List<MatchOdd>
-)
+) {
+    var isExpand = false
+}

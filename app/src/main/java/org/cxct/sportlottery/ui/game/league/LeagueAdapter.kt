@@ -35,12 +35,10 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
         fun bind(item: Row) {
             itemView.league_name.text = item.name
+            itemView.league_sub_expand.setExpanded(item.isExpand, false)
             itemView.setOnClickListener {
-                if (itemView.league_sub_expand.isExpanded) {
-                    itemView.league_sub_expand.collapse()
-                } else {
-                    itemView.league_sub_expand.expand()
-                }
+                item.isExpand = !item.isExpand
+                itemView.league_sub_expand.setExpanded(item.isExpand, true)
             }
 
             setupLeagueSubList(item)
