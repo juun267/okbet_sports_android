@@ -185,7 +185,7 @@ class MainViewModel(
     fun getLeagueList(matchType: MatchType) {
         when (matchType) {
             MatchType.IN_PLAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.inPlay?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
                     it.isSelected
                 }?.code
 
@@ -194,7 +194,7 @@ class MainViewModel(
                 }
             }
             MatchType.TODAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.today?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
                     it.isSelected
                 }?.code
 
@@ -203,7 +203,7 @@ class MainViewModel(
                 }
             }
             MatchType.EARLY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.early?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
                     it.isSelected
                 }?.code
 
@@ -212,7 +212,7 @@ class MainViewModel(
                 }
             }
             MatchType.PARLAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.parlay?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
 
@@ -298,13 +298,17 @@ class MainViewModel(
 
     private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
         val inPlayCount =
-            sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.find { it.code == goalCode }?.num
+                ?: 0
         val todayCount =
-            sportMenuResult?.sportMenuData?.menu?.today?.items?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.today?.items?.find { it.code == goalCode }?.num
+                ?: 0
         val earlyCount =
-            sportMenuResult?.sportMenuData?.menu?.early?.items?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.early?.items?.find { it.code == goalCode }?.num
+                ?: 0
         val parlayCount =
-            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find { it.code == goalCode }?.num
+                ?: 0
         val atStartCount =
             sportMenuResult?.sportMenuData?.atStart?.items?.find { it.code == goalCode }?.num ?: 0
 
