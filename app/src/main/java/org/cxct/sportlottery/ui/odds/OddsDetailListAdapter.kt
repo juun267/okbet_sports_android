@@ -131,7 +131,6 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             }
 
             for (element in oddsDetail.typeCodes) {
-
                 try {
                     if (element == code) {
                         setVisibility(true)
@@ -140,8 +139,8 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                         setVisibility(false)
                     }
                 } catch (e: Exception) {
-                    //確認oddsType後即可正常運行 目前僅限oddsType = EU (by home fragment)
-                    e.printStackTrace()
+                    // 目前api會回傳空陣列 無法比對
+                    // https://sports.cxct.org/api/front/playcate/type/list
                 }
 
             }
