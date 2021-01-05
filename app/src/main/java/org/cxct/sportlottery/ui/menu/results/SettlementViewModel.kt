@@ -43,10 +43,12 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         dataType = SettleType.MATCH
         requestListener.requestIng(true)
         viewModelScope.launch {
-            val result = doNetwork {
+            doNetwork {
                 settlementRepository.resultList(pagingParams = pagingParams, timeRangeParams = timeRangeParams, gameType = gameType)
+            }?.let { result ->
+                _matchResultListResult.postValue(result)
             }
-            _matchResultListResult.postValue(result)
+
             filterResult()
             requestListener.requestIng(false)
             reSetDetailStatus()
@@ -56,15 +58,16 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     fun getSettlementDetailData(settleRvPosition: Int, gameResultRvPosition: Int, matchId: String) {
         requestListener.requestIng(true)
         viewModelScope.launch {
-            val result = doNetwork {
+            doNetwork {
                 settlementRepository.resultPlayList(matchId)
+            }?.let { result ->
+                _gameResultDetailResult.postValue(_gameResultDetailResult.value?.apply {
+                    this.settleRvPosition = settleRvPosition
+                    this.gameResultRvPosition = gameResultRvPosition
+                    this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
+                    requestListener.requestIng(false)
+                })
             }
-            _gameResultDetailResult.postValue(_gameResultDetailResult.value?.apply {
-                this.settleRvPosition = settleRvPosition
-                this.gameResultRvPosition = gameResultRvPosition
-                this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
-                requestListener.requestIng(false)
-            })
         }
     }
 
@@ -72,10 +75,12 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         dataType = SettleType.OUTRIGHT
         requestListener.requestIng(true)
         viewModelScope.launch {
-            val result = doNetwork {
+            doNetwork {
                 settlementRepository.resultOutRightList(gameType = gameType)
+            }?.let { result ->
+                _outRightListResult.postValue(result)
             }
-            _outRightListResult.postValue(result)
+
             filterResult()
             requestListener.requestIng(false)
             reSetDetailStatus()
