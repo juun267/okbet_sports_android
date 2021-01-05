@@ -104,6 +104,7 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
                 tv_full_game_score.text = fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
             }
 
+            //TODO Dean : 之後可以寫成Util
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
             tv_time.text = dateFormat.format(data.matchInfo.startTime.let {
@@ -113,6 +114,15 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
 
             //判斷詳情展開或關閉
             el_game_result_detail.setExpanded(mIsOpenList[position], false)
+
+            when(mIsOpenList[position]){
+                true -> {
+                    iv_switch.setImageResource(R.drawable.ic_more_on)
+                }
+                false ->{
+                    iv_switch.setImageResource(R.drawable.ic_more)
+                }
+            }
         }
     }
 
@@ -121,6 +131,14 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             val data = mDataList[position]
             ll_game_detail.setOnClickListener {
                 mIsOpenList[position] = !mIsOpenList[position] //切換展開或關閉
+                when(mIsOpenList[position]){
+                    true -> {
+                        iv_switch.setImageResource(R.drawable.ic_more_on)
+                    }
+                    false ->{
+                        iv_switch.setImageResource(R.drawable.ic_more)
+                    }
+                }
                 //若沒有取過資料才打api
                 if (mGameDetailData?.settlementRvMap?.get(RvPosition(positionKey, position)) == null) {
                     mGameResultDetailListener?.getGameResultDetail(gameResultRvPosition = position, matchId = data.matchInfo.id)

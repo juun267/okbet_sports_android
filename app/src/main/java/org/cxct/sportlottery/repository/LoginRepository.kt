@@ -13,7 +13,6 @@ import retrofit2.Response
 
 const val NAME_LOGIN = "login"
 const val KEY_TOKEN = "token"
-const val KEY_USERNAME = "user_name"
 
 var sLoginData: LoginData? = null
 
@@ -23,7 +22,6 @@ class LoginRepository(private val androidContext: Context) {
     }
 
     val token = sharedPref.liveData(KEY_TOKEN, "")
-    val userName = sharedPref.liveData(KEY_USERNAME, "")
 
     suspend fun login(userName: String, password: String): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.login(
@@ -36,7 +34,6 @@ class LoginRepository(private val androidContext: Context) {
 
                 with(sharedPref.edit()) {
                     putString(KEY_TOKEN, it.loginData?.token)
-                    putString(KEY_USERNAME, it.loginData?.userName)
                     apply()
                 }
             }
@@ -46,16 +43,11 @@ class LoginRepository(private val androidContext: Context) {
     }
 
     suspend fun logout(): Response<LogoutResult> {
-        val logoutResponse = OneBoSportApi.indexService.logout(LogoutRequest())
-
-        if (logoutResponse.isSuccessful) {
-            with(sharedPref.edit()) {
-                remove(KEY_TOKEN)
-                remove(KEY_USERNAME)
-                apply()
-            }
+        with(sharedPref.edit()) {
+            remove(KEY_TOKEN)
+            apply()
         }
 
-        return logoutResponse
+        return OneBoSportApi.indexService.logout(LogoutRequest())
     }
 }

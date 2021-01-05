@@ -45,14 +45,15 @@ object TimeUtil {
     }
 
     fun getNowTimeStamp(): Long {
-        val date = Calendar.getInstance().time
-        return date.time / 1000
+        return System.currentTimeMillis()
     }
 
     fun getTodayStartTimeStamp(): Long {
-        val format = "yyyy-MM-dd"
-        val date = Calendar.getInstance().time
-        val timeFormat = timeFormat(date.time, format)
-        return SimpleDateFormat(format).parse(timeFormat).time / 1000
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR_OF_DAY, 0)
+        c.set(Calendar.MINUTE, 0)
+        c.set(Calendar.SECOND, 0)
+        c.set(Calendar.MILLISECOND, 0)
+        return c.timeInMillis
     }
 }
