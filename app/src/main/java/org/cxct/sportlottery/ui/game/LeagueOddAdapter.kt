@@ -53,12 +53,6 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 this.adapter = matchOddAdapter
-                this.addItemDecoration(
-                    DividerItemDecoration(
-                        context,
-                        DividerItemDecoration.VERTICAL
-                    )
-                )
             }
 
             matchOddAdapter.data = item.matchOdds

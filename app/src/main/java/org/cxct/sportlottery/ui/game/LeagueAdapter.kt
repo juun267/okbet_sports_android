@@ -52,12 +52,6 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 this.adapter = leagueSubAdapter
-                this.addItemDecoration(
-                    DividerItemDecoration(
-                        context,
-                        DividerItemDecoration.VERTICAL
-                    )
-                )
             }
 
             leagueSubAdapter.data = item.list
