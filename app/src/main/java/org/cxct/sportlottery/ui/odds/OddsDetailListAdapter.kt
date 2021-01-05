@@ -27,6 +27,11 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
         CS("CS", R.layout.content_odds_detail_list_cs, 2),//波胆
         FG("FG", R.layout.content_odds_detail_list_fg_lg, 3),//首先进球
         LG("LG", R.layout.content_odds_detail_list_fg_lg, 4),//最后进球
+        SINGLE("1X2", R.layout.content_odds_detail_list_fg_lg, 5),//獨贏
+        DC("1X2", R.layout.content_odds_detail_list_fg_lg, 6),//雙重機會
+        OE("O/E", R.layout.content_odds_detail_list_ou, 7),//單雙
+
+        //缺球隊進球TG類確認版型，進球球員確認key
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -49,6 +54,15 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             type == GameType.LG.value -> {
                 return GameType.LG.type
             }
+            checkKey(type, GameType.SINGLE.value) -> {
+                return GameType.SINGLE.type
+            }
+            type == GameType.DC.value -> {
+                return GameType.DC.type
+            }
+            type == GameType.OE.value -> {
+                return GameType.OE.type
+            }
             else -> {
                 return -1
             }
@@ -65,6 +79,9 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             GameType.CS.type -> layout = GameType.CS.layout
             GameType.FG.type -> layout = GameType.FG.layout
             GameType.LG.type -> layout = GameType.LG.layout
+            GameType.SINGLE.type -> layout = GameType.SINGLE.layout
+            GameType.DC.type -> layout = GameType.DC.layout
+            GameType.OE.type -> layout = GameType.OE.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -130,9 +147,16 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
 
             when (viewType) {
                 GameType.HDP.type -> hdp(oddsDetail)
-                GameType.OU.type -> ou(oddsDetail)
+
+                GameType.OU.type,
+                GameType.OE.type -> ou(oddsDetail)
+
                 GameType.CS.type -> cs(oddsDetail)
-                GameType.FG.type, GameType.LG.type -> fg(oddsDetail)
+
+                GameType.FG.type,
+                GameType.LG.type,
+                GameType.SINGLE.type,
+                GameType.DC.type -> fg(oddsDetail)
             }
 
             for (element in oddsDetail.typeCodes) {
