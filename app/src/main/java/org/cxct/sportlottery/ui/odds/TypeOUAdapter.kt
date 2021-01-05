@@ -8,14 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.base.BaseAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class TypeOUAdapter(private val oddsList: List<Odd>) : BaseAdapter<TypeOUAdapter.ViewHolder>() {
+class TypeOUAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeOUAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_hdp_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_ou_item, parent, false))
     }
 
 
@@ -29,28 +28,16 @@ class TypeOUAdapter(private val oddsList: List<Odd>) : BaseAdapter<TypeOUAdapter
     }
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(view: View) : OddViewHolder(view) {
 
-        private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
-        private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
         private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
         private val rlContent = itemView.findViewById<RelativeLayout>(R.id.rl_content)
 
         fun bindModel(odd: Odd, position: Int) {
 
-            tvName.text = odd.name
-            tvOdds.text = odd.odds.toString()
+            setData(odd)
+
             tvSpread.text = odd.spread
-
-            tvOdds.isSelected = odd.isSelect
-
-            tvOdds.setOnClickListener {
-                tvOdds.isSelected = !tvOdds.isSelected
-                odd.isSelect = tvOdds.isSelected
-
-                //TODO 添加至投注單
-
-            }
 
             val rlParams: RelativeLayout.LayoutParams = rlContent.layoutParams as RelativeLayout.LayoutParams
 

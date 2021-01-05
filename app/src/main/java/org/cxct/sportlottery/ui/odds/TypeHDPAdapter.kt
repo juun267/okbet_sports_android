@@ -30,28 +30,17 @@ class TypeHDPAdapter(private val oddsList: List<Odd>) :
     }
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
-        private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
         private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
         private val rlContent = itemView.findViewById<RelativeLayout>(R.id.rl_content)
 
         fun bindModel(odd: Odd, position: Int) {
 
-            tvName.text = odd.name
-            tvOdds.text = odd.odds.toString()
+            setData(odd)
+
             tvSpread.text = odd.spread
-
-            tvOdds.isSelected = odd.isSelect
-
-            tvOdds.setOnClickListener {
-                tvOdds.isSelected = !tvOdds.isSelected
-                odd.isSelect = tvOdds.isSelected
-
-                //TODO 添加至投注單
-
-            }
 
             val rlParams: RelativeLayout.LayoutParams = rlContent.layoutParams as RelativeLayout.LayoutParams
 
