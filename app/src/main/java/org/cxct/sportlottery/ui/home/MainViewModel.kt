@@ -106,7 +106,7 @@ class MainViewModel(
             }
 
             //TODO change timber to actual logout ui to da
-            Timber.d("logout result is ${result.success} ${result.code} ${result.msg}")
+            Timber.d("logout result is ${result?.success} ${result?.code} ${result?.msg}")
         }
     }
 
@@ -134,7 +134,7 @@ class MainViewModel(
                 )
             }
 
-            val asStartCount = result.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
+            val asStartCount = result?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             _asStartCount.postValue(asStartCount)
             _allFootballCount.postValue(getAllGameCount("FT", result))
             _allBasketballCount.postValue(getAllGameCount("BK", result))
@@ -142,11 +142,11 @@ class MainViewModel(
             _allBadmintonCount.postValue(getAllGameCount("BM", result))
             _allVolleyballCount.postValue(getAllGameCount("VB", result))
 
-            result.sportMenuData?.let {
-                initSportMenuSelectedState(it)
+            result?.let {
+                if (it.sportMenuData != null)
+                initSportMenuSelectedState(it.sportMenuData)
+                _sportMenuResult.postValue(it)
             }
-
-            _sportMenuResult.postValue(result)
         }
     }
 
@@ -167,13 +167,13 @@ class MainViewModel(
 
     fun getInPlayMatchPreload() {
         viewModelScope.launch {
-            val resultInPlay = doNetwork {
+            doNetwork {
                 OneBoSportApi.matchService.getMatchPreload(
                     MatchPreloadRequest("INPLAY")
                 )
+            }?.let { result ->
+                _matchPreloadInPlay.postValue(result)
             }
-
-            _matchPreloadInPlay.postValue(resultInPlay)
         }
     }
 
@@ -320,7 +320,7 @@ class MainViewModel(
             val userMoneyResult = doNetwork {
                 OneBoSportApi.userService.getMoney()
             }
-            _userMoney.postValue(userMoneyResult.money)
+            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 
