@@ -13,5 +13,7 @@ data class InfoCenterResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "rows")
-    val infoCenterData: MutableList<InfoCenterData>?
+    val infoCenterData: MutableList<InfoCenterData>?,
+    @Json(name = "total")
+    val total: Int?
 ) : BaseResult()

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
@@ -112,7 +111,7 @@ object ErrorUtils {
                     }
                     (url.contains(USER_NOTICE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return InfoCenterResult(it.code, it.msg, it.success,null) as T
+                        return InfoCenterResult(it.code, it.msg, it.success,null,null) as T
                     }
                 }
             }
