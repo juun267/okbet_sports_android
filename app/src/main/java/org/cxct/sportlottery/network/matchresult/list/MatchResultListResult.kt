@@ -17,5 +17,5 @@ data class MatchResultListResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "total")
-    val total: Int
+    val total: Int?
 ) : BaseResult()
