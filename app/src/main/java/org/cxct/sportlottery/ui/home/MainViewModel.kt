@@ -15,6 +15,8 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.list.OddsListRequest
+import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -49,6 +51,9 @@ class MainViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
+    val oddsListResult: LiveData<OddsListResult>
+        get() = _oddsListResult
+
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
 
@@ -63,6 +68,7 @@ class MainViewModel(
     private val _matchPreloadEarly = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
+    private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU
@@ -196,35 +202,45 @@ class MainViewModel(
     }
 
     fun getLeagueList(matchType: MatchType) {
-        var gameType: String? = null
-
         when (matchType) {
             MatchType.IN_PLAY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.inPlay?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.inPlay?.find {
                     it.isSelected
                 }?.code
+
+                gameType?.let {
+                    getOddsList(gameType, matchType.postValue)
+                }
             }
             MatchType.TODAY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.today?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.today?.find {
                     it.isSelected
                 }?.code
+
+                gameType?.let {
+                    getLeagueList(gameType, matchType.postValue)
+                }
             }
             MatchType.EARLY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.early?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.early?.find {
                     it.isSelected
                 }?.code
+
+                gameType?.let {
+                    getLeagueList(gameType, matchType.postValue)
+                }
             }
             MatchType.PARLAY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.parlay?.find {
+                val gameType = _sportMenuResult.value?.sportMenuData?.parlay?.find {
                     it.isSelected
                 }?.code
+
+                gameType?.let {
+                    getLeagueList(gameType, matchType.postValue)
+                }
             }
             else -> {
             }
-        }
-
-        gameType?.let {
-            getLeagueList(gameType, matchType.postValue)
         }
     }
 
@@ -268,19 +284,30 @@ class MainViewModel(
         _curDateEarly.postValue(dateEarly)
     }
 
+    private fun getOddsList(gameType: String, matchType: String) {
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.oddsService.getOddsList(
+                    OddsListRequest(
+                        gameType,
+                        matchType,
+                        oddsType = "EU",
+                        playCateMenuCode = "HDP&O"
+                    )
+                )
+            }
+            _oddsListResult.postValue(result)
+        }
+    }
+
     private fun getLeagueList(gameType: String, matchType: String) {
         viewModelScope.launch {
             val result = doNetwork {
                 OneBoSportApi.leagueService.getLeagueList(
-                    LeagueListRequest(
-                        gameType, matchType
-                    )
+                    LeagueListRequest(gameType, matchType)
                 )
             }
-
-            if (result.success) {
-                _leagueListResult.postValue(result)
-            }
+            _leagueListResult.postValue(result)
         }
     }
 
