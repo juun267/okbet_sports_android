@@ -157,7 +157,11 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(oddsDetailViewModel.playCateListResult.value!!.rows[tab!!.position].code)
+                tab?.position?.let { t ->
+                    oddsDetailViewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
+                        (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
+                    }
+                }
             }
         }
         )
