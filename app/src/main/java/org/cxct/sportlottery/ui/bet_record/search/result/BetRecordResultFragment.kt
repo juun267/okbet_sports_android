@@ -49,6 +49,8 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     private fun initRv() {
         val rvAdapter = BetRecordAdapter(ItemClickListener {
             it.let { orderNum ->
+                //todo cheryl: open dialog
+                BetRecordDetailDialog().show(parentFragmentManager, "BetRecordDetailDialog")
             }
         })
         rv_bet_record.adapter = rvAdapter

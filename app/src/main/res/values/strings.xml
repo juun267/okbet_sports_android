@@ -95,9 +95,12 @@
     <string name="champion_play">冠军玩法</string>
     <string name="inquire">查询</string>
     <string name="order_number">注单编号</string>
+    <string name="order_number_colon">注单编号：</string>
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">总投注额</string>
+    <string name="total_bet_money_colon">总投注额：</string>
     <string name="status">状态</string>
+    <string name="status_colon">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态：</string>
     <string name="bet_record">投注记录</string>
     <string name="select_all">全选</string>
     <string name="start_date">开始日期</string>
@@ -119,5 +122,11 @@
     <string name="inplay_row_title">滚球</string>
     <string name="inplay_row_btn_double">1 X 2</string>
     <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
+    <string name="bet_detail">注单详情</string>
+    <string name="bet_time">投注时间：</string>
+    <string name="league_name">联赛名称：</string>
+    <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
+    <string name="play_type">玩&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;法：</string>
+    <string name="game_odds">盘口赔率：</string>
 
 </resources>
