@@ -31,6 +31,7 @@ class LeagueSubAdapter : RecyclerView.Adapter<LeagueSubAdapter.ViewHolder>() {
 
         fun bind(item: League) {
             itemView.sub_league_name.text = item.name
+            itemView.sub_league_count.text = item.num.toString()
         }
 
         companion object {
