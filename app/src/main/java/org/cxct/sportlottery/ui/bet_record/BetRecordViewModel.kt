@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -33,6 +34,7 @@ class BetRecordViewModel : BaseViewModel() {
         this.value = mutableListOf()
     }
 
+    var nowItemData: Row? = null
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
 

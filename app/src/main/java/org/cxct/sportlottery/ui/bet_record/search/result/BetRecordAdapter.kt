@@ -97,8 +97,8 @@ class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
 
 }
 
-class ItemClickListener(val clickListener: (orderNum: String) -> Unit) {
-    fun onClick(data: Row) = clickListener(data.orderNo)
+class ItemClickListener(val clickListener: (data: Row) -> Unit) {
+    fun onClick(data: Row) = clickListener(data)
 }
 
 sealed class DataItem {

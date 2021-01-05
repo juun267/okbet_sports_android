@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.content.Context
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -13,9 +14,13 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
 
     val viewModel: T by sharedViewModel(clazz = clazz)
 
-    override fun onResume() {
-        super.onResume()
-        hideKeyboard()
+    init {
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) //hide keyboard
+        setStyle(STYLE_NO_TITLE, R.style.MyDialogStyle)
+    }
+
+    protected fun setStyle (style: Int) {
+        setStyle(STYLE_NO_TITLE, style)
     }
 
     /*弹出加载界面*/
@@ -34,7 +39,7 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
             (activity as BaseActivity<*>).hideLoading()
     }
 
-    private fun hideKeyboard() {
+    protected fun hideKeyboard() {
         try {
             //*隱藏軟鍵盤
             val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
