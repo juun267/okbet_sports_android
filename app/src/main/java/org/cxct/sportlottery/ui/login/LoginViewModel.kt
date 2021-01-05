@@ -31,14 +31,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
-            val result = doNetwork {
+             doNetwork {
                 loginRepository.login(
                     username,
                     MD5Util.MD5Encode(password)
                 )
+            }?.let { result ->
+                _loginResult.postValue(result)
             }
-
-            _loginResult.postValue(result)
         }
     }
 

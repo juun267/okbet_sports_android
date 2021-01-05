@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.detail.Odd
 
 class TypeFGLGAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeFGLGAdapter.ViewHolder>() {
 
@@ -28,19 +28,19 @@ class TypeFGLGAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<Ty
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val tv_name = itemView.findViewById<TextView>(R.id.tv_name)
-        private val tv_odds = itemView.findViewById<TextView>(R.id.tv_odds)
+        private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
+        private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
 
         fun bindModel(odd: Odd) {
 
-            tv_name.text = odd.name
-            tv_odds.text = odd.odds.toString()
+            tvName.text = odd.name
+            tvOdds.text = odd.odds.toString()
 
-            tv_odds.isSelected = odd.isSelect
+            tvOdds.isSelected = odd.isSelect
 
-            tv_odds.setOnClickListener {
-                tv_odds.isSelected = !tv_odds.isSelected
-                odd.isSelect = tv_odds.isSelected
+            tvOdds.setOnClickListener {
+                tvOdds.isSelected = !tvOdds.isSelected
+                odd.isSelect = tvOdds.isSelected
 
                 //TODO 添加至投注單
 

@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.bet_record
 
-import android.util.Log
-import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,9 +7,6 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
-import org.cxct.sportlottery.network.bet.list.Row
-import org.cxct.sportlottery.network.error.ErrorUtils
-import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet_record.search.BetTypeItemData
 import org.cxct.sportlottery.util.TimeUtil
@@ -68,10 +63,11 @@ class BetRecordViewModel : BaseViewModel() {
             val betListRequest = BetListRequest(statusList = statusList,
                                                 startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START).toString(),
                                                 endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END).toString())
-            val result = doNetwork {
+            doNetwork {
                 OneBoSportApi.betService.getBetList(betListRequest)
+            }?.let { result ->
+                _betRecordResult.postValue(result)
             }
-            _betRecordResult.postValue(result)
         }
     }
 

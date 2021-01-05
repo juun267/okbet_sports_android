@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,30 +8,21 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.home.HomeFragment
-import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel::class), Animation.AnimationListener {
+class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -67,6 +56,8 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
+    private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -81,7 +72,7 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false);
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
         return dataBinding.root
     }
 
@@ -97,7 +88,7 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
     private fun dataBinding() {
         dataBinding.apply {
             view = this@OddsDetailFragment
-            oddsDetailViewModel = this@OddsDetailFragment.viewModel
+            oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
             lifecycleOwner = this@OddsDetailFragment
         }
     }
@@ -108,6 +99,7 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
 
         height?.let {
             rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
+            rv_detail.setHasFixedSize(true)
         }
 
         (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -122,11 +114,11 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
     private fun getData() {
         matchId?.let { matchId ->
             oddsType?.let { oddsType ->
-                viewModel.getOddsDetail(matchId, oddsType)
+                oddsDetailViewModel.getOddsDetail(matchId, oddsType)
             }
         }
 
-        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
+        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
 
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 tv_time.text = TimeUtil.stampToDate(time.toLong())
@@ -137,11 +129,11 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
             }
 
             gameType?.let { gameType ->
-                viewModel.getPlayCateList(gameType)
+                oddsDetailViewModel.getPlayCateList(gameType)
             }
         })
 
-        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
                     for (element in result.rows) {
@@ -163,7 +155,11 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(viewModel.playCateListResult.value!!.rows[tab!!.position].code)
+                tab?.position?.let { t ->
+                    oddsDetailViewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
+                        (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
+                    }
+                }
             }
         }
         )
@@ -180,9 +176,7 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
-                ft.remove(this@OddsDetailFragment)
-                ft.commit()
+                parentFragmentManager.popBackStack()
             }
 
             override fun onAnimationStart(animation: Animation?) {
@@ -224,9 +218,9 @@ class OddsDetailFragment : BaseFragment<OddsDetailViewModel>(OddsDetailViewModel
 
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
-        val animat = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
-        animat.setAnimationListener(this)
-        return animat
+        val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
+        anim.setAnimationListener(this)
+        return anim
     }
 
 }
