@@ -11,7 +11,7 @@ class InfoCenterRepository {
         return OneBoSportApi.infoCenterService.getInfoList(InfoCenterRequest(page, pageSize))
     }
 
-    suspend fun setMsgReaded(msgId:String): Response<InfoCenterResult>{
+    suspend fun setMsgReaded(msgId: String): Response<InfoCenterResult> {
         return OneBoSportApi.infoCenterService.setMsgReaded(msgId)
     }
 
