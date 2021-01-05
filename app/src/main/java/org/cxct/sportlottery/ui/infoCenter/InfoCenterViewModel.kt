@@ -18,10 +18,6 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
         get() = _userMsgList
     private var _userMsgList = MutableLiveData<MutableList<InfoCenterData>>()
 
-    val setMsgReadResult: LiveData<InfoCenterResult>
-        get() = _setMsgReadResult
-    private var _setMsgReadResult = MutableLiveData<InfoCenterResult>()
-
     private var mNextRequestPage = 1
     private var pageSize = 10 //預設每次載入10筆資料
     private var mIsGettingData = false //判斷請求任務是否進行中
@@ -61,16 +57,4 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
         }
     }
 
-    fun setMsgRead(msgId: String) {
-        try {
-            viewModelScope.launch {
-                val result = doNetwork {
-                    infoCenterRepository.setMsgReaded(msgId)
-                }
-                _setMsgReadResult.value = result
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 }
