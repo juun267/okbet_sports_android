@@ -16,7 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.league.LeagueListResult
-import org.cxct.sportlottery.network.sport.Sport
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -74,16 +74,16 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    setupInPlayFilter(it.sportMenuData?.inPlay ?: listOf())
+                    setupInPlayFilter(it.sportMenuData?.menu?.inPlay?.items ?: listOf())
                 }
                 MatchType.TODAY -> {
-                    setupTodayFilter(it.sportMenuData?.today ?: listOf())
+                    setupTodayFilter(it.sportMenuData?.menu?.today?.items ?: listOf())
                 }
                 MatchType.EARLY -> {
-                    setupEarlyFilter(it.sportMenuData?.early ?: listOf())
+                    setupEarlyFilter(it.sportMenuData?.menu?.early?.items ?: listOf())
                 }
                 MatchType.PARLAY -> {
-                    setupParlayFilter(it.sportMenuData?.parlay ?: listOf())
+                    setupParlayFilter(it.sportMenuData?.menu?.parlay?.items ?: listOf())
                 }
                 else -> {
                 }
@@ -105,31 +105,31 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.getLeagueList(args.matchType)
     }
 
-    private fun setupInPlayFilter(sportList: List<Sport>) {
-        val selectSportName = sportList.find { sport ->
+    private fun setupInPlayFilter(itemList: List<Item>) {
+        val selectSportName = itemList.find { sport ->
             sport.isSelected
         }?.name
 
-        gameTypeAdapter.data = sportList
+        gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.VISIBLE
         inplay_sport.text = selectSportName
     }
 
-    private fun setupTodayFilter(sportList: List<Sport>) {
-        gameTypeAdapter.data = sportList
+    private fun setupTodayFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
     }
 
-    private fun setupEarlyFilter(sportList: List<Sport>) {
-        gameTypeAdapter.data = sportList
+    private fun setupEarlyFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
     }
 
-    private fun setupParlayFilter(sportList: List<Sport>) {
-        gameTypeAdapter.data = sportList
+    private fun setupParlayFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
     }
