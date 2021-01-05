@@ -56,6 +56,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_sub_expand.setExpanded(item.isExpand, true)
+                updateArrowExpand()
+            }
+        }
+
+        private fun updateArrowExpand() {
+            when (itemView.league_odd_sub_expand.isExpanded) {
+                true -> itemView.league_odd_arrow.setImageResource(R.drawable.ic_arrow_dark)
+                false -> itemView.league_odd_arrow.setImageResource(R.drawable.ic_arrow_down_dark)
             }
         }
 
