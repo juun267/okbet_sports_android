@@ -133,7 +133,7 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private fun setupDetailRv(itemView: View, itemPosition: Int) {
         itemView.apply {
             val data = mDataList[itemPosition]
-            if (rv_game_result.adapter == null && mAdapterList[itemPosition] == null) {
+            if (mAdapterList[itemPosition] == null) {
                 val newGameResultRvAdapter = GameResultRvAdapter()
                 newGameResultRvAdapter.let {
                     rv_game_result.adapter = it
