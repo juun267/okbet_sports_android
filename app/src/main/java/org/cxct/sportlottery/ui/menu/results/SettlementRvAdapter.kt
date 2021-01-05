@@ -136,13 +136,11 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (mAdapterList[itemPosition] == null) {
                 val newGameResultRvAdapter = GameResultRvAdapter()
                 newGameResultRvAdapter.let {
-                    rv_game_result.adapter = it
                     mAdapterList[itemPosition] = it
                     it.mDataList = data.list.toMutableList()
                 }
-            } else {
-                rv_game_result.adapter = mAdapterList[itemPosition]
             }
+            rv_game_result.adapter = mAdapterList[itemPosition]
 
             (rv_game_result.adapter as GameResultRvAdapter).apply {
                 //下一層需要用到gameResultRvPosition判斷哪一個detail被點擊需展開，需在set mDataList前先賦值
