@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,7 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.sport.Sport
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
@@ -117,7 +116,7 @@ class MainViewModel(
                 )
             }
 
-            val asStartCount = result.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+            val asStartCount = result.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             _asStartCount.postValue(asStartCount)
             _allFootballCount.postValue(getAllGameCount("FT", result))
             _allBasketballCount.postValue(getAllGameCount("BK", result))
@@ -134,17 +133,17 @@ class MainViewModel(
     }
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
-        sportMenuData.inPlay.map { sport ->
-            sport.isSelected = (sportMenuData.inPlay.indexOf(sport) == 0)
+        sportMenuData.menu.inPlay.items.map { sport ->
+            sport.isSelected = (sportMenuData.menu.inPlay.items.indexOf(sport) == 0)
         }
-        sportMenuData.today.map { sport ->
-            sport.isSelected = (sportMenuData.today.indexOf(sport) == 0)
+        sportMenuData.menu.today.items.map { sport ->
+            sport.isSelected = (sportMenuData.menu.today.items.indexOf(sport) == 0)
         }
-        sportMenuData.early.map { sport ->
-            sport.isSelected = (sportMenuData.early.indexOf(sport) == 0)
+        sportMenuData.menu.early.items.map { sport ->
+            sport.isSelected = (sportMenuData.menu.early.items.indexOf(sport) == 0)
         }
-        sportMenuData.parlay.map { sport ->
-            sport.isSelected = (sportMenuData.parlay.indexOf(sport) == 0)
+        sportMenuData.menu.parlay.items.map { sport ->
+            sport.isSelected = (sportMenuData.menu.parlay.items.indexOf(sport) == 0)
         }
     }
 
@@ -160,8 +159,8 @@ class MainViewModel(
         }
     }
 
-    fun getLeagueList(matchType: MatchType, sport: Sport) {
-        updateSportSelectedState(matchType, sport)
+    fun getLeagueList(matchType: MatchType, item: Item) {
+        updateSportSelectedState(matchType, item)
         getLeagueList(matchType)
     }
 
@@ -170,22 +169,22 @@ class MainViewModel(
 
         when (matchType) {
             MatchType.IN_PLAY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.inPlay?.find {
+                gameType = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
                     it.isSelected
                 }?.code
             }
             MatchType.TODAY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.today?.find {
+                gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
                     it.isSelected
                 }?.code
             }
             MatchType.EARLY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.early?.find {
+                gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
                     it.isSelected
                 }?.code
             }
             MatchType.PARLAY -> {
-                gameType = _sportMenuResult.value?.sportMenuData?.parlay?.find {
+                gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
             }
@@ -198,28 +197,28 @@ class MainViewModel(
         }
     }
 
-    private fun updateSportSelectedState(matchType: MatchType, sport: Sport) {
+    private fun updateSportSelectedState(matchType: MatchType, item: Item) {
         val result = _sportMenuResult.value
 
         when (matchType) {
             MatchType.IN_PLAY -> {
-                result?.sportMenuData?.inPlay?.map {
-                    it.isSelected = (it == sport)
+                result?.sportMenuData?.menu?.inPlay?.items?.map {
+                    it.isSelected = (it == item)
                 }
             }
             MatchType.TODAY -> {
-                result?.sportMenuData?.today?.map {
-                    it.isSelected = (it == sport)
+                result?.sportMenuData?.menu?.today?.items?.map {
+                    it.isSelected = (it == item)
                 }
             }
             MatchType.EARLY -> {
-                result?.sportMenuData?.early?.map {
-                    it.isSelected = (it == sport)
+                result?.sportMenuData?.menu?.early?.items?.map {
+                    it.isSelected = (it == item)
                 }
             }
             MatchType.PARLAY -> {
-                result?.sportMenuData?.parlay?.map {
-                    it.isSelected = (it == sport)
+                result?.sportMenuData?.menu?.parlay?.items?.map {
+                    it.isSelected = (it == item)
                 }
             }
             else -> {
@@ -251,15 +250,15 @@ class MainViewModel(
 
     private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
         val inPlayCount =
-            sportMenuResult?.sportMenuData?.inPlay?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.find { it.code == goalCode }?.num ?: 0
         val todayCount =
-            sportMenuResult?.sportMenuData?.today?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.today?.items?.find { it.code == goalCode }?.num ?: 0
         val earlyCount =
-            sportMenuResult?.sportMenuData?.early?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.early?.items?.find { it.code == goalCode }?.num ?: 0
         val parlayCount =
-            sportMenuResult?.sportMenuData?.parlay?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find { it.code == goalCode }?.num ?: 0
         val atStartCount =
-            sportMenuResult?.sportMenuData?.atStart?.find { it.code == goalCode }?.num ?: 0
+            sportMenuResult?.sportMenuData?.atStart?.items?.find { it.code == goalCode }?.num ?: 0
 
         return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
     }
