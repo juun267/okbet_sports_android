@@ -13,13 +13,10 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_toStartOf="@+id/tv_spread"
             android:textColor="@color/textColorDark"
             android:textSize="14sp" />
-
 
         <TextView
             android:id="@+id/tv_odds"
@@ -32,16 +29,6 @@
             android:gravity="center"
             android:textColor="@color/color_select_text_odds"
             android:textSize="14sp" />
-
-        <ImageView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tv_odds"
-            android:layout_alignEnd="@+id/tv_odds"
-            android:layout_alignTop="@+id/tv_odds"
-            android:layout_alignBottom="@+id/tv_odds"/>
-
 
         <TextView
             android:id="@+id/tv_spread"

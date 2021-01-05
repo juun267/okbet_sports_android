@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import java.lang.Exception
 
 
 class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetailListData>) :
@@ -23,7 +23,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
     //需要再確認代號
     enum class GameType(val value: String, val layout: Int, val type: Int) {
         HDP("HDP", R.layout.content_odds_detail_list_hdp, 0),//让球
-        TG("TG", 0, 1),//进球
+        OU("O/U", R.layout.content_odds_detail_list_ou, 1),//大小
         CS("CS", R.layout.content_odds_detail_list_cs, 2),//波胆
         FG("FG", R.layout.content_odds_detail_list_fg_lg, 3),//首先进球
         LG("LG", R.layout.content_odds_detail_list_fg_lg, 4),//最后进球
@@ -36,6 +36,9 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
         when {
             checkKey(type, GameType.HDP.value) -> {
                 return GameType.HDP.type
+            }
+            checkKey(type, GameType.OU.value) -> {
+                return GameType.OU.type
             }
             checkKey(type, GameType.CS.value) -> {
                 return GameType.CS.type
@@ -58,7 +61,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
 
         when (viewType) {
             GameType.HDP.type -> layout = GameType.HDP.layout
-            GameType.TG.type -> layout = GameType.TG.layout
+            GameType.OU.type -> layout = GameType.OU.layout
             GameType.CS.type -> layout = GameType.CS.layout
             GameType.FG.type -> layout = GameType.FG.layout
             GameType.LG.type -> layout = GameType.LG.layout
@@ -124,8 +127,10 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                 ivArrowUp.animate().rotation(0f).setDuration(200).start()
             }
 
+
             when (viewType) {
                 GameType.HDP.type -> hdp(oddsDetail)
+                GameType.OU.type -> ou(oddsDetail)
                 GameType.CS.type -> cs(oddsDetail)
                 GameType.FG.type, GameType.LG.type -> fg(oddsDetail)
             }
@@ -208,6 +213,15 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             rvBet.apply {
                 adapter = TypeHDPAdapter(oddsDetail.oddArrayList)
                 layoutManager = LinearLayoutManager(itemView.context)
+            }
+        }
+
+        private fun ou(oddsDetail: OddsDetailListData) {
+            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet.apply {
+                adapter = TypeOUAdapter(oddsDetail.oddArrayList)
+                layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
 
