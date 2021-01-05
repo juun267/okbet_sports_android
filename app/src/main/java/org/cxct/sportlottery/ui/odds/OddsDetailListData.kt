@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
-import org.cxct.sportlottery.network.odds.Odd
-import java.util.*
+import org.cxct.sportlottery.network.odds.detail.Odd
 
 data class OddsDetailListData(
     var gameType: String,
