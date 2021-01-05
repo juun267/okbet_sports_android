@@ -49,6 +49,11 @@ class InfoCenterAdapter : RecyclerView.Adapter<InfoCenterAdapter.ViewHolder>() {
         }
     }
 
+    fun addData(newDataList: MutableList<InfoCenterData>) {
+        data.addAll(data.size-1, newDataList)
+        notifyDataSetChanged()
+    }
+
     fun filterData() {
         var unreadData = data.filter { it.isRead == 0 }//0未读 1已读
         var readedData = data.filter { it.isRead == 1 }
