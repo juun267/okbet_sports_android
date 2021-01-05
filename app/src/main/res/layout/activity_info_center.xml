@@ -8,47 +8,6 @@
     tools:context=".ui.infoCenter.InfoCenterActivity">
 
     <LinearLayout
-        android:id="@+id/ll_tab"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <TextView
-            android:id="@+id/btn_inbox"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selected_under_yellow_line_effect"
-            android:clickable="true"
-            android:ems="5"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="@string/inbox"
-            android:textColor="@color/pumpkinOrange"
-            android:textSize="@dimen/textSize14sp" />
-
-        <TextView
-            android:id="@+id/btn_unread_letters"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selected_under_yellow_line_effect"
-            android:clickable="true"
-            android:ems="5"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="@string/unread_letters"
-            android:textColor="@color/pumpkinOrange"
-            android:textSize="@dimen/textSize14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,93 +50,14 @@
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
         android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/ll_foot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
-
-
-    <LinearLayout
-        android:id="@+id/ll_foot"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <Button
-                android:id="@+id/btn_first_page"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="42dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_square_shape_dark_blue"
-                android:text="@string/btn_home_page"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textSize14sp" />
-
-            <Button
-                android:id="@+id/btn_previous_page"
-                android:layout_width="20dp"
-                android:layout_height="42dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_square_shape_dark_blue"
-                android:text="@string/btn_previous_page"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textSize14sp" />
-
-            <Button
-                android:id="@+id/btn_next_page"
-                android:layout_width="20dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_square_shape_dark_blue"
-                android:text="@string/btn_next_page"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textSize14sp" />
-
-            <Button
-                android:id="@+id/btn_last_page"
-                android:layout_width="0dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_square_shape_dark_blue"
-                android:text="@string/btn_end_page"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textSize14sp" />
-
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txv_page_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/info_center_promot"
-            android:textSize="@dimen/textSize14sp" />
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title"
+        tools:orientation="vertical"
+        tools:itemCount="5"
+        tools:listitem="@layout/content_infocenter_list"
+        tools:context = "org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
