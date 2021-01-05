@@ -201,7 +201,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
 
     override fun onAnimationRepeat(animation: Animation?) {
-
     }
 
 
@@ -213,14 +212,17 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
 
     override fun onAnimationStart(animation: Animation?) {
-
     }
 
 
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
-        val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
-        anim.setAnimationListener(this)
-        return anim
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
+            anim.setAnimationListener(this)
+            anim
+        } else {
+            null
+        }
     }
 
 }
