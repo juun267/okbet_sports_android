@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet_record.search.result
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -16,22 +17,19 @@ class BetDetailAdapter : ListAdapter<MatchOdd, BetDetailAdapter.ItemViewHolder>(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        Log.e(">>>", "position = $position")
         val item = getItem(position)
         holder.bind(item)
+        showDivider(position, holder)
     }
 
-    override fun submitList(list: List<MatchOdd>?) {
-        Log.e(">>>", "submitList")
-        super.submitList(list)
-        notifyDataSetChanged()
+    private fun showDivider(position: Int, holder: ItemViewHolder) {
+        if (position == itemCount - 1) holder.binding.divider.visibility = View.GONE
+        else holder.binding.divider.visibility = View.VISIBLE
     }
 
     class ItemViewHolder private constructor(val binding: ItemBetRecordDetailBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: MatchOdd) {
             binding.data = data
-            Log.e(">>>", "data = ${data.leagueName}")
-            binding.tvLeague.text = data.leagueName
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 

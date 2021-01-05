@@ -11,10 +11,11 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 
-class BetRecordDetailDialog(val data: Row): BaseDialog<BetRecordViewModel>(BetRecordViewModel::class) {
+class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetRecordViewModel::class) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: DialogBetRecordDetailListBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_record_detail_list, container, false)
+        val binding: DialogBetRecordDetailListBinding =
+            DataBindingUtil.inflate(inflater, R.layout.dialog_bet_record_detail_list, container, false)
         binding.apply {
             betRecordDetailViewModel = this@BetRecordDetailDialog.viewModel
             lifecycleOwner = this@BetRecordDetailDialog
@@ -38,10 +39,6 @@ class BetRecordDetailDialog(val data: Row): BaseDialog<BetRecordViewModel>(BetRe
         val rvAdapter = BetDetailAdapter()
         rv_detail.adapter = rvAdapter
         rvAdapter.submitList(data.matchOdds)
-//        rvAdapter.notifyDataSetChanged()
-
-        Log.e(">>>", "data.matchOdds = ${data.matchOdds.size}, " +
-                "rvAdapter.itemCount = ${rvAdapter.itemCount}")
     }
 
 }

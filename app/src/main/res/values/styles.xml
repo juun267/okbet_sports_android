@@ -48,7 +48,7 @@
     <style name="MyDialogStyle">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@color/transparent_black_30</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
 </resources>
