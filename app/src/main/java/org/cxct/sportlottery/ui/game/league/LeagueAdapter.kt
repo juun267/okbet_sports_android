@@ -35,13 +35,9 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
         fun bind(item: Row) {
             itemView.league_name.text = item.name
-            itemView.league_sub_expand.setExpanded(item.isExpand, false)
-            itemView.setOnClickListener {
-                item.isExpand = !item.isExpand
-                itemView.league_sub_expand.setExpanded(item.isExpand, true)
-            }
 
             setupLeagueSubList(item)
+            setupLeagueSubExpand(item)
         }
 
         private fun setupLeagueSubList(item: Row) {
@@ -52,6 +48,14 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
             }
 
             leagueSubAdapter.data = item.list
+        }
+
+        private fun setupLeagueSubExpand(item: Row) {
+            itemView.league_sub_expand.setExpanded(item.isExpand, false)
+            itemView.setOnClickListener {
+                item.isExpand = !item.isExpand
+                itemView.league_sub_expand.setExpanded(item.isExpand, true)
+            }
         }
 
         companion object {

@@ -36,13 +36,9 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
         fun bind(item: LeagueOdd) {
             itemView.league_odd_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
-            itemView.league_odd_sub_expand.setExpanded(item.isExpand, false)
-            itemView.setOnClickListener {
-                item.isExpand = !item.isExpand
-                itemView.league_odd_sub_expand.setExpanded(item.isExpand, true)
-            }
 
             setupMatchOddList(item)
+            setupMatchOddExpand(item)
         }
 
         private fun setupMatchOddList(item: LeagueOdd) {
@@ -53,6 +49,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             }
 
             matchOddAdapter.data = item.matchOdds
+        }
+
+        private fun setupMatchOddExpand(item: LeagueOdd) {
+            itemView.league_odd_sub_expand.setExpanded(item.isExpand, false)
+            itemView.setOnClickListener {
+                item.isExpand = !item.isExpand
+                itemView.league_odd_sub_expand.setExpanded(item.isExpand, true)
+            }
         }
 
         companion object {

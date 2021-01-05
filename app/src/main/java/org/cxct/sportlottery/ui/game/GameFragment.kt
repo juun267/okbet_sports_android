@@ -160,8 +160,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
-                hall_odds_list.visibility = View.VISIBLE
                 hall_league_list.visibility = View.GONE
+                hall_odds_list.visibility = View.VISIBLE
 
                 leagueOddAdapter.data = it.oddsListData?.leagueOdds ?: listOf()
             }
