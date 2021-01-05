@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -37,38 +35,8 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.matchPreloadEarly.observe(this.viewLifecycleOwner, Observer {
-            drawer_early.setCount(it.matchPreloadData?.num?.toString())
-            drawer_early.setRvGameData(it.matchPreloadData)
-            drawer_early.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-                override fun onClick(select: GameEntity) {
-                    toOddsDetail(select)
-                }
-            })
-        })
-
-        viewModel.matchPreloadInPlay.observe(this.viewLifecycleOwner, Observer {
-            drawer_in_play.setCount(it.matchPreloadData?.num?.toString())
-            drawer_in_play.setRvGameData(it.matchPreloadData)
-            drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-                override fun onClick(select: GameEntity) {
-                    toOddsDetail(select)
-                }
-            })
-        })
-
-        viewModel.matchPreloadToday.observe(this.viewLifecycleOwner, Observer {
-            drawer_today.setCount(it.matchPreloadData?.num?.toString())
-            drawer_today.setRvGameData(it.matchPreloadData)
-            drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-                override fun onClick(select: GameEntity) {
-                    toOddsDetail(select)
-                }
-            })
-        })
-
         initEvent()
-        queryData()
+        initObserve()
     }
 
     private fun initEvent() {
@@ -97,8 +65,25 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun initObserve() {
+        viewModel.token.observe(viewLifecycleOwner, Observer {
+            //登入、登出 token 改變重新接資料
+            queryData()
+        })
+
+        viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
+            drawer_in_play.setCount(it.matchPreloadData?.num?.toString())
+            drawer_in_play.setRvGameData(it.matchPreloadData)
+            drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
+                override fun onClick(select: GameEntity) {
+                    toOddsDetail(select)
+                }
+            })
+        })
+    }
+
     private fun queryData() {
-        viewModel.getMatchPreload()
+        viewModel.getInPlayMatchPreload()
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -125,8 +110,5 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             )
         )
     }
-
-
-
 
 }
