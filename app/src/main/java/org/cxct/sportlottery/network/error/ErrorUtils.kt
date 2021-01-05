@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
@@ -14,6 +15,8 @@ import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_MONEY
+import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.network.InfoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -106,6 +109,10 @@ object ErrorUtils {
                     (url.contains(INDEX_LOGOUT)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LogoutResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(USER_NOTICE_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return InfoCenterResult(it.code, it.msg, it.success,null) as T
                     }
                 }
             }

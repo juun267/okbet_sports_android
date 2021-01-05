@@ -6,12 +6,12 @@ import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
 data class InfoCenterResult(
-    @Json(name = "success")
-    override val success: Boolean,
-    @Json(name = "msg")
-    override val msg: String,
     @Json(name = "code")
     override val code: Int,
+    @Json(name = "msg")
+    override val msg: String,
+    @Json(name = "success")
+    override val success: Boolean,
     @Json(name = "rows")
     val infoCenterData: MutableList<InfoCenterData>?
 ) : BaseResult()
