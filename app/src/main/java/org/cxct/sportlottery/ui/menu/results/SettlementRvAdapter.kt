@@ -112,10 +112,9 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             if (mIsOpenList[position]) {
                 setupDetailRv(this, position)
-                block_drawer_result.expand(false)
-            } else {
-                block_drawer_result.collapse(false)
             }
+
+            block_drawer_result.setExpanded(mIsOpenList[position], false)
 
             block_type.setOnClickListener {
                 setupDetailRv(this, position)
@@ -185,11 +184,8 @@ class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             tv_ranking.text = data.resultList[0].playCateName
             tv_winner.text = data.resultList[0].playName
 
-            if (mIsOpenList[position]) {
-                ep_champion.expand(false)
-            } else {
-                ep_champion.collapse(false)
-            }
+            ep_champion.setExpanded(mIsOpenList[position], false)
+
             ll_type.setOnClickListener {
                 mIsOpenList[position] = !mIsOpenList[position]
                 this.ep_champion.let { expandableLayout ->
