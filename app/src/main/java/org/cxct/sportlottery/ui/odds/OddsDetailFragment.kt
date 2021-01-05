@@ -9,7 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -18,13 +18,11 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener {
+class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -178,9 +176,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
-                ft.remove(this@OddsDetailFragment)
-                ft.commit()
+                parentFragmentManager.popBackStack()
             }
 
             override fun onAnimationStart(animation: Animation?) {
