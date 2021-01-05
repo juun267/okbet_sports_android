@@ -34,7 +34,6 @@ class BetRecordViewModel : BaseViewModel() {
         this.value = mutableListOf()
     }
 
-    var nowItemData: Row? = null
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
 

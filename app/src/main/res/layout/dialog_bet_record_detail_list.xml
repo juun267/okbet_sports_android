@@ -7,22 +7,27 @@
         <variable
             name="betRecordDetailViewModel"
             type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
+
+        <variable
+            name="row"
+            type="org.cxct.sportlottery.network.bet.list.Row" />
+
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context = ".ui.bet_record.search.result.BetRecordDetailDialog">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="40dp"
             app:cardCornerRadius="8dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/gray9">
 
                 <LinearLayout
@@ -98,6 +103,7 @@
                         tools:text="2020-12-12 19:58:22"
                         android:textColor="@color/gray3"
                         android:textSize="@dimen/textSize14sp"
+                        app:dateTime="@{row.addTime}"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintStart_toEndOf="@id/text_view"
@@ -120,6 +126,7 @@
                         tools:text="b000003612091822030128"
                         android:textColor="@color/gray3"
                         android:textSize="@dimen/textSize14sp"
+                        android:text="@{row.orderNo}"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
@@ -142,6 +149,7 @@
                         tools:text="1,000.00"
                         android:textColor="@color/gray3"
                         android:textSize="@dimen/textSize14sp"
+                        android:text="@{String.valueOf(row.totalAmount)}"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
@@ -164,8 +172,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="-1,000.00"
-                        android:textColor="@color/red2"
                         android:textSize="@dimen/textSize14sp"
+                        tools:textColor="@color/red2"
+                        android:text="@{(row.win == null) ? @string/nothing : row.win > 0 ? String.format(@string/plus_symbol, row.win.toString()): String.format(@string/minus_symbol, row.win.toString())}"
+                        android:textColor="@{(row.win == null) ?  @color/gray6 : row.win > 0 ? @color/green : @color/red2}"
                         app:layout_constraintBottom_toBottomOf="@+id/text_view4"
                         app:layout_constraintEnd_toStartOf="@id/tv_status"
                         app:layout_constraintHorizontal_bias="0"
@@ -178,6 +188,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="全输"
+                        android:layout_marginStart="4dp"
+                        app:status="@{row.status}"
                         android:textColor="@color/gray3"
                         android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/text_view4"
@@ -207,13 +219,14 @@
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="8dp"
+                            android:text="@{row.matchOdds.size() > 0 ? String.format(@string/bet_item, row.matchOdds[0].playCateName) : null}"
                             tools:text="投注项目 - 3串4"
                             android:textColor="@color/gray6" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_detail"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="300dp"
                             android:background="@color/white"
                             tools:listitem="@layout/item_bet_record_detail" />
 

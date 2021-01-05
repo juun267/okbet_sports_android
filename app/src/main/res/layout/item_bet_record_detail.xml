@@ -5,19 +5,14 @@
 
     <data>
         <variable
-            name="row"
-            type="org.cxct.sportlottery.network.bet.list.Row" />
-
-        <variable
-            name="clickListener"
-            type="org.cxct.sportlottery.ui.bet_record.search.result.ItemClickListener" />
+            name="data"
+            type="org.cxct.sportlottery.network.bet.MatchOdd" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="12dp"
-        android:onClick="@{() -> clickListener.onClick(row)}"
         android:layout_marginHorizontal="4dp"
         android:orientation="vertical">
 
@@ -73,6 +68,7 @@
                 android:gravity="center"
                 android:layout_marginHorizontal="16dp"
                 android:textSize="@dimen/textSize12sp"
+                android:text="@{String.format(@string/match_names, data.homeName, data.awayName)}"
                 android:textColor="@color/gray6"
                 tools:text="(主) 泰拉维  vs  库塔伊西鱼雷 (客)"
                 />
@@ -101,6 +97,7 @@
                 android:gravity="center"
                 android:layout_marginHorizontal="16dp"
                 android:textSize="@dimen/textSize12sp"
+                android:text="@{data.playCateName}"
                 android:textColor="@color/gray6"
                 tools:text="独赢"
                 />
@@ -129,6 +126,7 @@
                 android:gravity="center"
                 android:layout_marginHorizontal="16dp"
                 android:textSize="@dimen/textSize12sp"
+                android:text="@{data.playName}"
                 android:textColor="@color/gray6"
                 tools:text="泰拉雅"
                 />
@@ -139,7 +137,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/textSize12sp"
-                android:textColor="@color/red2"
+                android:text="@{String.valueOf(data.odds)}"
+                android:textColor="@{data.odds > 0 ? @color/green : @color/red2}"
+                tools:textColor="@color/red2"
                 tools:text="\@3.45"
                 />
         </LinearLayout>

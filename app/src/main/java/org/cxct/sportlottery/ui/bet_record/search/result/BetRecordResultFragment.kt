@@ -49,12 +49,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     private fun initRv() {
         val rvAdapter = BetRecordAdapter(ItemClickListener {
             it.let { data ->
-
-                viewModel.nowItemData = data
-                val detailDialog = BetRecordDetailDialog()
-//                val bundle = Bundle()
-//                bundle.putParcelable("data", data)
-//                detailDialog.arguments = bundle
+                val detailDialog = BetRecordDetailDialog(data)
                 detailDialog.show(parentFragmentManager, "BetRecordDetailDialog")
             }
         })
