@@ -40,6 +40,7 @@
             android:id="@+id/league_sub_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             tools:itemCount="3"
             tools:listitem="@layout/itemview_sub_league" />
 
