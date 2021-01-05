@@ -155,7 +155,6 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
                 //0:今日, 1:明天, 2:後天 ... 7:冠軍
                 when (date) {
                     7 -> {
-                        //TODO get outright result
                         settleType = SettleType.OUTRIGHT
                         settlementViewModel.getOutrightResultList(gameType)
                     }
