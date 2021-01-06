@@ -286,22 +286,4 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         return mainBinding.appBarLayout
     }
 
-    fun getHeight(): Int {
-
-        var statusBarHeight = 0
-        val resourceId = applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            statusBarHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
-        }
-
-        var navHeight = 0
-        val navResourceId = applicationContext.resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        if (navResourceId > 0) {
-            navHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
-        }
-
-        return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height * 2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusBarHeight - navHeight
-
-    }
-
 }
