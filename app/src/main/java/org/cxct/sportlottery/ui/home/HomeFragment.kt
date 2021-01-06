@@ -105,8 +105,6 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 select.name,
                 select.match!!.id,
                 "EU",
-                (requireActivity() as MainActivity).getScrollView().getChildAt(0).height,
-                (requireActivity() as MainActivity).getHeight()
             )
         )
     }
