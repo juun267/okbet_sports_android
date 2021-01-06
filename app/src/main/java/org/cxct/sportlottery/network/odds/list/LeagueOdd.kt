@@ -4,7 +4,6 @@ package org.cxct.sportlottery.network.odds.list
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.League
-import org.cxct.sportlottery.network.odds.MatchOdd
 
 @JsonClass(generateAdapter = true)
 data class LeagueOdd(
@@ -12,4 +11,6 @@ data class LeagueOdd(
     val league: League,
     @Json(name = "matchOdds")
     val matchOdds: List<MatchOdd>
-)
+) {
+    var isExpand = false
+}

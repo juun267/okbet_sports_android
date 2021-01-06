@@ -84,21 +84,20 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     }
 
 
+    class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
+        override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+            return oldItem.orderNum == newItem.orderNum
+        }
+
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+            return oldItem == newItem
+        }
+
+    }
 }
 
-class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
-    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem.orderNum == newItem.orderNum
-    }
-
-    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem == newItem
-    }
-
-}
-
-class ItemClickListener(val clickListener: (orderNum: String) -> Unit) {
-    fun onClick(data: Row) = clickListener(data.orderNo)
+class ItemClickListener(val clickListener: (data: Row) -> Unit) {
+    fun onClick(data: Row) = clickListener(data)
 }
 
 sealed class DataItem {

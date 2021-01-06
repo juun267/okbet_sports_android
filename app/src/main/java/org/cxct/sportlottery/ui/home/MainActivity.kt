@@ -124,11 +124,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
-            val countInPlay = sportMenuResult?.sportMenuData?.inPlay?.sumBy { it.num } ?: 0
-            val countToday = sportMenuResult?.sportMenuData?.today?.sumBy { it.num } ?: 0
-            val countEarly = sportMenuResult?.sportMenuData?.early?.sumBy { it.num } ?: 0
-            val countParlay = sportMenuResult?.sportMenuData?.parlay?.sumBy { it.num } ?: 0
-            val countAsStart = sportMenuResult?.sportMenuData?.atStart?.sumBy { it.num } ?: 0
+            val countInPlay = sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+            val countToday = sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+            val countEarly = sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countParlay = sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countAsStart = sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tab_all)

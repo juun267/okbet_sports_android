@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.detail.Odd
 
 class TypeCSAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
 

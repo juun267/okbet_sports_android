@@ -18,7 +18,7 @@ abstract class BaseViewModel : ViewModel() {
     private val _code = MutableLiveData<Int>()
     private val _networkException = MutableLiveData<Boolean>()
 
-    suspend fun <T> doNetwork(apiFun: suspend () -> Response<T>): T {
+    suspend fun <T> doNetwork(apiFun: suspend () -> Response<T>): T? {
         val apiResult = viewModelScope.async {
             try {
                 val response = apiFun()
@@ -30,18 +30,16 @@ abstract class BaseViewModel : ViewModel() {
 
                     _networkException.postValue(errorResult == null)
 
-                    errorResult?.let {
-                        _code.postValue((it as BaseResult).code)
-                        return@async it
-                    }
+                    _code.postValue((errorResult as BaseResult).code)
+                    return@async errorResult
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _networkException.postValue(true)
+                return@async null
             }
         }
 
-        @Suppress("UNCHECKED_CAST")
-        return (apiResult as Deferred<T>).await()
+        return apiResult.await()
     }
 }
