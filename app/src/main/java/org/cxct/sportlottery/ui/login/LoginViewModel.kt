@@ -21,6 +21,15 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
 
+    val account by lazy { loginRepository.account }
+    val password by lazy { loginRepository.password }
+
+    var isRememberPWD
+        get() = loginRepository.isRememberPWD
+        set(value) {
+            loginRepository.isRememberPWD = value
+        }
+
     fun loginDataChanged(context: Context, account: String, password: String) {
         val accountError = checkAccount(context, account)
         val passwordError = checkPassword(context, password)
@@ -28,11 +37,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
         _loginFormState.value = LoginFormState(accountError, passwordError, isDataValid)
     }
 
-    fun login(username: String, password: String) {
+    fun login(account: String, password: String) {
         viewModelScope.launch {
+            //預設存帳號
+            loginRepository.account = account
+
+            //勾選時記住密碼
+            loginRepository.password = if (loginRepository.isRememberPWD) password else null
+
             doNetwork {
                 loginRepository.login(
-                    username,
+                    account,
                     MD5Util.MD5Encode(password)
                 )
             }?.let { result ->

@@ -62,9 +62,19 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
+    fun getEditText(): EditText {
+        return et_input
+    }
+
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged { afterTextChanged.invoke(it) }
     }
+
+    var eyeVisibility
+        get() = btn_eye.visibility
+        set(value) {
+            btn_eye.visibility = value
+        }
 }
 
 /**

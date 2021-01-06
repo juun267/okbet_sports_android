@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.login
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
@@ -19,6 +20,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupAccount()
         setupPassword()
         setupLoginButton()
+        setupRememberPWD()
         initObserve()
     }
 
@@ -27,12 +29,24 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupAccount() {
+        et_account.setText(viewModel.account)
         et_account.afterTextChanged {
             viewModel.loginDataChanged(this, et_account.getText(), et_password.getText())
         }
     }
 
     private fun setupPassword() {
+        et_password.setText(viewModel.password)
+
+        //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
+        et_password.eyeVisibility = View.GONE
+        et_password.getEditText().setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && et_password.eyeVisibility == View.GONE) {
+                et_password.eyeVisibility = View.VISIBLE
+                et_password.setText(null)
+            }
+        }
+
         et_password.afterTextChanged {
             viewModel.loginDataChanged(this, et_account.getText(), et_password.getText())
         }
@@ -46,6 +60,13 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             } else {
                 viewModel.loginDataChanged(this, et_account.getText(), et_password.getText())
             }
+        }
+    }
+
+    private fun setupRememberPWD() {
+        cb_remember_password.isChecked = viewModel.isRememberPWD
+        cb_remember_password.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.isRememberPWD = isChecked
         }
     }
 
