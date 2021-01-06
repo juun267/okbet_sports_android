@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -62,7 +63,10 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            navController.navigate(GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id))
+            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment( it.list.first().id, args.matchType)
+            val navOptions =
+                NavOptions.Builder().setLaunchSingleTop(true).build()
+            navController.navigate(action, navOptions)
         })
     }
 
