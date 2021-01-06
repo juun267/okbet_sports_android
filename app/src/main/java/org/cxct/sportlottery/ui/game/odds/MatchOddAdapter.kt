@@ -31,7 +31,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
         fun bind(item: MatchOdd) {
             itemView.match_odd_name.text = item.matchInfo.homeName
-            itemView.match_odd_count.text = item.odds.size.toString()
+            itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
         }
 
         companion object {
