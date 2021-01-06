@@ -27,7 +27,7 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
                 val result = doNetwork {
                     infoCenterRepository.getUserNoticeList(page, pageSize)
                 }
-                _userMsgList.value = result.infoCenterData
+                _userMsgList.value = result?.infoCenterData
             } catch (e: Exception) {
                 e.printStackTrace()
             }

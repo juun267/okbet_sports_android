@@ -8,6 +8,10 @@
         <variable
             name="betRecordViewModel"
             type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
+
+        <variable
+            name="other"
+            type="org.cxct.sportlottery.network.bet.list.Other" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,9 +93,64 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             tools:listitem="@layout/item_bet_record_result"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linear_layout2"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <LinearLayout
+            android:id="@+id/linear_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/gray"
+            android:padding="8dp"
+            android:gravity="end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_bet_record">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/pumpkinOrange"
+                    android:text="@string/total_bet_amount"/>
+
+                <TextView
+                    android:id="@+id/tv_total_bet_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/pumpkinOrange"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@{other.totalAmount.toString()}"
+                    tools:text="0.0"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/win_lose"/>
+
+                <TextView
+                    android:id="@+id/tv_total_win_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textColor="@{other.win > 0 ? @color/green : other.win == 0 ? @color/gray6 : @color/red2}"
+                    android:text="@{other.win.toString()}"
+                    tools:text="0.0"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
