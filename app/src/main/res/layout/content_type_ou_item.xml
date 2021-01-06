@@ -20,7 +20,6 @@
             android:textColor="@color/textColorDark"
             android:textSize="14sp" />
 
-
         <TextView
             android:id="@+id/tv_odds"
             android:layout_width="64dp"
@@ -46,7 +45,6 @@
             android:paddingEnd="24dp"
             android:src="@drawable/ic_lock_odd"
             android:visibility="gone" />
-
 
         <TextView
             android:id="@+id/tv_spread"

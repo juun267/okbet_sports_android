@@ -39,7 +39,7 @@
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 android:maxLines="1"
                 android:textColor="@color/gray6"
-                app:dateTime="@{row}"/>
+                app:dateTime="@{row.addTime}"/>
 
             <TextView
                 android:id="@+id/tv_order_number"
@@ -100,7 +100,7 @@
                 android:maxLines="1"
                 tools:text="\u00404.3"
                 android:text="@{row.matchOdds.size() > 0 ? String.format(@string/at_symbol, row.matchOdds.get(0).odds) : null}"
-                android:textColor="@color/red" />
+                android:textColor="@color/red2" />
 
         </LinearLayout>
 
@@ -129,8 +129,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 tools:text="+1,060.00"
-                android:text="@{row.win > 0 ? String.format(@string/plus_symbol, row.win.toString()): String.format(@string/minus_symbol, row.win.toString())}"
-                android:textColor="@{row.win > 0 ? @color/green : @color/red}"
+                android:text="@{(row.win == null) ? @string/nothing : row.win > 0 ? String.format(@string/plus_symbol, row.win.toString()): String.format(@string/minus_symbol, row.win.toString())}"
+                android:textColor="@{(row.win == null) ?  @color/gray6 : row.win > 0 ? @color/green : @color/red2}"
                 android:textSize="@dimen/textSize12sp"
                 tools:textColor="@color/green" />
 
@@ -142,7 +142,7 @@
                 tools:text="全赢"
                 android:textSize="@dimen/textSize12sp"
                 android:textColor="@color/gray6"
-                app:status="@{row}"/>
+                app:status="@{row.status}"/>
 
         </LinearLayout>
     </LinearLayout>

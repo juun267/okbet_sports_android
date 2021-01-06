@@ -10,13 +10,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-
-class TypeHDPAdapter(private val oddsList: List<Odd>) :
-    RecyclerView.Adapter<TypeHDPAdapter.ViewHolder>() {
+class TypeOUAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeOUAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_hdp_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_ou_item, parent, false))
     }
 
 
@@ -32,7 +30,6 @@ class TypeHDPAdapter(private val oddsList: List<Odd>) :
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
-        private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
         private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
         private val rlContent = itemView.findViewById<RelativeLayout>(R.id.rl_content)
 
@@ -45,17 +42,13 @@ class TypeHDPAdapter(private val oddsList: List<Odd>) :
             val rlParams: RelativeLayout.LayoutParams = rlContent.layoutParams as RelativeLayout.LayoutParams
 
             if (position % 2 != 0) {
-
-                if(position != oddsList.size - 1){
-                    val params: RecyclerView.LayoutParams = itemView.layoutParams as RecyclerView.LayoutParams
-                    params.setMargins(0, 0, 0, 2)
-                    itemView.layoutParams = params
-                }
-
-                rlParams.setMargins(0, 5.dp, 0, 10.dp)
-            } else {
-                rlParams.setMargins(0, 10.dp, 0, 5.dp)
+                val params: RecyclerView.LayoutParams = itemView.layoutParams as RecyclerView.LayoutParams
+                params.setMargins(2, 0, 0, 0)
+                itemView.layoutParams = params
             }
+
+            rlParams.setMargins(0, 10.dp, 0, if (position == oddsList.size - 1 || position == oddsList.size - 2) 10.dp else 0)
+
             rlContent.layoutParams = rlParams
 
         }
