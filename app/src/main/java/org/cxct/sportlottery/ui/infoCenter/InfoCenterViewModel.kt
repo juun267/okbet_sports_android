@@ -19,7 +19,7 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
     private var _userMsgList = MutableLiveData<MutableList<InfoCenterData>>()
 
     private var mNextRequestPage = 1
-    private var pageSize = 10 //預設每次載入10筆資料
+    private var pageSize = 20 //預設每次載入20筆資料
     private var mIsGettingData = false //判斷請求任務是否進行中
     private var mNeedMoreLoading = false //判斷滑到底是否需要繼續加載
 
@@ -50,8 +50,10 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
                         (mCurrentTotalCount + result?.infoCenterData!!.size) < result.total ?: 0
 
                     mNextRequestPage++
+
                 }
             }
+            mIsGettingData = false
         } catch (e: Exception) {
             e.printStackTrace()
         }

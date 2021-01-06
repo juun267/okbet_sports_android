@@ -61,7 +61,7 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel
         rv_data.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1))
-                    viewModel.getUserMsgList(true, 0)
+                    viewModel.getUserMsgList(false, adapter.itemCount)
             }
         })
     }
