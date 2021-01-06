@@ -44,6 +44,9 @@
         android:name="org.cxct.sportlottery.ui.game.Game2Fragment"
         android:label="fragment_game2"
         tools:layout="@layout/fragment_game2">
+        <argument
+            android:name="oddsListId"
+            app:argType="string" />
         <action
             android:id="@+id/action_game2Fragment_to_betListDialog"
             app:destination="@id/betListDialog" />

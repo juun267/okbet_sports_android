@@ -1,11 +1,12 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
+import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.home.MainViewModel
@@ -33,6 +35,11 @@ import timber.log.Timber
  * create an instance of this fragment.
  */
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+
+    private val navController by lazy {
+        findNavController()
+    }
+
     private val args: GameFragmentArgs by navArgs()
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
@@ -54,7 +61,9 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter()
+        LeagueAdapter(LeagueListener {
+            navController.navigate(GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id))
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
