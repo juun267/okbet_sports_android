@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 
-class TypeFGLGAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeFGLGAdapter.ViewHolder>() {
+class TypeOneListAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
