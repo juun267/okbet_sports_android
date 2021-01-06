@@ -32,14 +32,13 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
         const val SCROLL_HEIGHT = "scrollHeight"
         const val HEIGHT = "height"
 
-        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String, scrollHeight: Int, height: Int) =
+        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String, height: Int) =
             OddsDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(GAME_TYPE, gameType)
                     putString(TYPE_NAME, typeName)
                     putString(MATCH_ID, matchId)
                     putString(ODDS_TYPE, oddsType)
-                    putInt(SCROLL_HEIGHT, scrollHeight)
                     putInt(HEIGHT, height)
                 }
             }
