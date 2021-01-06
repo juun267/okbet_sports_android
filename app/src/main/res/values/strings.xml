@@ -117,12 +117,12 @@
     <string name="suspend">延期</string>
     <string name="canceled">已取消</string>
 
-
-
     <!--game hall-->
     <string name="inplay_row_title">滚球</string>
     <string name="inplay_row_btn_double">1 X 2</string>
     <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
     <string name="date_row_league">赛事</string>
     <string name="date_row_other">其他早盤</string>
+    <string name="ou_hdp_ou_title">大小</string>
+    <string name="ou_hdp_hdp_title">让球</string>
 </resources>
