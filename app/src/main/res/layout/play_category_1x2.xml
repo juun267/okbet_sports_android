@@ -73,16 +73,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
-
         android:textColor="@color/textColorDark"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/x12_away_score"
         app:layout_constraintTop_toBottomOf="@id/x12_home_name"
         tools:text="伊斯伯納" />
 
-    <include
+    <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/x12_bet_1"
-        layout="@layout/play_category_1x2_bet"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="15dp"
@@ -91,27 +89,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/x12_bet_x"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/x12_away_name" />
+        app:layout_constraintTop_toBottomOf="@id/x12_away_name"
+        tools:bottomText="1.26"
+        tools:topText="1" />
 
-    <include
+    <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/x12_bet_x"
-        layout="@layout/play_category_1x2_bet"
         android:layout_width="80dp"
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="@id/x12_bet_1"
         app:layout_constraintEnd_toStartOf="@id/x12_bet_2"
         app:layout_constraintStart_toEndOf="@id/x12_bet_1"
-        app:layout_constraintTop_toTopOf="@id/x12_bet_1" />
+        app:layout_constraintTop_toTopOf="@id/x12_bet_1"
+        tools:bottomText="4.70"
+        tools:topText="X" />
 
-    <include
+    <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/x12_bet_2"
-        layout="@layout/play_category_1x2_bet"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="@id/x12_bet_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/x12_bet_x"
-        app:layout_constraintTop_toTopOf="@id/x12_bet_1" />
+        app:layout_constraintTop_toTopOf="@id/x12_bet_1"
+        tools:bottomText="13.5"
+        tools:topText="2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

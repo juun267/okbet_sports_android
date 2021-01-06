@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="64dp"
-    android:layout_height="50dp"
+    android:id="@+id/bet_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/shape_play_category_bet_bg">
 
     <TextView
-        android:id="@+id/hdp_top_text"
+        android:id="@+id/bet_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="2dp"
+        android:textColor="@color/selector_gametype_row_text"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@id/bet_top_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bet_top_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
@@ -15,11 +27,10 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="+0.5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/hdp_bottom_text"
+        android:id="@+id/bet_bottom_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="9dp"
@@ -28,11 +39,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hdp_top_text"
-        tools:text="1.03" />
+        app:layout_constraintTop_toBottomOf="@id/bet_top_text" />
 
     <ImageView
-        android:id="@+id/hdp_lock"
+        android:id="@+id/bet_lock"
         android:layout_width="16dp"
         android:layout_height="22dp"
         android:scaleType="centerCrop"

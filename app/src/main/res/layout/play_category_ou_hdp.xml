@@ -81,25 +81,28 @@
         app:layout_constraintTop_toBottomOf="@id/ou_hdp_game_state"
         tools:text="宏都拉斯普羅格雷索" />
 
-    <include
+    <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/ou_hdp_home_ou"
-        layout="@layout/play_category_ou_bet"
         android:layout_width="64dp"
         android:layout_height="50dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="@id/ou_hdp_home_name"
         app:layout_constraintEnd_toStartOf="@id/ou_hdp_home_hdp"
-        app:layout_constraintTop_toTopOf="@id/ou_hdp_home_name" />
+        app:layout_constraintTop_toTopOf="@id/ou_hdp_home_name"
+        app:ouType="oType"
+        tools:bottomText="1.03"
+        tools:topText="5.5/6" />
 
-    <include
+    <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/ou_hdp_home_hdp"
-        layout="@layout/play_category_hdp_bet"
         android:layout_width="64dp"
         android:layout_height="50dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="@id/ou_hdp_home_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ou_hdp_home_name" />
+        app:layout_constraintTop_toTopOf="@id/ou_hdp_home_name"
+        tools:bottomText="1.03"
+        tools:topText="+0.5" />
 
     <TextView
         android:id="@+id/ou_hdp_away_score"
@@ -128,24 +131,27 @@
         app:layout_constraintTop_toBottomOf="@id/ou_hdp_home_name"
         tools:text="伊斯伯納" />
 
-    <include
+    <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/ou_hdp_away_ou"
-        layout="@layout/play_category_ou_bet"
         android:layout_width="64dp"
         android:layout_height="50dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="@id/ou_hdp_away_name"
         app:layout_constraintEnd_toStartOf="@id/ou_hdp_away_hdp"
-        app:layout_constraintTop_toTopOf="@id/ou_hdp_away_name" />
+        app:layout_constraintTop_toTopOf="@id/ou_hdp_away_name"
+        app:ouType="uType"
+        tools:bottomText="1.03"
+        tools:topText="5.5/6" />
 
-    <include
+    <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/ou_hdp_away_hdp"
-        layout="@layout/play_category_hdp_bet"
         android:layout_width="64dp"
         android:layout_height="50dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="@id/ou_hdp_away_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ou_hdp_away_name" />
+        app:layout_constraintTop_toTopOf="@id/ou_hdp_away_name"
+        tools:bottomText="1.03"
+        tools:topText="+0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
