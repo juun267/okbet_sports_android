@@ -32,6 +32,16 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         fun bind(item: MatchOdd) {
             itemView.match_odd_name.text = item.matchInfo.homeName
             itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
+
+            setupMatchOddDetailExpand(item)
+        }
+
+        private fun setupMatchOddDetailExpand(item: MatchOdd) {
+            itemView.match_odd_expand.setExpanded(item.isExpand, false)
+            itemView.setOnClickListener {
+                item.isExpand = !item.isExpand
+                itemView.match_odd_expand.setExpanded(item.isExpand, true)
+            }
         }
 
         companion object {
