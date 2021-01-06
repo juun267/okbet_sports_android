@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="64dp"
+    android:layout_height="50dp"
+    android:background="@drawable/shape_ou_hdp_bet_bg">
+
+    <TextView
+        android:id="@+id/ou_bet_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="9dp"
+        android:textColor="@color/selector_gametype_row_text"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="O" />
+
+    <TextView
+        android:id="@+id/ou_top_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/selector_ou_hdp_bet_top_text"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/ou_bet_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ou_bet_type"
+        app:layout_constraintTop_toTopOf="@id/ou_bet_type"
+        tools:text="5.5/6" />
+
+    <TextView
+        android:id="@+id/ou_bottom_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:textColor="@color/selector_ou_hdp_bet_bottom_text"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ou_top_text"
+        tools:text="1.03" />
+
+    <ImageView
+        android:id="@+id/ou_bet_lock"
+        android:layout_width="16dp"
+        android:layout_height="22dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_iconlockbet"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
