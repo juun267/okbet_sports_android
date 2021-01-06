@@ -272,8 +272,6 @@ class MainViewModel(
                     OddsListRequest(
                         gameType,
                         matchType,
-                        oddsType = "EU",
-                        playCateMenuCode = "HDP&O"
                     )
                 )
             }
