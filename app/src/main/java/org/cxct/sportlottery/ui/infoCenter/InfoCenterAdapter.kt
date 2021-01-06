@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.InfoCenter.InfoCenterData
+import org.cxct.sportlottery.util.TimeUtil
 
 class InfoCenterAdapter : RecyclerView.Adapter<InfoCenterAdapter.ViewHolder>() {
 
@@ -36,7 +37,7 @@ class InfoCenterAdapter : RecyclerView.Adapter<InfoCenterAdapter.ViewHolder>() {
         fun bind(item: InfoCenterData) {
             txvIndex.text = (adapterPosition + 1).toString()
             txvTitle.text = item.title
-            txvTime.text = item.addDate
+            txvTime.text = TimeUtil.stampToDate(item.addDate .toLong())
         }
 
         companion object {
