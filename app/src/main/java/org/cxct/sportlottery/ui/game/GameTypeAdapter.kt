@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_game_type.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.sport.Sport
+import org.cxct.sportlottery.network.sport.Item
 
 class GameTypeAdapter(private val gameTypeListener: GameTypeListener) :
     RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
-    var data = listOf<Sport>()
+    var data = listOf<Item>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -31,7 +31,7 @@ class GameTypeAdapter(private val gameTypeListener: GameTypeListener) :
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Sport, gameTypeListener: GameTypeListener) {
+        fun bind(item: Item, gameTypeListener: GameTypeListener) {
             itemView.type_game_count.text = item.num.toString()
 
             itemView.type_game_text.text = item.name
@@ -73,6 +73,6 @@ class GameTypeAdapter(private val gameTypeListener: GameTypeListener) :
     }
 }
 
-class GameTypeListener(val clickListener: (sport: Sport) -> Unit) {
-    fun onClick(sport: Sport) = clickListener(sport)
+class GameTypeListener(val clickListener: (item: Item) -> Unit) {
+    fun onClick(item: Item) = clickListener(item)
 }

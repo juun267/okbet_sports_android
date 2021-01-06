@@ -4,7 +4,6 @@ package org.cxct.sportlottery.network.odds.detail
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.League
-import org.cxct.sportlottery.network.odds.MatchOdd
 
 @JsonClass(generateAdapter = true)
 data class OddsDetailData(

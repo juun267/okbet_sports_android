@@ -39,9 +39,6 @@
 
     <color name="tab_ripple">#1AF98B00</color>
 
-
-
-
     <!-- 线条颜色 -->
     <color name="lineGray">#f2f2f2</color>
     <color name="bright_gray">#CCCCCC</color>
@@ -65,6 +62,7 @@
     <color name="tool_bar_background">#00496b</color>
     <color name="tool_bar_text_color">#EAA909</color>
     <color name="back_button_menu">#023851</color>
+    <color name="gray_background_color">#E6E6E6</color>
 
     <!--白色系-->
     <color name="white">#FFFFFF</color>
@@ -77,23 +75,27 @@
     <color name="gray5">#f3f4f6</color>
     <color name="gray6">#202020</color>
     <color name="gray7">#e7e7e7</color>
+    <color name="gray8">#4a4a4a</color>
+    <color name="gray9">#f0f0f0</color>
+    <color name="gray10">#dddddd</color>
 
 
     <!--紅色系-->
     <color name="red">#ff4c2c</color>
+    <color name="red2">#ff4b2c</color>
 
     <!--橘色系-->
     <color name="orange">#ef9823</color>
 
     <!--綠色系-->
     <color name="green">#3eca71</color>
-    <color name="gray8">#4a4a4a</color>
 
     <!-- 藍色系 -->
     <color name="blue_transparent_40">#64c8d7e8</color>
     <color name="blue">#223549</color>
     <color name="blue2">#c8d7e8</color>
     <color name="blue3">#445e77</color>
+    <color name="blue4">#dae2eb</color>
 
     <color name="date_select_orange">#F98B00</color>
 

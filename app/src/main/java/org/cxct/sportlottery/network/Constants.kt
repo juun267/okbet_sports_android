@@ -38,6 +38,10 @@ object Constants {
     //outright
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
 
+    //infoCenter
+    const val USER_NOTICE_LIST = "/api/front/user/notice/list"
+    const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
+
     //user
     const val USER_MONEY = "/api/front/user/money"
 

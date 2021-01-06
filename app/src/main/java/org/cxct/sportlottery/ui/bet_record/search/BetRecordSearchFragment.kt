@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet_record.search
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +65,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     private fun setObserver() {
         viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
-                tv_bet_status.text = list.joinToString(",") { it.name }
+            tv_bet_status.text = list.joinToString(",") { it.name }
         })
     }
 
@@ -264,9 +265,12 @@ class BetStatusLvAdapter(private val context: Context, private val dataList: Lis
         view.apply {
             checkbox.text = data.name
             checkbox.isChecked = data.isSelected
+
+            if (data.isSelected) linear_layout.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+            else linear_layout.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 data.isSelected = isChecked
-                linear_layout.isSelected = isChecked
                 notifyDataSetChanged()
                 mOnSelectItemListener?.onClick(data)
             }

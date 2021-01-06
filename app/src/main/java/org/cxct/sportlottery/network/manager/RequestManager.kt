@@ -14,11 +14,10 @@ import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
 import org.cxct.sportlottery.network.interceptor.LogInterceptor
 import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
-import org.cxct.sportlottery.network.odds.CateDetailData
+import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
 
