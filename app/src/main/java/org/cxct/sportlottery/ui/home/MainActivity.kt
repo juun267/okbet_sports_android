@@ -278,10 +278,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.getSportMenu()
     }
 
-    fun getScrollView(): NestedScrollView {
-        return mainBinding.scrollView
-    }
-
     fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
     }
