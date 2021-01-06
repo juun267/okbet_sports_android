@@ -41,6 +41,14 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.match_odd_expand.setExpanded(item.isExpand, true)
+                updateArrowExpand()
+            }
+        }
+
+        private fun updateArrowExpand() {
+            when (itemView.match_odd_expand.isExpanded) {
+                true -> itemView.match_odd_arrow.setImageResource(R.drawable.ic_arrow_gray_up)
+                false -> itemView.match_odd_arrow.setImageResource(R.drawable.ic_arrow_gray)
             }
         }
 
