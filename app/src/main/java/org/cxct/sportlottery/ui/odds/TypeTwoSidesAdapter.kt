@@ -10,7 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class TypeOUAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeOUAdapter.ViewHolder>() {
+class TypeTwoSidesAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
