@@ -8,11 +8,23 @@
         <attr name="cvTitle" format="string" />
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
+        <attr name="cvHint" format="string" />
+        <attr name="cvText" format="string" />
+        <attr name="cvInputType">
+            <!-- Just plain old text.  Corresponds to
+            {@link android.text.InputType#TYPE_CLASS_TEXT} |
+            {@link android.text.InputType#TYPE_TEXT_VARIATION_NORMAL}. -->
+            <flag name="text" value="0x00000001" />
+            <!-- Text that is a password.  Corresponds to
+            {@link android.text.InputType#TYPE_CLASS_TEXT} |
+            {@link android.text.InputType#TYPE_TEXT_VARIATION_PASSWORD}. -->
+            <flag name="textPassword" value="0x00000081" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="ToolBarView">
         <attr name="title" format="string" />
-        <attr format="reference" name="fragmentNavGraph"/>
+        <attr name="fragmentNavGraph" format="reference" />
     </declare-styleable>
 
 </resources>

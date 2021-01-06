@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.login
 
-import android.util.Patterns
-import androidx.lifecycle.*
+import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.LoginResult
@@ -19,19 +21,16 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
-            _loginFormState.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
-            _loginFormState.value = LoginFormState(passwordError = R.string.invalid_password)
-        } else {
-            _loginFormState.value = LoginFormState(isDataValid = true)
-        }
+    fun loginDataChanged(context: Context, account: String, password: String) {
+        val accountError = checkAccount(context, account)
+        val passwordError = checkPassword(context, password)
+        val isDataValid = accountError == null && passwordError == null
+        _loginFormState.value = LoginFormState(accountError, passwordError, isDataValid)
     }
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
-             doNetwork {
+            doNetwork {
                 loginRepository.login(
                     username,
                     MD5Util.MD5Encode(password)
@@ -42,15 +41,18 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
         }
     }
 
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
+    private fun checkAccount(context: Context, username: String): String? {
+        return when {
+            username.isBlank() -> context.getString(R.string.error_required_field)
+            else -> null
         }
     }
 
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+    private fun checkPassword(context: Context, password: String): String? {
+        return when {
+            password.isBlank() -> context.getString(R.string.error_required_field)
+            password.length < 6 -> context.getString(R.string.error_last_6_pw)
+            else -> null
+        }
     }
 }

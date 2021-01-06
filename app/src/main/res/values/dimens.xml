@@ -18,6 +18,7 @@
     <dimen name="textSize21sp">21dp</dimen>
     <dimen name="textSize22sp">22dp</dimen>
     <dimen name="textSize24sp">24dp</dimen>
+    <dimen name="textSize30sp">30sp</dimen>
     <dimen name="textSize34sp">34dp</dimen>
 
     <dimen name="activity_horizontal_margin">15dp</dimen>
