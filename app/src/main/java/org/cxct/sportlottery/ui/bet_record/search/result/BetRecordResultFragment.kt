@@ -29,8 +29,8 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         binding.apply {
             betRecordViewModel = this@BetRecordResultFragment.viewModel
             lifecycleOwner = this@BetRecordResultFragment
+            other = this@BetRecordResultFragment.viewModel.betRecordResult.value?.other
         }
-
         return binding.root
     }
 
