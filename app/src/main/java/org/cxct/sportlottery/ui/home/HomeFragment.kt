@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
@@ -76,6 +78,14 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             drawer_in_play.setRvGameData(it.matchPreloadData)
             drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
+
+                    //使用於投注細項 -> [更多]
+                    for (i in it.matchPreloadData?.datas?.indices!!) {
+                        if (select.code == it.matchPreloadData.datas[i].code) {
+                            viewModel.setMoreList(it.matchPreloadData.datas[i].matchs)
+                            break
+                        }
+                    }
                     toOddsDetail(select)
                 }
             })

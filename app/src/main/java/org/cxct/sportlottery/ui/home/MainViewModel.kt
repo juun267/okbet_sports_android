@@ -99,6 +99,18 @@ class MainViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
+    private val _oddsDetailMoreList = MutableLiveData<List<*>>()
+    val oddsDetailMoreList: LiveData<List<*>?>
+        get() = _oddsDetailMoreList
+
+    fun setMoreList(list: List<*>) {
+        _oddsDetailMoreList.value = list
+    }
+
+    fun getMoreList(): MutableLiveData<List<*>>{
+        return _oddsDetailMoreList
+    }
+
     fun logout() {
         viewModelScope.launch {
             val result = doNetwork {
@@ -145,7 +157,7 @@ class MainViewModel(
 
             result?.let {
                 if (it.sportMenuData != null)
-                initSportMenuSelectedState(it.sportMenuData)
+                    initSportMenuSelectedState(it.sportMenuData)
                 _sportMenuResult.postValue(it)
             }
         }
