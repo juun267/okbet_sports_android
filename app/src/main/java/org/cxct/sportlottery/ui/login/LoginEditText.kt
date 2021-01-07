@@ -15,6 +15,12 @@ import org.cxct.sportlottery.R
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
+    var eyeVisibility
+        get() = btn_eye.visibility
+        set(value) {
+            btn_eye.visibility = value
+        }
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
         addView(view)
@@ -69,12 +75,6 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged { afterTextChanged.invoke(it) }
     }
-
-    var eyeVisibility
-        get() = btn_eye.visibility
-        set(value) {
-            btn_eye.visibility = value
-        }
 }
 
 /**
