@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
@@ -204,6 +205,15 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun switchFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, 0)
+            .replace(R.id.odds_detail_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+
     override fun onBackPressed() {
         super.onBackPressed()
 
@@ -226,6 +236,21 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.sportMenuResult.observe(this, Observer {
             hideLoading()
             updateUiWithResult(it)
+        })
+
+        viewModel.curOddsDetailParams.observe(this, Observer {
+            val gameType = it[0]
+            val typeName = it[1]
+            val matchId = it[2] ?: ""
+            val oddsType = "EU"
+
+            getAppBarLayout().setExpanded(true, true)
+
+            switchFragment(
+                OddsDetailFragment.newInstance(
+                    gameType, typeName, matchId, oddsType
+                )
+            )
         })
     }
 

@@ -24,7 +24,6 @@ import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import timber.log.Timber
 
 
 /**
@@ -48,7 +47,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener {
-                Timber.i(it.toString())
+                viewModel.getOddsDetail(it.matchInfo.id)
             }
         }
     }

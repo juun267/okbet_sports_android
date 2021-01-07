@@ -60,6 +60,9 @@ class MainViewModel(
     val curDateEarly: LiveData<List<Pair<String, Boolean>>>
         get() = _curDateEarly
 
+    val curOddsDetailParams: LiveData<List<String?>>
+        get() = _curOddsDetailParams
+
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
@@ -70,6 +73,7 @@ class MainViewModel(
         value = PlayType.OU_HDP
     }
     private val _curDateEarly = MutableLiveData<List<Pair<String, Boolean>>>()
+    private val _curOddsDetailParams = MutableLiveData<List<String?>>()
 
     private val _asStartCount = MutableLiveData<Int>()
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -332,5 +336,12 @@ class MainViewModel(
         }
 
         _curDateEarly.postValue(dateEarly)
+    }
+
+    fun getOddsDetail(oddId: String) {
+        val item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
+            it.isSelected
+        }
+        _curOddsDetailParams.postValue(listOf(item?.code,item?.name,oddId))
     }
 }
