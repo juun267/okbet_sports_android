@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.login
+package org.cxct.sportlottery.ui.login.signIn
 
 import android.os.Bundle
 import android.view.View

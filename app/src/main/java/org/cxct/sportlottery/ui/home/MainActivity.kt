@@ -28,7 +28,7 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.Game2FragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
-import org.cxct.sportlottery.ui.login.LoginActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
