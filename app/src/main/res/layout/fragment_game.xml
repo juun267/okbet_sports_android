@@ -47,9 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/hall_date_row"
-                app:layout_constraintVertical_bias="0" />
+                app:layout_constraintTop_toBottomOf="@id/hall_date_row" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hall_league_list"
@@ -57,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/hall_date_row" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
