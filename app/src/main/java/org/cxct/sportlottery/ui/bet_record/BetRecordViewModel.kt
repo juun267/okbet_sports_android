@@ -26,7 +26,7 @@ class BetRecordViewModel : BaseViewModel() {
         get() = _betRecordResult
 
     private val _selectStatusList = MutableLiveData<MutableList<BetTypeItemData>>().apply {
-        mutableListOf<BetTypeItemData>()
+        this.value = mutableListOf()
     }
 
     private val _betListRequestState = MutableLiveData<BetListRequestState>()

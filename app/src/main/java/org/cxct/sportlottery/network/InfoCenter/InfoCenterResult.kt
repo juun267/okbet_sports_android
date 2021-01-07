@@ -1,23 +1,19 @@
-package org.cxct.sportlottery.network.bet.list
-
+package org.cxct.sportlottery.network.InfoCenter
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
-data class BetListResult(
+data class InfoCenterResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
     override val msg: String,
-    @Json(name = "rows")
-    val rows: List<Row>?,
     @Json(name = "success")
     override val success: Boolean,
+    @Json(name = "rows")
+    val infoCenterData: MutableList<InfoCenterData>?,
     @Json(name = "total")
-    val total: Int?,
-    @Json(name = "other")
-    val other: Other?
+    val total: Int?
 ) : BaseResult()
-

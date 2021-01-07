@@ -114,10 +114,11 @@ class MainViewModel(
     fun getAnnouncement() {
         val messageType = "1"
         viewModelScope.launch {
-            val result = doNetwork {
+            doNetwork {
                 OneBoSportApi.messageService.getMessageList(messageType)
+            }?.let { result ->
+                _messageListResult.postValue(result)
             }
-            _messageListResult.postValue(result)
         }
     }
 

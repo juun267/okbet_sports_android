@@ -70,7 +70,6 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_bet_history.setOnClickListener {
-//            val activity = ToolBarActivity(BetRecordSearchFragment())::class.java
             startActivity(Intent(context, BetRecordActivity::class.java))
         }
 

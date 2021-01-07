@@ -88,9 +88,20 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
+    <!--  information center  -->
+    <string name="inbox">收件箱 (%1$d)</string>
+    <string name="unread_letters">未读邮件 (%1$d)</string>
+    <string name="index">序号</string>
+    <string name="title">标题</string>
+    <string name="time">时间</string>
+    <string name="btn_home_page">首页</string>
+    <string name="btn_previous_page">上一页</string>
+    <string name="btn_next_page">下一页</string>
+    <string name="btn_end_page">尾页</string>
+    <string name="info_center_promot">当前 %1$d/%2$d  每页 %3$d 笔   共 %4$d 条</string>
+
+    <!--bet record-->
     <string name="please_choose_bet_state">请选择注单状态</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="please_choose_start_date">请选择开始日期</string>
     <string name="please_choose_end_date">请选择结束日期</string>
     <string name="today">今日</string>
@@ -99,9 +110,12 @@
     <string name="champion_play">冠军玩法</string>
     <string name="inquire">查询</string>
     <string name="order_number">注单编号</string>
+    <string name="order_number_colon">注单编号：</string>
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">总投注额</string>
+    <string name="total_bet_money_colon">总投注额：</string>
     <string name="status">状态</string>
+    <string name="status_colon">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态：</string>
     <string name="bet_record">投注记录</string>
     <string name="select_all">全选</string>
     <string name="start_date">开始日期</string>
@@ -117,6 +131,17 @@
     <string name="suspend">延期</string>
     <string name="canceled">已取消</string>
 
+    <string name="bet_detail">注单详情</string>
+    <string name="bet_time">投注时间：</string>
+    <string name="league_name">联赛名称：</string>
+    <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
+    <string name="play_type">玩&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;法：</string>
+    <string name="game_odds">盘口赔率：</string>
+    <string name="match_names">(主) %s  vs  %s (客)</string>
+    <string name="bet_item">投注项目 - %s</string>
+    <string name="nothing">--</string>
+
+
     <!--game hall-->
     <string name="inplay_row_title">滚球</string>
     <string name="inplay_row_btn_double">1 X 2</string>
@@ -125,4 +150,8 @@
     <string name="date_row_other">其他早盤</string>
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
+
+    <string name="total_bet_amount">总共有 投注额</string>
+    <string name="win_lose">赢 / 输</string>
+
 </resources>
