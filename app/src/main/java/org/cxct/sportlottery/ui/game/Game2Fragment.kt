@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_game.view.*
+import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
+import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -29,18 +33,25 @@ private const val ARG_PARAM2 = "param2"
 class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val args: Game2FragmentArgs by navArgs()
+    private val navController by lazy {
+        findNavController()
+    }
+
+    private val playType: PlayType by lazy { PlayType.OU_HDP }
 
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter()
+    }
+
+    private val matchOddAdapter by lazy {
+        MatchOddAdapter()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_game2, container, false).apply {
-            setupOddsList(this)
-        }
+        return inflater.inflate(R.layout.fragment_game2, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,26 +62,48 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 leagueOddAdapter.data = it.oddsListData?.leagueOdds ?: listOf()
+                it.oddsListData?.leagueOdds?.getOrNull(0)?.let { leagueOdd ->
+                    this.view?.let { view ->
+                        setupMatchOddList(view, leagueOdd)
+                        setupLeagueLayout(view, it.oddsListData.leagueOdds[0])
+                        setupBackEvent(view)
+                    }
+                }
             }
         })
     }
 
-    private fun setupOddsList(view: View) {
-        view.hall_odds_list.apply {
+    private fun getLeagueOddsList() {
+        viewModel.getLeagueOddsList(args.matchType, args.oddsListId, TimeUtil.getTodayTimeRangeParams())
+    }
+
+    private fun setupMatchOddList(view: View, item: LeagueOdd) {
+        view.league_odd_sub_list.apply {
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            this.adapter = leagueOddAdapter
-            this.addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
+            this.adapter = matchOddAdapter
+        }
+
+        matchOddAdapter.data = item.matchOdds
+        matchOddAdapter.playType = playType
+    }
+
+    private fun setupLeagueLayout(view: View, item: LeagueOdd) {
+        view.apply {
+            league_odd_name.text = item.league.name
+            league_odd_count.text = item.matchOdds.size.toString()
         }
     }
 
-    private fun getLeagueOddsList() {
-        viewModel.getLeagueOddsList(args.matchType, args.oddsListId, TimeUtil.getTodayTimeRangeParams())
+    private fun setupBackEvent(view: View) {
+        view.apply {
+            league_odd_arrow.setOnClickListener {
+                val action = Game2FragmentDirections.actionGame2FragmentToGameFragment(args.matchType)
+                val navOptions =
+                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                navController.navigate(action, navOptions)
+            }
+        }
     }
 
     companion object {
