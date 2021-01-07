@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.game.Game2FragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -196,6 +197,15 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             R.id.gameFragment -> {
                 val action =
                     GameFragmentDirections.actionGameFragmentToGameFragment(
+                        matchType
+                    )
+                val navOptions =
+                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                navController.navigate(action, navOptions)
+            }
+            R.id.game2Fragment -> {
+                val action =
+                    Game2FragmentDirections.actionGame2FragmentToGameFragment(
                         matchType
                     )
                 val navOptions =

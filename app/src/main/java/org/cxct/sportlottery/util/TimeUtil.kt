@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,6 +56,38 @@ object TimeUtil {
         c.set(Calendar.SECOND, 0)
         c.set(Calendar.MILLISECOND, 0)
         return c.timeInMillis
+    }
+
+    fun getTodayEndTimeStamp(): Long {
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR_OF_DAY, 23)
+        c.set(Calendar.MINUTE, 59)
+        c.set(Calendar.SECOND, 59)
+        c.set(Calendar.MILLISECOND, 59)
+        return c.timeInMillis
+    }
+
+    fun getTodayTimeRangeParams(): TimeRangeParams {
+        return object : TimeRangeParams{
+            override val startTime: String?
+                get() = getTodayStartTimeStamp().toString()
+            override val endTime: String?
+                get() = getTodayEndTimeStamp().toString()
+
+        }
+    }
+
+    fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
+        //date : yyyy-MM-dd
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val startTimeStamp = formatter.parse("$date 00:00:00")?.time
+        val endTimeStamp = formatter.parse("$date 23:59:59")?.time
+        return object : TimeRangeParams{
+            override val startTime: String?
+                get() = startTimeStamp.toString()
+            override val endTime: String?
+                get() = endTimeStamp.toString()
+        }
     }
 
     fun getOneWeekDate(): List<String> {

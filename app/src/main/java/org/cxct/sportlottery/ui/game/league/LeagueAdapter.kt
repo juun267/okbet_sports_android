@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.itemview_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
 
-class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
+class LeagueAdapter(private val leagueListener: LeagueListener) : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     var data = listOf<Row>()
         set(value) {
             field = value
@@ -19,25 +19,31 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     override fun getItemCount(): Int = data.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, leagueListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, leagueListener)
     }
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val leagueSubAdapter by lazy {
-            LeagueSubAdapter()
-        }
+    class ViewHolder private constructor(itemView: View, leagueListener: LeagueListener) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Row) {
+        private lateinit var leagueSubAdapter: LeagueSubAdapter
+
+        fun bind(item: Row, leagueListener: LeagueListener) {
             itemView.league_name.text = item.name
 
+            setupLeagueSubAdapter(item, leagueListener)
             setupLeagueSubList(item)
             setupLeagueSubExpand(item)
+        }
+
+        private fun setupLeagueSubAdapter(item: Row, leagueListener: LeagueListener) {
+            leagueSubAdapter = LeagueSubAdapter(LeagueSubAdapter.LeagueSubListener {
+                leagueListener.onClick(item)
+            })
         }
 
         private fun setupLeagueSubList(item: Row) {
@@ -67,13 +73,17 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, leagueListener: LeagueListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.itemview_league, parent, false)
 
-                return ViewHolder(view)
+                return ViewHolder(view, leagueListener)
             }
         }
     }
+}
+
+class LeagueListener(val clickListener: (item: Row) -> Unit) {
+    fun onClick(item: Row) = clickListener(item)
 }
