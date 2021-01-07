@@ -337,7 +337,6 @@ class MainViewModel(
     }
 
     private fun getLeagueList(gameType: String, matchType: String, timeRangeParams: TimeRangeParams) {
-        Log.e("Dean" , "timeRangeParams = ${timeRangeParams}, startTime = ${timeRangeParams.startTime} , endTime = ${timeRangeParams.endTime}")
         viewModelScope.launch {
             val result = doNetwork {
                 OneBoSportApi.leagueService.getLeagueList(
