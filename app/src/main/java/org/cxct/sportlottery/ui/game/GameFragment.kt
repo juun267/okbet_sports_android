@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.game_bar_inplay.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import timber.log.Timber
+import org.cxct.sportlottery.util.TimeUtil
 
 
 /**
@@ -41,10 +43,18 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         findNavController()
     }
 
+    //TODO Dean : 順一下獲取List的邏輯, 目前有重複call api的問題
+    private var timeRangeParams: TimeRangeParams = object : TimeRangeParams {
+        override val startTime: String?
+            get() = null
+        override val endTime: String?
+            get() = null
+    }
+
     private val args: GameFragmentArgs by navArgs()
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            viewModel.getLeagueList(args.matchType, it)
+            viewModel.getLeagueList(args.matchType, it, timeRangeParams)
         })
     }
     private val gameDateAdapter by lazy {
@@ -63,7 +73,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment( it.list.first().id, args.matchType)
+            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id, args.matchType)
             val navOptions =
                 NavOptions.Builder().setLaunchSingleTop(true).build()
             navController.navigate(action, navOptions)
@@ -202,11 +212,15 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             leagueOddAdapter.playType = it
         })
 
-        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer {
-            gameDateAdapter.data = it
+        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer { pair ->
+            gameDateAdapter.data = pair
+            pair.find { it.second }?.first?.let {
+                timeRangeParams = TimeUtil.getDayDateTimeRangeParams(it)
+                viewModel.getLeagueList(args.matchType, timeRangeParams)
+            }
         })
 
-        viewModel.getLeagueList(args.matchType)
+        viewModel.getLeagueList(args.matchType, timeRangeParams)
         viewModel.getEarlyDateRow()
     }
 

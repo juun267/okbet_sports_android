@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.home
 
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -117,9 +118,7 @@ class MainViewModel(
         viewModelScope.launch {
             doNetwork {
                 OneBoSportApi.messageService.getMessageList(messageType)
-            }?.let { result ->
-                _messageListResult.postValue(result)
-            }
+            }?.let { result -> _messageListResult.postValue(result) }
         }
     }
 
@@ -179,12 +178,12 @@ class MainViewModel(
         }
     }
 
-    fun getLeagueList(matchType: MatchType, item: Item) {
+    fun getLeagueList(matchType: MatchType, item: Item, timeRangeParams: TimeRangeParams) {
         updateSportSelectedState(matchType, item)
-        getLeagueList(matchType)
+        getLeagueList(matchType, timeRangeParams)
     }
 
-    fun getLeagueList(matchType: MatchType) {
+    fun getLeagueList(matchType: MatchType, timeRangeParams: TimeRangeParams) {
         when (matchType) {
             MatchType.IN_PLAY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
@@ -201,7 +200,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getLeagueList(gameType, matchType.postValue)
+                    getLeagueList(gameType, matchType.postValue, timeRangeParams)
                 }
             }
             MatchType.EARLY -> {
@@ -210,7 +209,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getLeagueList(gameType, matchType.postValue)
+                    getLeagueList(gameType, matchType.postValue, timeRangeParams)
                 }
             }
             MatchType.PARLAY -> {
@@ -219,7 +218,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getLeagueList(gameType, matchType.postValue)
+                    getLeagueList(gameType, matchType.postValue, timeRangeParams)
                 }
             }
             else -> {
@@ -337,11 +336,12 @@ class MainViewModel(
         }
     }
 
-    private fun getLeagueList(gameType: String, matchType: String) {
+    private fun getLeagueList(gameType: String, matchType: String, timeRangeParams: TimeRangeParams) {
+        Log.e("Dean" , "timeRangeParams = ${timeRangeParams}, startTime = ${timeRangeParams.startTime} , endTime = ${timeRangeParams.endTime}")
         viewModelScope.launch {
             val result = doNetwork {
                 OneBoSportApi.leagueService.getLeagueList(
-                    LeagueListRequest(gameType, matchType)
+                    LeagueListRequest(gameType, matchType, startTime = timeRangeParams.startTime, endTime = timeRangeParams.endTime)
                 )
             }
             _leagueListResult.postValue(result)
