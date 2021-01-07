@@ -10,12 +10,14 @@ import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityInfoCenterBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.bet_record.search.result.BetRecordDetailDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
-    var adapter = InfoCenterAdapter()
+    var adapter: InfoCenterAdapter? = null
+
     private lateinit var infoCenterBinding: ActivityInfoCenterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,15 +44,22 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel
         //獲取訊息清單
         viewModel.userMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer
-            if (adapter.data.isNotEmpty()) {
-                adapter.addData(userMsgList)//上拉加載
+            if (adapter?.data?.isNotEmpty() == true) {
+                adapter?.addData(userMsgList)//上拉加載
             } else {
-                adapter.data = userMsgList//重新載入
+                adapter?.data = userMsgList//重新載入
             }
         })
     }
 
     private fun initRecyclerView() {
+        adapter = InfoCenterAdapter(InfoCenterAdapter.ItemClickListener {
+            it.let { data ->
+                val detailDialog = InfoCenterDetailDialog(data)
+                detailDialog.show(supportFragmentManager, "")
+            }
+        })
+
         rv_data.layoutManager = LinearLayoutManager(
             this@InfoCenterActivity,
             LinearLayoutManager.VERTICAL,
@@ -61,7 +70,7 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel
         rv_data.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1))
-                    viewModel.getUserMsgList(false, adapter.itemCount)
+                    viewModel.getUserMsgList(false, adapter?.itemCount?:0)
             }
         })
     }
