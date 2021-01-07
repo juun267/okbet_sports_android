@@ -79,9 +79,9 @@ object TimeUtil {
 
     fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
         //date : yyyy-MM-dd
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SS", Locale.getDefault())
-        val startTimeStamp = formatter.parse("$date 00:00:00:00")?.time
-        val endTimeStamp = formatter.parse("$date 23:59:59:59")?.time
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val startTimeStamp = formatter.parse("$date 00:00:00")?.time
+        val endTimeStamp = formatter.parse("$date 23:59:59")?.time
         return object : TimeRangeParams{
             override val startTime: String?
                 get() = startTimeStamp.toString()
