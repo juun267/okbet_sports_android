@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.util.TimeUtil
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +34,13 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: Game2FragmentArgs by navArgs()
     private val navController by lazy {
         findNavController()
+    }
+    private val timeRangeParams = object : TimeRangeParams {
+        override val startTime: String?
+            get() = args.startTime
+        override val endTime: String?
+            get() = args.endTime
+
     }
 
     private val playType: PlayType by lazy { PlayType.OU_HDP }
@@ -74,7 +80,7 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun getLeagueOddsList() {
-        viewModel.getLeagueOddsList(args.matchType, args.oddsListId, TimeUtil.getTodayTimeRangeParams())
+        viewModel.getLeagueOddsList(args.matchType, args.oddsListId, timeRangeParams)
     }
 
     private fun setupMatchOddList(view: View, item: LeagueOdd) {
@@ -99,9 +105,7 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         view.apply {
             league_odd_arrow.setOnClickListener {
                 val action = Game2FragmentDirections.actionGame2FragmentToGameFragment(args.matchType)
-                val navOptions =
-                    NavOptions.Builder().setLaunchSingleTop(true).build()
-                navController.navigate(action, navOptions)
+                navController.navigate(action)
             }
         }
     }

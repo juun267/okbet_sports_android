@@ -49,13 +49,19 @@
             app:argType="string" />
         <argument
             android:name="matchType"
-            app:argType="org.cxct.sportlottery.network.common.MatchType"/>
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        <argument
+            android:name="startTime"
+            app:argType="string" />
+        <argument
+            android:name="endTime"
+            app:argType="string" />
         <action
             android:id="@+id/action_game2Fragment_to_gameFragment"
             app:destination="@+id/gameFragment">
             <argument
                 android:name="matchType"
-                app:argType="org.cxct.sportlottery.network.common.MatchType"/>
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
         <action
             android:id="@+id/action_game2Fragment_to_betListDialog"

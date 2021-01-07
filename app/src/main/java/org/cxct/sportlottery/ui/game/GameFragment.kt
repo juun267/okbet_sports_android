@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -73,10 +72,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id, args.matchType)
-            val navOptions =
-                NavOptions.Builder().setLaunchSingleTop(true).build()
-            navController.navigate(action, navOptions)
+            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id, args.matchType, timeRangeParams.startTime ?: "", timeRangeParams.endTime ?: "")
+            navController.navigate(action)
         })
     }
 
@@ -123,16 +120,20 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupDateRow(view: View) {
-        view.date_row_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            this.adapter = gameDateAdapter
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
+        if (args.matchType == MatchType.TODAY) {
+            timeRangeParams = TimeUtil.getTodayTimeRangeParams()
+        } else {
+            view.date_row_list.apply {
+                this.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                this.adapter = gameDateAdapter
+                addItemDecoration(
+                    SpaceItemDecoration(
+                        context,
+                        R.dimen.recyclerview_item_dec_spec
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -220,7 +221,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.getLeagueList(args.matchType, timeRangeParams)
         viewModel.getEarlyDateRow()
     }
 
