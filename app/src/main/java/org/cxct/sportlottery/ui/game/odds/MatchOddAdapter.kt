@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_match_odd.view.*
+import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
+import kotlinx.android.synthetic.main.play_category_ou_hdp.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -40,8 +42,20 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.match_odd_name.text = item.matchInfo.homeName
             itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
 
+            setupMatchOddDetail(item, playType)
             setupMatchOddDetailExpand(item)
+        }
 
+        private fun setupMatchOddDetailExpand(item: MatchOdd) {
+            itemView.match_odd_expand.setExpanded(item.isExpand, false)
+            itemView.setOnClickListener {
+                item.isExpand = !item.isExpand
+                itemView.match_odd_expand.setExpanded(item.isExpand, true)
+                updateArrowExpand()
+            }
+        }
+
+        private fun setupMatchOddDetail(item: MatchOdd, playType: PlayType) {
             when (playType) {
                 PlayType.OU_HDP -> {
                     setupMatchOddOuHdp(item)
@@ -54,18 +68,31 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             }
         }
 
-        private fun setupMatchOddDetailExpand(item: MatchOdd) {
-            itemView.match_odd_expand.setExpanded(item.isExpand, false)
-            itemView.setOnClickListener {
-                item.isExpand = !item.isExpand
-                itemView.match_odd_expand.setExpanded(item.isExpand, true)
-                updateArrowExpand()
-            }
-        }
-
         private fun setupMatchOddOuHdp(item: MatchOdd) {
+            val oddListOU = item.odds[PlayType.OU.code]
+            val oddListHDP = item.odds[PlayType.HDP.code]
+
+            val oddOUHome = oddListOU?.get(0)
+            val oddOUAway = oddListOU?.get(1)
+
+            val oddHDPHome = oddListHDP?.get(0)
+            val oddHDPAway = oddListHDP?.get(1)
+
             itemView.match_odd_ou_hdp.visibility = View.VISIBLE
             itemView.match_odd_1x2.visibility = View.GONE
+
+            itemView.ou_hdp_home_name.text = item.matchInfo.homeName
+            itemView.ou_hdp_away_name.text = item.matchInfo.awayName
+
+            itemView.ou_hdp_home_ou.bet_top_text.text = oddOUHome?.spread
+            itemView.ou_hdp_home_ou.bet_bottom_text.text = oddOUHome?.odds.toString()
+            itemView.ou_hdp_away_ou.bet_top_text.text = oddOUAway?.spread
+            itemView.ou_hdp_away_ou.bet_bottom_text.text = oddOUAway?.odds.toString()
+
+            itemView.ou_hdp_home_hdp.bet_top_text.text = oddHDPHome?.spread
+            itemView.ou_hdp_home_hdp.bet_bottom_text.text = oddHDPHome?.odds.toString()
+            itemView.ou_hdp_away_hdp.bet_top_text.text = oddHDPAway?.spread
+            itemView.ou_hdp_away_hdp.bet_bottom_text.text = oddHDPAway?.odds.toString()
         }
 
         private fun setupMatchOdd1x2(item: MatchOdd) {
