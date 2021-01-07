@@ -7,10 +7,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 
 class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     var data = listOf<LeagueOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var playType: PlayType = PlayType.OU_HDP
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -25,7 +32,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, playType)
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,15 +40,15 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             MatchOddAdapter()
         }
 
-        fun bind(item: LeagueOdd) {
+        fun bind(item: LeagueOdd, playType: PlayType) {
             itemView.league_odd_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupMatchOddList(item)
+            setupMatchOddList(item, playType)
             setupMatchOddExpand(item)
         }
 
-        private fun setupMatchOddList(item: LeagueOdd) {
+        private fun setupMatchOddList(item: LeagueOdd, playType: PlayType) {
             itemView.league_odd_sub_list.apply {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -49,6 +56,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             }
 
             matchOddAdapter.data = item.matchOdds
+            matchOddAdapter.playType = playType
         }
 
         private fun setupMatchOddExpand(item: LeagueOdd) {

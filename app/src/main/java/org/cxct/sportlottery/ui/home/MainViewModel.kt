@@ -67,7 +67,7 @@ class MainViewModel(
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
-        value = PlayType.OU
+        value = PlayType.OU_HDP
     }
     private val _curDateEarly = MutableLiveData<List<Pair<String, Boolean>>>()
 

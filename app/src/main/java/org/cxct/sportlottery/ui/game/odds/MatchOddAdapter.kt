@@ -6,10 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_match_odd.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 
 class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     var data = listOf<MatchOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var playType: PlayType = PlayType.OU_HDP
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -22,18 +29,29 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, playType)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: MatchOdd) {
+        fun bind(item: MatchOdd, playType: PlayType) {
             itemView.match_odd_name.text = item.matchInfo.homeName
             itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
 
             setupMatchOddDetailExpand(item)
+
+            when (playType) {
+                PlayType.OU_HDP -> {
+                    setupMatchOddOuHdp(item)
+                }
+                PlayType.X12 -> {
+                    setupMatchOdd1x2(item)
+                }
+                else -> {
+                }
+            }
         }
 
         private fun setupMatchOddDetailExpand(item: MatchOdd) {
@@ -43,6 +61,16 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.match_odd_expand.setExpanded(item.isExpand, true)
                 updateArrowExpand()
             }
+        }
+
+        private fun setupMatchOddOuHdp(item: MatchOdd) {
+            itemView.match_odd_ou_hdp.visibility = View.VISIBLE
+            itemView.match_odd_1x2.visibility = View.GONE
+        }
+
+        private fun setupMatchOdd1x2(item: MatchOdd) {
+            itemView.match_odd_1x2.visibility = View.VISIBLE
+            itemView.match_odd_ou_hdp.visibility = View.GONE
         }
 
         private fun updateArrowExpand() {

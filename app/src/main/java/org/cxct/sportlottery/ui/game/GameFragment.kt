@@ -70,7 +70,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupLeagueList(this)
 
             this.inplay_ou.setOnClickListener {
-                viewModel.setPlayType(PlayType.OU)
+                viewModel.setPlayType(PlayType.OU_HDP)
             }
 
             this.inplay_1x2.setOnClickListener {
@@ -177,8 +177,10 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
-            inplay_ou.isSelected = (it === PlayType.OU)
+            inplay_ou.isSelected = (it === PlayType.OU_HDP)
             inplay_1x2.isSelected = (it == PlayType.X12)
+
+            leagueOddAdapter.playType = it
         })
 
         viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer {
