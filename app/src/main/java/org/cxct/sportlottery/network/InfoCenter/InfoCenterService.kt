@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.InfoCenter
+package org.cxct.sportlottery.network.infoCenter
 
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_READED

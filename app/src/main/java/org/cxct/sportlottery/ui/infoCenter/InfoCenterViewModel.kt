@@ -1,13 +1,10 @@
 package org.cxct.sportlottery.ui.infoCenter
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.InfoCenter.InfoCenterData
-import org.cxct.sportlottery.network.InfoCenter.InfoCenterResult
+import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
