@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.JumpUtil
 
 
@@ -24,6 +26,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupLoginButton()
         setupRememberPWD()
         setupForgetPasswordButton()
+        setupRegisterButton()
         initObserve()
     }
 
@@ -84,6 +87,13 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             })
             dialog.setCanceledOnTouchOutside(true)
             dialog.show()
+        }
+    }
+
+    private fun setupRegisterButton() {
+        btn_sign_up.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            finish()
         }
     }
 

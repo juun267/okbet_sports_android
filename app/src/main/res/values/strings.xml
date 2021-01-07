@@ -27,9 +27,24 @@
     <string name="desc_forget_password">请联系在线客服为您找回密码，是否立即访问？</string>
     <string name="desc_no_account">还没有账号？</string>
     <string name="sign_up_know">立即注册</string>
-
     <string name="error_last_6_pw">*密码至少6位字符</string>
     <string name="error_required_field">*未填写必要的字段</string>
+
+    <!-- Register page-->
+    <string name="recommend_code">推荐代码</string>
+    <string name="hint_recommend_code">请输入推荐代码</string>
+    <string name="member_account">会员帐号</string>
+    <string name="hint_input_account_password_rule">长度6–20个字符，须含数字和字母组合</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="hint_confirm_password">请再次输入密码</string>
+    <string name="real_name">真实姓名</string>
+    <string name="hint_real_name">须与你用于提款的银行一致，否则无法提款</string>
+    <string name="verification_code">验证码</string>
+    <string name="hint_verification_code">请输入验证码</string>
+    <string name="desc_agreement">我已经达到法定年龄，并且完全同意</string>
+    <string name="btn_agreement">开户协议</string>
+    <string name="have_account">已有帐号?</string>
+    <string name="go_to_login">前往登录</string>
 
     <!-- Home page-->
     <string name="btn_login">登录</string>

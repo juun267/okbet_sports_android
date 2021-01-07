@@ -19,6 +19,9 @@
         <activity
             android:name=".ui.login.signIn.LoginActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.login.signUp.RegisterActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".ui.home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

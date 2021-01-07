@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:text="@string/btn_login"
-        android:textColor="#223549"
+        android:textColor="@color/blue"
         android:textSize="@dimen/textSize30sp"
         app:layout_constraintBottom_toTopOf="@id/et_account"
         app:layout_constraintStart_toStartOf="@id/et_account" />
