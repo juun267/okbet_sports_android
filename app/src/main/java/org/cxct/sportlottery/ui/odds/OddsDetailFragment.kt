@@ -29,18 +29,14 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
         const val TYPE_NAME = "typeName"
         const val MATCH_ID = "matchId"
         const val ODDS_TYPE = "oddsType"
-        const val SCROLL_HEIGHT = "scrollHeight"
-        const val HEIGHT = "height"
 
-        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String, scrollHeight: Int, height: Int) =
+        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
             OddsDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(GAME_TYPE, gameType)
                     putString(TYPE_NAME, typeName)
                     putString(MATCH_ID, matchId)
                     putString(ODDS_TYPE, oddsType)
-                    putInt(SCROLL_HEIGHT, scrollHeight)
-                    putInt(HEIGHT, height)
                 }
             }
     }
@@ -49,8 +45,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
     private var typeName: String? = null
     private var matchId: String? = null
     private var oddsType: String? = null
-    private var height: Int? = null
-    private var scrollHeight: Int? = null
 
     private val oddsDetailListData = ArrayList<OddsDetailListData>()
 
@@ -65,8 +59,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
             typeName = it.getString(TYPE_NAME)
             matchId = it.getString(MATCH_ID)
             oddsType = it.getString(ODDS_TYPE)
-            height = it.getInt(HEIGHT)
-            scrollHeight = it.getInt(SCROLL_HEIGHT)
         }
     }
 
@@ -96,11 +88,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
     private fun initUI() {
         tv_type_name.text = typeName
-
-        height?.let {
-            rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
-            rv_detail.setHasFixedSize(true)
-        }
 
         (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
@@ -201,26 +188,25 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
 
     override fun onAnimationRepeat(animation: Animation?) {
-
     }
 
 
     override fun onAnimationEnd(animation: Animation?) {
-        scrollHeight?.let {
-            rv_detail.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, it)
-        }
     }
 
 
     override fun onAnimationStart(animation: Animation?) {
-
     }
 
 
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
-        val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
-        anim.setAnimationListener(this)
-        return anim
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
+            anim.setAnimationListener(this)
+            anim
+        } else {
+            null
+        }
     }
 
 }
