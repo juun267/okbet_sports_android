@@ -25,6 +25,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var matchOddListener: MatchOddListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -32,16 +34,21 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, playType)
+        holder.bind(item, playType, matchOddListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: MatchOdd, playType: PlayType) {
+        fun bind(
+            item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?
+        ) {
             itemView.match_odd_name.text = item.matchInfo.homeName
             itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
+            itemView.setOnClickListener {
+                matchOddListener?.onClick(item)
+            }
 
             setupMatchOddDetail(item, playType)
             setupMatchOddDetailExpand(item)
@@ -149,4 +156,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             }
         }
     }
+}
+
+class MatchOddListener(val clickListener: (matchOdd: MatchOdd) -> Unit) {
+    fun onClick(matchOdd: MatchOdd) = clickListener(matchOdd)
 }
