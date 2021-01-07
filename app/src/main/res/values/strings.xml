@@ -9,13 +9,22 @@
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
 
+    <string name="error_url_fail">跳转地址错误</string>
+
+    <!-- Custom alert Dialog -->
+    <string name="prompt">提示</string>
+    <string name="btn_confirm">确定</string>
+    <string name="btn_cancel">取消</string>
+
     <!-- Login page -->
     <string name="login_account">登录账号</string>
     <string name="please_input_account">请输入帐号</string>
     <string name="please_input_password">请输入密码</string>
     <string name="login_password">登录密码</string>
     <string name="remember_password">记住密码</string>
-    <string name="forget_password">忘记密码?</string>
+    <string name="forget_password_question">忘记密码?</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="desc_forget_password">请联系在线客服为您找回密码，是否立即访问？</string>
     <string name="desc_no_account">还没有账号？</string>
     <string name="sign_up_know">立即注册</string>
 
