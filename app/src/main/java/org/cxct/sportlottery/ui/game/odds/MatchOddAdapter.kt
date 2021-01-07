@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_match_odd.view.*
+import kotlinx.android.synthetic.main.play_category_1x2.view.*
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import kotlinx.android.synthetic.main.play_category_ou_hdp.view.*
 import org.cxct.sportlottery.R
@@ -96,8 +97,21 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         }
 
         private fun setupMatchOdd1x2(item: MatchOdd) {
+            val oddList1X2 = item.odds[PlayType.X12.code]
+
+            val oddBet1 = oddList1X2?.get(0)
+            val oddBetX = oddList1X2?.get(1)
+            val oddBet2 = oddList1X2?.get(2)
+
             itemView.match_odd_1x2.visibility = View.VISIBLE
             itemView.match_odd_ou_hdp.visibility = View.GONE
+
+            itemView.x12_home_name.text = item.matchInfo.homeName
+            itemView.x12_away_name.text = item.matchInfo.awayName
+
+            itemView.x12_bet_1.bet_bottom_text.text = oddBet1?.odds.toString()
+            itemView.x12_bet_x.bet_bottom_text.text = oddBetX?.odds.toString()
+            itemView.x12_bet_2.bet_bottom_text.text = oddBet2?.odds.toString()
         }
 
         private fun updateArrowExpand() {

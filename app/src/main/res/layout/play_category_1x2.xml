@@ -90,8 +90,8 @@
         app:layout_constraintEnd_toStartOf="@id/x12_bet_x"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/x12_away_name"
-        tools:bottomText="1.26"
-        tools:topText="1" />
+        app:topText="1"
+        tools:bottomText="1.26" />
 
     <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/x12_bet_x"
@@ -101,8 +101,8 @@
         app:layout_constraintEnd_toStartOf="@id/x12_bet_2"
         app:layout_constraintStart_toEndOf="@id/x12_bet_1"
         app:layout_constraintTop_toTopOf="@id/x12_bet_1"
-        tools:bottomText="4.70"
-        tools:topText="X" />
+        app:topText="X"
+        tools:bottomText="4.70" />
 
     <org.cxct.sportlottery.ui.game.common.OddsBetButton
         android:id="@+id/x12_bet_2"
@@ -113,7 +113,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/x12_bet_x"
         app:layout_constraintTop_toTopOf="@id/x12_bet_1"
-        tools:bottomText="13.5"
-        tools:topText="2" />
+        app:topText="2"
+        tools:bottomText="13.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
