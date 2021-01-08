@@ -14,5 +14,5 @@ data class OutrightOddsListResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val outrightOddsListData: OutrightOddsListData
+    val outrightOddsListData: OutrightOddsListData?
 ) : BaseResult()
