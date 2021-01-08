@@ -109,7 +109,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
             //選單選擇結束要收起選單
-            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
@@ -126,10 +127,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
-            val countInPlay = sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
-            val countToday = sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
-            val countEarly = sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
-            val countParlay = sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countInPlay =
+                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+            val countToday =
+                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+            val countEarly =
+                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countParlay =
+                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countAsStart = sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
@@ -292,7 +297,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun updateMenuFragmentUI() {
         try {
-            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.updateUI()
         } catch (e: Exception) {
             e.printStackTrace()
