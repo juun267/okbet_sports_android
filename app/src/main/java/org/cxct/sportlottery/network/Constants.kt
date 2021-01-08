@@ -36,6 +36,7 @@ object Constants {
     const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list"
 
     //outright
+    const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/list"
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
 
     //infoCenter
