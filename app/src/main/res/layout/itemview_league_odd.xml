@@ -12,6 +12,18 @@
         android:background="@color/blue2"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/league_odd_arrow"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_arrow_down_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
         <TextView
             android:id="@+id/league_odd_name"
             android:layout_width="wrap_content"
@@ -53,6 +65,7 @@
             android:id="@+id/league_odd_sub_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             tools:itemCount="3"
             tools:listitem="@layout/itemview_match_odd" />
     </net.cachapa.expandablelayout.ExpandableLayout>

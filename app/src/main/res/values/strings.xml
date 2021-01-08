@@ -33,6 +33,7 @@
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
+    <string name="home_tab_outright">冠军</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
 
@@ -132,6 +133,7 @@
     <string name="ended">已结束</string>
     <string name="suspend">延期</string>
     <string name="canceled">已取消</string>
+
     <string name="bet_detail">注单详情</string>
     <string name="bet_time">投注时间：</string>
     <string name="league_name">联赛名称：</string>
@@ -142,12 +144,17 @@
     <string name="bet_item">投注项目 - %s</string>
     <string name="nothing">--</string>
 
+
     <!--game hall-->
     <string name="inplay_row_title">滚球</string>
     <string name="inplay_row_btn_double">1 X 2</string>
     <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
     <string name="date_row_league">赛事</string>
     <string name="date_row_other">其他早盤</string>
+    <string name="ou_hdp_ou_title">大小</string>
+    <string name="ou_hdp_hdp_title">让球</string>
+
     <string name="total_bet_amount">总共有 投注额</string>
     <string name="win_lose">赢 / 输</string>
+
 </resources>

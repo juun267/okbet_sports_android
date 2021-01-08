@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/league_layout"
@@ -12,6 +12,18 @@
         android:background="@color/blue2"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/league_arrow"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_arrow_down_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
         <TextView
             android:id="@+id/league_name"
             android:layout_width="wrap_content"
@@ -19,10 +31,12 @@
             android:layout_marginStart="35dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="墨西哥" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -31,12 +45,16 @@
         android:id="@+id/league_sub_expand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/league_layout">
+        app:layout_constraintTop_toBottomOf="@id/league_layout"
+        tools:el_expanded="true">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/league_sub_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="3"
+            tools:listitem="@layout/itemview_sub_league" />
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 

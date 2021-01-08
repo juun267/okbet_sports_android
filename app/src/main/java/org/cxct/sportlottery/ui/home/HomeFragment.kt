@@ -95,8 +95,7 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun toOddsDetail(select: GameEntity) {
-
-        (requireActivity() as MainActivity).getScrollView().smoothScrollTo(0, 0)
+        scroll_view.smoothScrollTo(0,0)
         (requireActivity() as MainActivity).getAppBarLayout().setExpanded(true, true)
 
         switchFragment(

@@ -27,4 +27,13 @@
         <attr name="fragmentNavGraph" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="OddsBetButton">
+        <attr name="isLock" format="boolean" />
+        <attr name="ouType" format="enum">
+            <enum name="oType" value="0" />
+            <enum name="uType" value="1" />
+        </attr>
+        <attr name="topText" format="string" />
+        <attr name="bottomText" format="string" />
+    </declare-styleable>
 </resources>
