@@ -135,6 +135,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             val countParlay =
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countOutright =
+                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
             val countAsStart = sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
@@ -157,6 +159,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             val tabParlay = tabLayout.getTabAt(4)?.customView
             tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
             tabParlay?.tv_number?.text = countParlay.toString()
+
+            val tabOutright = tabLayout.getTabAt(5)?.customView
+            tabOutright?.tv_title?.setText(R.string.home_tab_outright)
+            tabOutright?.tv_number?.text = countOutright.toString()
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -178,6 +185,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     }
                     4 -> {
                         navGameFragment(MatchType.PARLAY)
+                    }
+                    5 -> {
+                        navGameFragment(MatchType.OUTRIGHT)
                     }
                 }
             }

@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_scrollFlags="scroll">
-                <!-- toolBar -->
+                    <!-- toolBar -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -104,6 +104,7 @@
                                 app:riv_oval="true" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -114,9 +115,9 @@
                             <!-- 公告輪播跑馬燈 -->
                             <LinearLayout
                                 android:id="@+id/ll_announce"
-                                android:background="@color/gray"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
+                                android:background="@color/gray"
                                 android:gravity="center_vertical">
 
                                 <ImageView
@@ -176,6 +177,12 @@
 
                                 <com.google.android.material.tabs.TabItem
                                     android:id="@+id/tab_parlay"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout="@layout/home_cate_tab" />
+
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_outright"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout="@layout/home_cate_tab" />
