@@ -39,7 +39,7 @@
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 android:maxLines="1"
                 android:textColor="@color/gray6"
-                app:dateTime="@{row.addTime}"/>
+                android:text="@{row.addTime}"/>
 
             <TextView
                 android:id="@+id/tv_order_number"
