@@ -2,8 +2,11 @@ package org.cxct.sportlottery.network.interceptor
 
 import android.content.Context
 import android.text.TextUtils
-import okhttp3.*
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
@@ -24,6 +27,7 @@ import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import timber.log.Timber
 import java.io.IOException
@@ -117,15 +121,8 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
 
     private fun getMockJsonData(request: Request, fileName: String): Response? {
         val assetManager = context.assets
-        val data: String?
-
-        data = try {
-            readStringFromInputStream(assetManager.open("mock_api/$fileName"))
-        } catch (e: IOException) {
-            Timber.e("getMockJsonData exception: $e")
-            return null
-        }
-
+        val path = "mock_api/$fileName"
+        val data = readStringFromAssetManager(assetManager, path)
         return getHttpSuccessResponse(request, data)
     }
 
