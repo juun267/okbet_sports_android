@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_MONEY
+import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import timber.log.Timber
 import java.io.IOException
@@ -101,6 +102,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(INDEX_LOGOUT) -> {
                     response = getMockJsonData(request, "index_logout.mock")
+                }
+                path.contains(USER_NOTICE_LIST) -> {
+                    response = getMockJsonData(request, "user_notice_list.mock")
                 }
             }
         }

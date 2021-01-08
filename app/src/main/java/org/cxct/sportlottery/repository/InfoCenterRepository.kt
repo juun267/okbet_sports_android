@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.repository
 
-import org.cxct.sportlottery.network.InfoCenter.InfoCenterRequest
-import org.cxct.sportlottery.network.InfoCenter.InfoCenterResult
+import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
+import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import retrofit2.Response
 

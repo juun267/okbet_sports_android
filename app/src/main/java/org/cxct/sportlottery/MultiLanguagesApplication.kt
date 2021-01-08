@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.LoginViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
 import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
@@ -35,12 +36,14 @@ class MultiLanguagesApplication : Application() {
         viewModel { OddsDetailViewModel() }
         viewModel { SettlementViewModel(get()) }
         viewModel { BetRecordViewModel() }
+        viewModel { InfoCenterViewModel(get()) }
     }
 
     private val repoModule = module {
         single { LoginRepository(get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
+        single { InfoCenterRepository() }
     }
 
     override fun attachBaseContext(base: Context) {
