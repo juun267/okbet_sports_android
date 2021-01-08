@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TimeUtil
+import timber.log.Timber
 
 
 /**
@@ -205,6 +206,13 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 hall_league_list.visibility = View.VISIBLE
 
                 leagueAdapter.data = it.rows ?: listOf()
+            }
+        })
+
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                //TODO create adapter for outright odd list result
+                Timber.i(it.toString())
             }
         })
 

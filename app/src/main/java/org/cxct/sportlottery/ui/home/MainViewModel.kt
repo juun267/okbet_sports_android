@@ -20,6 +20,8 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
@@ -56,6 +58,9 @@ class MainViewModel(
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
 
+    val outrightOddsListResult: LiveData<OutrightOddsListResult>
+        get() = _outrightOddsListResult
+
     val curPlayType: LiveData<PlayType>
         get() = _curPlayType
 
@@ -71,6 +76,7 @@ class MainViewModel(
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
+    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -234,8 +240,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    //TODO outright odd list api
-                    Timber.i("get outright list")
+                    getOutrightOddsList(it)
                 }
             }
             else -> {
@@ -366,6 +371,18 @@ class MainViewModel(
                 )
             }
             _leagueListResult.postValue(result)
+        }
+    }
+
+    private fun getOutrightOddsList(gameType: String) {
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.outrightService.getOutrightOddsList(
+                    OutrightOddsListRequest(gameType)
+                )
+            }
+
+            _outrightOddsListResult.postValue(result)
         }
     }
 
