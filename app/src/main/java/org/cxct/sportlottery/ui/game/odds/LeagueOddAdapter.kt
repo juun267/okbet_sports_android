@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 
 class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
@@ -15,6 +16,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
+
+    var playType: PlayType = PlayType.OU_HDP
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var matchOddListener: MatchOddListener? = null
 
     override fun getItemCount(): Int = data.size
 
@@ -25,7 +34,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, playType, matchOddListener)
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,15 +42,19 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             MatchOddAdapter()
         }
 
-        fun bind(item: LeagueOdd) {
+        fun bind(item: LeagueOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
             itemView.league_odd_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupMatchOddList(item)
+            setupMatchOddList(item, playType, matchOddListener)
             setupMatchOddExpand(item)
         }
 
-        private fun setupMatchOddList(item: LeagueOdd) {
+        private fun setupMatchOddList(
+            item: LeagueOdd,
+            playType: PlayType,
+            matchOddListener: MatchOddListener?
+        ) {
             itemView.league_odd_sub_list.apply {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -49,6 +62,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             }
 
             matchOddAdapter.data = item.matchOdds
+            matchOddAdapter.playType = playType
+            matchOddAdapter.matchOddListener = matchOddListener
         }
 
         private fun setupMatchOddExpand(item: LeagueOdd) {
@@ -56,6 +71,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_sub_expand.setExpanded(item.isExpand, true)
+                updateArrowExpand()
+            }
+        }
+
+        private fun updateArrowExpand() {
+            when (itemView.league_odd_sub_expand.isExpanded) {
+                true -> itemView.league_odd_arrow.setImageResource(R.drawable.ic_arrow_dark)
+                false -> itemView.league_odd_arrow.setImageResource(R.drawable.ic_arrow_down_dark)
             }
         }
 
