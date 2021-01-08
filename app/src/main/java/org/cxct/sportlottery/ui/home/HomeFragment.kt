@@ -80,13 +80,11 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 override fun onClick(select: GameEntity) {
 
                     //使用於投注細項 -> [更多]
-                    for (i in it.matchPreloadData?.datas?.indices!!) {
-                        if (select.code == it.matchPreloadData.datas[i].code) {
-                            viewModel.setMoreList(it.matchPreloadData.datas[i].matchs)
-                            break
-                        }
-                    }
-                    toOddsDetail(select)
+                   val selectData = it.matchPreloadData?.datas?.find { data -> select.code == data.code }
+                    selectData?.matchs?.let { list -> viewModel.setOddsDetailMoreList(list) }
+
+                    scroll_view.smoothScrollTo(0,0)
+                    viewModel.getOddsDetail(select)
                 }
             })
         })
@@ -94,28 +92,6 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun queryData() {
         viewModel.getInPlayMatchPreload()
-    }
-
-    private fun switchFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0)
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun toOddsDetail(select: GameEntity) {
-        scroll_view.smoothScrollTo(0,0)
-        (requireActivity() as MainActivity).getAppBarLayout().setExpanded(true, true)
-
-        switchFragment(
-            OddsDetailFragment.newInstance(
-                select.code,
-                select.name,
-                select.match!!.id,
-                "EU",
-            )
-        )
     }
 
 }

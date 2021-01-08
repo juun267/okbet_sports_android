@@ -64,8 +64,9 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewMo
 
     private fun getData() {
 
-        val list: MutableLiveData<List<*>> = viewModel.getMoreList()
+        val list: MutableLiveData<List<*>> = viewModel.getOddsDetailMoreList()
 
+        //後續再重構較好的資料判別方式
         var m: Any?
         for (i in list.value?.indices!!) {
             when (list.value!![i]) {

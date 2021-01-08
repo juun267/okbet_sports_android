@@ -230,7 +230,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun switchFragment(fragment: Fragment) {
+    fun switchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.enter_from_right, 0)
             .replace(R.id.odds_detail_container, fragment)

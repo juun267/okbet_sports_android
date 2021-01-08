@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -102,10 +101,8 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
                 matchId?.let { id ->
                     OddsDetailMoreFragment.newInstance(id, object : OddsDetailMoreFragment.ChangeGameListener {
                         override fun refreshData(matchId: String) {
-
                             this@OddsDetailFragment.matchId = matchId
                             getData()
-
                         }
                     }).apply {
                         show(it, "")

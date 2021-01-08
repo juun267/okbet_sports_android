@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
@@ -109,11 +110,11 @@ class MainViewModel(
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
 
-    fun setMoreList(list: List<*>) {
-        _oddsDetailMoreList.value = list
+    fun setOddsDetailMoreList(list: List<*>) {
+        _oddsDetailMoreList.postValue(list)
     }
 
-    fun getMoreList(): MutableLiveData<List<*>>{
+    fun getOddsDetailMoreList(): MutableLiveData<List<*>>{
         return _oddsDetailMoreList
     }
 
@@ -412,4 +413,9 @@ class MainViewModel(
         }
         _curOddsDetailParams.postValue(listOf(item?.code,item?.name,oddId))
     }
+
+    fun getOddsDetail(entity: GameEntity) {
+        _curOddsDetailParams.postValue(listOf(entity.code,entity.name,entity.match?.id))
+    }
+
 }
