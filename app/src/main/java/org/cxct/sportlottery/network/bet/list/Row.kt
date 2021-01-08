@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.bet.MatchOdd
 @JsonClass(generateAdapter = true)
 data class Row(
     @Json(name = "addTime")
-    val addTime: String,
+    val addTime: Long,
     @Json(name = "cancelReason")
     val cancelReason: String?,
     @Json(name = "gameType")

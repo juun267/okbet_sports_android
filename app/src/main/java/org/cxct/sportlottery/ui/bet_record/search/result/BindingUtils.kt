@@ -12,6 +12,7 @@ fun TextView.setDateTime(timeStamp: Long?) {
         text = timeStampToDate(timeStamp)
     }
 }
+
 @BindingAdapter("status") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setStatus(status: Int?) {
     status?.let {

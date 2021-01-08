@@ -103,7 +103,7 @@
                         android:layout_marginStart="16dp"
                         android:textColor="@color/gray3"
                         android:textSize="@dimen/textSize14sp"
-                        android:text="@{row.addTime}"
+                        app:dateTime="@{row.addTime}"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintStart_toEndOf="@id/text_view"
