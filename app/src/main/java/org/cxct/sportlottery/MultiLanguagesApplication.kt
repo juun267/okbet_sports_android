@@ -14,6 +14,7 @@ import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
+import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
 import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -36,6 +37,7 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
         viewModel { MainViewModel(get(), get(), get()) }
         viewModel { LoginViewModel(get()) }
+        viewModel { RegisterViewModel(get()) }
         viewModel { OddsDetailViewModel() }
         viewModel { SettlementViewModel(get()) }
         viewModel { BetRecordViewModel() }

@@ -5,7 +5,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="16dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
@@ -36,10 +35,14 @@
             android:id="@+id/sv_block_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="12dp"
+            android:paddingStart="10dp"
+            android:paddingTop="50dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tv_message"
@@ -53,6 +56,7 @@
         </ScrollView>
 
         <LinearLayout
+            android:id="@+id/block_bottom_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -62,8 +66,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sv_block_content">
+            app:layout_constraintStart_toStartOf="parent">
 
             <Button
                 android:id="@+id/btn_negative"
@@ -88,7 +91,7 @@
                 android:background="@drawable/bg_radius_5_button_dusk"
                 android:minWidth="135dp"
                 android:minHeight="36dp"
-                android:text="@string/btn_confirm"
+                android:text="@string/btn_determine"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize14sp" />
 

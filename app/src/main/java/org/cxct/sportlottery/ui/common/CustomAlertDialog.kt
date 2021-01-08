@@ -22,7 +22,7 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     private var mTitle: String? = null
     private var mMessage: String? = null
     private var mSpannedMessage: Spanned? = null
-    private var mPositiveText: String? = context.getString(R.string.btn_confirm)
+    private var mPositiveText: String? = context.getString(R.string.btn_determine)
     private var mNegativeText: String? = context.getString(R.string.btn_cancel)
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
