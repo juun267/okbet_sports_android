@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
+import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TimeUtil
@@ -77,6 +78,10 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
     }
 
+    private val outrightOddAdapter by lazy {
+        OutrightOddAdapter()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -94,6 +99,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupOddsList(this)
 
             setupLeagueList(this)
+
+            setupOutrightOddsList(this)
 
             this.inplay_ou.setOnClickListener {
                 viewModel.setPlayType(PlayType.OU_HDP)
@@ -165,6 +172,21 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun setupOutrightOddsList(view: View) {
+        view.hall_outright_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.adapter = outrightOddAdapter
+            this.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -194,6 +216,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 hall_league_list.visibility = View.GONE
+                hall_outright_list.visibility = View.GONE
                 hall_odds_list.visibility = View.VISIBLE
 
                 leagueOddAdapter.data = it.oddsListData?.leagueOdds ?: listOf()
@@ -203,6 +226,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 hall_odds_list.visibility = View.GONE
+                hall_outright_list.visibility = View.GONE
                 hall_league_list.visibility = View.VISIBLE
 
                 leagueAdapter.data = it.rows ?: listOf()
@@ -211,8 +235,11 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
-                //TODO create adapter for outright odd list result
-                Timber.i(it.toString())
+                hall_odds_list.visibility = View.GONE
+                hall_league_list.visibility = View.GONE
+                hall_outright_list.visibility = View.VISIBLE
+
+                outrightOddAdapter.data = it.outrightOddsListData?.leagueOdds ?: listOf()
             }
         })
 
