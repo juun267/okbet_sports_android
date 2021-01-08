@@ -90,6 +90,25 @@ object TimeUtil {
         }
     }
 
+    fun getOtherEarlyDateTimeRangeParams(): TimeRangeParams {
+        //date : yyyy-MM-dd
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR_OF_DAY, 0)
+        c.set(Calendar.MINUTE, 0)
+        c.set(Calendar.SECOND, 0)
+        c.set(Calendar.MILLISECOND, 0)
+        c.add(Calendar.DAY_OF_MONTH, 8)
+        val startTimeStamp = c.timeInMillis
+        c.add(Calendar.DAY_OF_MONTH, 22)
+        val endTimeStamp = c.timeInMillis
+        return object : TimeRangeParams{
+            override val startTime: String?
+                get() = startTimeStamp.toString()
+            override val endTime: String?
+                get() = endTimeStamp.toString()
+        }
+    }
+
     fun getOneWeekDate(): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
