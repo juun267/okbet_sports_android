@@ -182,6 +182,9 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 MatchType.PARLAY -> {
                     setupParlayFilter(it.sportMenuData?.menu?.parlay?.items ?: listOf())
                 }
+                MatchType.OUTRIGHT -> {
+                    setupOutrightFilter(it.sportMenuData?.menu?.outright?.items ?: listOf())
+                }
                 else -> {
                 }
             }
@@ -250,6 +253,13 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupParlayFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
+
+        hall_inplay_row.visibility = View.GONE
+        hall_date_row.visibility = View.VISIBLE
+    }
+
+    private fun setupOutrightFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
         hall_inplay_row.visibility = View.GONE
