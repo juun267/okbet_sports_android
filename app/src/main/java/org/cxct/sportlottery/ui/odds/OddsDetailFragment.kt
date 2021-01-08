@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -72,7 +73,9 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
         super.onActivityCreated(savedInstanceState)
         dataBinding()
         initUI()
+        observeData()
         getData()
+
     }
 
 
@@ -97,50 +100,24 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
         tv_more.setOnClickListener {
             parentFragmentManager.let {
-                OddsDetailMoreFragment.newInstance().apply {
-                    show(it, "")
-                }
-            }
-        }
-    }
+                matchId?.let { id ->
+                    OddsDetailMoreFragment.newInstance(id, object : OddsDetailMoreFragment.ChangeGameListener {
+                        override fun refreshData(matchId: String) {
 
+                            this@OddsDetailFragment.matchId = matchId
 
-    private fun getData() {
-        matchId?.let { matchId ->
-            oddsType?.let { oddsType ->
-                oddsDetailViewModel.getOddsDetail(matchId, oddsType)
-            }
-        }
+                            Log.e("[kevin]", "matchId => $matchId")
 
-        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
+                            getData()
 
-            it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                tv_time.text = TimeUtil.stampToDate(time.toLong())
-            }
-
-            it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
-                oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
-            }
-
-            gameType?.let { gameType ->
-                oddsDetailViewModel.getPlayCateList(gameType)
-            }
-        })
-
-        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
-            when (result) {
-                is PlayCateListResult -> {
-                    for (element in result.rows) {
-                        tab_cat.addTab(tab_cat.newTab().setText(element.name), false)
+                        }
+                    }).apply {
+                        show(it, "")
                     }
-                    tab()
                 }
             }
-        })
-    }
+        }
 
-
-    private fun tab() {
         tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
@@ -157,7 +134,49 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
             }
         }
         )
-        tab_cat.getTabAt(0)?.select()
+    }
+
+
+    private fun observeData() {
+
+        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+            when (result) {
+                is PlayCateListResult -> {
+                    tab_cat.removeAllTabs()
+                    for (element in result.rows) {
+                        tab_cat.addTab(tab_cat.newTab().setText(element.name), false)
+                    }
+
+                    matchId?.let { matchId ->
+                        oddsType?.let { oddsType ->
+                            oddsDetailViewModel.getOddsDetail(matchId, oddsType)
+                        }
+                    }
+                }
+            }
+        })
+
+        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
+
+            it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
+                tv_time.text = TimeUtil.stampToDate(time.toLong())
+            }
+
+            oddsDetailListData.clear()
+            it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+                oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
+            }
+
+            tab_cat.getTabAt(0)?.select()
+
+        })
+    }
+
+
+    private fun getData() {
+        gameType?.let { gameType ->
+            oddsDetailViewModel.getPlayCateList(gameType)
+        }
     }
 
 

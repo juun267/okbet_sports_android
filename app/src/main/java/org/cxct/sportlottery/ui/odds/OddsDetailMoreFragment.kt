@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_odds_detail_more.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.match.Match
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
@@ -18,8 +17,31 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewMo
 
     private var matchOddList: MutableList<MoreGameEntity> = mutableListOf()
 
+    private var matchId: String? = null
+
+    private var changeGameListener: ChangeGameListener? = null
+
     companion object {
-        fun newInstance() = OddsDetailMoreFragment().apply { arguments = Bundle().apply {} }
+
+        const val MATCH_ID = "matchId"
+
+        fun newInstance(matchId: String, changeGameListener: ChangeGameListener) = OddsDetailMoreFragment().apply {
+            arguments = Bundle().apply {
+                putString(MATCH_ID, matchId)
+            }
+            this.changeGameListener = changeGameListener
+        }
+    }
+
+    interface ChangeGameListener {
+        fun refreshData(matchId: String)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            matchId = it.getString(MATCH_ID)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,18 +68,23 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewMo
 
         var m: Any?
         for (i in list.value?.indices!!) {
-            when(list.value!![i]){
-                is Match ->  {
+            when (list.value!![i]) {
+                is Match -> {
                     m = (list.value!![i] as Match)
-                    matchOddList.add(
-                        MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime.toString(), m.status)
-                    )
+                    if (m.id != matchId) {
+                        matchOddList.add(
+                            MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime.toString(), m.status)
+                        )
+                    }
                 }
+
                 is MatchOdd -> {
                     m = (list.value!![i] as MatchOdd).matchInfo
-                    matchOddList.add(
-                        MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status)
-                    )
+                    if (m.id != matchId) {
+                        matchOddList.add(
+                            MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status)
+                        )
+                    }
                 }
             }
         }
@@ -65,8 +92,10 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewMo
 
     }
 
-    override fun onItemClick() {
-
+    override fun onItemClick(matchId: String) {
+        changeGameListener?.refreshData(matchId)
+        dismissAllowingStateLoss()
     }
+
 
 }

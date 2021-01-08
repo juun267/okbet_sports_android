@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ContentOddsDetailMoreBinding
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 
 
 class OddsDetailMoreAdapter(private val matchInfoList: List<MoreGameEntity>, private val onItemClickListener: OnItemClickListener) :
@@ -30,16 +31,16 @@ class OddsDetailMoreAdapter(private val matchInfoList: List<MoreGameEntity>, pri
 
 
     inner class MoreViewHolder(private val binding: ContentOddsDetailMoreBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(moreGameEntity: MoreGameEntity?) {
+        fun bind(moreGameEntity: MoreGameEntity) {
             binding.item = moreGameEntity
             binding.executePendingBindings()
-            binding.root.setOnClickListener { onItemClickListener.onItemClick()}
+            binding.root.setOnClickListener { onItemClickListener.onItemClick(moreGameEntity.id) }
         }
     }
 
 
     interface OnItemClickListener {
-        fun onItemClick()
+        fun onItemClick(matchId: String)
     }
 
 }
