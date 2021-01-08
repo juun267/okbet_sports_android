@@ -75,7 +75,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
         initUI()
         observeData()
         getData()
-
     }
 
 
@@ -105,9 +104,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
                         override fun refreshData(matchId: String) {
 
                             this@OddsDetailFragment.matchId = matchId
-
-                            Log.e("[kevin]", "matchId => $matchId")
-
                             getData()
 
                         }
