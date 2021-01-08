@@ -168,6 +168,9 @@ class MainViewModel(
         sportMenuData.menu.parlay.items.map { sport ->
             sport.isSelected = (sportMenuData.menu.parlay.items.indexOf(sport) == 0)
         }
+        sportMenuData.menu.outright.items.map { sport ->
+            sport.isSelected = (sportMenuData.menu.outright.items.indexOf(sport) == 0)
+        }
     }
 
     fun getInPlayMatchPreload() {
@@ -223,6 +226,16 @@ class MainViewModel(
 
                 gameType?.let {
                     getLeagueList(gameType, matchType.postValue, timeRangeParams)
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+                    it.isSelected
+                }?.code
+
+                gameType?.let {
+                    //TODO outright odd list api
+                    Timber.i("get outright list")
                 }
             }
             else -> {
@@ -290,6 +303,11 @@ class MainViewModel(
             }
             MatchType.PARLAY -> {
                 result?.sportMenuData?.menu?.parlay?.items?.map {
+                    it.isSelected = (it == item)
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                result?.sportMenuData?.menu?.outright?.items?.map {
                     it.isSelected = (it == item)
                 }
             }
