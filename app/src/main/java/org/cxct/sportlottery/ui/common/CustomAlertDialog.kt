@@ -50,18 +50,13 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
 
         if (mPositiveText == null) {
             btn_positive.visibility = View.GONE
-            line_v.visibility = View.GONE //隱藏 button 之間的分隔線
         } else
             btn_positive.text = mPositiveText
 
         if (mNegativeText == null) {
             btn_negative.visibility = View.GONE
-            line_v.visibility = View.GONE //隱藏 button 之間的分隔線
         } else
             btn_negative.text = mNegativeText
-
-        if (mPositiveText == null && mNegativeText == null)
-            line_h.visibility = View.GONE
 
         btn_positive.setOnClickListener(mPositiveClickListener)
         btn_negative.setOnClickListener(mNegativeClickListener)

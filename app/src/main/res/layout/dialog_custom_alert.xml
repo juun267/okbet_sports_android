@@ -4,34 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:layout_margin="16dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.common.CustomAlertDialog">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minWidth="300dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#2B3B4B"
             android:gravity="center"
             android:minHeight="40dp"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="標題" />
 
         <ScrollView
             android:id="@+id/sv_block_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="12dp">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
 
             <TextView
                 android:id="@+id/tv_message"
@@ -44,45 +52,48 @@
 
         </ScrollView>
 
-        <View
-            android:id="@+id/line_h"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/light_gray" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sv_block_content">
 
             <Button
                 android:id="@+id/btn_negative"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
+                android:background="@drawable/bg_radius_5_button_dusk"
+                android:minWidth="135dp"
+                android:minHeight="36dp"
                 android:text="@string/btn_cancel"
-                android:textColor="@color/main"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize14sp" />
-
-            <View
-                android:id="@+id/line_v"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/light_gray" />
 
             <Button
                 android:id="@+id/btn_positive"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
+                android:background="@drawable/bg_radius_5_button_dusk"
+                android:minWidth="135dp"
+                android:minHeight="36dp"
                 android:text="@string/btn_confirm"
-                android:textColor="@color/main"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
