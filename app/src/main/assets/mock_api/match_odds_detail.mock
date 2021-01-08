@@ -4,15 +4,15 @@
 	"code": 0,
 	"t": {
 		"league": {
-			"id": "sr:tournament:217",
-			"name": "德国杯"
+			"id": "sr:tournament:52",
+			"name": "土耳其超级联赛"
 		},
 		"matchOdds": {
 			"matchInfo": {
-				"id": "sr:match:24369530",
-				"homeName": "埃森",
-				"awayName": "杜塞尔多夫",
-				"startTime": 1608744600000,
+				"id": "sr:match:23300833",
+				"homeName": "费内巴切",
+				"awayName": "阿兰尼亚体育",
+				"startTime": 1610035200000,
 				"endTime": null,
 				"status": 0,
 				"playCateNum": null
@@ -22,83 +22,83 @@
 					"typeCodes": "POPULAR,ALL,HDP&OU,QATest",
 					"name": "让球",
 					"odds": [{
-						"id": "6ace10c9fff91c148e4c84a32a6301b7",
-						"name": "埃森",
+						"id": "37ce8523dc1a1d692c9b68f2bf855019",
+						"name": "费内巴切",
 						"extInfo": null,
-						"spread": "+1",
-						"odds": 1.64,
+						"spread": "0",
+						"odds": 1.53,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "eb50d39d8d2ee830bb4cf89a67ad7788",
-						"name": "杜塞尔多夫",
+						"id": "0bfea2bdc5eb320af2be0f5755699bf2",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
-						"spread": "-1",
-						"odds": 2.28,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "d70094d098497462444521f5a9309628",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+1/1.5",
-						"odds": 1.51,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "b631715f845a9c161f4268b44f781a03",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "-1/1.5",
-						"odds": 2.6,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "4fda01251e99c83edd713ba1ca4fcdb4",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+0.5/1",
-						"odds": 1.87,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "157004eb67d0d3a8d2757199c29dcbbf",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "-0.5/1",
-						"odds": 1.94,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "c386f899b98e9d76d824c55f522c4ad8",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+0.5",
-						"odds": 2.1,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "55e7aa159b75a692fa79e9dda1ef9a7c",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "-0.5",
-						"odds": 1.74,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "3cd18bfd0a0acf5005e95df12811aba0",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+0/0.5",
+						"spread": "0",
 						"odds": 2.5,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "eba8d2eb7a568736f3d8ca362f1d21c5",
-						"name": "杜塞尔多夫",
+						"id": "f704365706a9ba6ed29e3b29b3bf34de",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "-0.5/1",
+						"odds": 2.38,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "90bf3232b713f890515a8f3a3f61a588",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+0.5/1",
+						"odds": 1.59,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "6d5a7ef0d267d1693124eab72687ef0a",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "-0.5",
+						"odds": 2.06,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a6cf7fb572ff4977497f1cdf22d068fe",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+0.5",
+						"odds": 1.77,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "78f6272fa5176733da0411e39649ae05",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "+0/0.5",
+						"odds": 1.41,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "45cb9ad2da6e144700f9c14daf2edfa1",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": "-0/0.5",
-						"odds": 1.54,
+						"odds": 2.95,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "1a6ee94a77966fb2efc3d5f480d4eaab",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "-0/0.5",
+						"odds": 1.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a8620d656417ff97369631d515371b26",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+0/0.5",
+						"odds": 2.02,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -107,51 +107,51 @@
 					"typeCodes": "POPULAR,ALL,HDP&OU,1ST",
 					"name": "让球-上半场",
 					"odds": [{
-						"id": "ae305dc68bc23ab0e9e354f7b5fdb7b3",
-						"name": "埃森",
+						"id": "dd6c11b93db75eb8b08eaf2024badc66",
+						"name": "费内巴切",
 						"extInfo": null,
-						"spread": "+0/0.5",
-						"odds": 1.95,
+						"spread": "0",
+						"odds": 1.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "78cbbf0482cf4ab4af9dd7786a138e0d",
-						"name": "杜塞尔多夫",
+						"id": "61e722e545ac65b01ce35c34abe7ed55",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "0",
+						"odds": 2.35,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "dbd0808ca17915a4b0509ad7582160f8",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": "-0/0.5",
-						"odds": 1.86,
+						"odds": 2.11,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "4e9b966fdff7e22bc67e33d1a5a48637",
-						"name": "埃森",
+						"id": "027f45077069e17e649b68a44a5ef0d1",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
-						"spread": "0",
-						"odds": 2.9,
+						"spread": "+0/0.5",
+						"odds": 1.74,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "050ef282604de4fdc58c6fc58363021e",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "0",
-						"odds": 1.42,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "d1e61c8a630c11b5676edc891f93f15a",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+0.5",
-						"odds": 1.63,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "11ddcbe0054da186a7b54227c89c4c53",
-						"name": "杜塞尔多夫",
+						"id": "11ad169f1fe7079800fcfbf3ebce93ca",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": "-0.5",
-						"odds": 2.29,
+						"odds": 2.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "21114c5621a5f9f3d741e8afeb64a5b1",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+0.5",
+						"odds": 1.5,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -160,51 +160,51 @@
 					"typeCodes": "ALL,HDP&OU",
 					"name": "让球-下半场",
 					"odds": [{
-						"id": "1f2d573a4805a1cc9a228e36b477d8ca",
-						"name": "埃森",
+						"id": "081ccb0cd9ada0d16c3a67d468c5ca60",
+						"name": "费内巴切",
 						"extInfo": null,
-						"spread": "+0.5/1",
-						"odds": 1.53,
+						"spread": "0",
+						"odds": 1.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "b38b937718d64537b544b98a34dda0bb",
-						"name": "杜塞尔多夫",
+						"id": "9e009b1b9ad1747307f429a85bf74405",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
-						"spread": "-0.5/1",
-						"odds": 2.5,
+						"spread": "0",
+						"odds": 2.35,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "bb12e1d2ddf51c394ec7c455a316c5ee",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+0.5",
-						"odds": 1.76,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "929c78ee37a55d459cf5c35c9f5d9b77",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "-0.5",
-						"odds": 2.07,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "0e4f840fde69322fc25964b35ae8cb98",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+0/0.5",
-						"odds": 2.09,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "19945b8f77d34c33a31f0deca57db34d",
-						"name": "杜塞尔多夫",
+						"id": "f9eaa96ac6b65fc08c4ba47a7be7947a",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": "-0/0.5",
-						"odds": 1.75,
+						"odds": 1.99,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "04084baae8772a671110b540e767ae3d",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+0/0.5",
+						"odds": 1.82,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "ba9dfe358d5acbeeb00d3748af7ab3ef",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "-0.5",
+						"odds": 2.38,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "1d44dc09b9a58bc3ab4fca14a387c0fd",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+0.5",
+						"odds": 1.59,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -213,83 +213,83 @@
 					"typeCodes": "POPULAR,ALL,HDP&OU,GOAL,QATest",
 					"name": "大/小",
 					"odds": [{
-						"id": "33a6fad6017e5bbe27a11baa94293126",
+						"id": "c59ec27e535998ddb4f70eb503690ee2",
 						"name": "大",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 1.71,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "83258d7e4fcac9946d4d95ffb51b3960",
-						"name": "小",
-						"extInfo": null,
-						"spread": "2.5",
-						"odds": 2.15,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "5e79e4c657f3ec0b3d923286fc08a624",
-						"name": "大",
-						"extInfo": null,
-						"spread": "2.5/3",
-						"odds": 1.88,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "f33eec8172bbd53e79f4aae1848492b3",
-						"name": "小",
-						"extInfo": null,
-						"spread": "2.5/3",
-						"odds": 1.93,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "7f5f592e686349d60151d68c202d2061",
-						"name": "大",
-						"extInfo": null,
-						"spread": "2/2.5",
-						"odds": 1.52,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "f9957aff146266b458e11a929ee40b43",
-						"name": "小",
-						"extInfo": null,
-						"spread": "2/2.5",
-						"odds": 2.55,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "99b7ee0da7d72063f1fde9f796e9ef3a",
-						"name": "大",
-						"extInfo": null,
-						"spread": "3",
-						"odds": 2.16,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "95ef4583ea2615785443e6d93bbc4397",
-						"name": "小",
-						"extInfo": null,
-						"spread": "3",
 						"odds": 1.7,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ee8136a373c60e8733df773e6c6faec1",
-						"name": "大",
+						"id": "e639291725f3e9a488301825c71c633f",
+						"name": "小",
 						"extInfo": null,
-						"spread": "3/3.5",
-						"odds": 2.44,
+						"spread": "2.5",
+						"odds": 2.17,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5d266d876867174ee098926e7cb1672c",
+						"id": "fb7a7400882fb74f47760c69ead96cb3",
+						"name": "大",
+						"extInfo": null,
+						"spread": "2.5/3",
+						"odds": 1.86,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "c14a6391f1063c5cacc6bec8e4f28552",
+						"name": "小",
+						"extInfo": null,
+						"spread": "2.5/3",
+						"odds": 1.95,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "732c8100e0dbaff3c051f58b4e3d91e0",
+						"name": "大",
+						"extInfo": null,
+						"spread": "2/2.5",
+						"odds": 1.5,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8cc03da10f0a98b661a51ea47b2ecb36",
+						"name": "小",
+						"extInfo": null,
+						"spread": "2/2.5",
+						"odds": 2.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e669350c006ddda3469d0b9a9591c6db",
+						"name": "大",
+						"extInfo": null,
+						"spread": "3",
+						"odds": 2.12,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "c84ecd06fbfdb31d4f3da26109bd323d",
+						"name": "小",
+						"extInfo": null,
+						"spread": "3",
+						"odds": 1.73,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "d0ba52fb863366af5b1f6259e745864c",
+						"name": "大",
+						"extInfo": null,
+						"spread": "3/3.5",
+						"odds": 2.39,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "98867cfa180b557f9b8ca3e9b3eb39da",
 						"name": "小",
 						"extInfo": null,
 						"spread": "3/3.5",
-						"odds": 1.56,
+						"odds": 1.58,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -298,7 +298,7 @@
 					"typeCodes": "POPULAR,ALL,HDP&OU,GOAL,1ST",
 					"name": "大/小-上半场",
 					"odds": [{
-						"id": "800350761ecdeaff017f3de2c9524320",
+						"id": "0847456b0dfe2792b29fd870243e36f6",
 						"name": "大",
 						"extInfo": null,
 						"spread": "0.5",
@@ -306,7 +306,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9c304ad088e91a945c9622d2805413b6",
+						"id": "bb74379042402b7ebc81e00bf9f8b2db",
 						"name": "小",
 						"extInfo": null,
 						"spread": "0.5",
@@ -314,31 +314,31 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0d2251e02fe136269e08f468ed2162e8",
+						"id": "5817cbf121e651d7131e4aca91eeb4ac",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1",
-						"odds": 1.68,
+						"odds": 1.67,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "06fc21eb59cd64cbb71aad1eec0da12e",
+						"id": "bf82b320e715a6bbfc8b6484434f93a6",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1",
-						"odds": 2.2,
+						"odds": 2.21,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "401afa27af1c14e453afa96ff7d4e1ef",
+						"id": "50d263879f6e6b2338a688452eebb2e7",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 2.55,
+						"odds": 2.5,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "fe7fb93bd5aaf6c2aed64b73cc4dcec9",
+						"id": "6d75018f3148f7dfe199ec37a3b6bc38",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1.5",
@@ -346,35 +346,35 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5f5ff66b6a5246d6b209a5f10771b6ca",
+						"id": "37533c0447c6760076e0ea8682173e31",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1/1.5",
-						"odds": 2.11,
+						"odds": 2.1,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "41decfc7c34792c1af951effa842de53",
+						"id": "76ea035fc02047cdc4fecb2bba129f63",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1/1.5",
-						"odds": 1.73,
+						"odds": 1.74,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "4f98d4dbe0926f9726b6ab83a3d0a2c9",
+						"id": "99dcd1fd9cd7863dadb82a1d4cf114d3",
 						"name": "大",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 6.0,
+						"odds": 5.8,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "7a924308840a0525b21b1bca43232dcc",
+						"id": "1b9efafac04bde94a073302f99a9caaa",
 						"name": "小",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 1.13,
+						"odds": 1.14,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -383,79 +383,79 @@
 					"typeCodes": "ALL,HDP&OU,GOAL",
 					"name": "大/小-下半场",
 					"odds": [{
-						"id": "7582ec0d2caf9edae0e619222a95af97",
+						"id": "6fdc6b9c3caeb8b0a83049ec0f9d7ffe",
 						"name": "大",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 1.2,
+						"odds": 1.19,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9f6f19bfd038eb29206ebd5d9501b223",
+						"id": "5086b7c5894a92fd814d46c7da229593",
 						"name": "小",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 4.7,
+						"odds": 4.8,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5f0f2bfe631096a87f69aceac5537ac6",
+						"id": "18bc3ae00587f7de654d4a66d228fcfa",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 1.92,
+						"odds": 1.9,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "191e9d07a1c75274b44cbbbb6dc643a0",
+						"id": "c380a5d9fc8f4bf64ca3fe94bf2cfb61",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 1.89,
+						"odds": 1.91,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9a21bce2ca36e73ac2d13c39cc3ece13",
+						"id": "8f2203d3d9b7793c885d299a8adc296e",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1.5/2",
-						"odds": 2.26,
+						"odds": 2.22,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "70eb4e3eb663e3f559182baf6b789941",
+						"id": "8a37aebed9e9c12f616d10632c35ac0e",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1.5/2",
-						"odds": 1.64,
+						"odds": 1.67,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "f7520c7dbf0154e4f90519537742c2a0",
+						"id": "39451ed4e1745146292974b127d5bb4f",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1/1.5",
-						"odds": 1.63,
+						"odds": 1.61,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "fbb60cb9d4ffc661993ade4c8f7a8ddc",
+						"id": "30080df7d0c82add6b74672f8c3f67d1",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1/1.5",
-						"odds": 2.29,
+						"odds": 2.33,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "017534df9143223b19463224aea869ec",
+						"id": "765ecccf4701027beff7544e85c4a423",
 						"name": "大",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 3.95,
+						"odds": 3.85,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "657ef6c0878e40f1263f935d55b66c8a",
+						"id": "d041452b59105a0bde0b2160eadfdbc1",
 						"name": "小",
 						"extInfo": null,
 						"spread": "2.5",
@@ -468,27 +468,27 @@
 					"typeCodes": "POPULAR,ALL,QATest",
 					"name": "独赢",
 					"odds": [{
-						"id": "f0f546666a478badaba52068a9fbdfb9",
-						"name": "埃森",
+						"id": "0b79afd0333741e9f2bbe1ac4b1690fe",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.5,
+						"odds": 2.09,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9f91e35b0d272c3888b3fd9569333369",
+						"id": "7c58a38a105f04a56bf0bf8fb0f4792d",
 						"name": "和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 3.85,
+						"odds": 3.55,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9b2a8e3ae3129a7ea7accfbd7a52ec2e",
-						"name": "杜塞尔多夫",
+						"id": "6be2c1853feb0592bc42ccc3b442904b",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.76,
+						"odds": 3.45,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -497,27 +497,27 @@
 					"typeCodes": "POPULAR,ALL,1ST",
 					"name": "独赢-上半场",
 					"odds": [{
-						"id": "36aaef1272ae9766c8d18e8619d016b2",
-						"name": "埃森",
+						"id": "2925a3812982a9975fe9f9a4f4216efb",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.8,
+						"odds": 2.65,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ad04f6a1c24ba8f9370d6db6d1cc7abd",
+						"id": "ec634a39482ed94b4ed0dbb7fcb68b27",
 						"name": "和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.42,
+						"odds": 2.38,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0fe4af415abb0014446537fc07ecc9eb",
-						"name": "杜塞尔多夫",
+						"id": "ab8abb2b4d20cdcc70ed83aa451c4bc3",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.32,
+						"odds": 3.95,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -526,27 +526,27 @@
 					"typeCodes": "ALL",
 					"name": "独赢-下半场",
 					"odds": [{
-						"id": "2ea52e960909360ca6157d352d98e3cd",
-						"name": "埃森",
+						"id": "2a83f7549570832bbb9ef1936937d43f",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.4,
+						"odds": 2.42,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5252d37117950fdff0995c94f0f31642",
+						"id": "7591004d17c2115ce00182b558e4ec9d",
 						"name": "和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.85,
+						"odds": 2.8,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "c52b3e01d7b6201dff19c2d644046536",
-						"name": "杜塞尔多夫",
+						"id": "cdb1b5bc41842f6f30e12afcb7db5349",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.1,
+						"odds": 3.6,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -555,79 +555,79 @@
 					"typeCodes": "POPULAR,ALL,GOAL,QATest",
 					"name": "波胆",
 					"odds": [{
-						"id": "55088d7d73e3bb0abefcbf539001b2e3",
+						"id": "6f8a3e77596b6a69961cf18de4297c2b",
 						"name": "1 - 0",
+						"extInfo": null,
+						"spread": null,
+						"odds": 12.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8c281e89cbd22c04687892de2cc8a289",
+						"name": "2 - 1",
+						"extInfo": null,
+						"spread": null,
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8a0b809791dbed0b1494c5c53dd7380a",
+						"name": "3 - 1",
 						"extInfo": null,
 						"spread": null,
 						"odds": 18.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "a125259b077bb762e22e38bee1b5949a",
-						"name": "2 - 1",
-						"extInfo": null,
-						"spread": null,
-						"odds": 17.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "fca527e1355385bc860fbb594f8af439",
-						"name": "3 - 1",
-						"extInfo": null,
-						"spread": null,
-						"odds": 50.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "fcae6dd2eaeed5ef26814736de43f97d",
+						"id": "18dcb5ccb2b1b38c28942bb973120bee",
 						"name": "4 - 0",
 						"extInfo": null,
 						"spread": null,
-						"odds": 101.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "d7ea2a6266ccfcf9f5719b21ec591dbb",
-						"name": "4 - 2",
-						"extInfo": null,
-						"spread": null,
-						"odds": 101.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "8a1ca56e91f458da85df9548ae073087",
-						"name": "2 - 0",
-						"extInfo": null,
-						"spread": null,
-						"odds": 35.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "83ffeeff91333dfbe7aab536a60be6af",
-						"name": "3 - 0",
-						"extInfo": null,
-						"spread": null,
-						"odds": 90.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "58b3b98e208b0953e02252377234324d",
-						"name": "3 - 2",
-						"extInfo": null,
-						"spread": null,
 						"odds": 50.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "519beb987ba7814e1b08e67f04d19570",
-						"name": "4 - 1",
+						"id": "7c0d1dd622bd23d8c2220400f3d7bb24",
+						"name": "4 - 2",
 						"extInfo": null,
 						"spread": null,
-						"odds": 101.0,
+						"odds": 70.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3ef4380c6e13ab4249225941b7ad9a95",
+						"id": "453519d5936cec5ad1202b0f9f5de3dc",
+						"name": "2 - 0",
+						"extInfo": null,
+						"spread": null,
+						"odds": 13.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "efbb5f489704090ef65c0087494e47ac",
+						"name": "3 - 0",
+						"extInfo": null,
+						"spread": null,
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "ab8aa618f7cace00e077cf3085fefc82",
+						"name": "3 - 2",
+						"extInfo": null,
+						"spread": null,
+						"odds": 29.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8d244767ed0b63fc93daa6b7e9f0ddfb",
+						"name": "4 - 1",
+						"extInfo": null,
+						"spread": null,
+						"odds": 45.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "66212f84f0581883a343f2db90076aac",
 						"name": "4 - 3",
 						"extInfo": null,
 						"spread": null,
@@ -635,7 +635,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "e6e25de3f8f14b4c5cb7e65b1ed33393",
+						"id": "3571b215ab803ad8eba77fe1ae50bbda",
 						"name": "0 - 0",
 						"extInfo": null,
 						"spread": null,
@@ -643,31 +643,31 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "8108a572aaf5109a4fd85c08bf0ad8c7",
+						"id": "ab2a01e8d284b7910a641add405352fc",
 						"name": "1 - 1",
 						"extInfo": null,
 						"spread": null,
-						"odds": 8.4,
+						"odds": 7.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "757fc2b807f01f1663a67ea0972fdc33",
+						"id": "9902e48182dfea40794b3f0a650fdacf",
 						"name": "2 - 2",
 						"extInfo": null,
 						"spread": null,
-						"odds": 16.0,
+						"odds": 14.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "baf45a53be9dd300afe1a74433901637",
+						"id": "578be01f3052686544b961847356be6b",
 						"name": "3 - 3",
 						"extInfo": null,
 						"spread": null,
-						"odds": 70.0,
+						"odds": 60.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "adc3c0de057aec91ca05ea85b1b32668",
+						"id": "e353d36469d70f1e56f7ae26acb64565",
 						"name": "4 - 4",
 						"extInfo": null,
 						"spread": null,
@@ -675,79 +675,79 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "bca098d6aa0fd065b25068048462a7b3",
+						"id": "7af5f43925f975488ec4d8cd13e5e719",
 						"name": "0 - 1",
-						"extInfo": null,
-						"spread": null,
-						"odds": 10.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "6bcdc0ee28bb3b15651a2d8d304bb18f",
-						"name": "1 - 2",
-						"extInfo": null,
-						"spread": null,
-						"odds": 10.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "d7661aba283008b500bcf6dccd388b7c",
-						"name": "1 - 3",
 						"extInfo": null,
 						"spread": null,
 						"odds": 16.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "21478f30f80b9b72205ef6f847b5724f",
-						"name": "0 - 4",
+						"id": "79654965c413c1cfd5d210a0377da53f",
+						"name": "1 - 2",
+						"extInfo": null,
+						"spread": null,
+						"odds": 14.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "5a45fb024245db3522d5d3b1d37792c3",
+						"name": "1 - 3",
 						"extInfo": null,
 						"spread": null,
 						"odds": 35.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "df64e8517d8f90d68e2ed7bce642cc32",
+						"id": "b4c39aedbdcea332742e36d272000c8e",
+						"name": "0 - 4",
+						"extInfo": null,
+						"spread": null,
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "59e5622a78aa1e6c0bb81aad00e6abc4",
 						"name": "2 - 4",
+						"extInfo": null,
+						"spread": null,
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e09a85e18df4cd32ce043e74dc1fb8dc",
+						"name": "0 - 2",
+						"extInfo": null,
+						"spread": null,
+						"odds": 24.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "6b253c3188cd88ea6cebd71211768db9",
+						"name": "0 - 3",
 						"extInfo": null,
 						"spread": null,
 						"odds": 60.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d385ecb293bf0e8260828ca66504bdef",
-						"name": "0 - 2",
-						"extInfo": null,
-						"spread": null,
-						"odds": 11.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "cd9f3cabf29af755913101651795fd16",
-						"name": "0 - 3",
-						"extInfo": null,
-						"spread": null,
-						"odds": 17.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "581b063f1804bb227ca44f263b0e017e",
+						"id": "0b7a2f419ab08a5707d22723833c073d",
 						"name": "2 - 3",
 						"extInfo": null,
 						"spread": null,
-						"odds": 29.0,
+						"odds": 40.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0774974bd0c724583dbba02e5bf9c920",
+						"id": "5b203e8afeef86bfcac2653cd64a3a01",
 						"name": "1 - 4",
 						"extInfo": null,
 						"spread": null,
-						"odds": 35.0,
+						"odds": 101.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0a2500056aa645971555fddd8b1a11a9",
+						"id": "c7267292547e4c293858c70649e9a746",
 						"name": "3 - 4",
 						"extInfo": null,
 						"spread": null,
@@ -755,11 +755,11 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ab668548294a4b7a5a84e0d927cf4457",
+						"id": "9fb9d11efd6d920107bd1c32e3143fb4",
 						"name": "其他比分",
 						"extInfo": null,
 						"spread": null,
-						"odds": 21.0,
+						"odds": 25.0,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -768,31 +768,31 @@
 					"typeCodes": "POPULAR,ALL,1ST",
 					"name": "波胆-上半场",
 					"odds": [{
-						"id": "0ac49dcf32d2dcf96a50faf9104d3f6f",
+						"id": "45fd16c752eed5ab7498f7fbfe1c9d0a",
 						"name": "1 - 0",
 						"extInfo": null,
 						"spread": null,
-						"odds": 7.4,
+						"odds": 4.7,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "204f8ac50b17f17f80c9869900f783f8",
+						"id": "96a87ae48016b31d309b3a859634497e",
 						"name": "2 - 1",
 						"extInfo": null,
 						"spread": null,
-						"odds": 40.0,
+						"odds": 22.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "7041984b8706125174c0f58dbfa6d65e",
+						"id": "485e57ff5035776a2ac8f95012c197f5",
 						"name": "2 - 0",
 						"extInfo": null,
 						"spread": null,
-						"odds": 30.0,
+						"odds": 13.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "a5a053852ba66ea7d554bb076a984b15",
+						"id": "d757058084d6377a661bebcebb16ae1e",
 						"name": "0 - 0",
 						"extInfo": null,
 						"spread": null,
@@ -800,51 +800,51 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "636cd02686e1147c5369d659b37b681c",
+						"id": "2d8b62c80fd6ca117e1f858b3a9c3453",
 						"name": "1 - 1",
 						"extInfo": null,
 						"spread": null,
-						"odds": 9.0,
+						"odds": 8.4,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "f05a5d2b6fe823a23846014aac934275",
+						"id": "b01cbb13b26facd792fd3955c6fe31fe",
 						"name": "2 - 2",
 						"extInfo": null,
 						"spread": null,
-						"odds": 90.0,
+						"odds": 80.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "22ad63c867835338e16efd57bf0514dc",
+						"id": "66e337b1e30faa37308d057e20ad4174",
 						"name": "0 - 1",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.2,
+						"odds": 6.4,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3271483d57756d8e775cc0ea9128aeab",
+						"id": "c7e2f245be74b4d54db322826558b0b3",
 						"name": "1 - 2",
 						"extInfo": null,
 						"spread": null,
-						"odds": 22.0,
+						"odds": 30.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "1f2cfb0b1e4c68465f42b04c195cb406",
+						"id": "f3ab0f2717336283b3a0e092aa9cd3cf",
 						"name": "0 - 2",
 						"extInfo": null,
 						"spread": null,
-						"odds": 10.0,
+						"odds": 23.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "38b03ec996c30a3c4ca8e06911e32c97",
+						"id": "40859c90d1770350a442043ea51f6d0f",
 						"name": "其他比分",
 						"extInfo": null,
 						"spread": null,
-						"odds": 15.0,
+						"odds": 16.0,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -853,83 +853,83 @@
 					"typeCodes": "ALL,GOAL",
 					"name": "波胆-下半场",
 					"odds": [{
-						"id": "c2367daa18b20337c4f9bff74701fa4e",
+						"id": "3846878da8789a09b73d48a69f109a9e",
 						"name": "1 - 0",
 						"extInfo": null,
 						"spread": null,
-						"odds": 8.0,
+						"odds": 5.4,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ed7834194f257c13f537a9af651c67d2",
+						"id": "73e3d19f67acc315d2610433e4777a13",
 						"name": "2 - 1",
-						"extInfo": null,
-						"spread": null,
-						"odds": 26.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "543094dcf33041fa9e2b9dde6e4aa2e4",
-						"name": "2 - 0",
-						"extInfo": null,
-						"spread": null,
-						"odds": 26.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "faab0d42a5cd1bb7c9dd81b4e65797ab",
-						"name": "0 - 0",
-						"extInfo": null,
-						"spread": null,
-						"odds": 5.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "762074e70257c2d6cc397d18d3d85af9",
-						"name": "1 - 1",
-						"extInfo": null,
-						"spread": null,
-						"odds": 7.6,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "3fc669a6b6494ebbdb726a180b2bcdf4",
-						"name": "2 - 2",
-						"extInfo": null,
-						"spread": null,
-						"odds": 50.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "a74d8343ae12cf706ee06dd48d1212c5",
-						"name": "0 - 1",
-						"extInfo": null,
-						"spread": null,
-						"odds": 4.8,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "455be428f822dd3751684571e371a335",
-						"name": "1 - 2",
 						"extInfo": null,
 						"spread": null,
 						"odds": 15.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "f7c786234c86d8d3a9d83ca4ea37de24",
-						"name": "0 - 2",
+						"id": "7c2b7545f30c163eb60a2d329aacbc1d",
+						"name": "2 - 0",
 						"extInfo": null,
 						"spread": null,
-						"odds": 8.8,
+						"odds": 11.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "e2d3018177f72ca6cd44553909904b32",
+						"id": "47a405754c887627af55125e06eb68db",
+						"name": "0 - 0",
+						"extInfo": null,
+						"spread": null,
+						"odds": 5.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "42614b4bc514ef484929f6dea12b7bda",
+						"name": "1 - 1",
+						"extInfo": null,
+						"spread": null,
+						"odds": 7.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "aa37d0063cd4f0bbffc14194a9bb2ebe",
+						"name": "2 - 2",
+						"extInfo": null,
+						"spread": null,
+						"odds": 45.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "2e48935d58a420b961caacb336fe7543",
+						"name": "0 - 1",
+						"extInfo": null,
+						"spread": null,
+						"odds": 7.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "26b00e8c503de973d75c665106932f4f",
+						"name": "1 - 2",
+						"extInfo": null,
+						"spread": null,
+						"odds": 20.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e79da9931d78defeca8305e5b502ebeb",
+						"name": "0 - 2",
+						"extInfo": null,
+						"spread": null,
+						"odds": 19.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "74785071b53ac18f4dfdcc0209d69ea0",
 						"name": "其他比分",
 						"extInfo": null,
 						"spread": null,
-						"odds": 8.8,
+						"odds": 9.2,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -938,35 +938,35 @@
 					"typeCodes": "POPULAR,ALL,GOAL,QATest",
 					"name": "总进球数",
 					"odds": [{
-						"id": "50e3f8a37d195be1a695246b32a7ddde",
+						"id": "28b4d8b28d71a502945a023d043e610a",
 						"name": "0-1",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.6,
+						"odds": 4.7,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "504d630b49c7fca42f507751cf49330c",
+						"id": "45705b4ab13c2c2d82855df7e7e12129",
 						"name": "2-3",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.13,
+						"odds": 2.14,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "1f976b77d4fca4b2dd7cde1d75afc09a",
+						"id": "a31e7accc7856cd314c84711fc4c5fd7",
 						"name": "4-6",
 						"extInfo": null,
 						"spread": null,
-						"odds": 3.05,
+						"odds": 3.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "82cbcfa9d37ab394b0ffe3ed3e291ce8",
+						"id": "9f5766b1fb32a943270e89ebdc8ea20e",
 						"name": "7或以上",
 						"extInfo": null,
 						"spread": null,
-						"odds": 30.0,
+						"odds": 29.0,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -975,7 +975,7 @@
 					"typeCodes": "POPULAR,ALL,GOAL,1ST",
 					"name": "总进球数-上半场",
 					"odds": [{
-						"id": "ec9cdd5016844b3117aa8ed2c6bb2400",
+						"id": "8ff81d820770f11ffa777a661d1308cf",
 						"name": "0",
 						"extInfo": null,
 						"spread": null,
@@ -983,27 +983,27 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "43cac4da70a73a2953540a81aa809455",
+						"id": "3c7e81a005b9c947d2dbec6d331c3364",
 						"name": "1",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.7,
+						"odds": 2.75,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "1e85a37ccfd804833ce093dce1740da2",
+						"id": "17cd317b91b8e69d11913fbddb498a8e",
 						"name": "2",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.2,
+						"odds": 4.1,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "87a73eb894c0a8bd49080fcfc777b77d",
+						"id": "be7645406d1cdd238294c79c5784969c",
 						"name": "3或以上",
 						"extInfo": null,
 						"spread": null,
-						"odds": 6.8,
+						"odds": 6.6,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1012,19 +1012,19 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "双方球队进球",
 					"odds": [{
-						"id": "fe88666817bb8d325f36bc3d731a3cec",
+						"id": "3961164bdffc923004296081e501566e",
 						"name": "是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.7,
+						"odds": 1.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0283ba8bb66507129301bd8e7896a7de",
+						"id": "f42fa5b8f938fb122ce5bdab74a77ac5",
 						"name": "否",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.16,
+						"odds": 2.35,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1033,19 +1033,19 @@
 					"typeCodes": "ALL,GOAL",
 					"name": "双方球队进球-下半场",
 					"odds": [{
-						"id": "c22b1d0b6112d5dc9c54c12398507cea",
+						"id": "158b6ba8184ef0467ee56283dab5000a",
 						"name": "是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 3.1,
+						"odds": 2.9,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0cbdc5b891c5a5b567590baddea38115",
+						"id": "6308a997ef60213be5c4e0fe7988e92d",
 						"name": "否",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.37,
+						"odds": 1.41,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1054,145 +1054,145 @@
 					"typeCodes": "ALL,GOAL",
 					"name": "双方球队进球-上半场",
 					"odds": [{
-						"id": "8acae0f16d6003ea1f15a2b35685b63e",
+						"id": "7ee2c3741d038cd5ac8d267ef065cdb7",
 						"name": "是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.3,
+						"odds": 4.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "1ba9898ed95eb0201f9d1a08dca804c0",
+						"id": "2d9184bf49605312f77de8bc08033def",
 						"name": "否",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.23,
+						"odds": 1.25,
 						"status": 0,
 						"producerId": 3
 					}]
 				},
 				"TG&O/U-H:1.5": {
 					"typeCodes": "POPULAR,ALL,GOAL",
-					"name": "球队进球数&大/小-埃森",
+					"name": "球队进球数&大/小-费内巴切",
 					"odds": [{
-						"id": "4f4574e1abfafc94dbe998a3192d9139",
+						"id": "0c417ba714bf15f6cb4a33e988480010",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 3.15,
+						"odds": 1.89,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "58c0e11c98a5a2c75d70cf7b042975ce",
+						"id": "9a14847a8bcd6e0459b45b9389fa73a3",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 1.36,
+						"odds": 1.92,
 						"status": 0,
 						"producerId": 3
 					}]
 				},
 				"TG&O/U-C:1.5": {
 					"typeCodes": "POPULAR,ALL,GOAL",
-					"name": "球队进球数&大/小-杜塞尔多夫",
+					"name": "球队进球数&大/小-阿兰尼亚体育",
 					"odds": [{
-						"id": "ddf92f0368f255e3121796ef325447be",
+						"id": "fad191a90b88f1f648aaed1c95f41f9f",
 						"name": "大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 1.72,
+						"odds": 2.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "646251742e1db5552b0a3be694cc6fed",
+						"id": "0b9720b51569c4b649d941a8887e6d8d",
 						"name": "小",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 2.13,
+						"odds": 1.51,
 						"status": 0,
 						"producerId": 3
 					}]
 				},
 				"TG&O/U-H-1ST:0.5": {
 					"typeCodes": "POPULAR,ALL,HDP&OU,GOAL,1ST",
-					"name": "球队进球数&大/小-埃森-上半场",
+					"name": "球队进球数&大/小-费内巴切-上半场",
 					"odds": [{
-						"id": "0e2c0e0468ff46195d8acf665409c774",
+						"id": "d140e22bee014312a29c86b6d7f3ec5d",
 						"name": "大",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 2.5,
+						"odds": 1.82,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9e336e763f1b83b046a1060d874bd1b9",
+						"id": "9c3a5f545947491f496fa0d1a1a5ca9d",
 						"name": "小",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 1.53,
+						"odds": 1.99,
 						"status": 0,
 						"producerId": 3
 					}]
 				},
 				"TG&O/U-H-2ST:0.5": {
 					"typeCodes": "ALL,HDP&OU,GOAL",
-					"name": "球队进球数&大/小-埃森-下半场",
+					"name": "球队进球数&大/小-费内巴切-下半场",
 					"odds": [{
-						"id": "8ea2367a50288310ee23171d2110a574",
+						"id": "0939bf1b43da9af634fb16052d9a2fc9",
 						"name": "大",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 2.08,
+						"odds": 1.56,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "920e331f3cd8a4ba3240e6f0e537656e",
+						"id": "516cb22efed4ce525dcf233497dfd55f",
 						"name": "小",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 1.76,
+						"odds": 2.46,
 						"status": 0,
 						"producerId": 3
 					}]
 				},
 				"TG&O/U-C-1ST:0.5": {
 					"typeCodes": "POPULAR,ALL,HDP&OU,GOAL,1ST",
-					"name": "球队进球数&大/小-杜塞尔多夫-上半场",
+					"name": "球队进球数&大/小-阿兰尼亚体育-上半场",
 					"odds": [{
-						"id": "81f5b6030ef25fc85d1edee7ddee1636",
+						"id": "7738829671c64a859b224c8358fef72f",
 						"name": "大",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 1.71,
+						"odds": 2.23,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "cf044c8d541f4b55cd31d13185f5f103",
+						"id": "2fe7343e2e3a3ab3b7e23db77bf8a609",
 						"name": "小",
 						"extInfo": null,
 						"spread": "0.5",
-						"odds": 2.15,
+						"odds": 1.66,
 						"status": 0,
 						"producerId": 3
 					}]
 				},
-				"TG&O/U-C-2ST:1.5": {
+				"TG&O/U-C-2ST:0.5": {
 					"typeCodes": "ALL,HDP&OU,GOAL",
-					"name": "球队进球数&大/小-杜塞尔多夫-下半场",
+					"name": "球队进球数&大/小-阿兰尼亚体育-下半场",
 					"odds": [{
-						"id": "6786ed4959027d34cf6507543778d5aa",
+						"id": "4ffc2969f1623bf7a9a5c1ec01f769c1",
 						"name": "大",
 						"extInfo": null,
-						"spread": "1.5",
-						"odds": 3.25,
+						"spread": "0.5",
+						"odds": 1.85,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0c94a0d2aaeba4e60c1296354cf5fa65",
+						"id": "58c4941e272ec8aa88257720511a5ad2",
 						"name": "小",
 						"extInfo": null,
-						"spread": "1.5",
-						"odds": 1.35,
+						"spread": "0.5",
+						"odds": 1.96,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1201,19 +1201,19 @@
 					"typeCodes": "POPULAR,ALL,GOAL,QATest",
 					"name": "单/双",
 					"odds": [{
-						"id": "11f692e1d34bc49b3115aaa2609e2181",
+						"id": "9f89d628bfc1e1ae8fc3cd0e5deca2c3",
 						"name": "单",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.96,
+						"odds": 1.99,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d4a28fd41bcd38a1584bd311b62ab51b",
+						"id": "83d0f6c2f80683115e9195ca98b2ee8a",
 						"name": "双",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.85,
+						"odds": 1.83,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1222,15 +1222,15 @@
 					"typeCodes": "POPULAR,ALL,GOAL,1ST",
 					"name": "单/双-上半场",
 					"odds": [{
-						"id": "44fde8d434610f5eb15a031679ea8f09",
+						"id": "d4aa39047d0bded52290e40444241db7",
 						"name": "单",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.06,
+						"odds": 2.07,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9a107049cbb5ad7818f915772c0ca82d",
+						"id": "6e7bfd86dd69d727006a9d537eee65e4",
 						"name": "双",
 						"extInfo": null,
 						"spread": null,
@@ -1243,7 +1243,7 @@
 					"typeCodes": "ALL,GOAL",
 					"name": "单/双-下半场",
 					"odds": [{
-						"id": "a961af9619f418fbbd0c5a68bac58cee",
+						"id": "0a90f2bb5883625a4b012c55a107abd5",
 						"name": "单",
 						"extInfo": null,
 						"spread": null,
@@ -1251,7 +1251,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "54a226cad1cc56e51f81b77e06c83989",
+						"id": "3f83988e5c0ad123753431c6ec6294a6",
 						"name": "双",
 						"extInfo": null,
 						"spread": null,
@@ -1264,75 +1264,75 @@
 					"typeCodes": "POPULAR,ALL",
 					"name": "半场 / 全场",
 					"odds": [{
-						"id": "2ae826f116894f8a3a90ceddbc5e3964",
-						"name": "埃森/埃森",
+						"id": "8f0f30a00d864ca4562e88c7773ae290",
+						"name": "费内巴切/费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 8.6,
+						"odds": 3.45,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d0a2dc00f0b9643e343cea684039a0eb",
-						"name": "埃森/和局",
+						"id": "867047739fb3c424d582191f8f8a1d59",
+						"name": "费内巴切/和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 19.0,
+						"odds": 16.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3905e89f62071c2fadcc73a8e1348306",
-						"name": "埃森/杜塞尔多夫",
+						"id": "b1785ee9ef2314bbdca615dc3a16e146",
+						"name": "费内巴切/阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 29.0,
+						"odds": 45.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "eb0bc04daa469957bcf2780ac69d5a24",
-						"name": "和局/埃森",
+						"id": "de035e59028a1252b90114637576ad90",
+						"name": "和局/费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 12.0,
+						"odds": 6.2,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ac4fbcd7433a5602b0c3e6445a8014cf",
+						"id": "d643382f2b2cf6f836169693cc800249",
 						"name": "和局/和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 6.8,
+						"odds": 6.4,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5868e7854824e4d162c39233e1844cc0",
-						"name": "和局/杜塞尔多夫",
+						"id": "972b51cda13f92042e454a84ede74ea1",
+						"name": "和局/阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 5.4,
+						"odds": 9.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d288ef60be31e8d6407a1986986ea8f3",
-						"name": "杜塞尔多夫/埃森",
+						"id": "20050fb4d3f9975252a7b2c3c3cb00c0",
+						"name": "阿兰尼亚体育/费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 60.0,
+						"odds": 30.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "f58ecf7d62ea65940564c5f0733cce2f",
-						"name": "杜塞尔多夫/和局",
+						"id": "a055d4ac700d0ac72221ccd858427a3f",
+						"name": "阿兰尼亚体育/和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 18.0,
+						"odds": 16.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "a4006167e89509f348730f2cbef16469",
-						"name": "杜塞尔多夫/杜塞尔多夫",
+						"id": "3d7925b3b8c62ff3c82f456c86f2a7de",
+						"name": "阿兰尼亚体育/阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.8,
+						"odds": 6.4,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1341,59 +1341,59 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "净胜球数",
 					"odds": [{
-						"id": "d62a2b778f2ca5c3f1cb468b5f0d04d6",
-						"name": "埃森-净胜1球",
+						"id": "1e938dc5fedda445101e826a22912436",
+						"name": "费内巴切-净胜1球",
 						"extInfo": null,
 						"spread": null,
-						"odds": 7.2,
+						"odds": 4.5,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "a00c76a26da2b3c3734b5bc4581f2949",
-						"name": "埃森-净胜2球",
+						"id": "ba4abd80b50462b216ba92d1d3e1b41e",
+						"name": "费内巴切-净胜2球",
 						"extInfo": null,
 						"spread": null,
-						"odds": 17.0,
+						"odds": 6.8,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "bc7b923d9fa81652acfe8f8a47f4f6f8",
-						"name": "埃森-净胜3球或更多",
+						"id": "ad1e367cf184849234648536e58e8595",
+						"name": "费内巴切-净胜3球或更多",
 						"extInfo": null,
 						"spread": null,
-						"odds": 45.0,
+						"odds": 8.8,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "24a6723ff606fc03d4befa8ab914f920",
+						"id": "1d6acf6787eb60bb8c5435ed1f6bec80",
 						"name": "和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 3.9,
+						"odds": 3.55,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "8d9f671345042e793363f70dae24d29a",
-						"name": "杜塞尔多夫-净胜1球",
+						"id": "2e48347a6b9e4d29da95b9a06e624cff",
+						"name": "阿兰尼亚体育-净胜1球",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.1,
+						"odds": 6.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "48a15d82730c1bfb22650792e2df402b",
-						"name": "杜塞尔多夫-净胜2球",
+						"id": "530485f467fa6896900f9f5191929510",
+						"name": "阿兰尼亚体育-净胜2球",
 						"extInfo": null,
 						"spread": null,
-						"odds": 5.6,
+						"odds": 12.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "69ba6a0ed1f2bbda5eb6e928d276acf2",
-						"name": "杜塞尔多夫-净胜3球或更多",
+						"id": "7b2b73415938ec98e4443741c0513514",
+						"name": "阿兰尼亚体育-净胜3球或更多",
 						"extInfo": null,
 						"spread": null,
-						"odds": 6.4,
+						"odds": 25.0,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1402,27 +1402,27 @@
 					"typeCodes": "POPULAR,ALL",
 					"name": "双重机会",
 					"odds": [{
-						"id": "a82e9ba617e595e05d5a12a059a98c47",
-						"name": "埃森/和局",
+						"id": "639b6d612e6743e06aaef49d423d4b81",
+						"name": "费内巴切/和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.12,
+						"odds": 1.35,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "8f9ccdacc9ae90396e66d8a4ccd92e38",
-						"name": "杜塞尔多夫/和局",
+						"id": "6d8c6fcdaee1a72f09eb58ee06ee2860",
+						"name": "阿兰尼亚体育/和局",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.24,
+						"odds": 1.79,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5ca94fa2cfc354d595bee01174a2a401",
-						"name": "埃森/杜塞尔多夫",
+						"id": "dcd641c66722e1c2cac818b5e7c5d944",
+						"name": "费内巴切/阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.3,
+						"odds": 1.34,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1431,99 +1431,1234 @@
 					"typeCodes": "ALL",
 					"name": "三项让球",
 					"odds": [{
-						"id": "112ab0d10a2dc3d86245d2b6e3bead26",
-						"name": "埃森",
+						"id": "84454788301bda4263d777419e8127d1",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "+1",
+						"odds": 1.33,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "05e656ab2c9876981c4bac7312909518",
+						"name": "和局",
+						"extInfo": null,
+						"spread": "+1",
+						"odds": 5.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "33ccb262c91aabf0ea193834b4e1b905",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": "-1",
+						"odds": 7.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "2a3b9cea616596d7bde74cd55ae3a191",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "-2",
+						"odds": 8.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f460161280880af36a90d686ce8e5070",
+						"name": "和局",
+						"extInfo": null,
+						"spread": "-2",
+						"odds": 6.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "2caa248d1c0404482a05ccfc8ff9964d",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+2",
+						"odds": 1.29,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "0e1e16801a83f9635652fe3f2f88774c",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "-1",
+						"odds": 3.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "227880f6dceab20a40fc63eba7c2976d",
+						"name": "和局",
+						"extInfo": null,
+						"spread": "-1",
+						"odds": 4.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e099afc4a8621bebc5a316be569d7450",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "+1",
+						"odds": 1.78,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "aac6239f9dcd929cd7485eaf7c65b404",
+						"name": "费内巴切",
+						"extInfo": null,
+						"spread": "+2",
+						"odds": 1.1,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f130bb4f4ae8dba66868d64929b79a92",
+						"name": "和局",
+						"extInfo": null,
+						"spread": "+2",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e08c5fe542275c95cfdb1439a834f410",
+						"name": "阿兰尼亚体育",
+						"extInfo": null,
+						"spread": "-2",
+						"odds": 21.0,
+						"status": 0,
+						"producerId": 3
+					}]
+				},
+				"SCO-1ST": {
+					"typeCodes": "POPULAR,ALL,GOAL",
+					"name": "最先进球球员",
+					"odds": [{
+						"id": "586254935912c0d6aab553e43a478ff1",
+						"name": "西塞, 帕皮斯-登巴",
+						"extInfo": "H",
+						"spread": "sr:player:8978",
+						"odds": 8.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e0878e0ffa649eeced0b1c2a8b4a8416",
+						"name": "Ademi, Kemal",
+						"extInfo": "H",
+						"spread": "sr:player:868802",
+						"odds": 8.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b9780576f3e07ea56dc016e2f1805522",
+						"name": "Thiam, Mame",
+						"extInfo": "H",
+						"spread": "sr:player:180981",
+						"odds": 8.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "9ad98b408eb889d02d8f62ec48ebf56f",
+						"name": "萨马塔，姆博瓦那",
+						"extInfo": "H",
+						"spread": "sr:player:199810",
+						"odds": 8.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "1d3514e193d087c2e4bce6c04eeb3a61",
+						"name": "戴維森",
+						"extInfo": "C",
+						"spread": "sr:player:902400",
+						"odds": 9.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "89bf9417dc67bf396f7de923dbcf6223",
+						"name": "扬达什，梅尔特",
+						"extInfo": "H",
+						"spread": "sr:player:909978",
+						"odds": 9.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8b73cc4e43bb4396a50860887aa9b3bd",
+						"name": "佩罗蒂, 迭戈",
+						"extInfo": "H",
+						"spread": "sr:player:47171",
+						"odds": 9.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "7ce0bbb2a738c5877bd9f5a4b61e8892",
+						"name": "Bareiro, Adam",
+						"extInfo": "C",
+						"spread": "sr:player:1101471",
+						"odds": 9.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "7e0156f468c34df166c15e73841a614c",
+						"name": "巴巴卡尔, 埃尔-库玛",
+						"extInfo": "C",
+						"spread": "sr:player:88697",
+						"odds": 10.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "9d55c97c642ed5a40fdd3f07a8605b7f",
+						"name": "瓦伦西亚, 恩纳",
+						"extInfo": "H",
+						"spread": "sr:player:106456",
+						"odds": 10.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8bc95aa5aa35b46a34ce60d78781803d",
+						"name": "季米特里斯,佩尔卡斯",
+						"extInfo": "H",
+						"spread": "sr:player:139304",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "bbd5d116d6eca5f93c13f3e178e06399",
+						"name": "伽马斯，希南",
+						"extInfo": "H",
+						"spread": "sr:player:169165",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "c6da0d163a6cc7561615a240afd7e360",
+						"name": "索萨, 何塞",
+						"extInfo": "H",
+						"spread": "sr:player:22981",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8fcfee573a7ef11bd66d68a715efea64",
+						"name": "佩克特梅克, 穆斯塔法",
+						"extInfo": "C",
+						"spread": "sr:player:43643",
 						"odds": 12.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d5f3728830908bb9af8000088d83142a",
-						"name": "和局",
-						"extInfo": null,
-						"spread": "-1",
-						"odds": 6.8,
+						"id": "eef849dd94185a84bfc81a28c5318f5a",
+						"name": "巴卡塞塔斯, 阿纳斯塔西奥斯",
+						"extInfo": "C",
+						"spread": "sr:player:114076",
+						"odds": 12.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0d5601425bbadec8b3ad65a59205d0f9",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "+1",
-						"odds": 1.23,
+						"id": "e7d31347d63fce1b23951d89bd80dd1f",
+						"name": "卡迪奥格鲁, 费尔迪",
+						"extInfo": "H",
+						"spread": "sr:player:934224",
+						"odds": 12.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "4ee0fad616221ed1463ee49c96143ad5",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+1",
-						"odds": 2.13,
+						"id": "551d1dd11a485108f906208a30b8df18",
+						"name": "奥赞, 土番",
+						"extInfo": "H",
+						"spread": "sr:player:251907",
+						"odds": 12.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "230f641ed837646eab3292c5fb024810",
-						"name": "和局",
-						"extInfo": null,
-						"spread": "+1",
-						"odds": 4.1,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "cb52eb5d45ab0c446f852a7b789e5cf9",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "-1",
-						"odds": 3.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "de0cdabdedc5cc0f2c09cd9902a942bd",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "-2",
-						"odds": 35.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "d78202a2437412f8f6a80f88a5411ad8",
-						"name": "和局",
-						"extInfo": null,
-						"spread": "-2",
+						"id": "99f397cfb6a0d2e03c166cb12d85b1ae",
+						"name": "Gunes, Umut",
+						"extInfo": "C",
+						"spread": "sr:player:1117889",
 						"odds": 13.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "00ba9a1e5f5f7152b6241180332a7f2a",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "+2",
-						"odds": 1.06,
+						"id": "ef944b47591ed9733ed97da60075d42f",
+						"name": "Bekiroglu, Efkan",
+						"extInfo": "C",
+						"spread": "sr:player:576416",
+						"odds": 15.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "29ba79fbc2e798eb47d1a877ebdc396c",
-						"name": "埃森",
-						"extInfo": null,
-						"spread": "+2",
-						"odds": 1.42,
+						"id": "4c8b47d489cc1fc90ff4c5f888b7540e",
+						"name": "宾格尔，泰弗",
+						"extInfo": "C",
+						"spread": "sr:player:255957",
+						"odds": 16.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "b875ca7122db88fbb92442d9bc399553",
-						"name": "和局",
+						"id": "36c1e5d41d33b8020a3e08d3b872203b",
+						"name": "雅罗古鲁，哈桑",
+						"extInfo": "C",
+						"spread": "sr:player:227624",
+						"odds": 17.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "00b4eb25ea2f21fc683de11e8043f71b",
+						"name": "诺瓦克, 菲利普",
+						"extInfo": "H",
+						"spread": "sr:player:12194",
+						"odds": 20.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "14cf7e0666c64d1f00618ebcd411bd4d",
+						"name": "Kutlu, Berkan",
+						"extInfo": "C",
+						"spread": "sr:player:2047809",
+						"odds": 20.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "cb9b6aece9965393549e83084de6d508",
+						"name": "古斯塔沃, 鲁伊兹",
+						"extInfo": "H",
+						"spread": "sr:player:29735",
+						"odds": 21.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "9a7d7b188e4188233389d4aa973d5146",
+						"name": "迪拉尔, 纳比尔",
+						"extInfo": "H",
+						"spread": "sr:player:42102",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a2500ac46c637a80dd28ac6c1e3059e5",
+						"name": "卡拉加，艾菲坎",
+						"extInfo": "C",
+						"spread": "sr:player:60510",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "89d2619fcb3e866dcb158bb1d257e776",
+						"name": "西格尔奇, 托加",
+						"extInfo": "H",
+						"spread": "sr:player:120298",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f83cd4bcd7c352690a9c21c9b09edb35",
+						"name": "Beyaz, Omer",
+						"extInfo": "H",
+						"spread": "sr:player:1986039",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "5c540a78b75c362ac5fd3a9beabdb496",
+						"name": "古尔塞拉姆, 塞胡恩",
+						"extInfo": "C",
+						"spread": "sr:player:20747",
+						"odds": 25.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b2d8c02606af79e379bd96f2f6e4ed9a",
+						"name": "阿齐兹, 塞尔达",
+						"extInfo": "H",
+						"spread": "sr:player:43528",
+						"odds": 27.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f7968a520609461568db4fd347f60a6e",
+						"name": "桑加雷，纳齐姆",
+						"extInfo": "H",
+						"spread": "sr:player:169425",
+						"odds": 29.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a60c255e6d129cba73505b804b89ad1f",
+						"name": "乌坎, 萨利赫",
+						"extInfo": "C",
+						"spread": "sr:player:135695",
+						"odds": 30.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "64b2c1f5b2dc1510123f06dcfa4b5074",
+						"name": "戈努尔, 格克汉",
+						"extInfo": "H",
+						"spread": "sr:player:30137",
+						"odds": 35.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "add00e4b3dbc9fb6025f46e2e2b5c10f",
+						"name": "埃尔金, 卡内尔",
+						"extInfo": "H",
+						"spread": "sr:player:15680",
+						"odds": 40.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "88b160fb67b48451a0c61296a5adf8af",
+						"name": "查维拉斯, 乔治奥斯",
+						"extInfo": "C",
+						"spread": "sr:player:33000",
+						"odds": 45.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8008d199baa010f6af60c17fdd64833c",
+						"name": "马塞尔,蒂塞兰德",
+						"extInfo": "H",
+						"spread": "sr:player:338651",
+						"odds": 45.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "7c53cab652832f2594b6b53c40532b08",
+						"name": "考尔克, 斯蒂芬",
+						"extInfo": "C",
+						"spread": "sr:player:73685",
+						"odds": 50.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "fc367413e90bd52f48c83f709ba0aaea",
+						"name": "雅克,弗朗索瓦, 穆班杰",
+						"extInfo": "C",
+						"spread": "sr:player:106869",
+						"odds": 50.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "423739ccc508a9122e76ea02032619ef",
+						"name": "莱默斯, 毛里西奥",
+						"extInfo": "H",
+						"spread": "sr:player:385916",
+						"odds": 50.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "44341133053ae434c60efe3ce9a96367",
+						"name": "Alptekin, Cenk",
+						"extInfo": "H",
+						"spread": "sr:player:2031225",
+						"odds": 60.0,
+						"status": 1,
+						"producerId": 3
+					}, {
+						"id": "20cfefb264c77aac47c862fab4a563a5",
+						"name": "西夫特皮纳, 萨迪克",
+						"extInfo": "H",
+						"spread": "sr:player:111811",
+						"odds": 70.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a50511e220ce0aae38832c7779d71838",
+						"name": "阿克索伊，法提赫",
+						"extInfo": "C",
+						"spread": "sr:player:914518",
+						"odds": 70.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b4809a9e9b31f956f3614dacad6f4c1e",
+						"name": "胡安-弗朗西斯科-莫雷诺-弗尔特斯",
+						"extInfo": "C",
+						"spread": "sr:player:30745",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a552f300a71fca6d9fb4c27bfbf0284f",
+						"name": "马诺利斯",
+						"extInfo": "C",
+						"spread": "sr:player:136675",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "da135a4926606f90e2c962ff14c25663",
+						"name": "Gulay, Ahmet",
+						"extInfo": "C",
+						"spread": "sr:player:1986045",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a99b67c9b6c27b9b49fe48e9cbc93096",
+						"name": "塞莱比，阿尔法",
+						"extInfo": "C",
+						"spread": "sr:player:1057193",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}]
+				},
+				"SCO-LAST": {
+					"typeCodes": "POPULAR,ALL,GOAL",
+					"name": "最后进球球员",
+					"odds": [{
+						"id": "42da52beb1afc22e58955c325e30e53a",
+						"name": "无进球",
 						"extInfo": null,
-						"spread": "+2",
+						"spread": null,
+						"odds": 0.0,
+						"status": 1,
+						"producerId": 3
+					}, {
+						"id": "e652bd79c54b6187d3de16c9072e46de",
+						"name": "西塞, 帕皮斯-登巴",
+						"extInfo": "H",
+						"spread": "sr:player:8978",
+						"odds": 8.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "970586b0abebe060e0c073a42bdb027e",
+						"name": "Thiam, Mame",
+						"extInfo": "H",
+						"spread": "sr:player:180981",
+						"odds": 8.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "cbe80b12802ad01cc6f26a1ce7f96544",
+						"name": "Ademi, Kemal",
+						"extInfo": "H",
+						"spread": "sr:player:868802",
+						"odds": 8.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "d60e5c3df5d8910f1ca2f2cd54c2ce7a",
+						"name": "萨马塔，姆博瓦那",
+						"extInfo": "H",
+						"spread": "sr:player:199810",
+						"odds": 8.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "0ebc39a9296b90a0ab37bc401bc1027a",
+						"name": "戴維森",
+						"extInfo": "C",
+						"spread": "sr:player:902400",
+						"odds": 9.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8b8951bdb9f17cd9cea737869bb134fb",
+						"name": "扬达什，梅尔特",
+						"extInfo": "H",
+						"spread": "sr:player:909978",
+						"odds": 9.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "79d6d5435be2c8fd4d023063d27432d8",
+						"name": "佩罗蒂, 迭戈",
+						"extInfo": "H",
+						"spread": "sr:player:47171",
+						"odds": 9.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8fc0bc4790eaa8f3fa2cd1d5c9d6964b",
+						"name": "Bareiro, Adam",
+						"extInfo": "C",
+						"spread": "sr:player:1101471",
+						"odds": 9.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "c03fe0f41f6170db93e2efa34c63d678",
+						"name": "巴巴卡尔, 埃尔-库玛",
+						"extInfo": "C",
+						"spread": "sr:player:88697",
+						"odds": 10.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "541e39e689be141a3d458c1ec4a289aa",
+						"name": "瓦伦西亚, 恩纳",
+						"extInfo": "H",
+						"spread": "sr:player:106456",
+						"odds": 10.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "fd0c9554342658ea818aa255a205d29a",
+						"name": "季米特里斯,佩尔卡斯",
+						"extInfo": "H",
+						"spread": "sr:player:139304",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "9aca63c7a613b2be25ac5fde1a341f82",
+						"name": "伽马斯，希南",
+						"extInfo": "H",
+						"spread": "sr:player:169165",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "dd0c22e26982810afb02fd99de0aee0a",
+						"name": "索萨, 何塞",
+						"extInfo": "H",
+						"spread": "sr:player:22981",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "351eff22a47c5c1b5a88c4c17d0b5283",
+						"name": "巴卡塞塔斯, 阿纳斯塔西奥斯",
+						"extInfo": "C",
+						"spread": "sr:player:114076",
+						"odds": 12.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "163a1b870209fef493fcfc89f76ed7b7",
+						"name": "卡迪奥格鲁, 费尔迪",
+						"extInfo": "H",
+						"spread": "sr:player:934224",
+						"odds": 12.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "76e267154000711383d35595a3ce3b48",
+						"name": "佩克特梅克, 穆斯塔法",
+						"extInfo": "C",
+						"spread": "sr:player:43643",
+						"odds": 12.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e75652b485c2a7ec989ccd8b0a79164d",
+						"name": "奥赞, 土番",
+						"extInfo": "H",
+						"spread": "sr:player:251907",
+						"odds": 12.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "217af51b066691067bf8754c5f45dfc3",
+						"name": "Gunes, Umut",
+						"extInfo": "C",
+						"spread": "sr:player:1117889",
+						"odds": 13.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "910f9e9f3aad292a54cd25af23c40240",
+						"name": "Bekiroglu, Efkan",
+						"extInfo": "C",
+						"spread": "sr:player:576416",
+						"odds": 15.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "547c0c0d6a8edc79972a1010710e1659",
+						"name": "宾格尔，泰弗",
+						"extInfo": "C",
+						"spread": "sr:player:255957",
+						"odds": 16.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "2681bf6fee64de1979fdcc124a2e32d4",
+						"name": "雅罗古鲁，哈桑",
+						"extInfo": "C",
+						"spread": "sr:player:227624",
+						"odds": 17.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "16f34e0e1bb74e03179f05ea66dfc8e5",
+						"name": "诺瓦克, 菲利普",
+						"extInfo": "H",
+						"spread": "sr:player:12194",
+						"odds": 20.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "47c0677337e300682b7a44257e06ca0a",
+						"name": "Kutlu, Berkan",
+						"extInfo": "C",
+						"spread": "sr:player:2047809",
+						"odds": 20.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b0579eb60dc9b18b15f9c494bd2e5ede",
+						"name": "古斯塔沃, 鲁伊兹",
+						"extInfo": "H",
+						"spread": "sr:player:29735",
+						"odds": 21.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "0210bb5446270c028815eb559aca2943",
+						"name": "迪拉尔, 纳比尔",
+						"extInfo": "H",
+						"spread": "sr:player:42102",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "51d79521d9029883db3978091ac18108",
+						"name": "卡拉加，艾菲坎",
+						"extInfo": "C",
+						"spread": "sr:player:60510",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "9c0701758a4c1d18e7110796745b7c50",
+						"name": "西格尔奇, 托加",
+						"extInfo": "H",
+						"spread": "sr:player:120298",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "0a8a46aac4594d6146081cb063e4ab68",
+						"name": "Beyaz, Omer",
+						"extInfo": "H",
+						"spread": "sr:player:1986039",
+						"odds": 23.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "42c746932f09fbb8c08d7ffa8235b0b9",
+						"name": "古尔塞拉姆, 塞胡恩",
+						"extInfo": "C",
+						"spread": "sr:player:20747",
+						"odds": 25.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "5a15276ee445a7cdb2fda09a3ec0b875",
+						"name": "阿齐兹, 塞尔达",
+						"extInfo": "H",
+						"spread": "sr:player:43528",
+						"odds": 27.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "ae5d57705b3ce3bf0fee83908d72804e",
+						"name": "桑加雷，纳齐姆",
+						"extInfo": "H",
+						"spread": "sr:player:169425",
+						"odds": 29.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b15bfc0db7776c5541a6bd977e969a02",
+						"name": "乌坎, 萨利赫",
+						"extInfo": "C",
+						"spread": "sr:player:135695",
+						"odds": 30.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "61e1be632a72279277ced13b25144bfd",
+						"name": "戈努尔, 格克汉",
+						"extInfo": "H",
+						"spread": "sr:player:30137",
+						"odds": 35.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "64a11cca929c7173a285e7e15c3e0464",
+						"name": "埃尔金, 卡内尔",
+						"extInfo": "H",
+						"spread": "sr:player:15680",
+						"odds": 40.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "61c2081b73a32bcb5560479736bb7332",
+						"name": "马塞尔,蒂塞兰德",
+						"extInfo": "H",
+						"spread": "sr:player:338651",
+						"odds": 45.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "7989ee076b4007bc770915e52fba0ed1",
+						"name": "查维拉斯, 乔治奥斯",
+						"extInfo": "C",
+						"spread": "sr:player:33000",
+						"odds": 45.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f6ce84093f713c56423f376dc3a2cd1a",
+						"name": "雅克,弗朗索瓦, 穆班杰",
+						"extInfo": "C",
+						"spread": "sr:player:106869",
+						"odds": 50.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "de9296426c5277ecdc63ae22e1ac7b24",
+						"name": "莱默斯, 毛里西奥",
+						"extInfo": "H",
+						"spread": "sr:player:385916",
+						"odds": 50.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "0a8cbe5a5fee2c7912e449fa9958ccf3",
+						"name": "考尔克, 斯蒂芬",
+						"extInfo": "C",
+						"spread": "sr:player:73685",
+						"odds": 50.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "45a8c1db7fb4678a25bfaa15b82fd5d6",
+						"name": "Alptekin, Cenk",
+						"extInfo": "H",
+						"spread": "sr:player:2031225",
+						"odds": 60.0,
+						"status": 1,
+						"producerId": 3
+					}, {
+						"id": "0e60460df3964360a28a4d7f2af90083",
+						"name": "西夫特皮纳, 萨迪克",
+						"extInfo": "H",
+						"spread": "sr:player:111811",
+						"odds": 70.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "6a86f0bff419163f870d5a544cbffe2b",
+						"name": "阿克索伊，法提赫",
+						"extInfo": "C",
+						"spread": "sr:player:914518",
+						"odds": 70.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "cee453e1c090e7a7b5952e0725af763a",
+						"name": "胡安-弗朗西斯科-莫雷诺-弗尔特斯",
+						"extInfo": "C",
+						"spread": "sr:player:30745",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "649dec043673c104a504ac114c8fcf97",
+						"name": "塞莱比，阿尔法",
+						"extInfo": "C",
+						"spread": "sr:player:1057193",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "341c55ded07029d2fc9ef2d6229864d7",
+						"name": "Gulay, Ahmet",
+						"extInfo": "C",
+						"spread": "sr:player:1986045",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "eb7c3334d9e35b7fddbec88091dd3305",
+						"name": "马诺利斯",
+						"extInfo": "C",
+						"spread": "sr:player:136675",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}]
+				},
+				"SCO-ANT": {
+					"typeCodes": "POPULAR,ALL,GOAL",
+					"name": "任意时间进球球员",
+					"odds": [{
+						"id": "fb82e58b48f5b0438cec5ad2ceb69fe4",
+						"name": "无进球",
+						"extInfo": null,
+						"spread": null,
+						"odds": 0.0,
+						"status": 1,
+						"producerId": 3
+					}, {
+						"id": "8544819623816ba0f52f3b015897ea44",
+						"name": "西塞, 帕皮斯-登巴",
+						"extInfo": "H",
+						"spread": "sr:player:8978",
+						"odds": 3.1,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "47e75a431708c8eb1069f0d5877148f2",
+						"name": "Ademi, Kemal",
+						"extInfo": "H",
+						"spread": "sr:player:868802",
+						"odds": 3.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b486a956660c0fdf1cbd56084f2d5363",
+						"name": "Thiam, Mame",
+						"extInfo": "H",
+						"spread": "sr:player:180981",
+						"odds": 3.25,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f04e44a573b3090e740c1f5cf118220e",
+						"name": "萨马塔，姆博瓦那",
+						"extInfo": "H",
+						"spread": "sr:player:199810",
+						"odds": 3.3,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "1aa24da87cad4b8d38bbdc3c45752756",
+						"name": "戴維森",
+						"extInfo": "C",
+						"spread": "sr:player:902400",
+						"odds": 3.55,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a43cfd8547b492deaa47c5b8e1beb626",
+						"name": "扬达什，梅尔特",
+						"extInfo": "H",
+						"spread": "sr:player:909978",
+						"odds": 3.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "28be49adbb64b18aa3fec9a2448e95f9",
+						"name": "Bareiro, Adam",
+						"extInfo": "C",
+						"spread": "sr:player:1101471",
+						"odds": 3.65,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f6078b3f02385a74d5ca5b30ae5d0554",
+						"name": "佩罗蒂, 迭戈",
+						"extInfo": "H",
+						"spread": "sr:player:47171",
+						"odds": 3.65,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "ece145ac9f1240fab6ee7da6758e8a0a",
+						"name": "巴巴卡尔, 埃尔-库玛",
+						"extInfo": "C",
+						"spread": "sr:player:88697",
+						"odds": 3.75,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "57f0d7ca71fcd98f5a543eac28027f0c",
+						"name": "瓦伦西亚, 恩纳",
+						"extInfo": "H",
+						"spread": "sr:player:106456",
+						"odds": 3.9,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "57b74eee1890a1f37d45bf8c9700f457",
+						"name": "索萨, 何塞",
+						"extInfo": "H",
+						"spread": "sr:player:22981",
+						"odds": 4.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "a0b9462531d0b4514b94e7292043815d",
+						"name": "季米特里斯,佩尔卡斯",
+						"extInfo": "H",
+						"spread": "sr:player:139304",
+						"odds": 4.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "7025c4110f6e5a1270e15bb7736225dd",
+						"name": "伽马斯，希南",
+						"extInfo": "H",
+						"spread": "sr:player:169165",
+						"odds": 4.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f49d8b96e3dcefa7bd733b68a3a3eaac",
+						"name": "奥赞, 土番",
+						"extInfo": "H",
+						"spread": "sr:player:251907",
+						"odds": 4.3,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e1269a3342c8223cfc9576cafc678180",
+						"name": "佩克特梅克, 穆斯塔法",
+						"extInfo": "C",
+						"spread": "sr:player:43643",
+						"odds": 4.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b7ee4c068f0a9782fa735bf11ba0f1ef",
+						"name": "巴卡塞塔斯, 阿纳斯塔西奥斯",
+						"extInfo": "C",
+						"spread": "sr:player:114076",
+						"odds": 4.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "9f3f328289bfa534e747563229ad8813",
+						"name": "卡迪奥格鲁, 费尔迪",
+						"extInfo": "H",
+						"spread": "sr:player:934224",
+						"odds": 4.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b56dc3828d281ec6c0081fb150294ed1",
+						"name": "Gunes, Umut",
+						"extInfo": "C",
+						"spread": "sr:player:1117889",
+						"odds": 4.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "712fb055835c2afd597b34875d4fda75",
+						"name": "Bekiroglu, Efkan",
+						"extInfo": "C",
+						"spread": "sr:player:576416",
 						"odds": 5.4,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "375976b8a54c186a03cd17d38dc1cd0f",
-						"name": "杜塞尔多夫",
-						"extInfo": null,
-						"spread": "-2",
-						"odds": 6.0,
+						"id": "938dbd5d6851bd2ad11ec7250abdc8f9",
+						"name": "宾格尔，泰弗",
+						"extInfo": "C",
+						"spread": "sr:player:255957",
+						"odds": 5.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "532c7a0dcfc2a9091032bffce34648b6",
+						"name": "雅罗古鲁，哈桑",
+						"extInfo": "C",
+						"spread": "sr:player:227624",
+						"odds": 6.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "2922b8a1aa0a36922de70fff5ce1d7bc",
+						"name": "诺瓦克, 菲利普",
+						"extInfo": "H",
+						"spread": "sr:player:12194",
+						"odds": 7.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "c07be86719db034d440aa0ce179c0117",
+						"name": "古斯塔沃, 鲁伊兹",
+						"extInfo": "H",
+						"spread": "sr:player:29735",
+						"odds": 7.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "5c551c8744ae1e636b36b4b115347352",
+						"name": "Kutlu, Berkan",
+						"extInfo": "C",
+						"spread": "sr:player:2047809",
+						"odds": 7.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "08e2bee0d18c23650a8eb45ef90a541a",
+						"name": "西格尔奇, 托加",
+						"extInfo": "H",
+						"spread": "sr:player:120298",
+						"odds": 8.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "30a47412c088d7a7315ad677bdf3fedc",
+						"name": "Beyaz, Omer",
+						"extInfo": "H",
+						"spread": "sr:player:1986039",
+						"odds": 8.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f5e8c42d8ce7826b731f6017b71c3d65",
+						"name": "迪拉尔, 纳比尔",
+						"extInfo": "H",
+						"spread": "sr:player:42102",
+						"odds": 8.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b168341f1f360cd95d8f67a1194fc967",
+						"name": "卡拉加，艾菲坎",
+						"extInfo": "C",
+						"spread": "sr:player:60510",
+						"odds": 8.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "809f96d60565a8c847751b193ab5b25f",
+						"name": "古尔塞拉姆, 塞胡恩",
+						"extInfo": "C",
+						"spread": "sr:player:20747",
+						"odds": 8.8,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "83382afdf65c9982e03516550ff4533c",
+						"name": "阿齐兹, 塞尔达",
+						"extInfo": "H",
+						"spread": "sr:player:43528",
+						"odds": 9.6,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "b8927e1b8ccde4a8925be62ffdc795b3",
+						"name": "桑加雷，纳齐姆",
+						"extInfo": "H",
+						"spread": "sr:player:169425",
+						"odds": 10.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "74e7d343d475fc254d4c925c93fee2b9",
+						"name": "乌坎, 萨利赫",
+						"extInfo": "C",
+						"spread": "sr:player:135695",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f4e1161f8eeed820f0d27274c6b463c9",
+						"name": "戈努尔, 格克汉",
+						"extInfo": "H",
+						"spread": "sr:player:30137",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "612c09f13d7116ac027fea3a3239af31",
+						"name": "埃尔金, 卡内尔",
+						"extInfo": "H",
+						"spread": "sr:player:15680",
+						"odds": 14.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "146ead083c1a2cb23695872b8ff801df",
+						"name": "查维拉斯, 乔治奥斯",
+						"extInfo": "C",
+						"spread": "sr:player:33000",
+						"odds": 17.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "5cca197272b155baa2c1fc28e0e4a0d9",
+						"name": "马塞尔,蒂塞兰德",
+						"extInfo": "H",
+						"spread": "sr:player:338651",
+						"odds": 17.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "dd617f285621854115008c87c02ccd6e",
+						"name": "考尔克, 斯蒂芬",
+						"extInfo": "C",
+						"spread": "sr:player:73685",
+						"odds": 19.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "660688bcef04482d4a53d3ba93cadb80",
+						"name": "雅克,弗朗索瓦, 穆班杰",
+						"extInfo": "C",
+						"spread": "sr:player:106869",
+						"odds": 19.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "9b953d358ad25255bbb59f0687064f70",
+						"name": "莱默斯, 毛里西奥",
+						"extInfo": "H",
+						"spread": "sr:player:385916",
+						"odds": 20.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "56625097b3c9d1f9a06c3262341ba0b1",
+						"name": "Alptekin, Cenk",
+						"extInfo": "H",
+						"spread": "sr:player:2031225",
+						"odds": 22.0,
+						"status": 1,
+						"producerId": 3
+					}, {
+						"id": "7686f7430318ab19539e4e97706386f0",
+						"name": "西夫特皮纳, 萨迪克",
+						"extInfo": "H",
+						"spread": "sr:player:111811",
+						"odds": 26.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "5f9d7e6dab6f84a7b7c9b806d2c49476",
+						"name": "阿克索伊，法提赫",
+						"extInfo": "C",
+						"spread": "sr:player:914518",
+						"odds": 27.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "7126308a834e5842cf49bc3ae0784abd",
+						"name": "马诺利斯",
+						"extInfo": "C",
+						"spread": "sr:player:136675",
+						"odds": 100.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "f2d8c6060587d69ad2749e3a1a735cf4",
+						"name": "胡安-弗朗西斯科-莫雷诺-弗尔特斯",
+						"extInfo": "C",
+						"spread": "sr:player:30745",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "6d42949f81091956721990c94af8929d",
+						"name": "塞莱比，阿尔法",
+						"extInfo": "C",
+						"spread": "sr:player:1057193",
+						"odds": 101.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "2576ff825dbd4288575940e08b3dc38e",
+						"name": "Gulay, Ahmet",
+						"extInfo": "C",
+						"spread": "sr:player:1986045",
+						"odds": 101.0,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1532,19 +2667,19 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "零失球",
 					"odds": [{
-						"id": "d7b725cc3cb5a62fc8f0fa824bb58084",
-						"name": "埃森",
+						"id": "3695ffb328f9cb04f9720e10261de7b4",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 5.6,
+						"odds": 3.3,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "7d6eb81f2f5d08f7f4cb2b6ea8c5f5bc",
-						"name": "杜塞尔多夫",
+						"id": "b6da28a02322841a04e892b8196d74ea",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.75,
+						"odds": 4.8,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1553,51 +2688,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL,QATest",
 					"name": "独赢&大小",
 					"odds": [{
-						"id": "10a9f46c480a3c5ece0d2119645aa1b0",
-						"name": "埃森-大",
+						"id": "c6b64c8b4cf5d31c2188d4371027a61c",
+						"name": "费内巴切-大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 6.2,
+						"odds": 2.55,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "bb621df20733d6deb5b17dfec57c98d6",
-						"name": "埃森-小",
+						"id": "314e5753fc5a525f7ae9c49201f86e77",
+						"name": "费内巴切-小",
+						"extInfo": null,
+						"spread": "1.5",
+						"odds": 11.0,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "8291ebbc9e91c3566aa6bcee4f18c745",
+						"name": "和局-大",
+						"extInfo": null,
+						"spread": "1.5",
+						"odds": 4.5,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "bcd597bfc7e176c1537649ccdb795a78",
+						"name": "和局-小",
 						"extInfo": null,
 						"spread": "1.5",
 						"odds": 17.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "aa48d485709cb58b766a8a8b3fd372f8",
-						"name": "和局-大",
+						"id": "5da8c65c50a54a33d99b232e96ff445b",
+						"name": "阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 5.0,
+						"odds": 4.5,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "297bbfdab80b0afccfdfbc59b55d74aa",
-						"name": "和局-小",
+						"id": "6b2a3bc07eeea6a31d26feb2771db62d",
+						"name": "阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 16.0,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "1982e6b642773c52e572a54acbe1b78c",
-						"name": "杜塞尔多夫-大",
-						"extInfo": null,
-						"spread": "1.5",
-						"odds": 2.13,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "55e86ba25a012d75738b8602f765dd4f",
-						"name": "杜塞尔多夫-小",
-						"extInfo": null,
-						"spread": "1.5",
-						"odds": 9.8,
+						"odds": 15.0,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1606,51 +2741,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL,QATest",
 					"name": "独赢&大小",
 					"odds": [{
-						"id": "b77b2078da9d7f5d88d113519c8b159d",
-						"name": "埃森-大",
+						"id": "5d56d90265806eb3d5555d9a83076e08",
+						"name": "费内巴切-大",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 7.6,
+						"odds": 3.15,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "b651578a1af178ba26be1005a7944110",
-						"name": "埃森-小",
+						"id": "4f560c0a26b67cb11500bece23bf9ccf",
+						"name": "费内巴切-小",
+						"extInfo": null,
+						"spread": "2.5",
+						"odds": 6.2,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "2fbd03fc072e1c9b33c4db42c368d3a3",
+						"name": "和局-大",
 						"extInfo": null,
 						"spread": "2.5",
 						"odds": 11.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "edd5312f4e90e3bf71aaed127af205d9",
-						"name": "和局-大",
+						"id": "96c722b4b9ce7911c1da01aee5d7f6b3",
+						"name": "和局-小",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 13.0,
+						"odds": 5.2,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "c36465bce328ba479e9940d843a90f3c",
-						"name": "和局-小",
+						"id": "efeb0753f7ea055187d08730bbc962d0",
+						"name": "阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "2.5",
 						"odds": 5.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "fae382be555864ddf5264055e5a1ce41",
-						"name": "杜塞尔多夫-大",
+						"id": "0d2966edd2945a0d5a4d1904d55bde40",
+						"name": "阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 2.65,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "d06114b52e5eae79aad90999946120f4",
-						"name": "杜塞尔多夫-小",
-						"extInfo": null,
-						"spread": "2.5",
-						"odds": 5.2,
+						"odds": 9.4,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1659,51 +2794,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL,QATest",
 					"name": "独赢&大小",
 					"odds": [{
-						"id": "898f34b8addfb8caf849a50e4b15b518",
-						"name": "埃森-大",
+						"id": "0dbc6958917597ed76c8e2a3cf24559b",
+						"name": "费内巴切-大",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 16.0,
+						"odds": 5.4,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5b84889384093a7443c527a4fa79f420",
-						"name": "埃森-小",
+						"id": "28e2ea86b87ec4fded74a4ed294dbb2b",
+						"name": "费内巴切-小",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 6.4,
+						"odds": 3.35,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d80aad93c6fac2560576c3b0642e0cf0",
+						"id": "40f8d49443861d70a7355979e7215fa5",
 						"name": "和局-大",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 13.0,
+						"odds": 11.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "fe4a7155fd0d4724265ec8a3e5fdb239",
+						"id": "25916297c9881092ce9650cc7b82ed79",
 						"name": "和局-小",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 5.6,
+						"odds": 5.2,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "8be700cf171eab0309b07868bebf7daa",
-						"name": "杜塞尔多夫-大",
+						"id": "35eb7af2bd530f6672206a48d628d6ab",
+						"name": "阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 4.5,
+						"odds": 11.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "afc4770facf3533c9e84ae7122caef3b",
-						"name": "杜塞尔多夫-小",
+						"id": "1e92942def7013744d67aa3a98952237",
+						"name": "阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 2.85,
+						"odds": 5.2,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1712,51 +2847,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL,QATest",
 					"name": "独赢&大小",
 					"odds": [{
-						"id": "59c19e781a51292ccb911f85eed203b5",
-						"name": "埃森-大",
+						"id": "774eec945adedd57c1f6a28627d8f730",
+						"name": "费内巴切-大",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 26.0,
+						"odds": 9.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5321607c05c42a03025a809553aa96d6",
-						"name": "埃森-小",
+						"id": "71af090b55b5e16da1a0b165a480e870",
+						"name": "费内巴切-小",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 5.6,
+						"odds": 2.7,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "fc053d8db31e69163567d24ad43af0ab",
+						"id": "85649b1521db2649eacc5937141828a6",
 						"name": "和局-大",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 60.0,
+						"odds": 50.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ad0a7d172265b1bf9835c9d6e3ea96b0",
+						"id": "7ca761e71569be473373f2d91f47ae77",
 						"name": "和局-小",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 4.1,
+						"odds": 3.85,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ca2fddf8f1234bf641545cfcfe19bc17",
-						"name": "杜塞尔多夫-大",
+						"id": "4c92291a6804455b01f6cce58773b372",
+						"name": "阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 7.6,
+						"odds": 17.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d5ad558c196a9ea80628beb1a85af403",
-						"name": "杜塞尔多夫-小",
+						"id": "ef65b85149667f9860f3b9de5e7f6762",
+						"name": "阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 2.26,
+						"odds": 4.4,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1765,31 +2900,31 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "独赢&双方球队进球",
 					"odds": [{
-						"id": "138cb123d9e62cab109dcedfb438f1f0",
-						"name": "埃森-是",
+						"id": "2b6d1aa47d091f62a0bd73b5222bf2dc",
+						"name": "费内巴切-是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 8.6,
+						"odds": 4.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "e230c27a3890d1e61a6c05a29670fdfe",
-						"name": "埃森-否",
+						"id": "41e69c697aad7e81f96ec940262bff1d",
+						"name": "费内巴切-否",
 						"extInfo": null,
 						"spread": null,
-						"odds": 9.8,
+						"odds": 4.3,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "229d89abdb9a6af71c1d67c266b2bb28",
+						"id": "09a7062cc0314c074944455638694af8",
 						"name": "和局-是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 5.0,
+						"odds": 4.5,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "95d5bb2ff422538cef489844365ec7d9",
+						"id": "da5beea0ed1ee23b141345dbdc4f9ad9",
 						"name": "和局-否",
 						"extInfo": null,
 						"spread": null,
@@ -1797,19 +2932,19 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "e4c8600c09d0b441ee0d9e7fdec43044",
-						"name": "杜塞尔多夫-是",
+						"id": "4d7949d7ab12fd66c3ab175a1c2fc0b4",
+						"name": "阿兰尼亚体育-是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 3.6,
+						"odds": 6.4,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "716bfb5b6e31318f686df7324911c683",
-						"name": "杜塞尔多夫-否",
+						"id": "51314767132a3e3be9770771925cf8b2",
+						"name": "阿兰尼亚体育-否",
 						"extInfo": null,
 						"spread": null,
-						"odds": 3.4,
+						"odds": 7.6,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1818,51 +2953,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "独赢&最先进球",
 					"odds": [{
-						"id": "f366828b5a896bb411f7f24e48b5b7c3",
-						"name": "埃森-埃森",
+						"id": "47a3352cef39a970091551b6cd033977",
+						"name": "费内巴切-费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 5.6,
+						"odds": 2.49,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "cbb7e6ea5daf11b6ca3df971732d318c",
-						"name": "埃森-杜塞尔多夫",
+						"id": "72bc38c4ff23884342a8c06402f98a0b",
+						"name": "费内巴切-阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 26.0,
+						"odds": 13.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "a423da0cfcba096e36d916a564e99809",
-						"name": "和局-埃森",
+						"id": "b6495709ed59ba606a3189b7ea7f0f4a",
+						"name": "和局-费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 10.0,
+						"odds": 9.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3d4ffe9249b44a32c2c1ea483e6db787",
-						"name": "和局-杜塞尔多夫",
+						"id": "2bd14a88d16a37ea4ee269e64f254374",
+						"name": "和局-阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 10.0,
+						"odds": 9.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3f511a3a21466517533e877fe9a09624",
-						"name": "杜塞尔多夫-埃森",
+						"id": "34e864f5cae905e122eb4dcd5120f72f",
+						"name": "阿兰尼亚体育-费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 12.0,
+						"odds": 20.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "7a22e032c6d2073904afdcdaa2b8e7be",
-						"name": "杜塞尔多夫-杜塞尔多夫",
+						"id": "225b7b91fd333f6df4e5c0b9ae531b58",
+						"name": "阿兰尼亚体育-阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.06,
+						"odds": 4.2,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1871,35 +3006,35 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "大小&双方球队进球",
 					"odds": [{
-						"id": "99125606800b78caf0c46df239b5be70",
+						"id": "394f9feb640d7e79c8722dbaae6f07da",
 						"name": "大-是",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 2.14,
+						"odds": 2.03,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "c78874a05689813547cb92e1cb93c2ad",
+						"id": "c78b654f215cc236e3607f573149acc9",
 						"name": "大-否",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 8.4,
+						"odds": 10.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ee5f59508e46e964376aa4c707a8a486",
+						"id": "798dab1b88e43305d0b0b20ce1e2fc03",
 						"name": "小-是",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 8.2,
+						"odds": 7.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "fa7a3fb0ae2901305071847c1e02a1c4",
+						"id": "dc4cc12ea59cb1ee3192914bf5cd35b5",
 						"name": "小-否",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 2.95,
+						"odds": 3.05,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1908,51 +3043,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "双重机会&双方球队进球",
 					"odds": [{
-						"id": "8fdf71341ebc1e2d8c23d46cea7181cf",
-						"name": "埃森或和局-是",
+						"id": "e6dd583ca9df9a1e528e242fcbd332b4",
+						"name": "费内巴切或和局-是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 3.25,
+						"odds": 2.17,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "5ff0bb956cc3b4a330e41256e6a5bd57",
-						"name": "埃森或和局-否",
+						"id": "ad981380fb856589d82d129495ac39a4",
+						"name": "费内巴切或和局-否",
 						"extInfo": null,
 						"spread": null,
-						"odds": 6.2,
+						"odds": 3.5,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "9f1f0163e3a51e3bb2a65e2c1245b1e1",
-						"name": "杜塞尔多夫或和局-是",
+						"id": "54e3ef6fa6312cf20e809684fe342cfc",
+						"name": "阿兰尼亚体育或和局-是",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.16,
+						"odds": 2.7,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "43c1a54d8df68000c3b05a0280b1696d",
-						"name": "杜塞尔多夫或和局-否",
+						"id": "511d97c56197d3d67f904aad643c27dd",
+						"name": "阿兰尼亚体育或和局-否",
+						"extInfo": null,
+						"spread": null,
+						"odds": 5.4,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "e605f01b8c19ea48ec7a5f09eb6217f2",
+						"name": "费内巴切或阿兰尼亚体育-是",
+						"extInfo": null,
+						"spread": null,
+						"odds": 2.5,
+						"status": 0,
+						"producerId": 3
+					}, {
+						"id": "639b6b7367903e61b80c9db77f5954a6",
+						"name": "费内巴切或阿兰尼亚体育-否",
 						"extInfo": null,
 						"spread": null,
 						"odds": 2.85,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "f712c159af9e79e47032d7c7f2170b1a",
-						"name": "埃森或杜塞尔多夫-是",
-						"extInfo": null,
-						"spread": null,
-						"odds": 2.6,
-						"status": 0,
-						"producerId": 3
-					}, {
-						"id": "ebc7507703d5183f81bf773f8908913b",
-						"name": "埃森或杜塞尔多夫-否",
-						"extInfo": null,
-						"spread": null,
-						"odds": 2.55,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -1961,51 +3096,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "双重机会&大小",
 					"odds": [{
-						"id": "86a05603546e2b0e9a357d1e354cfe39",
-						"name": "埃森或和局-大",
+						"id": "51b116405e69f3902d024e6d52863552",
+						"name": "费内巴切或和局-大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 2.85,
+						"odds": 1.67,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "63a44c084f183824e0215d990c283883",
-						"name": "埃森或和局-小",
+						"id": "7c54d93979349db46c65e48e185a507e",
+						"name": "费内巴切或和局-小",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 8.6,
+						"odds": 6.8,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "6d8fd9011f68fc2aac3658f8bed23b86",
-						"name": "杜塞尔多夫或和局-大",
+						"id": "43f2678bb3db8ada2cc244afdb5fcacf",
+						"name": "阿兰尼亚体育或和局-大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 1.53,
+						"odds": 2.31,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0711d917583451f2e248e61e84084d11",
-						"name": "杜塞尔多夫或和局-小",
+						"id": "4074bb24fe561ef2f3fdb5a8d8ae43c1",
+						"name": "阿兰尼亚体育或和局-小",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 6.4,
+						"odds": 8.2,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "a4dfbb886b5abfe475964e9dbc35400e",
-						"name": "埃森或杜塞尔多夫-大",
+						"id": "4c3ef20fe50fea6499da98c949560e68",
+						"name": "费内巴切或阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 1.62,
+						"odds": 1.67,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "211804ebb2c36fbba0360a6255d49482",
-						"name": "埃森或杜塞尔多夫-小",
+						"id": "1d367dce2282c6a691a702fba6da5d27",
+						"name": "费内巴切或阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "1.5",
-						"odds": 6.4,
+						"odds": 6.6,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2014,51 +3149,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "双重机会&大小",
 					"odds": [{
-						"id": "0172e1356ce65f3e4999beed6a2f9747",
-						"name": "埃森或和局-大",
+						"id": "c77b310d0c63adcca71791c404d965ae",
+						"name": "费内巴切或和局-大",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 4.9,
+						"odds": 2.49,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3a2a30406af9737b9178ca2567cf441d",
-						"name": "埃森或和局-小",
+						"id": "252589942c92a91df0edb4d9fef66820",
+						"name": "费内巴切或和局-小",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 3.8,
+						"odds": 2.9,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "68ea3f6f46ca69f19c4a108bdc658efa",
-						"name": "杜塞尔多夫或和局-大",
+						"id": "db51af5d7271dbb97d0633130e288e3f",
+						"name": "阿兰尼亚体育或和局-大",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 2.24,
+						"odds": 3.75,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "b41de644509ce4156039b56a5a9f64e9",
-						"name": "杜塞尔多夫或和局-小",
+						"id": "b437f2487f6eef87b62fc8f5179a86ec",
+						"name": "阿兰尼亚体育或和局-小",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 2.75,
+						"odds": 3.45,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "746032e7b63d737326746da593a2d8e3",
-						"name": "埃森或杜塞尔多夫-大",
+						"id": "00be695cbdc59b5547bb2de9eabb16c8",
+						"name": "费内巴切或阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 2.01,
+						"odds": 2.05,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "152f1d36d07913f7c654d550b7383437",
-						"name": "埃森或杜塞尔多夫-小",
+						"id": "204139a5dfea2e24fc7de202cb042113",
+						"name": "费内巴切或阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "2.5",
-						"odds": 3.6,
+						"odds": 3.85,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2067,51 +3202,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "双重机会&大小",
 					"odds": [{
-						"id": "70b400989b344f935059cef13784c87f",
-						"name": "埃森或和局-大",
+						"id": "f7acb8f2e0a602c539f664bebe95cf9a",
+						"name": "费内巴切或和局-大",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 7.4,
+						"odds": 3.7,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "1b60e965ab2edf76c73fe19abf1c8fb0",
-						"name": "埃森或和局-小",
+						"id": "e9ed86c19ab09ce4a3129b84166426d6",
+						"name": "费内巴切或和局-小",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 3.05,
+						"odds": 2.1,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "741f653e839459d3d256ca9f3a557a7b",
-						"name": "杜塞尔多夫或和局-大",
+						"id": "9890292f749820e54716e90f2c85d625",
+						"name": "阿兰尼亚体育或和局-大",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 3.45,
+						"odds": 5.6,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "340d20af4bfda3c8de53ed03aee8651f",
-						"name": "杜塞尔多夫或和局-小",
+						"id": "868529befb167dc39eab0869bebeeaeb",
+						"name": "阿兰尼亚体育或和局-小",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 1.92,
+						"odds": 2.65,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "393e17cd99786807178a90810ab24448",
-						"name": "埃森或杜塞尔多夫-大",
+						"id": "f36bb7c21d6b2a35371e0adcd4911cad",
+						"name": "费内巴切或阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 3.6,
+						"odds": 3.7,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "71e51628578fd36c7e5f3580ff28b773",
-						"name": "埃森或杜塞尔多夫-小",
+						"id": "a3b617ee14c27c04283c07b7befd0f75",
+						"name": "费内巴切或阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "3.5",
-						"odds": 2.01,
+						"odds": 2.09,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2120,51 +3255,51 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "双重机会&大小",
 					"odds": [{
-						"id": "65702094f863c7dff3f5502c8dc988f6",
-						"name": "埃森或和局-大",
+						"id": "b6cd061ad55e5bae4c7ca427fea4c341",
+						"name": "费内巴切或和局-大",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 19.0,
+						"odds": 7.8,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "8f2048c81af563a58b6b4f7e57712f83",
-						"name": "埃森或和局-小",
+						"id": "18b9972c7e49392150446e8cc848c18d",
+						"name": "费内巴切或和局-小",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 2.43,
+						"odds": 1.63,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "43fbc4b72c05299b4ebb64668c90228f",
-						"name": "杜塞尔多夫或和局-大",
+						"id": "539d3ef6c8718a5b2bea8b1f61459b9e",
+						"name": "阿兰尼亚体育或和局-大",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 7.0,
+						"odds": 13.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "17b30d13f5dfe8ce8bb34caa44dbf19f",
-						"name": "杜塞尔多夫或和局-小",
+						"id": "0df668b1d3be79e77fcd35cfec8463f2",
+						"name": "阿兰尼亚体育或和局-小",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 1.5,
+						"odds": 2.09,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "299ae10b991eac21c7588edb15fcf3ad",
-						"name": "埃森或杜塞尔多夫-大",
+						"id": "3e36424ff8ebcd81b635709f51d68d53",
+						"name": "费内巴切或阿兰尼亚体育-大",
 						"extInfo": null,
 						"spread": "4.5",
 						"odds": 6.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "6a6b0f38170503ed60341ed25c4d5055",
-						"name": "埃森或杜塞尔多夫-小",
+						"id": "82c7f6d116ad82998d8093186fe2b9d6",
+						"name": "费内巴切或阿兰尼亚体育-小",
 						"extInfo": null,
 						"spread": "4.5",
-						"odds": 1.65,
+						"odds": 1.71,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2173,7 +3308,7 @@
 					"typeCodes": "ALL,GOAL,1ST",
 					"name": "最多进球的半场&独赢",
 					"odds": [{
-						"id": "1ee1b35eb6c2a998c721b5986569dc49",
+						"id": "29f1fd38fccebe5f0887416a5d44d154",
 						"name": "上半场",
 						"extInfo": null,
 						"spread": null,
@@ -2181,7 +3316,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "47e7ec451e23818134657dbe5daf1554",
+						"id": "5c38afd47aa16e393d029af24a9bd3c9",
 						"name": "和局",
 						"extInfo": null,
 						"spread": null,
@@ -2189,11 +3324,11 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0cc325f5a425de4268f923f2ed4aa4eb",
+						"id": "88a81677150391c9cd4faea9389e9e75",
 						"name": "下半场",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.09,
+						"odds": 2.08,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2202,19 +3337,19 @@
 					"typeCodes": "ALL,GOAL,1ST",
 					"name": "双半场进球",
 					"odds": [{
-						"id": "93b2bdb7450c1f8fc8304694aa42bc4a",
-						"name": "埃森",
+						"id": "bbc4eb7accf65ff84d0983e4e8ec12f1",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 5.2,
+						"odds": 2.9,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "a8d0593019bceb2ac051203ad56ba6b4",
-						"name": "杜塞尔多夫",
+						"id": "d41c64119748cb7abef0e5402e8af5ab",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.55,
+						"odds": 4.1,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2223,19 +3358,19 @@
 					"typeCodes": "ALL,1ST",
 					"name": "赢得任一半场",
 					"odds": [{
-						"id": "585884dfbe43f930720b053eea772cda",
-						"name": "埃森",
+						"id": "883752fe41f52fa4ad228ba90b7081e1",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.55,
+						"odds": 1.56,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ff3e1c9cd27bd69d97c51d4b6de761ef",
-						"name": "杜塞尔多夫",
+						"id": "b75489768474dde53c3f1aa698dafc94",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.42,
+						"odds": 2.13,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2244,19 +3379,19 @@
 					"typeCodes": "ALL,1ST",
 					"name": "赢得所有半场",
 					"odds": [{
-						"id": "f5e3731c67b805f5c304c3b4f76ded59",
-						"name": "埃森",
+						"id": "12a97ce98c7d69ae683140e1a62fff08",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 14.0,
+						"odds": 6.0,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "ebdceeddd421b34fd74e03262bda0528",
-						"name": "杜塞尔多夫",
+						"id": "91a0b6b9b369160aed6a63d799fb6cf4",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 4.7,
+						"odds": 11.0,
 						"status": 0,
 						"producerId": 3
 					}]
@@ -2265,7 +3400,7 @@
 					"typeCodes": "ALL,GOAL",
 					"name": "首个入球时间",
 					"odds": [{
-						"id": "4ec7ff25621495828c443967d4e2384c",
+						"id": "2d0d373aef2d9cce0ba648abec6c2202",
 						"name": "上半场开场-14:59分钟",
 						"extInfo": null,
 						"spread": null,
@@ -2273,7 +3408,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "be45d0f74737333267f1898aec060906",
+						"id": "05482eaa82f030899972a1751d5db7be",
 						"name": "15:00 分钟– 29:59 分钟",
 						"extInfo": null,
 						"spread": null,
@@ -2281,7 +3416,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "0bd73e4e171d719d08e9b51ad3e0f4cd",
+						"id": "4ebf5c0d80076411ea4f9ad9275a14c6",
 						"name": "30:00分钟 - 半场",
 						"extInfo": null,
 						"spread": null,
@@ -2289,7 +3424,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3fb08880f82b63883625fc9b0726f979",
+						"id": "54494611914700fb7bf7d47e9580377e",
 						"name": "无进球",
 						"extInfo": null,
 						"spread": null,
@@ -2297,7 +3432,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "3b47278f290e15c962f756f6ebce939f",
+						"id": "879694fcd911f40417f0564930944bfa",
 						"name": "下半场开场 - 59:59 分钟",
 						"extInfo": null,
 						"spread": null,
@@ -2305,7 +3440,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "c4017a1f7c430684f5647d460e966410",
+						"id": "7f62cf57002e572eb94da3bc2a435d0c",
 						"name": "60:00 分钟 – 74:59分钟",
 						"extInfo": null,
 						"spread": null,
@@ -2313,7 +3448,7 @@
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d1ac37dc40e806c6ed64f1fc3b0c13a2",
+						"id": "fd341667ea32d7316e8b2879f666489e",
 						"name": "75:00分钟 - 全场完场",
 						"extInfo": null,
 						"spread": null,
@@ -2326,23 +3461,23 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "最先进球",
 					"odds": [{
-						"id": "a32cfcda1def260cf7e8a5181c922de6",
-						"name": "埃森",
+						"id": "ebd38676de310ff2224091c418c8e368",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.75,
+						"odds": 1.78,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "4fa34e6be44b91e5fd8a531638893530",
-						"name": "杜塞尔多夫",
+						"id": "3d2928cf937fe52f0378ca21925858a2",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.61,
+						"odds": 2.35,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "86a2e2adceec00588796c15ef0c4bdd4",
+						"id": "d440db8d7d0588c51844dbd0ba9478bc",
 						"name": "无进球",
 						"extInfo": null,
 						"spread": null,
@@ -2355,23 +3490,23 @@
 					"typeCodes": "POPULAR,ALL,GOAL",
 					"name": "最后进球",
 					"odds": [{
-						"id": "4c35a23bfc2e7efea607607b9c5e7016",
-						"name": "埃森",
+						"id": "0185ce6fc6ccbab1340b696ff139e972",
+						"name": "费内巴切",
 						"extInfo": null,
 						"spread": null,
-						"odds": 2.75,
+						"odds": 1.78,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "d761fdf5cee59c3aa7f5c7166004b3ff",
-						"name": "杜塞尔多夫",
+						"id": "14a11aa18cfe5f7152d843a6ecc7b9d9",
+						"name": "阿兰尼亚体育",
 						"extInfo": null,
 						"spread": null,
-						"odds": 1.61,
+						"odds": 2.35,
 						"status": 0,
 						"producerId": 3
 					}, {
-						"id": "36e60452d84440de24879b37a97a843f",
+						"id": "f55a5ce0661f6610e5b55e58e8f39470",
 						"name": "无进球",
 						"extInfo": null,
 						"spread": null,

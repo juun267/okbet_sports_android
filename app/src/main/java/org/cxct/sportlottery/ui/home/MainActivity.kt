@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
@@ -26,9 +26,11 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.game.Game2FragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
@@ -107,7 +109,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
             //選單選擇結束要收起選單
-            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
@@ -124,10 +127,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
-            val countInPlay = sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
-            val countToday = sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
-            val countEarly = sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
-            val countParlay = sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countInPlay =
+                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+            val countToday =
+                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+            val countEarly =
+                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countParlay =
+                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countOutright =
+                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
             val countAsStart = sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
@@ -150,6 +159,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             val tabParlay = tabLayout.getTabAt(4)?.customView
             tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
             tabParlay?.tv_number?.text = countParlay.toString()
+
+            val tabOutright = tabLayout.getTabAt(5)?.customView
+            tabOutright?.tv_title?.setText(R.string.home_tab_outright)
+            tabOutright?.tv_number?.text = countOutright.toString()
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -171,6 +185,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     }
                     4 -> {
                         navGameFragment(MatchType.PARLAY)
+                    }
+                    5 -> {
+                        navGameFragment(MatchType.OUTRIGHT)
                     }
                 }
             }
@@ -201,8 +218,26 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     NavOptions.Builder().setLaunchSingleTop(true).build()
                 navController.navigate(action, navOptions)
             }
+            R.id.game2Fragment -> {
+                val action =
+                    Game2FragmentDirections.actionGame2FragmentToGameFragment(
+                        matchType
+                    )
+                val navOptions =
+                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                navController.navigate(action, navOptions)
+            }
         }
     }
+
+    private fun switchFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_right, 0)
+            .replace(R.id.odds_detail_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -226,6 +261,21 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.sportMenuResult.observe(this, Observer {
             hideLoading()
             updateUiWithResult(it)
+        })
+
+        viewModel.curOddsDetailParams.observe(this, Observer {
+            val gameType = it[0]
+            val typeName = it[1]
+            val matchId = it[2] ?: ""
+            val oddsType = "EU"
+
+            getAppBarLayout().setExpanded(true, true)
+
+            switchFragment(
+                OddsDetailFragment.newInstance(
+                    gameType, typeName, matchId, oddsType
+                )
+            )
         })
     }
 
@@ -257,7 +307,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun updateMenuFragmentUI() {
         try {
-            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.updateUI()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -278,30 +329,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.getSportMenu()
     }
 
-    fun getScrollView(): NestedScrollView {
-        return mainBinding.scrollView
-    }
-
     fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
-    }
-
-    fun getHeight(): Int {
-
-        var statusBarHeight = 0
-        val resourceId = applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            statusBarHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
-        }
-
-        var navHeight = 0
-        val navResourceId = applicationContext.resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        if (navResourceId > 0) {
-            navHeight = applicationContext.resources.getDimensionPixelSize(resourceId)
-        }
-
-        return MetricsUtil.getScreenHeight() - mainBinding.toolBar.height * 2 - mainBinding.llAnnounce.height - mainBinding.tabLayout.height - statusBarHeight - navHeight
-
     }
 
 }

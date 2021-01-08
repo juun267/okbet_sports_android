@@ -1,11 +1,12 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,12 +18,16 @@ import kotlinx.android.synthetic.main.game_bar_inplay.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
+import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
+import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.TimeUtil
 
 
 /**
@@ -31,10 +36,23 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
  * create an instance of this fragment.
  */
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+
+    private val navController by lazy {
+        findNavController()
+    }
+
+    //TODO Dean : 順一下獲取List的邏輯, 目前有重複call api的問題
+    private var timeRangeParams: TimeRangeParams = object : TimeRangeParams {
+        override val startTime: String?
+            get() = null
+        override val endTime: String?
+            get() = null
+    }
+
     private val args: GameFragmentArgs by navArgs()
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            viewModel.getLeagueList(args.matchType, it)
+            viewModel.getLeagueList(args.matchType, it, timeRangeParams)
         })
     }
     private val gameDateAdapter by lazy {
@@ -44,11 +62,18 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val leagueOddAdapter by lazy {
-        LeagueOddAdapter()
+        LeagueOddAdapter().apply {
+            matchOddListener = MatchOddListener {
+                viewModel.getOddsDetail(it.matchInfo.id)
+            }
+        }
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter()
+        LeagueAdapter(LeagueListener {
+            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id, args.matchType, timeRangeParams.startTime ?: "", timeRangeParams.endTime ?: "")
+            navController.navigate(action)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +95,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupLeagueList(this)
 
             this.inplay_ou.setOnClickListener {
-                viewModel.setPlayType(PlayType.OU)
+                viewModel.setPlayType(PlayType.OU_HDP)
             }
 
             this.inplay_1x2.setOnClickListener {
@@ -94,16 +119,20 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupDateRow(view: View) {
-        view.date_row_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            this.adapter = gameDateAdapter
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
+        if (args.matchType == MatchType.TODAY) {
+            timeRangeParams = TimeUtil.getTodayTimeRangeParams()
+        } else {
+            view.date_row_list.apply {
+                this.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                this.adapter = gameDateAdapter
+                addItemDecoration(
+                    SpaceItemDecoration(
+                        context,
+                        R.dimen.recyclerview_item_dec_spec
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -177,15 +206,20 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
-            inplay_ou.isSelected = (it === PlayType.OU)
+            inplay_ou.isSelected = (it === PlayType.OU_HDP)
             inplay_1x2.isSelected = (it == PlayType.X12)
+
+            leagueOddAdapter.playType = it
         })
 
-        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer {
-            gameDateAdapter.data = it
+        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer { pair ->
+            gameDateAdapter.data = pair
+            pair.find { it.second }?.first?.let {
+                timeRangeParams = TimeUtil.getDayDateTimeRangeParams(it)
+                viewModel.getLeagueList(args.matchType, timeRangeParams)
+            }
         })
 
-        viewModel.getLeagueList(args.matchType)
         viewModel.getEarlyDateRow()
     }
 

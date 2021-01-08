@@ -34,9 +34,14 @@
 
     <color name="button_focus">#F98B00</color>
     <color name="button_unfocus">#F7F7F7</color>
+    <color name="button_disable">#80000000</color>
     <color name="pumpkinOrange">#F98B00</color>
+    <color name="orangeyRed">#FF4B2C</color>
 
     <color name="tab_ripple">#1AF98B00</color>
+
+
+
 
     <!-- 线条颜色 -->
     <color name="lineGray">#f2f2f2</color>

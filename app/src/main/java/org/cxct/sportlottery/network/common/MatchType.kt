@@ -5,5 +5,6 @@ enum class MatchType(val postValue: String) {
     TODAY("TODAY"),
     EARLY("EARLY"),
     PARLAY("PARLAY"),
+    OUTRIGHT("OUTRIGHT"),
     AT_START("ATSTART")
 }

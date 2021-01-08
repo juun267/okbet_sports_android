@@ -3,12 +3,11 @@ package org.cxct.sportlottery.ui.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 
-class TypeFGLGAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeFGLGAdapter.ViewHolder>() {
+class TypeOneListAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,26 +25,10 @@ class TypeFGLGAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<Ty
     }
 
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
-        private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
+    inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(odd: Odd) {
-
-            tvName.text = odd.name
-            tvOdds.text = odd.odds.toString()
-
-            tvOdds.isSelected = odd.isSelect
-
-            tvOdds.setOnClickListener {
-                tvOdds.isSelected = !tvOdds.isSelected
-                odd.isSelect = tvOdds.isSelected
-
-                //TODO 添加至投注單
-
-            }
-
+            setData(odd)
         }
     }
 

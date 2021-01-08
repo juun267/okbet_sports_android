@@ -11,4 +11,6 @@ data class MatchOdd(
     val matchInfo: MatchInfo,
     @Json(name = "odds")
     val odds: Map<String, List<Odd>>
-)
+) {
+    var isExpand = false
+}
