@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
+import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.home.MainViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,7 +51,11 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val matchOddAdapter by lazy {
-        MatchOddAdapter()
+        MatchOddAdapter().apply {
+            matchOddListener = MatchOddListener {
+                viewModel.getOddsDetail(it.matchInfo.id)
+            }
+        }
     }
 
     override fun onCreateView(
