@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordActivity
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.LanguageManager
@@ -26,7 +27,11 @@ import org.cxct.sportlottery.util.LanguageManager
 class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 
@@ -70,10 +75,12 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_bet_history.setOnClickListener {
-//            val activity = ToolBarActivity(BetRecordSearchFragment())::class.java
             startActivity(Intent(context, BetRecordActivity::class.java))
         }
 
+        menu_news.setOnClickListener {
+            startActivity(Intent(context, InfoCenterActivity::class.java))
+        }
     }
 
     fun updateUI() {

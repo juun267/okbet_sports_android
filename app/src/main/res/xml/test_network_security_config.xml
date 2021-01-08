@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 20181205 測試需求:
+為抓取網路請求和響應數據內容，為了看到 https 通訊加密內容，需要在手機端添加 user level 的 CA 憑證
+所以需要此設置給予使用自訂 CA 權限-->
+<!--20190107 聊天室 9.0會遇到 not permitted by network security policy android  --><!--https://www.jianshu.com/p/57047a84e559  -->
+<network-security-config>
+    <base-config
+        cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

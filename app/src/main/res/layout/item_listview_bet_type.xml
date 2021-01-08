@@ -6,7 +6,6 @@
     android:paddingStart="24dp"
     android:paddingEnd="4dp"
     android:id="@+id/linear_layout"
-    android:background="@drawable/selector_bg_white_blue"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 

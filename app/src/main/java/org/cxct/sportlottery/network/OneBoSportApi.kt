@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network
 
+import org.cxct.sportlottery.network.infoCenter.InfoCenterService
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.index.IndexService
@@ -83,5 +84,11 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(UserService::class.java)
+    }
+
+    val infoCenterService: InfoCenterService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(InfoCenterService::class.java)
     }
 }

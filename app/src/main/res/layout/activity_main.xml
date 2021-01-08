@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_scrollFlags="scroll">
-                <!-- toolBar -->
+                    <!-- toolBar -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -104,6 +104,7 @@
                                 app:riv_oval="true" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -114,9 +115,9 @@
                             <!-- 公告輪播跑馬燈 -->
                             <LinearLayout
                                 android:id="@+id/ll_announce"
-                                android:background="@color/gray"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
+                                android:background="@color/gray"
                                 android:gravity="center_vertical">
 
                                 <ImageView
@@ -180,6 +181,12 @@
                                     android:layout_height="wrap_content"
                                     android:layout="@layout/home_cate_tab" />
 
+                                <com.google.android.material.tabs.TabItem
+                                    android:id="@+id/tab_outright"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout="@layout/home_cate_tab" />
+
                             </com.google.android.material.tabs.TabLayout>
 
                         </LinearLayout>
@@ -189,15 +196,25 @@
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.fragment.app.FragmentContainerView
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:id="@+id/homeFragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
-                app:navGraph="@navigation/home_navigation"
-                tools:layout="@layout/fragment_home" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/homeFragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:navGraph="@navigation/home_navigation"
+                    tools:layout="@layout/fragment_home" />
+
+                <FrameLayout
+                    android:id="@+id/odds_detail_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

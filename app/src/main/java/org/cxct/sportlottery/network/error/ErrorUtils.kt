@@ -12,9 +12,12 @@ import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_MONEY
+import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -27,6 +30,7 @@ import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.user.UserMoneyResult
 import retrofit2.Converter
@@ -73,7 +77,7 @@ object ErrorUtils {
                     }
                     (url.contains(MATCH_BET_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return BetListResult(it.code, it.msg, null, it.success, null) as T
+                        return BetListResult(it.code, it.msg, null, it.success, null, null) as T
                     }
                     (url.contains(MATCH_PRELOAD)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -101,6 +105,10 @@ object ErrorUtils {
                             null
                         ) as T
                     }
+                    (url.contains(OUTRIGHT_ODDS_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OutrightOddsListResult(it.code, it.msg, it.success, null) as T
+                    }
                     (url.contains(USER_MONEY)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return UserMoneyResult(it.code, it.msg, it.success, null) as T
@@ -108,6 +116,10 @@ object ErrorUtils {
                     (url.contains(INDEX_LOGOUT)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LogoutResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(USER_NOTICE_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return InfoCenterResult(it.code, it.msg, it.success, null, null) as T
                     }
                     (url.contains(MATCH_RESULT_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

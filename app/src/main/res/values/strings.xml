@@ -9,6 +9,19 @@
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
 
+    <!-- Login page -->
+    <string name="login_account">登录账号</string>
+    <string name="please_input_account">请输入帐号</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="login_password">登录密码</string>
+    <string name="remember_password">记住密码</string>
+    <string name="forget_password">忘记密码?</string>
+    <string name="desc_no_account">还没有账号？</string>
+    <string name="sign_up_know">立即注册</string>
+
+    <string name="error_last_6_pw">*密码至少6位字符</string>
+    <string name="error_required_field">*未填写必要的字段</string>
+
     <!-- Home page-->
     <string name="btn_login">登录</string>
     <string name="btn_logout">登出</string>
@@ -20,6 +33,7 @@
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
+    <string name="home_tab_outright">冠军</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
 
@@ -77,20 +91,20 @@
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
 
-    <!--login need translate later-->
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <!--  information center  -->
+    <string name="inbox">收件箱 (%1$d)</string>
+    <string name="unread_letters">未读邮件 (%1$d)</string>
+    <string name="index">序号</string>
+    <string name="title">标题</string>
+    <string name="time">时间</string>
+    <string name="btn_home_page">首页</string>
+    <string name="btn_previous_page">上一页</string>
+    <string name="btn_next_page">下一页</string>
+    <string name="btn_end_page">尾页</string>
+    <string name="info_center_promot">当前 %1$d/%2$d  每页 %3$d 笔   共 %4$d 条</string>
 
+    <!--bet record-->
     <string name="please_choose_bet_state">请选择注单状态</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="please_choose_start_date">请选择开始日期</string>
     <string name="please_choose_end_date">请选择结束日期</string>
     <string name="today">今日</string>
@@ -99,9 +113,12 @@
     <string name="champion_play">冠军玩法</string>
     <string name="inquire">查询</string>
     <string name="order_number">注单编号</string>
+    <string name="order_number_colon">注单编号：</string>
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">总投注额</string>
+    <string name="total_bet_money_colon">总投注额：</string>
     <string name="status">状态</string>
+    <string name="status_colon">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态：</string>
     <string name="bet_record">投注记录</string>
     <string name="select_all">全选</string>
     <string name="start_date">开始日期</string>
@@ -117,6 +134,17 @@
     <string name="suspend">延期</string>
     <string name="canceled">已取消</string>
 
+    <string name="bet_detail">注单详情</string>
+    <string name="bet_time">投注时间：</string>
+    <string name="league_name">联赛名称：</string>
+    <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
+    <string name="play_type">玩&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;法：</string>
+    <string name="game_odds">盘口赔率：</string>
+    <string name="match_names">(主) %s  vs  %s (客)</string>
+    <string name="bet_item">投注项目 - %s</string>
+    <string name="nothing">--</string>
+
+
     <!--game hall-->
     <string name="inplay_row_title">滚球</string>
     <string name="inplay_row_btn_double">1 X 2</string>
@@ -125,4 +153,8 @@
     <string name="date_row_other">其他早盤</string>
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
+
+    <string name="total_bet_amount">总共有 投注额</string>
+    <string name="win_lose">赢 / 输</string>
+
 </resources>

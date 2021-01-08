@@ -23,6 +23,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var matchOddListener: MatchOddListener? = null
+
     override fun getItemCount(): Int = data.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,7 +34,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, playType)
+        holder.bind(item, playType, matchOddListener)
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,15 +42,19 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             MatchOddAdapter()
         }
 
-        fun bind(item: LeagueOdd, playType: PlayType) {
+        fun bind(item: LeagueOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
             itemView.league_odd_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupMatchOddList(item, playType)
+            setupMatchOddList(item, playType, matchOddListener)
             setupMatchOddExpand(item)
         }
 
-        private fun setupMatchOddList(item: LeagueOdd, playType: PlayType) {
+        private fun setupMatchOddList(
+            item: LeagueOdd,
+            playType: PlayType,
+            matchOddListener: MatchOddListener?
+        ) {
             itemView.league_odd_sub_list.apply {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -57,6 +63,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
 
             matchOddAdapter.data = item.matchOdds
             matchOddAdapter.playType = playType
+            matchOddAdapter.matchOddListener = matchOddListener
         }
 
         private fun setupMatchOddExpand(item: LeagueOdd) {

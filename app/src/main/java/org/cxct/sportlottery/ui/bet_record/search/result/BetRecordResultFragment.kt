@@ -29,8 +29,8 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         binding.apply {
             betRecordViewModel = this@BetRecordResultFragment.viewModel
             lifecycleOwner = this@BetRecordResultFragment
+            other = this@BetRecordResultFragment.viewModel.betRecordResult.value?.other
         }
-
         return binding.root
     }
 
@@ -48,7 +48,9 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     private fun initRv() {
         val rvAdapter = BetRecordAdapter(ItemClickListener {
-            it.let { orderNum ->
+            it.let { data ->
+                val detailDialog = BetRecordDetailDialog(data)
+                detailDialog.show(parentFragmentManager, "BetRecordDetailDialog")
             }
         })
         rv_bet_record.adapter = rvAdapter

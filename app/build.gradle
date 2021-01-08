@@ -60,7 +60,7 @@ android {
             manifestPlaceholders = [
                     app_name               : "测试体育",
                     JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "57f81c205b0afd41e401cc6d", //JPush上注册的包名对应的appkey.
+                    JPUSH_APPKEY           : "65670407e46038b18ee836ed", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
                     JPUSH_PRIVODER         : applicationId + ".DataProvider",
                     JPUSH_PERMISSION       : applicationId + ".permission.JPUSH_MESSAGE",
