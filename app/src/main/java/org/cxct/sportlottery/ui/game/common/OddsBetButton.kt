@@ -6,6 +6,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
+import java.lang.Exception
 
 const val O_TYPE = 0
 const val U_TYPE = 1
@@ -32,6 +33,8 @@ class OddsBetButton @JvmOverloads constructor(
 
             bet_bottom_text.text = typedArray.getString(R.styleable.OddsBetButton_bottomText)
 
+        } catch (e: Exception) {
+            e.printStackTrace()
         } finally {
             typedArray.recycle()
         }
