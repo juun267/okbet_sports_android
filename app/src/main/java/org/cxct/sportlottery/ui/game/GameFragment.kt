@@ -225,7 +225,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.gameHallOddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 hall_league_list.visibility = View.GONE
                 hall_outright_list.visibility = View.GONE

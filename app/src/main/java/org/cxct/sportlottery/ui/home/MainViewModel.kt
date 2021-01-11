@@ -52,6 +52,9 @@ class MainViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
+    val gameHallOddsListResult: LiveData<OddsListResult>
+        get() = _gameHallOddsListResult
+
     val oddsListResult: LiveData<OddsListResult>
         get() = _oddsListResult
 
@@ -74,6 +77,7 @@ class MainViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
+    private val _gameHallOddsListResult = MutableLiveData<OddsListResult>()
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
     private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
@@ -236,7 +240,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getOddsList(gameType, matchType.postValue)
+                    getGameHallOddsList(gameType, matchType.postValue)
                 }
             }
             MatchType.TODAY -> {
@@ -358,6 +362,28 @@ class MainViewModel(
         }
 
         _sportMenuResult.postValue(result)
+    }
+
+    private fun getGameHallOddsList(
+        gameType: String,
+        matchType: String,
+        timeRangeParams: TimeRangeParams? = null,
+        leagueIdList: List<String>? = null
+    ) {
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.oddsService.getOddsList(
+                    OddsListRequest(
+                        gameType,
+                        matchType,
+                        leagueIdList = leagueIdList,
+                        startTime = timeRangeParams?.startTime,
+                        endTime = timeRangeParams?.endTime
+                    )
+                )
+            }
+            _gameHallOddsListResult.postValue(result)
+        }
     }
 
     private fun getOddsList(
