@@ -9,6 +9,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
@@ -64,6 +65,12 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(INDEX_LOGIN) -> {
                     response = getMockJsonData(request, "index_login.mock")
                 }
+                path.contains(INDEX_LOGOUT) -> {
+                    response = getMockJsonData(request, "index_logout.mock")
+                }
+                path.contains(INDEX_CONFIG) -> {
+                    response = getMockJsonData(request, "index_config.mock")
+                }
                 path.contains(MESSAGE_LIST) -> {
                     response = getMockJsonData(request, "message_list.mock")
                 }
@@ -111,9 +118,6 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(USER_MONEY) -> {
                     response = getMockJsonData(request, "user_money.mock")
-                }
-                path.contains(INDEX_LOGOUT) -> {
-                    response = getMockJsonData(request, "index_logout.mock")
                 }
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")
