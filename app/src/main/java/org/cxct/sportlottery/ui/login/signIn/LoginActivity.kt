@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.login.signIn
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.R
@@ -114,11 +113,16 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         if (loginResult.success) {
             finish()
         } else {
-            showLoginFailed(loginResult.msg)
+            showErrorDialog(loginResult.msg)
         }
     }
 
-    private fun showLoginFailed(error: String) {
-        Toast.makeText(applicationContext, error, Toast.LENGTH_SHORT).show()
+    private fun showErrorDialog(errorMsg: String?) {
+        val dialog = CustomAlertDialog(this)
+        dialog.setMessage(errorMsg)
+        dialog.setNegativeButtonText(null)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 }

@@ -58,15 +58,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
 
     private fun checkAccount(context: Context, username: String): String? {
         return when {
-            username.isBlank() -> context.getString(R.string.error_required_field)
+            username.isBlank() -> context.getString(R.string.error_input_account)
             else -> null
         }
     }
 
     private fun checkPassword(context: Context, password: String): String? {
         return when {
-            password.isBlank() -> context.getString(R.string.error_required_field)
-            password.length < 6 -> context.getString(R.string.error_last_6_pw)
+            password.isBlank() -> context.getString(R.string.error_input_password)
             else -> null
         }
     }
