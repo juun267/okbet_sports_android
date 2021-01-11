@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
@@ -104,6 +105,14 @@ class MainViewModel(
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
+
+    private val _oddsDetailMoreList = MutableLiveData<List<*>>()
+    val oddsDetailMoreList: LiveData<List<*>?>
+        get() = _oddsDetailMoreList
+
+    fun setOddsDetailMoreList(list: List<*>) {
+        _oddsDetailMoreList.postValue(list)
+    }
 
     fun logout() {
         viewModelScope.launch {
@@ -400,4 +409,9 @@ class MainViewModel(
         }
         _curOddsDetailParams.postValue(listOf(item?.code,item?.name,oddId))
     }
+
+    fun getOddsDetail(entity: GameEntity) {
+        _curOddsDetailParams.postValue(listOf(entity.code,entity.name,entity.match?.id))
+    }
+
 }
