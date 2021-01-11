@@ -52,7 +52,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            viewModel.getLeagueList(args.matchType, it, timeRangeParams)
+            viewModel.getGameHallList(args.matchType, it, timeRangeParams)
         })
     }
     private val gameDateAdapter by lazy {
@@ -131,9 +131,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             viewModel.setPlayType(PlayType.X12)
         }
         view.hall_match_type_row.matchClickListener = View.OnClickListener {
-            //TODO replace timber to get match list
-            Timber.i("click match")
-
+            viewModel.getGameHallList(args.matchType, timeRangeParams)
         }
         view.hall_match_type_row.outrightClickListener = View.OnClickListener {
             //TODO replace timber to get outright list
@@ -271,7 +269,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 } else {
                     TimeUtil.getDayDateTimeRangeParams(it)
                 }
-                viewModel.getLeagueList(args.matchType, timeRangeParams)
+                viewModel.getGameHallList(args.matchType, timeRangeParams)
             }
         })
 

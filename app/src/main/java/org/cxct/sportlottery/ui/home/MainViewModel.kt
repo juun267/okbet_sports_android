@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.home
 
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -147,11 +147,11 @@ class MainViewModel(
 
             val asStartCount = result?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             _asStartCount.postValue(asStartCount)
-            _allFootballCount.postValue(getAllGameCount("FT", result))
-            _allBasketballCount.postValue(getAllGameCount("BK", result))
-            _allTennisCount.postValue(getAllGameCount("TN", result))
-            _allBadmintonCount.postValue(getAllGameCount("BM", result))
-            _allVolleyballCount.postValue(getAllGameCount("VB", result))
+            _allFootballCount.postValue(getAllGameCount(SportType.FOOTBALL.code, result))
+            _allBasketballCount.postValue(getAllGameCount(SportType.BASKETBALL.code, result))
+            _allTennisCount.postValue(getAllGameCount(SportType.TENNIS.code, result))
+            _allBadmintonCount.postValue(getAllGameCount(SportType.BADMINTON.code, result))
+            _allVolleyballCount.postValue(getAllGameCount(SportType.VOLLEYBALL.code, result))
 
             result?.let {
                 if (it.sportMenuData != null)
@@ -159,6 +159,25 @@ class MainViewModel(
                 _sportMenuResult.postValue(it)
             }
         }
+    }
+
+    private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
+        val inPlayCount =
+            sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.find { it.code == goalCode }?.num
+                ?: 0
+        val todayCount =
+            sportMenuResult?.sportMenuData?.menu?.today?.items?.find { it.code == goalCode }?.num
+                ?: 0
+        val earlyCount =
+            sportMenuResult?.sportMenuData?.menu?.early?.items?.find { it.code == goalCode }?.num
+                ?: 0
+        val parlayCount =
+            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find { it.code == goalCode }?.num
+                ?: 0
+        val atStartCount =
+            sportMenuResult?.sportMenuData?.atStart?.items?.find { it.code == goalCode }?.num ?: 0
+
+        return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
     }
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
@@ -183,7 +202,7 @@ class MainViewModel(
         viewModelScope.launch {
             doNetwork {
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest("INPLAY")
+                    MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
             }?.let { result ->
                 _matchPreloadInPlay.postValue(result)
@@ -191,12 +210,25 @@ class MainViewModel(
         }
     }
 
-    fun getLeagueList(matchType: MatchType, item: Item, timeRangeParams: TimeRangeParams) {
-        updateSportSelectedState(matchType, item)
-        getLeagueList(matchType, timeRangeParams)
+    fun getMoney() {
+        viewModelScope.launch {
+            val userMoneyResult = doNetwork {
+                OneBoSportApi.userService.getMoney()
+            }
+            _userMoney.postValue(userMoneyResult?.money)
+        }
     }
 
-    fun getLeagueList(matchType: MatchType, timeRangeParams: TimeRangeParams) {
+    fun getGameHallList(matchType: MatchType, item: Item, timeRangeParams: TimeRangeParams) {
+        updateSportSelectedState(matchType, item)
+        getGameHallList(matchType, timeRangeParams)
+    }
+
+    fun getGameHallList(
+        matchType: MatchType,
+        timeRangeParams: TimeRangeParams,
+    ) {
+
         when (matchType) {
             MatchType.IN_PLAY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
@@ -248,10 +280,13 @@ class MainViewModel(
         }
     }
 
-    fun getLeagueOddsList(matchType: MatchType, leagueId: String, timeRangeParams: TimeRangeParams) {
-//        val leagueIdList: List<Int>? = null
-        val leagueIdList: MutableList<String> by lazy {
-            mutableListOf(leagueId)
+    fun getLeagueOddsList(
+        matchType: MatchType,
+        leagueId: String,
+        timeRangeParams: TimeRangeParams
+    ) {
+        val leagueIdList by lazy {
+            listOf(leagueId)
         }
 
         when (matchType) {
@@ -261,25 +296,27 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getLeagueOddsList(gameType, matchType.postValue, leagueIdList, timeRangeParams)
+                    getOddsList(gameType, matchType.postValue, timeRangeParams, leagueIdList)
                 }
             }
+
             MatchType.EARLY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
                     it.isSelected
                 }?.code
 
                 gameType?.let {
-                    getLeagueOddsList(gameType, matchType.postValue, leagueIdList, timeRangeParams)
+                    getOddsList(gameType, matchType.postValue, timeRangeParams, leagueIdList)
                 }
             }
+
             MatchType.PARLAY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
 
                 gameType?.let {
-                    getLeagueOddsList(gameType, matchType.postValue, leagueIdList, timeRangeParams)
+                    getOddsList(gameType, matchType.postValue, timeRangeParams, leagueIdList)
                 }
             }
             else -> {
@@ -323,30 +360,12 @@ class MainViewModel(
         _sportMenuResult.postValue(result)
     }
 
-    fun updateDateSelectedState(string: String) {
-        val dateEarly: MutableList<Pair<String, Boolean>> = mutableListOf()
-
-        _curDateEarly.value?.forEach {
-            dateEarly.add(Pair(it.first, (it.first == string)))
-        }
-        _curDateEarly.postValue(dateEarly)
-    }
-
-    private fun getOddsList(gameType: String, matchType: String) {
-        viewModelScope.launch {
-            val result = doNetwork {
-                OneBoSportApi.oddsService.getOddsList(
-                    OddsListRequest(
-                        gameType,
-                        matchType,
-                    )
-                )
-            }
-            _oddsListResult.postValue(result)
-        }
-    }
-
-    private fun getLeagueOddsList(gameType: String, matchType: String, leagueIdList: List<String>, timeRangeParams: TimeRangeParams) {
+    private fun getOddsList(
+        gameType: String,
+        matchType: String,
+        timeRangeParams: TimeRangeParams? = null,
+        leagueIdList: List<String>? = null
+    ) {
         viewModelScope.launch {
             val result = doNetwork {
                 OneBoSportApi.oddsService.getOddsList(
@@ -354,8 +373,8 @@ class MainViewModel(
                         gameType,
                         matchType,
                         leagueIdList = leagueIdList,
-                        startTime = timeRangeParams.startTime,
-                        endTime = timeRangeParams.endTime
+                        startTime = timeRangeParams?.startTime,
+                        endTime = timeRangeParams?.endTime
                     )
                 )
             }
@@ -363,11 +382,20 @@ class MainViewModel(
         }
     }
 
-    private fun getLeagueList(gameType: String, matchType: String, timeRangeParams: TimeRangeParams) {
+    private fun getLeagueList(
+        gameType: String,
+        matchType: String,
+        timeRangeParams: TimeRangeParams
+    ) {
         viewModelScope.launch {
             val result = doNetwork {
                 OneBoSportApi.leagueService.getLeagueList(
-                    LeagueListRequest(gameType, matchType, startTime = timeRangeParams.startTime, endTime = timeRangeParams.endTime)
+                    LeagueListRequest(
+                        gameType,
+                        matchType,
+                        startTime = timeRangeParams.startTime,
+                        endTime = timeRangeParams.endTime
+                    )
                 )
             }
             _leagueListResult.postValue(result)
@@ -381,40 +409,7 @@ class MainViewModel(
                     OutrightOddsListRequest(gameType)
                 )
             }
-
             _outrightOddsListResult.postValue(result)
-        }
-    }
-
-    fun setPlayType(playType: PlayType) {
-        _curPlayType.postValue(playType)
-    }
-
-    private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
-        val inPlayCount =
-            sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val todayCount =
-            sportMenuResult?.sportMenuData?.menu?.today?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val earlyCount =
-            sportMenuResult?.sportMenuData?.menu?.early?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val parlayCount =
-            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val atStartCount =
-            sportMenuResult?.sportMenuData?.atStart?.items?.find { it.code == goalCode }?.num ?: 0
-
-        return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
-    }
-
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 
@@ -429,10 +424,23 @@ class MainViewModel(
         _curDateEarly.postValue(dateEarly)
     }
 
+    fun updateDateSelectedState(string: String) {
+        val dateEarly: MutableList<Pair<String, Boolean>> = mutableListOf()
+
+        _curDateEarly.value?.forEach {
+            dateEarly.add(Pair(it.first, (it.first == string)))
+        }
+        _curDateEarly.postValue(dateEarly)
+    }
+
+    fun setPlayType(playType: PlayType) {
+        _curPlayType.postValue(playType)
+    }
+
     fun getOddsDetail(oddId: String) {
         val item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
             it.isSelected
         }
-        _curOddsDetailParams.postValue(listOf(item?.code,item?.name,oddId))
+        _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
     }
 }
