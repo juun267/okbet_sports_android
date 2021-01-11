@@ -2,6 +2,7 @@ package org.cxct.sportlottery.service
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.IBinder
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -25,6 +26,18 @@ import ua.naiksoftware.stomp.dto.StompMessage
 import java.util.concurrent.TimeUnit
 
 class BackService : BaseService(){
+
+    enum class EventType {
+        ODDS_CHANGE, //赔率变更
+        ORDER_SETTLEMENT, //注单结算通知
+        USER_MONEY, //余额变更
+        USER_NOTICE, //用户消息通知
+        NOTICE, //公告
+        PING_PONG, //ping-pong心跳
+        MATCH_CLOCK, //赛事时刻
+        GLOBAL_STOP, //所有赔率禁用，不允许投注
+    }
+
     companion object {
 //        private const val URL_BASE = "https://sports.cxct.org/api"
         private const val URL_SOCKET_HOST_AND_PORT = "http://sports.cxct.org/api/ws/app/im" //app连接端点,无sockjs
@@ -60,6 +73,10 @@ class BackService : BaseService(){
     override fun onDestroy() {
         super.onDestroy()
         disconnect()
+    }
+
+    override fun onBind(intent: Intent): IBinder? {
+        return super.onBind(intent)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -130,10 +147,11 @@ class BackService : BaseService(){
                     Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
 //                    val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(dataListType)
                     val type = Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
-                    val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter<List<PrivateDisposableResponseItem>>(type)
+                    val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(type)
                     val item = adapter.fromJson(topicMessage.payload.toString())
-                    Timber.e(">>>>>>test, item money = ${item?.first()?.money}")
-                    Timber.e(">>>>>>test, item money 2 = ${item?.get(1)?.money}")
+                    item?.forEach {
+                        Timber.e(">>>>>>test, item money = ${it.eventType}")
+                    }
                 }
 
                 //具体赛事/赛季频道
