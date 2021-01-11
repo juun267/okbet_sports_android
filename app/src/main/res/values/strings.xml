@@ -176,14 +176,13 @@
     <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
     <string name="date_row_league">赛事</string>
     <string name="date_row_other">其他早盤</string>
+    <string name="outright_row_entrance">冠军盘口</string>
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
 
     <string name="total_bet_amount">总共有 投注额</string>
     <string name="win_lose">赢 / 输</string>
 
-
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
-
 </resources>

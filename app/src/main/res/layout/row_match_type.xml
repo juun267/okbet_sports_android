@@ -7,7 +7,7 @@
     android:background="#223549">
 
     <TextView
-        android:id="@+id/inplay_title"
+        android:id="@+id/row_inplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -19,18 +19,42 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/inplay_sport"
+        android:id="@+id/row_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="@string/date_row_league"
+        android:textColor="@color/selector_match_type_row_text"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/row_outright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/outright_row_entrance"
+        android:textColor="@color/selector_match_type_row_text"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/row_match"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/row_sport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/inplay_title"
-        app:layout_constraintTop_toBottomOf="@id/inplay_title"
+        app:layout_constraintStart_toStartOf="@id/row_inplay"
+        app:layout_constraintTop_toBottomOf="@id/row_inplay"
         tools:text="足球" />
 
     <Button
-        android:id="@+id/inplay_1x2"
+        android:id="@+id/row_1x2"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginEnd="15dp"
@@ -48,7 +72,7 @@
         tools:textColor="@android:color/white" />
 
     <Button
-        android:id="@+id/inplay_ou"
+        android:id="@+id/row_ou"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginEnd="5dp"
@@ -59,10 +83,10 @@
         android:paddingBottom="8dp"
         android:text="@string/inplay_row_btn_bs"
         android:textColor="@color/selector_inplay_btn_text"
-        android:textSize="@dimen/textSize14sp"
-        app:layout_constraintBottom_toBottomOf="@id/inplay_1x2"
-        app:layout_constraintEnd_toStartOf="@id/inplay_1x2"
-        app:layout_constraintTop_toTopOf="@id/inplay_1x2"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/row_1x2"
+        app:layout_constraintEnd_toStartOf="@id/row_1x2"
+        app:layout_constraintTop_toTopOf="@id/row_1x2"
         tools:textColor="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
