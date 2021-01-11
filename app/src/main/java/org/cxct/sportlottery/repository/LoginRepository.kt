@@ -14,8 +14,6 @@ const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 
-var sLoginData: LoginData? = null
-
 class LoginRepository(private val androidContext: Context) {
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
