@@ -12,15 +12,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
-import kotlinx.android.synthetic.main.game_bar_date.view.*
-import kotlinx.android.synthetic.main.game_bar_inplay.*
-import kotlinx.android.synthetic.main.game_bar_inplay.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
@@ -73,7 +71,12 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id, args.matchType, timeRangeParams.startTime ?: "", timeRangeParams.endTime ?: "")
+            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(
+                it.list.first().id,
+                args.matchType,
+                timeRangeParams.startTime ?: "",
+                timeRangeParams.endTime ?: ""
+            )
             navController.navigate(action)
         })
     }
@@ -94,6 +97,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             setupSportTypeRow(this)
 
+            setupMatchTypeRow(this)
+
             setupDateRow(this)
 
             setupOddsList(this)
@@ -101,14 +106,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupLeagueList(this)
 
             setupOutrightOddsList(this)
-
-            this.inplay_ou.setOnClickListener {
-                viewModel.setPlayType(PlayType.OU_HDP)
-            }
-
-            this.inplay_1x2.setOnClickListener {
-                viewModel.setPlayType(PlayType.X12)
-            }
         }
     }
 
@@ -126,11 +123,29 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun setupMatchTypeRow(view: View) {
+        view.hall_match_type_row.ouHDPClickListener = View.OnClickListener {
+            viewModel.setPlayType(PlayType.OU_HDP)
+        }
+        view.hall_match_type_row.x12ClickListener = View.OnClickListener {
+            viewModel.setPlayType(PlayType.X12)
+        }
+        view.hall_match_type_row.matchClickListener = View.OnClickListener {
+            //TODO replace timber to get match list
+            Timber.i("click match")
+
+        }
+        view.hall_match_type_row.outrightClickListener = View.OnClickListener {
+            //TODO replace timber to get outright list
+            Timber.i("click outright entrance")
+        }
+    }
+
     private fun setupDateRow(view: View) {
         if (args.matchType == MatchType.TODAY) {
             timeRangeParams = TimeUtil.getTodayTimeRangeParams()
         } else {
-            view.date_row_list.apply {
+            view.hall_date_list.apply {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 this.adapter = gameDateAdapter
@@ -191,7 +206,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
-
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
                     setupInPlayFilter(it.sportMenuData?.menu?.inPlay?.items ?: listOf())
@@ -244,8 +258,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
-            inplay_ou.isSelected = (it === PlayType.OU_HDP)
-            inplay_1x2.isSelected = (it == PlayType.X12)
+            hall_match_type_row.curPlayType = it
 
             leagueOddAdapter.playType = it
         })
@@ -268,37 +281,40 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.VISIBLE
-        inplay_sport.text = selectSportName
-        hall_date_row.visibility = View.GONE
+        hall_match_type_row.apply {
+            type = MatchTypeRow.IN_PLAY
+            sport = selectSportName
+        }
+
+        hall_date_list.visibility = View.GONE
     }
 
     private fun setupTodayFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.GONE
+        hall_match_type_row.type = MatchTypeRow.TODAY
+        hall_date_list.visibility = View.GONE
     }
 
     private fun setupEarlyFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.VISIBLE
+        hall_match_type_row.type = MatchTypeRow.EARLY
+        hall_date_list.visibility = View.VISIBLE
     }
 
     private fun setupParlayFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.VISIBLE
+        hall_match_type_row.type = MatchTypeRow.PARLAY
+        hall_date_list.visibility = View.VISIBLE
     }
 
     private fun setupOutrightFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.VISIBLE
+        hall_match_type_row.type = MatchTypeRow.OUTRIGHT
+        hall_date_list.visibility = View.GONE
     }
 
     companion object {

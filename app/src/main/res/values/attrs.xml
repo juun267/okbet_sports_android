@@ -36,4 +36,14 @@
         <attr name="topText" format="string" />
         <attr name="bottomText" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="MatchTypeRow">
+        <attr name="matchType" format="enum">
+            <enum name="inplay" value="0" />
+            <enum name="today" value="1" />
+            <enum name="early" value="2" />
+            <enum name="paylay" value="3" />
+            <enum name="outright" value="4" />
+        </attr>
+    </declare-styleable>
 </resources>
