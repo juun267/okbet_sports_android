@@ -36,6 +36,10 @@
     <string name="error_last_6_pw">*密码至少6位字符</string>
     <string name="error_required_field">*未填写必要的字段</string>
 
+    <!-- Service select dialog -->
+    <string name="online_service1">在线客服1</string>
+    <string name="online_service2">在线客服2</string>
+
     <!-- Register page-->
     <string name="recommend_code">推荐代码</string>
     <string name="hint_recommend_code">请输入推荐代码</string>
