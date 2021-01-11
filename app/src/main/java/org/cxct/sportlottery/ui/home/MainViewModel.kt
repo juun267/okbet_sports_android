@@ -20,6 +20,8 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
@@ -57,6 +59,9 @@ class MainViewModel(
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
 
+    val outrightOddsListResult: LiveData<OutrightOddsListResult>
+        get() = _outrightOddsListResult
+
     val curPlayType: LiveData<PlayType>
         get() = _curPlayType
 
@@ -72,6 +77,7 @@ class MainViewModel(
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
+    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -177,6 +183,9 @@ class MainViewModel(
         sportMenuData.menu.parlay.items.map { sport ->
             sport.isSelected = (sportMenuData.menu.parlay.items.indexOf(sport) == 0)
         }
+        sportMenuData.menu.outright.items.map { sport ->
+            sport.isSelected = (sportMenuData.menu.outright.items.indexOf(sport) == 0)
+        }
     }
 
     fun getInPlayMatchPreload() {
@@ -232,6 +241,15 @@ class MainViewModel(
 
                 gameType?.let {
                     getLeagueList(gameType, matchType.postValue, timeRangeParams)
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+                    it.isSelected
+                }?.code
+
+                gameType?.let {
+                    getOutrightOddsList(it)
                 }
             }
             else -> {
@@ -302,6 +320,11 @@ class MainViewModel(
                     it.isSelected = (it == item)
                 }
             }
+            MatchType.OUTRIGHT -> {
+                result?.sportMenuData?.menu?.outright?.items?.map {
+                    it.isSelected = (it == item)
+                }
+            }
             else -> {
             }
         }
@@ -357,6 +380,18 @@ class MainViewModel(
                 )
             }
             _leagueListResult.postValue(result)
+        }
+    }
+
+    private fun getOutrightOddsList(gameType: String) {
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.outrightService.getOutrightOddsList(
+                    OutrightOddsListRequest(gameType)
+                )
+            }
+
+            _outrightOddsListResult.postValue(result)
         }
     }
 
