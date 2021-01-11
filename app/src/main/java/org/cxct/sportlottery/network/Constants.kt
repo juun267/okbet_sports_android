@@ -38,6 +38,7 @@ object Constants {
     //outright
     const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/list"
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
+    const val OUTRIGHT_SEASON_LIST = "/api/front/outright/season/list"
 
     //infoCenter
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
