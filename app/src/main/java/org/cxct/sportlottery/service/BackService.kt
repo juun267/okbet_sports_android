@@ -2,13 +2,17 @@ package org.cxct.sportlottery.service
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.CompletableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import org.cxct.sportlottery.network.service.PrivateDisposableResponseItem
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
@@ -18,12 +22,11 @@ import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompCommand
 import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class BackService : BaseService(){
     companion object {
-//        private const val URL_BASE = "http://sports.cxct.org/api"
+//        private const val URL_BASE = "https://sports.cxct.org/api"
         private const val URL_SOCKET_HOST_AND_PORT = "http://sports.cxct.org/api/ws/app/im" //app连接端点,无sockjs
         private const val URL_ALL = "/ws/notify/all" //全体公共频道
         private const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
@@ -40,14 +43,15 @@ class BackService : BaseService(){
 //    private val URL_PRIVATE by lazy { "/notify/user/{userId}" } //用户私人频道
 //    private val URL_EVENT by lazy { "/notify/event/{eventId}"} //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id) //TODO Cheryl 替換變數
 //    private val URL_HALL by lazy { "/notify/hall/{gameType}/{cateMenuCode}/{eventId}" }//大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏 //TODO Cheryl 替換變數
-    private val URL_PRIVATE by lazy { "/ws/notify/user/${201}"}
-    private val URL_EVENT by lazy { "/ws/notify/event/sr:match:24755382"}
-    private val URL_HALL by lazy { "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25217322" }
+    private val URL_PRIVATE = "/ws/notify/user/${201}"
+    private val URL_EVENT = "/ws/notify/event/sr:match:24755382"
+    private val URL_HALL = "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25217322"
 
     private var mStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mPingDisposable: Disposable? = null
     private val mHeader: List<StompHeader> by lazy { listOf(StompHeader("token", token)) }
+    private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() }
 
     override fun onCreate() {
         super.onCreate()
@@ -74,15 +78,13 @@ class BackService : BaseService(){
     fun connect() {
 //        try {
             val headerMap = mHeader.map { it.key to it.value }.toMap()
-//        val headerMap = mapOf<String, String>("token" to token)
             Timber.e(">>>token = ${!token.isNullOrBlank()}, url = $URL_SOCKET_HOST_AND_PORT")
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
             mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP,
                                       URL_SOCKET_HOST_AND_PORT,
-//                                      chatUrl,
                                       headerMap,
-                                      httpClient.newBuilder().pingInterval(40, TimeUnit.SECONDS).retryOnConnectionFailure(true).build())
+                                      httpClient.newBuilder().pingInterval(40,TimeUnit.SECONDS).retryOnConnectionFailure(true).build())
 
             mStompClient?.let { stompClient ->
 
@@ -96,7 +98,7 @@ class BackService : BaseService(){
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { lifecycleEvent: LifecycleEvent ->
                     when (lifecycleEvent.type) {
-                        LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened, isConnected = ${stompClient.isConnected}")
+                        LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
                         LifecycleEvent.Type.CLOSED -> {
                             Timber.d("Stomp connection closed")
                             resetSubscriptions()
@@ -115,23 +117,28 @@ class BackService : BaseService(){
 
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL) { topicMessage ->
-                    Timber.d(topicMessage.payload)
+                    Timber.d("$URL_ALL, msg = ${topicMessage.payload}")
                 }
 
                 //大厅赔率频道
                 val hallDisposable: Disposable? = stompClient.subscribe(URL_HALL) { topicMessage ->
-                    Timber.d(topicMessage.payload)
+                    Timber.d("$URL_HALL, msg = ${topicMessage.payload}")
                 }
 
                 //用户私人频道
                 val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
-                    Timber.d(topicMessage.payload)
+                    Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
+//                    val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(dataListType)
+                    val type = Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
+                    val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter<List<PrivateDisposableResponseItem>>(type)
+                    val item = adapter.fromJson(topicMessage.payload.toString())
+                    Timber.e(">>>>>>test, item money = ${item?.first()?.money}")
+                    Timber.e(">>>>>>test, item money 2 = ${item?.get(1)?.money}")
                 }
 
                 //具体赛事/赛季频道
                 val eventDisposable: Disposable? = stompClient.subscribe(URL_EVENT) { topicMessage ->
-                    Timber.e("$URL_EVENT, topicMessage.payload = ${topicMessage.payload}")
-                    Timber.d(topicMessage.payload)
+                    Timber.d("$URL_EVENT, msg = ${topicMessage.payload}")
                 }
 
                 mCompositeDisposable?.add(lifecycleDisposable)
@@ -167,12 +174,11 @@ class BackService : BaseService(){
 
     @SuppressLint("CheckResult")
     private fun StompClient.subscribe(url: String, respond: (StompMessage) -> Unit): Disposable? {
-        Timber.d("url = $url")
         return this.topic(url, mHeader)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ topicMessage ->
-                           Timber.d("訂閱成功 $url")
+                           Timber.d("$url 訂閱成功")
                            respond(topicMessage)
                        }, { throwable ->
                            Timber.e("訂閱失敗 : $throwable")

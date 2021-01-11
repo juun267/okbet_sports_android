@@ -1,17 +1,34 @@
 package org.cxct.sportlottery.network.service
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class UserNotice(
-    val addDate: Long,
-    val content: String,
-    val id: Int,
-    val isRead: Int,
-    val msgShowType: Int,
-    val noticeType: Int,
-    val operatorId: Int,
-    val operatorName: String,
-    val platformId: Int,
-    val tempId: Int,
-    val title: String,
-    val userId: Int,
-    val userName: String
+    @Json(name = "addDate")
+    val addDate: Long?,
+    @Json(name = "content")
+    val content: String?,
+    @Json(name = "id")
+    val id: Int?,
+    @Json(name = "isRead")
+    val isRead: Int?,
+    @Json(name = "msgShowType")
+    val msgShowType: Int?,
+    @Json(name = "noticeType")
+    val noticeType: Int?,
+    @Json(name = "operatorId")
+    val operatorId: Int?,
+    @Json(name = "operatorName")
+    val operatorName: String?,
+    @Json(name = "platformId")
+    val platformId: Int?,
+    @Json(name = "tempId")
+    val tempId: Int?,
+    @Json(name = "title")
+    val title: String?,
+    @Json(name = "userId")
+    val userId: Int?,
+    @Json(name = "userName")
+    val userName: String?
 )
