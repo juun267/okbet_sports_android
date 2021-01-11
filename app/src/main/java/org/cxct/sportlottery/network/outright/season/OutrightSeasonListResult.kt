@@ -12,9 +12,9 @@ data class OutrightSeasonListResult(
     @Json(name = "msg")
     override val msg: String,
     @Json(name = "rows")
-    val rows: List<Row>,
+    val rows: List<Row>?,
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "total")
-    val total: Int
+    val total: Int?
 ) : BaseResult()
