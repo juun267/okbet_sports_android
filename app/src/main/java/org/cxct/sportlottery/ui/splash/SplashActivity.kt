@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
 
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
@@ -55,7 +57,17 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     //過程中任一流程請求失敗，點擊確定按鈕重試
     private fun showErrorRetryDialog(message: String) {
-        //TODO simon test 顯示錯誤彈窗
+        val dialog = CustomAlertDialog(this)
+        dialog.setMessage(message)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.setNegativeButtonText(null)
+        dialog.setPositiveButtonText(getString(R.string.btn_retry))
+        dialog.setPositiveClickListener(View.OnClickListener {
+            getAppConfig() //TODO simon test review getHost 流程
+            dialog.dismiss()
+        })
+        dialog.show()
     }
 
 }
