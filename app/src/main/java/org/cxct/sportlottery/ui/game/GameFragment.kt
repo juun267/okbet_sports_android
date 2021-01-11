@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TimeUtil
+import timber.log.Timber
 
 
 /**
@@ -246,7 +247,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-/*        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 hall_odds_list.visibility = View.GONE
                 hall_league_list.visibility = View.GONE
@@ -254,7 +255,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
                 outrightOddAdapter.data = it.outrightOddsListData?.leagueOdds ?: listOf()
             }
-        })*/
+        })
 
         viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
             hall_match_type_row.curPlayType = it
