@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_odds_detail_more.*
@@ -64,7 +65,7 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewMo
 
     private fun getData() {
 
-        val list: MutableLiveData<List<*>> = viewModel.getOddsDetailMoreList()
+        val list: LiveData<List<*>?> = viewModel.oddsDetailMoreList
 
         //後續再重構較好的資料判別方式
         var m: Any?

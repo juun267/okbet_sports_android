@@ -114,10 +114,6 @@ class MainViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
-    fun getOddsDetailMoreList(): MutableLiveData<List<*>>{
-        return _oddsDetailMoreList
-    }
-
     fun logout() {
         viewModelScope.launch {
             val result = doNetwork {
