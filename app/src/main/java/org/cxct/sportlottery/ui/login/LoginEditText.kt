@@ -25,10 +25,9 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
         addView(view)
 
+        val typedArray = context.theme
+            .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
-            val typedArray = context.theme
-                .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
-
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
@@ -41,6 +40,8 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             setupEye(view.btn_eye)
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            typedArray.recycle()
         }
     }
 
