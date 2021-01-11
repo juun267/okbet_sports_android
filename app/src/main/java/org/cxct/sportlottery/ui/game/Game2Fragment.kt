@@ -1,29 +1,24 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
+import kotlinx.android.synthetic.main.fragment_game2.*
 import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.home.MainViewModel
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -32,23 +27,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
-    private val args: Game2FragmentArgs by navArgs()
-    private val navController by lazy {
-        findNavController()
-    }
-    private val timeRangeParams = object : TimeRangeParams {
-        override val startTime: String?
-            get() = args.startTime
-        override val endTime: String?
-            get() = args.endTime
-
-    }
-
     private val playType: PlayType by lazy { PlayType.OU_HDP }
-
-    private val leagueOddAdapter by lazy {
-        LeagueOddAdapter()
-    }
 
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
@@ -65,27 +44,35 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         return inflater.inflate(R.layout.fragment_game2, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (league_odd_sub_list.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getLeagueOddsList()
-
-        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
-                leagueOddAdapter.data = it.oddsListData?.leagueOdds ?: listOf()
-                it.oddsListData?.leagueOdds?.getOrNull(0)?.let { leagueOdd ->
-                    this.view?.let { view ->
-                        setupMatchOddList(view, leagueOdd)
-                        setupLeagueLayout(view, it.oddsListData.leagueOdds[0])
-                        setupBackEvent(view)
-                    }
-                }
+        val data = viewModel.oddsListResult.value
+        data?.oddsListData?.leagueOdds?.getOrNull(0)?.let { leagueOdd ->
+            this.view?.let { view ->
+                setupMatchOddList(view, leagueOdd)
+                setupLeagueLayout(view, data.oddsListData.leagueOdds[0])
+                setupEvent(view)
             }
-        })
+        }
     }
 
-    private fun getLeagueOddsList() {
-        viewModel.getLeagueOddsList(args.matchType, args.oddsListId, timeRangeParams)
+    override fun onResume() {
+        super.onResume()
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
+            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
+                backEvent()
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 
     private fun setupMatchOddList(view: View, item: LeagueOdd) {
@@ -94,8 +81,7 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = matchOddAdapter
         }
-
-        matchOddAdapter.data = item.matchOdds
+        matchOddAdapter.data = item.matchOdds.apply { this[0].isExpand = true }
         matchOddAdapter.playType = playType
     }
 
@@ -106,24 +92,27 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun setupBackEvent(view: View) {
-        view.apply {
-            league_odd_arrow.setOnClickListener {
-                val action = Game2FragmentDirections.actionGame2FragmentToGameFragment(args.matchType)
-                navController.navigate(action)
-            }
+    private fun setupEvent(view: View) {
+        view.league_odd_arrow.setOnClickListener {
+            backEvent()
         }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
+    private fun backEvent() {
+        //比照h5特別處理退出動畫
+        val animation: Animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
+        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
 
-         * @return A new instance of fragment Game2Fragment.
-         */
-        @JvmStatic
-        fun newInstance() {
-        }
+            override fun onAnimationEnd(animation: Animation?) {
+                parentFragmentManager.popBackStack()
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+        })
+        this.view?.startAnimation(animation)
     }
 }
