@@ -51,7 +51,7 @@
                             android:layout_marginTop="10dp"
                             android:text="FOOTBALL"
                             android:textColor="@color/main_dark"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/textSize20sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,7 +61,7 @@
                             android:layout_marginStart="10dp"
                             android:text="世界顶级赛事"
                             android:textColor="@color/main_dark"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/textSize12sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/label_en_ft" />
 
@@ -73,7 +73,7 @@
                             android:layout_marginBottom="10dp"
                             android:text="@string/football"
                             android:textColor="@android:color/white"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/textSize16sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 
@@ -84,7 +84,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@{mainViewModel.allFootballCount.toString()}"
                             android:textColor="@android:color/white"
-                            android:textSize="22sp"
+                            android:textSize="@dimen/textSize22sp"
                             app:layout_constraintBottom_toBottomOf="@id/label_football"
                             app:layout_constraintEnd_toStartOf="@id/iv_football"
                             app:layout_constraintStart_toEndOf="@id/label_football"
@@ -124,7 +124,7 @@
                             android:layout_marginTop="10dp"
                             android:text="BASKETBALL"
                             android:textColor="@color/main_dark"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/textSize20sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -134,7 +134,7 @@
                             android:layout_marginStart="10dp"
                             android:text="世界顶级赛事"
                             android:textColor="@color/main_dark"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/textSize12sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/label_en_bk" />
 
@@ -146,7 +146,7 @@
                             android:layout_marginBottom="10dp"
                             android:text="@string/basketball"
                             android:textColor="@android:color/white"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/textSize16sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 
@@ -157,7 +157,7 @@
                             android:layout_marginStart="5dp"
                             android:text="@{mainViewModel.allBasketballCount.toString()}"
                             android:textColor="@android:color/white"
-                            android:textSize="22sp"
+                            android:textSize="@dimen/textSize22sp"
                             app:layout_constraintBottom_toBottomOf="@id/label_basketball"
                             app:layout_constraintEnd_toStartOf="@id/iv_basketball"
                             app:layout_constraintStart_toEndOf="@id/label_basketball"
