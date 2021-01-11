@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.content.res.AssetManager
 import android.text.TextUtils
 import java.io.*
 
@@ -46,7 +47,29 @@ object FileUtil {
         return builder.toString()
     }
 
+    @JvmStatic
+    fun readStringFromAssetManager(assetManager: AssetManager?, path: String?): String? {
+        var inputStream: InputStream? = null
+        return try {
+            inputStream = assetManager!!.open(path!!)
+            val inputStreamReader = InputStreamReader(inputStream, Charsets.UTF_8)
+            val reader = BufferedReader(inputStreamReader)
+            val builder = StringBuilder()
+            var line: String?
 
+            while (reader.readLine().also { line = it } != null)
+                builder.append(line)
+
+            builder.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        } finally {
+            closeQuietly(inputStream)
+        }
+    }
+
+    @Deprecated("inputStream 在同一個地方 open 跟 close 感覺比較好。 另創建 fun readStringFromAssetManager() 取代")
     @JvmStatic
     fun readStringFromInputStream(inputStream: InputStream?): String? {
         var inputStreamReader: InputStreamReader? = null

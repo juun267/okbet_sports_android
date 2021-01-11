@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".ui.login.signIn.LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:text="@string/btn_login"
-        android:textColor="#223549"
+        android:textColor="@color/blue"
         android:textSize="@dimen/textSize30sp"
         app:layout_constraintBottom_toTopOf="@id/et_account"
         app:layout_constraintStart_toStartOf="@id/et_account" />
@@ -87,7 +87,7 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="4dp"
-        android:text="@string/forget_password"
+        android:text="@string/forget_password_question"
         android:textColor="@color/orangeyRed"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toTopOf="@id/btn_login"

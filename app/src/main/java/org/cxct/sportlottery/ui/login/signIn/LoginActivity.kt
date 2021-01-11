@@ -1,5 +1,6 @@
-package org.cxct.sportlottery.ui.login
+package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -8,6 +9,9 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.util.JumpUtil
 
 
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
@@ -16,15 +20,17 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        setupBack()
+        setupBackButton()
         setupAccount()
         setupPassword()
         setupLoginButton()
         setupRememberPWD()
+        setupForgetPasswordButton()
+        setupRegisterButton()
         initObserve()
     }
 
-    private fun setupBack() {
+    private fun setupBackButton() {
         btn_back.setOnClickListener { finish() }
     }
 
@@ -67,6 +73,27 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         cb_remember_password.isChecked = viewModel.isRememberPWD
         cb_remember_password.setOnCheckedChangeListener { _, isChecked ->
             viewModel.isRememberPWD = isChecked
+        }
+    }
+
+    private fun setupForgetPasswordButton() {
+        btn_forget_password.setOnClickListener {
+            val dialog = CustomAlertDialog(this)
+            dialog.setTitle(getString(R.string.forget_password))
+            dialog.setMessage(getString(R.string.desc_forget_password))
+            dialog.setPositiveClickListener(View.OnClickListener {
+                JumpUtil.toOnlineService(this)
+                dialog.dismiss()
+            })
+            dialog.setCanceledOnTouchOutside(true)
+            dialog.show()
+        }
+    }
+
+    private fun setupRegisterButton() {
+        btn_sign_up.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            finish()
         }
     }
 
