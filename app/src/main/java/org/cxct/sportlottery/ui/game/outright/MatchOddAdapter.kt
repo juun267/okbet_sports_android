@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sub_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
-import timber.log.Timber
 
 
-class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
+class MatchOddAdapter(private val matchOddListener: MatchOddListener?) :
+    RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     var data = listOf<MatchOdd>()
         set(value) {
             field = value
@@ -24,18 +24,17 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, matchOddListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: MatchOdd) {
+        fun bind(item: MatchOdd, matchOddListener: MatchOddListener?) {
             itemView.sub_league_name.text = item.matchInfo.id
             itemView.item_sub_league.setOnClickListener {
-                //TODO open fragment for odd list
-                Timber.i("enter match odd list")
+                matchOddListener?.onClick(item)
             }
         }
 
@@ -48,5 +47,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 return ViewHolder(view)
             }
         }
+    }
+
+    class MatchOddListener(val clickListener: (item: MatchOdd) -> Unit) {
+        fun onClick(item: MatchOdd) = clickListener(item)
     }
 }

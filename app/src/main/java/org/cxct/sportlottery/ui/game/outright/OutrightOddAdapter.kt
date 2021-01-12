@@ -17,6 +17,8 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             notifyDataSetChanged()
         }
 
+    var matchOddListener: MatchOddAdapter.MatchOddListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -24,22 +26,25 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, matchOddListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val matchOddAdapter by lazy {
-            MatchOddAdapter()
-        }
+        private lateinit var matchOddAdapter: MatchOddAdapter
 
-        fun bind(item: LeagueOdd) {
+        fun bind(item: LeagueOdd, matchOddListener: MatchOddAdapter.MatchOddListener?) {
             itemView.league_odd_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
+            setupMatchOddAdapter(matchOddListener)
             setupMatchOddList(item)
             setupMatchOddExpand(item)
+        }
+
+        private fun setupMatchOddAdapter(matchOddListener: MatchOddAdapter.MatchOddListener?) {
+            matchOddAdapter = MatchOddAdapter(matchOddListener)
         }
 
         private fun setupMatchOddList(item: LeagueOdd) {

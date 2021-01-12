@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
+import org.cxct.sportlottery.ui.game.outright.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
@@ -82,7 +83,12 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val outrightOddAdapter by lazy {
-        OutrightOddAdapter()
+        OutrightOddAdapter().apply {
+            matchOddListener = MatchOddAdapter.MatchOddListener {
+                //TODO confirm outright odd detail map api
+                Timber.i("open outright odds detail")
+            }
+        }
     }
 
     private val outrightSeasonAdapter by lazy {
