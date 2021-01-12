@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="5dp"
     android:background="@color/background"
-    tools:context=".ui.game.Game2Fragment">
+    tools:context=".ui.game.GameDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/league_odd_layout"

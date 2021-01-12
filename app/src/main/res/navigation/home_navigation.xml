@@ -41,9 +41,9 @@
     </fragment>
     <fragment
         android:id="@+id/game2Fragment"
-        android:name="org.cxct.sportlottery.ui.game.Game2Fragment"
+        android:name="org.cxct.sportlottery.ui.game.GameDetailFragment"
         android:label="fragment_game2"
-        tools:layout="@layout/fragment_game2">
+        tools:layout="@layout/fragment_game_detail">
         <argument
             android:name="oddsListId"
             app:argType="string" />
