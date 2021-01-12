@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.home
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -16,15 +18,21 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.service.PrivateDisposableResponseItem
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.service.BackService
+import org.cxct.sportlottery.service.SERVICE_SEND_DATA
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.Game2FragmentDirections
@@ -33,6 +41,7 @@ import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
+import timber.log.Timber
 
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
@@ -51,6 +60,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
+    private val mBroadcastReceiver = MyBroadcastReceiver()
+/*
+    private val mBroadcastReceiver by lazy {
+        object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent) {
+                val bundle = intent.extras
+                val message = bundle?.getString("topicMessage", "")
+                Timber.e(">>> BackService to activity, passed value succeed = ${!message.isNullOrBlank()}")
+            }
+        }
+    }
+    */
     private val navController by lazy {
         findNavController(R.id.homeFragment)
     }
@@ -64,11 +85,21 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lifecycleOwner = this@MainActivity
         }
 
+        initBroadcastReceiver()
         initToolBar()
         initMenu()
         initRvMarquee()
         refreshTabLayout(null)
         initObserve()
+    }
+
+    private fun initBroadcastReceiver() {
+
+        val filter = IntentFilter().apply {
+            addAction(SERVICE_SEND_DATA)
+        }
+        registerReceiver(mBroadcastReceiver, filter)
+
     }
 
     override fun onResume() {
@@ -209,28 +240,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun navGameFragment(matchType: MatchType) {
         when (navController.currentDestination?.id) {
             R.id.homeFragment -> {
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToGameFragment(
-                        matchType
-                    )
+                val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
                 navController.navigate(action)
             }
             R.id.gameFragment -> {
-                val action =
-                    GameFragmentDirections.actionGameFragmentToGameFragment(
-                        matchType
-                    )
-                val navOptions =
-                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                val action = GameFragmentDirections.actionGameFragmentToGameFragment(matchType)
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 navController.navigate(action, navOptions)
             }
             R.id.game2Fragment -> {
-                val action =
-                    Game2FragmentDirections.actionGame2FragmentToGameFragment(
-                        matchType
-                    )
-                val navOptions =
-                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                val action = Game2FragmentDirections.actionGame2FragmentToGameFragment(matchType)
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 navController.navigate(action, navOptions)
             }
         }
@@ -277,11 +297,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            switchFragment(
-                OddsDetailFragment.newInstance(
-                    gameType, typeName, matchId, oddsType
-                )
-            )
+            switchFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType))
         })
     }
 
@@ -337,6 +353,24 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
+    }
+
+}
+
+class MyBroadcastReceiver : BroadcastReceiver() {
+        private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() } //.add(KotlinJsonAdapterFactory())
+    override fun onReceive(context: Context?, intent: Intent) {
+        val bundle = intent.extras
+        val messageStr = bundle?.getString("topicMessage", "")
+//        Timber.e(">>> backService to activity, passed value succeed = $messageStr")
+        val type = Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
+        val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(type)
+        if (!messageStr.isNullOrEmpty()) {
+            val item = adapter.fromJson(messageStr)
+            item?.forEach {
+                Timber.e(">>>>>>test, item money = ${it.eventType}")
+            }
+        }
     }
 
 }

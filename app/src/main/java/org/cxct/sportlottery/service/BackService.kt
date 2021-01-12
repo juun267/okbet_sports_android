@@ -2,7 +2,9 @@ package org.cxct.sportlottery.service
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -25,7 +27,10 @@ import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
 import java.util.concurrent.TimeUnit
 
+const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
+
 class BackService : BaseService(){
+
 
     enum class EventType {
         ODDS_CHANGE, //赔率变更
@@ -145,13 +150,9 @@ class BackService : BaseService(){
                 //用户私人频道
                 val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
                     Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
-//                    val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(dataListType)
-                    val type = Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
-                    val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(type)
-                    val item = adapter.fromJson(topicMessage.payload.toString())
-                    item?.forEach {
-                        Timber.e(">>>>>>test, item money = ${it.eventType}")
-                    }
+                    val bundle = Bundle()
+                    bundle.putString("topicMessage", topicMessage.payload.toString())
+                    sendMessageToActivity(bundle)
                 }
 
                 //具体赛事/赛季频道
@@ -172,6 +173,12 @@ class BackService : BaseService(){
 //            e.printStackTrace()
 //            reconnect()
 //        }
+    }
+
+    private fun sendMessageToActivity(bundle: Bundle) {
+        val intent = Intent(SERVICE_SEND_DATA)
+        intent.putExtras(bundle)
+        sendBroadcast(intent)
     }
 
     private fun reconnect() {

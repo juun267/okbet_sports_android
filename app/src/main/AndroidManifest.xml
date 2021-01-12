@@ -16,6 +16,13 @@
 
         <!-- 後臺服務-長連線 -->
         <service android:name=".service.BackService" />
+        <!--broadCast-->
+        <receiver android:name=".ui.home.MyBroadcastReceiver"  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".ui.infoCenter.InfoCenterActivity" />
         <activity android:name=".ui.menu.results.ResultsSettlementActivity" />
