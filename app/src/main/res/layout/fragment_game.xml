@@ -65,6 +65,14 @@
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hall_outright_season_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

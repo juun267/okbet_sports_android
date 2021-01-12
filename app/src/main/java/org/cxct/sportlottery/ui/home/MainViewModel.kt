@@ -22,6 +22,8 @@ import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
+import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
@@ -65,6 +67,9 @@ class MainViewModel(
     val outrightOddsListResult: LiveData<OutrightOddsListResult>
         get() = _outrightOddsListResult
 
+    val outrightSeasonListResult: LiveData<OutrightSeasonListResult>
+        get() = _outrightSeasonListResult
+
     val curPlayType: LiveData<PlayType>
         get() = _curPlayType
 
@@ -85,6 +90,7 @@ class MainViewModel(
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
     private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
+    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -343,6 +349,24 @@ class MainViewModel(
         _isOpenMatchOdds.postValue(true)
     }
 
+    fun getOutrightSeasonList() {
+        val gameType = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+            it.isSelected
+        }?.code
+
+        gameType?.let {
+            viewModelScope.launch {
+                val result = doNetwork {
+                    OneBoSportApi.outrightService.getOutrightSeasonList(
+                        OutrightSeasonListRequest(gameType)
+                    )
+                }
+
+                _outrightSeasonListResult.postValue(result)
+            }
+        }
+    }
+
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
         val result = _sportMenuResult.value
 
@@ -469,7 +493,7 @@ class MainViewModel(
     }
 
     fun getOddsDetail(entity: GameEntity) {
-        _curOddsDetailParams.postValue(listOf(entity.code,entity.name,entity.match?.id))
+        _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
 }
