@@ -23,7 +23,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.common.*
+import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
@@ -146,7 +146,9 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupDateRow(view: View) {
         if (args.matchType == MatchType.TODAY) {
+            view.hall_date_list.adapter = null
             timeRangeParams = TimeUtil.getTodayTimeRangeParams()
+            viewModel.getGameHallList(args.matchType, timeRangeParams)
         } else {
             view.hall_date_list.apply {
                 this.layoutManager =
@@ -159,6 +161,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     )
                 )
             }
+            viewModel.getEarlyDateRow()
         }
     }
 
@@ -220,7 +223,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
@@ -249,12 +251,19 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer { pair ->
+            //TODO Dean : 記錄問題,沒有postValue卻觸發了observe
             gameDateAdapter.data = pair
             pair.find { it.second }?.first?.let {
-                timeRangeParams = if (it == getString(R.string.date_row_other)) {
-                    TimeUtil.getOtherEarlyDateTimeRangeParams()
-                } else {
-                    TimeUtil.getDayDateTimeRangeParams(it)
+                timeRangeParams = when {
+                    args.matchType == MatchType.TODAY -> {
+                        TimeUtil.getTodayTimeRangeParams()
+                    }
+                    it == getString(R.string.date_row_other) -> {
+                        TimeUtil.getOtherEarlyDateTimeRangeParams()
+                    }
+                    else -> {
+                        TimeUtil.getDayDateTimeRangeParams(it)
+                    }
                 }
                 viewModel.getGameHallList(args.matchType, timeRangeParams)
             }
@@ -283,8 +292,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 setupGameHallList(it)
             }
         })
-
-        viewModel.getEarlyDateRow()
     }
 
     private fun setupInPlayFilter(itemList: List<Item>) {
