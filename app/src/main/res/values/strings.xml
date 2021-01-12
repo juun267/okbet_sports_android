@@ -90,6 +90,10 @@
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号 Ver %s</string>
 
+    <!--  HelpCenter  -->
+    <string name="contact_us">联络我们</string>
+    <string name="game_rule">游戏规则</string>
+
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>
     <string name="select_all_league">选择所有联赛</string>
