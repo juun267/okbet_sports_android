@@ -8,66 +8,12 @@
     android:orientation="vertical"
     tools:context=".ui.helpCenter.HelpCenterActivity">
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/help_center_container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_info_contact_us" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_weight="1"
-            android:text="@string/contact_us" />
-
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:rotation="-90"
-            android:src="@drawable/ic_arrow_gray" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_info_game_rules" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_weight="1"
-            android:text="@string/game_rule" />
-
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:rotation="-90"
-            android:src="@drawable/ic_arrow_gray" />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/help_center_navigation"
+        tools:layout="@layout/fragment_help_center" />
 
 </LinearLayout>
