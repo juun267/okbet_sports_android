@@ -19,7 +19,6 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
-import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -28,8 +27,6 @@ import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
-import org.cxct.sportlottery.ui.game.outright.MatchOddAdapter
-import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
@@ -83,15 +80,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
     }
 
-    private val outrightOddAdapter by lazy {
-        OutrightOddAdapter().apply {
-            matchOddListener = MatchOddAdapter.MatchOddListener {
-                //TODO confirm outright odd detail map api
-                Timber.i("open outright odds detail")
-            }
-        }
-    }
-
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
             seasonSubListener = SeasonSubAdapter.SeasonSubListener {
@@ -120,9 +108,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupOddsList(this)
 
             setupLeagueList(this)
-
-            setupOutrightOddsList(this)
-
+            
             setupOutrightSeasonList(this)
         }
     }
@@ -147,12 +133,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         view.hall_match_type_row.x12ClickListener = View.OnClickListener {
             viewModel.setPlayType(PlayType.X12)
-        }
-        view.hall_match_type_row.matchClickListener = View.OnClickListener {
-            viewModel.getGameHallList(args.matchType, timeRangeParams)
-        }
-        view.hall_match_type_row.outrightClickListener = View.OnClickListener {
-            viewModel.getOutrightSeasonList()
         }
     }
 
@@ -196,20 +176,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
-            this.addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
-        }
-    }
-
-    private fun setupOutrightOddsList(view: View) {
-        view.hall_outright_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            this.adapter = outrightOddAdapter
             this.addItemDecoration(
                 DividerItemDecoration(
                     context,
@@ -293,12 +259,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
-                setupGameHallList(it)
-            }
-        })
-
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 setupGameHallList(it)
@@ -353,14 +313,12 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         when (baseResult) {
             is OddsListResult -> setupOddList(baseResult)
             is LeagueListResult -> setupLeagueList(baseResult)
-            is OutrightOddsListResult -> setupOutrightOddsList(baseResult)
             is OutrightSeasonListResult -> setupOutrightSeasonList(baseResult)
         }
     }
 
     private fun setupOddList(oddsListResult: OddsListResult) {
         hall_league_list.visibility = View.GONE
-        hall_outright_list.visibility = View.GONE
         hall_outright_season_list.visibility = View.GONE
         hall_odds_list.visibility = View.VISIBLE
 
@@ -369,27 +327,15 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupLeagueList(leagueListResult: LeagueListResult) {
         hall_odds_list.visibility = View.GONE
-        hall_outright_list.visibility = View.GONE
         hall_outright_season_list.visibility = View.GONE
         hall_league_list.visibility = View.VISIBLE
 
         leagueAdapter.data = leagueListResult.rows ?: listOf()
     }
 
-    private fun setupOutrightOddsList(outrightOddsListResult: OutrightOddsListResult) {
-        hall_odds_list.visibility = View.GONE
-        hall_league_list.visibility = View.GONE
-        hall_outright_season_list.visibility = View.GONE
-        hall_outright_list.visibility = View.VISIBLE
-
-        outrightOddAdapter.data =
-            outrightOddsListResult.outrightOddsListData?.leagueOdds ?: listOf()
-    }
-
     private fun setupOutrightSeasonList(outrightSeasonListResult: OutrightSeasonListResult) {
         hall_odds_list.visibility = View.GONE
         hall_league_list.visibility = View.GONE
-        hall_outright_list.visibility = View.GONE
         hall_outright_season_list.visibility = View.VISIBLE
 
         outrightSeasonAdapter.data = outrightSeasonListResult.rows ?: listOf()

@@ -64,9 +64,6 @@ class MainViewModel(
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
 
-    val outrightOddsListResult: LiveData<OutrightOddsListResult>
-        get() = _outrightOddsListResult
-
     val outrightSeasonListResult: LiveData<OutrightSeasonListResult>
         get() = _outrightSeasonListResult
 
@@ -89,7 +86,6 @@ class MainViewModel(
     private val _oddsListGameHallResult = MutableLiveData<OddsListResult>()
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
-    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
     private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
@@ -295,7 +291,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getOutrightOddsList(it)
+                    getOutrightSeasonList(it)
                 }
             }
             else -> {
@@ -347,24 +343,6 @@ class MainViewModel(
         }
 
         _isOpenMatchOdds.postValue(true)
-    }
-
-    fun getOutrightSeasonList() {
-        val gameType = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
-            it.isSelected
-        }?.code
-
-        gameType?.let {
-            viewModelScope.launch {
-                val result = doNetwork {
-                    OneBoSportApi.outrightService.getOutrightSeasonList(
-                        OutrightSeasonListRequest(gameType)
-                    )
-                }
-
-                _outrightSeasonListResult.postValue(result)
-            }
-        }
     }
 
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
@@ -450,14 +428,15 @@ class MainViewModel(
         }
     }
 
-    private fun getOutrightOddsList(gameType: String) {
+    private fun getOutrightSeasonList(gameType: String) {
         viewModelScope.launch {
             val result = doNetwork {
-                OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(gameType)
+                OneBoSportApi.outrightService.getOutrightSeasonList(
+                    OutrightSeasonListRequest(gameType)
                 )
             }
-            _outrightOddsListResult.postValue(result)
+
+            _outrightSeasonListResult.postValue(result)
         }
     }
 
