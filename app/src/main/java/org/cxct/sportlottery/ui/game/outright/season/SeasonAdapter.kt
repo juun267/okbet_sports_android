@@ -16,6 +16,8 @@ class SeasonAdapter : RecyclerView.Adapter<SeasonAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var seasonSubListener: SeasonSubAdapter.SeasonSubListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -23,21 +25,24 @@ class SeasonAdapter : RecyclerView.Adapter<SeasonAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, seasonSubListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val seasonSubAdapter by lazy {
-            SeasonSubAdapter()
-        }
+        private lateinit var seasonSubAdapter: SeasonSubAdapter
 
-        fun bind(item: Row) {
+        fun bind(item: Row, seasonSubListener: SeasonSubAdapter.SeasonSubListener?) {
             itemView.league_name.text = item.name
 
+            setupSeasonAdapter(seasonSubListener)
             setupSeasonSublist(item)
             setupLeagueSubExpand(item)
+        }
+
+        private fun setupSeasonAdapter(seasonSubListener: SeasonSubAdapter.SeasonSubListener?) {
+            seasonSubAdapter = SeasonSubAdapter(seasonSubListener)
         }
 
         private fun setupSeasonSublist(item: Row) {

@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
+import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TimeUtil
@@ -92,7 +93,12 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val outrightSeasonAdapter by lazy {
-        SeasonAdapter()
+        SeasonAdapter().apply {
+            seasonSubListener = SeasonSubAdapter.SeasonSubListener {
+                //TODO confirm season detail map api
+                Timber.i("open season details list")
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

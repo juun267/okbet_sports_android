@@ -8,7 +8,8 @@ import kotlinx.android.synthetic.main.itemview_sub_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.season.Season
 
-class SeasonSubAdapter : RecyclerView.Adapter<SeasonSubAdapter.ViewHolder>() {
+class SeasonSubAdapter(private val seasonSubListener: SeasonSubListener?) :
+    RecyclerView.Adapter<SeasonSubAdapter.ViewHolder>() {
     var data = listOf<Season>()
         set(value) {
             field = value
@@ -22,16 +23,20 @@ class SeasonSubAdapter : RecyclerView.Adapter<SeasonSubAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, seasonSubListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Season) {
+        fun bind(item: Season, seasonSubListener: SeasonSubListener?) {
             itemView.sub_league_name.text = item.name
             itemView.sub_league_count.text = item.num.toString()
+
+            itemView.setOnClickListener {
+                seasonSubListener?.onClick(item)
+            }
         }
 
         companion object {
@@ -43,5 +48,9 @@ class SeasonSubAdapter : RecyclerView.Adapter<SeasonSubAdapter.ViewHolder>() {
                 return ViewHolder(view)
             }
         }
+    }
+
+    class SeasonSubListener(val clickListener: (item: Season) -> Unit) {
+        fun onClick(item: Season) = clickListener(item)
     }
 }
