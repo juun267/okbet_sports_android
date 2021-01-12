@@ -71,13 +71,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(
-                it.list.first().id,
-                args.matchType,
-                timeRangeParams.startTime ?: "",
-                timeRangeParams.endTime ?: ""
-            )
-            navController.navigate(action)
+            viewModel.getLeagueOddsList(args.matchType, it.list.first().id, timeRangeParams)
         })
     }
 
@@ -225,7 +219,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 hall_league_list.visibility = View.GONE
                 hall_outright_list.visibility = View.GONE
