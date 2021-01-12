@@ -45,12 +45,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         et_password.eyeVisibility = View.GONE
-        et_password.getEditText().setOnFocusChangeListener { _, hasFocus ->
+        et_password.setEditTextOnFocusChangeListener(View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus && et_password.eyeVisibility == View.GONE) {
                 et_password.eyeVisibility = View.VISIBLE
                 et_password.setText(null)
             }
-        }
+        })
 
         et_password.afterTextChanged {
             viewModel.loginDataChanged(this, et_account.getText(), et_password.getText())

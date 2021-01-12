@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,9 +8,11 @@
     tools:context="org.cxct.sportlottery.ui.login.LoginEditText">
 
     <LinearLayout
+        android:id="@+id/block_editText"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/bg_square_shape_4dp_white"
+        android:background="@drawable/effect_edittext_bg"
+        android:focusable="true"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingStart="10dp"
@@ -58,8 +61,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
         android:textColor="@color/orangeyRed"
         android:textSize="@dimen/textSize12sp"
-        tools:text="@string/error_required_field" />
+        app:drawableStartCompat="@drawable/ic_error_tip"
+        tools:text="@string/error_input_account" />
 
 </LinearLayout>

@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
+    private var mOnFocusChangeListener: OnFocusChangeListener? = null
     var eyeVisibility
         get() = btn_eye.visibility
         set(value) {
@@ -37,21 +38,31 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.et_input.inputType = inputType
 
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
-            setupEye(view.btn_eye)
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             typedArray.recycle()
         }
+
+        setupFocus()
+        setupEye()
+        setError(null)
     }
 
-    private fun setupEye(v: View) {
-        v.setOnClickListener {
-            if (v.isSelected) {
-                v.isSelected = false
+    private fun setupFocus() {
+        et_input.setOnFocusChangeListener { v, hasFocus ->
+            block_editText.isSelected = hasFocus
+            mOnFocusChangeListener?.onFocusChange(v, hasFocus)
+        }
+    }
+
+    private fun setupEye() {
+        btn_eye.setOnClickListener {
+            if (it.isSelected) {
+                it.isSelected = false
                 et_input.transformationMethod = PasswordTransformationMethod.getInstance() //不顯示
             } else {
-                v.isSelected = true
+                it.isSelected = true
                 et_input.transformationMethod = HideReturnsTransformationMethod.getInstance() //顯示
             }
         }
@@ -59,6 +70,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun setError(value: String?) {
         tv_error.text = value
+        if (tv_error.text.isNullOrEmpty()) {
+            tv_error.visibility = View.INVISIBLE
+            block_editText.isActivated = false
+        } else {
+            tv_error.visibility = View.VISIBLE
+            block_editText.isActivated = true
+        }
     }
 
     fun setText(value: String?) {
@@ -69,8 +87,8 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
-    fun getEditText(): EditText {
-        return et_input
+    fun setEditTextOnFocusChangeListener(l: OnFocusChangeListener?) {
+        mOnFocusChangeListener = l
     }
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
