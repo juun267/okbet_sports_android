@@ -39,6 +39,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     tools:text="@string/bet_record"
+                    android:textSize="@dimen/textSize16sp"
                     android:textColor="@color/white" />
 
                 <ImageView
