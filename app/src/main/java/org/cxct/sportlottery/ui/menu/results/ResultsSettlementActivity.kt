@@ -20,17 +20,15 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityResultsSettlementBinding
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.Row
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementViewModel::class) {
-    private lateinit var settlementBinding: ActivityResultsSettlementBinding
+class ResultsSettlementActivity : BaseToolBarActivity<SettlementViewModel>(SettlementViewModel::class) {
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
     lateinit var settlementGameTypeBottomSheet: BottomSheetDialog
@@ -55,24 +53,27 @@ class ResultsSettlementActivity : BaseActivity<SettlementViewModel>(SettlementVi
         fun requestIng(loading: Boolean)
     }
 
+    override fun setContentView(): Int {
+        return R.layout.activity_results_settlement
+    }
+
+    override fun setToolBarName(): String {
+        return getString(R.string.game_settlement)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bindingViewModel()
+        setupAdapter()
         initEvent()
         setupSpinnerGameType() //設置體育種類列表
         observeData()
         initTimeSelector()
     }
 
-    private fun bindingViewModel() {
-        settlementBinding = DataBindingUtil.setContentView(this, R.layout.activity_results_settlement)
-        settlementBinding.apply {
-            settlementViewModel = this@ResultsSettlementActivity.settlementViewModel
-            lifecycleOwner = this@ResultsSettlementActivity
-            rv_results.adapter = settlementRvAdapter
-            rv_date.adapter = settlementDateRvAdapter
-        }
+    private fun setupAdapter() {
+        rv_results.adapter = settlementRvAdapter
+        rv_date.adapter = settlementDateRvAdapter
     }
 
     private fun initEvent() {
