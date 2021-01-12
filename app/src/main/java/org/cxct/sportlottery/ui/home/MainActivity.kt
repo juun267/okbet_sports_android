@@ -5,7 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.content.ComponentName
+import android.content.ServiceConnection
+import android.os.*
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -42,7 +46,6 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
 import timber.log.Timber
-
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
@@ -53,6 +56,26 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
+        }
+    }
+
+    private lateinit var mService: BackService
+
+    private var mIsBound: Boolean = false
+
+    private val mServiceConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            Timber.e("$name onServiceConnected")
+            val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
+            mService = binder.service
+            mIsBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            Timber.e("$name onServiceDisconnected")
+            mIsBound = false
+            //service 物件設為null
         }
     }
 
@@ -87,16 +110,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
-        try {
-            startService(Intent(this, BackService::class.java))
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        doBindService()
     }
 
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        doUnBindService()
     }
 
     private fun testSendServer() {
@@ -110,6 +134,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             addAction(SERVICE_SEND_DATA)
         }
         registerReceiver(mBroadcastReceiver, filter)
+    }
+
+
+    private fun doBindService() {
+        //TODO Cheryl 判斷if is login already
+        bindService(Intent(this, BackService::class.java), mServiceConnection, Context.BIND_AUTO_CREATE)
+        mIsBound = true
+    }
+
+    private fun doUnBindService() {
+        unbindService(mServiceConnection)
+        mIsBound = false
     }
 
     private fun initToolBar() {
@@ -141,8 +177,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
             //選單選擇結束要收起選單
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
