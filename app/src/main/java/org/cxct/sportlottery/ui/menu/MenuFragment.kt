@@ -80,6 +80,7 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         menu_news.setOnClickListener {
             startActivity(Intent(context, InfoCenterActivity::class.java))
+            mDownMenuListener?.onClick(menu_news)
         }
     }
 

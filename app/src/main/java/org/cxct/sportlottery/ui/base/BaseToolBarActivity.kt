@@ -5,7 +5,10 @@ import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
+import androidx.drawerlayout.widget.DrawerLayout
 import kotlinx.android.synthetic.main.activity_base_tool_bar.*
 import kotlinx.android.synthetic.main.view_tool_bar_drawer_layout.view.*
 import org.cxct.sportlottery.R
@@ -16,8 +19,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
 /***
- * 目前無法支援使用DataBinding的Activity
- * 但可以測試看看LiveData
+ * 1.目前無法支援使用DataBinding的Activity
+ * 2.原本activity onCreate中的setContentView()這行要拿掉
  */
 
 
@@ -31,6 +34,7 @@ abstract class BaseToolBarActivity<T : BaseViewModel>(claazz: KClass<T>) : BaseA
         tv_toolbar_title.text = setToolBarName()
         initMenu()
     }
+
     /**
      * 回傳 Layout
      * */
@@ -53,15 +57,22 @@ abstract class BaseToolBarActivity<T : BaseViewModel>(claazz: KClass<T>) : BaseA
         }
 
         btn_toolbar_menu.setOnClickListener {
-            if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+            if (drawer_layout.isDrawerOpen(nav_right)){
+                drawer_layout.closeDrawers()
+            }
             else {
                 drawer_layout.openDrawer(nav_right)
             }
         }
 
         btn_toolbar_back.setOnClickListener {
+            drawer_layout.closeDrawers()
             super.onBackPressed()
         }
+
+        //關閉側邊欄滑動行為
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
 
     }
 }
