@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game2.*
@@ -52,14 +53,17 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val data = viewModel.oddsListResult.value
-        data?.oddsListData?.leagueOdds?.getOrNull(0)?.let { leagueOdd ->
-            this.view?.let { view ->
-                setupMatchOddList(view, leagueOdd)
-                setupLeagueLayout(view, data.oddsListData.leagueOdds[0])
-                setupEvent(view)
+        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                it.oddsListData?.leagueOdds?.getOrNull(0)?.let { leagueOdd ->
+                    this.view?.let { view ->
+                        setupMatchOddList(view, leagueOdd)
+                        setupLeagueLayout(view, it.oddsListData.leagueOdds[0])
+                        setupEvent(view)
+                    }
+                }
             }
-        }
+        })
     }
 
     override fun onResume() {
@@ -100,7 +104,8 @@ class Game2Fragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun backEvent() {
         //比照h5特別處理退出動畫
-        val animation: Animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
+        val animation: Animation =
+            AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
         animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(animation: Animation?) {

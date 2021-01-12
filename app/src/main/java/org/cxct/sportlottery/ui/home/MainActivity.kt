@@ -286,7 +286,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             )
         })
 
-        viewModel.oddsListResult.observe(this, Observer {
+        viewModel.isOpenMatchOdds.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
             addFragment(
                 Game2Fragment(), Page.ODDS

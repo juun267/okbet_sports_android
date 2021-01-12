@@ -52,8 +52,8 @@ class MainViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
-    val gameHallOddsListResult: LiveData<OddsListResult>
-        get() = _gameHallOddsListResult
+    val oddsListGameHallResult: LiveData<OddsListResult>
+        get() = _oddsListGameHallResult
 
     val oddsListResult: LiveData<OddsListResult>
         get() = _oddsListResult
@@ -73,11 +73,14 @@ class MainViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
+    val isOpenMatchOdds: LiveData<Boolean>
+        get() = _isOpenMatchOdds
+
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
-    private val _gameHallOddsListResult = MutableLiveData<OddsListResult>()
+    private val _oddsListGameHallResult = MutableLiveData<OddsListResult>()
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
     private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
@@ -86,8 +89,9 @@ class MainViewModel(
     }
     private val _curDateEarly = MutableLiveData<List<Pair<String, Boolean>>>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
-
     private val _asStartCount = MutableLiveData<Int>()
+    private val _isOpenMatchOdds = MutableLiveData<Boolean>()
+
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
 
@@ -240,7 +244,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getGameHallOddsList(gameType, matchType.postValue)
+                    getOddsList(gameType, matchType.postValue)
                 }
             }
             MatchType.TODAY -> {
@@ -326,6 +330,8 @@ class MainViewModel(
             else -> {
             }
         }
+
+        _isOpenMatchOdds.postValue(true)
     }
 
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
@@ -364,28 +370,6 @@ class MainViewModel(
         _sportMenuResult.postValue(result)
     }
 
-    private fun getGameHallOddsList(
-        gameType: String,
-        matchType: String,
-        timeRangeParams: TimeRangeParams? = null,
-        leagueIdList: List<String>? = null
-    ) {
-        viewModelScope.launch {
-            val result = doNetwork {
-                OneBoSportApi.oddsService.getOddsList(
-                    OddsListRequest(
-                        gameType,
-                        matchType,
-                        leagueIdList = leagueIdList,
-                        startTime = timeRangeParams?.startTime,
-                        endTime = timeRangeParams?.endTime
-                    )
-                )
-            }
-            _gameHallOddsListResult.postValue(result)
-        }
-    }
-
     private fun getOddsList(
         gameType: String,
         matchType: String,
@@ -404,7 +388,12 @@ class MainViewModel(
                     )
                 )
             }
-            _oddsListResult.postValue(result)
+
+            if (leagueIdList != null && timeRangeParams != null) {
+                _oddsListResult.postValue(result)
+            } else {
+                _oddsListGameHallResult.postValue(result)
+            }
         }
     }
 
