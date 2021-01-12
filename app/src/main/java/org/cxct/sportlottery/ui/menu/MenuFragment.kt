@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordActivity
+import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
@@ -81,6 +82,11 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         menu_news.setOnClickListener {
             startActivity(Intent(context, InfoCenterActivity::class.java))
             mDownMenuListener?.onClick(menu_news)
+        }
+
+        menu_help.setOnClickListener {
+            startActivity(Intent(context, HelpCenterActivity::class.java))
+            mDownMenuListener?.onClick(menu_help)
         }
     }
 
