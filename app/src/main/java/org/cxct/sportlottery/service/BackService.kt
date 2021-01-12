@@ -150,9 +150,6 @@ class BackService : BaseService(){
                 //用户私人频道
                 val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
                     Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
-                    val bundle = Bundle()
-                    bundle.putString("topicMessage", topicMessage.payload.toString())
-                    sendMessageToActivity(bundle)
                 }
 
                 //具体赛事/赛季频道
@@ -175,7 +172,9 @@ class BackService : BaseService(){
 //        }
     }
 
-    private fun sendMessageToActivity(bundle: Bundle) {
+    private fun sendMessageToActivity(message: String) {
+        val bundle = Bundle()
+        bundle.putString("serverMessage", message)
         val intent = Intent(SERVICE_SEND_DATA)
         intent.putExtras(bundle)
         sendBroadcast(intent)
@@ -204,7 +203,8 @@ class BackService : BaseService(){
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ topicMessage ->
                            Timber.d("$url 訂閱成功")
-                           respond(topicMessage)
+                           respond(topicMessage) //TODO Cheryl: 如果沒有要在service處理的事, 可以刪掉這行
+                           sendMessageToActivity(topicMessage.payload)
                        }, { throwable ->
                            Timber.e("訂閱失敗 : $throwable")
                        })

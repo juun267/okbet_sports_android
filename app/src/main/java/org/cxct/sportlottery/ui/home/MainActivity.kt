@@ -61,17 +61,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val mMarqueeAdapter = MarqueeAdapter()
 
     private val mBroadcastReceiver = MyBroadcastReceiver()
-/*
-    private val mBroadcastReceiver by lazy {
-        object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent) {
-                val bundle = intent.extras
-                val message = bundle?.getString("topicMessage", "")
-                Timber.e(">>> BackService to activity, passed value succeed = ${!message.isNullOrBlank()}")
-            }
-        }
-    }
-    */
+
     private val navController by lazy {
         findNavController(R.id.homeFragment)
     }
@@ -91,15 +81,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         initRvMarquee()
         refreshTabLayout(null)
         initObserve()
-    }
-
-    private fun initBroadcastReceiver() {
-
-        val filter = IntentFilter().apply {
-            addAction(SERVICE_SEND_DATA)
-        }
-        registerReceiver(mBroadcastReceiver, filter)
-
+        testSendServer()
     }
 
     override fun onResume() {
@@ -115,6 +97,19 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
+    }
+
+    private fun testSendServer() {
+        iv_logo.setOnClickListener {
+        }
+    }
+
+    private fun initBroadcastReceiver() {
+
+        val filter = IntentFilter().apply {
+            addAction(SERVICE_SEND_DATA)
+        }
+        registerReceiver(mBroadcastReceiver, filter)
     }
 
     private fun initToolBar() {
@@ -361,8 +356,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
         private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() } //.add(KotlinJsonAdapterFactory())
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
-        val messageStr = bundle?.getString("topicMessage", "")
-//        Timber.e(">>> backService to activity, passed value succeed = $messageStr")
+        val messageStr = bundle?.getString("serverMessage", "")
         val type = Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
         val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(type)
         if (!messageStr.isNullOrEmpty()) {
