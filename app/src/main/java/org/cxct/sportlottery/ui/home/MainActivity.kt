@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.game.Game2Fragment
 import org.cxct.sportlottery.ui.game.Game2FragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -50,6 +51,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private lateinit var mainBinding: ActivityMainBinding
 
     private val mMarqueeAdapter = MarqueeAdapter()
+
+    enum class Page {
+        ODDS_DETAIL,
+        ODDS
+    }
 
     private val navController by lazy {
         findNavController(R.id.homeFragment)
@@ -229,12 +235,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun switchFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0)
-            .replace(R.id.odds_detail_container, fragment)
-            .addToBackStack(null)
-            .commit()
+    private fun addFragment(fragment: Fragment, page: Page) {
+        if (supportFragmentManager.findFragmentByTag(page.name) == null) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, 0)
+                .add(R.id.odds_detail_container, fragment, page.name)
+                .addToBackStack(page.name)
+                .commit()
+        }
     }
 
 
@@ -270,10 +278,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            switchFragment(
+            addFragment(
                 OddsDetailFragment.newInstance(
                     gameType, typeName, matchId, oddsType
-                )
+                ), Page.ODDS_DETAIL
+            )
+        })
+
+        viewModel.isOpenMatchOdds.observe(this, Observer {
+            getAppBarLayout().setExpanded(true, true)
+            addFragment(
+                Game2Fragment(), Page.ODDS
             )
         })
     }
