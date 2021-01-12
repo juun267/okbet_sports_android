@@ -19,7 +19,7 @@
     <string name="btn_retry">重试</string>
 
     <!-- Splash page -->
-    <string name="loading_get_config">正在获取最快地址...</string>
+    <string name="loading_get_config">正在获取最快地址…</string>
     <string name="error_config">获取平台配置文件失败!</string>
 
     <!-- Login page -->
@@ -51,6 +51,7 @@
     <string name="hint_real_name">须与你用于提款的银行一致，否则无法提款</string>
     <string name="verification_code">验证码</string>
     <string name="hint_verification_code">请输入验证码</string>
+    <string name="get_valid_code_fail_point">请求验证码失败，请点击重试！</string>
     <string name="desc_agreement">我已经达到法定年龄，并且完全同意</string>
     <string name="btn_agreement">开户协议</string>
     <string name="have_account">已有帐号?</string>

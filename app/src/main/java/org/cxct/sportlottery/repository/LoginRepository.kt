@@ -64,10 +64,8 @@ class LoginRepository(private val androidContext: Context) {
         }
 
 
-    suspend fun login(userName: String, password: String): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.login(
-            LoginRequest(userName, password)
-        )
+    suspend fun login(loginRequest: LoginRequest): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.login(loginRequest)
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {

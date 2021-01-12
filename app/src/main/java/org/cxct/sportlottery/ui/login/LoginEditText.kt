@@ -1,20 +1,24 @@
 package org.cxct.sportlottery.ui.login
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
+    private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
     private var mOnFocusChangeListener: OnFocusChangeListener? = null
     var eyeVisibility
         get() = btn_eye.visibility
@@ -32,7 +36,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
-
+            view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
 
             val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
@@ -46,6 +50,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
         setupFocus()
         setupEye()
+        setupVerificationCode()
         setError(null)
     }
 
@@ -58,14 +63,30 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private fun setupEye() {
         btn_eye.setOnClickListener {
-            if (it.isSelected) {
-                it.isSelected = false
+            if (cb_eye.isChecked) {
+                cb_eye.isChecked = false
                 et_input.transformationMethod = PasswordTransformationMethod.getInstance() //不顯示
             } else {
-                it.isSelected = true
+                cb_eye.isChecked = true
                 et_input.transformationMethod = HideReturnsTransformationMethod.getInstance() //顯示
             }
         }
+    }
+
+    private fun setupVerificationCode() {
+        iv_verification_code.setOnClickListener {
+            iv_verification_code.visibility = View.GONE
+            mVerificationCodeBtnOnClickListener?.onClick(it)
+        }
+    }
+
+    fun setVerificationCodeBtnOnClickListener(l: OnClickListener?) {
+        mVerificationCodeBtnOnClickListener = l
+    }
+
+    fun setVerificationCode(bitmap: Bitmap?) {
+        iv_verification_code.visibility = View.VISIBLE
+        Glide.with(this).load(bitmap).into(iv_verification_code)
     }
 
     fun setError(value: String?) {

@@ -46,13 +46,41 @@
             android:textSize="@dimen/textSize12sp"
             tools:hint="@string/please_input_account" />
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/btn_eye"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:contentDescription="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/effect_visible_eye" />
+            android:gravity="center">
+
+            <CheckBox
+                android:id="@+id/cb_eye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/effect_visible_eye"
+                android:clickable="false" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/block_verification_code"
+            android:layout_width="80dp"
+            android:layout_height="30dp">
+
+            <ProgressBar
+                android:id="@+id/pb_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray1"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
     </LinearLayout>
 
