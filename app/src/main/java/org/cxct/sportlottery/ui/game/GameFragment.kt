@@ -293,98 +293,99 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
     }
-            private fun setupInPlayFilter(itemList: List<Item>) {
-                val selectSportName = itemList.find { sport ->
-                    sport.isSelected
-                }?.name
 
-                gameTypeAdapter.data = itemList
+    private fun setupInPlayFilter(itemList: List<Item>) {
+        val selectSportName = itemList.find { sport ->
+            sport.isSelected
+        }?.name
 
-                hall_match_type_row.apply {
-                    type = MatchTypeRow.IN_PLAY
-                    sport = selectSportName
-                }
+        gameTypeAdapter.data = itemList
 
-                hall_date_list.visibility = View.GONE
-            }
-
-            private fun setupTodayFilter(itemList: List<Item>) {
-                gameTypeAdapter.data = itemList
-
-                hall_match_type_row.type = MatchTypeRow.TODAY
-                hall_date_list.visibility = View.GONE
-            }
-
-            private fun setupEarlyFilter(itemList: List<Item>) {
-                gameTypeAdapter.data = itemList
-
-                hall_match_type_row.type = MatchTypeRow.EARLY
-                hall_date_list.visibility = View.VISIBLE
-            }
-
-            private fun setupParlayFilter(itemList: List<Item>) {
-                gameTypeAdapter.data = itemList
-
-                hall_match_type_row.type = MatchTypeRow.PARLAY
-                hall_date_list.visibility = View.VISIBLE
-            }
-
-            private fun setupOutrightFilter(itemList: List<Item>) {
-                gameTypeAdapter.data = itemList
-
-                hall_match_type_row.type = MatchTypeRow.OUTRIGHT
-                hall_date_list.visibility = View.GONE
-            }
-
-            private fun setupGameHallList(baseResult: BaseResult) {
-                when (baseResult) {
-                    is OddsListResult -> setupOddList(baseResult)
-                    is LeagueListResult -> setupLeagueList(baseResult)
-                    is OutrightOddsListResult -> setupOutrightOddsList(baseResult)
-                    is OutrightSeasonListResult -> setupOutrightSeasonList(baseResult)
-                }
-            }
-
-            private fun setupOddList(oddsListResult: OddsListResult) {
-                hall_league_list.visibility = View.GONE
-                hall_outright_list.visibility = View.GONE
-                hall_outright_season_list.visibility = View.GONE
-                hall_odds_list.visibility = View.VISIBLE
-
-                leagueOddAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
-            }
-
-            private fun setupLeagueList(leagueListResult: LeagueListResult) {
-                hall_odds_list.visibility = View.GONE
-                hall_outright_list.visibility = View.GONE
-                hall_outright_season_list.visibility = View.GONE
-                hall_league_list.visibility = View.VISIBLE
-
-                leagueAdapter.data = leagueListResult.rows ?: listOf()
-            }
-
-            private fun setupOutrightOddsList(outrightOddsListResult: OutrightOddsListResult) {
-                hall_odds_list.visibility = View.GONE
-                hall_league_list.visibility = View.GONE
-                hall_outright_season_list.visibility = View.GONE
-                hall_outright_list.visibility = View.VISIBLE
-
-                outrightOddAdapter.data =
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds ?: listOf()
-            }
-
-            private fun setupOutrightSeasonList(outrightSeasonListResult: OutrightSeasonListResult) {
-                hall_odds_list.visibility = View.GONE
-                hall_league_list.visibility = View.GONE
-                hall_outright_list.visibility = View.GONE
-                hall_outright_season_list.visibility = View.VISIBLE
-
-                outrightSeasonAdapter.data = outrightSeasonListResult.rows ?: listOf()
-            }
-
-            companion object {
-            @JvmStatic
-            fun newInstance() {
-            }
+        hall_match_type_row.apply {
+            type = MatchTypeRow.IN_PLAY
+            sport = selectSportName
         }
+
+        hall_date_list.visibility = View.GONE
+    }
+
+    private fun setupTodayFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
+
+        hall_match_type_row.type = MatchTypeRow.TODAY
+        hall_date_list.visibility = View.GONE
+    }
+
+    private fun setupEarlyFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
+
+        hall_match_type_row.type = MatchTypeRow.EARLY
+        hall_date_list.visibility = View.VISIBLE
+    }
+
+    private fun setupParlayFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
+
+        hall_match_type_row.type = MatchTypeRow.PARLAY
+        hall_date_list.visibility = View.VISIBLE
+    }
+
+    private fun setupOutrightFilter(itemList: List<Item>) {
+        gameTypeAdapter.data = itemList
+
+        hall_match_type_row.type = MatchTypeRow.OUTRIGHT
+        hall_date_list.visibility = View.GONE
+    }
+
+    private fun setupGameHallList(baseResult: BaseResult) {
+        when (baseResult) {
+            is OddsListResult -> setupOddList(baseResult)
+            is LeagueListResult -> setupLeagueList(baseResult)
+            is OutrightOddsListResult -> setupOutrightOddsList(baseResult)
+            is OutrightSeasonListResult -> setupOutrightSeasonList(baseResult)
         }
+    }
+
+    private fun setupOddList(oddsListResult: OddsListResult) {
+        hall_league_list.visibility = View.GONE
+        hall_outright_list.visibility = View.GONE
+        hall_outright_season_list.visibility = View.GONE
+        hall_odds_list.visibility = View.VISIBLE
+
+        leagueOddAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+    }
+
+    private fun setupLeagueList(leagueListResult: LeagueListResult) {
+        hall_odds_list.visibility = View.GONE
+        hall_outright_list.visibility = View.GONE
+        hall_outright_season_list.visibility = View.GONE
+        hall_league_list.visibility = View.VISIBLE
+
+        leagueAdapter.data = leagueListResult.rows ?: listOf()
+    }
+
+    private fun setupOutrightOddsList(outrightOddsListResult: OutrightOddsListResult) {
+        hall_odds_list.visibility = View.GONE
+        hall_league_list.visibility = View.GONE
+        hall_outright_season_list.visibility = View.GONE
+        hall_outright_list.visibility = View.VISIBLE
+
+        outrightOddAdapter.data =
+            outrightOddsListResult.outrightOddsListData?.leagueOdds ?: listOf()
+    }
+
+    private fun setupOutrightSeasonList(outrightSeasonListResult: OutrightSeasonListResult) {
+        hall_odds_list.visibility = View.GONE
+        hall_league_list.visibility = View.GONE
+        hall_outright_list.visibility = View.GONE
+        hall_outright_season_list.visibility = View.VISIBLE
+
+        outrightSeasonAdapter.data = outrightSeasonListResult.rows ?: listOf()
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() {
+        }
+    }
+}
