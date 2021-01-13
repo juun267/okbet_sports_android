@@ -83,8 +83,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
             seasonSubListener = SeasonSubAdapter.SeasonSubListener {
-                //TODO confirm season detail map api
-                Timber.i("open season details list")
+                viewModel.getOutrightOddsList(it.id)
             }
         }
     }
@@ -108,7 +107,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupOddsList(this)
 
             setupLeagueList(this)
-            
+
             setupOutrightSeasonList(this)
         }
     }

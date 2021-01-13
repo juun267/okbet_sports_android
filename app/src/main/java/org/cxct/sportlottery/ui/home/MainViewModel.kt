@@ -67,6 +67,9 @@ class MainViewModel(
     val outrightSeasonListResult: LiveData<OutrightSeasonListResult>
         get() = _outrightSeasonListResult
 
+    val outrightOddsListResult: LiveData<OutrightOddsListResult>
+        get() = _outrightOddsListResult
+
     val curPlayType: LiveData<PlayType>
         get() = _curPlayType
 
@@ -87,6 +90,7 @@ class MainViewModel(
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
     private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult>()
+    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -339,6 +343,28 @@ class MainViewModel(
                 }
             }
             else -> {
+            }
+        }
+
+        _isOpenMatchOdds.postValue(true)
+    }
+
+    fun getOutrightOddsList(leagueId: String) {
+        val gameType = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+            it.isSelected
+        }?.code
+
+        gameType?.let {
+            viewModelScope.launch {
+                val result = doNetwork {
+                    OneBoSportApi.outrightService.getOutrightOddsList(
+                        OutrightOddsListRequest(
+                            gameType,
+                            leagueIdList = listOf(leagueId)
+                        )
+                    )
+                }
+                _outrightOddsListResult.postValue(result)
             }
         }
 

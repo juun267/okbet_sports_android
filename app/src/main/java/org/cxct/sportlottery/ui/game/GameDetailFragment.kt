@@ -9,16 +9,22 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_detail.*
+import kotlinx.android.synthetic.main.fragment_game_detail.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd.view.*
+import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
+import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
+import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 
 /**
@@ -38,6 +44,10 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private val outrightOddAdapter by lazy {
+        OutrightOddAdapter()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +55,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         return inflater.inflate(R.layout.fragment_game_detail, container, false).apply {
             setupEvent(this)
             setupMatchOddList(this)
+            setupOutrightOddList(this)
         }
     }
 
@@ -61,6 +72,20 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             this.adapter = matchOddAdapter.apply {
                 this.playType = this@GameDetailFragment.playType
             }
+        }
+    }
+
+    private fun setupOutrightOddList(view: View) {
+        view.outright_odd_sub_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.adapter = outrightOddAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
     }
 
@@ -94,25 +119,52 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
-                it.oddsListData?.leagueOdds?.getOrNull(0)?.let { leagueOdd ->
-                    this.view?.let { view ->
-                        setupMatchOddList(leagueOdd)
-                        setupLeagueLayout(view, it.oddsListData.leagueOdds[0])
-                    }
-                }
+                setupOddsUpperBar(it)
+                setupMatchOddList(it)
+            }
+        })
+
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                setupLeagueOddsUpperBar()
+                setupOutrightOddList(it)
             }
         })
     }
 
-    private fun setupLeagueLayout(view: View, item: LeagueOdd) {
-        view.apply {
-            league_odd_name.text = item.league.name
-            league_odd_count.text = item.matchOdds.size.toString()
+    private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
+        league_odd_count.visibility = View.VISIBLE
+        val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
+
+        oddsFirst?.let {
+            league_odd_name.text = it.league.name
+            league_odd_count.text = it.matchOdds.size.toString()
         }
     }
 
-    private fun setupMatchOddList(item: LeagueOdd) {
-        matchOddAdapter.data = item.matchOdds.apply { this[0].isExpand = true }
+    private fun setupMatchOddList(oddsListResult: OddsListResult) {
+        league_odd_sub_list.visibility = View.VISIBLE
+        outright_odd_sub_list.visibility = View.GONE
+
+        val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
+
+        oddsFirst?.let {
+            matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
+        }
+    }
+
+    private fun setupLeagueOddsUpperBar() {
+        league_odd_name.text = getString(R.string.detail_outright_upper_bar_title)
+        league_odd_count.visibility = View.GONE
+    }
+
+    private fun setupOutrightOddList(outrightOddsListResult: OutrightOddsListResult) {
+        league_odd_sub_list.visibility = View.GONE
+        outright_odd_sub_list.visibility = View.VISIBLE
+
+        outrightOddAdapter.data =
+            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.values?.first()
+                ?: listOf()
     }
 
     override fun onResume() {
