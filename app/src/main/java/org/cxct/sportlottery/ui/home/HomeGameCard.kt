@@ -13,15 +13,16 @@ class HomeGameCard @JvmOverloads constructor(context: Context, attrs: AttributeS
         val view = LayoutInflater.from(context).inflate(R.layout.home_game_card, this, false)
         addView(view)
 
+        val typedArray = context.theme
+            .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
-            val typedArray = context.theme
-                .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
-
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.tv_count.text = typedArray.getText(R.styleable.CustomView_cvCount)
             view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, -1))
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            typedArray.recycle()
         }
     }
 
