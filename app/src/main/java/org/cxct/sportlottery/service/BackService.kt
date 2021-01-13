@@ -70,7 +70,7 @@ class BackService : BaseService(){
 //    private val URL_EVENT by lazy { "/notify/event/{eventId}"} //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id) //TODO Cheryl 替換變數
 //    private val URL_HALL by lazy { "/notify/hall/{gameType}/{cateMenuCode}/{eventId}" }//大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏 //TODO Cheryl 替換變數
     private val URL_PRIVATE = "/ws/notify/user/${201}"
-    private val URL_EVENT = "/ws/notify/event/sr:match:25272582" //.apply { replace(":", "\\") }
+    private val URL_EVENT = "/ws/notify/event/sr:match:25290392" //.apply { replace(":", "\\") }
     private val URL_HALL = "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25217322"
 
     private var mStompClient: StompClient? = null
@@ -90,7 +90,6 @@ class BackService : BaseService(){
     override fun onBind(intent: Intent): IBinder {
 
         if (token.isNullOrEmpty()) return mBinder
-
 
         if (mStompClient?.isConnected != true) {
             Timber.d("==尚未建立連線，連線開始==")
@@ -119,6 +118,7 @@ class BackService : BaseService(){
                                       headerMap,
                                       httpClient.newBuilder().pingInterval(40, TimeUnit.SECONDS).retryOnConnectionFailure(true).build())
 
+        val stompMessage : StompMessage
             mStompClient?.let { stompClient ->
 
                 stompClient.withServerHeartbeat(HEART_BEAT_RATE)
@@ -147,14 +147,14 @@ class BackService : BaseService(){
                         else -> Timber.e("Stomp connection failed")
                     }
                 }
-//                val eventDisposable = stompClient.topic(URL_EVENT, mHeader)
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe({ topicMessage ->
-//                                   Timber.e(">>>>>>> $URL_EVENT 訂閱成功, topicMessage = ${topicMessage}")
-//                               }, { throwable ->
-//                                   Timber.e("訂閱失敗 : $throwable")
-//                               })
+                val eventDisposable = stompClient.topic(URL_EVENT, mHeader)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ topicMessage ->
+                                   Timber.e(">>>>>>> $URL_EVENT 訂閱成功, topicMessage = ${topicMessage}")
+                               }, { throwable ->
+                                   Timber.e("訂閱失敗 : $throwable")
+                               })
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL) { topicMessage ->
                     Timber.e("$URL_ALL, msg = ${topicMessage.payload}")
@@ -166,21 +166,27 @@ class BackService : BaseService(){
                 }
 
                 Timber.e(">>>>>>url event = $URL_EVENT")
+                /*
                 //具体赛事/赛季频道
                 val eventDisposable: Disposable? = stompClient.subscribe(URL_EVENT) { topicMessage ->
                     Timber.e("$URL_EVENT, msg = ${topicMessage.payload}")
                 }
-
+*/
                 //大厅赔率频道
                 val hallDisposable: Disposable? = stompClient.subscribe(URL_HALL) { topicMessage ->
                     Timber.e("$URL_HALL, msg = ${topicMessage.payload}")
                 }
                 mCompositeDisposable?.add(lifecycleDisposable)
-                mCompositeDisposable?.add(privateDisposable!!)
                 mCompositeDisposable?.add(eventDisposable!!)
+                mCompositeDisposable?.add(privateDisposable!!)
                 mCompositeDisposable?.add(allDisposable!!)
                 mCompositeDisposable?.add(hallDisposable!!)
+/*
+                stompClient.setPathMatcher { path, msg ->
 
+                    Timber.e("path = $path")
+                }
+                */
                 stompClient.connect(mHeader)
             }
 
@@ -216,6 +222,7 @@ class BackService : BaseService(){
 
     @SuppressLint("CheckResult")
     private fun StompClient.subscribe(url: String, respond: (StompMessage) -> Unit): Disposable? {
+
         return this.topic(url, mHeader)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
