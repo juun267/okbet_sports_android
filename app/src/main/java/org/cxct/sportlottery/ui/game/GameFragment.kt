@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,16 +37,14 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
  * create an instance of this fragment.
  */
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
-    private val navController by lazy {
-        findNavController()
-    }
-
     private val args: GameFragmentArgs by navArgs()
+
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
             viewModel.getGameHallList(args.matchType, it)
         })
     }
+
     private val gameDateAdapter by lazy {
         GameDateAdapter(GameDateListener {
             viewModel.getGameHallList(args.matchType, it)
