@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.infoCenter
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,8 +9,6 @@ import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityInfoCenterBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.bet_record.search.result.BetRecordDetailDialog
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {

@@ -9,6 +9,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.info.BetInfoData
+import org.cxct.sportlottery.network.bet.info.BetInfoRequest
+import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.TimeRangeParams
@@ -119,6 +123,10 @@ class MainViewModel(
     fun setOddsDetailMoreList(list: List<*>) {
         _oddsDetailMoreList.postValue(list)
     }
+
+    private val _betInfoResult = MutableLiveData<BetInfoResult>()
+    val betInfoResult: LiveData<BetInfoResult>
+        get() = _betInfoResult
 
     fun logout() {
         viewModelScope.launch {
@@ -442,11 +450,21 @@ class MainViewModel(
         val item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
             it.isSelected
         }
-        _curOddsDetailParams.postValue(listOf(item?.code,item?.name,oddId))
+        _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
     }
 
     fun getOddsDetail(entity: GameEntity) {
-        _curOddsDetailParams.postValue(listOf(entity.code,entity.name,entity.match?.id))
+        _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
+    fun getBetInfoList(oddsList: List<Odd>) {
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.betService.getBetInfo(
+                    BetInfoRequest("EU", oddsList)
+                )
+            }
+            _betInfoResult.postValue(result)
+        }
+    }
 }

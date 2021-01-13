@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class BetInfoData(
     @Json(name = "matchOdds")
-    val matchOdds: List<MatchOdd>,
+    val matchOdds: MutableList<MatchOdd>,
     @Json(name = "parlayOdds")
-    val parlayOdds: List<ParlayOdd>
+    val parlayOdds: MutableList<ParlayOdd>
 )
