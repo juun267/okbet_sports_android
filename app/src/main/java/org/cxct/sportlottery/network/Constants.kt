@@ -13,6 +13,7 @@ object Constants {
     const val INDEX_LOGOUT = "/api/front/index/logout"
     const val INDEX_CONFIG = "/api/front/index/config.json" //获取配置信息
     const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
+    const val INDEX_REGISTER = "api/front/index/register" //注册用户
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"

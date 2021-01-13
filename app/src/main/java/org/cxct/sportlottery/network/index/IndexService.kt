@@ -3,7 +3,9 @@ package org.cxct.sportlottery.network.index
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
+import org.cxct.sportlottery.network.index.register.RegisterRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,4 +25,7 @@ interface IndexService {
 
     @POST(INDEX_VALIDATE_CODE)
     suspend fun getValidCode(@Body validCodeRequest: ValidCodeRequest): Response<ValidCodeResult>
+
+    @POST(INDEX_REGISTER)
+    suspend fun register(@Body registerRequest: RegisterRequest): Response<LoginResult>
 }

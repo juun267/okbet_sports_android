@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import liveData
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.*
+import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.util.AesCryptoUtil
 import retrofit2.Response
 
@@ -88,5 +89,23 @@ class LoginRepository(private val androidContext: Context) {
         }
 
         return OneBoSportApi.indexService.logout(LogoutRequest())
+    }
+
+    suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.register(registerRequest)
+
+        if (loginResponse.isSuccessful) {
+            loginResponse.body()?.let {
+                account = registerRequest.userName //預設存帳號
+                sLoginData = it.loginData
+
+                with(sharedPref.edit()) {
+                    putString(KEY_TOKEN, it.loginData?.token)
+                    apply()
+                }
+            }
+        }
+
+        return loginResponse
     }
 }

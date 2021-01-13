@@ -5,6 +5,7 @@ import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
@@ -65,7 +66,7 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
-                    (url.contains(INDEX_LOGIN)) -> {
+                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) ) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }

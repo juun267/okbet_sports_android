@@ -9,8 +9,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.index.ValidCodeRequest
 import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -20,26 +22,43 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class RegisterViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
-
     val registerFormState: LiveData<RegisterFormState>
         get() = _registerFormState
+    val registerResult: LiveData<LoginResult>
+        get() = _registerResult
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
 
     private val _registerFormState = MutableLiveData<RegisterFormState>()
+    private val _registerResult = MutableLiveData<LoginResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
 
-    fun registerDataChanged(context: Context, memberAccount: String?, loginPassword: String?, confirmPassword: String?, fullName: String?, validCode: String?, checkAgreement: Boolean) {
+    fun registerDataChanged(
+        context: Context,
+        inviteCode: String?,
+        memberAccount: String?,
+        loginPassword: String?,
+        confirmPassword: String?,
+        fullName: String?,
+        validCode: String?,
+        checkAgreement: Boolean
+    ) {
+        val inviteCodeError: String? = checkInviteCode(context, inviteCode)
         val memberAccountError = checkMemberAccount(context, memberAccount)
         val loginPasswordError = checkLoginPassword(context, loginPassword)
         val confirmPasswordError = checkConfirmPassword(context, loginPassword, confirmPassword)
         val fullNameError = checkFullName(context, fullName)
         val validCodeError = checkValidCode(context, validCode)
-        val isDataValid = memberAccountError == null && loginPasswordError == null && confirmPasswordError == null &&
+        val isDataValid = (sConfigData?.enableInviteCode != FLAG_OPEN || inviteCodeError == null) &&
+                memberAccountError == null &&
+                loginPasswordError == null &&
+                confirmPasswordError == null &&
                 (sConfigData?.enableFullName != FLAG_OPEN || fullNameError == null) &&
-                (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null)
+                (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null) &&
+                checkAgreement
 
         _registerFormState.value = RegisterFormState(
+            inviteCodeError = inviteCodeError,
             memberAccountError = memberAccountError,
             loginPasswordError = loginPasswordError,
             confirmPasswordError = confirmPasswordError,
@@ -64,11 +83,18 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         return HtmlCompat.fromHtml(htmlString, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
+    private fun checkInviteCode(context: Context, inviteCode: String?): String? {
+        return when {
+            inviteCode.isNullOrBlank() -> context.getString(R.string.hint_recommend_code)
+            else -> null
+        }
+    }
+
     private fun checkMemberAccount(context: Context, account: String?): String? {
         return when {
             account.isNullOrBlank() -> context.getString(R.string.error_account_empty)
             account.length !in 4..16 -> context.getString(R.string.error_member_account)
-            VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_input_format)
+            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_input_format)
             else -> null
         }
     }
@@ -77,7 +103,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         return when {
             password.isNullOrBlank() -> context.getString(R.string.error_password_empty)
             password.length !in 6..20 -> context.getString(R.string.error_register_password)
-            VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_input_format)
+            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_input_format)
             else -> null
         }
     }
@@ -91,7 +117,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
 
     private fun checkFullName(context: Context, fullName: String?): String? {
         return when {
-            VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_input_format)
+            !VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_input_format)
             else -> null
         }
     }
@@ -109,6 +135,16 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
                 OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
             }
             _validCodeResult.postValue(result)
+        }
+    }
+
+    fun register(registerRequest: RegisterRequest) {
+        viewModelScope.launch {
+            doNetwork {
+                loginRepository.register(registerRequest)
+            }?.let { result ->
+                _registerResult.postValue(result)
+            }
         }
     }
 }
