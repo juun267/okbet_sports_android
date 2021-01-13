@@ -199,4 +199,26 @@
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
+
+    <!--  Withdraw  -->
+    <string name="now_balance">当前余额</string>
+    <string name="withdraw">提款</string>
+    <string name="currency">RMB</string>
+    <string name="submit">提交</string>
+    <string name="reset">重置</string>
+    <!--  BankList  -->
+    <string name="name">姓名</string>
+    <string name="tail_number">尾号</string>
+    <string name="bind_start_time">绑定于</string>
+    <string name="bind_credit_card_not_yet">您尚未绑定银行卡</string>
+    <string name="select_bank">选择银行</string>
+    <string name="withdraw_amount">提款金额</string>
+    <string name="withdraw_password">提款密码</string>
+    <string name="withdraw_all">全部提取</string>
+    <string name="withdraw_handling_fee_hint">・手续费率：2% 须支付手续费：0元</string>
+    <string name="hint_please_enter_withdraw_amount">请输入提款金额</string>
+    <string name="hint_please_enter_withdraw_password">请填写提款密码</string>
+    <string name="add_credit_card">新增银行卡</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
