@@ -285,6 +285,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             )
         })
 
+        viewModel.matchTypeCard.observe(this, Observer {
+            when (it) {
+                MatchType.PARLAY -> {
+                    tabLayout.getTabAt(4)?.select()
+                }
+                MatchType.AT_START -> {
+                }
+                else -> {
+                }
+            }
+        })
+
         viewModel.isOpenMatchOdds.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
             addFragment(

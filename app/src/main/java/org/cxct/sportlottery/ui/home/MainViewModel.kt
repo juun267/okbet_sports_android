@@ -80,6 +80,9 @@ class MainViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
+    val matchTypeCard: LiveData<MatchType>
+        get() = _matchTypeCard
+
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
@@ -98,6 +101,7 @@ class MainViewModel(
     private val _curDateEarly = MutableLiveData<List<Pair<String, Boolean>>>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
+    private val _matchTypeCard = MutableLiveData<MatchType>()
     private val _isOpenMatchOdds = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -241,6 +245,16 @@ class MainViewModel(
             }
             _userMoney.postValue(userMoneyResult?.money)
         }
+    }
+
+    fun getGameHallList(matchType: MatchType, sportType: SportType?) {
+        sportType?.let {
+            _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
+                it.isSelected = (it.code == sportType.code)
+            }
+        }
+
+        _matchTypeCard.postValue(matchType)
     }
 
     fun getGameHallList(matchType: MatchType, item: Item, timeRangeParams: TimeRangeParams) {
