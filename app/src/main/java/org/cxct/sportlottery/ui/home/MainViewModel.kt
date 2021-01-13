@@ -22,6 +22,9 @@ import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.outright.odds.Winner
+import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
+import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
@@ -62,6 +65,9 @@ class MainViewModel(
     val leagueListResult: LiveData<LeagueListResult>
         get() = _leagueListResult
 
+    val outrightSeasonListResult: LiveData<OutrightSeasonListResult>
+        get() = _outrightSeasonListResult
+
     val outrightOddsListResult: LiveData<OutrightOddsListResult>
         get() = _outrightOddsListResult
 
@@ -84,6 +90,7 @@ class MainViewModel(
     private val _oddsListGameHallResult = MutableLiveData<OddsListResult>()
     private val _oddsListResult = MutableLiveData<OddsListResult>()
     private val _leagueListResult = MutableLiveData<LeagueListResult>()
+    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult>()
     private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
@@ -289,7 +296,7 @@ class MainViewModel(
                 }?.code
 
                 gameType?.let {
-                    getOutrightOddsList(it)
+                    getOutrightSeasonList(it)
                 }
             }
             else -> {
@@ -341,6 +348,43 @@ class MainViewModel(
         }
 
         _isOpenMatchOdds.postValue(true)
+    }
+
+    fun getOutrightOddsList(leagueId: String) {
+        val gameType = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+            it.isSelected
+        }?.code
+
+        gameType?.let {
+            viewModelScope.launch {
+                val result = doNetwork {
+                    OneBoSportApi.outrightService.getOutrightOddsList(
+                        OutrightOddsListRequest(
+                            gameType,
+                            leagueIdList = listOf(leagueId)
+                        )
+                    )
+                }
+                _outrightOddsListResult.postValue(result)
+            }
+        }
+
+        _isOpenMatchOdds.postValue(true)
+    }
+
+    fun updateOutrightOddsSelectedState(winner: Winner) {
+        val result = _outrightOddsListResult.value
+
+        val winnerList =
+            result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
+                0
+            )?.odds?.values?.first() ?: listOf()
+
+        winnerList.map {
+            it.isSelected = (it == winner)
+        }
+
+        _outrightOddsListResult.postValue(result)
     }
 
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
@@ -426,14 +470,15 @@ class MainViewModel(
         }
     }
 
-    private fun getOutrightOddsList(gameType: String) {
+    private fun getOutrightSeasonList(gameType: String) {
         viewModelScope.launch {
             val result = doNetwork {
-                OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(gameType)
+                OneBoSportApi.outrightService.getOutrightSeasonList(
+                    OutrightSeasonListRequest(gameType)
                 )
             }
-            _outrightOddsListResult.postValue(result)
+
+            _outrightSeasonListResult.postValue(result)
         }
     }
 
@@ -469,7 +514,7 @@ class MainViewModel(
     }
 
     fun getOddsDetail(entity: GameEntity) {
-        _curOddsDetailParams.postValue(listOf(entity.code,entity.name,entity.match?.id))
+        _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
 }

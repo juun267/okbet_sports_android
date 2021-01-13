@@ -56,28 +56,6 @@ class MatchTypeRow @JvmOverloads constructor(
             row_1x2.setOnClickListener(field)
         }
 
-    var matchClickListener: OnClickListener? = null
-        set(value) {
-            field = value
-
-            row_match.setOnClickListener {
-                row_outright.isSelected = false
-                row_match.isSelected = true
-                field?.onClick(it)
-            }
-        }
-
-    var outrightClickListener: OnClickListener? = null
-        set(value) {
-            field = value
-
-            row_outright.setOnClickListener {
-                row_match.isSelected = false
-                row_outright.isSelected = true
-                field?.onClick(it)
-            }
-        }
-
     init {
         init(attrs)
     }
@@ -120,11 +98,11 @@ class MatchTypeRow @JvmOverloads constructor(
                 row_outright.visibility = GONE
             }
             OUTRIGHT -> {
-                row_match.apply {
+                row_outright.apply {
                     visibility = VISIBLE
                     isSelected = true
                 }
-                row_outright.visibility = VISIBLE
+                row_match.visibility = GONE
                 row_inplay.visibility = GONE
                 row_sport.visibility = GONE
                 row_1x2.visibility = GONE

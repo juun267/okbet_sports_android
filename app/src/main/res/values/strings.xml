@@ -190,6 +190,7 @@
     <string name="outright_row_entrance">冠军盘口</string>
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
+    <string name="detail_outright_upper_bar_title">冠军</string>
 
     <string name="total_bet_amount">总共有 投注额</string>
     <string name="win_lose">赢 / 输</string>
