@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -67,7 +68,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupValidCode() {
-        if (sConfigData?.enableValidCode == "1") {
+        if (sConfigData?.enableValidCode == FLAG_OPEN) {
             et_verification_code.visibility = View.VISIBLE
             updateValidCode()
         } else {

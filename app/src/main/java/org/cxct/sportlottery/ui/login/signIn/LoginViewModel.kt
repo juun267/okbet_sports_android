@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.index.LoginRequest
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.index.ValidCodeRequest
 import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -42,7 +43,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
         val passwordError = checkPassword(context, password)
         val validCodeError = checkValidCode(context, validCode)
         val isDataValid = accountError == null && passwordError == null &&
-                (sConfigData?.enableValidCode != "1" || validCodeError == null)
+                (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null)
         _loginFormState.value = LoginFormState(accountError, passwordError, validCodeError, isDataValid)
     }
 
