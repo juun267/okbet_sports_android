@@ -16,6 +16,8 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             notifyDataSetChanged()
         }
 
+    var outrightOddListener: OutrightOddListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -23,18 +25,19 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, outrightOddListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Winner) {
+        fun bind(item: Winner, outrightOddListener: OutrightOddListener?) {
             itemView.outright_name.text = item.spread
             itemView.outright_bet.text = item.odds.toString()
+            itemView.isSelected = item.isSelected
             itemView.outright_bet.setOnClickListener {
-                it.isSelected = !it.isSelected
+                outrightOddListener?.onClick(item)
             }
         }
 
@@ -47,5 +50,9 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
                 return ViewHolder(view)
             }
         }
+    }
+
+    class OutrightOddListener(val clickListener: (winner: Winner) -> Unit) {
+        fun onClick(winner: Winner) = clickListener(winner)
     }
 }

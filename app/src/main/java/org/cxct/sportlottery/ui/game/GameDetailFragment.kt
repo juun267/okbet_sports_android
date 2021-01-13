@@ -45,7 +45,11 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val outrightOddAdapter by lazy {
-        OutrightOddAdapter()
+        OutrightOddAdapter().apply {
+            outrightOddListener = OutrightOddAdapter.OutrightOddListener {
+                viewModel.updateOutrightOddsSelectedState(it)
+            }
+        }
     }
 
     override fun onCreateView(

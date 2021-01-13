@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
@@ -369,6 +370,21 @@ class MainViewModel(
         }
 
         _isOpenMatchOdds.postValue(true)
+    }
+
+    fun updateOutrightOddsSelectedState(winner: Winner) {
+        val result = _outrightOddsListResult.value
+
+        val winnerList =
+            result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
+                0
+            )?.odds?.values?.first() ?: listOf()
+
+        winnerList.map {
+            it.isSelected = (it == winner)
+        }
+
+        _outrightOddsListResult.postValue(result)
     }
 
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
