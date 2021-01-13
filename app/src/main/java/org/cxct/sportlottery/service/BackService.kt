@@ -70,14 +70,13 @@ class BackService : BaseService(){
 //    private val URL_EVENT by lazy { "/notify/event/{eventId}"} //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id) //TODO Cheryl 替換變數
 //    private val URL_HALL by lazy { "/notify/hall/{gameType}/{cateMenuCode}/{eventId}" }//大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏 //TODO Cheryl 替換變數
     private val URL_PRIVATE = "/ws/notify/user/${201}"
-    private val URL_EVENT = "/ws/notify/event/sr:match:24755382"
+    private val URL_EVENT = "/ws/notify/event/sr:match:25272582" //.apply { replace(":", "\\") }
     private val URL_HALL = "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25217322"
 
     private var mStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mPingDisposable: Disposable? = null
     private val mHeader: List<StompHeader> by lazy { listOf(StompHeader("token", token)) }
-    private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() }
 
     override fun onCreate() {
         super.onCreate()
@@ -148,32 +147,39 @@ class BackService : BaseService(){
                         else -> Timber.e("Stomp connection failed")
                     }
                 }
-
+//                val eventDisposable = stompClient.topic(URL_EVENT, mHeader)
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe({ topicMessage ->
+//                                   Timber.e(">>>>>>> $URL_EVENT 訂閱成功, topicMessage = ${topicMessage}")
+//                               }, { throwable ->
+//                                   Timber.e("訂閱失敗 : $throwable")
+//                               })
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL) { topicMessage ->
-                    Timber.d("$URL_ALL, msg = ${topicMessage.payload}")
-                }
-
-                //大厅赔率频道
-                val hallDisposable: Disposable? = stompClient.subscribe(URL_HALL) { topicMessage ->
-                    Timber.d("$URL_HALL, msg = ${topicMessage.payload}")
+                    Timber.e("$URL_ALL, msg = ${topicMessage.payload}")
                 }
 
                 //用户私人频道
                 val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
-                    Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
+//                    Timber.e("$URL_PRIVATE, msg = ${topicMessage.payload}")
                 }
 
+                Timber.e(">>>>>>url event = $URL_EVENT")
                 //具体赛事/赛季频道
                 val eventDisposable: Disposable? = stompClient.subscribe(URL_EVENT) { topicMessage ->
-                    Timber.d("$URL_EVENT, msg = ${topicMessage.payload}")
+                    Timber.e("$URL_EVENT, msg = ${topicMessage.payload}")
                 }
 
+                //大厅赔率频道
+                val hallDisposable: Disposable? = stompClient.subscribe(URL_HALL) { topicMessage ->
+                    Timber.e("$URL_HALL, msg = ${topicMessage.payload}")
+                }
                 mCompositeDisposable?.add(lifecycleDisposable)
-                mCompositeDisposable?.add(allDisposable!!)
-                mCompositeDisposable?.add(hallDisposable!!)
                 mCompositeDisposable?.add(privateDisposable!!)
                 mCompositeDisposable?.add(eventDisposable!!)
+                mCompositeDisposable?.add(allDisposable!!)
+                mCompositeDisposable?.add(hallDisposable!!)
 
                 stompClient.connect(mHeader)
             }
@@ -214,7 +220,7 @@ class BackService : BaseService(){
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ topicMessage ->
-                           Timber.d("$url 訂閱成功")
+                           Timber.e("$url 訂閱成功")
                            respond(topicMessage) //TODO Cheryl: 如果沒有要在service處理的事, 可以刪掉這行
                            sendMessageToActivity(topicMessage.payload)
                        }, { throwable ->
@@ -223,19 +229,29 @@ class BackService : BaseService(){
     }
 
     @SuppressLint("CheckResult")
-    private fun StompClient.sendMessage(url: String, header: List<StompHeader>, content: String) {
+    fun sendMessage(url: String, content: String) {
+        Timber.e("start sending message to server")
         val sendHeader = mHeader.toMutableList().apply {
             this.add(StompHeader(StompHeader.DESTINATION, url))
         }
 
-        this.send(StompMessage(StompCommand.SEND, sendHeader, content))
+        mStompClient?.send(StompMessage(StompCommand.SEND, sendHeader, content))
             ?.compose(applySchedulers())
             ?.subscribe({
-                            Timber.d("傳送訊息成功!!!!")
+                            Timber.e("sending message to server succeed!!!")
                         }, { throwable ->
                             Timber.e("傳送訊息失敗 ==> $throwable")
                             reconnect()
                         })
+    }
+
+    fun subScribeMatch() {
+        Timber.e("subScribeMatch")
+        val eventDisposable: Disposable? = mStompClient?.subscribe(URL_EVENT) { topicMessage ->
+            Timber.e(">>> msg = ${topicMessage.payload}")
+        }
+        mCompositeDisposable?.add(eventDisposable!!)
+
     }
 
     private fun applySchedulers(): CompletableTransformer {

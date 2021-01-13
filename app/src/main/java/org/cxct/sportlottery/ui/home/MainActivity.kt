@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.*
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -125,6 +126,12 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun testSendServer() {
         iv_logo.setOnClickListener {
+            Timber.e( "BackService mService.getStr() = ${mService.getStr()}")
+            val URL_HALL = "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25217322"
+//            Timber.e( "BackService sendMessage = ${}")
+//            mService.sendMessage(URL_HALL, "")
+
+            mService.subScribeMatch()
         }
     }
 
@@ -385,21 +392,22 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         return mainBinding.appBarLayout
     }
 
-}
-
-class MyBroadcastReceiver : BroadcastReceiver() {
+    class MyBroadcastReceiver : BroadcastReceiver() {
         private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() } //.add(KotlinJsonAdapterFactory())
-    override fun onReceive(context: Context?, intent: Intent) {
-        val bundle = intent.extras
-        val messageStr = bundle?.getString("serverMessage", "")
-        val type = Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
-        val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(type)
-        if (!messageStr.isNullOrEmpty()) {
-            val item = adapter.fromJson(messageStr)
-            item?.forEach {
-                Timber.e(">>>>>>test, item money = ${it.eventType}")
+        override fun onReceive(context: Context?, intent: Intent) {
+            val bundle = intent.extras
+            val messageStr = bundle?.getString("serverMessage", "")
+            val type =
+                Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
+            val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(type)
+            if (!messageStr.isNullOrEmpty()) {
+                val item = adapter.fromJson(messageStr)
+                item?.forEach {
+                    Timber.e(">>>>>>test, item money = ${it.eventType}")
+                }
             }
         }
+
     }
 
 }
