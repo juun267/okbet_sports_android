@@ -1,19 +1,15 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
-import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -66,10 +62,10 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
         })
     }
 
-    //test 正確用在點擊賠率按鈕上
+
     private fun getData() {
-        val list = listOf(Odd("123", 456.00))
-        viewModel.getBetInfoList(list)
+//        val list = listOf(Odd("123", 456.00))
+//        viewModel.getBetInfoList(list)
     }
 
 
@@ -79,7 +75,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
 
 
     override fun onBetClick() {
-      ToastUtil.showToast(context, "bet click")
+
     }
 
 

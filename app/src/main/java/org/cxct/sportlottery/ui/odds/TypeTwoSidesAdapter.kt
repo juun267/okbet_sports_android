@@ -10,7 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class TypeTwoSidesAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
+class TypeTwoSidesAdapter(private val oddsList: List<Odd>, private val onOddClickListener: OnOddClickListener) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +35,7 @@ class TypeTwoSidesAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapte
 
         fun bindModel(odd: Odd, position: Int) {
 
-            setData(odd)
+            setData(odd, onOddClickListener)
 
             tvSpread.text = odd.spread
 

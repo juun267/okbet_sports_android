@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 
-abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
     private val vCover = itemView.findViewById<View>(R.id.iv_disable_cover)
     private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
 
-    fun setData(odd: Odd) {
+    fun setData(odd: Odd, onOddClickListener: OnOddClickListener) {
 
         tvName.text = odd.name
         tvOdds.text = odd.odds.toString()
@@ -25,7 +25,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvOdds.setOnClickListener {
                     tvOdds.isSelected = !tvOdds.isSelected
                     odd.isSelect = tvOdds.isSelected
-                    //TODO 添加至投注單
+                    onOddClickListener.onAddToBetInfoList(odd)
                 }
             }
 

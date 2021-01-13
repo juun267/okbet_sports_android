@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +17,17 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
+import org.cxct.sportlottery.ui.bet.record.search.result.BetRecordDetailDialog
+import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OddsDetailFragment : Fragment(), Animation.AnimationListener {
+class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -92,7 +98,7 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
         (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         rv_detail.apply {
-            adapter = OddsDetailListAdapter(oddsDetailListData)
+            adapter = OddsDetailListAdapter(oddsDetailListData, this@OddsDetailFragment)
             layoutManager = LinearLayoutManager(requireContext())
         }
 
@@ -109,6 +115,8 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
                     }
                 }
             }
+
+            BetInfoListDialog().show(parentFragmentManager, "")
         }
 
         tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -131,7 +139,6 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
 
     private fun observeData() {
-
         oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
@@ -170,6 +177,13 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
         gameType?.let { gameType ->
             oddsDetailViewModel.getPlayCateList(gameType)
         }
+    }
+
+
+    override fun onAddToBetInfoList(odd: Odd) {
+        //mock data 內有三筆
+        viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
+        BetInfoListDialog().show(parentFragmentManager, "")
     }
 
 

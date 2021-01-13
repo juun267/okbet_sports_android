@@ -11,7 +11,7 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 
-class TypeGroupItemAdapter(private val oddsList: List<Odd>, private val groupItemCount: Int) :
+class TypeGroupItemAdapter(private val oddsList: List<Odd>, private val groupItemCount: Int, private val onOddClickListener: OnOddClickListener) :
     RecyclerView.Adapter<TypeGroupItemAdapter.ViewHolder>() {
 
 
@@ -37,7 +37,7 @@ class TypeGroupItemAdapter(private val oddsList: List<Odd>, private val groupIte
 
         fun bindModel(odd: Odd, position: Int) {
 
-            setData(odd)
+            setData(odd, onOddClickListener)
 
             tvSpread.text = odd.spread
 
