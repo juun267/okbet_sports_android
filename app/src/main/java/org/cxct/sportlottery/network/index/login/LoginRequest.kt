@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.index
+package org.cxct.sportlottery.network.index.login
 
 
 data class LoginRequest(

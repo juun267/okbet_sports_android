@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import liveData
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.*
+import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.logout.LogoutRequest
+import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.util.AesCryptoUtil
 import retrofit2.Response

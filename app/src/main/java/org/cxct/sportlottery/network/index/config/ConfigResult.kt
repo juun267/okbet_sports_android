@@ -1,11 +1,12 @@
-package org.cxct.sportlottery.network.index
+package org.cxct.sportlottery.network.index.config
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.index.config.ConfigData
 
 @JsonClass(generateAdapter = true)
-data class ValidCodeResult(
+data class ConfigResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
@@ -13,6 +14,5 @@ data class ValidCodeResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val validCodeData: ValidCodeData?
-
+    val configData: ConfigData?
 ) : BaseResult()

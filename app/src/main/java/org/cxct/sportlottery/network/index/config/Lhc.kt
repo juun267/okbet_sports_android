@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.index
+package org.cxct.sportlottery.network.index.config
 
 data class Lhc(
     val blue: String?, //蓝

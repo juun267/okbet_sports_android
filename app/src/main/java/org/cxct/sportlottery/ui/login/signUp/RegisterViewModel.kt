@@ -9,9 +9,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.LoginResult
-import org.cxct.sportlottery.network.index.ValidCodeRequest
-import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.LoginRepository

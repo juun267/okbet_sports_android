@@ -26,10 +26,10 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
-import org.cxct.sportlottery.network.index.ConfigResult
-import org.cxct.sportlottery.network.index.LoginResult
-import org.cxct.sportlottery.network.index.LogoutResult
-import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.network.index.config.ConfigResult
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.logout.LogoutResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult

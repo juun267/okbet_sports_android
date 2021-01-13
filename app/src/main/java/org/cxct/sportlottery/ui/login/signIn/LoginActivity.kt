@@ -7,9 +7,9 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.LoginRequest
-import org.cxct.sportlottery.network.index.LoginResult
-import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
