@@ -94,6 +94,6 @@
         android:textColor="@color/orangeyRed"
         android:textSize="@dimen/textSize12sp"
         app:drawableStartCompat="@drawable/ic_error_tip"
-        tools:text="@string/error_input_account" />
+        tools:text="@string/please_input_account" />
 
 </LinearLayout>

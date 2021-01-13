@@ -30,9 +30,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
         app:layout_constraintTop_toTopOf="@id/btn_back"
-        app:layout_constraintBottom_toBottomOf="@id/guidelineBottom">
+        app:layout_constraintVertical_bias="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="15dp"
                 app:cvHint="@string/hint_recommend_code"
-                app:cvInputType="text"
+                app:cvInputType="number"
                 app:cvTitle="@string/recommend_code" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
@@ -68,7 +68,7 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="4dp"
-                app:cvHint="@string/hint_input_account_password_rule"
+                app:cvHint="@string/hint_member_account"
                 app:cvInputType="text"
                 app:cvTitle="@string/member_account" />
 
@@ -79,7 +79,7 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="4dp"
-                app:cvHint="@string/hint_input_account_password_rule"
+                app:cvHint="@string/hint_member_account"
                 app:cvInputType="textPassword"
                 app:cvTitle="@string/login_password" />
 
@@ -95,7 +95,7 @@
                 app:cvTitle="@string/confirm_password" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_real_name"
+                android:id="@+id/et_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
@@ -112,8 +112,9 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="4dp"
+                app:cvEnableVerificationCode="true"
                 app:cvHint="@string/hint_verification_code"
-                app:cvInputType="text"
+                app:cvInputType="number"
                 app:cvTitle="@string/verification_code" />
 
             <LinearLayout
