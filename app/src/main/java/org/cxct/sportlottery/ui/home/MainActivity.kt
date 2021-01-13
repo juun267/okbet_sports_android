@@ -247,9 +247,12 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        if (navController.currentDestination?.id != R.id.homeFragment) {
+            tabLayout.getTabAt(0)?.select()
+            return
+        }
 
-        tabLayout.getTabAt(0)?.select()
+        super.onBackPressed()
     }
 
     private fun initObserve() {
