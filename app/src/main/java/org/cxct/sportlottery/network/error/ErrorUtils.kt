@@ -6,6 +6,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
+import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.logout.LogoutResult
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
@@ -81,6 +83,10 @@ object ErrorUtils {
                     (url.contains(INDEX_VALIDATE_CODE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ValidCodeResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(INDEX_SEND_SMS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SmsResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(MESSAGE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
