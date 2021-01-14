@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
+import androidx.annotation.Nullable
 import androidx.lifecycle.*
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
@@ -18,6 +18,7 @@ abstract class BaseViewModel : ViewModel() {
     private val _code = MutableLiveData<Int>()
     private val _networkException = MutableLiveData<Boolean>()
 
+    @Nullable
     suspend fun <T> doNetwork(apiFun: suspend () -> Response<T>): T? {
         val apiResult = viewModelScope.async {
             try {
@@ -35,6 +36,7 @@ abstract class BaseViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+
                 _networkException.postValue(true)
                 return@async null
             }
