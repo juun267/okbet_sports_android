@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_game_date.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.game.data.Date
 
 class GameDateAdapter(private val gameDateListener: GameDateListener) :
     RecyclerView.Adapter<GameDateAdapter.ViewHolder>() {
 
-    var data = listOf<Pair<String, Boolean>>()
+    var data = listOf<Date>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -30,11 +31,11 @@ class GameDateAdapter(private val gameDateListener: GameDateListener) :
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Pair<String, Boolean>, gameDateListener: GameDateListener) {
-            itemView.game_date.text = item.first
-            itemView.isSelected = item.second
+        fun bind(item: Date, gameDateListener: GameDateListener) {
+            itemView.game_date.text = item.display
+            itemView.isSelected = item.isSelected
             itemView.setOnClickListener {
-                gameDateListener.onClick(item.first)
+                gameDateListener.onClick(item)
             }
         }
 
@@ -50,6 +51,6 @@ class GameDateAdapter(private val gameDateListener: GameDateListener) :
     }
 }
 
-class GameDateListener(val clickListener: (string: String) -> Unit) {
-    fun onClick(string: String) = clickListener(string)
+class GameDateListener(val clickListener: (date: Date) -> Unit) {
+    fun onClick(date: Date) = clickListener(date)
 }
