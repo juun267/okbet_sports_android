@@ -19,6 +19,7 @@ class MatchTypeRow @JvmOverloads constructor(
         const val EARLY = 2
         const val PARLAY = 3
         const val OUTRIGHT = 4
+        const val AT_START = 5
     }
 
     var type = IN_PLAY
@@ -75,7 +76,7 @@ class MatchTypeRow @JvmOverloads constructor(
 
     private fun setupMatchType(type: Int) {
         when (type) {
-            IN_PLAY -> {
+            IN_PLAY, AT_START -> {
                 row_inplay.visibility = VISIBLE
                 row_sport.visibility = VISIBLE
                 row_1x2.visibility = VISIBLE
