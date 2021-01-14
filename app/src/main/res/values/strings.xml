@@ -183,6 +183,7 @@
 
     <!--game hall-->
     <string name="inplay_row_title">滚球</string>
+    <string name="match_type_row_at_start">即将开赛</string>
     <string name="inplay_row_btn_double">1 X 2</string>
     <string name="inplay_row_btn_bs">让球 ＆ 大小</string>
     <string name="date_row_league">赛事</string>
