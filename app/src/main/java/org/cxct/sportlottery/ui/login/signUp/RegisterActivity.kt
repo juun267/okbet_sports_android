@@ -74,7 +74,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             weChat = et_we_chat.getText(),
             zalo = et_zalo.getText(),
             facebook = et_facebook.getText(),
-            whatsApp = et_we_chat.getText(),
+            whatsApp = et_whats_app.getText(),
             telegram = et_telegram.getText(),
             validCode = et_verification_code.getText(),
             securityCode = et_sms_valid_code.getText(),
@@ -334,6 +334,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             et_we_chat.setError(registerState.weChatError)
             et_zalo.setError(registerState.zaloError)
             et_facebook.setError(registerState.facebookError)
+            et_whats_app.setError(registerState.whatsAppError)
             et_telegram.setError(registerState.telegramError)
             et_sms_valid_code.setError(registerState.securityCodeError)
             et_verification_code.setError(registerState.validCodeError)
