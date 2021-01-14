@@ -177,7 +177,7 @@
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:gravity="start|center_vertical"
-                android:hint="@string/hint_please_enter_withdraw_password"
+                android:hint="@string/hint_four_number_password"
                 android:textColor="@color/textColorDark"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>

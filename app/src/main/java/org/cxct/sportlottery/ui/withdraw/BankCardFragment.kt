@@ -35,7 +35,7 @@ class BindBankCardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bind_bank_card, container, false)
+        return inflater.inflate(R.layout.fragment_bank_card, container, false)
     }
 
     companion object {
