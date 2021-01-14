@@ -14,11 +14,15 @@ class WithdrawViewModel: BaseViewModel() {
         get() = _bankCardList
     private var _bankCardList = MutableLiveData<MyResult>()
 
-    fun getBankCardList(){
+    private fun getBankCardList(){
         viewModelScope.launch {
             doNetwork {
                 OneBoSportApi.bankService.getBankMy()
             }?.let { result -> _bankCardList.value = result }
         }
+    }
+
+    fun initBankListFragment(){
+        getBankCardList()
     }
 }

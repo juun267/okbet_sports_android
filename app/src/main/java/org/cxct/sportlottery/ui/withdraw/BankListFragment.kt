@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.base.BaseFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,7 +22,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BankListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BankListFragment : Fragment() {
+class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private val mBankListAdapter by lazy {
         BankListAdapter()
@@ -38,6 +40,23 @@ class BankListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_bank_list, container, false).apply {
             setupRecyclerView(this)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+            viewModel.initBankListFragment()
+            setupObserve()
+    }
+
+    private fun setupObserve() {
+        viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
+            it.bankCardList?.let {data ->
+                mBankListAdapter.bankList = data
+                if (data.isNotEmpty()){
+                    tv_no_bank_card.visibility = View.GONE
+                }
+            }
+        })
     }
 
     private fun setupRecyclerView(view: View) {

@@ -5,7 +5,9 @@
     <string name="language_en">English</string>
 
     <string name="app_name">创信体育</string>
-
+    <!-- Common -->
+        <!--  Symbol  -->
+    <string name="colon">：</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
 

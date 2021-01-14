@@ -9,6 +9,7 @@
     tools:context=".ui.withdraw.BankListFragment">
 
     <TextView
+        android:id="@+id/tv_no_bank_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
