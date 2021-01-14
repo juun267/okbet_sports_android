@@ -79,7 +79,7 @@ class MatchTypeRow @JvmOverloads constructor(
             IN_PLAY -> {
                 row_match_type.apply {
                     visibility = VISIBLE
-                    text = context.getString(R.string.inplay_row_title)
+                    text = context.getString(R.string.match_type_row_in_play)
                 }
                 row_sport.visibility = VISIBLE
                 row_1x2.visibility = VISIBLE

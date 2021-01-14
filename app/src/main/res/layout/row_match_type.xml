@@ -16,7 +16,7 @@
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/inplay_row_title" />
+        tools:text="@string/match_type_row_in_play" />
 
     <TextView
         android:id="@+id/row_match"
@@ -63,7 +63,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="10dp"
         android:paddingBottom="8dp"
-        android:text="@string/inplay_row_btn_double"
+        android:text="@string/match_type_row_btn_double"
         android:textColor="@color/selector_inplay_btn_text"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,7 +81,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="10dp"
         android:paddingBottom="8dp"
-        android:text="@string/inplay_row_btn_bs"
+        android:text="@string/match_type_row_btn_bs"
         android:textColor="@color/selector_inplay_btn_text"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/row_1x2"
