@@ -207,6 +207,7 @@
     <string name="submit">提交</string>
     <string name="reset">重置</string>
     <!--  BankList  -->
+    <string name="withdraw_setting">提款设置</string>
     <string name="name">姓名</string>
     <string name="tail_number">尾号</string>
     <string name="bind_start_time">绑定于</string>
@@ -220,6 +221,7 @@
     <string name="hint_four_number_password">密碼為4個數字</string>
     <string name="add_credit_card">新增银行卡</string>
     <!--  BankCard  -->
+    <string name="edit_bank_card">编辑银行卡</string>
     <string name="bank_card_number">银行卡号</string>
     <string name="withdraw_amount_range">(限額%s~%s RMB)</string>
     <string name="please_enter_bank_card_rule">請輸入12-19位數內的銀行卡號</string>

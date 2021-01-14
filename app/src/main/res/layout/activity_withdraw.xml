@@ -2,9 +2,11 @@
 <androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/withdraw_container"
+    android:name="androidx.navigation.fragment.NavHostFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:navGraph="@navigation/home_navigation"
-    tools:context=".ui.withdraw.WithdrawActivity">
+    app:navGraph="@navigation/withdraw_navigation"
+    tools:layout="@layout/fragment_withdraw">
 
 </androidx.fragment.app.FragmentContainerView>

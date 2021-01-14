@@ -1,14 +1,20 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 
 class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewModel::class) {
+
+    private  val  mNavController by lazy {
+        findNavController(R.id.withdraw_container)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_withdraw)
     }
 
     override fun setContentView(): Int {
