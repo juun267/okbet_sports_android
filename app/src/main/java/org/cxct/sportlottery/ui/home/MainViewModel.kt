@@ -57,19 +57,19 @@ class MainViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
-    val oddsListGameHallResult: LiveData<OddsListResult>
+    val oddsListGameHallResult: LiveData<OddsListResult?>
         get() = _oddsListGameHallResult
 
-    val oddsListResult: LiveData<OddsListResult>
+    val oddsListResult: LiveData<OddsListResult?>
         get() = _oddsListResult
 
-    val leagueListResult: LiveData<LeagueListResult>
+    val leagueListResult: LiveData<LeagueListResult?>
         get() = _leagueListResult
 
-    val outrightSeasonListResult: LiveData<OutrightSeasonListResult>
+    val outrightSeasonListResult: LiveData<OutrightSeasonListResult?>
         get() = _outrightSeasonListResult
 
-    val outrightOddsListResult: LiveData<OutrightOddsListResult>
+    val outrightOddsListResult: LiveData<OutrightOddsListResult?>
         get() = _outrightOddsListResult
 
     val curPlayType: LiveData<PlayType>
@@ -91,11 +91,11 @@ class MainViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
-    private val _oddsListGameHallResult = MutableLiveData<OddsListResult>()
-    private val _oddsListResult = MutableLiveData<OddsListResult>()
-    private val _leagueListResult = MutableLiveData<LeagueListResult>()
-    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult>()
-    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
+    private val _oddsListGameHallResult = MutableLiveData<OddsListResult?>()
+    private val _oddsListResult = MutableLiveData<OddsListResult?>()
+    private val _leagueListResult = MutableLiveData<LeagueListResult?>()
+    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult?>()
+    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult?>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
