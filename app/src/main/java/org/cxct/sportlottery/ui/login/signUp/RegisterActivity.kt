@@ -7,8 +7,8 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_register.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -31,7 +31,17 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupLoginPassword()
         setupConfirmPassword()
         setupFullName()
+        setupWithdrawalPassword()
+        setupQQ()
+        setupPhone()
+        setupMail()
+        setupWeChat()
+        setupZalo()
+        setupFacebook()
+        setupWhatsApp()
+        setupTelegram()
         setupValidCode()
+        setupSmsValidCode()
         setupAgreementButton()
         setupRegisterButton()
         setupGoToLoginButton()
@@ -40,8 +50,24 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun checkInputData() {
         viewModel.registerDataChanged(
-            this, et_recommend_code.getText(), et_member_account.getText(), et_login_password.getText(),
-            et_confirm_password.getText(), et_full_name.getText(), et_verification_code.getText(), cb_agreement.isChecked
+            context = this,
+            inviteCode = et_recommend_code.getText(),
+            memberAccount = et_member_account.getText(),
+            loginPassword = et_login_password.getText(),
+            confirmPassword = et_confirm_password.getText(),
+            fullName = et_full_name.getText(),
+            fundPwd = et_withdrawal_pwd.getText(),
+            qq = et_qq.getText(),
+            phone = et_phone.getText(),
+            email = et_mail.getText(),
+            weChat = et_we_chat.getText(),
+            zalo = et_zalo.getText(),
+            facebook = et_facebook.getText(),
+            whatsApp = et_we_chat.getText(),
+            telegram = et_telegram.getText(),
+            validCode = et_verification_code.getText(),
+            securityCode = et_sms_valid_code.getText(),
+            checkAgreement = cb_agreement.isChecked
         )
     }
 
@@ -81,6 +107,70 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
     }
 
+    private fun setupWithdrawalPassword() {
+        et_withdrawal_pwd.visibility = if (sConfigData?.enableFundPwd == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_withdrawal_pwd.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+    private fun setupQQ() {
+        et_qq.visibility = if (sConfigData?.enableQQ == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_qq.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+    private fun setupPhone() {
+        et_phone.visibility = if (sConfigData?.enablePhone == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_phone.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+    private fun setupMail() {
+        et_mail.visibility = if (sConfigData?.enableEmail == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_mail.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+    private fun setupWeChat() {
+        et_we_chat.visibility = if (sConfigData?.enableWechat == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_we_chat.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+    private fun setupZalo() {
+        et_zalo.visibility = if (sConfigData?.enableZalo == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_zalo.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+    private fun setupFacebook() {
+        et_facebook.visibility = if (sConfigData?.enableFacebook == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_facebook.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+    private fun setupWhatsApp() {
+        et_whats_app.visibility = if (sConfigData?.enableWhatsApp == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_whats_app.afterTextChanged {
+            checkInputData()
+        }
+    }
+
+
+    private fun setupTelegram() {
+        et_telegram.visibility = if (sConfigData?.enableTelegram == FLAG_OPEN) View.VISIBLE else View.GONE
+        et_telegram.afterTextChanged {
+            checkInputData()
+        }
+    }
+
     private fun setupValidCode() {
         if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
             et_verification_code.visibility = View.VISIBLE
@@ -96,6 +186,19 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         et_verification_code.afterTextChanged {
             checkInputData()
         }
+    }
+
+    private fun setupSmsValidCode() {
+        //TODO simon test 簡訊驗證碼
+        et_sms_valid_code.visibility = if (sConfigData?.enableRegValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
+
+//        et_verification_code.setVerificationCodeBtnOnClickListener(View.OnClickListener {
+//            updateValidCode()
+//        })
+//
+//        et_verification_code.afterTextChanged {
+//            checkInputData()
+//        }
     }
 
     private fun setupAgreementButton() {
@@ -136,6 +239,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val userName = et_member_account.getText()
         val loginPassword = et_login_password.getText()
         val fullName = et_full_name.getText()
+        val fundPwd = et_withdrawal_pwd.getText()
+        val qq = et_qq.getText()
+        val phone = et_phone.getText()
+        val email = et_mail.getText()
+        val weChat = et_we_chat.getText()
+        val zalo = et_zalo.getText()
+        val facebook = et_facebook.getText()
+        val whatsApp = et_whats_app.getText()
+        val telegram = et_telegram.getText()
+        val smsCode = et_sms_valid_code.getText()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = et_verification_code.getText()
         val deviceSn = "" //JPushInterface.getRegistrationID(applicationContext) //極光推播 //TODO 極光推波建置好，要來補齊 deviceSn 參數
@@ -151,6 +264,26 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 this.inviteCode = inviteCode
             if (sConfigData?.enableFullName == FLAG_OPEN)
                 this.fullName = fullName
+            if (sConfigData?.enableFundPwd == FLAG_OPEN)
+                this.fundPwd = fundPwd
+            if (sConfigData?.enableQQ == FLAG_OPEN)
+                this.qq = qq
+            if (sConfigData?.enablePhone == FLAG_OPEN)
+                this.phone = phone
+            if (sConfigData?.enableEmail == FLAG_OPEN)
+                this.email = email
+            if (sConfigData?.enableWechat == FLAG_OPEN)
+                this.wechat = weChat
+            if (sConfigData?.enableZalo == FLAG_OPEN)
+                this.zalo = zalo
+            if (sConfigData?.enableFacebook == FLAG_OPEN)
+                this.facebook = facebook
+            if (sConfigData?.whatsApp == FLAG_OPEN)
+                this.whatsapp = whatsApp
+            if (sConfigData?.enableTelegram == FLAG_OPEN)
+                this.telegram = telegram
+            if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
+                this.securityCode = smsCode
             if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
                 this.validCodeIdentity = validCodeIdentity
                 this.validCode = validCode
@@ -174,6 +307,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             et_login_password.setError(registerState.loginPasswordError)
             et_confirm_password.setError(registerState.confirmPasswordError)
             et_full_name.setError(registerState.fullNameError)
+            et_withdrawal_pwd.setError(registerState.fundPwdError)
+            et_qq.setError(registerState.qqError)
+            et_phone.setError(registerState.phoneError)
+            et_mail.setError(registerState.emailError)
+            et_we_chat.setError(registerState.weChatError)
+            et_zalo.setError(registerState.zaloError)
+            et_facebook.setError(registerState.facebookError)
+            et_telegram.setError(registerState.telegramError)
+            et_sms_valid_code.setError(registerState.securityCodeError)
             et_verification_code.setError(registerState.validCodeError)
         })
 

@@ -10,9 +10,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
-import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -40,7 +40,17 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         loginPassword: String?,
         confirmPassword: String?,
         fullName: String?,
+        fundPwd: String?,
+        qq: String?,
+        phone: String?,
+        email: String?,
+        weChat: String?,
+        zalo: String?,
+        facebook: String?,
+        whatsApp: String?,
+        telegram: String?,
         validCode: String?,
+        securityCode: String?,
         checkAgreement: Boolean
     ) {
         val inviteCodeError: String? = checkInviteCode(context, inviteCode)
@@ -48,12 +58,32 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         val loginPasswordError = checkLoginPassword(context, loginPassword)
         val confirmPasswordError = checkConfirmPassword(context, loginPassword, confirmPassword)
         val fullNameError = checkFullName(context, fullName)
+        val fundPwdError = checkFundPwd(context, fundPwd)
+        val qqError = checkQQ(context, qq)
+        val phoneError = checkPhone(context, phone)
+        val emailError = checkEmail(context, email)
+        val weChatError = checkWeChat(context, weChat)
+        val zaloError = checkZalo(context, zalo)
+        val facebookError = checkFacebook(context, facebook)
+        val whatsAppError = checkWhatsApp(context, whatsApp)
+        val telegramError = checkTelegram(context, telegram)
+        val securityCodeError = checkSecurityCode(context, securityCode)
         val validCodeError = checkValidCode(context, validCode)
         val isDataValid = (sConfigData?.enableInviteCode != FLAG_OPEN || inviteCodeError == null) &&
                 memberAccountError == null &&
                 loginPasswordError == null &&
                 confirmPasswordError == null &&
                 (sConfigData?.enableFullName != FLAG_OPEN || fullNameError == null) &&
+                (sConfigData?.enableFundPwd != FLAG_OPEN || fundPwdError == null) &&
+                (sConfigData?.enableQQ != FLAG_OPEN || qqError == null) &&
+                (sConfigData?.enablePhone != FLAG_OPEN || phoneError == null) &&
+                (sConfigData?.enableEmail != FLAG_OPEN || emailError == null) &&
+                (sConfigData?.enableWechat != FLAG_OPEN || weChatError == null) &&
+                (sConfigData?.enableZalo != FLAG_OPEN || zaloError == null) &&
+                (sConfigData?.enableFacebook != FLAG_OPEN || facebookError == null) &&
+                (sConfigData?.enableWhatsApp != FLAG_OPEN || whatsAppError == null) &&
+                (sConfigData?.enableTelegram != FLAG_OPEN || telegramError == null) &&
+                (sConfigData?.enableSmsValidCode != FLAG_OPEN || securityCodeError == null) &&
                 (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null) &&
                 checkAgreement
 
@@ -63,6 +93,15 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
             loginPasswordError = loginPasswordError,
             confirmPasswordError = confirmPasswordError,
             fullNameError = fullNameError,
+            fundPwdError = fundPwdError,
+            qqError = qqError,
+            phoneError = phoneError,
+            emailError = emailError,
+            zaloError = zaloError,
+            facebookError = facebookError,
+            whatsAppError = whatsAppError,
+            telegramError = telegramError,
+            securityCodeError = securityCodeError,
             validCodeError = validCodeError,
             checkAgreement = checkAgreement,
             isDataValid = isDataValid
@@ -94,7 +133,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         return when {
             account.isNullOrBlank() -> context.getString(R.string.error_account_empty)
             account.length !in 4..16 -> context.getString(R.string.error_member_account)
-            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_input_format)
+            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_character_not_match)
             else -> null
         }
     }
@@ -103,7 +142,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         return when {
             password.isNullOrBlank() -> context.getString(R.string.error_password_empty)
             password.length !in 6..20 -> context.getString(R.string.error_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_input_format)
+            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_character_not_match)
             else -> null
         }
     }
@@ -117,7 +156,81 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
 
     private fun checkFullName(context: Context, fullName: String?): String? {
         return when {
-            !VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_input_format)
+            !VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_character_not_match)
+            else -> null
+        }
+    }
+
+    private fun checkFundPwd(context: Context, fundPwd: String?): String? {
+        return when {
+            !VerifyConstUtil.verifyPayPwd(fundPwd ?: "") -> context.getString(R.string.hint_withdrawal_pwd)
+            else -> null
+        }
+    }
+
+    private fun checkQQ(context: Context, qq: String?): String? {
+        return when {
+            qq.isNullOrBlank() -> context.getString(R.string.hint_qq_number)
+            !VerifyConstUtil.verifyQQ(qq) -> context.getString(R.string.error_input_format)
+            else -> null
+        }
+    }
+
+    private fun checkPhone(context: Context, phone: String?): String? {
+        return when {
+            phone.isNullOrBlank() -> context.getString(R.string.hint_phone_number)
+            else -> null
+        }
+    }
+
+    private fun checkEmail(context: Context, email: String?): String? {
+        return when {
+            email.isNullOrBlank() -> context.getString(R.string.hint_e_mail)
+            !VerifyConstUtil.verifyMail(email) -> context.getString(R.string.error_input_format)
+            else -> null
+        }
+    }
+
+    private fun checkWeChat(context: Context, weChat: String?): String? {
+        return when {
+            weChat.isNullOrBlank() -> context.getString(R.string.hint_we_chat_number)
+            !VerifyConstUtil.verifyWeChat(weChat) -> context.getString(R.string.error_input_format)
+            else -> null
+        }
+    }
+
+    private fun checkZalo(context: Context, zalo: String?): String? {
+        return when {
+            zalo.isNullOrBlank() -> context.getString(R.string.hint_zalo)
+            else -> null
+        }
+    }
+
+    private fun checkFacebook(context: Context, facebook: String?): String? {
+        return when {
+            facebook.isNullOrBlank() -> context.getString(R.string.hint_facebook)
+            else -> null
+        }
+    }
+
+    private fun checkWhatsApp(context: Context, whatsApp: String?): String? {
+        return when {
+            whatsApp.isNullOrBlank() -> context.getString(R.string.hint_whats_app)
+            else -> null
+        }
+    }
+
+    private fun checkTelegram(context: Context, telegram: String?): String? {
+        return when {
+            telegram.isNullOrBlank() -> context.getString(R.string.hint_telegram)
+            !VerifyConstUtil.verifyTelegram(telegram) -> context.getString(R.string.error_input_format)
+            else -> null
+        }
+    }
+
+    private fun checkSecurityCode(context: Context, securityCode: String?): String? {
+        return when {
+            securityCode.isNullOrBlank() -> context.getString(R.string.hint_verification_code_by_sms)
             else -> null
         }
     }
