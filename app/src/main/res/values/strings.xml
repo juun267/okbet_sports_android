@@ -60,6 +60,7 @@
     <string name="error_register_password">密码不足6个或超过20个的英数组合</string>
     <string name="error_password_format">密码需使用英文与数字组合的密码</string>
     <string name="error_password_empty">密码不得为空</string>
+    <string name="hint_input_account_password_rule">长度6–20个字符，须含数字和字母组合</string>
     <string name="confirm_password">确认密码</string>
     <string name="hint_confirm_password">请再次输入密码</string>
     <string name="error_confirm_password">两次密码输入不一致</string>
@@ -164,6 +165,13 @@
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
 
+    <!-- Profile page-->
+    <string name="profile_info">个人资讯</string>
+    <string name="avatar">头像</string>
+    <string name="nickname">昵称</string>
+    <string name="password_setting">密码设置</string>
+    <string name="id">ID</string>
+    
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
     <string name="unread_letters">未读邮件 (%1$d)</string>
