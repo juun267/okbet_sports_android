@@ -16,16 +16,12 @@ class SplashViewModel : BaseViewModel() {
     private val _configResult = MutableLiveData<ConfigResult?>()
 
     fun getConfig() {
-        try {
-            viewModelScope.launch {
-                val result = doNetwork {
-                    OneBoSportApi.indexService.getConfig()
-                }
-                sConfigData = result?.configData
-                _configResult.postValue(result)
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.indexService.getConfig()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+            sConfigData = result?.configData
+            _configResult.postValue(result)
         }
     }
 
