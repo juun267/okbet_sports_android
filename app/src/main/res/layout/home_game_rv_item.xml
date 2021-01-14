@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="@string/vs"
+        android:text="@string/verse"
         android:textColor="@color/lightGray"
         android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@id/team1"

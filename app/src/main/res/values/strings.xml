@@ -12,7 +12,7 @@
     <string name="error_url_fail">跳转地址错误</string>
 
     <!--common-->
-    <string name="vs">vs</string>
+    <string name="verse">vs</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -111,7 +111,6 @@
     <string name="game_result">赛果</string>
     <string name="game_yellow_card">罚牌</string>
     <string name="game_corner_kick">角球</string>
-    <string name="verse">VS</string>
     <string name="football">足球</string>
     <string name="basketball">篮球</string>
     <string name="tennis">网球</string>

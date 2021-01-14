@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@string/vs"
+            android:text="@string/verse"
             android:textSize="12sp"
             app:layout_constraintBaseline_toBaselineOf="@id/match_odd_home_name"
             app:layout_constraintStart_toEndOf="@id/match_odd_home_name" />
