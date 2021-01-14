@@ -9,5 +9,5 @@ data class MatchOdd(
     @Json(name = "matchInfo")
     val matchInfo: MatchInfo,
     @Json(name = "odds")
-    val odds: Odds
+    val odds: Map<String, List<Winner>>
 )

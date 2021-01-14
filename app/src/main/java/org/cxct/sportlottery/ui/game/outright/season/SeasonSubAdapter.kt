@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.outright
+package org.cxct.sportlottery.ui.game.outright.season
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sub_league.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.network.outright.season.Season
 
-
-class MatchOddAdapter(private val matchOddListener: MatchOddListener?) :
-    RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
-    var data = listOf<MatchOdd>()
+class SeasonSubAdapter(private val seasonSubListener: SeasonSubListener?) :
+    RecyclerView.Adapter<SeasonSubAdapter.ViewHolder>() {
+    var data = listOf<Season>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -24,17 +23,19 @@ class MatchOddAdapter(private val matchOddListener: MatchOddListener?) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, matchOddListener)
+        holder.bind(item, seasonSubListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: MatchOdd, matchOddListener: MatchOddListener?) {
-            itemView.sub_league_name.text = item.matchInfo.id
-            itemView.item_sub_league.setOnClickListener {
-                matchOddListener?.onClick(item)
+        fun bind(item: Season, seasonSubListener: SeasonSubListener?) {
+            itemView.sub_league_name.text = item.name
+            itemView.sub_league_count.text = item.num.toString()
+
+            itemView.setOnClickListener {
+                seasonSubListener?.onClick(item)
             }
         }
 
@@ -49,7 +50,7 @@ class MatchOddAdapter(private val matchOddListener: MatchOddListener?) :
         }
     }
 
-    class MatchOddListener(val clickListener: (item: MatchOdd) -> Unit) {
-        fun onClick(item: MatchOdd) = clickListener(item)
+    class SeasonSubListener(val clickListener: (item: Season) -> Unit) {
+        fun onClick(item: Season) = clickListener(item)
     }
 }

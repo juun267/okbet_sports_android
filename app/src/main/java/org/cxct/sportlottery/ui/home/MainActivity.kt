@@ -26,8 +26,8 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.game.Game2Fragment
-import org.cxct.sportlottery.ui.game.Game2FragmentDirections
+import org.cxct.sportlottery.ui.game.GameDetailFragment
+import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -225,7 +225,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
             R.id.game2Fragment -> {
                 val action =
-                    Game2FragmentDirections.actionGame2FragmentToGameFragment(
+                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(
                         matchType
                     )
                 val navOptions =
@@ -288,7 +288,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.isOpenMatchOdds.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
             addFragment(
-                Game2Fragment(), Page.ODDS
+                GameDetailFragment(), Page.ODDS
             )
         })
     }

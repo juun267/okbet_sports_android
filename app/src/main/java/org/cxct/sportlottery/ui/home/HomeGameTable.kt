@@ -21,10 +21,9 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
         val view = LayoutInflater.from(context).inflate(R.layout.home_game_table, this, false)
         addView(view)
 
+        val typedArray = context.theme
+            .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
-            val typedArray = context.theme
-                .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
-
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.tv_count.text = typedArray.getText(R.styleable.CustomView_cvCount)
 
@@ -32,6 +31,8 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
             rv_game.adapter = homeGameDrawerAdapter
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            typedArray.recycle()
         }
     }
 

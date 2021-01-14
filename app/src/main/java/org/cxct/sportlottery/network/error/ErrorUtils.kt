@@ -5,6 +5,7 @@ import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
@@ -27,6 +28,7 @@ import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.index.ConfigResult
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.index.LogoutResult
+import org.cxct.sportlottery.network.index.ValidCodeResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
@@ -74,6 +76,10 @@ object ErrorUtils {
                     (url.contains(INDEX_CONFIG)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ConfigResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(INDEX_VALIDATE_CODE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ValidCodeResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(MESSAGE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

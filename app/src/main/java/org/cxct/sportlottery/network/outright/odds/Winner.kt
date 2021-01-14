@@ -16,4 +16,6 @@ data class Winner(
     val spread: String,
     @Json(name = "status")
     val status: Int
-)
+) {
+    var isSelected = false
+}
