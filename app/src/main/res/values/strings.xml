@@ -48,6 +48,8 @@
     <string name="hint_member_account">账号长度要有4–16个字符，以及必须包含数字及字母的组合</string>
     <string name="error_member_account">用户名不足4个或超过16个的英数组合</string>
     <string name="error_account_empty">帐号不得为空</string>
+    <string name="desc_register_checking_account">帐号检查中</string>
+    <string name="error_register_id_exist">您输入的账号已被注册，不可使用，请更换后再试一次</string>
     <string name="error_character_not_match">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
     <string name="hint_register_password">密码长度要有6–20个字符，以及必须包含数字及字母的组合</string>
     <string name="error_register_password">密码不足6个或超过20个的英数组合</string>

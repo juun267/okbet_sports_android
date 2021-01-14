@@ -7,7 +7,11 @@ import android.os.Looper
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.btn_back
+import kotlinx.android.synthetic.main.activity_register.btn_login
+import kotlinx.android.synthetic.main.activity_register.et_verification_code
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
@@ -26,6 +30,7 @@ import java.util.*
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class) {
 
     private var mSmsTimer: Timer? = null
+    private var mIsVerifyAccount = false //判斷是帳號是否註冊過
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +69,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             context = this,
             inviteCode = et_recommend_code.getText(),
             memberAccount = et_member_account.getText(),
+            isVerifyAccount = mIsVerifyAccount,
             loginPassword = et_login_password.getText(),
             confirmPassword = et_confirm_password.getText(),
             fullName = et_full_name.getText(),
@@ -95,7 +101,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupMemberAccount() {
         et_member_account.afterTextChanged {
-            checkInputData()
+            checkAccountExist(it)
         }
     }
 
@@ -252,6 +258,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         et_verification_code.setText(null)
     }
 
+    private fun checkAccountExist(account: String) {
+        mIsVerifyAccount = false
+        et_member_account.setError(getString(R.string.desc_register_checking_account))
+        viewModel.checkAccountExist(account)
+    }
+
     private fun register() {
         loading()
 
@@ -351,6 +363,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         viewModel.smsResult.observe(this, Observer {
             updateUiWithResult(it)
         })
+
+        viewModel.checkAccountResult.observe(this, Observer {
+            updateUiWithResult(it)
+        })
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
@@ -381,6 +397,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         } else {
             ToastUtil.showToastInCenter(this@RegisterActivity, smsResult?.msg)
         }
+    }
+
+    private fun updateUiWithResult(checkAccountResult: CheckAccountResult?) {
+        mIsVerifyAccount = checkAccountResult?.success?: false //若回傳資料為 null 也當作帳號判斷無效
+        checkInputData()
     }
 
     //發送簡訊後，倒數五分鐘
