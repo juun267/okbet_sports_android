@@ -14,15 +14,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp">
+                android:padding="4dp">
 
                 <TextView
                     android:id="@+id/tv_home_name"
@@ -32,13 +28,23 @@
                     android:gravity="center"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="域堡" />
 
                 <TextView
+                    android:id="@+id/tv_home_vs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/verse"
-                    android:textColor="@color/colorDarkBlack" />
+                    android:layout_marginStart="7dp"
+                    android:layout_marginEnd="7dp"
+                    android:text="@string/vs"
+                    android:textColor="@color/lightGray"
+                    android:textSize="12sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_home_name"
+                    app:layout_constraintEnd_toStartOf="@id/tv_away_name"
+                    app:layout_constraintStart_toEndOf="@+id/tv_home_name" />
 
                 <TextView
                     android:id="@+id/tv_away_name"
@@ -48,8 +54,11 @@
                     android:gravity="center"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_home_vs"
+                    app:layout_constraintTop_toTopOf="@id/tv_home_name"
                     tools:text="赫尔辛格" />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:layout_width="1dp"
