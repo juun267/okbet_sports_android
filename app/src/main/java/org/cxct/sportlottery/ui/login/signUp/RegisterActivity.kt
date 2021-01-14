@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -289,7 +290,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val registerRequest = RegisterRequest(
             userName = userName,
             password = MD5Util.MD5Encode(loginPassword),
-            loginSrc = 2,
+            loginSrc = LOGIN_SRC,
             deviceSn = deviceSn
         ).apply {
             if (sConfigData?.enableInviteCode == FLAG_OPEN)

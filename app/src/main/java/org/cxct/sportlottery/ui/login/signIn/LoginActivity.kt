@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -103,20 +104,20 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun login() {
         loading()
 
-        val account = et_account.getText().trim()
-        val password = et_password.getText().trim()
+        val account = et_account.getText()
+        val password = et_password.getText()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
-        val validCode = et_verification_code.getText().trim()
+        val validCode = et_verification_code.getText()
         val deviceSn = "" //JPushInterface.getRegistrationID(applicationContext) //極光推播 //TODO 極光推波建置好，要來補齊 deviceSn 參數
         Timber.d("極光推播: RegistrationID = $deviceSn")
 
         val loginRequest = LoginRequest(
             account = account,
             password = MD5Util.MD5Encode(password),
-            loginSrc = 2,
+            loginSrc = LOGIN_SRC,
+            deviceSn = deviceSn,
             validCodeIdentity = validCodeIdentity,
             validCode = validCode,
-            deviceSn = deviceSn,
             appVersion = BuildConfig.VERSION_NAME
         )
         viewModel.login(loginRequest, password)
