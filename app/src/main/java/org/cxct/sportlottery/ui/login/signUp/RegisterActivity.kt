@@ -2,12 +2,15 @@ package org.cxct.sportlottery.ui.login.signUp
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_register.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -18,8 +21,11 @@ import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
+import java.util.*
 
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class) {
+
+    private var mSmsTimer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +52,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupRegisterButton()
         setupGoToLoginButton()
         initObserve()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopSmeTimer()
     }
 
     private fun checkInputData() {
@@ -189,16 +200,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupSmsValidCode() {
-        //TODO simon test 簡訊驗證碼
-        et_sms_valid_code.visibility = if (sConfigData?.enableRegValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
+        block_sms_valid_code.visibility = if (sConfigData?.enableRegValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
 
-//        et_verification_code.setVerificationCodeBtnOnClickListener(View.OnClickListener {
-//            updateValidCode()
-//        })
-//
-//        et_verification_code.afterTextChanged {
-//            checkInputData()
-//        }
+        btn_send_sms.setOnClickListener {
+            sendSms()
+        }
+
+        et_sms_valid_code.afterTextChanged {
+            checkInputData()
+        }
     }
 
     private fun setupAgreementButton() {
@@ -223,6 +233,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             } else {
                 checkInputData()
             }
+        }
+    }
+
+    private fun sendSms() {
+        val phone = et_phone.getText()
+        if (phone.isBlank())
+            showErrorDialog(getString(R.string.hint_phone_number))
+        else {
+            btn_send_sms.isEnabled = false
+            viewModel.sendSms(phone)
         }
     }
 
@@ -326,6 +346,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         viewModel.validCodeResult.observe(this, Observer {
             updateUiWithResult(it)
         })
+
+        viewModel.smsResult.observe(this, Observer {
+            updateUiWithResult(it)
+        })
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
@@ -346,6 +370,52 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             updateValidCode()
             et_verification_code.setVerificationCode(null)
             ToastUtil.showToastInCenter(this@RegisterActivity, getString(R.string.get_valid_code_fail_point))
+        }
+    }
+
+    private fun updateUiWithResult(smsResult: SmsResult?) {
+        btn_send_sms.isEnabled = true
+        if (smsResult?.success == true) {
+            showSmeTimer300()
+        } else {
+            ToastUtil.showToastInCenter(this@RegisterActivity, smsResult?.msg)
+        }
+    }
+
+    //發送簡訊後，倒數五分鐘
+    private fun showSmeTimer300() {
+        try {
+            stopSmeTimer()
+            btn_send_sms.visibility = View.GONE
+
+            var sec = 300
+            mSmsTimer = Timer()
+            mSmsTimer?.schedule(object : TimerTask() {
+                override fun run() {
+                    Handler(Looper.getMainLooper()).post {
+                        if (sec-- > 0) {
+                            tv_timer.text = getString(R.string.send_timer, sec)
+                        } else {
+                            stopSmeTimer()
+                            btn_send_sms.visibility = View.VISIBLE
+                            tv_timer.text = null
+                        }
+                    }
+                }
+            }, 0, 1000) //在 0 秒後，每隔 1000L 毫秒執行一次
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+            stopSmeTimer()
+            btn_send_sms.visibility = View.VISIBLE
+            tv_timer.text = null
+        }
+    }
+
+    private fun stopSmeTimer() {
+        if (mSmsTimer != null) {
+            mSmsTimer?.cancel()
+            mSmsTimer = null
         }
     }
 

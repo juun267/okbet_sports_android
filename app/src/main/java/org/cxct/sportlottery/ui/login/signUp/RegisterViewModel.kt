@@ -11,6 +11,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.network.index.sendSms.SmsRequest
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -28,10 +30,13 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         get() = _registerResult
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
+    val smsResult: LiveData<SmsResult?>
+        get() = _smsResult
 
     private val _registerFormState = MutableLiveData<RegisterFormState>()
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
+    private val _smsResult = MutableLiveData<SmsResult?>()
 
     fun registerDataChanged(
         context: Context,
@@ -239,6 +244,15 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
         return when {
             validCode.isNullOrBlank() -> context.getString(R.string.hint_verification_code)
             else -> null
+        }
+    }
+
+    fun sendSms(phone: String) {
+        viewModelScope.launch {
+            val result = doNetwork {
+                OneBoSportApi.indexService.sendSms(SmsRequest(19, phone)) //TODO 等待後端修復再來 review platformId參數跟 sendSms 能不能成功執行
+            }
+            _smsResult.postValue(result)
         }
     }
 

@@ -225,17 +225,54 @@
                 app:cvInputType="number"
                 app:cvTitle="@string/verification_code" />
 
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_sms_valid_code"
+            <RelativeLayout
+                android:id="@+id/block_sms_valid_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
-                android:layout_marginBottom="4dp"
-                app:cvEnableVerificationCode="true"
-                app:cvHint="@string/hint_verification_code_by_sms"
-                app:cvInputType="number"
-                app:cvTitle="@string/verification_code" />
+                android:layout_marginBottom="4dp">
+
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_sms_valid_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvEnableVerificationCode="true"
+                    app:cvHint="@string/hint_verification_code_by_sms"
+                    app:cvInputType="number"
+                    app:cvTitle="@string/verification_code"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:minWidth="80dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:background="@android:color/white"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentEnd="true">
+
+                    <Button
+                        android:id="@+id/btn_send_sms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:text="@string/get_verification_code"
+                        android:textColor="@color/color_select_black_gray"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray4"
+                        android:textSize="@dimen/textSize14sp"
+                        tools:text="@string/send_timer" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
