@@ -44,11 +44,12 @@
 
     <declare-styleable name="MatchTypeRow">
         <attr name="matchType" format="enum">
-            <enum name="inplay" value="0" />
+            <enum name="in_play" value="0" />
             <enum name="today" value="1" />
             <enum name="early" value="2" />
-            <enum name="paylay" value="3" />
+            <enum name="parlay" value="3" />
             <enum name="outright" value="4" />
+            <enum name="at_start" value="5" />
         </attr>
     </declare-styleable>
 </resources>
