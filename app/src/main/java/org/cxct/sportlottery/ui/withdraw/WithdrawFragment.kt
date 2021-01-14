@@ -50,7 +50,6 @@ class WithdrawFragment : Fragment() {
             val action = WithdrawFragmentDirections.actionWithdrawFragmentToBankListFragment()
             mNavController.navigate(action)
         }
-        WithdrawActivity.setupTitleName(requireContext(), mNavController)
     }
 
     companion object {
