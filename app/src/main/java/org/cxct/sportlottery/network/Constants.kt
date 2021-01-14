@@ -49,6 +49,9 @@ object Constants {
     //user
     const val USER_MONEY = "/api/front/user/money"
 
+    //bank
+    const val BANK_MY = "/api/front/user/bank/my"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000
