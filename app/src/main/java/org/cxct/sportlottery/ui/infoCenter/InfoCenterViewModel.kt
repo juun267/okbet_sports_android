@@ -21,7 +21,6 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
     private var mNeedMoreLoading = false //判斷滑到底是否需要繼續加載
 
     fun getUserMsgList(isReload: Boolean, currentTotalCount: Int) {
-        try {
             if (mIsGettingData)
                 return
             mIsGettingData = true
@@ -51,9 +50,6 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
                 }
             }
             mIsGettingData = false
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
 }
