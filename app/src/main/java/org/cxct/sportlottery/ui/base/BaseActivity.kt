@@ -2,17 +2,23 @@ package org.cxct.sportlottery.ui.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.layout_bet_info_list_float_button.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
-import kotlin.reflect.KClass
+import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
+import org.cxct.sportlottery.ui.home.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
     companion object {
@@ -23,11 +29,19 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private var loadingView: View? = null
 
+    private var floatButtonView: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         onTokenStateChanged()
         onNetworkException()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        createOddButton()
     }
 
     private fun onTokenStateChanged() {
@@ -96,5 +110,42 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     fun onNetworkUnavailable() {
         Toast.makeText(applicationContext, R.string.connect_first, Toast.LENGTH_SHORT).show()
     }
+
+    private fun createOddButton() {
+        if (floatButtonView != null) return
+        val contentView: ViewGroup = window.decorView.findViewById(android.R.id.content)
+        floatButtonView = LayoutInflater.from(this).inflate(R.layout.layout_bet_info_list_float_button, contentView, false)
+        contentView.addView(floatButtonView)
+
+        if (viewModel is MainViewModel) {
+            if ((viewModel as MainViewModel).betInfoList.value != null) {
+                checkBetInfoList((viewModel as MainViewModel).betInfoList.value?.size!!)
+            }
+            (viewModel as MainViewModel).betInfoList.observe(this, Observer {
+                if(it!=null)checkBetInfoList(it.size)
+            })
+        }
+
+        betFloatButtonVisible(false)//default
+        rl_bet_float_button.setOnClickListener { BetInfoListDialog().show(supportFragmentManager, "") }
+    }
+
+    private fun checkBetInfoList(count: Int) {
+        if (count > 0) {
+            betFloatButtonVisible(true)
+            setBetCount(count)
+        } else {
+            betFloatButtonVisible(false)
+        }
+    }
+
+    open fun betFloatButtonVisible(visible: Boolean) {
+        rl_bet_float_button.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    open fun setBetCount(count: Int) {
+        tv_bet_count.text = count.toString()
+    }
+
 
 }

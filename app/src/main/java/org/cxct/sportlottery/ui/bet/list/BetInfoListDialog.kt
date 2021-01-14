@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,6 @@ import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListAdapter.OnItemClickListener {
 
@@ -33,7 +33,6 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
-        getData()
     }
 
 
@@ -57,20 +56,20 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
     }
 
     private fun observeData() {
-        viewModel.betInfoResult.observe(requireActivity(), Observer {
-            betInfoListAdapter.addAll(it.betInfoData!!)
+        viewModel.betInfoList.observe(requireActivity(), Observer {
+            if(it.size==0){
+                dismiss()
+            }
         })
-    }
-
-
-    private fun getData() {
-//        val list = listOf(Odd("123", 456.00))
-//        viewModel.getBetInfoList(list)
+        betInfoListAdapter.addAll(viewModel.betInfoList.value!!)
     }
 
 
     override fun onDeleteClick(position: Int) {
+        //mock模式下 因為回傳內容都一樣 所以不會移除
+        viewModel.removeBetInfoItem(betInfoListAdapter.betInfoList[position].matchOdd.oddsId)
         betInfoListAdapter.removeItem(position)
+
     }
 
 

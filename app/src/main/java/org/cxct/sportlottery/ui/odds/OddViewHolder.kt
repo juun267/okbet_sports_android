@@ -25,7 +25,11 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvOdds.setOnClickListener {
                     tvOdds.isSelected = !tvOdds.isSelected
                     odd.isSelect = tvOdds.isSelected
-                    onOddClickListener.onAddToBetInfoList(odd)
+                    if(odd.isSelect){
+                        onOddClickListener.addToBetInfoList(odd)
+                    }else{
+                        onOddClickListener.removeBetInfoItem(odd)
+                    }
                 }
             }
 

@@ -200,5 +200,6 @@
     <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额：%s</string>
     <string name="bet_info_list_less_than_minimum_limit">投注额小于最低限额：%s</string>
     <string name="bet_info_list_odd">\＠&#160;%s</string>
+    <string name="bet_info_list">注单</string>
 
 </resources>

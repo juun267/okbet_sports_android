@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
-import org.cxct.sportlottery.network.bet.info.BetInfoData
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.MatchType
@@ -31,6 +30,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
@@ -120,13 +120,13 @@ class MainViewModel(
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
 
-    fun setOddsDetailMoreList(list: List<*>) {
-        _oddsDetailMoreList.postValue(list)
-    }
-
     private val _betInfoResult = MutableLiveData<BetInfoResult>()
     val betInfoResult: LiveData<BetInfoResult>
         get() = _betInfoResult
+
+    private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
+    val betInfoList: LiveData<MutableList<BetInfoListData>>
+        get() = _betInfoList
 
     fun logout() {
         viewModelScope.launch {
@@ -457,6 +457,10 @@ class MainViewModel(
         _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
+    fun setOddsDetailMoreList(list: List<*>) {
+        _oddsDetailMoreList.postValue(list)
+    }
+
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
             val result = doNetwork {
@@ -465,6 +469,25 @@ class MainViewModel(
                 )
             }
             _betInfoResult.postValue(result)
+
+            if (!result?.success!!) return@launch
+
+            if (_betInfoList.value == null) {
+                _betInfoList.value = mutableListOf()
+            }
+            for (i in result.betInfoData?.matchOdds!!.indices) {
+                _betInfoList.value!!.add(BetInfoListData(result.betInfoData.matchOdds[i], result.betInfoData.parlayOdds[i]))
+            }
+            _betInfoList.postValue(_betInfoList.value)
         }
     }
+
+    fun removeBetInfoItem(oddId: String) {
+        _betInfoList.value!!.remove(_betInfoList.value!!.find {
+            it.matchOdd.oddsId == oddId
+        })
+        _betInfoList.postValue(_betInfoList.value)
+        Log.e("[kevin]", "剩餘 ${betInfoList.value!!.size}")
+    }
+
 }

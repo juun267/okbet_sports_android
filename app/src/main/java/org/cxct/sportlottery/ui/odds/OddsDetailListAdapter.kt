@@ -17,6 +17,8 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetailListData>, private val onOddClickListener: OnOddClickListener) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
+    var oddId: MutableList<String> = mutableListOf()
+
     private lateinit var code: String
 
     enum class GameType(val value: String, val layout: Int, val type: Int) {
@@ -44,6 +46,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
         W3("W3", R.layout.content_odds_detail_list_group_item, 21),//三项让球
         TG_OU("TG&O/U", R.layout.content_odds_detail_list_two_sides, 22),//球队进球数&大/小
     }
+
 
     override fun getItemViewType(position: Int): Int {
 
@@ -101,6 +104,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             }
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -271,7 +275,11 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                     tvOdds.setOnClickListener {
                         tvOdds.isSelected = !tvOdds.isSelected
                         element.isSelect = tvOdds.isSelected
-                        onOddClickListener.onAddToBetInfoList(element)
+                        if(element.isSelect){
+                            onOddClickListener.addToBetInfoList(element)
+                        }else{
+                            onOddClickListener.removeBetInfoItem(element)
+                        }
                     }
                 }
             }

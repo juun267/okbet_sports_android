@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -21,7 +19,6 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
-import org.cxct.sportlottery.ui.bet.record.search.result.BetRecordDetailDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -55,6 +52,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
+    //後續將該OddsDetailViewModel內容移至MainViewModel
     private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,8 +113,6 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
                     }
                 }
             }
-
-            BetInfoListDialog().show(parentFragmentManager, "")
         }
 
         tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -164,6 +160,18 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
             oddsDetailListData.clear()
             it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+
+                var odd: Odd?
+
+                if(viewModel.betInfoList.value!=null) {
+                    for (m in viewModel.betInfoList.value?.indices!!) {
+                        for (i in value.odds.indices) {
+                            odd = value.odds.find { v -> v.id == viewModel.betInfoList.value!![m].matchOdd.oddsId }
+                            odd?.isSelect = true
+                        }
+                    }
+                }
+
                 oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
             }
 
@@ -180,10 +188,13 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     }
 
 
-    override fun onAddToBetInfoList(odd: Odd) {
-        //mock data 內有三筆
+    override fun addToBetInfoList(odd: Odd) {
         viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
-        BetInfoListDialog().show(parentFragmentManager, "")
+    }
+
+
+    override fun removeBetInfoItem(odd: Odd) {
+        viewModel.removeBetInfoItem(odd.id)
     }
 
 

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemSingleBinding
-import org.cxct.sportlottery.network.bet.info.BetInfoData
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.login.afterTextChanged
@@ -21,9 +20,7 @@ import org.cxct.sportlottery.util.TextUtil
 class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
-
-    var matchOddList = mutableListOf<MatchOdd>()
-    var parLayOddList = mutableListOf<ParlayOdd>()
+    var betInfoList = mutableListOf<BetInfoListData>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,18 +31,18 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
 
 
     override fun getItemCount(): Int {
-        return matchOddList.size
+        return betInfoList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(matchOddList[position], parLayOddList[position], position)
+        holder.bind(betInfoList[position].matchOdd, betInfoList[position].parlayOdds, position)
     }
 
 
     inner class ViewHolder(private val binding: ContentBetInfoItemSingleBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd):Boolean{
+        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd): Boolean {
             val error: Boolean
             if (TextUtils.isEmpty(it)) {
                 binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_bigger_than_zero)
@@ -118,12 +115,12 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
             binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), matchOdd.odds.toString())
 
             binding.etBet.afterTextChanged {
-              check(it, matchOdd, parlayOdd)
+                check(it, matchOdd, parlayOdd)
             }
 
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             binding.betInfoAction.tv_bet.setOnClickListener {
-                if(!check(binding.etBet.text.toString(), matchOdd, parlayOdd)){
+                if (!check(binding.etBet.text.toString(), matchOdd, parlayOdd)) {
                     onItemClickListener.onBetClick()
                 }
             }
@@ -134,18 +131,16 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
 
-    fun addAll(betInfoData: BetInfoData) {
-        matchOddList.addAll(betInfoData.matchOdds)
-        parLayOddList.addAll(betInfoData.parlayOdds)
+    fun addAll(betInfoList: MutableList<BetInfoListData>) {
+        this.betInfoList.addAll(betInfoList)
         notifyDataSetChanged()
     }
 
 
     fun removeItem(position: Int) {
-        matchOddList.removeAt(position)
-        parLayOddList.removeAt(position)
+        betInfoList.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(0, matchOddList.size);
+        notifyItemRangeChanged(0, betInfoList.size);
     }
 
 
