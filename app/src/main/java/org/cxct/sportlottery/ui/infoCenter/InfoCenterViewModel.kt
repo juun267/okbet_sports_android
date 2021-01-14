@@ -11,9 +11,9 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository) :
     BaseViewModel() {
 
-    val userMsgList: LiveData<MutableList<InfoCenterData>>
+    val userMsgList: LiveData<MutableList<InfoCenterData>?>
         get() = _userMsgList
-    private var _userMsgList = MutableLiveData<MutableList<InfoCenterData>>()
+    private var _userMsgList = MutableLiveData<MutableList<InfoCenterData>?>()
 
     private var mNextRequestPage = 1
     private var pageSize = 20 //預設每次載入20筆資料
