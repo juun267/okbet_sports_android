@@ -103,7 +103,7 @@
         android:focusable="true"
         android:padding="4dp"
         android:text="@string/forget_password_question"
-        android:textColor="@color/orangeyRed"
+        android:textColor="@color/orangeRed"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toTopOf="@id/btn_login"
         app:layout_constraintEnd_toEndOf="@id/btn_login" />
