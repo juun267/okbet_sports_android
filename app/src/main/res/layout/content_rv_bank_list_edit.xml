@@ -81,12 +81,11 @@
             android:id="@+id/tv_colon1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/name"
+            android:text="@string/colon"
             android:textColor="@color/gray4"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toEndOf="@+id/tv_name"
-            app:layout_constraintTop_toTopOf="@+id/tv_name"
-            tools:text="：" />
+            app:layout_constraintTop_toTopOf="@+id/tv_name" />
 
         <TextView
             android:id="@+id/tv_bank_number"
@@ -114,12 +113,11 @@
             android:id="@+id/tv_colon2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/name"
+            android:text="@string/colon"
             android:textColor="@color/gray4"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toEndOf="@+id/tv_title_tail_number"
-            app:layout_constraintTop_toTopOf="@+id/tv_title_tail_number"
-            tools:text="：" />
+            app:layout_constraintTop_toTopOf="@+id/tv_title_tail_number" />
 
         <TextView
             android:id="@+id/tv_tail_number"
@@ -149,12 +147,11 @@
             android:id="@+id/tv_colon3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/name"
+            android:text="@string/colon"
             android:textColor="@color/gray4"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toEndOf="@+id/tv_bind_start_time"
-            app:layout_constraintTop_toTopOf="@+id/tv_bind_start_time"
-            tools:text="：" />
+            app:layout_constraintTop_toTopOf="@+id/tv_bind_start_time" />
 
         <TextView
             android:id="@+id/tv_bind_time"
