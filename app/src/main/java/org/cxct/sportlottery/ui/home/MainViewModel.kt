@@ -225,6 +225,9 @@ class MainViewModel(
         sportMenuData.menu.outright.items.map { sport ->
             sport.isSelected = (sportMenuData.menu.outright.items.indexOf(sport) == 0)
         }
+        sportMenuData.atStart.items.map { sport ->
+            sport.isSelected = (sportMenuData.atStart.items.indexOf(sport) == 0)
+        }
     }
 
     fun getInPlayMatchPreload() {
