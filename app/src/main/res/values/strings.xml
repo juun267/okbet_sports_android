@@ -11,6 +11,9 @@
 
     <string name="error_url_fail">跳转地址错误</string>
 
+    <!--common-->
+    <string name="vs">vs</string>
+
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
     <string name="btn_confirm">确认</string>
