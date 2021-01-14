@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -76,6 +77,11 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         menu_bet_history.setOnClickListener {
             startActivity(Intent(context, BetRecordActivity::class.java))
+        }
+
+        menu_profile_center.setOnClickListener {
+            startActivity(Intent(context, ProfileCenterActivity::class.java))
+            mDownMenuListener?.onClick(menu_profile_center)
         }
 
         menu_news.setOnClickListener {
