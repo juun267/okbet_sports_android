@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.network.index
 
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -20,6 +22,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface IndexService {
@@ -41,4 +44,7 @@ interface IndexService {
 
     @POST(INDEX_SEND_SMS)
     suspend fun sendSms(@Body smsRequest: SmsRequest): Response<SmsResult>
+
+    @GET(Constants.INDEX_CHECK_EXIST)
+    suspend fun checkAccountExist(@Path("userName") userName: String): Response<CheckAccountResult>
 }
