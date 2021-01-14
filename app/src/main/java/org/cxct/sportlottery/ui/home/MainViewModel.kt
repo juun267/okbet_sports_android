@@ -322,7 +322,14 @@ class MainViewModel(
                     getOutrightSeasonList(it)
                 }
             }
-            else -> {
+            MatchType.AT_START -> {
+                val gameType = _sportMenuResult.value?.sportMenuData?.atStart?.items?.find {
+                    it.isSelected
+                }?.code
+
+                gameType?.let {
+                    getOddsList(gameType, matchType.postValue, getCurrentTimeRangeParams())
+                }
             }
         }
     }
@@ -453,7 +460,10 @@ class MainViewModel(
                     it.isSelected = (it == item)
                 }
             }
-            else -> {
+            MatchType.AT_START -> {
+                result?.sportMenuData?.atStart?.items?.map {
+                    it.isSelected = (it == item)
+                }
             }
         }
 
@@ -479,7 +489,7 @@ class MainViewModel(
                 )
             }
 
-            if (leagueIdList != null && timeRangeParams != null) {
+            if (leagueIdList != null) {
                 _oddsListResult.postValue(result)
             } else {
                 _oddsListGameHallResult.postValue(result)
@@ -526,7 +536,6 @@ class MainViewModel(
             MatchType.TODAY -> {
                 dateRow.add(Date("", TimeUtil.getTodayTimeRangeParams()))
             }
-
             MatchType.EARLY -> {
                 TimeUtil.getOneWeekDate().forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
@@ -538,7 +547,6 @@ class MainViewModel(
                     )
                 )
             }
-
             MatchType.PARLAY -> {
                 dateRow.add(
                     Date(
@@ -564,7 +572,9 @@ class MainViewModel(
                     )
                 )
             }
-
+            MatchType.AT_START -> {
+                dateRow.add(Date("", TimeUtil.getAtStartTimeRangeParams()))
+            }
             else -> {
             }
         }
