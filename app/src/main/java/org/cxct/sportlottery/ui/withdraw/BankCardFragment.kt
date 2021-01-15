@@ -43,8 +43,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
-            setupEvent()
 
+            setupEvent()
         }
     }
 
@@ -63,10 +63,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         view.btn_delete_bank_card.visibility = View.GONE
     }
 
-    private fun setupTitle(){
-        if (args.editBankCard != null){
+    private fun setupTitle() {
+        if (args.editBankCard != null) {
             (this@BankCardFragment.activity as WithdrawActivity).setToolBarName(getString(R.string.edit_bank_card))
-        }else{
+        } else {
             (this@BankCardFragment.activity as WithdrawActivity).setToolBarName(getString(R.string.add_credit_card))
         }
     }

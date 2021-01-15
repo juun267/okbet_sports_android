@@ -8,3 +8,5 @@ const val FLAG_CLOSE = "0"
 
 var sLoginData: LoginData? = null
 var sConfigData: ConfigData? = null
+//TODO Dean : 測試使用, 串接/api/user/info後將此處重新review
+var sUserInfo: UserInfo = UserInfo()
