@@ -27,7 +27,9 @@ public class StompHeader {
     }
 
     public String getValue() {
-        return mValue;
+        if (mKey.equals(DESTINATION)) {
+            return mValue.replace("\\c", ":");
+        } else return mValue;
     }
 
     @Override

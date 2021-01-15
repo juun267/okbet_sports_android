@@ -8,9 +8,7 @@ import android.os.Bundle
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.*
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -33,7 +31,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.service.PrivateDisposableResponseItem
+import org.cxct.sportlottery.network.service.user.PrivateDisposableResponseItem
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.service.BackService
@@ -396,9 +394,20 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() } //.add(KotlinJsonAdapterFactory())
         override fun onReceive(context: Context?, intent: Intent) {
             val bundle = intent.extras
+
+            val channel = bundle?.getString("channel", "")
             val messageStr = bundle?.getString("serverMessage", "")
-            val type =
-                Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
+
+           when (channel) {
+               BackService.URL_ALL -> {
+               }
+
+               BackService.URL_PRIVATE -> {
+               }
+           }
+
+
+            val type = Types.newParameterizedType(List::class.java, PrivateDisposableResponseItem::class.java)
             val adapter: JsonAdapter<List<PrivateDisposableResponseItem>> = moshi.adapter(type)
             if (!messageStr.isNullOrEmpty()) {
                 val item = adapter.fromJson(messageStr)
