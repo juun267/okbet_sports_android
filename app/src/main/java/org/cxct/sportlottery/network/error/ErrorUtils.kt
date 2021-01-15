@@ -2,9 +2,12 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
+import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
@@ -25,10 +28,12 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
-import org.cxct.sportlottery.network.index.ConfigResult
-import org.cxct.sportlottery.network.index.LoginResult
-import org.cxct.sportlottery.network.index.LogoutResult
-import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
+import org.cxct.sportlottery.network.index.config.ConfigResult
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.logout.LogoutResult
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
@@ -65,7 +70,7 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
-                    (url.contains(INDEX_LOGIN)) -> {
+                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) ) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }
@@ -80,6 +85,14 @@ object ErrorUtils {
                     (url.contains(INDEX_VALIDATE_CODE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ValidCodeResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(INDEX_SEND_SMS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SmsResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(INDEX_CHECK_EXIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return CheckAccountResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(MESSAGE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

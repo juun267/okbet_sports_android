@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.index
+package org.cxct.sportlottery.network.index.config
 
 data class ConfigData(
     val agentMode: String?, //代理模式：ulimit 无限级，fixed 固定级

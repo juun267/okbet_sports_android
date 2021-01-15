@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.index
+package org.cxct.sportlottery.network.index.validCode
 
 data class ValidCodeData(
     val identity: String?, //标识符，登录或再次请求验证码时，需要携带回去

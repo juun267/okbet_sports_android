@@ -20,11 +20,15 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:minWidth="52dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:textColor="@color/gray4"
             android:textSize="@dimen/textSize13sp"
+            app:autoSizeMaxTextSize="13dp"
+            app:autoSizeMinTextSize="6dp"
+            app:autoSizeTextType="uniform"
             tools:text="@string/login_account" />
 
         <View
@@ -94,6 +98,6 @@
         android:textColor="@color/orangeyRed"
         android:textSize="@dimen/textSize12sp"
         app:drawableStartCompat="@drawable/ic_error_tip"
-        tools:text="@string/error_input_account" />
+        tools:text="@string/please_input_account" />
 
 </LinearLayout>
