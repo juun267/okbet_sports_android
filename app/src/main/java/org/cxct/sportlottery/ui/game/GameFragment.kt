@@ -210,19 +210,19 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })

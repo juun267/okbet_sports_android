@@ -13,6 +13,11 @@
 
     <string name="error_url_fail">跳转地址错误</string>
 
+
+    <!--network message-->
+    <string name="message_network_no_connect">请检查网络连接，然后重试。</string>
+    <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
+
     <!--common-->
     <string name="verse">vs</string>
 

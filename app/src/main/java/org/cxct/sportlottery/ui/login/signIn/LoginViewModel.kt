@@ -17,7 +17,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 
-class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
+class LoginViewModel(
+    private val androidContext: Context,
+    private val loginRepository: LoginRepository
+) : BaseViewModel() {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
     val loginResult: LiveData<LoginResult>
@@ -55,7 +58,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
             //勾選時記住密碼
             loginRepository.password = if (loginRepository.isRememberPWD) originalPassword else null
 
-            doNetwork {
+            doNetwork(androidContext) {
                 loginRepository.login(loginRequest)
             }?.let { result ->
                 _loginResult.postValue(result)
@@ -65,7 +68,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
 
     fun getValidCode(identity: String?) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
             }
             _validCodeResult.postValue(result)

@@ -66,7 +66,7 @@ object ErrorUtils {
             try {
                 error = converter.convert(it)
             } catch (e: IOException) {
-                e.printStackTrace()
+                throw e
             }
         }
 
@@ -132,7 +132,13 @@ object ErrorUtils {
                     }
                     (url.contains(OUTRIGHT_RESULT_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OutrightResultListResult(it.code, it.msg, null, it.success, null) as T
+                        return OutrightResultListResult(
+                            it.code,
+                            it.msg,
+                            null,
+                            it.success,
+                            null
+                        ) as T
                     }
                     (url.contains(OUTRIGHT_ODDS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -140,7 +146,13 @@ object ErrorUtils {
                     }
                     (url.contains(OUTRIGHT_SEASON_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OutrightSeasonListResult(it.code, it.msg, null, it.success, null) as T
+                        return OutrightSeasonListResult(
+                            it.code,
+                            it.msg,
+                            null,
+                            it.success,
+                            null
+                        ) as T
                     }
                     (url.contains(USER_MONEY)) -> {
                         @Suppress("UNCHECKED_CAST")

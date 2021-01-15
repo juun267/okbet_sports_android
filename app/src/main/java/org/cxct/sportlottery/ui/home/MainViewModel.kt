@@ -57,19 +57,19 @@ class MainViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
-    val oddsListGameHallResult: LiveData<OddsListResult>
+    val oddsListGameHallResult: LiveData<OddsListResult?>
         get() = _oddsListGameHallResult
 
-    val oddsListResult: LiveData<OddsListResult>
+    val oddsListResult: LiveData<OddsListResult?>
         get() = _oddsListResult
 
-    val leagueListResult: LiveData<LeagueListResult>
+    val leagueListResult: LiveData<LeagueListResult?>
         get() = _leagueListResult
 
-    val outrightSeasonListResult: LiveData<OutrightSeasonListResult>
+    val outrightSeasonListResult: LiveData<OutrightSeasonListResult?>
         get() = _outrightSeasonListResult
 
-    val outrightOddsListResult: LiveData<OutrightOddsListResult>
+    val outrightOddsListResult: LiveData<OutrightOddsListResult?>
         get() = _outrightOddsListResult
 
     val curPlayType: LiveData<PlayType>
@@ -91,11 +91,11 @@ class MainViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
-    private val _oddsListGameHallResult = MutableLiveData<OddsListResult>()
-    private val _oddsListResult = MutableLiveData<OddsListResult>()
-    private val _leagueListResult = MutableLiveData<LeagueListResult>()
-    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult>()
-    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult>()
+    private val _oddsListGameHallResult = MutableLiveData<OddsListResult?>()
+    private val _oddsListResult = MutableLiveData<OddsListResult?>()
+    private val _leagueListResult = MutableLiveData<LeagueListResult?>()
+    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult?>()
+    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult?>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -142,7 +142,7 @@ class MainViewModel(
 
     fun logout() {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 loginRepository.logout()
             }
 
@@ -155,7 +155,7 @@ class MainViewModel(
     fun getAnnouncement() {
         val messageType = "1"
         viewModelScope.launch {
-            doNetwork {
+            doNetwork(androidContext) {
                 OneBoSportApi.messageService.getMessageList(messageType)
             }?.let { result -> _messageListResult.postValue(result) }
         }
@@ -167,7 +167,7 @@ class MainViewModel(
         val todayStart = TimeUtil.getTodayStartTimeStamp()
 
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
                     now.toString(),
                     todayStart.toString()
@@ -232,7 +232,7 @@ class MainViewModel(
 
     fun getInPlayMatchPreload() {
         viewModelScope.launch {
-            doNetwork {
+            doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
                     MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
@@ -244,7 +244,7 @@ class MainViewModel(
 
     fun getMoney() {
         viewModelScope.launch {
-            val userMoneyResult = doNetwork {
+            val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
@@ -401,7 +401,7 @@ class MainViewModel(
 
         gameType?.let {
             viewModelScope.launch {
-                val result = doNetwork {
+                val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
                             gameType,
@@ -477,7 +477,7 @@ class MainViewModel(
         leagueIdList: List<String>? = null
     ) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
                     OddsListRequest(
                         gameType,
@@ -503,7 +503,7 @@ class MainViewModel(
         timeRangeParams: TimeRangeParams?
     ) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.leagueService.getLeagueList(
                     LeagueListRequest(
                         gameType,
@@ -519,7 +519,7 @@ class MainViewModel(
 
     private fun getOutrightSeasonList(gameType: String) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightSeasonList(
                     OutrightSeasonListRequest(gameType)
                 )
