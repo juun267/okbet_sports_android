@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="16dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
     android:background="@color/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,15 +28,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/select_bank"
+                android:ems="4"
+                android:gravity="start|center_vertical"
+                android:text="@string/create_bank"
                 android:textColor="@color/gray4"
                 android:textSize="@dimen/textSize13sp" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@color/bright_gray" />
 
@@ -47,6 +47,7 @@
                 android:src="@drawable/ic_bank_default" />
 
             <TextView
+                android:id="@+id/tv_bank_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="28dp"
@@ -68,38 +69,40 @@
             android:paddingBottom="12dp">
 
             <TextView
+                android:id="@+id/tv_create_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/withdraw_amount"
+                android:gravity="start|center_vertical"
+                android:minEms="4"
+                android:text="@string/create_name"
                 android:textColor="@color/gray4"
                 android:textSize="@dimen/textSize13sp" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@color/bright_gray" />
 
             <EditText
+                android:id="@+id/edit_create_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:gravity="start|center_vertical"
+                android:hint="@string/hint_please_enter_create_name"
                 android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize12sp"
-                tools:hint="(限額XX~XX RMB) XX根據後台設定" />
+                android:textSize="@dimen/textSize12sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:layout_marginEnd="12dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_close_gray"/>
+                android:layout_marginEnd="12dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_close_gray" />
         </LinearLayout>
         <!-- 銀行卡號 -->
         <LinearLayout
@@ -115,7 +118,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:ems="4"
+                android:gravity="start|center_vertical"
                 android:text="@string/bank_card_number"
                 android:textColor="@color/gray4"
                 android:textSize="@dimen/textSize13sp" />
@@ -123,11 +127,11 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@color/bright_gray" />
 
             <EditText
+                android:id="@+id/edit_bank_card_number"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
@@ -152,7 +156,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:ems="4"
+                android:gravity="start|center_vertical"
                 android:text="@string/network_point"
                 android:textColor="@color/gray4"
                 android:textSize="@dimen/textSize13sp" />
@@ -160,18 +165,18 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@color/bright_gray" />
 
             <EditText
+                android:id="@+id/edit_network_point"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:gravity="start|center_vertical"
-                android:hint="@string/hint_four_number_password"
+                android:hint="@string/please_enter_network_point"
                 android:textColor="@color/textColorDark"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
@@ -189,7 +194,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:ems="4"
+                android:gravity="start|center_vertical"
                 android:text="@string/withdraw_password"
                 android:textColor="@color/gray4"
                 android:textSize="@dimen/textSize13sp" />
@@ -197,11 +203,11 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@color/bright_gray" />
 
             <EditText
+                android:id="@+id/withdraw_password"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
@@ -231,6 +237,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:letterSpacing="0.1"
                 android:paddingStart="64dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="64dp"
@@ -251,6 +258,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:letterSpacing="0.1"
                 android:paddingStart="64dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="64dp"
@@ -260,18 +268,21 @@
                 android:textSize="@dimen/textSize16sp" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-        <TextView
-            android:layout_marginTop="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingStart="64dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="64dp"
-            android:background="@drawable/frame_sideline_dark_blue_5dp"
-            android:paddingBottom="8dp"
-            android:text="@string/delete_bank_card"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize16sp" />
+
+    <TextView
+        android:id="@+id/btn_delete_bank_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/frame_sideline_dark_blue_5dp"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:paddingStart="64dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="64dp"
+        android:paddingBottom="8dp"
+        android:text="@string/delete_bank_card"
+        android:textColor="@color/gray4"
+        android:textSize="@dimen/textSize16sp" />
 </LinearLayout>

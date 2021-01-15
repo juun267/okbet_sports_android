@@ -223,11 +223,15 @@
     <string name="hint_four_number_password">密碼為4個數字</string>
     <string name="add_credit_card">新增银行卡</string>
     <!--  BankCard  -->
+    <string name="create_bank">开户银行</string>
+    <string name="create_name">开户名</string>
+    <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
     <string name="edit_bank_card">编辑银行卡</string>
     <string name="bank_card_number">银行卡号</string>
     <string name="withdraw_amount_range">(限額%s~%s RMB)</string>
     <string name="please_enter_bank_card_rule">請輸入12-19位數內的銀行卡號</string>
     <string name="network_point">开户网点</string>
+    <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
