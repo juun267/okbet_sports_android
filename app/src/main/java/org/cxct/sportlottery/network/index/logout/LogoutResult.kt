@@ -1,17 +1,16 @@
-package org.cxct.sportlottery.network.index
+package org.cxct.sportlottery.network.index.logout
+
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
-data class ConfigResult(
+data class LogoutResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
     override val msg: String,
     @Json(name = "success")
-    override val success: Boolean,
-    @Json(name = "t")
-    val configData: ConfigData?
+    override val success: Boolean
 ) : BaseResult()

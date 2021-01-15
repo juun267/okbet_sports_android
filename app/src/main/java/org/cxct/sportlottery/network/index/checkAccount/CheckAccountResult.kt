@@ -1,12 +1,11 @@
-package org.cxct.sportlottery.network.index
-
+package org.cxct.sportlottery.network.index.checkAccount
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
-data class LogoutResult(
+data class CheckAccountResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
