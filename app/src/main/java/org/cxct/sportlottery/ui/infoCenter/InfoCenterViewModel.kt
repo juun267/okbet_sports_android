@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.infoCenter
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,7 +9,10 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository) :
+class InfoCenterViewModel(
+    private val androidContext: Context,
+    private val infoCenterRepository: InfoCenterRepository
+) :
     BaseViewModel() {
 
     val userMsgList: LiveData<MutableList<InfoCenterData>?>
@@ -21,35 +25,34 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
     private var mNeedMoreLoading = false //判斷滑到底是否需要繼續加載
 
     fun getUserMsgList(isReload: Boolean, currentTotalCount: Int) {
-            if (mIsGettingData)
-                return
-            mIsGettingData = true
+        if (mIsGettingData) return
+        mIsGettingData = true
 
-            var mCurrentTotalCount = currentTotalCount
+        var mCurrentTotalCount = currentTotalCount
 
-            if (isReload) {//重新載入
-                mNextRequestPage = 1
-                _userMsgList.value = mutableListOf()
-                mCurrentTotalCount = 0
-                mNeedMoreLoading = true
-            }
+        if (isReload) {//重新載入
+            mNextRequestPage = 1
+            _userMsgList.value = mutableListOf()
+            mCurrentTotalCount = 0
+            mNeedMoreLoading = true
+        }
 
-            if (mNeedMoreLoading) {
-                viewModelScope.launch {
-                    val result = doNetwork {
-                        infoCenterRepository.getUserNoticeList(mNextRequestPage, pageSize)
-                    }
-                    _userMsgList.value = result?.infoCenterData
-
-                    //判斷是不是可以再加載
-                    mNeedMoreLoading =
-                        (mCurrentTotalCount + (result?.infoCenterData?.size?:0)) < result?.total ?: 0
-
-                    mNextRequestPage++
-
+        if (mNeedMoreLoading) {
+            viewModelScope.launch {
+                val result = doNetwork(androidContext) {
+                    infoCenterRepository.getUserNoticeList(mNextRequestPage, pageSize)
                 }
+                _userMsgList.value = result?.infoCenterData
+
+                //判斷是不是可以再加載
+                mNeedMoreLoading =
+                    (mCurrentTotalCount + (result?.infoCenterData?.size ?: 0)) < result?.total ?: 0
+
+                mNextRequestPage++
+
             }
-            mIsGettingData = false
+        }
+        mIsGettingData = false
     }
 
 }

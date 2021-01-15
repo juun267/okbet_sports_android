@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,7 +10,9 @@ import org.cxct.sportlottery.network.index.ConfigResult
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class SplashViewModel : BaseViewModel() {
+class SplashViewModel(
+    private val androidContext: Context,
+) : BaseViewModel() {
 
     val configResult: LiveData<ConfigResult?>
         get() = _configResult
@@ -17,7 +20,7 @@ class SplashViewModel : BaseViewModel() {
 
     fun getConfig() {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.getConfig()
             }
             sConfigData = result?.configData

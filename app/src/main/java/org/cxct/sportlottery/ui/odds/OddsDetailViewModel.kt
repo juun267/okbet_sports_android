@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,7 +11,9 @@ import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class OddsDetailViewModel : BaseViewModel() {
+class OddsDetailViewModel(
+    private val androidContext: Context,
+) : BaseViewModel() {
 
     private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
     private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
@@ -24,7 +27,7 @@ class OddsDetailViewModel : BaseViewModel() {
 
     fun getOddsDetail(matchId: String, oddsType: String) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId, oddsType))
             }
             _oddsDetailResult.postValue(result)
@@ -33,7 +36,7 @@ class OddsDetailViewModel : BaseViewModel() {
 
     fun getPlayCateList(gameType: String) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.playCateListService.getPlayCateList(gameType)
             }
             _playCateListResult.postValue(result)
