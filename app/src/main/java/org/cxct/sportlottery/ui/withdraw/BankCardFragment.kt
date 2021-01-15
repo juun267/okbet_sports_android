@@ -59,7 +59,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         val initData = args.editBankCard
         initData?.let {
             view.apply {
-                btn_delete_bank_card.visibility = View.VISIBLE
+                btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
                 edit_create_name.setText(sLoginData?.fullName)
                 edit_bank_card_number.setText(initData.cardNo)
@@ -67,7 +67,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
             return@setupInitData
         }
-        view.btn_delete_bank_card.visibility = View.GONE
+        view.btn_delete_bank.visibility = View.GONE
     }
 
     private fun setupTitle() {
@@ -86,6 +86,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_reset.setOnClickListener {
             resetAll()
         }
+
+        btn_delete_bank.setOnClickListener {
+            viewModel.deleteBankCard(args.editBankCard?.id.toString())
+        }
     }
 
     private fun setupObserve() {
@@ -93,6 +97,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (it.success) {
                 //TODO Dean : bind bank card success Event
                 //綁定成功後回至銀行卡列表bank card list
+                mNavController.popBackStack()
+            }
+        })
+
+        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                //TODO Dean : delete bank card success Event
+                //刪除銀行卡成功後回至銀行卡列表bank card list
                 mNavController.popBackStack()
             }
         })

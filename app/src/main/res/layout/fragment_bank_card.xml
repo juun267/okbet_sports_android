@@ -274,7 +274,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/btn_delete_bank_card"
+        android:id="@+id/btn_delete_bank"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
