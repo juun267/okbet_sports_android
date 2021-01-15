@@ -23,11 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="VS"
-        android:textColor="@color/textColorDark"
+        android:text="@string/verse"
+        android:textColor="@color/lightGray"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@id/team1"
-        app:layout_constraintTop_toTopOf="@id/team1" />
+        app:layout_constraintBaseline_toBaselineOf="@id/team1"
+        app:layout_constraintStart_toEndOf="@id/team1" />
 
     <TextView
         android:id="@+id/team2"

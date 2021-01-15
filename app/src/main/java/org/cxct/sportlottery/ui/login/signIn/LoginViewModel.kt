@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.LoginRequest
-import org.cxct.sportlottery.network.index.LoginResult
-import org.cxct.sportlottery.network.index.ValidCodeRequest
-import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
@@ -74,14 +74,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
 
     private fun checkAccount(context: Context, username: String): String? {
         return when {
-            username.isBlank() -> context.getString(R.string.error_input_account)
+            username.isBlank() -> context.getString(R.string.please_input_account)
             else -> null
         }
     }
 
     private fun checkPassword(context: Context, password: String): String? {
         return when {
-            password.isBlank() -> context.getString(R.string.error_input_password)
+            password.isBlank() -> context.getString(R.string.please_input_password)
             else -> null
         }
     }

@@ -81,6 +81,9 @@ class MainViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
+    val matchTypeCard: LiveData<MatchType>
+        get() = _matchTypeCard
+
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
@@ -99,6 +102,7 @@ class MainViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
+    private val _matchTypeCard = MutableLiveData<MatchType>()
     private val _isOpenMatchOdds = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -221,6 +225,9 @@ class MainViewModel(
         sportMenuData.menu.outright.items.map { sport ->
             sport.isSelected = (sportMenuData.menu.outright.items.indexOf(sport) == 0)
         }
+        sportMenuData.atStart.items.map { sport ->
+            sport.isSelected = (sportMenuData.atStart.items.indexOf(sport) == 0)
+        }
     }
 
     fun getInPlayMatchPreload() {
@@ -242,6 +249,16 @@ class MainViewModel(
             }
             _userMoney.postValue(userMoneyResult?.money)
         }
+    }
+
+    fun getGameHallList(matchType: MatchType, sportType: SportType?) {
+        sportType?.let {
+            _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
+                it.isSelected = (it.code == sportType.code)
+            }
+        }
+
+        _matchTypeCard.postValue(matchType)
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
@@ -305,7 +322,14 @@ class MainViewModel(
                     getOutrightSeasonList(it)
                 }
             }
-            else -> {
+            MatchType.AT_START -> {
+                val gameType = _sportMenuResult.value?.sportMenuData?.atStart?.items?.find {
+                    it.isSelected
+                }?.code
+
+                gameType?.let {
+                    getOddsList(gameType, matchType.postValue, getCurrentTimeRangeParams())
+                }
             }
         }
     }
@@ -436,7 +460,10 @@ class MainViewModel(
                     it.isSelected = (it == item)
                 }
             }
-            else -> {
+            MatchType.AT_START -> {
+                result?.sportMenuData?.atStart?.items?.map {
+                    it.isSelected = (it == item)
+                }
             }
         }
 
@@ -462,7 +489,7 @@ class MainViewModel(
                 )
             }
 
-            if (leagueIdList != null && timeRangeParams != null) {
+            if (leagueIdList != null) {
                 _oddsListResult.postValue(result)
             } else {
                 _oddsListGameHallResult.postValue(result)
@@ -509,7 +536,6 @@ class MainViewModel(
             MatchType.TODAY -> {
                 dateRow.add(Date("", TimeUtil.getTodayTimeRangeParams()))
             }
-
             MatchType.EARLY -> {
                 TimeUtil.getOneWeekDate().forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
@@ -521,7 +547,6 @@ class MainViewModel(
                     )
                 )
             }
-
             MatchType.PARLAY -> {
                 dateRow.add(
                     Date(
@@ -547,7 +572,9 @@ class MainViewModel(
                     )
                 )
             }
-
+            MatchType.AT_START -> {
+                dateRow.add(Date("", TimeUtil.getAtStartTimeRangeParams()))
+            }
             else -> {
             }
         }

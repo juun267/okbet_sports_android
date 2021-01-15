@@ -10,9 +10,13 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants.BANK_MY
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
+import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
+import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
@@ -71,6 +75,18 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(INDEX_CONFIG) -> {
                     response = getMockJsonData(request, "index_config.mock")
+                }
+                path.contains(INDEX_REGISTER) -> {
+                    response = getMockJsonData(request, "index_register.mock")
+                }
+                path.contains(INDEX_VALIDATE_CODE) -> {
+                    response = getMockJsonData(request, "index_valid_code.mock")
+                }
+                path.contains(INDEX_SEND_SMS) -> {
+                    response = getMockJsonData(request, "index_send_sms.mock")
+                }
+                path.contains(INDEX_CHECK_EXIST) -> {
+                    response = getMockJsonData(request, "index_check_exist.mock")
                 }
                 path.contains(MESSAGE_LIST) -> {
                     response = getMockJsonData(request, "message_list.mock")
