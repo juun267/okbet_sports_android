@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.profileCenter
+package org.cxct.sportlottery.ui.profileCenter.nickname
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -12,7 +12,7 @@ import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
-class ProfileModel(
+class NicknameModel(
     private val androidContext: Context
 ) : BaseViewModel() {
 

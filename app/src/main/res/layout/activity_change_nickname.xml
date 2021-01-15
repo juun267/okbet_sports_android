@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/gray11"
     android:orientation="vertical"
-    tools:context=".ui.profileCenter.ChangeNicknameActivity">
+    tools:context=".ui.profileCenter.nickname.ChangeNicknameActivity">
 
     <RelativeLayout
         android:id="@+id/toolBar"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/profile_info"
+            android:text="@string/change_nickname"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize16sp" />
 

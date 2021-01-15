@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.profileCenter
+package org.cxct.sportlottery.ui.profileCenter.nickname
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 
-class ChangeNicknameActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
+class ChangeNicknameActivity : BaseActivity<NicknameModel>(NicknameModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_nickname)
