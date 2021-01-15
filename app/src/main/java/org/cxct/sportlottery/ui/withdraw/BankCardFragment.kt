@@ -26,11 +26,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private val args: BankCardFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,6 +75,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_submit.setOnClickListener {
             viewModel.addBankCard(createBankAddRequest())
         }
+
+        btn_reset.setOnClickListener {
+            resetAll()
+        }
     }
 
     private fun createBankAddRequest(): BankAddRequest {
@@ -91,6 +90,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             fullName = edit_create_name.text.toString(),
             uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
         )
+    }
+
+    private fun resetAll() {
+        edit_create_name.setText("")
+        edit_bank_card_number.setText("")
+        edit_network_point.setText("")
+        edit_withdraw_password.setText("")
+        this@BankCardFragment.activity?.currentFocus?.clearFocus()
     }
 
     companion object {
