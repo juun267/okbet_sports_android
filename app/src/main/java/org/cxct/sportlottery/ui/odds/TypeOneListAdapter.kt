@@ -6,8 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
-class TypeOneListAdapter(private val oddsList: List<Odd>, private val onOddClickListener: OnOddClickListener) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
+class TypeOneListAdapter(
+    private val oddsList: List<Odd>,
+    private val onOddClickListener: OnOddClickListener,
+    private val betInfoList: MutableList<BetInfoListData>
+) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +33,7 @@ class TypeOneListAdapter(private val oddsList: List<Odd>, private val onOddClick
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener)
+            setData(odd, onOddClickListener, betInfoList)
         }
     }
 

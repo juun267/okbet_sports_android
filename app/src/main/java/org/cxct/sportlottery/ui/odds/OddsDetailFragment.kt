@@ -49,9 +49,11 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     private var matchId: String? = null
     private var oddsType: String? = null
 
-    private val oddsDetailListData = ArrayList<OddsDetailListData>()
+//    private val oddsDetailListData = ArrayList<OddsDetailListData>()
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
+
+    private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
     //後續將該OddsDetailViewModel內容移至MainViewModel
     private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
@@ -96,8 +98,10 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
         (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
+
         rv_detail.apply {
-            adapter = OddsDetailListAdapter(oddsDetailListData, this@OddsDetailFragment)
+            adapter = oddsDetailListAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
 
@@ -159,21 +163,32 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
                 tv_time.text = TimeUtil.stampToDate(time.toLong())
             }
 
-            oddsDetailListData.clear()
+            oddsDetailListAdapter?.oddsDetailListData?.clear()
             it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
 
                 var odd: Odd?
 
                 viewModel.betInfoList.value.let { list ->
-                    for (m in list?.indices!!) {
-                        for (i in value.odds.indices) {
-                            odd = value.odds.find { v -> v.id == viewModel.betInfoList.value!![m].matchOdd.oddsId }
-                            odd?.isSelect = true
+
+                    if (list != null) {
+                        for (m in list.indices) {
+                            for (i in value.odds.indices) {
+                                odd = value.odds.find { v -> v.id == viewModel.betInfoList.value!![m].matchOdd.oddsId }
+                                odd?.isSelect = true
+                            }
                         }
                     }
                 }
 
-                oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
+                oddsDetailListAdapter?.oddsDetailListData?.add(
+                    OddsDetailListData(
+                        key,
+                        TextUtil.split(value.typeCodes),
+                        value.name,
+                        value.odds,
+                        false
+                    )
+                )
             }
 
             tab_cat.getTabAt(0)?.select()
@@ -187,10 +202,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         })
 
         viewModel.betInfoList.observe(requireActivity(), Observer {
-
-
-
-
+            oddsDetailListAdapter?.setBetInfoList(it)
         })
 
 
