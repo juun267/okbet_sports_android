@@ -87,7 +87,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             bankName = tv_bank_name.text.toString(),
             subAddress = edit_network_point.text.toString(),
             cardNo = edit_bank_card_number.text.toString(),
-            fundPwd = edit_withdraw_password.text.toString(),
+            fundPwd = MD5Encode(edit_withdraw_password.text.toString()),
             fullName = edit_create_name.text.toString(),
             id = args.editBankCard?.id?.toString(),
             userId = sUserInfo.userId.toString(),
