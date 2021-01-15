@@ -58,9 +58,10 @@
 
             <ImageView
                 android:id="@+id/img_edit_bank"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
                 android:src="@drawable/ic_edit_button"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

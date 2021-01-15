@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.bank
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class T(
@@ -24,4 +25,4 @@ data class T(
     val userId: Int,
     @Json(name = "uwType")
     val uwType: String
-)
+) : Serializable

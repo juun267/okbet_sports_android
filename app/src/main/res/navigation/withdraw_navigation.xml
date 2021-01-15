@@ -23,7 +23,12 @@
             app:destination="@+id/withdrawFragment" />
         <action
             android:id="@+id/action_bankListFragment_to_bankCardFragment"
-            app:destination="@+id/bankCardFragment" />
+            app:destination="@+id/bankCardFragment">
+            <argument
+                android:name="editBankCardData"
+                app:argType="org.cxct.sportlottery.network.bank.T"
+                app:nullable="true" />
+        </action>
     </fragment>
 
     <fragment
