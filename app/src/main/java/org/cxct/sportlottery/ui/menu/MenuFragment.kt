@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
+import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -65,6 +66,12 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         menu_game_result.setOnClickListener {
             startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             mDownMenuListener?.onClick(menu_game_result)
+        }
+
+        //TODO Dean : Test for withdraw page
+        menu_profile.setOnClickListener {
+            startActivity(Intent(activity, WithdrawActivity::class.java))
+            mDownMenuListener?.onClick(menu_profile)
         }
 
         menu_sign_out.setOnClickListener {
