@@ -8,6 +8,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface BankService {
     @GET(BANK_MY)
@@ -17,4 +18,8 @@ interface BankService {
     suspend fun bankAdd(
         @Body bankAddRequest: BankAddRequest
     ): Response<BankAddResult>
+
+    suspend fun bankDelete(
+        @Path("id") id: String
+    ):
 }
