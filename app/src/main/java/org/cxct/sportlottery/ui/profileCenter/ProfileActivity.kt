@@ -8,6 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sLoginData
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
 
 class ProfileActivity : AppCompatActivity() {
@@ -26,6 +27,10 @@ class ProfileActivity : AppCompatActivity() {
 
         btn_nickname.setOnClickListener {
             startActivity(Intent(this@ProfileActivity, ChangeNicknameActivity::class.java))
+        }
+
+        btn_pwd_setting.setOnClickListener {
+            startActivity(Intent(this@ProfileActivity, SettingPasswordActivity::class.java))
         }
     }
 

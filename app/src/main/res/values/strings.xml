@@ -178,6 +178,15 @@
     <string name="hint_nickname">中英文长度2–50字</string>
     <string name="error_nickname_empty">昵称不能为空</string>
 
+    <!-- Setting password page-->
+    <string name="setting_password">密码设置</string>
+    <string name="withdrawal_password">提款密码</string>
+    <string name="current_password">当前密码</string>
+    <string name="hint_current_password">请输入当前登录密码</string>
+    <string name="new_password">新密码</string>
+    <string name="hint_new_password">请输入新密码</string>
+    <string name="hint_confirm_new_password">请再次输入新密码</string>
+
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
     <string name="unread_letters">未读邮件 (%1$d)</string>
