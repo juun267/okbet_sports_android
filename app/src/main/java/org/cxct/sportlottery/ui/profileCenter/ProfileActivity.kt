@@ -1,12 +1,11 @@
 package org.cxct.sportlottery.ui.profileCenter
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile.iv_head
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sLoginData
 
@@ -30,6 +29,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        //TODO 使用 userInfo API 來刷新畫面
         updateAvatar()
         tv_nickname.text = sLoginData?.nickName
         tv_member_account.text = sLoginData?.userName
