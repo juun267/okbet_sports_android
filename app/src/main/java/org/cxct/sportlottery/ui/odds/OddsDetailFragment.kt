@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -163,8 +164,8 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
                 var odd: Odd?
 
-                if(viewModel.betInfoList.value!=null) {
-                    for (m in viewModel.betInfoList.value?.indices!!) {
+                viewModel.betInfoList.value.let { list ->
+                    for (m in list?.indices!!) {
                         for (i in value.odds.indices) {
                             odd = value.odds.find { v -> v.id == viewModel.betInfoList.value!![m].matchOdd.oddsId }
                             odd?.isSelect = true
@@ -178,6 +179,21 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             tab_cat.getTabAt(0)?.select()
 
         })
+
+        viewModel.betInfoResult.observe(requireActivity(), Observer {
+            if (it.success) {
+                it.betInfoData?.let { data -> viewModel.addToBetInfoList(data) }
+            }
+        })
+
+        viewModel.betInfoList.observe(requireActivity(), Observer {
+
+
+
+
+        })
+
+
     }
 
 
@@ -188,7 +204,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     }
 
 
-    override fun addToBetInfoList(odd: Odd) {
+    override fun getBetInfoList(odd: Odd) {
         viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
     }
 

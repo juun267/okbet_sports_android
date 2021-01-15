@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.info.BetInfoData
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.MatchType
@@ -123,6 +124,8 @@ class MainViewModel(
     private val _betInfoResult = MutableLiveData<BetInfoResult>()
     val betInfoResult: LiveData<BetInfoResult>
         get() = _betInfoResult
+
+    private val betList = MutableLiveData<MutableList<BetInfoListData>>()
 
     private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
     val betInfoList: LiveData<MutableList<BetInfoListData>>
@@ -469,25 +472,29 @@ class MainViewModel(
                 )
             }
             _betInfoResult.postValue(result)
-
-            if (!result?.success!!) return@launch
-
-            if (_betInfoList.value == null) {
-                _betInfoList.value = mutableListOf()
-            }
-            for (i in result.betInfoData?.matchOdds!!.indices) {
-                _betInfoList.value!!.add(BetInfoListData(result.betInfoData.matchOdds[i], result.betInfoData.parlayOdds[i]))
-            }
-            _betInfoList.postValue(_betInfoList.value)
+//            if(result?.success!!) {
+//                result.betInfoData?.let { addToBetInfoList(it) }
+//            }
         }
     }
+
+    fun addToBetInfoList(betInfoData: BetInfoData) {
+        if (betList.value == null) {
+            betList.value = mutableListOf()
+        }
+        for (i in betInfoData.matchOdds.indices) {
+            betList.value!!.add(BetInfoListData(betInfoData.matchOdds[i], betInfoData.parlayOdds[i]))
+        }
+        _betInfoList.postValue(betList.value)
+    }
+
 
     fun removeBetInfoItem(oddId: String) {
         _betInfoList.value!!.remove(_betInfoList.value!!.find {
             it.matchOdd.oddsId == oddId
         })
         _betInfoList.postValue(_betInfoList.value)
-        Log.e("[kevin]", "剩餘 ${betInfoList.value!!.size}")
+        Timber.d("剩餘${betInfoList.value!!.size}項")
     }
 
 }

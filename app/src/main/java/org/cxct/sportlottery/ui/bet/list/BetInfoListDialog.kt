@@ -19,6 +19,10 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
 
     private lateinit var betInfoListAdapter: BetInfoListAdapter
 
+    init {
+        setStyle(R.style.Common)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: DialogBetInfoListBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
         binding.apply {

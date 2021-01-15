@@ -276,7 +276,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                         tvOdds.isSelected = !tvOdds.isSelected
                         element.isSelect = tvOdds.isSelected
                         if(element.isSelect){
-                            onOddClickListener.addToBetInfoList(element)
+                            onOddClickListener.getBetInfoList(element)
                         }else{
                             onOddClickListener.removeBetInfoItem(element)
                         }
