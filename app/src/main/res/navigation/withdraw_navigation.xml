@@ -24,20 +24,16 @@
         <action
             android:id="@+id/action_bankListFragment_to_bankCardFragment"
             app:destination="@+id/bankCardFragment">
-            <argument
-                android:name="editBankCardData"
-                app:argType="org.cxct.sportlottery.network.bank.T"
-                app:nullable="true" />
+
         </action>
     </fragment>
-
     <fragment
         android:id="@+id/bankCardFragment"
         android:name="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
-        android:label="BindBankCardFragment">
-        <action
-            android:id="@+id/action_bankCardFragment_to_bankListFragment"
-            app:destination="@+id/bankListFragment" />
-
+        android:label="BankCardFragment" >
+        <argument android:name="editBankCard"
+            app:argType="org.cxct.sportlottery.network.bank.T"
+            app:nullable="true"/>
     </fragment>
+
 </navigation>
