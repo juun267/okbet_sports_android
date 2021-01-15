@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.error.TokenError
 import kotlin.reflect.KClass
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -33,13 +34,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun onTokenStateChanged() {
         viewModel.code.observe(this, Observer {
             when (it) {
-                2014 -> {
+                TokenError.EXPIRED.code -> {
                     //TODO deal response code 2014
                 }
-                2015 -> {
+                TokenError.FAILURE.code -> {
                     //TODO deal response code 2015
                 }
-                2018 -> {
+                TokenError.REPEAT_LOGIN.code -> {
                     //TODO deal response code 2018
                 }
             }
