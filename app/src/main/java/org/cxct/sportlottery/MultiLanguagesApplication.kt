@@ -40,7 +40,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SplashViewModel(get()) }
         viewModel { MainViewModel(get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
-        viewModel { RegisterViewModel(get()) }
+        viewModel { RegisterViewModel(get(), get()) }
         viewModel { OddsDetailViewModel(get()) }
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
