@@ -215,6 +215,8 @@
                 android:background="@color/transparent"
                 android:gravity="start|center_vertical"
                 android:hint="@string/hint_four_number_password"
+                android:inputType="numberPassword"
+                android:maxLength="4"
                 android:textColor="@color/textColorDark"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
