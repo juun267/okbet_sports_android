@@ -47,7 +47,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun onNetworkException() {
-        viewModel.networkException.observe(this, Observer {
+        viewModel.networkExceptionUnknown.observe(this, Observer {
             //TODO show network exception message
         })
     }
