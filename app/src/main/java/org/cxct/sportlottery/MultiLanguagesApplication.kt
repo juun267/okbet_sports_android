@@ -6,16 +6,14 @@ import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.SettlementRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -44,6 +42,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettlementViewModel(get()) }
         viewModel { BetRecordViewModel() }
         viewModel { InfoCenterViewModel(get()) }
+        viewModel { MoneyRechViewModel(get()) }
     }
 
     private val repoModule = module {
@@ -51,6 +50,7 @@ class MultiLanguagesApplication : Application() {
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
+        single { MoneyRepository() }
     }
 
     override fun attachBaseContext(base: Context) {
