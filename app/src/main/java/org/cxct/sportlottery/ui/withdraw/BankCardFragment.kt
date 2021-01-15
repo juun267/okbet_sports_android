@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseFragment
 
@@ -43,6 +45,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.apply {
+            setupEvent()
+
+        }
+    }
+
     private fun setupInitData(view: View) {
         val initData = args.editBankCard
         initData?.let {
@@ -64,6 +74,23 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }else{
             (this@BankCardFragment.activity as WithdrawActivity).setToolBarName(getString(R.string.add_credit_card))
         }
+    }
+
+    private fun setupEvent() {
+        btn_submit.setOnClickListener {
+            viewModel.addBankCard(createBankAddRequest())
+        }
+    }
+
+    private fun createBankAddRequest(): BankAddRequest {
+        return BankAddRequest(
+            bankName = tv_bank_name.text.toString(),
+            subAddress = edit_network_point.text.toString(),
+            cardNo = edit_bank_card_number.text.toString(),
+            fundPwd = edit_withdraw_password.text.toString(),
+            fullName = edit_create_name.text.toString(),
+            uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+        )
     }
 
     companion object {

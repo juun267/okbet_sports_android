@@ -6,7 +6,7 @@ data class BankAddRequest(
     val cardNo: String,
     val fundPwd: String,
     val fullName: String,
-    val id: String?,
+    val id: String? = null,
     val uwType: String,
-    val userId: String?
+    val userId: String? = null
 )

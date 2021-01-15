@@ -207,7 +207,7 @@
                 android:background="@color/bright_gray" />
 
             <EditText
-                android:id="@+id/withdraw_password"
+                android:id="@+id/edit_withdraw_password"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
@@ -234,6 +234,7 @@
             app:cardCornerRadius="5dp">
 
             <TextView
+                android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
