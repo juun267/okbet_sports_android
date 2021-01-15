@@ -9,6 +9,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -141,6 +142,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(BANK_MY) -> {
                     response = getMockJsonData(request, "user_bank_my")
+                }
+                path.contains(BANK_DELETE) -> {
+                    response = getMockJsonData(request, "user_bank_delete")
                 }
             }
         }
