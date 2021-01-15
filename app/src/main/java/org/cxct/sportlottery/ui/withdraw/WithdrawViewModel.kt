@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,7 +11,8 @@ import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class WithdrawViewModel : BaseViewModel() {
+class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
+
     val needToUpdateWithdrawPassword: LiveData<Boolean>
         get() = _needToUpdateWithdrawPassword
     private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>(false)
@@ -24,7 +26,7 @@ class WithdrawViewModel : BaseViewModel() {
 
     fun getBankCardList() {
         viewModelScope.launch {
-            doNetwork {
+            doNetwork(androidContext) {
                 OneBoSportApi.bankService.getBankMy()
             }?.let { result ->
                 _bankCardList.value = result
@@ -35,7 +37,7 @@ class WithdrawViewModel : BaseViewModel() {
 
     fun addBankCard(bankAddRequest: BankAddRequest) {
         viewModelScope.launch {
-            doNetwork {
+            doNetwork(androidContext) {
                 OneBoSportApi.bankService.bankAdd(
                     bankAddRequest
                 )

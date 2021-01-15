@@ -45,6 +45,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
+        viewModel { WithdrawViewModel(get()) }
     }
 
     private val repoModule = module {
