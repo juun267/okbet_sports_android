@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
@@ -21,6 +22,10 @@ class ProfileActivity : AppCompatActivity() {
     private fun initButton() {
         btn_back.setOnClickListener {
             finish()
+        }
+
+        btn_nickname.setOnClickListener {
+            startActivity(Intent(this@ProfileActivity, ChangeNicknameActivity::class.java))
         }
     }
 

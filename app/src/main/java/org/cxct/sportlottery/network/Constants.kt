@@ -51,6 +51,7 @@ object Constants {
 
     //user
     const val USER_MONEY = "/api/front/user/money"
+    const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

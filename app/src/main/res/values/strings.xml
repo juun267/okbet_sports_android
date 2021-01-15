@@ -10,6 +10,7 @@
     <string name="connect_first">请先连上网路</string>
 
     <string name="error_url_fail">跳转地址错误</string>
+    <string name="unknown_error">未知错误</string>
 
 
     <!--network message-->
@@ -171,7 +172,11 @@
     <string name="nickname">昵称</string>
     <string name="password_setting">密码设置</string>
     <string name="id">ID</string>
-    
+
+    <!-- Change nickname page-->
+    <string name="hint_nickname">中英文长度2–50字</string>
+    <string name="error_nickname_empty">昵称不能为空</string>
+
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
     <string name="unread_letters">未读邮件 (%1$d)</string>

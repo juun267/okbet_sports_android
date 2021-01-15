@@ -29,6 +29,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".ui.profileCenter.ProfileCenterActivity" />
         <activity android:name=".ui.profileCenter.ProfileActivity" />
+        <activity android:name=".ui.profileCenter.ChangeNicknameActivity" />
         <activity android:name=".ui.infoCenter.InfoCenterActivity" />
         <activity android:name=".ui.menu.results.ResultsSettlementActivity" />
         <activity android:name=".ui.bet_record.BetRecordActivity" />

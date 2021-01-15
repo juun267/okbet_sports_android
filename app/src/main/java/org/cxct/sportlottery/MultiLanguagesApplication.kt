@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
 import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
+import org.cxct.sportlottery.ui.profileCenter.ProfileModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.koin.android.ext.koin.androidContext
@@ -44,6 +45,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
+        viewModel { ProfileModel(get()) }
     }
 
     private val repoModule = module {
