@@ -24,7 +24,10 @@ import org.cxct.sportlottery.util.FileUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.VerifyConstUtil
 
-class RegisterViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
+class RegisterViewModel(
+    private val androidContext: Context,
+    private val loginRepository: LoginRepository
+) : BaseViewModel() {
     val registerFormState: LiveData<RegisterFormState>
         get() = _registerFormState
     val registerResult: LiveData<LoginResult>
@@ -255,8 +258,13 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
 
     fun sendSms(phone: String) {
         viewModelScope.launch {
-            val result = doNetwork {
-                OneBoSportApi.indexService.sendSms(SmsRequest(19, phone)) //TODO 等待後端修復再來 review platformId參數跟 sendSms 能不能成功執行
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.sendSms(
+                    SmsRequest(
+                        19,
+                        phone
+                    )
+                ) //TODO 等待後端修復再來 review platformId參數跟 sendSms 能不能成功執行
             }
             _smsResult.postValue(result)
         }
@@ -264,7 +272,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
 
     fun getValidCode(identity: String?) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
             }
             _validCodeResult.postValue(result)
@@ -273,7 +281,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
 
     fun checkAccountExist(account: String) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.checkAccountExist(account)
             }
             _checkAccountResult.postValue(result)
@@ -282,7 +290,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : BaseView
 
     fun register(registerRequest: RegisterRequest) {
         viewModelScope.launch {
-            doNetwork {
+            doNetwork(androidContext) {
                 loginRepository.register(registerRequest)
             }?.let { result ->
                 _registerResult.postValue(result)
