@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.repository.sLoginData
+import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
 
 // TODO: Rename parameter arguments, choose names that match
@@ -88,6 +89,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             cardNo = edit_bank_card_number.text.toString(),
             fundPwd = edit_withdraw_password.text.toString(),
             fullName = edit_create_name.text.toString(),
+            id = args.editBankCard?.id?.toString(),
+            userId = sUserInfo.userId.toString(),
             uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
         )
     }
