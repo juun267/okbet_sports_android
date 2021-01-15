@@ -198,6 +198,21 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         viewModel.betInfoResult.observe(requireActivity(), Observer {
             if (it.success) {
                 it.betInfoData?.let { data -> viewModel.addToBetInfoList(data) }
+            } else {
+                oddsDetailViewModel.oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                    var odd: Odd?
+                    viewModel.betInfoList.value.let { list ->
+                        if (list != null) {
+                            for (m in list.indices) {
+                                for (i in value.odds.indices) {
+                                    odd = value.odds.find { v -> v.id == viewModel.betInfoList.value!![m].matchOdd.oddsId }
+                                    odd?.isSelect = false
+                                }
+                            }
+                        }
+                    }
+                    oddsDetailListAdapter?.notifyDataSetChanged()
+                }
             }
         })
 
