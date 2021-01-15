@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.MyResult
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
+import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
@@ -23,6 +24,11 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
     val bankCardList: LiveData<MyResult>
         get() = _bankCardList
     private var _bankCardList = MutableLiveData<MyResult>()
+
+    val bankAddResult: LiveData<BankAddResult>
+        get() = _bankAddResult
+
+    private var _bankAddResult = MutableLiveData<BankAddResult>()
 
     fun getBankCardList() {
         viewModelScope.launch {
@@ -41,6 +47,8 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
                 OneBoSportApi.bankService.bankAdd(
                     bankAddRequest
                 )
+            }?.let { result ->
+                _bankAddResult.value = result
             }
         }
     }

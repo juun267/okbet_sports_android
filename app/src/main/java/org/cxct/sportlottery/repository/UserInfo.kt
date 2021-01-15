@@ -10,7 +10,7 @@ class UserRebateList {
 }
 
 class UserInfo {
-    var userId = 0
+    var userId = 129
     var userName: String? = null
     var fullName: String? = null
     var roleId = 0
