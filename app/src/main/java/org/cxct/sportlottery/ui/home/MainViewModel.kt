@@ -41,8 +41,8 @@ class MainViewModel(
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository
 ) : BaseViewModel() {
-    val token: LiveData<String?> by lazy {
-        loginRepository.token
+    val isLogin: LiveData<Boolean> by lazy {
+        loginRepository.isLogin
     }
 
     val messageListResult: LiveData<MessageListResult>
