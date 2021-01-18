@@ -136,6 +136,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
                 android:layout_weight="1"
+                android:inputType="numberDecimal"
                 android:background="@color/transparent"
                 android:gravity="start|center_vertical"
                 android:hint="@string/please_enter_bank_card_rule"
