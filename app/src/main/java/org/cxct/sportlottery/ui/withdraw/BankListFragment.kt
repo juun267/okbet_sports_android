@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.withdraw.WithdrawActivity.Companion.navigateKey
 
 class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -18,12 +19,14 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         findNavController()
     }
 
+
     private val mBankListAdapter by lazy {
+        val navigateFrom = arguments?.getSerializable(navigateKey) as PageFrom
         BankListAdapter(BankListClickListener({
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it)
+            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
             mNavController.navigate(action)
         }, {
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null)
+            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, navigateFrom)
             mNavController.navigate(action)
         }))
     }

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_withdraw.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.withdraw.WithdrawActivity.Companion.navigateKey
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,8 +52,9 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.checkPermissions()
 
         btn_reset.setOnClickListener {
-            val action = WithdrawFragmentDirections.actionWithdrawFragmentToBankListFragment()
-            mNavController.navigate(action)
+            val bundle = Bundle()
+            bundle.putSerializable(navigateKey, PageFrom.WITHDRAW)
+            mNavController.navigate(R.id.bankListFragment, bundle)
         }
     }
 

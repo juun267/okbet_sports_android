@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -90,7 +89,15 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 //TODO Dean : bind bank card success Event
                 //綁定成功後回至銀行卡列表bank card list
                 viewModel.clearBankCardFragmentStatus() //若不清除下一次近來時會直接觸發觀察
-                mNavController.popBackStack()
+                when (args.navigateFrom) {
+                    PageFrom.WITHDRAW -> {
+                        val action = BankCardFragmentDirections.actionBankCardFragmentToWithdrawFragment(args.navigateFrom)
+                        mNavController.navigate(action)
+                    }
+                    else -> {
+                        mNavController.popBackStack()
+                    }
+                }
             }
         })
 

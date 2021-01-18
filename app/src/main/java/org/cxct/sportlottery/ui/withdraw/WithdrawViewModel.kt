@@ -17,10 +17,10 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val needToUpdateWithdrawPassword: LiveData<Boolean>
         get() = _needToUpdateWithdrawPassword
-    private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>(false)
+    private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>()
     val checkBankCardOrNot: LiveData<Boolean>
         get() = _checkBankCardOrNot
-    private var _checkBankCardOrNot = MutableLiveData<Boolean>(false)
+    private var _checkBankCardOrNot = MutableLiveData<Boolean>()
 
     val bankCardList: LiveData<MyResult>
         get() = _bankCardList
@@ -74,7 +74,7 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
         getBankCardList()
     }
 
-    fun clearBankCardFragmentStatus(){
+    fun clearBankCardFragmentStatus() {
         _bankDeleteResult = MutableLiveData()
         _bankAddResult = MutableLiveData()
     }

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -7,6 +8,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 
 class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewModel::class) {
+
+    companion object {
+        val navigateKey = "NAVIGATE_FROM"
+    }
 
     private val mNavController by lazy {
         findNavController(R.id.withdraw_container)
@@ -17,7 +22,9 @@ class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewMode
             checkBankCardOrNot.observe(this@WithdrawActivity, Observer {
                 if (!it) {
                     if (mNavController.currentDestination?.id != R.id.bankListFragment) {
-                        mNavController.navigate(R.id.bankListFragment)
+                        val bundle = Bundle()
+                        bundle.putSerializable(navigateKey, PageFrom.WITHDRAW)
+                        mNavController.navigate(R.id.bankListFragment, bundle)
                     }
                 }
             })
@@ -34,10 +41,6 @@ class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewMode
 
     override fun setToolBarName(): String {
         return getString(R.string.withdraw)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onBackPressed() {
