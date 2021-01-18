@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -40,7 +41,8 @@ import timber.log.Timber
 class MainViewModel(
     private val androidContext: Context,
     private val loginRepository: LoginRepository,
-    private val sportMenuRepository: SportMenuRepository
+    private val sportMenuRepository: SportMenuRepository,
+    private val betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
@@ -467,34 +469,22 @@ class MainViewModel(
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
             val result = doNetwork {
-                OneBoSportApi.betService.getBetInfo(
-                    BetInfoRequest("EU", oddsList)
-                )
+                betInfoRepository.getBetInfoList(oddsList)
             }
             _betInfoResult.postValue(result)
-//            if(result?.success!!) {
-//                result.betInfoData?.let { addToBetInfoList(it) }
-//            }
         }
     }
 
-    fun addToBetInfoList(betInfoData: BetInfoData) {
-        if (betList.value == null) {
-            betList.value = mutableListOf()
-        }
-        for (i in betInfoData.matchOdds.indices) {
-            betList.value!!.add(BetInfoListData(betInfoData.matchOdds[i], betInfoData.parlayOdds[i]))
-        }
-        _betInfoList.postValue(betList.value)
+    fun addToBetInfoList() {
+        _betInfoList.postValue(betInfoRepository.betList)
     }
 
 
     fun removeBetInfoItem(oddId: String) {
-        _betInfoList.value!!.remove(_betInfoList.value!!.find {
-            it.matchOdd.oddsId == oddId
-        })
-        _betInfoList.postValue(_betInfoList.value)
+        betInfoRepository.removeItem(oddId)
+        _betInfoList.postValue(betInfoRepository.betList)
         Timber.d("剩餘${betInfoList.value!!.size}項")
+
     }
 
 }

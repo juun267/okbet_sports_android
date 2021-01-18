@@ -49,8 +49,6 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     private var matchId: String? = null
     private var oddsType: String? = null
 
-//    private val oddsDetailListData = ArrayList<OddsDetailListData>()
-
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
@@ -197,7 +195,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
         viewModel.betInfoResult.observe(requireActivity(), Observer {
             if (it.success) {
-                it.betInfoData?.let { data -> viewModel.addToBetInfoList(data) }
+                it.betInfoData?.let { data -> viewModel.addToBetInfoList() }
             } else {
                 oddsDetailViewModel.oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
                     var odd: Odd?
