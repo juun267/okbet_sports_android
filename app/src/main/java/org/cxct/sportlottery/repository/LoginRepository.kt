@@ -111,4 +111,16 @@ class LoginRepository(private val androidContext: Context) {
 
         return loginResponse
     }
+
+    suspend fun checkToken(): Response<LoginResult> {
+        val checkTokenResponse = OneBoSportApi.indexService.checkToken()
+
+        if (checkTokenResponse.isSuccessful) {
+            checkTokenResponse.body()?.let {
+                sLoginData = it.loginData
+            }
+        }
+
+        return checkTokenResponse
+    }
 }

@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -44,6 +45,9 @@ class MainViewModel(
     val token: LiveData<String?> by lazy {
         loginRepository.token
     }
+
+    val checkTokenResult: LiveData<LoginResult?>
+        get() = _checkTokenResult
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -87,6 +91,7 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
+    private val _checkTokenResult = MutableLiveData<LoginResult?>()
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
@@ -138,6 +143,15 @@ class MainViewModel(
 
     fun setOddsDetailMoreList(list: List<*>) {
         _oddsDetailMoreList.postValue(list)
+    }
+
+    fun checkToken() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                loginRepository.checkToken()
+            }
+            _checkTokenResult.postValue(result)
+        }
     }
 
     fun logout() {

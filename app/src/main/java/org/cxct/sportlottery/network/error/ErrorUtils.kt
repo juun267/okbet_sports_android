@@ -2,7 +2,9 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
@@ -72,7 +74,7 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
-                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) ) -> {
+                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) || url.contains(INDEX_CHECK_TOKEN) ) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }

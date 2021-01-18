@@ -260,11 +260,8 @@ class RegisterViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.sendSms(
-                    SmsRequest(
-                        19,
-                        phone
-                    )
-                ) //TODO 等待後端修復再來 review platformId參數跟 sendSms 能不能成功執行
+                    SmsRequest(phone)
+                )
             }
             _smsResult.postValue(result)
         }

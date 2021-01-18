@@ -7,9 +7,6 @@ import android.os.Looper
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.btn_back
-import kotlinx.android.synthetic.main.activity_register.btn_login
-import kotlinx.android.synthetic.main.activity_register.et_verification_code
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -207,7 +204,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupSmsValidCode() {
-        block_sms_valid_code.visibility = if (sConfigData?.enableRegValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
+        block_sms_valid_code.visibility = if (sConfigData?.enableSmsValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
+        if (sConfigData?.enableSmsValidCode == FLAG_OPEN) {
+            //手機驗證碼開啟，必定需要手機號欄位輸入
+            et_phone.visibility = View.VISIBLE
+            block_sms_valid_code.visibility = View.VISIBLE
+        } else{
+            block_sms_valid_code.visibility = View.GONE
+        }
 
         btn_send_sms.setOnClickListener {
             sendSms()
