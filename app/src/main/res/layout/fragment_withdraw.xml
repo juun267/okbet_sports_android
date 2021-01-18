@@ -27,9 +27,11 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
+            android:text="0"
             android:textSize="14sp"
             tools:text="19940.000" />
 
@@ -133,6 +135,7 @@
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
+                android:id="@+id/btn_withdraw_all"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
@@ -180,6 +183,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
                 android:layout_weight="1"
+                android:maxLength="4"
                 android:inputType="numberPassword"
                 android:background="@color/transparent"
                 android:gravity="start|center_vertical"
