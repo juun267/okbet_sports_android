@@ -21,7 +21,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
 
     private val mBankListAdapter by lazy {
-        val navigateFrom = arguments?.getSerializable(navigateKey) as PageFrom
+        val navigateFrom = (arguments?.getSerializable(navigateKey) ?: PageFrom.WITHDRAW_SETTING) as PageFrom
         BankListAdapter(BankListClickListener({
             val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
             mNavController.navigate(action)

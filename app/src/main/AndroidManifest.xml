@@ -13,7 +13,8 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.withdraw.WithdrawActivity"></activity>
+        <activity android:name=".ui.withdraw.WithdrawActivity"/>
+        <activity android:name=".ui.withdraw.BankActivity"/>
         <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
