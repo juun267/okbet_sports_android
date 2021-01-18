@@ -646,7 +646,7 @@ class MainViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 betInfoRepository.getBetInfoList(oddsList)
             }
             _betInfoResult.postValue(result)

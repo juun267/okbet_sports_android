@@ -35,20 +35,13 @@ class MultiLanguagesApplication : Application() {
 
     private val viewModelModule = module {
         viewModel { MainViewModel(get(), get(), get(), get()) }
-        viewModel { LoginViewModel(get()) }
-        viewModel { RegisterViewModel(get()) }
-        viewModel { OddsDetailViewModel() }
-        viewModel { SettlementViewModel(get()) }
-        viewModel { BetRecordViewModel() }
-        viewModel { InfoCenterViewModel(get()) }
-        viewModel { SplashViewModel(get()) }
-        viewModel { MainViewModel(get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
         viewModel { OddsDetailViewModel(get()) }
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
+        viewModel { SplashViewModel(get()) }
         viewModel { NicknameModel(get()) }
     }
 
