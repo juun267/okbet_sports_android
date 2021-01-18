@@ -2,7 +2,8 @@ package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import liveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -23,7 +24,10 @@ class LoginRepository(private val androidContext: Context) {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    val token = sharedPref.liveData(KEY_TOKEN, "")
+    val isLogin: LiveData<Boolean>
+        get() = _isLogin
+
+    private val _isLogin = MutableLiveData<Boolean>()
 
     var account
         get() = sharedPref.getString(KEY_ACCOUNT, "")
@@ -75,6 +79,8 @@ class LoginRepository(private val androidContext: Context) {
             loginResponse.body()?.let {
                 sLoginData = it.loginData
 
+                _isLogin.postValue(it.loginData != null)
+
                 with(sharedPref.edit()) {
                     putString(KEY_TOKEN, it.loginData?.token)
                     apply()
@@ -86,6 +92,8 @@ class LoginRepository(private val androidContext: Context) {
     }
 
     suspend fun logout(): Response<LogoutResult> {
+        _isLogin.postValue(false)
+
         with(sharedPref.edit()) {
             remove(KEY_TOKEN)
             apply()
@@ -101,6 +109,8 @@ class LoginRepository(private val androidContext: Context) {
             loginResponse.body()?.let {
                 account = registerRequest.userName //預設存帳號
                 sLoginData = it.loginData
+
+                _isLogin.postValue(it.loginData != null)
 
                 with(sharedPref.edit()) {
                     putString(KEY_TOKEN, it.loginData?.token)
