@@ -59,6 +59,17 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             setupWithdrawData()?.let { request -> viewModel.addWithdraw(request) }
         }
 
+        btn_withdraw_all.setOnClickListener {
+            tv_balance.text.toString().let {
+                if (it.toLong() >= 0){
+                    edit_withdraw_amount.apply {
+                        setText(it)
+                        setSelection(it.length)
+                    }
+                }
+            }
+        }
+
         btn_reset.setOnClickListener {
             clearEvent()
         }
