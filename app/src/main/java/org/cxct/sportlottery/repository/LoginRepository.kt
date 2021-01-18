@@ -93,12 +93,6 @@ class LoginRepository(private val androidContext: Context) {
 
     suspend fun logout(): Response<LogoutResult> {
         _isLogin.postValue(false)
-
-        with(sharedPref.edit()) {
-            remove(KEY_TOKEN)
-            apply()
-        }
-
         return OneBoSportApi.indexService.logout(LogoutRequest())
     }
 
@@ -120,5 +114,12 @@ class LoginRepository(private val androidContext: Context) {
         }
 
         return loginResponse
+    }
+
+    fun clear() {
+        with(sharedPref.edit()) {
+            remove(KEY_TOKEN)
+            apply()
+        }
     }
 }
