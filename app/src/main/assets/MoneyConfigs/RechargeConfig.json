@@ -1,92 +1,86 @@
 [
   {
     "title": "网银在线支付",
+    "subtitle": "支持多家银行，转账更便捷",
     "image": "money_online_pay",
     "rechType": "onlinePayment",
     "onlineType": "1"
   },
   {
     "title": "在线信用卡支付",
+    "subtitle": "支持多家银行，转账更便捷",
     "image": "money_xyk_online_pay",
     "rechType": "onlinePayment",
     "onlineType": "6"
   },
   {
     "title": "银行卡转账",
+    "subtitle": "线下入款，您的首选",
     "image": "money_transfer",
     "rechType": "bankTransfer",
     "onlineType": "0"
   },
   {
     "title": "支付宝在线支付",
+    "subtitle": "支付宝在线支付",
     "image": "money_zfb_icon",
     "rechType": "onlinePayment",
     "onlineType": "2"
   },
   {
     "title": "微信在线支付",
+    "subtitle": "微信在线支付",
     "image": "money_wechatpay_icon",
     "rechType": "onlinePayment",
     "onlineType": "3"
   },
   {
     "title": "QQ在线支付",
+    "subtitle": "QQ在线支付",
     "image": "money_qqpay_icon",
     "rechType": "onlinePayment",
     "onlineType": "4"
   },
   {
     "title": "银联快捷(扫码)",
-    "image": "money_online_pay_yl",
+    "subtitle": "银联扫码在线支付",
+    "image": "money_online_pay",
     "rechType": "onlinePayment",
     "onlineType": "9"
   },
   {
     "title": "京东钱包",
+    "subtitle": "京东支付",
     "image": "money_online_pay_jd",
     "rechType": "onlinePayment",
     "onlineType": "8"
   },
   {
     "title": "支付宝转账",
-    "image": "money_momo_icon",
+    "subtitle": "支付宝转账支付",
+    "image": "money_zfb_icon",
     "rechType": "alipay",
     "onlineType": "0"
   },
   {
     "title": "支付宝自动支付",
+    "subtitle": "支付宝转账，自动审核，快速受理。",
     "image": "money_zfb_icon",
     "rechType": "alipayAuto",
     "onlineType": "0"
   },
   {
     "title": "微信转账",
-    "image": "money_zalo_icon",
+    "subtitle": "微信转账支付",
+    "image": "money_wechat_icon",
     "rechType": "weixin",
     "onlineType": "0"
   },
   {
     "title": "财付通转账",
+    "subtitle": "财付通转账支付",
     "image": "money_cft_icon",
     "rechType": "cft",
     "onlineType": "0"
-  },
-  {
-    "title": "网银在线充值",
-    "image": "money_atm_icon",
-    "rechType": "onlinePayment",
-    "onlineType": "101"
-  },
-  {
-    "title": "momopay充值",
-    "image": "money_momo_icon",
-    "rechType": "onlinePayment",
-    "onlineType": "102"
-  },
-  {
-    "title": "zalopay充值",
-    "image": "money_zalo_icon",
-    "rechType": "onlinePayment",
-    "onlineType": "103"
   }
 ]

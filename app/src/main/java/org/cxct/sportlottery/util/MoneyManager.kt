@@ -3,7 +3,9 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.content.res.AssetManager
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
@@ -20,7 +22,7 @@ object MoneyManager {
      */
     private fun getRechargeConfig(context: Context): String {
         val stringBuilder = StringBuilder()
-        val path = "RechargeConfig.json"
+        val path = "MoneyConfigs/RechargeConfig.json"
         try {
             //获取assets资源管理器
             val assetManager: AssetManager = context.assets
@@ -41,7 +43,8 @@ object MoneyManager {
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
-            mMoneyPayWayList = listOf(Gson().fromJson(getRechargeConfig(mContext), MoneyPayWayData::class.java))
+            val type = object : TypeToken<List<MoneyPayWayData>>() {}.type
+            mMoneyPayWayList = Gson().fromJson(getRechargeConfig(mContext), type)
         }
         return mMoneyPayWayList
     }
@@ -55,4 +58,16 @@ object MoneyManager {
 //    fun getMinMoney(rechConfig: MoneyRechCfg.RechConfig?): Double { //TODO Bill 等AppConfigManager做好去裡面撈最小充值金額(每個使用者不一樣)
 //        return rechConfig?.minMoney ?: AppConfigManager.getAppConfig().minRechMoney!!.toDouble()
 //    }
+
+
+    fun getBankIcon(bankName: String): Int {
+        return when(bankName) {
+            "bankTransfer"-> R.drawable.ic_bank_atm
+            "alipay"->R.drawable.ic_alipay
+            "weixin"->R.drawable.ic_wechat_pay
+            "cft"->R.drawable.ic_tenpay
+            "onlinePayment"->R.drawable.ic_online_pay
+            else-> R.drawable.ic_bank_atm
+        }
+    }
 }

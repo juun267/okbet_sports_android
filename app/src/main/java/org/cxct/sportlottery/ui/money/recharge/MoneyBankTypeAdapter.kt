@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.util.MoneyManager
 
 class MoneyBankTypeAdapter : RecyclerView.Adapter<MoneyBankTypeAdapter.ViewHolder>() {
 
@@ -33,12 +34,7 @@ class MoneyBankTypeAdapter : RecyclerView.Adapter<MoneyBankTypeAdapter.ViewHolde
         val tvType: TextView = itemView.findViewById(R.id.tv_type)
 
         fun bind(item: MoneyPayWayData) {
-
-            icBank.setImageResource(
-                when (item.image) {
-                    else -> R.drawable.ic_back
-                }
-            )
+            icBank.setImageResource(MoneyManager.getBankIcon(item.rechType))
             tvType.text = item.title
         }
 
@@ -51,6 +47,4 @@ class MoneyBankTypeAdapter : RecyclerView.Adapter<MoneyBankTypeAdapter.ViewHolde
             }
         }
     }
-
-
 }
