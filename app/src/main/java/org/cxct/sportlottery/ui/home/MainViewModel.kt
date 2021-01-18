@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.home
 
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,8 +9,6 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
-import org.cxct.sportlottery.network.bet.info.BetInfoData
-import org.cxct.sportlottery.network.bet.info.BetInfoRequest
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
@@ -126,8 +123,6 @@ class MainViewModel(
     private val _betInfoResult = MutableLiveData<BetInfoResult>()
     val betInfoResult: LiveData<BetInfoResult>
         get() = _betInfoResult
-
-    private val betList = MutableLiveData<MutableList<BetInfoListData>>()
 
     private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
     val betInfoList: LiveData<MutableList<BetInfoListData>>
