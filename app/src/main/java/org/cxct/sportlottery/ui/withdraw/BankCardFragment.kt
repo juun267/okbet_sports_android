@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -40,6 +41,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         super.onViewCreated(view, savedInstanceState)
         view.apply {
 
+            initView()
+
             setupEvent()
 
             setupObserve()
@@ -62,7 +65,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupTitle() {
-        when (val currentActivity = this.activity){
+        when (val currentActivity = this.activity) {
             is WithdrawActivity -> {
                 if (args.editBankCard != null) {
                     currentActivity.setToolBarName(getString(R.string.edit_bank_card))
@@ -77,6 +80,26 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     currentActivity.setToolBarName(getString(R.string.add_credit_card))
                 }
             }
+        }
+    }
+
+    private fun initView() {
+        if (edit_create_name.text.isNotEmpty()) {
+            btn_clear_create_name.visibility = View.VISIBLE
+        } else {
+            btn_clear_create_name.visibility = View.GONE
+        }
+
+        if (edit_bank_card_number.text.isNotEmpty()) {
+            btn_clear_bank_card_number.visibility = View.VISIBLE
+        } else {
+            btn_clear_bank_card_number.visibility = View.GONE
+        }
+
+        if (edit_network_point.text.isNotEmpty()) {
+            btn_clear_network_point.visibility = View.VISIBLE
+        } else {
+            btn_clear_network_point.visibility = View.GONE
         }
     }
 
@@ -100,8 +123,42 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_clear_bank_card_number.setOnClickListener {
             edit_bank_card_number.setText("")
         }
+
         btn_clear_network_point.setOnClickListener {
             edit_network_point.setText("")
+        }
+
+        edit_create_name.addTextChangedListener {
+            it?.let {
+                if (it.isNotEmpty()) {
+                    btn_clear_create_name.visibility = View.VISIBLE
+                } else {
+                    btn_clear_create_name.visibility = View.GONE
+                }
+
+            }
+        }
+
+        edit_bank_card_number.addTextChangedListener {
+            it?.let {
+                if (it.isNotEmpty()) {
+                    btn_clear_bank_card_number.visibility = View.VISIBLE
+                } else {
+                    btn_clear_bank_card_number.visibility = View.GONE
+                }
+
+            }
+        }
+
+        edit_network_point.addTextChangedListener {
+            it?.let {
+                if (it.isNotEmpty()) {
+                    btn_clear_network_point.visibility = View.VISIBLE
+                } else {
+                    btn_clear_network_point.visibility = View.GONE
+                }
+
+            }
         }
     }
 
