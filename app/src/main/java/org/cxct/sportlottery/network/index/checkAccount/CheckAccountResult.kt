@@ -11,5 +11,7 @@ data class CheckAccountResult(
     @Json(name = "msg")
     override val msg: String,
     @Json(name = "success")
-    override val success: Boolean
+    override val success: Boolean,
+    @Json(name = "t")
+    val isExist: Boolean = false
 ) : BaseResult()

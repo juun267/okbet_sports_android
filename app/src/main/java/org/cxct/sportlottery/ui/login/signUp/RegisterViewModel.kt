@@ -49,7 +49,7 @@ class RegisterViewModel(
         context: Context,
         inviteCode: String?,
         memberAccount: String?,
-        isVerifyAccount: Boolean = false, //判斷是帳號是否註冊過
+        isExistAccount: Boolean = false, //判斷是帳號是否註冊過
         loginPassword: String?,
         confirmPassword: String?,
         fullName: String?,
@@ -67,7 +67,7 @@ class RegisterViewModel(
         checkAgreement: Boolean
     ) {
         val inviteCodeError: String? = checkInviteCode(context, inviteCode)
-        val memberAccountError = checkMemberAccount(context, memberAccount, isVerifyAccount)
+        val memberAccountError = checkMemberAccount(context, memberAccount, isExistAccount)
         val loginPasswordError = checkLoginPassword(context, loginPassword)
         val confirmPasswordError = checkConfirmPassword(context, loginPassword, confirmPassword)
         val fullNameError = checkFullName(context, fullName)
@@ -142,10 +142,10 @@ class RegisterViewModel(
         }
     }
 
-    private fun checkMemberAccount(context: Context, account: String?, isVerifyAccount: Boolean): String? {
+    private fun checkMemberAccount(context: Context, account: String?, isExistAccount: Boolean): String? {
         return when {
             account.isNullOrBlank() -> context.getString(R.string.error_account_empty)
-            isVerifyAccount -> context.getString(R.string.error_register_id_exist)
+            isExistAccount -> context.getString(R.string.error_register_id_exist)
             account.length !in 4..16 -> context.getString(R.string.error_member_account)
             !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_character_not_match)
             else -> null
