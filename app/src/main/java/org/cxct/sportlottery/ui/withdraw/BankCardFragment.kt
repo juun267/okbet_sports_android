@@ -62,10 +62,21 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupTitle() {
-        if (args.editBankCard != null) {
-            (this@BankCardFragment.activity as WithdrawActivity).setToolBarName(getString(R.string.edit_bank_card))
-        } else {
-            (this@BankCardFragment.activity as WithdrawActivity).setToolBarName(getString(R.string.add_credit_card))
+        when (val currentActivity = this.activity){
+            is WithdrawActivity -> {
+                if (args.editBankCard != null) {
+                    currentActivity.setToolBarName(getString(R.string.edit_bank_card))
+                } else {
+                    currentActivity.setToolBarName(getString(R.string.add_credit_card))
+                }
+            }
+            is BankActivity -> {
+                if (args.editBankCard != null) {
+                    currentActivity.setToolBarName(getString(R.string.edit_bank_card))
+                } else {
+                    currentActivity.setToolBarName(getString(R.string.add_credit_card))
+                }
+            }
         }
     }
 
