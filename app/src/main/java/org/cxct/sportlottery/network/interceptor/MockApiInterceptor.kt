@@ -9,8 +9,14 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
+import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
+import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
+import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
@@ -23,8 +29,10 @@ import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
@@ -62,6 +70,27 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
             when {
                 path.contains(INDEX_LOGIN) -> {
                     response = getMockJsonData(request, "index_login.mock")
+                }
+                path.contains(INDEX_LOGOUT) -> {
+                    response = getMockJsonData(request, "index_logout.mock")
+                }
+                path.contains(INDEX_CONFIG) -> {
+                    response = getMockJsonData(request, "index_config.mock")
+                }
+                path.contains(INDEX_REGISTER) -> {
+                    response = getMockJsonData(request, "index_register.mock")
+                }
+                path.contains(INDEX_VALIDATE_CODE) -> {
+                    response = getMockJsonData(request, "index_valid_code.mock")
+                }
+                path.contains(INDEX_SEND_SMS) -> {
+                    response = getMockJsonData(request, "index_send_sms.mock")
+                }
+                path.contains(INDEX_CHECK_EXIST) -> {
+                    response = getMockJsonData(request, "index_check_exist.mock")
+                }
+                path.contains(INDEX_CHECK_TOKEN) -> {
+                    response = getMockJsonData(request, "index_check_token.mock")
                 }
                 path.contains(MESSAGE_LIST) -> {
                     response = getMockJsonData(request, "message_list.mock")
@@ -105,11 +134,14 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(OUTRIGHT_ODDS_LIST) -> {
                     response = getMockJsonData(request, "outright_odds_list.mock")
                 }
+                path.contains(OUTRIGHT_SEASON_LIST) -> {
+                    response = getMockJsonData(request, "outright_season_list.mock")
+                }
                 path.contains(USER_MONEY) -> {
                     response = getMockJsonData(request, "user_money.mock")
                 }
-                path.contains(INDEX_LOGOUT) -> {
-                    response = getMockJsonData(request, "index_logout.mock")
+                path.contains(USER_EDIT_NICKNAME) -> {
+                    response = getMockJsonData(request, "user_edit_nickname.mock")
                 }
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")

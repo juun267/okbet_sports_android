@@ -26,7 +26,8 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.game.Game2FragmentDirections
+import org.cxct.sportlottery.ui.game.GameDetailFragment
+import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -50,6 +51,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private lateinit var mainBinding: ActivityMainBinding
 
     private val mMarqueeAdapter = MarqueeAdapter()
+
+    enum class Page {
+        ODDS_DETAIL,
+        ODDS
+    }
 
     private val navController by lazy {
         findNavController(R.id.homeFragment)
@@ -163,6 +169,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
 
+            val tabAtStart = tabLayout.getTabAt(6)?.customView
+            tabAtStart?.visibility = View.GONE
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -187,6 +196,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     }
                     5 -> {
                         navGameFragment(MatchType.OUTRIGHT)
+                    }
+                    6 -> {
+                        navGameFragment(MatchType.AT_START)
                     }
                 }
             }
@@ -219,7 +231,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
             R.id.game2Fragment -> {
                 val action =
-                    Game2FragmentDirections.actionGame2FragmentToGameFragment(
+                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(
                         matchType
                     )
                 val navOptions =
@@ -229,19 +241,26 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun switchFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0)
-            .replace(R.id.odds_detail_container, fragment)
-            .addToBackStack(null)
-            .commit()
+    private fun addFragment(fragment: Fragment, page: Page) {
+        if (supportFragmentManager.findFragmentByTag(page.name) == null) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, 0)
+                .add(R.id.odds_detail_container, fragment, page.name)
+                .addToBackStack(page.name)
+                .commit()
+        }
     }
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        if (navController.currentDestination?.id != R.id.homeFragment
+            && supportFragmentManager.backStackEntryCount == 0
+        ) {
+            tabLayout.getTabAt(0)?.select()
+            return
+        }
 
-        tabLayout.getTabAt(0)?.select()
+        super.onBackPressed()
     }
 
     private fun initObserve() {
@@ -270,10 +289,30 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            switchFragment(
+            addFragment(
                 OddsDetailFragment.newInstance(
                     gameType, typeName, matchId, oddsType
-                )
+                ), Page.ODDS_DETAIL
+            )
+        })
+
+        viewModel.matchTypeCard.observe(this, Observer {
+            when (it) {
+                MatchType.PARLAY -> {
+                    tabLayout.getTabAt(4)?.select()
+                }
+                MatchType.AT_START -> {
+                    tabLayout.getTabAt(6)?.select()
+                }
+                else -> {
+                }
+            }
+        })
+
+        viewModel.isOpenMatchOdds.observe(this, Observer {
+            getAppBarLayout().setExpanded(true, true)
+            addFragment(
+                GameDetailFragment(), Page.ODDS
             )
         })
     }
