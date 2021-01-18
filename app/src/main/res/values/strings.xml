@@ -10,6 +10,7 @@
     <string name="connect_first">请先连上网路</string>
 
     <string name="error_url_fail">跳转地址错误</string>
+    <string name="unknown_error">未知错误</string>
 
 
     <!--network message-->
@@ -60,6 +61,7 @@
     <string name="error_register_password">密码不足6个或超过20个的英数组合</string>
     <string name="error_password_format">密码需使用英文与数字组合的密码</string>
     <string name="error_password_empty">密码不得为空</string>
+    <string name="hint_input_account_password_rule">长度6–20个字符，须含数字和字母组合</string>
     <string name="confirm_password">确认密码</string>
     <string name="hint_confirm_password">请再次输入密码</string>
     <string name="error_confirm_password">两次密码输入不一致</string>
@@ -163,6 +165,27 @@
     <string name="third_plat">第三盘</string>
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
+
+    <!-- Profile page-->
+    <string name="profile_info">个人资讯</string>
+    <string name="avatar">头像</string>
+    <string name="nickname">昵称</string>
+    <string name="password_setting">密码设置</string>
+    <string name="id">ID</string>
+
+    <!-- Change nickname page-->
+    <string name="change_nickname">更换昵称</string>
+    <string name="hint_nickname">中英文长度2–50字</string>
+    <string name="error_nickname_empty">昵称不能为空</string>
+
+    <!-- Setting password page-->
+    <string name="setting_password">密码设置</string>
+    <string name="withdrawal_password">提款密码</string>
+    <string name="current_password">当前密码</string>
+    <string name="hint_current_password">请输入当前登录密码</string>
+    <string name="new_password">新密码</string>
+    <string name="hint_new_password">请输入新密码</string>
+    <string name="hint_confirm_new_password">请再次输入新密码</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>

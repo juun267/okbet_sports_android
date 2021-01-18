@@ -36,6 +36,11 @@ object VerifyConstUtil {
                 Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
     }
 
+    //暱稱 //中英文組合長度2–50字
+    fun verifyNickname(nickname: CharSequence): Boolean {
+        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD]{2,50}", nickname)
+    }
+
     //qq //判断qq字數小於五
     fun verifyQQ(text: CharSequence): Boolean {
         return text.length >= 5

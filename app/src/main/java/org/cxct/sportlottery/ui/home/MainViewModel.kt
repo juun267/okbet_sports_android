@@ -336,7 +336,7 @@ class MainViewModel(
 
     fun getLeagueOddsList(
         matchType: MatchType,
-        leagueId: String,
+        leagueId: String
     ) {
         val leagueIdList by lazy {
             listOf(leagueId)
