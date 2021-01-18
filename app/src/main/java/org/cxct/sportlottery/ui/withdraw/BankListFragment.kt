@@ -42,9 +42,9 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun setupObserve() {
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
-            it.bankCardList?.let { data ->
-                mBankListAdapter.bankList = data
-                if (data.isNotEmpty()) {
+            it.bankCardList.let { data ->
+                mBankListAdapter.bankList = data ?: listOf()
+                if (!data.isNullOrEmpty()) {
                     tv_no_bank_card.visibility = View.GONE
                 }
             }

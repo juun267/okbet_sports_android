@@ -73,4 +73,9 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
         }
         getBankCardList()
     }
+
+    fun clearBankCardFragmentStatus(){
+        _bankDeleteResult = MutableLiveData()
+        _bankAddResult = MutableLiveData()
+    }
 }
