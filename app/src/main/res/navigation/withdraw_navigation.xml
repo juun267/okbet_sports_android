@@ -9,13 +9,7 @@
         android:id="@+id/withdrawFragment"
         android:name="org.cxct.sportlottery.ui.withdraw.WithdrawFragment"
         android:label="WithdrawFragment">
-<!--        <action
-            android:id="@+id/action_withdrawFragment_to_bankListFragment"
-            app:destination="@+id/bankListFragment">
-            <argument
-                android:name="navigateFrom"
-                app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
-        </action>-->
+
     </fragment>
     <fragment
         android:id="@+id/bankListFragment"

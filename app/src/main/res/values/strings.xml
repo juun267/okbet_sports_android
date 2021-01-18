@@ -246,6 +246,8 @@
     <string name="currency">RMB</string>
     <string name="submit">提交</string>
     <string name="reset">重置</string>
+    <string name="select_bank_card">选择银行卡</string>
+    <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <!--  BankList  -->
     <string name="withdraw_setting">提款设置</string>
     <string name="name">姓名</string>

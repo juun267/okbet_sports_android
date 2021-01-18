@@ -1,30 +1,28 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.BaseAdapter
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
+import kotlinx.android.synthetic.main.fragment_withdraw.view.*
+import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bank.T
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity.Companion.navigateKey
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [WithdrawFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var bankCardBottomSheet: BottomSheetDialog
+    private lateinit var bankCardAdapter: BankCardAdapter
 
     private val mNavController by lazy {
         findNavController()
@@ -32,24 +30,23 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_withdraw, container, false)
+        return inflater.inflate(R.layout.fragment_withdraw, container, false).apply {
+
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.checkPermissions()
+        initEvent()
+        initObserve(view)
+
 
         btn_reset.setOnClickListener {
             val bundle = Bundle()
@@ -58,23 +55,81 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WithdrawFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WithdrawFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun initEvent() {
+        ll_select_bank.setOnClickListener {
+            bankCardBottomSheet.show()
+        }
+    }
+
+    private fun initObserve(view: View) {
+        viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
+            it.bankCardList?.let { list ->
+                tv_select_bank_card.text = getBankCardTailNo(it.bankCardList[0])
+                initSelectBankCardBottomSheet(view, list.toMutableList()) }
+        })
+    }
+
+    private fun initSelectBankCardBottomSheet(view: View, bankCardList: MutableList<T>) {
+        val bankCardBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
+        bankCardBottomSheet = BottomSheetDialog(requireContext())
+        bankCardBottomSheet.apply {
+            setContentView(bankCardBottomSheetView)
+            bankCardAdapter = BankCardAdapter(lv_bank_card.context, bankCardList, BankCardAdapterListener {
+                view.tv_select_bank_card.text = getBankCardTailNo(it)
+                dismiss()
+            })
+            lv_bank_card.adapter = bankCardAdapter
+            bankCardBottomSheet.btn_close.setOnClickListener {
+                this.dismiss()
+            }
+        }
+    }
+
+    private fun getBankCardTailNo(data: T): String{
+        return String.format(getString(R.string.selected_bank_card), data.bankName, data.cardNo)
+    }
+}
+
+class BankCardAdapter(private val context: Context, private val dataList: MutableList<T>, private val listener: BankCardAdapterListener) : BaseAdapter() {
+
+    private var selectedPosition = 0
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.item_listview_bank_card, parent, false)
+        val data = dataList[position]
+
+        view.apply {
+            tv_bank_card.text = String.format(context.getString(R.string.selected_bank_card), data.bankName, data.cardNo)
+            if (position == selectedPosition)
+                ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+            else
+                ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            ll_select_bank_card.setOnClickListener {
+                if (selectedPosition != position) {
+                    //                data.isSelected = !data.isSelected
+                    selectedPosition = position
+                    notifyDataSetChanged()
+                    listener.onClick(data)
                 }
             }
+        }
+
+        return view
     }
+
+    override fun getCount(): Int {
+        return dataList.size
+    }
+
+    override fun getItem(position: Int): Any? {
+        return null
+    }
+
+    override fun getItemId(position: Int): Long {
+        return 0
+    }
+}
+
+class BankCardAdapterListener(val listener: (bankCard: T)->Unit){
+    fun onClick(bankCard: T) = listener(bankCard)
 }
