@@ -97,6 +97,7 @@
                 android:textSize="@dimen/textSize12sp" />
 
             <ImageView
+                android:id="@+id/btn_clear_create_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -142,6 +143,14 @@
                 android:hint="@string/please_enter_bank_card_rule"
                 android:textColor="@color/textColorDark"
                 android:textSize="@dimen/textSize12sp" />
+            <ImageView
+                android:id="@+id/btn_clear_bank_card_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_close_gray" />
         </LinearLayout>
         <!-- 開戶網點 -->
         <LinearLayout
@@ -180,6 +189,14 @@
                 android:hint="@string/please_enter_network_point"
                 android:textColor="@color/textColorDark"
                 android:textSize="@dimen/textSize12sp" />
+            <ImageView
+                android:id="@+id/btn_clear_network_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_close_gray" />
         </LinearLayout>
         <!-- 提款密碼 -->
         <LinearLayout

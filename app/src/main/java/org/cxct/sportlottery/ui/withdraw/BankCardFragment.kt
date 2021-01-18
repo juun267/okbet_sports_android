@@ -92,6 +92,17 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_delete_bank.setOnClickListener {
             viewModel.deleteBankCard(args.editBankCard?.id.toString())
         }
+
+        btn_clear_create_name.setOnClickListener {
+            edit_create_name.setText("")
+        }
+
+        btn_clear_bank_card_number.setOnClickListener {
+            edit_bank_card_number.setText("")
+        }
+        btn_clear_network_point.setOnClickListener {
+            edit_network_point.setText("")
+        }
     }
 
     private fun setupObserve() {
