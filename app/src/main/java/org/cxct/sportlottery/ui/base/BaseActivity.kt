@@ -10,15 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.error.TokenError
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.home.MainActivity
 import kotlin.reflect.KClass
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
-    companion object {
-        private const val TAG = "BaseActivity"
-    }
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -32,19 +30,20 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun onTokenStateChanged() {
-        viewModel.code.observe(this, Observer {
-            when (it) {
-                TokenError.EXPIRED.code -> {
-                    //TODO deal response code 2014
-                }
-                TokenError.FAILURE.code -> {
-                    //TODO deal response code 2015
-                }
-                TokenError.REPEAT_LOGIN.code -> {
-                    //TODO deal response code 2018
-                }
-            }
+        viewModel.errorResultToken.observe(this, Observer {
+            showDialogLogout(it.msg)
         })
+    }
+
+    private fun showDialogLogout(message: String) {
+        val dialog = CustomAlertDialog(this)
+        dialog.setMessage(message)
+        dialog.setPositiveClickListener {
+            MainActivity.reStart(this)
+            dialog.dismiss()
+        }
+        dialog.setNegativeButtonText(null)
+        dialog.show()
     }
 
     private fun onNetworkException() {

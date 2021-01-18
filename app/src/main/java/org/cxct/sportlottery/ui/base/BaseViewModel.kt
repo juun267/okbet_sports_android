@@ -7,6 +7,7 @@ import kotlinx.coroutines.async
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
+import org.cxct.sportlottery.network.error.TokenError
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
 import java.lang.Exception
@@ -14,8 +15,8 @@ import java.net.SocketTimeoutException
 
 
 abstract class BaseViewModel : ViewModel() {
-    val code: LiveData<Int>
-        get() = _code
+    val errorResultToken: LiveData<BaseResult>
+        get() = _errorResultToken
 
     val networkUnavailableMsg: LiveData<String>
         get() = _networkUnavailableMsg
@@ -26,7 +27,7 @@ abstract class BaseViewModel : ViewModel() {
     val networkExceptionUnknown: LiveData<Exception>
         get() = _networkExceptionUnknown
 
-    private val _code = MutableLiveData<Int>()
+    private val _errorResultToken = MutableLiveData<BaseResult>()
     private val _networkUnavailableMsg = MutableLiveData<String>()
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<Exception>()
@@ -66,9 +67,15 @@ abstract class BaseViewModel : ViewModel() {
         return null
     }
 
-    private fun <T> doResponseError(response: Response<T>): T {
+    private fun <T> doResponseError(response: Response<T>): T? {
         val errorResult = ErrorUtils.parseError(response)
-        _code.postValue((errorResult as BaseResult).code)
+        errorResult?.let {
+            when ((it as BaseResult).code) {
+                TokenError.EXPIRED.code, TokenError.FAILURE.code, TokenError.REPEAT_LOGIN.code -> {
+                    _errorResultToken.postValue(it)
+                }
+            }
+        }
         return errorResult
     }
 

@@ -315,6 +315,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 GameDetailFragment(), Page.ODDS
             )
         })
+
+        viewModel.errorResultToken.observe(this, Observer {
+            viewModel.logout()
+        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
