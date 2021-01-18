@@ -10,6 +10,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
@@ -86,6 +87,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(INDEX_CHECK_EXIST) -> {
                     response = getMockJsonData(request, "index_check_exist.mock")
+                }
+                path.contains(INDEX_CHECK_TOKEN) -> {
+                    response = getMockJsonData(request, "index_check_token.mock")
                 }
                 path.contains(MESSAGE_LIST) -> {
                     response = getMockJsonData(request, "message_list.mock")

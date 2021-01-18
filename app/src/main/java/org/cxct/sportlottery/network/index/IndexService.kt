@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.index
 
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
@@ -47,4 +48,7 @@ interface IndexService {
 
     @GET(Constants.INDEX_CHECK_EXIST)
     suspend fun checkAccountExist(@Path("userName") userName: String): Response<CheckAccountResult>
+
+    @POST(INDEX_CHECK_TOKEN)
+    suspend fun checkToken(): Response<LoginResult>
 }
