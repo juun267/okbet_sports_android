@@ -17,15 +17,7 @@ import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.MD5Util.MD5Encode
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-
-/**
- * A simple [Fragment] subclass.
- * Use the [BankCardFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+//TODO Dean : 銀行卡綁定完成後因進入的頁面不同而回到不同頁面. Ex:提款、提款設置
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private val mNavController by lazy { findNavController() }
