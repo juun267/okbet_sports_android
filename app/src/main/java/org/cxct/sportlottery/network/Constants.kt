@@ -59,6 +59,9 @@ object Constants {
     const val USER_MONEY = "/api/front/user/money"
     const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称
 
+    //upload image
+    const val UPLOAD_IMG = "/api/upload/image" //上传图片
+
     //bank
     const val BANK_MY = "/api/front/user/bank/my"
     const val BANK_ADD = "/api/front/user/bank/add"

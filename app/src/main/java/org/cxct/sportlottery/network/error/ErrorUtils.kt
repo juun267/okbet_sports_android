@@ -2,10 +2,10 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
-import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
@@ -26,15 +26,15 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
-import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
+import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
@@ -44,6 +44,7 @@ import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
@@ -54,6 +55,7 @@ import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.UserMoneyResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
@@ -187,7 +189,11 @@ object ErrorUtils {
                     }
                     (url.contains(RECHARGE_CONFIG_MAP)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return MoneyRechCfgResult(it.code, it.msg, it.success,  null) as T
+                        return MoneyRechCfgResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(UPLOAD_IMG)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return UploadImgResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(BANK_MY)) -> {
                         @Suppress("UNCHECKED_CAST")
