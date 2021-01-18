@@ -17,7 +17,11 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         initButton()
-        initView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshView()
     }
 
     private fun initButton() {
@@ -34,8 +38,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun initView() {
-        //TODO 使用 userInfo API 來刷新畫面
+    private fun refreshView() {
         updateAvatar()
         tv_nickname.text = sLoginData?.nickName
         tv_member_account.text = sLoginData?.userName
