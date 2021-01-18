@@ -63,7 +63,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 tv_bank_name.text = initData.bankName
                 edit_create_name.setText(sLoginData?.fullName)
                 edit_bank_card_number.setText(initData.cardNo)
-                edit_network_point.setText("") // TODO Dean : 沒有欄位可以取得, 待釐清
+                edit_network_point.setText(initData.subAddress)
             }
             return@setupInitData
         }
