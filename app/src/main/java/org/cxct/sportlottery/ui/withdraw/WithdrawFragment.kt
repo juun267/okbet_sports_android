@@ -48,11 +48,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initObserve(view)
 
 
-        btn_reset.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putSerializable(navigateKey, PageFrom.WITHDRAW)
-            mNavController.navigate(R.id.bankListFragment, bundle)
-        }
     }
 
     private fun initEvent() {
@@ -63,6 +58,16 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_withdraw.setOnClickListener {
             setupWithdrawData()?.let { request -> viewModel.addWithdraw(request) }
         }
+
+        btn_reset.setOnClickListener {
+            clearEvent()
+        }
+    }
+
+    private fun clearEvent() {
+        edit_withdraw_amount.setText("")
+        edit_withdraw_password.setText("")
+        bankCardAdapter.initSelectStatus()
     }
 
     private fun initObserve(view: View) {
@@ -153,6 +158,12 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
 
     override fun getItemId(position: Int): Long {
         return 0
+    }
+
+    fun initSelectStatus(){
+        selectedPosition = 0
+        listener.onClick(dataList[0])
+        notifyDataSetChanged()
     }
 }
 
