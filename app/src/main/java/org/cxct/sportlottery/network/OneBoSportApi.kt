@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.user.UserService
+import org.cxct.sportlottery.network.withdraw.WithdrawService
 
 
 object OneBoSportApi {
@@ -97,5 +98,11 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(BankService::class.java)
+    }
+
+    val withdrawService: WithdrawService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(WithdrawService::class.java)
     }
 }
