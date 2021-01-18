@@ -33,6 +33,8 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_bank_list, container, false).apply {
+            setupTitle()
+
             setupRecyclerView(this)
         }
     }
@@ -41,6 +43,17 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         super.onViewCreated(view, savedInstanceState)
         viewModel.getBankCardList()
         setupObserve()
+    }
+
+    private fun setupTitle() {
+        when (val currentActivity = this.activity) {
+            is WithdrawActivity -> {
+                currentActivity.setToolBarName(getString(R.string.withdraw_setting))
+            }
+            is BankActivity -> {
+                currentActivity.setToolBarName(getString(R.string.withdraw_setting))
+            }
+        }
     }
 
     private fun setupObserve() {
