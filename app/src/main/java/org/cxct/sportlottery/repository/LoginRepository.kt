@@ -42,7 +42,7 @@ class LoginRepository(private val androidContext: Context) {
         get() {
             return try {
                 val securityKey = AesCryptoUtil.encrypt(KEY_PWD)
-                val securityValue = sharedPref.getString(securityKey, "")?: ""
+                val securityValue = sharedPref.getString(securityKey, "") ?: ""
                 AesCryptoUtil.decrypt(securityValue)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -53,7 +53,7 @@ class LoginRepository(private val androidContext: Context) {
             try {
                 with(sharedPref.edit()) {
                     val securityKey = AesCryptoUtil.encrypt(KEY_PWD)
-                    val securityValue = AesCryptoUtil.encrypt(value?: "")
+                    val securityValue = AesCryptoUtil.encrypt(value ?: "")
                     putString(securityKey, securityValue)
                     commit()
                 }
@@ -93,12 +93,6 @@ class LoginRepository(private val androidContext: Context) {
 
     suspend fun logout(): Response<LogoutResult> {
         _isLogin.postValue(false)
-
-        with(sharedPref.edit()) {
-            remove(KEY_TOKEN)
-            apply()
-        }
-
         return OneBoSportApi.indexService.logout(LogoutRequest())
     }
 
@@ -132,5 +126,12 @@ class LoginRepository(private val androidContext: Context) {
         }
 
         return checkTokenResponse
+    }
+
+    fun clear() {
+        with(sharedPref.edit()) {
+            remove(KEY_TOKEN)
+            apply()
+        }
     }
 }

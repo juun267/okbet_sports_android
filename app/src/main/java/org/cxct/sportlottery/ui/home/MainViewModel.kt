@@ -160,6 +160,10 @@ class MainViewModel(
                 loginRepository.logout()
             }
 
+            if (result?.success == true) {
+                loginRepository.clear()
+            }
+
             //TODO change timber to actual logout ui to da
             Timber.d("logout result is ${result?.success} ${result?.code} ${result?.msg}")
         }
