@@ -16,21 +16,21 @@ import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.T
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity.Companion.navigateKey
+import org.cxct.sportlottery.util.MD5Util
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
+    private var withdrawBankCardData: T? = null
 
     private val mNavController by lazy {
         findNavController()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -59,13 +59,20 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         ll_select_bank.setOnClickListener {
             bankCardBottomSheet.show()
         }
+
+        btn_withdraw.setOnClickListener {
+            setupWithdrawData()?.let { request -> viewModel.addWithdraw(request) }
+        }
     }
 
     private fun initObserve(view: View) {
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
             it.bankCardList?.let { list ->
-                tv_select_bank_card.text = getBankCardTailNo(it.bankCardList[0])
-                initSelectBankCardBottomSheet(view, list.toMutableList()) }
+                val iniData = it.bankCardList[0]
+                withdrawBankCardData = iniData
+                tv_select_bank_card.text = getBankCardTailNo(iniData)
+                initSelectBankCardBottomSheet(view, list.toMutableList())
+            }
         })
     }
 
@@ -85,7 +92,26 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun getBankCardTailNo(data: T): String{
+    private fun setupWithdrawData(): WithdrawAddRequest? {
+        if (withdrawBankCardData == null)
+            return null
+        if (edit_withdraw_password.text.toString().length != 4)
+            return null
+        if (!judgmentWithdrawAmount())
+            return null
+        return WithdrawAddRequest(
+            id = withdrawBankCardData!!.id.toLong(),
+            applyMoney = edit_withdraw_amount.text.toString().toLong(),
+            withdrawPwd = MD5Util.MD5Encode(edit_withdraw_password.text.toString())
+        )
+    }
+
+    private fun judgmentWithdrawAmount(): Boolean {
+        //TODO Dean : 判斷因額是否符合範圍
+        return true
+    }
+
+    private fun getBankCardTailNo(data: T): String {
         return String.format(getString(R.string.selected_bank_card), data.bankName, data.cardNo)
     }
 }
@@ -130,6 +156,6 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
     }
 }
 
-class BankCardAdapterListener(val listener: (bankCard: T)->Unit){
+class BankCardAdapterListener(val listener: (bankCard: T) -> Unit) {
     fun onClick(bankCard: T) = listener(bankCard)
 }

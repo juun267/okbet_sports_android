@@ -120,6 +120,7 @@
                 android:background="@color/bright_gray" />
 
             <EditText
+                android:id="@+id/edit_withdraw_amount"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
@@ -173,6 +174,7 @@
                 android:background="@color/bright_gray" />
 
             <EditText
+                android:id="@+id/edit_withdraw_password"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="12dp"
@@ -201,6 +203,7 @@
             app:cardCornerRadius="5dp">
 
             <TextView
+                android:id="@+id/btn_withdraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.bank.MyResult
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
@@ -33,6 +34,14 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
     val bankDeleteResult: LiveData<BankDeleteResult>
         get() = _bankDeleteResult
     private var _bankDeleteResult = MutableLiveData<BankDeleteResult>()
+
+    fun addWithdraw(withdrawAddRequest: WithdrawAddRequest){
+        viewModelScope.launch {
+            doNetwork(androidContext){
+                OneBoSportApi.withdrawService.addWithdraw(withdrawAddRequest)
+            }
+        }
+    }
 
     fun getBankCardList() {
         viewModelScope.launch {
