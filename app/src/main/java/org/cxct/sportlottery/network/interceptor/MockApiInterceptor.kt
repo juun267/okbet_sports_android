@@ -12,6 +12,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
+import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
@@ -89,6 +91,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(INDEX_CHECK_EXIST) -> {
                     response = getMockJsonData(request, "index_check_exist.mock")
                 }
+                path.contains(INDEX_CHECK_TOKEN) -> {
+                    response = getMockJsonData(request, "index_check_token.mock")
+                }
                 path.contains(MESSAGE_LIST) -> {
                     response = getMockJsonData(request, "message_list.mock")
                 }
@@ -136,6 +141,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(USER_MONEY) -> {
                     response = getMockJsonData(request, "user_money.mock")
+                }
+                path.contains(USER_EDIT_NICKNAME) -> {
+                    response = getMockJsonData(request, "user_edit_nickname.mock")
                 }
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")

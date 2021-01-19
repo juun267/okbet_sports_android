@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.menu.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -72,12 +73,12 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         //TODO Dean : Test for withdraw page
         menu_test_withdraw.setOnClickListener {
             startActivity(Intent(activity, WithdrawActivity::class.java))
-            mDownMenuListener?.onClick(menu_profile)
+            mDownMenuListener?.onClick(menu_test_withdraw)
         }
 
         menu_test_withdraw_setting.setOnClickListener {
             startActivity(Intent(activity, BankActivity::class.java))
-            mDownMenuListener?.onClick(menu_profile)
+            mDownMenuListener?.onClick(menu_test_withdraw_setting)
         }
 
         menu_sign_out.setOnClickListener {
@@ -89,6 +90,11 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         menu_bet_history.setOnClickListener {
             startActivity(Intent(context, BetRecordActivity::class.java))
+        }
+
+        menu_profile_center.setOnClickListener {
+            startActivity(Intent(context, ProfileCenterActivity::class.java))
+            mDownMenuListener?.onClick(menu_profile_center)
         }
 
         menu_news.setOnClickListener {

@@ -11,7 +11,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class SplashViewModel(
-    private val androidContext: Context,
+    private val androidContext: Context
 ) : BaseViewModel() {
 
     val configResult: LiveData<ConfigResult?>

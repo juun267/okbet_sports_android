@@ -7,9 +7,6 @@ import android.os.Looper
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.btn_back
-import kotlinx.android.synthetic.main.activity_register.btn_login
-import kotlinx.android.synthetic.main.activity_register.et_verification_code
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -31,7 +28,7 @@ import java.util.*
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class) {
 
     private var mSmsTimer: Timer? = null
-    private var mIsVerifyAccount = false //判斷是帳號是否註冊過
+    private var mIsExistAccount = false //判斷是帳號是否註冊過
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +67,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             context = this,
             inviteCode = et_recommend_code.getText(),
             memberAccount = et_member_account.getText(),
-            isVerifyAccount = mIsVerifyAccount,
+            isExistAccount = mIsExistAccount,
             loginPassword = et_login_password.getText(),
             confirmPassword = et_confirm_password.getText(),
             fullName = et_full_name.getText(),
@@ -207,7 +204,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupSmsValidCode() {
-        block_sms_valid_code.visibility = if (sConfigData?.enableRegValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
+        block_sms_valid_code.visibility = if (sConfigData?.enableSmsValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
+        if (sConfigData?.enableSmsValidCode == FLAG_OPEN) {
+            //手機驗證碼開啟，必定需要手機號欄位輸入
+            et_phone.visibility = View.VISIBLE
+            block_sms_valid_code.visibility = View.VISIBLE
+        } else{
+            block_sms_valid_code.visibility = View.GONE
+        }
 
         btn_send_sms.setOnClickListener {
             sendSms()
@@ -260,7 +264,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun checkAccountExist(account: String) {
-        mIsVerifyAccount = false
+        mIsExistAccount = false
         et_member_account.setError(getString(R.string.desc_register_checking_account))
         viewModel.checkAccountExist(account)
     }
@@ -401,7 +405,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun updateUiWithResult(checkAccountResult: CheckAccountResult?) {
-        mIsVerifyAccount = checkAccountResult?.success?: false //若回傳資料為 null 也當作帳號判斷無效
+        mIsExistAccount = checkAccountResult?.isExist?: false //若回傳資料為 null 也當作帳號未註冊
         checkInputData()
     }
 
