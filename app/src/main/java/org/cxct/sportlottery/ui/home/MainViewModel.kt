@@ -52,12 +52,14 @@ class MainViewModel(
     private val sportMenuRepository: SportMenuRepository,
     private val betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
-    val token: LiveData<String?> by lazy {
-        loginRepository.token
-    }
 
-    val checkTokenResult: LiveData<LoginResult?>
-        get() = _checkTokenResult
+    val isLogin: LiveData<Boolean> by lazy {
+        loginRepository.isLogin.apply {
+            if (this.value == false && !loginRepository.isCheckToken) {
+                checkToken()
+            }
+        }
+    }
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -101,7 +103,6 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
-    private val _checkTokenResult = MutableLiveData<LoginResult?>()
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
@@ -171,23 +172,23 @@ class MainViewModel(
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
 
-    fun checkToken() {
+    private fun checkToken() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.checkToken()
             }
-            _checkTokenResult.postValue(result)
         }
     }
 
     fun logout() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.logout()
+            }.apply {
+                loginRepository.clear()
+                //TODO change timber to actual logout ui to da
+                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
-
-            //TODO change timber to actual logout ui to da
-            Timber.d("logout result is ${result?.success} ${result?.code} ${result?.msg}")
         }
     }
 
@@ -666,26 +667,20 @@ class MainViewModel(
             val result = doNetwork(androidContext) {
                 betInfoRepository.getBetInfoList(oddsList)
             }
-            result?.success.let {
-                if (it != null) {
-                    if (it) {
-                        _betInfoList.postValue(betInfoRepository.betList)
-                    } else {
-                        oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                            var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                            betInfoList.value.let { list ->
-                                if (list != null) {
-                                    for (m in list.indices) {
-                                        for (i in value.odds.indices) {
-                                            odd = value.odds.find { v -> v.id == betInfoList.value!![m].matchOdd.oddsId }
-                                            odd?.isSelect = false
-                                        }
-                                    }
-                                }
+            result?.success?.let {
+                if (it) {
+                    _betInfoList.postValue(betInfoRepository.betList)
+                } else {
+                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = false
                             }
                         }
-                        _betInfoResult.postValue(result)
                     }
+                    _betInfoResult.postValue(result)
                 }
             }
         }
@@ -709,14 +704,10 @@ class MainViewModel(
                 if (it) {
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoList.value.let { list ->
-                            if (list != null) {
-                                for (m in list.indices) {
-                                    for (i in value.odds.indices) {
-                                        odd = value.odds.find { v -> v.id == betInfoList.value!![m].matchOdd.oddsId }
-                                        odd?.isSelect = true
-                                    }
-                                }
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = true
                             }
                         }
                         list.add(

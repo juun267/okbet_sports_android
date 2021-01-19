@@ -95,7 +95,7 @@
         android:layout_marginStart="10dp"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
-        android:textColor="@color/orangeyRed"
+        android:textColor="@color/orangeRed"
         android:textSize="@dimen/textSize12sp"
         app:drawableStartCompat="@drawable/ic_error_tip"
         tools:text="@string/please_input_account" />

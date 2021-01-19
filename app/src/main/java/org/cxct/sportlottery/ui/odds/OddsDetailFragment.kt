@@ -138,12 +138,6 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
                     for (element in result.rows) {
                         dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(element.name), false)
                     }
-
-                    matchId?.let { matchId ->
-                        oddsType?.let { oddsType ->
-                            viewModel.getOddsDetail(matchId, oddsType)
-                        }
-                    }
                 }
             }
         })
@@ -174,6 +168,12 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     private fun getData() {
         gameType?.let { gameType ->
             viewModel.getPlayCateList(gameType)
+        }
+
+        matchId?.let { matchId ->
+            oddsType?.let { oddsType ->
+                viewModel.getOddsDetail(matchId, oddsType)
+            }
         }
     }
 

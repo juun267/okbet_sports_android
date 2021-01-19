@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network
 
+import org.cxct.sportlottery.network.bank.BankService
 import org.cxct.sportlottery.network.infoCenter.InfoCenterService
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.bet.BetService
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.user.UserService
+import org.cxct.sportlottery.network.withdraw.WithdrawService
 
 
 object OneBoSportApi {
@@ -90,5 +92,17 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(InfoCenterService::class.java)
+    }
+
+    val bankService: BankService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(BankService::class.java)
+    }
+
+    val withdrawService: WithdrawService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(WithdrawService::class.java)
     }
 }
