@@ -47,6 +47,7 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.Game2FragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
+import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.login.LoginActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
@@ -92,7 +93,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val mMarqueeAdapter = MarqueeAdapter()
 
     private val mBroadcastReceiver by lazy {
-        MyBroadcastReceiver(viewModel)
+        ServiceBroadcastReceiver(viewModel)
     }
 
     private val navController by lazy {
@@ -115,7 +116,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         refreshTabLayout(null)
         initObserve()
 
-        testSendMatchEventToServer()
+        testSendMatchEventToServer() //testing
     }
 
     override fun onResume() {
@@ -136,8 +137,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun testSendMatchEventToServer() {
         iv_logo.setOnClickListener {
-            Timber.e(">>>testSendMatchEventToServer")
-            val matchUrl = "/ws/notify/event/sr:match:25369136"
+            val matchUrl = "/ws/notify/event/sr:match:25367352"
             mService.subscribeMatchEvent(matchUrl)
         }
     }
@@ -149,7 +149,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
         registerReceiver(mBroadcastReceiver, filter)
     }
-
 
     private fun doBindService() {
         //TODO Cheryl 判斷if is login already
@@ -396,150 +395,5 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
     }
-
-    class MyBroadcastReceiver(val viewModel: MainViewModel) : BroadcastReceiver() {
-        private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() } //.add(KotlinJsonAdapterFactory())
-        override fun onReceive(context: Context?, intent: Intent) {
-            val bundle = intent.extras
-
-            val channel = bundle?.getString("channel", "")
-            val messageStr = bundle?.getString("serverMessage", "") ?: ""
-
-            val jsonArray = JSONArray(messageStr)
-            for (i in 0 until jsonArray.length()) {
-                val jObjStr = jsonArray.optJSONObject(i).toString()
-                val eventType = jsonArray.optJSONObject(i).optString("eventType")
-                when (channel) {
-                    //全体公共频道
-                    BackService.URL_ALL -> {
-                        when (eventType) {
-                            EventType.NOTICE.value -> {
-
-                            }
-                            EventType.GLOBAL_STOP.value -> {
-
-                            }
-                        }
-                    }
-
-                    //用户私人频道
-                    BackService.URL_PRIVATE -> {
-                        when (eventType) {
-                            EventType.USER_MONEY.value -> {
-                                val data = getUserMoney(jObjStr)
-                                viewModel.setUserMoney(data?.money)
-                            }
-                            EventType.USER_NOTICE.value -> {
-                                val data = getUserNotice(jObjStr)
-
-                            }
-                            EventType.ORDER_SETTLEMENT.value -> {
-
-                            }
-                            EventType.PING_PONG.value -> {
-
-                            }
-                        }
-                    }
-
-                    //大廳賠率
-                    BackService.URL_HALL -> {
-                        when (eventType) {
-                            EventType.MATCH_STATUS_CHANGE.value -> {
-
-                            }
-                            EventType.MATCH_CLOCK.value -> {
-
-                            }
-                            EventType.ODDS_CHANGE.value -> {
-
-                            }
-                        }
-                    }
-
-                    //具体赛事/赛季频道
-                    BackService.URL_EVENT -> {
-                        when (eventType) {
-                            EventType.ODDS_CHANGE.value -> {
-
-                            }
-                        }
-
-                    }
-
-                    BackService.URL_PING -> {
-                        when (eventType) {
-                            EventType.PING_PONG.value -> {
-
-                            }
-                        }
-                    }
-
-                }
-            }
-
-        }
-
-        private fun getGlobalStop(messageStr: String): GlobalStopEvent? {
-            val adapter = moshi.adapter(GlobalStopEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-        private fun getMatchClock(messageStr: String): MatchClockEvent? {
-            val adapter = moshi.adapter(MatchClockEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-        private fun getMatchStatusChange(messageStr: String): MatchStatusChangeEvent? {
-            val adapter = moshi.adapter(MatchStatusChangeEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-        private fun getNotice(messageStr: String): NoticeEvent? {
-            val adapter = moshi.adapter(NoticeEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-        private fun getOddsChange(messageStr: String): OddsChangeEvent? {
-            val adapter = moshi.adapter(OddsChangeEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-        private fun getPingPong(messageStr: String): PingPongEvent? {
-            val adapter = moshi.adapter(PingPongEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-        private fun getUserMoney(messageStr: String): UserMoneyEvent? {
-            val adapter = moshi.adapter(UserMoneyEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-        private fun getUserNotice(messageStr: String): UserNoticeEvent? {
-            val adapter = moshi.adapter(UserNoticeEvent::class.java)
-            return adapter.fromJson(messageStr)
-        }
-
-
-
-    }
-
-
-
-    /*
-
-            private fun <T> parsingMessage(messageStr: String?, dataClass: Class<T>): List<T>? {
-                if (messageStr.isNullOrEmpty()) return null
-
-                val type = Types.newParameterizedType(List::class.java, dataClass)
-                return moshi.adapter(type).fromJson(messageStr)
-            }
-
-            private fun <T> getPrivateType (dataClass: Class<T>): JsonAdapter<List<PrivateDisposableResponseItem>> {
-                val type = Types.newParameterizedType(List::class.java, dataClass)
-                return moshi.adapter(type)
-            }
-    */
-
 
 }

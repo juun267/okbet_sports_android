@@ -203,7 +203,6 @@ class BackService : BaseService() {
 
     @SuppressLint("CheckResult")
     private fun StompClient.subscribe(url: String, respond: (StompMessage) -> Unit): Disposable? {
-
         return this.topic(url, mHeader).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
             { topicMessage ->
                 Timber.e(">>> $url 訂閱成功")
@@ -235,10 +234,11 @@ class BackService : BaseService() {
         val eventDisposable: Disposable? = mStompClient?.subscribe(newMatchUrl) { topicMessage ->
             Timber.e(">>> msg = ${topicMessage.payload}")
         }
-        mCompositeDisposable?.add(eventDisposable!!)
-        mCompositeDisposable?.delete(defaultEventDisposable!!)
 
+        if (defaultEventDisposable != null) mCompositeDisposable?.delete(defaultEventDisposable!!)
         defaultEventDisposable = eventDisposable
+
+        mCompositeDisposable?.add(defaultEventDisposable!!)
 
     }
 
