@@ -40,6 +40,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
+            view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
         } catch (e: Exception) {
             e.printStackTrace()
@@ -49,6 +50,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
         setupFocus()
         setupEye()
+        setupClear()
         setupVerificationCode()
         setError(null)
     }
@@ -69,6 +71,12 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
                 cb_eye.isChecked = true
                 et_input.transformationMethod = HideReturnsTransformationMethod.getInstance() //顯示
             }
+        }
+    }
+
+    private fun setupClear() {
+        btn_clear.setOnClickListener {
+            et_input.setText("")
         }
     }
 

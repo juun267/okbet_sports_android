@@ -15,9 +15,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_delete_bank
-import kotlinx.android.synthetic.main.fragment_bank_card.edit_bank_card_number
-import kotlinx.android.synthetic.main.fragment_bank_card.edit_create_name
-import kotlinx.android.synthetic.main.fragment_bank_card.edit_network_point
 import kotlinx.android.synthetic.main.fragment_bank_card.tv_bank_name
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
@@ -70,9 +67,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             view.apply {
                 btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
-                edit_create_name.setText(sLoginData?.fullName)
-                edit_bank_card_number.setText(initData.cardNo)
-                edit_network_point.setText(initData.subAddress)
+                et_create_name.setText(sLoginData?.fullName)
+                et_bank_card_number.setText(initData.cardNo)
+                et_network_point.setText(initData.subAddress)
             }
             return@setupInitData
         }
@@ -99,7 +96,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initView() {
-        if (edit_create_name.text.isNotEmpty()) {
+/*        if (edit_create_name.text.isNotEmpty()) {
             btn_clear_create_name.visibility = View.VISIBLE
         } else {
             btn_clear_create_name.visibility = View.GONE
@@ -115,7 +112,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             btn_clear_network_point.visibility = View.VISIBLE
         } else {
             btn_clear_network_point.visibility = View.GONE
-        }
+        }*/
 
         setupBankSelector()
     }
@@ -160,7 +157,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             viewModel.deleteBankCard(args.editBankCard?.id.toString())
         }
 
-        btn_clear_create_name.setOnClickListener {
+/*        btn_clear_create_name.setOnClickListener {
             edit_create_name.setText("")
         }
 
@@ -170,9 +167,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         btn_clear_network_point.setOnClickListener {
             edit_network_point.setText("")
-        }
+        }*/
 
-        edit_create_name.addTextChangedListener {
+        /*edit_create_name.addTextChangedListener {
             it?.let {
                 if (it.isNotEmpty()) {
                     btn_clear_create_name.visibility = View.VISIBLE
@@ -203,7 +200,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 }
 
             }
-        }
+        }*/
     }
 
     private fun setupObserve() {
@@ -235,10 +232,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun createBankAddRequest(): BankAddRequest {
         return BankAddRequest(
             bankName = tv_bank_name.text.toString(),
-            subAddress = edit_network_point.text.toString(),
-            cardNo = edit_bank_card_number.text.toString(),
-            fundPwd = MD5Encode(edit_withdraw_password.text.toString()),
-            fullName = edit_create_name.text.toString(),
+            subAddress = et_network_point.getText(),
+            cardNo = et_bank_card_number.getText(),
+            fundPwd = MD5Encode(et_withdrawal_password.getText()),
+            fullName = et_create_name.getText(),
             id = args.editBankCard?.id?.toString(),
             userId = sUserInfo.userId.toString(),
             uwType = "bank" //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
@@ -246,10 +243,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun resetAll() {
-        edit_create_name.setText("")
-        edit_bank_card_number.setText("")
-        edit_network_point.setText("")
-        edit_withdraw_password.setText("")
+        et_create_name.setText("")
+        et_bank_card_number.setText("")
+        et_network_point.setText("")
+        et_withdrawal_password.setText("")
         this@BankCardFragment.activity?.currentFocus?.clearFocus()
     }
 

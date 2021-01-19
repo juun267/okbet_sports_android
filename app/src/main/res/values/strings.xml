@@ -284,6 +284,7 @@
     <string name="withdraw_handling_fee_hint">・手续费率：2% 须支付手续费：0元</string>
     <string name="hint_please_enter_withdraw_amount">请输入提款金额</string>
     <string name="hint_four_number_password">密碼為4個數字</string>
+    <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_credit_card">新增银行卡</string>
     <!--  BankCard  -->
     <string name="create_bank">开户银行</string>
