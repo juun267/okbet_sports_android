@@ -1,5 +1,3 @@
-include ':example-client'
-include ':test-server'
 include ':lib'
 include ':awesome-calendar'
 rootProject.name='SportLottery'
