@@ -12,5 +12,5 @@ interface UploadImgService {
     @Headers("$KEY_BASE_URL:$HEADER_UPLOAD_IMG")
     @Multipart
     @POST(UPLOAD_IMG)
-    suspend fun uploadImg(@Body uploadImgRequest: UploadImgRequest, @Part part: MultipartBody.Part): Response<UploadImgResult>
+    suspend fun uploadImg(@Part parts: List<MultipartBody.Part>): Response<UploadImgResult>
 }

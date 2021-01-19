@@ -175,6 +175,11 @@
     <string name="password_setting">密码设置</string>
     <string name="id">ID</string>
 
+    <!-- Avatar selector -->
+    <string name="modify_avatar">修改头像</string>
+    <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
+    <string name="take_a_picture">拍一张照片</string>
+
     <!-- Change nickname page-->
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2–50字</string>
