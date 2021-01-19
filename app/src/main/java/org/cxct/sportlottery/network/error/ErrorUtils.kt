@@ -57,8 +57,8 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
-import org.cxct.sportlottery.network.user.UserMoneyResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import retrofit2.Converter

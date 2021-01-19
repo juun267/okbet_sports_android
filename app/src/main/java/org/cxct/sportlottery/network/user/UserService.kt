@@ -7,6 +7,7 @@ import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
+import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import retrofit2.Response
