@@ -33,7 +33,10 @@ abstract class BaseViewModel : ViewModel() {
     private val _networkExceptionUnknown = MutableLiveData<Exception>()
 
     @Nullable
-    suspend fun <T> doNetwork(context: Context, apiFun: suspend () -> Response<T>): T? {
+    suspend fun <T : BaseResult> doNetwork(
+        context: Context,
+        apiFun: suspend () -> Response<T>
+    ): T? {
         return when (NetworkUtil.isAvailable(context)) {
             true -> {
                 doApiFun(context, apiFun)
@@ -44,7 +47,10 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    private suspend fun <T> doApiFun(context: Context, apiFun: suspend () -> Response<T>): T? {
+    private suspend fun <T : BaseResult> doApiFun(
+        context: Context,
+        apiFun: suspend () -> Response<T>
+    ): T? {
         val apiResult = viewModelScope.async {
             try {
                 val response = apiFun()
@@ -62,12 +68,12 @@ abstract class BaseViewModel : ViewModel() {
         return apiResult.await()
     }
 
-    private fun <T> doNoConnect(context: Context): T? {
+    private fun <T : BaseResult> doNoConnect(context: Context): T? {
         _networkUnavailableMsg.postValue(context.getString(R.string.message_network_no_connect))
         return null
     }
 
-    private fun <T> doResponseError(response: Response<T>): T? {
+    private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         val errorResult = ErrorUtils.parseError(response)
         errorResult?.let {
             when ((it as BaseResult).code) {
@@ -79,7 +85,7 @@ abstract class BaseViewModel : ViewModel() {
         return errorResult
     }
 
-    private fun <T> doOnException(context: Context, exception: Exception): T? {
+    private fun <T : BaseResult> doOnException(context: Context, exception: Exception): T? {
         when (exception) {
             is SocketTimeoutException -> doOnTimeOutException(context)
             else -> doOnUnknownException(exception)
