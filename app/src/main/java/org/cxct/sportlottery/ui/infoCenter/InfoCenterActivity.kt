@@ -1,39 +1,23 @@
 package org.cxct.sportlottery.ui.infoCenter
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityInfoCenterBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.bet_record.search.result.BetRecordDetailDialog
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 
-
-class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
+class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
     var adapter: InfoCenterAdapter? = null
 
-    private lateinit var infoCenterBinding: ActivityInfoCenterBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initDataBiding()
         initLiveData()
         initRecyclerView()
         initData()
-    }
-
-    private fun initDataBiding() {
-        infoCenterBinding = DataBindingUtil.setContentView(this, R.layout.activity_info_center)
-        infoCenterBinding.apply {
-            infoCenterViewModel = this@InfoCenterActivity.viewModel
-            lifecycleOwner = this@InfoCenterActivity
-        }
     }
 
     private fun initData() {
@@ -73,6 +57,14 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel
                     viewModel.getUserMsgList(false, adapter?.itemCount?:0)
             }
         })
+    }
+
+    override fun setContentView(): Int {
+        return R.layout.activity_info_center
+    }
+
+    override fun setToolBarName(): String {
+       return "消息中心"
     }
 
 }

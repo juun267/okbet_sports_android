@@ -13,15 +13,15 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         val view = LayoutInflater.from(context).inflate(R.layout.menu_item, this, false)
         addView(view)
 
+        val typedArray = context.theme
+            .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
-            val typedArray = context.theme
-                .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
-
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0))
-
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            typedArray.recycle()
         }
     }
 

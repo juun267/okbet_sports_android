@@ -32,7 +32,7 @@
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
+            android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

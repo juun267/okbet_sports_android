@@ -14,6 +14,7 @@
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
@@ -23,7 +24,6 @@
             android:id="@+id/ll_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:background="@drawable/expandable_results_settlement"
             android:orientation="horizontal"
             android:paddingTop="8dp"
@@ -32,7 +32,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center_vertical"
                 android:paddingStart="30dp">
 
@@ -50,35 +50,28 @@
 
             </LinearLayout>
 
-            <LinearLayout
+
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:paddingEnd="12dp">
+                android:gravity="center"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/textSize14sp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:textColor="@color/textColorDark"
-                    android:textSize="@dimen/textSize14sp" />
+            <TextView
+                android:id="@+id/tv_title_winner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="@string/winner"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="@string/winner" />
 
-                <TextView
-                    android:id="@+id/tv_title_winner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:text="@string/winner"
-                    android:textColor="@color/textColorDark"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="@string/winner" />
-
-            </LinearLayout>
 
         </LinearLayout>
 
@@ -86,6 +79,7 @@
             android:id="@+id/ep_champion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             app:el_duration="500"
             app:el_expanded="false"
             app:el_parallax="0.5"
@@ -93,47 +87,59 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:gravity="center"
-                    android:textColor="@color/textColorDark"
-                    android:textSize="14sp"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/textGray"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="2019-09-20 08:00" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <View
+                    android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:id="@+id/tv_ranking"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingEnd="12dp">
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/champion"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/textSize12sp" />
 
-                    <TextView
-                        android:id="@+id/tv_ranking"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:gravity="center"
-                        android:text="@string/champion"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="14sp" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/light_gray" />
 
-                    <TextView
-                        android:id="@+id/tv_winner"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:textColor="@color/textColorDark"
-                        android:textSize="14sp"
-                        tools:text="Bodo/Glimt" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_winner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="Bodo/Glimt" />
 
 
             </LinearLayout>

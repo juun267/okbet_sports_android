@@ -22,7 +22,11 @@ object TimeUtil {
     }
 
     @JvmStatic
-    fun timeFormat(time: Long?, format: String, timeZone: TimeZone = TimeZone.getDefault()): String {
+    fun timeFormat(
+        time: Long?,
+        format: String,
+        timeZone: TimeZone = TimeZone.getDefault()
+    ): String {
         var formattedTime = ""
         try {
             val dateFormat = SimpleDateFormat(format, Locale.getDefault())
@@ -38,6 +42,7 @@ object TimeUtil {
     enum class TimeType {
         START, END
     }
+
     fun dateToTimeStamp(date: String, timeType: TimeType = TimeType.START): Long? {
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val startTimeStamp = formatter.parse("$date 00:00:00")?.time
@@ -68,24 +73,90 @@ object TimeUtil {
     }
 
     fun getTodayTimeRangeParams(): TimeRangeParams {
-        return object : TimeRangeParams{
-            override val startTime: String?
+        //match type 今日 00:00:00 ~ 23:59:59:59
+        return object : TimeRangeParams {
+            override val startTime: String
                 get() = getTodayStartTimeStamp().toString()
-            override val endTime: String?
+            override val endTime: String
                 get() = getTodayEndTimeStamp().toString()
-
         }
     }
 
     fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
+        //指定日期 00:00:00 ~ 23:59:59:59
         //date : yyyy-MM-dd
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val startTimeStamp = formatter.parse("$date 00:00:00")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59")?.time
-        return object : TimeRangeParams{
-            override val startTime: String?
+        return object : TimeRangeParams {
+            override val startTime: String
                 get() = startTimeStamp.toString()
-            override val endTime: String?
+            override val endTime: String
+                get() = endTimeStamp.toString()
+        }
+    }
+
+    fun getOtherEarlyDateTimeRangeParams(): TimeRangeParams {
+        //match type 早盤 串關 其他早盤 第7日00:00:00 ～ 第30日23:59:59
+        //date : yyyy-MM-dd
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR_OF_DAY, 0)
+        c.set(Calendar.MINUTE, 0)
+        c.set(Calendar.SECOND, 0)
+        c.set(Calendar.MILLISECOND, 0)
+        c.add(Calendar.DAY_OF_MONTH, 8)
+        val startTimeStamp = c.timeInMillis
+
+        c.add(Calendar.DAY_OF_MONTH, 22)
+        c.set(Calendar.HOUR_OF_DAY, 23)
+        c.set(Calendar.MINUTE, 59)
+        c.set(Calendar.SECOND, 59)
+        c.set(Calendar.MILLISECOND, 59)
+        val endTimeStamp = c.timeInMillis
+
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
+                get() = endTimeStamp.toString()
+        }
+    }
+
+    fun getParlayAllTimeRangeParams(): TimeRangeParams {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, 30)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 59)
+
+        return object : TimeRangeParams {
+            override val startTime: String?
+                get() = null
+            override val endTime: String
+                get() = calendar.timeInMillis.toString()
+        }
+    }
+
+    fun getParlayTodayTimeRangeParams(): TimeRangeParams {
+        return object : TimeRangeParams {
+            override val startTime: String?
+                get() = null
+            override val endTime: String
+                get() = getTodayEndTimeStamp().toString()
+        }
+    }
+
+    fun getAtStartTimeRangeParams(): TimeRangeParams {
+        val calendar = Calendar.getInstance()
+        val startTimeStamp = calendar.timeInMillis
+        calendar.add(Calendar.MINUTE, 60)
+        val endTimeStamp = calendar.timeInMillis
+
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
                 get() = endTimeStamp.toString()
         }
     }

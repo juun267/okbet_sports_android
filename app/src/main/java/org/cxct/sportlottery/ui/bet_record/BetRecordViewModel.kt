@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet_record
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,10 +15,10 @@ import org.cxct.sportlottery.util.TimeUtil.dateToTimeStamp
 
 data class BetListRequestState(var hasStatus: Boolean, var hasStartDate: Boolean, var hasEndDate: Boolean)
 
-class BetRecordViewModel : BaseViewModel() {
+class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
-    get() = _selectStatusList
+        get() = _selectStatusList
 
     val betListRequestState: LiveData<BetListRequestState>
         get() = _betListRequestState
@@ -33,14 +34,20 @@ class BetRecordViewModel : BaseViewModel() {
     private val _betRecordResult = MutableLiveData<BetListResult>()
 
 
-    val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 to "赢半", 4 to "全输", 5 to "输半", 6 to "和", 7 to "已取消")
+    val statusNameMap = mapOf(0 to "未确认",
+                              1 to "未结算",
+                              2 to "全赢",
+                              3 to "赢半",
+                              4 to "全输",
+                              5 to "输半",
+                              6 to "和",
+                              7 to "已取消")
 
     fun checkRequestState(startDate: String, endDate: String) {
-        _betListRequestState.value = BetListRequestState(
-            hasStatus = selectStatusNameList.value?.size?:0 > 0,
-            hasStartDate = startDate.isNotEmpty(),
-            hasEndDate = endDate.isNotEmpty()
-        )
+        _betListRequestState.value =
+            BetListRequestState(hasStatus = selectStatusNameList.value?.size ?: 0 > 0,
+                                hasStartDate = startDate.isNotEmpty(),
+                                hasEndDate = endDate.isNotEmpty())
     }
 
     fun addSelectStatus(item: BetTypeItemData) {
@@ -64,7 +71,8 @@ class BetRecordViewModel : BaseViewModel() {
                                                 statusList = statusList,
                                                 startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START).toString(),
                                                 endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END).toString())
-            doNetwork {
+
+            doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
                 _betRecordResult.postValue(result)

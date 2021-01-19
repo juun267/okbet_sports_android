@@ -37,9 +37,10 @@
     <color name="button_disable">#80000000</color>
     <color name="pumpkinOrange">#F98B00</color>
     <color name="orangeyRed">#FF4B2C</color>
-
     <color name="tab_ripple">#1AF98B00</color>
 
+    <color name="bottom_sheet_top_bar_background">#EEEEEE</color>
+    <color name="bottom_sheet_top_bar_close_text">#999999</color>
 
 
 
@@ -82,6 +83,7 @@
     <color name="gray8">#4a4a4a</color>
     <color name="gray9">#f0f0f0</color>
     <color name="gray10">#dddddd</color>
+    <color name="gray11">#f0f2f6</color>
 
 
     <!--紅色系-->

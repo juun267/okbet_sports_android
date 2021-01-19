@@ -12,18 +12,40 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/match_odd_name"
+            android:id="@+id/match_odd_home_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="14dp"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="洪都拉斯普羅格雷索 VS 伊斯帕納" />
+            tools:text="洪都拉斯普羅格雷索" />
+
+        <TextView
+            android:id="@+id/match_odd_vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/verse"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/match_odd_home_name"
+            app:layout_constraintStart_toEndOf="@id/match_odd_home_name" />
+
+        <TextView
+            android:id="@+id/match_odd_away_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/match_odd_vs"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="伊斯柏纳" />
 
         <TextView
             android:id="@+id/match_odd_count"
@@ -31,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="35dp"
             android:textColor="@color/textGray"
-            android:textSize="12sp"
+            android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

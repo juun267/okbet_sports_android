@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu.results
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,10 @@ import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
-class SettlementViewModel(private val settlementRepository: SettlementRepository) : BaseViewModel() {
+class SettlementViewModel(
+    private val androidContext: Context,
+    private val settlementRepository: SettlementRepository
+) : BaseViewModel() {
     val matchResultListResult: LiveData<MatchResultListResult>
         get() = _matchResultListResult
     val gameResultDetailResult: LiveData<SettlementRvData>
@@ -43,8 +47,12 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         dataType = SettleType.MATCH
         requestListener.requestIng(true)
         viewModelScope.launch {
-            doNetwork {
-                settlementRepository.resultList(pagingParams = pagingParams, timeRangeParams = timeRangeParams, gameType = gameType)
+            doNetwork(androidContext) {
+                settlementRepository.resultList(
+                    pagingParams = pagingParams,
+                    timeRangeParams = timeRangeParams,
+                    gameType = gameType
+                )
             }?.let { result ->
                 _matchResultListResult.postValue(result)
             }
@@ -58,7 +66,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
     fun getSettlementDetailData(settleRvPosition: Int, gameResultRvPosition: Int, matchId: String) {
         requestListener.requestIng(true)
         viewModelScope.launch {
-            doNetwork {
+            doNetwork(androidContext) {
                 settlementRepository.resultPlayList(matchId)
             }?.let { result ->
                 _gameResultDetailResult.postValue(_gameResultDetailResult.value?.apply {
@@ -75,7 +83,7 @@ class SettlementViewModel(private val settlementRepository: SettlementRepository
         dataType = SettleType.OUTRIGHT
         requestListener.requestIng(true)
         viewModelScope.launch {
-            doNetwork {
+            doNetwork(androidContext) {
                 settlementRepository.resultOutRightList(gameType = gameType)
             }?.let { result ->
                 _outRightListResult.postValue(result)
