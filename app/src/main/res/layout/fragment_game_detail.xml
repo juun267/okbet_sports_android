@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:layout_marginTop="5dp"
     android:background="@color/background"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".ui.game.GameDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
