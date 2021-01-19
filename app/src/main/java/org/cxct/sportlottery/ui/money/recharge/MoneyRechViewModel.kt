@@ -36,7 +36,7 @@ class MoneyRechViewModel(private val androidContext: Context, private val moneyR
         try {
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
-                    moneyRepository.getRechCfg("zh")
+                    moneyRepository.getRechCfg()
                 }
                 _rechargeConfigs.value = result?.rechCfg
 

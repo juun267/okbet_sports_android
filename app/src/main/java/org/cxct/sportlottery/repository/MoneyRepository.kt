@@ -5,7 +5,7 @@ import org.cxct.sportlottery.network.money.MoneyRechCfgResult
 import retrofit2.Response
 
 class MoneyRepository {
-    suspend fun getRechCfg(languageType: String): Response<MoneyRechCfgResult> {
-        return OneBoSportApi.moneyService.getRechCfg(languageType)
+    suspend fun getRechCfg(): Response<MoneyRechCfgResult> {
+        return OneBoSportApi.moneyService.getRechCfg()
     }
 }
