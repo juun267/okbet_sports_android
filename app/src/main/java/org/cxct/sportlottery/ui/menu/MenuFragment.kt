@@ -43,7 +43,8 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         initObserve()
         initEvent()
-        updateUI()
+        setupSelectLanguage()
+        setupVersion()
     }
 
     private fun getMoney() {
@@ -51,6 +52,12 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.isLogin.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                updateUI()
+                getMoney()
+            }
+        })
         viewModel.userMoney.observe(viewLifecycleOwner, Observer {
             tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
         })
@@ -103,23 +110,25 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    fun updateUI() {
+    private fun setupSelectLanguage() {
+        tv_language.text = when (LanguageManager.getSelectLanguage(tv_language.context)) {
+            LanguageManager.Language.ZH -> getString(R.string.language_cn)
+            LanguageManager.Language.EN -> getString(R.string.language_en)
+            else -> getString(R.string.language_en)
+        }
+    }
+
+    private fun setupVersion() {
+        tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
+    }
+
+    private fun updateUI() {
         Glide.with(this)
             .load(sLoginData?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
         tv_name.text = sLoginData?.userName
-
-        getMoney()
-
-        tv_language.text = when (LanguageManager.getSelectLanguage(tv_language.context)) {
-            LanguageManager.Language.ZH -> getString(R.string.language_cn)
-            LanguageManager.Language.EN -> getString(R.string.language_en)
-            else -> getString(R.string.language_en)
-        }
-
-        tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
     /**
