@@ -52,12 +52,14 @@ class MainViewModel(
     private val sportMenuRepository: SportMenuRepository,
     private val betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
-    val token: LiveData<String?> by lazy {
-        loginRepository.token
-    }
 
-    val checkTokenResult: LiveData<LoginResult?>
-        get() = _checkTokenResult
+    val isLogin: LiveData<Boolean> by lazy {
+        loginRepository.isLogin.apply {
+            if (this.value == false && !loginRepository.isCheckToken) {
+                checkToken()
+            }
+        }
+    }
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -101,7 +103,6 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
-    private val _checkTokenResult = MutableLiveData<LoginResult?>()
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
@@ -171,23 +172,23 @@ class MainViewModel(
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
 
-    fun checkToken() {
+    private fun checkToken() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.checkToken()
             }
-            _checkTokenResult.postValue(result)
         }
     }
 
     fun logout() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.logout()
+            }.apply {
+                loginRepository.clear()
+                //TODO change timber to actual logout ui to da
+                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
-
-            //TODO change timber to actual logout ui to da
-            Timber.d("logout result is ${result?.success} ${result?.code} ${result?.msg}")
         }
     }
 
