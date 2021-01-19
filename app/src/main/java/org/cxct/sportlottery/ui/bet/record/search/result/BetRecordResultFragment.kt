@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
 import kotlinx.android.synthetic.main.fragment_bet_record_result.tv_bet_status
 import org.cxct.sportlottery.R
@@ -49,21 +50,19 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 detailDialog.show(parentFragmentManager, "BetRecordDetailDialog")
             }
         })
+        rvAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                rv_bet_record.layoutManager?.scrollToPosition(0)
+            }
+        })
+
         rv_bet_record.adapter = rvAdapter
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
-            it?.let {
-                /*
-                if (it.rows?.size?:0 <= 0) {
-                    view_no_data.visibility = View.VISIBLE
-                    rv_bet_record.visibility = View.GONE
-                } else {
-                    view_no_data.visibility = View.GONE
-                    rv_bet_record.visibility = View.VISIBLE
-                }
-                */
+            it.let {
                 rvAdapter.addFooterAndSubmitList(it.rows)
             }
         })
+
     }
 
 

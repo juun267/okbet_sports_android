@@ -25,7 +25,6 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
 
     fun addFooterAndSubmitList(list: List<Row>?) {
         adapterScope.launch {
-            Log.e(">>>", "list size = ${list?.size}")
             val items = when (list) {
                 null -> listOf(DataItem.NoData)
                 else -> {
