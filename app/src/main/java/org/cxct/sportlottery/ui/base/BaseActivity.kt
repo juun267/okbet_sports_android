@@ -124,7 +124,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
 
         betFloatButtonVisible(false)//default
-        rl_bet_float_button.setOnClickListener { BetInfoListDialog().show(supportFragmentManager, "") }
+        rl_bet_float_button.setOnClickListener { BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG) }
     }
 
     private fun checkBetInfoList(count: Int) {

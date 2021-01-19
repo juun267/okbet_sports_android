@@ -16,6 +16,10 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 
 class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListAdapter.OnItemClickListener {
 
+    companion object {
+        val TAG = BetInfoListDialog::class.java.simpleName
+    }
+
     private lateinit var betInfoListAdapter: BetInfoListAdapter
 
     private var deletePosition: Int = -1
