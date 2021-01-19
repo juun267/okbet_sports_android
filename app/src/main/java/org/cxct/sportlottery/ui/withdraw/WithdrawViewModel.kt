@@ -60,6 +60,8 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
                 OneBoSportApi.bankService.bankAdd(bankAddRequest)
             }?.let { result ->
                 _bankAddResult.value = result
+
+                clearBankCardFragmentStatus()
             }
         }
     }
@@ -70,6 +72,8 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
                 OneBoSportApi.bankService.bankDelete(id)
             }?.let { result ->
                 _bankDeleteResult.value = result
+
+                clearBankCardFragmentStatus()
             }
         }
     }
@@ -83,7 +87,8 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
         getBankCardList()
     }
 
-    fun clearBankCardFragmentStatus() {
+    private fun clearBankCardFragmentStatus() {
+        //若不清除下一次進入編輯銀行卡頁面時會直接觸發觀察判定編輯成功
         _bankDeleteResult = MutableLiveData()
         _bankAddResult = MutableLiveData()
     }

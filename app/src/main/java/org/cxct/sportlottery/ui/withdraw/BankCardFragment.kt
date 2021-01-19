@@ -166,7 +166,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (it.success) {
                 //TODO Dean : bind bank card success Event
                 //綁定成功後回至銀行卡列表bank card list
-                viewModel.clearBankCardFragmentStatus() //若不清除下一次近來時會直接觸發觀察
                 when (args.navigateFrom) {
                     PageFrom.WITHDRAW -> {
                         val action = BankCardFragmentDirections.actionBankCardFragmentToWithdrawFragment(args.navigateFrom)
@@ -183,7 +182,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (it.success) {
                 //TODO Dean : delete bank card success Event
                 //刪除銀行卡成功後回至銀行卡列表bank card list
-                viewModel.clearBankCardFragmentStatus() //若不清除下一次近來時會直接觸發觀察
                 mNavController.popBackStack()
             }
         })
