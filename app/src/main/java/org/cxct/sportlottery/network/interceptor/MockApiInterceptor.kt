@@ -9,6 +9,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
@@ -41,6 +42,7 @@ import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
 import timber.log.Timber
 import java.io.IOException
@@ -153,6 +155,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(USER_EDIT_ICON_URL) -> {
                     response = getMockJsonData(request, "user_edit_icon_url.mock")
+                }
+                path.contains(USER_UPDATE_PWD) -> {
+                    response = getMockJsonData(request, "user_update_pwd.mock")
                 }
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")

@@ -5,11 +5,14 @@ import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
+import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,4 +35,8 @@ interface UserService {
 
     @POST(USER_EDIT_ICON_URL)
     suspend fun editIconUrl(@Body editIconUrlRequest: IconUrlRequest): Response<IconUrlResult>
+
+    @POST(USER_UPDATE_PWD)
+    suspend fun updatePwd(@Body updatePwdRequest: UpdatePwdRequest): Response<UpdatePwdResult>
+
 }
