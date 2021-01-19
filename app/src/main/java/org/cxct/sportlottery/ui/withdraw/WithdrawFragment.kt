@@ -137,26 +137,30 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
     private var selectedPosition = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_listview_bank_card, parent, false)
-        val data = dataList[position]
+        // if remove "if (convertView == null)" will get a warning about reuse view.
+        if (convertView == null) {
+            val layoutInflater = LayoutInflater.from(context)
+            val view = layoutInflater.inflate(R.layout.item_listview_bank_card, parent, false)
+            val data = dataList[position]
 
-        view.apply {
-            tv_bank_card.text = String.format(context.getString(R.string.selected_bank_card), data.bankName, data.cardNo)
-            if (position == selectedPosition)
-                ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
-            else
-                ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            ll_select_bank_card.setOnClickListener {
-                if (selectedPosition != position) {
-                    //                data.isSelected = !data.isSelected
-                    selectedPosition = position
-                    notifyDataSetChanged()
-                    listener.onClick(data)
+            view.apply {
+                tv_bank_card.text = String.format(context.getString(R.string.selected_bank_card), data.bankName, data.cardNo)
+                if (position == selectedPosition)
+                    ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                else
+                    ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                ll_select_bank_card.setOnClickListener {
+                    if (selectedPosition != position) {
+                        //                data.isSelected = !data.isSelected
+                        selectedPosition = position
+                        notifyDataSetChanged()
+                        listener.onClick(data)
+                    }
                 }
             }
+            return view
         }
-
-        return view
+        return convertView
     }
 
     override fun getCount(): Int {
