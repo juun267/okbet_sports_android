@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,9 +8,11 @@
     tools:context="org.cxct.sportlottery.ui.login.LoginEditText">
 
     <LinearLayout
+        android:id="@+id/block_editText"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@drawable/bg_square_shape_4dp_white"
+        android:background="@drawable/effect_edittext_bg"
+        android:focusable="true"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingStart="10dp"
@@ -17,11 +20,15 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:minWidth="52dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:textColor="@color/gray4"
             android:textSize="@dimen/textSize13sp"
+            app:autoSizeMaxTextSize="13dp"
+            app:autoSizeMinTextSize="6dp"
+            app:autoSizeTextType="uniform"
             tools:text="@string/login_account" />
 
         <View
@@ -43,13 +50,41 @@
             android:textSize="@dimen/textSize12sp"
             tools:hint="@string/please_input_account" />
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/btn_eye"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:contentDescription="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/effect_visible_eye" />
+            android:gravity="center">
+
+            <CheckBox
+                android:id="@+id/cb_eye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/effect_visible_eye"
+                android:clickable="false" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/block_verification_code"
+            android:layout_width="80dp"
+            android:layout_height="30dp">
+
+            <ProgressBar
+                android:id="@+id/pb_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray1"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
     </LinearLayout>
 
@@ -58,8 +93,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
         android:textColor="@color/orangeyRed"
         android:textSize="@dimen/textSize12sp"
-        tools:text="@string/error_required_field" />
+        app:drawableStartCompat="@drawable/ic_error_tip"
+        tools:text="@string/please_input_account" />
 
 </LinearLayout>

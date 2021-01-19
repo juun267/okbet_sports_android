@@ -3,15 +3,24 @@ package org.cxct.sportlottery.ui.login.signIn
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.LoginResult
+import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.LOGIN_SRC
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.MD5Util
+import org.cxct.sportlottery.util.ToastUtil
+import timber.log.Timber
 
 
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
@@ -23,6 +32,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupBackButton()
         setupAccount()
         setupPassword()
+        setupValidCode()
         setupLoginButton()
         setupRememberPWD()
         setupForgetPasswordButton()
@@ -37,7 +47,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun setupAccount() {
         et_account.setText(viewModel.account)
         et_account.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText())
+            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
         }
     }
 
@@ -46,27 +56,71 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         et_password.eyeVisibility = View.GONE
-        et_password.getEditText().setOnFocusChangeListener { _, hasFocus ->
+        et_password.setEditTextOnFocusChangeListener(View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus && et_password.eyeVisibility == View.GONE) {
                 et_password.eyeVisibility = View.VISIBLE
                 et_password.setText(null)
             }
-        }
+        })
 
         et_password.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText())
+            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+        }
+    }
+
+    private fun setupValidCode() {
+        if (sConfigData?.enableValidCode == FLAG_OPEN) {
+            et_verification_code.visibility = View.VISIBLE
+            updateValidCode()
+        } else {
+            et_verification_code.visibility = View.GONE
+        }
+
+        et_verification_code.setVerificationCodeBtnOnClickListener(View.OnClickListener {
+            updateValidCode()
+        })
+
+        et_verification_code.afterTextChanged {
+            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
         }
     }
 
     private fun setupLoginButton() {
         btn_login.setOnClickListener {
             if (viewModel.loginFormState.value?.isDataValid == true) {
-                loading()
-                viewModel.login(et_account.getText(), et_password.getText())
+                login()
             } else {
-                viewModel.loginDataChanged(this, et_account.getText(), et_password.getText())
+                viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
             }
         }
+    }
+
+    private fun updateValidCode() {
+        val data = viewModel.validCodeResult.value?.validCodeData
+        viewModel.getValidCode(data?.identity)
+        et_verification_code.setText(null)
+    }
+
+    private fun login() {
+        loading()
+
+        val account = et_account.getText()
+        val password = et_password.getText()
+        val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
+        val validCode = et_verification_code.getText()
+        val deviceSn = "" //JPushInterface.getRegistrationID(applicationContext) //極光推播 //TODO 極光推波建置好，要來補齊 deviceSn 參數
+        Timber.d("極光推播: RegistrationID = $deviceSn")
+
+        val loginRequest = LoginRequest(
+            account = account,
+            password = MD5Util.MD5Encode(password),
+            loginSrc = LOGIN_SRC,
+            deviceSn = deviceSn,
+            validCodeIdentity = validCodeIdentity,
+            validCode = validCode,
+            appVersion = BuildConfig.VERSION_NAME
+        )
+        viewModel.login(loginRequest, password)
     }
 
     private fun setupRememberPWD() {
@@ -102,23 +156,45 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             val loginState = it ?: return@Observer
             et_account.setError(loginState.accountError)
             et_password.setError(loginState.passwordError)
+            et_verification_code.setError(loginState.validCodeError)
         })
 
         viewModel.loginResult.observe(this, Observer {
-            hideLoading()
+            updateUiWithResult(it)
+        })
+
+        viewModel.validCodeResult.observe(this, Observer {
             updateUiWithResult(it)
         })
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
+        hideLoading()
         if (loginResult.success) {
             finish()
         } else {
-            showLoginFailed(loginResult.msg)
+            updateValidCode()
+            showErrorDialog(loginResult.msg)
         }
     }
 
-    private fun showLoginFailed(error: String) {
-        Toast.makeText(applicationContext, error, Toast.LENGTH_SHORT).show()
+    private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
+        if (validCodeResult?.success == true) {
+            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
+            et_verification_code.setVerificationCode(bitmap)
+        } else {
+            updateValidCode()
+            et_verification_code.setVerificationCode(null)
+            ToastUtil.showToastInCenter(this@LoginActivity, getString(R.string.get_valid_code_fail_point))
+        }
+    }
+
+    private fun showErrorDialog(errorMsg: String?) {
+        val dialog = CustomAlertDialog(this)
+        dialog.setMessage(errorMsg)
+        dialog.setNegativeButtonText(null)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 }

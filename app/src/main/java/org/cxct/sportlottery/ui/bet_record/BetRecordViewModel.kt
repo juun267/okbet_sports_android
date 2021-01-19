@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet_record
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,10 +15,9 @@ import org.cxct.sportlottery.util.TimeUtil.dateToTimeStamp
 
 data class BetListRequestState(var hasStatus: Boolean, var hasStartDate: Boolean, var hasEndDate: Boolean)
 
-
 val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 to "赢半", 4 to "全输", 5 to "输半", 6 to "和", 7 to "已取消")
 
-class BetRecordViewModel : BaseViewModel() {
+class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
     get() = _selectStatusList
@@ -60,10 +60,12 @@ class BetRecordViewModel : BaseViewModel() {
 
     fun getBetList(statusList: List<Int>, startDate: String, endDate: String) {
         viewModelScope.launch {
-            val betListRequest = BetListRequest(statusList = statusList,
-                                                startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START).toString(),
-                                                endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END).toString())
-            doNetwork {
+            val betListRequest = BetListRequest(
+                statusList = statusList,
+                startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START).toString(),
+                endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END).toString()
+            )
+            doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
                 _betRecordResult.postValue(result)

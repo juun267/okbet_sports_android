@@ -4,7 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import liveData
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.*
+import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.logout.LogoutRequest
+import org.cxct.sportlottery.network.index.logout.LogoutResult
+import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.util.AesCryptoUtil
 import retrofit2.Response
 
@@ -64,10 +68,8 @@ class LoginRepository(private val androidContext: Context) {
         }
 
 
-    suspend fun login(userName: String, password: String): Response<LoginResult> {
-        val loginResponse = OneBoSportApi.indexService.login(
-            LoginRequest(userName, password)
-        )
+    suspend fun login(loginRequest: LoginRequest): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.login(loginRequest)
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
@@ -90,5 +92,35 @@ class LoginRepository(private val androidContext: Context) {
         }
 
         return OneBoSportApi.indexService.logout(LogoutRequest())
+    }
+
+    suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.register(registerRequest)
+
+        if (loginResponse.isSuccessful) {
+            loginResponse.body()?.let {
+                account = registerRequest.userName //預設存帳號
+                sLoginData = it.loginData
+
+                with(sharedPref.edit()) {
+                    putString(KEY_TOKEN, it.loginData?.token)
+                    apply()
+                }
+            }
+        }
+
+        return loginResponse
+    }
+
+    suspend fun checkToken(): Response<LoginResult> {
+        val checkTokenResponse = OneBoSportApi.indexService.checkToken()
+
+        if (checkTokenResponse.isSuccessful) {
+            checkTokenResponse.body()?.let {
+                sLoginData = it.loginData
+            }
+        }
+
+        return checkTokenResponse
     }
 }

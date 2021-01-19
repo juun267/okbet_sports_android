@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.index
+package org.cxct.sportlottery.network.index.config
 
 data class ImageData(
     val id: Int?, //图片id

@@ -44,7 +44,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         fun bind(
             item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?
         ) {
-            itemView.match_odd_name.text = item.matchInfo.homeName
+            itemView.match_odd_home_name.text = item.matchInfo.homeName
+            itemView.match_odd_away_name.text = item.matchInfo.awayName
             itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
             itemView.setOnClickListener {
                 matchOddListener?.onClick(item)

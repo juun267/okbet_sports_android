@@ -19,7 +19,12 @@
             {@link android.text.InputType#TYPE_CLASS_TEXT} |
             {@link android.text.InputType#TYPE_TEXT_VARIATION_PASSWORD}. -->
             <flag name="textPassword" value="0x00000081" />
+            <!-- A numeric only field.  Corresponds to
+            {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+            {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
+            <flag name="number" value="0x00000002" />
         </attr>
+        <attr name="cvEnableVerificationCode" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ToolBarView">
@@ -39,11 +44,12 @@
 
     <declare-styleable name="MatchTypeRow">
         <attr name="matchType" format="enum">
-            <enum name="inplay" value="0" />
+            <enum name="in_play" value="0" />
             <enum name="today" value="1" />
             <enum name="early" value="2" />
-            <enum name="paylay" value="3" />
+            <enum name="parlay" value="3" />
             <enum name="outright" value="4" />
+            <enum name="at_start" value="5" />
         </attr>
     </declare-styleable>
 </resources>

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
@@ -31,8 +29,6 @@ import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.TimeUtil
-import timber.log.Timber
 
 
 /**
@@ -41,28 +37,17 @@ import timber.log.Timber
  * create an instance of this fragment.
  */
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
-
-    private val navController by lazy {
-        findNavController()
-    }
-
-    //TODO Dean : 順一下獲取List的邏輯, 目前有重複call api的問題
-    private var timeRangeParams: TimeRangeParams = object : TimeRangeParams {
-        override val startTime: String?
-            get() = null
-        override val endTime: String?
-            get() = null
-    }
-
     private val args: GameFragmentArgs by navArgs()
+
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            viewModel.getGameHallList(args.matchType, it, timeRangeParams)
+            viewModel.getGameHallList(args.matchType, it)
         })
     }
+
     private val gameDateAdapter by lazy {
         GameDateAdapter(GameDateListener {
-            viewModel.updateDateSelectedState(it)
+            viewModel.getGameHallList(args.matchType, it)
         })
     }
 
@@ -76,7 +61,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it.list.first().id, timeRangeParams)
+            viewModel.getLeagueOddsList(args.matchType, it.list.first().id)
         })
     }
 
@@ -136,23 +121,15 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupDateRow(view: View) {
-        if (args.matchType == MatchType.TODAY) {
-            view.hall_date_list.adapter = null
-            timeRangeParams = TimeUtil.getTodayTimeRangeParams()
-            viewModel.getGameHallList(args.matchType, timeRangeParams)
-        } else {
-            view.hall_date_list.apply {
-                this.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                this.adapter = gameDateAdapter
-                addItemDecoration(
-                    SpaceItemDecoration(
-                        context,
-                        R.dimen.recyclerview_item_dec_spec
-                    )
+        view.hall_date_list.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = gameDateAdapter
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec
                 )
-            }
-            viewModel.getEarlyDateRow()
+            )
         }
     }
 
@@ -217,7 +194,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 MatchType.OUTRIGHT -> {
                     setupOutrightFilter(it.sportMenuData?.menu?.outright?.items ?: listOf())
                 }
-                else -> {
+                MatchType.AT_START -> {
+                    setupAtStartFilter(it.sportMenuData?.atStart?.items ?: listOf())
                 }
             }
         })
@@ -227,42 +205,29 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             leagueOddAdapter.playType = it
         })
 
-        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer { pair ->
-            //TODO Dean : 記錄問題,沒有postValue卻觸發了observe
-            gameDateAdapter.data = pair
-            pair.find { it.second }?.first?.let {
-                timeRangeParams = when {
-                    args.matchType == MatchType.TODAY -> {
-                        TimeUtil.getTodayTimeRangeParams()
-                    }
-                    it == getString(R.string.date_row_other) -> {
-                        TimeUtil.getOtherEarlyDateTimeRangeParams()
-                    }
-                    else -> {
-                        TimeUtil.getDayDateTimeRangeParams(it)
-                    }
-                }
-                viewModel.getGameHallList(args.matchType, timeRangeParams)
-            }
+        viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
+            gameDateAdapter.data = it
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
+
+        viewModel.getGameHallList(args.matchType, true)
     }
 
     private fun setupInPlayFilter(itemList: List<Item>) {
@@ -305,6 +270,21 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         gameTypeAdapter.data = itemList
 
         hall_match_type_row.type = MatchTypeRow.OUTRIGHT
+        hall_date_list.visibility = View.GONE
+    }
+
+    private fun setupAtStartFilter(itemList: List<Item>) {
+        val selectSportName = itemList.find { sport ->
+            sport.isSelected
+        }?.name
+
+        gameTypeAdapter.data = itemList
+
+        hall_match_type_row.apply {
+            type = MatchTypeRow.AT_START
+            sport = selectSportName
+        }
+
         hall_date_list.visibility = View.GONE
     }
 

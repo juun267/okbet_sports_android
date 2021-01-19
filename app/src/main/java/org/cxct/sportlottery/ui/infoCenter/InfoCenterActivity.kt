@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 
-class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
+class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
     var adapter: InfoCenterAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_info_center)
         initLiveData()
         initRecyclerView()
         initData()
@@ -57,6 +57,14 @@ class InfoCenterActivity : BaseActivity<InfoCenterViewModel>(InfoCenterViewModel
                     viewModel.getUserMsgList(false, adapter?.itemCount?:0)
             }
         })
+    }
+
+    override fun setContentView(): Int {
+        return R.layout.activity_info_center
+    }
+
+    override fun setToolBarName(): String {
+       return "消息中心"
     }
 
 }
