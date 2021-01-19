@@ -14,5 +14,5 @@ data class UserInfoResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val userInfoData: UserInfoData
+    val userInfoData: UserInfoData?
 ) : BaseResult()
