@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import io.reactivex.CompletableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -35,7 +36,8 @@ class BackService : BaseService() {
         //    private val URL_PRIVATE by lazy { "/notify/user/{userId}" } //用户私人频道
         //    private val URL_EVENT by lazy { "/notify/event/{eventId}"} //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id) //TODO Cheryl 替換變數
         //    private val URL_HALL by lazy { "/notify/hall/{gameType}/{cateMenuCode}/{eventId}" }//大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏 //TODO Cheryl 替換變數
-        var URL_PRIVATE = "/ws/notify/user/${201}"
+//        var URL_PRIVATE = "/ws/notify/user/${201}"
+        var URL_PRIVATE = "/ws/notify/user/${sLoginData?.userId}"
         var URL_EVENT = "/ws/notify/event/sr:match:25369136" //.apply { replace(":", "\\") }
         var URL_HALL = "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25305514"
 
@@ -126,6 +128,9 @@ class BackService : BaseService() {
                         }
                     }
 
+            Timber.e( "sLoginData?.userId = ${sLoginData?.userId}")
+
+            URL_PRIVATE = "/ws/notify/user/${201}" //test
             //用户私人频道
             val privateDisposable: Disposable? =
                 stompClient.subscribe(URL_PRIVATE) { topicMessage ->

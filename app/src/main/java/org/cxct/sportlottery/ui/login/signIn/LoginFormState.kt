@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.login
+package org.cxct.sportlottery.ui.login.signIn
 
 /**
  * Data validation state of the login form.

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
@@ -22,6 +24,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.index.ConfigResult
 import org.cxct.sportlottery.network.index.LoginResult
 import org.cxct.sportlottery.network.index.LogoutResult
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -31,6 +34,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.user.UserMoneyResult
 import retrofit2.Converter
@@ -62,6 +66,14 @@ object ErrorUtils {
                     (url.contains(INDEX_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(INDEX_LOGOUT)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LogoutResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(INDEX_CONFIG)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ConfigResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(MESSAGE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -97,25 +109,19 @@ object ErrorUtils {
                     }
                     (url.contains(OUTRIGHT_RESULT_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OutrightResultListResult(
-                            it.code,
-                            it.msg,
-                            null,
-                            it.success,
-                            null
-                        ) as T
+                        return OutrightResultListResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(OUTRIGHT_ODDS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return OutrightOddsListResult(it.code, it.msg, it.success, null) as T
                     }
+                    (url.contains(OUTRIGHT_SEASON_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OutrightSeasonListResult(it.code, it.msg, null, it.success, null) as T
+                    }
                     (url.contains(USER_MONEY)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return UserMoneyResult(it.code, it.msg, it.success, null) as T
-                    }
-                    (url.contains(INDEX_LOGOUT)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return LogoutResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(USER_NOTICE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

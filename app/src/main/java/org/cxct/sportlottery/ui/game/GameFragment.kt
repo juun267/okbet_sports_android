@@ -12,22 +12,27 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
-import kotlinx.android.synthetic.main.game_bar_date.view.*
-import kotlinx.android.synthetic.main.game_bar_inplay.*
-import kotlinx.android.synthetic.main.game_bar_inplay.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
+import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
+import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TimeUtil
+import timber.log.Timber
 
 
 /**
@@ -52,7 +57,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            viewModel.getLeagueList(args.matchType, it, timeRangeParams)
+            viewModel.getGameHallList(args.matchType, it, timeRangeParams)
         })
     }
     private val gameDateAdapter by lazy {
@@ -71,9 +76,16 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            val action = GameFragmentDirections.actionGameFragmentToGame2Fragment(it.list.first().id, args.matchType, timeRangeParams.startTime ?: "", timeRangeParams.endTime ?: "")
-            navController.navigate(action)
+            viewModel.getLeagueOddsList(args.matchType, it.list.first().id, timeRangeParams)
         })
+    }
+
+    private val outrightSeasonAdapter by lazy {
+        SeasonAdapter().apply {
+            seasonSubListener = SeasonSubAdapter.SeasonSubListener {
+                viewModel.getOutrightOddsList(it.id)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,19 +100,15 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             setupSportTypeRow(this)
 
+            setupMatchTypeRow(this)
+
             setupDateRow(this)
 
             setupOddsList(this)
 
             setupLeagueList(this)
 
-            this.inplay_ou.setOnClickListener {
-                viewModel.setPlayType(PlayType.OU_HDP)
-            }
-
-            this.inplay_1x2.setOnClickListener {
-                viewModel.setPlayType(PlayType.X12)
-            }
+            setupOutrightSeasonList(this)
         }
     }
 
@@ -118,11 +126,22 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun setupMatchTypeRow(view: View) {
+        view.hall_match_type_row.ouHDPClickListener = View.OnClickListener {
+            viewModel.setPlayType(PlayType.OU_HDP)
+        }
+        view.hall_match_type_row.x12ClickListener = View.OnClickListener {
+            viewModel.setPlayType(PlayType.X12)
+        }
+    }
+
     private fun setupDateRow(view: View) {
         if (args.matchType == MatchType.TODAY) {
+            view.hall_date_list.adapter = null
             timeRangeParams = TimeUtil.getTodayTimeRangeParams()
+            viewModel.getGameHallList(args.matchType, timeRangeParams)
         } else {
-            view.date_row_list.apply {
+            view.hall_date_list.apply {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 this.adapter = gameDateAdapter
@@ -133,6 +152,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     )
                 )
             }
+            viewModel.getEarlyDateRow()
         }
     }
 
@@ -164,11 +184,23 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun setupOutrightSeasonList(view: View) {
+        view.hall_outright_season_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.adapter = outrightSeasonAdapter
+            this.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
-
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
                     setupInPlayFilter(it.sportMenuData?.menu?.inPlay?.items ?: listOf())
@@ -190,40 +222,47 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
-                hall_league_list.visibility = View.GONE
-                hall_odds_list.visibility = View.VISIBLE
+        viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
+            hall_match_type_row.curPlayType = it
+            leagueOddAdapter.playType = it
+        })
 
-                leagueOddAdapter.data = it.oddsListData?.leagueOdds ?: listOf()
+        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer { pair ->
+            //TODO Dean : 記錄問題,沒有postValue卻觸發了observe
+            gameDateAdapter.data = pair
+            pair.find { it.second }?.first?.let {
+                timeRangeParams = when {
+                    args.matchType == MatchType.TODAY -> {
+                        TimeUtil.getTodayTimeRangeParams()
+                    }
+                    it == getString(R.string.date_row_other) -> {
+                        TimeUtil.getOtherEarlyDateTimeRangeParams()
+                    }
+                    else -> {
+                        TimeUtil.getDayDateTimeRangeParams(it)
+                    }
+                }
+                viewModel.getGameHallList(args.matchType, timeRangeParams)
+            }
+        })
+
+        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                setupGameHallList(it)
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
-                hall_odds_list.visibility = View.GONE
-                hall_league_list.visibility = View.VISIBLE
-
-                leagueAdapter.data = it.rows ?: listOf()
+                setupGameHallList(it)
             }
         })
 
-        viewModel.curPlayType.observe(this.viewLifecycleOwner, Observer {
-            inplay_ou.isSelected = (it === PlayType.OU_HDP)
-            inplay_1x2.isSelected = (it == PlayType.X12)
-
-            leagueOddAdapter.playType = it
-        })
-
-        viewModel.curDateEarly.observe(this.viewLifecycleOwner, Observer { pair ->
-            gameDateAdapter.data = pair
-            pair.find { it.second }?.first?.let {
-                timeRangeParams = TimeUtil.getDayDateTimeRangeParams(it)
-                viewModel.getLeagueList(args.matchType, timeRangeParams)
+        viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                setupGameHallList(it)
             }
         })
-
-        viewModel.getEarlyDateRow()
     }
 
     private fun setupInPlayFilter(itemList: List<Item>) {
@@ -233,37 +272,72 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.VISIBLE
-        inplay_sport.text = selectSportName
-        hall_date_row.visibility = View.GONE
+        hall_match_type_row.apply {
+            type = MatchTypeRow.IN_PLAY
+            sport = selectSportName
+        }
+
+        hall_date_list.visibility = View.GONE
     }
 
     private fun setupTodayFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.GONE
+        hall_match_type_row.type = MatchTypeRow.TODAY
+        hall_date_list.visibility = View.GONE
     }
 
     private fun setupEarlyFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.VISIBLE
+        hall_match_type_row.type = MatchTypeRow.EARLY
+        hall_date_list.visibility = View.VISIBLE
     }
 
     private fun setupParlayFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.VISIBLE
+        hall_match_type_row.type = MatchTypeRow.PARLAY
+        hall_date_list.visibility = View.VISIBLE
     }
 
     private fun setupOutrightFilter(itemList: List<Item>) {
         gameTypeAdapter.data = itemList
 
-        hall_inplay_row.visibility = View.GONE
-        hall_date_row.visibility = View.VISIBLE
+        hall_match_type_row.type = MatchTypeRow.OUTRIGHT
+        hall_date_list.visibility = View.GONE
+    }
+
+    private fun setupGameHallList(baseResult: BaseResult) {
+        when (baseResult) {
+            is OddsListResult -> setupOddList(baseResult)
+            is LeagueListResult -> setupLeagueList(baseResult)
+            is OutrightSeasonListResult -> setupOutrightSeasonList(baseResult)
+        }
+    }
+
+    private fun setupOddList(oddsListResult: OddsListResult) {
+        hall_league_list.visibility = View.GONE
+        hall_outright_season_list.visibility = View.GONE
+        hall_odds_list.visibility = View.VISIBLE
+
+        leagueOddAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+    }
+
+    private fun setupLeagueList(leagueListResult: LeagueListResult) {
+        hall_odds_list.visibility = View.GONE
+        hall_outright_season_list.visibility = View.GONE
+        hall_league_list.visibility = View.VISIBLE
+
+        leagueAdapter.data = leagueListResult.rows ?: listOf()
+    }
+
+    private fun setupOutrightSeasonList(outrightSeasonListResult: OutrightSeasonListResult) {
+        hall_odds_list.visibility = View.GONE
+        hall_league_list.visibility = View.GONE
+        hall_outright_season_list.visibility = View.VISIBLE
+
+        outrightSeasonAdapter.data = outrightSeasonListResult.rows ?: listOf()
     }
 
     companion object {

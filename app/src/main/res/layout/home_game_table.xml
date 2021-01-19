@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/textColorDark"
-            android:textSize="16sp"
+            android:textSize="@dimen/textSize16sp"
             tools:text="@string/home_tab_in_play" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:background="@drawable/home_count_ball"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="@dimen/textSize12sp"
             tools:text="21" />
 
     </LinearLayout>

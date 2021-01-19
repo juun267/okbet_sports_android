@@ -53,8 +53,7 @@ android {
     flavorDimensions "single"
 
     productFlavors {
-        //20191218 重構API測試平台使用，其他參數都和 apptest 一致
-        sportTest {
+        forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"test\""
             applicationId "com.happysport.sl.test"
             manifestPlaceholders = [
@@ -67,6 +66,10 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
+    }
+
+    sourceSets {
+        forqa.res.srcDirs = ['src/platform/test/res']
     }
 
     compileOptions {

@@ -44,7 +44,7 @@ class InfoCenterViewModel(private val infoCenterRepository: InfoCenterRepository
 
                     //判斷是不是可以再加載
                     mNeedMoreLoading =
-                        (mCurrentTotalCount + result?.infoCenterData!!.size) < result.total ?: 0
+                        (mCurrentTotalCount + (result?.infoCenterData?.size?:0)) < result?.total ?: 0
 
                     mNextRequestPage++
 

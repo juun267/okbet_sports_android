@@ -1,0 +1,190 @@
+{
+    "success": true,
+    "msg": "ok",
+    "code": 0,
+    "rows": [
+        {
+            "code": "sr:category:35",
+            "name": "Netherlands",
+            "num": 1,
+            "list": [
+                {
+                    "id": "sr:season:77283",
+                    "name": "Eredivisie 20/21",
+                    "start": 1599868800000,
+                    "end": 1621728000000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:21",
+            "name": "Russia",
+            "num": 1,
+            "list": [
+                {
+                    "id": "sr:season:77389",
+                    "name": "Premier League 20/21",
+                    "start": 1596844800000,
+                    "end": 1621728000000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:32",
+            "name": "Spain",
+            "num": 2,
+            "list": [
+                {
+                    "id": "sr:season:77361",
+                    "name": "LaLiga 20/21",
+                    "start": 1599782400000,
+                    "end": 1621814400000,
+                    "num": 1
+                },
+                {
+                    "id": "sr:season:79539",
+                    "name": "Copa del Rey 20/21",
+                    "start": 1604966400000,
+                    "end": 1618704000000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:393",
+            "name": "International Clubs",
+            "num": 2,
+            "list": [
+                {
+                    "id": "sr:season:77549",
+                    "name": "UEFA Champions League 20/21",
+                    "start": 1596844800000,
+                    "end": 1622246400000,
+                    "num": 1
+                },
+                {
+                    "id": "sr:season:77717",
+                    "name": "UEFA Europa League 20/21",
+                    "start": 1597708800000,
+                    "end": 1621987200000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:8",
+            "name": "Denmark",
+            "num": 1,
+            "list": [
+                {
+                    "id": "sr:season:77333",
+                    "name": "Superligaen 20/21",
+                    "start": 1599782400000,
+                    "end": 1622419200000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:7",
+            "name": "France",
+            "num": 1,
+            "list": [
+                {
+                    "id": "sr:season:77239",
+                    "name": "Ligue 1 20/21",
+                    "start": 1597968000000,
+                    "end": 1622419200000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:4",
+            "name": "International",
+            "num": 1,
+            "list": [
+                {
+                    "id": "sr:season:80092",
+                    "name": "WC Qualification, UEFA 2022",
+                    "start": 1616544000000,
+                    "end": 1648512000000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:30",
+            "name": "Germany",
+            "num": 1,
+            "list": [
+                {
+                    "id": "sr:season:77189",
+                    "name": "Bundesliga 20/21",
+                    "start": 1600387200000,
+                    "end": 1622246400000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:31",
+            "name": "Italy",
+            "num": 1,
+            "list": [
+                {
+                    "id": "sr:season:77547",
+                    "name": "Serie A 20/21",
+                    "start": 1600473600000,
+                    "end": 1621728000000,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "code": "sr:category:1",
+            "name": "England",
+            "num": 5,
+            "list": [
+                {
+                    "id": "sr:season:77179",
+                    "name": "Premier League 20/21",
+                    "start": 1599868800000,
+                    "end": 1621814400000,
+                    "num": 1
+                },
+                {
+                    "id": "sr:season:77685",
+                    "name": "Championship 20/21",
+                    "start": 1599782400000,
+                    "end": 1620518400000,
+                    "num": 1
+                },
+                {
+                    "id": "sr:season:77825",
+                    "name": "League One 20/21",
+                    "start": 1599868800000,
+                    "end": 1620518400000,
+                    "num": 1
+                },
+                {
+                    "id": "sr:season:77827",
+                    "name": "League Two 20/21",
+                    "start": 1599868800000,
+                    "end": 1620518400000,
+                    "num": 1
+                },
+                {
+                    "id": "sr:season:78213",
+                    "name": "National League 20/21",
+                    "start": 1601683200000,
+                    "end": 1623628800000,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "total": 10
+}

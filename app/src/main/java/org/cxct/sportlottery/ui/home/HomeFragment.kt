@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
@@ -76,7 +78,13 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             drawer_in_play.setRvGameData(it.matchPreloadData)
             drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
-                    toOddsDetail(select)
+
+                    //使用於投注細項 -> [更多]
+                   val selectData = it.matchPreloadData?.datas?.find { data -> select.code == data.code }
+                    selectData?.matchs?.let { list -> viewModel.setOddsDetailMoreList(list) }
+
+                    scroll_view.smoothScrollTo(0,0)
+                    viewModel.getOddsDetail(select)
                 }
             })
         })
@@ -84,28 +92,6 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun queryData() {
         viewModel.getInPlayMatchPreload()
-    }
-
-    private fun switchFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, 0)
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun toOddsDetail(select: GameEntity) {
-        scroll_view.smoothScrollTo(0,0)
-        (requireActivity() as MainActivity).getAppBarLayout().setExpanded(true, true)
-
-        switchFragment(
-            OddsDetailFragment.newInstance(
-                select.code,
-                select.name,
-                select.match!!.id,
-                "EU",
-            )
-        )
     }
 
 }

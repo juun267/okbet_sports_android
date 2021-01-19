@@ -18,7 +18,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_toStartOf="@+id/tv_spread"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
         <TextView
             android:id="@+id/tv_odds"
@@ -30,7 +30,7 @@
             android:background="@drawable/select_button_radius_5_odds"
             android:gravity="center"
             android:textColor="@color/color_select_text_odds"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
         <ImageView
             android:id="@+id/iv_disable_cover"
@@ -55,7 +55,7 @@
             android:layout_toStartOf="@+id/tv_odds"
             android:gravity="center"
             android:textColor="@color/text_spread"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </RelativeLayout>
 

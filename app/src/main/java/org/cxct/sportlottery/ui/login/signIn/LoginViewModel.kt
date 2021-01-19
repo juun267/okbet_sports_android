@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.login
+package org.cxct.sportlottery.ui.login.signIn
 
 import android.content.Context
 import androidx.lifecycle.LiveData

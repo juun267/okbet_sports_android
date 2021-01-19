@@ -30,25 +30,18 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.service.EventType
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
-import org.cxct.sportlottery.network.service.notice.NoticeEvent
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
-import org.cxct.sportlottery.network.service.user_money.UserMoneyEvent
-import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.SERVICE_SEND_DATA
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.game.Game2FragmentDirections
+import org.cxct.sportlottery.ui.game.GameDetailFragment
+import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.login.LoginActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
@@ -94,6 +87,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mBroadcastReceiver by lazy {
         ServiceBroadcastReceiver(viewModel)
+    }
+
+    enum class Page {
+        ODDS_DETAIL,
+        ODDS
     }
 
     private val navController by lazy {
@@ -179,9 +177,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
         btn_register.setOnClickListener {
-            //TODO simon test 跳轉註冊頁面
-            //            viewModel.logout()
-            //            getAnnouncement()
+            startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
         }
     }
 
@@ -294,17 +290,25 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 navController.navigate(action, navOptions)
             }
             R.id.game2Fragment -> {
-                val action = Game2FragmentDirections.actionGame2FragmentToGameFragment(matchType)
-                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+                val action =
+                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(
+                        matchType
+                    )
+                val navOptions =
+                    NavOptions.Builder().setLaunchSingleTop(true).build()
                 navController.navigate(action, navOptions)
             }
         }
     }
 
-    private fun switchFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right, 0).replace(
-            R.id.odds_detail_container,
-            fragment).addToBackStack(null).commit()
+    private fun addFragment(fragment: Fragment, page: Page) {
+        if (supportFragmentManager.findFragmentByTag(page.name) == null) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, 0)
+                .add(R.id.odds_detail_container, fragment, page.name)
+                .addToBackStack(page.name)
+                .commit()
+        }
     }
 
 
@@ -340,7 +344,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            switchFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType))
+            addFragment(
+                OddsDetailFragment.newInstance(
+                    gameType, typeName, matchId, oddsType
+                ), Page.ODDS_DETAIL
+            )
+        })
+
+        viewModel.isOpenMatchOdds.observe(this, Observer {
+            getAppBarLayout().setExpanded(true, true)
+            addFragment(
+                GameDetailFragment(), Page.ODDS
+            )
         })
     }
 
