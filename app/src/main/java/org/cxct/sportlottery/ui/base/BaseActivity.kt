@@ -21,7 +21,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
 
