@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="matchOdd"
+            type="org.cxct.sportlottery.network.bet.info.MatchOdd" />
+
+        <variable
+            name="parlayOdd"
+            type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/bet_info_detail"
+            layout="@layout/content_bet_info_item_detail"
+            app:matchOdd="@{matchOdd}"
+            app:parlayOdd="@{parlayOdd}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_input"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_radius_5_edittext_unfocus">
+
+                <EditText
+                    android:id="@+id/et_bet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:inputType="number"
+                    android:maxLength="18"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/main_dark"
+                    android:textColorHint="@color/gray10"
+                    android:textSize="14sp"
+                    tools:hint="限额：20,000.00"
+                    tools:ignore="RtlSymmetry" />
+
+                <ImageView
+                    android:id="@+id/iv_clear_text"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_close_gray12" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/orangeRed"
+                android:visibility="gone"
+                tools:text="投注额大于下注限额" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_close_warning"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/bet_list_warning"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:text="@string/bet_info_list_game_closed"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_warning_white"
+            tools:ignore="RtlSymmetry" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray" />
+
+        <include
+            android:id="@+id/bet_info_action"
+            layout="@layout/content_bet_info_item_action" />
+
+    </LinearLayout>
+
+</layout>
+

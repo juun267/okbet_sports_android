@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
@@ -18,6 +20,8 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
+import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -26,13 +30,18 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
@@ -40,14 +49,17 @@ import timber.log.Timber
 class MainViewModel(
     private val androidContext: Context,
     private val loginRepository: LoginRepository,
-    private val sportMenuRepository: SportMenuRepository
+    private val sportMenuRepository: SportMenuRepository,
+    private val betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
-    val token: LiveData<String?> by lazy {
-        loginRepository.token
-    }
 
-    val checkTokenResult: LiveData<LoginResult?>
-        get() = _checkTokenResult
+    val isLogin: LiveData<Boolean> by lazy {
+        loginRepository.isLogin.apply {
+            if (this.value == false && !loginRepository.isCheckToken) {
+                checkToken()
+            }
+        }
+    }
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -91,7 +103,6 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
-    private val _checkTokenResult = MutableLiveData<LoginResult?>()
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
@@ -141,27 +152,43 @@ class MainViewModel(
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
 
-    fun setOddsDetailMoreList(list: List<*>) {
-        _oddsDetailMoreList.postValue(list)
-    }
+    private val _betInfoResult = MutableLiveData<BetInfoResult>()
+    val betInfoResult: LiveData<BetInfoResult>
+        get() = _betInfoResult
 
-    fun checkToken() {
+    private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
+    val betInfoList: LiveData<MutableList<BetInfoListData>>
+        get() = _betInfoList
+
+    private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
+    val oddsDetailResult: LiveData<OddsDetailResult?>
+        get() = _oddsDetailResult
+
+    private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
+    val playCateListResult: LiveData<PlayCateListResult?>
+        get() = _playCateListResult
+
+    private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
+    val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
+        get() = _oddsDetailList
+
+    private fun checkToken() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.checkToken()
             }
-            _checkTokenResult.postValue(result)
         }
     }
 
     fun logout() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.logout()
+            }.apply {
+                loginRepository.clear()
+                //TODO change timber to actual logout ui to da
+                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
-
-            //TODO change timber to actual logout ui to da
-            Timber.d("logout result is ${result?.success} ${result?.code} ${result?.msg}")
         }
     }
 
@@ -630,5 +657,83 @@ class MainViewModel(
     fun getOddsDetail(entity: GameEntity) {
         _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
+
+    fun setOddsDetailMoreList(list: List<*>) {
+        _oddsDetailMoreList.postValue(list)
+    }
+
+    fun getBetInfoList(oddsList: List<Odd>) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                betInfoRepository.getBetInfoList(oddsList)
+            }
+            result?.success?.let {
+                if (it) {
+                    _betInfoList.postValue(betInfoRepository.betList)
+                } else {
+                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = false
+                            }
+                        }
+                    }
+                    _betInfoResult.postValue(result)
+                }
+            }
+        }
+    }
+
+
+    fun removeBetInfoItem(oddId: String) {
+        betInfoRepository.removeItem(oddId)
+        _betInfoList.postValue(betInfoRepository.betList)
+    }
+
+
+    fun getOddsDetail(matchId: String, oddsType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId, oddsType))
+            }
+            _oddsDetailResult.postValue(result)
+            result?.success?.let {
+                val list: ArrayList<OddsDetailListData> = ArrayList()
+                if (it) {
+                    result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = true
+                            }
+                        }
+                        list.add(
+                            OddsDetailListData(
+                                key,
+                                TextUtil.split(value.typeCodes),
+                                value.name,
+                                value.odds,
+                                false
+                            )
+                        )
+                    }
+                    _oddsDetailList.postValue(list)
+                }
+            }
+        }
+    }
+
+    fun getPlayCateList(gameType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.playCateListService.getPlayCateList(gameType)
+            }
+            _playCateListResult.postValue(result)
+        }
+    }
+
 
 }

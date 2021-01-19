@@ -1,26 +1,17 @@
-package org.cxct.sportlottery.ui.bet_record.search.result
+package org.cxct.sportlottery.ui.bet.record.search.result
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
 import kotlinx.android.synthetic.main.fragment_bet_record_result.tv_bet_status
-import kotlinx.android.synthetic.main.fragment_bet_record_search.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordResultBinding
-import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
-import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
+import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 

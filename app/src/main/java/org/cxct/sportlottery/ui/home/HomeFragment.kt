@@ -66,9 +66,10 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.token.observe(viewLifecycleOwner, Observer {
-            //登入、登出 token 改變重新接資料
-            queryData()
+        viewModel.isLogin.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                queryData()
+            }
         })
 
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {

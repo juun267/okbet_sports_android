@@ -264,11 +264,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.token.observe(this) {
-            //登入成功後要做的事
-            queryData()
-            updateAvatar()
-            updateMenuFragmentUI()
+        viewModel.isLogin.observe(this) {
+            if (it) {
+                queryData()
+                updateAvatar()
+            }
         }
 
         viewModel.messageListResult.observe(this, Observer {
@@ -315,6 +315,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 GameDetailFragment(), Page.ODDS
             )
         })
+
+        viewModel.errorResultToken.observe(this, Observer {
+            viewModel.logout()
+        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
@@ -341,16 +345,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             .load(sLoginData?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
-    }
-
-    private fun updateMenuFragmentUI() {
-        try {
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
-            menuFrag.updateUI()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     private fun queryData() {
