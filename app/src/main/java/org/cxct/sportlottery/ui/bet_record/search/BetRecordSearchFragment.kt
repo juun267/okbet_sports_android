@@ -26,6 +26,7 @@ import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
+import org.cxct.sportlottery.ui.bet_record.statusNameMap
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -124,7 +125,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun initListView() {
-        betStatusList = viewModel.statusNameMap.map {
+        betStatusList = statusNameMap.map {
             BetTypeItemData(it.key, it.value, false)
         }
 

@@ -418,4 +418,9 @@ class MainViewModel(
         }
         _curOddsDetailParams.postValue(listOf(item?.code,item?.name,oddId))
     }
+
+    fun setUserMoney(money: Double?) {
+        _userMoney.value = money
+    }
+
 }
