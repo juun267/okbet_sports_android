@@ -5,12 +5,15 @@ import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
+import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import retrofit2.Response
@@ -38,5 +41,8 @@ interface UserService {
 
     @POST(USER_UPDATE_PWD)
     suspend fun updatePwd(@Body updatePwdRequest: UpdatePwdRequest): Response<UpdatePwdResult>
+
+    @POST(USER_UPDATE_FUND_PWD)
+    suspend fun updateFundPwd(@Body updateFundPwdRequest: UpdateFundPwdRequest): Response<UpdateFundPwdResult>
 
 }

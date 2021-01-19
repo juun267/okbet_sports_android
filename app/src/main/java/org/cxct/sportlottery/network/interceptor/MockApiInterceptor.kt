@@ -42,6 +42,7 @@ import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
 import timber.log.Timber
@@ -158,6 +159,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(USER_UPDATE_PWD) -> {
                     response = getMockJsonData(request, "user_update_pwd.mock")
+                }
+                path.contains(USER_UPDATE_FUND_PWD) -> {
+                    response = getMockJsonData(request, "user_update_fund_pwd.mock")
                 }
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")

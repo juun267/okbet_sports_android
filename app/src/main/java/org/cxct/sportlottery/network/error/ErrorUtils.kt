@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
@@ -62,6 +63,7 @@ import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import retrofit2.Converter
 import retrofit2.Response
@@ -190,6 +192,10 @@ object ErrorUtils {
                     (url.contains(USER_UPDATE_PWD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return UpdatePwdResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(USER_UPDATE_FUND_PWD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return UpdateFundPwdResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(USER_NOTICE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
