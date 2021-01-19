@@ -666,26 +666,20 @@ class MainViewModel(
             val result = doNetwork(androidContext) {
                 betInfoRepository.getBetInfoList(oddsList)
             }
-            result?.success.let {
-                if (it != null) {
-                    if (it) {
-                        _betInfoList.postValue(betInfoRepository.betList)
-                    } else {
-                        oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                            var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                            betInfoList.value.let { list ->
-                                if (list != null) {
-                                    for (m in list.indices) {
-                                        for (i in value.odds.indices) {
-                                            odd = value.odds.find { v -> v.id == betInfoList.value!![m].matchOdd.oddsId }
-                                            odd?.isSelect = false
-                                        }
-                                    }
-                                }
+            result?.success?.let {
+                if (it) {
+                    _betInfoList.postValue(betInfoRepository.betList)
+                } else {
+                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = false
                             }
                         }
-                        _betInfoResult.postValue(result)
                     }
+                    _betInfoResult.postValue(result)
                 }
             }
         }
@@ -709,14 +703,10 @@ class MainViewModel(
                 if (it) {
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoList.value.let { list ->
-                            if (list != null) {
-                                for (m in list.indices) {
-                                    for (i in value.odds.indices) {
-                                        odd = value.odds.find { v -> v.id == betInfoList.value!![m].matchOdd.oddsId }
-                                        odd?.isSelect = true
-                                    }
-                                }
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = true
                             }
                         }
                         list.add(
