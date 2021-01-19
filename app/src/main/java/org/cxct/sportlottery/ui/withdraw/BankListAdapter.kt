@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.*
 import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bank.T
+import org.cxct.sportlottery.network.bank.my.BankCardList
 
 class BankListAdapter(private val mBankListClickListener: BankListClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class CardType { EDIT, ADD }
 
-    var bankList = listOf<T>()
+    var bankList = listOf<BankCardList>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -55,7 +55,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class ItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(data: T, mBankListClickListener: BankListClickListener) {
+        fun bind(data: BankCardList, mBankListClickListener: BankListClickListener) {
             itemView.apply {
                 iv_bank_icon.setImageResource(R.drawable.ic_bank_default) //TODO Dean : 待匯入銀行icon後對key做mapping
                 tv_bank_name.text = data.bankName
@@ -95,7 +95,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 }
 
-class BankListClickListener(private val editListener: (item: T) -> Unit, private val addListener: () -> Unit) {
-    fun onEdit(item: T) = editListener(item)
+class BankListClickListener(private val editListener: (item: BankCardList) -> Unit, private val addListener: () -> Unit) {
+    fun onEdit(item: BankCardList) = editListener(item)
     fun onAdd() = addListener()
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bank.MyResult
+import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
@@ -23,9 +23,9 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
         get() = _checkBankCardOrNot
     private var _checkBankCardOrNot = MutableLiveData<Boolean>()
 
-    val bankCardList: LiveData<MyResult>
+    val bankCardList: LiveData<BankMyResult>
         get() = _bankCardList
-    private var _bankCardList = MutableLiveData<MyResult>()
+    private var _bankCardList = MutableLiveData<BankMyResult>()
 
     val bankAddResult: LiveData<BankAddResult>
         get() = _bankAddResult
@@ -35,9 +35,9 @@ class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
         get() = _bankDeleteResult
     private var _bankDeleteResult = MutableLiveData<BankDeleteResult>()
 
-    fun addWithdraw(withdrawAddRequest: WithdrawAddRequest){
+    fun addWithdraw(withdrawAddRequest: WithdrawAddRequest) {
         viewModelScope.launch {
-            doNetwork(androidContext){
+            doNetwork(androidContext) {
                 OneBoSportApi.withdrawService.addWithdraw(withdrawAddRequest)
             }
         }

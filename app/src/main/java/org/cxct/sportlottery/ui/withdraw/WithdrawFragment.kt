@@ -15,17 +15,16 @@ import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bank.T
+import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.withdraw.WithdrawActivity.Companion.navigateKey
 import org.cxct.sportlottery.util.MD5Util
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
-    private var withdrawBankCardData: T? = null
+    private var withdrawBankCardData: BankCardList? = null
 
     private val mNavController by lazy {
         findNavController()
@@ -92,7 +91,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
     }
 
-    private fun initSelectBankCardBottomSheet(view: View, bankCardList: MutableList<T>) {
+    private fun initSelectBankCardBottomSheet(view: View, bankCardList: MutableList<BankCardList>) {
         val bankCardBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
         bankCardBottomSheet = BottomSheetDialog(requireContext())
         bankCardBottomSheet.apply {
@@ -127,12 +126,12 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         return true
     }
 
-    private fun getBankCardTailNo(data: T): String {
+    private fun getBankCardTailNo(data: BankCardList): String {
         return String.format(getString(R.string.selected_bank_card), data.bankName, data.cardNo)
     }
 }
 
-class BankCardAdapter(private val context: Context, private val dataList: MutableList<T>, private val listener: BankCardAdapterListener) : BaseAdapter() {
+class BankCardAdapter(private val context: Context, private val dataList: MutableList<BankCardList>, private val listener: BankCardAdapterListener) : BaseAdapter() {
 
     private var selectedPosition = 0
 
@@ -182,6 +181,6 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
     }
 }
 
-class BankCardAdapterListener(val listener: (bankCard: T) -> Unit) {
-    fun onClick(bankCard: T) = listener(bankCard)
+class BankCardAdapterListener(val listener: (bankCard: BankCardList) -> Unit) {
+    fun onClick(bankCard: BankCardList) = listener(bankCard)
 }

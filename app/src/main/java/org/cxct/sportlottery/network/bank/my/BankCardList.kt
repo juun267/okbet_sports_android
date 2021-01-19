@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.bank
+package org.cxct.sportlottery.network.bank.my
 
 
 import com.squareup.moshi.Json
@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
-data class T(
+data class BankCardList(
     @Json(name = "addTime")
     val addTime: String,
     @Json(name = "bankName")

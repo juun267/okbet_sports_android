@@ -2,7 +2,6 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
@@ -31,7 +30,7 @@ import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bank.MyResult
+import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
@@ -178,7 +177,7 @@ object ErrorUtils {
                     }
                     (url.contains(BANK_MY)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return MyResult(it.code, it.msg, it.success, null) as T
+                        return BankMyResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(BANK_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")

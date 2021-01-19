@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.bank
+package org.cxct.sportlottery.network.bank.my
 
 
 import com.squareup.moshi.Json
@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
-data class MyResult(
+data class BankMyResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
@@ -14,5 +14,5 @@ data class MyResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val bankCardList: List<T>?
-): BaseResult()
+    val bankCardList: List<BankCardList>?
+) : BaseResult()
