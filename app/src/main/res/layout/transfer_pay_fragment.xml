@@ -37,7 +37,7 @@
                     android:textSize="@dimen/textSize14sp"
                     android:textStyle="" />
 
-                <view
+                <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
@@ -346,7 +346,7 @@
                     android:textColor="@color/gray4"
                     android:textSize="@dimen/textSize14sp" />
 
-                <view
+                <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
@@ -407,7 +407,7 @@
                     android:textColor="@color/gray4"
                     android:textSize="@dimen/textSize14sp" />
 
-                <view
+                <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
@@ -459,7 +459,7 @@
                     android:textColor="@color/gray4"
                     android:textSize="@dimen/textSize14sp" />
 
-                <view
+                <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
@@ -511,7 +511,7 @@
                     android:textColor="@color/gray4"
                     android:textSize="@dimen/textSize14sp" />
 
-                <view
+                <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
@@ -570,7 +570,7 @@
                     android:textColor="@color/gray4"
                     android:textSize="@dimen/textSize14sp" />
 
-                <view
+                <View
                     android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"

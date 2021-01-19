@@ -7,14 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.ui.base.BaseFragment
 
-class TransferPayFragment : Fragment() {
+class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     companion object {
-        fun newInstance() = TransferPayFragment()
-    }
+        private const val TAG = "TransferPayFragment"    }
 
-    private lateinit var viewModel: TransferPayViewModel
+    private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("","","","",0) //支付類型
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,10 +24,21 @@ class TransferPayFragment : Fragment() {
         return inflater.inflate(R.layout.transfer_pay_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(TransferPayViewModel::class.java)
-        // TODO: Use the ViewModel
+//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+//        return inflater.inflate(R.layout.transfer_pay_fragment, container, false)
+//    }
+
+
+    fun setArguments(moneyPayWay: MoneyPayWayData?): TransferPayFragment {
+        mMoneyPayWay = moneyPayWay
+        return this
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        initPayAccountSpinner()
+//        initButton()
+//        initTimePicker()
+    }
 }

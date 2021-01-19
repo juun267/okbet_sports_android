@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.money.recharge.MoneyRechargeActivity">
 
     <!-- Tab bar-->
@@ -61,7 +62,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,19 +71,13 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/gray_background_color"
-            android:scrollIndicators="none">
+            android:background="@color/gray_background_color">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:background="@color/white"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_pay_type"
@@ -107,9 +102,8 @@
                         android:visibility="gone"
                         tools:visibility="visible" />
 
-                </LinearLayout>
 
-<!--                TODO Bill 這裡沒綁定銀行卡UI還沒出圖-->
+                <!--                TODO Bill 這裡沒綁定銀行卡UI還沒出圖-->
                 <RelativeLayout
                     android:id="@+id/block_no_type"
                     android:layout_width="match_parent"
@@ -145,4 +139,4 @@
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

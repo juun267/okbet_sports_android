@@ -2,13 +2,16 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_money_recharge.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.base.CustomImageAdapter
 
 class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -18,11 +21,13 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
     private val bankTypeAdapter by lazy { MoneyBankTypeAdapter() }
 
-    private val transferPayList by lazy { mutableListOf<MoneyPayWayData>() }
-
-    private val onlinePayList by lazy { mutableListOf<MoneyPayWayData>() }
+    private var transferPayList = mutableListOf<MoneyPayWayData>()
+    private var onlinePayList = mutableListOf<MoneyPayWayData>()
+    private var currentPayList = mutableListOf<MoneyPayWayData>()
 
     private var mCurrentFragment: Fragment? = null
+
+    private var mCustomImageAdapter: CustomImageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +50,19 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 //        })
 
         viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
-            var transferPayList = it ?: return@Observer
+            transferPayList = it ?: return@Observer
             if (currentTab == RechargeType.TRANSFER_PAY)
                 bankTypeAdapter?.data = transferPayList
+
+
+            when(currentTab){
+                RechargeType.TRANSFER_PAY->switchFragment(getPayFragment(transferPayList[0]),"TransferPayFragment")
+                RechargeType.TRANSFER_PAY->switchFragment(getPayFragment(transferPayList[0]),"OnlinePayFragment")
+            }
         })
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
-            var onlinePayList = it ?: return@Observer
+            onlinePayList = it ?: return@Observer
             if (currentTab == RechargeType.ONLINE_PAY)
                 bankTypeAdapter?.data = onlinePayList
         })
@@ -80,14 +91,13 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
         if ((!transferPayList.isNullOrEmpty() && currentTab == RechargeType.TRANSFER_PAY) || (!onlinePayList.isNullOrEmpty() && currentTab == RechargeType.ONLINE_PAY)) {
             block_no_type.visibility = View.VISIBLE
+            rv_pay_type.visibility = View.GONE
+            fl_pay_type_container.visibility = View.GONE
         } else {
             block_no_type.visibility = View.GONE
-            when(currentTab){
-                RechargeType.TRANSFER_PAY->switchFragment(TransferPayFragment(),"TransferPayFragment")
-                RechargeType.TRANSFER_PAY->switchFragment(TransferPayFragment(),"OnlinePayFragment")
-            }
+            rv_pay_type.visibility = View.VISIBLE
+            fl_pay_type_container.visibility = View.VISIBLE
         }
-
     }
 
     private fun refreshPayContainer() {
@@ -104,10 +114,15 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment? {
         return when (moneyPayWay.rechType) {
-            "onlinePayment" -> OnlinePayFragment().setArguments(moneyPayWay)
-            else -> TransferPayFragment().setArguments(moneyPayWay)
+            "onlinePayment" -> TransferPayFragment().setArguments(moneyPayWay)
+            else -> TransferPayFragment()
         }
     }
+
+    private fun refreshView(dataList: MutableList<MoneyPayWayData>) {
+        currentPayList = dataList
+    }
+
 
     /**
      * 導覽列 頁面切換
