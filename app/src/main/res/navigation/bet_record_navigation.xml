@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/betRecordSearchFragment"
-        android:name="org.cxct.sportlottery.ui.bet_record.search.BetRecordSearchFragment"
+        android:name="org.cxct.sportlottery.ui.bet.record.search.BetRecordSearchFragment"
         android:label="fragment_bet_record_search"
         tools:layout="@layout/fragment_bet_record_search" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/betRecordResultFragment"
-        android:name="org.cxct.sportlottery.ui.bet_record.search.result.BetRecordResultFragment"
+        android:name="org.cxct.sportlottery.ui.bet.record.search.result.BetRecordResultFragment"
         android:label="fragment_bet_record_result"
         tools:layout="@layout/fragment_bet_record_result" >
     </fragment>

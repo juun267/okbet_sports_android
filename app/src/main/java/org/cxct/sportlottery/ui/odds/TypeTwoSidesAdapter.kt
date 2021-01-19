@@ -8,9 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class TypeTwoSidesAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
+class TypeTwoSidesAdapter(
+    private val oddsList: List<Odd>,
+    private val onOddClickListener: OnOddClickListener,
+    private val betInfoList: MutableList<BetInfoListData>
+) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +40,7 @@ class TypeTwoSidesAdapter(private val oddsList: List<Odd>) : RecyclerView.Adapte
 
         fun bindModel(odd: Odd, position: Int) {
 
-            setData(odd)
+            setData(odd, onOddClickListener, betInfoList)
 
             tvSpread.text = odd.spread
 
