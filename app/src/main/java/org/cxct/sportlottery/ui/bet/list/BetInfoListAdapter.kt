@@ -20,8 +20,7 @@ import org.cxct.sportlottery.util.TextUtil
 class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
-    var betInfoList = mutableListOf<BetInfoListData>()
-
+    var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -131,16 +130,18 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
 
-    fun addAll(betInfoList: MutableList<BetInfoListData>) {
-        this.betInfoList.addAll(betInfoList)
-        notifyDataSetChanged()
-    }
-
-
-    fun removeItem(position: Int) {
-        betInfoList.removeAt(position)
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(0, betInfoList.size);
+    fun modify(list: MutableList<BetInfoListData>, position: Int) {
+        if (betInfoList.size == 0) {
+            betInfoList.addAll(list)
+            notifyDataSetChanged()
+        } else if (list.size < betInfoList.size) {
+            with(betInfoList) {
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(0, betInfoList.size)
+                clear()
+                addAll(list)
+            }
+        }
     }
 
 

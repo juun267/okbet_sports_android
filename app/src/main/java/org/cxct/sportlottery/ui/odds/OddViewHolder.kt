@@ -10,6 +10,11 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    companion object{
+        const val PLAYING = 0
+        const val LOCK = 1
+    }
+
     private val vCover = itemView.findViewById<View>(R.id.iv_disable_cover)
     private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
@@ -20,7 +25,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         tvOdds.text = odd.odds.toString()
 
         when (odd.status) {
-            0 -> {
+            PLAYING -> {
 
                 val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                 odd.isSelect = select
@@ -39,7 +44,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 }
             }
 
-            1 -> vCover.visibility = View.VISIBLE
+            LOCK -> vCover.visibility = View.VISIBLE
 
         }
     }

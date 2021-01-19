@@ -20,6 +20,8 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
+import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -28,6 +30,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -37,6 +40,8 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
@@ -153,6 +158,18 @@ class MainViewModel(
     private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
     val betInfoList: LiveData<MutableList<BetInfoListData>>
         get() = _betInfoList
+
+    private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
+    val oddsDetailResult: LiveData<OddsDetailResult?>
+        get() = _oddsDetailResult
+
+    private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
+    val playCateListResult: LiveData<PlayCateListResult?>
+        get() = _playCateListResult
+
+    private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
+    val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
+        get() = _oddsDetailList
 
     fun checkToken() {
         viewModelScope.launch {
@@ -649,20 +666,83 @@ class MainViewModel(
             val result = doNetwork(androidContext) {
                 betInfoRepository.getBetInfoList(oddsList)
             }
-            _betInfoResult.postValue(result)
+            result?.success.let {
+                if (it != null) {
+                    if (it) {
+                        _betInfoList.postValue(betInfoRepository.betList)
+                    } else {
+                        oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                            var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                            betInfoList.value.let { list ->
+                                if (list != null) {
+                                    for (m in list.indices) {
+                                        for (i in value.odds.indices) {
+                                            odd = value.odds.find { v -> v.id == betInfoList.value!![m].matchOdd.oddsId }
+                                            odd?.isSelect = false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        _betInfoResult.postValue(result)
+                    }
+                }
+            }
         }
-    }
-
-    fun addToBetInfoList() {
-        _betInfoList.postValue(betInfoRepository.betList)
     }
 
 
     fun removeBetInfoItem(oddId: String) {
         betInfoRepository.removeItem(oddId)
         _betInfoList.postValue(betInfoRepository.betList)
-        Timber.d("剩餘${betInfoList.value!!.size}項")
-
     }
+
+
+    fun getOddsDetail(matchId: String, oddsType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId, oddsType))
+            }
+            _oddsDetailResult.postValue(result)
+            result?.success?.let {
+                val list: ArrayList<OddsDetailListData> = ArrayList()
+                if (it) {
+                    result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                        betInfoList.value.let { list ->
+                            if (list != null) {
+                                for (m in list.indices) {
+                                    for (i in value.odds.indices) {
+                                        odd = value.odds.find { v -> v.id == betInfoList.value!![m].matchOdd.oddsId }
+                                        odd?.isSelect = true
+                                    }
+                                }
+                            }
+                        }
+                        list.add(
+                            OddsDetailListData(
+                                key,
+                                TextUtil.split(value.typeCodes),
+                                value.name,
+                                value.odds,
+                                false
+                            )
+                        )
+                    }
+                    _oddsDetailList.postValue(list)
+                }
+            }
+        }
+    }
+
+    fun getPlayCateList(gameType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.playCateListService.getPlayCateList(gameType)
+            }
+            _playCateListResult.postValue(result)
+        }
+    }
+
 
 }

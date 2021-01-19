@@ -118,11 +118,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         contentView.addView(floatButtonView)
 
         if (viewModel is MainViewModel) {
-            if ((viewModel as MainViewModel).betInfoList.value != null) {
-                checkBetInfoList((viewModel as MainViewModel).betInfoList.value?.size!!)
-            }
             (viewModel as MainViewModel).betInfoList.observe(this, Observer {
-                if(it!=null)checkBetInfoList(it.size)
+                if (it != null) checkBetInfoList(it.size)
             })
         }
 

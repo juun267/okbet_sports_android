@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +18,8 @@ import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
 
@@ -52,9 +48,6 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-
-    //後續將該OddsDetailViewModel內容移至MainViewModel
-    private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +78,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     private fun dataBinding() {
         dataBinding.apply {
             view = this@OddsDetailFragment
-            oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
+            oddsDetailViewModel= this@OddsDetailFragment.viewModel
             lifecycleOwner = this@OddsDetailFragment
         }
     }
@@ -94,11 +87,11 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     private fun initUI() {
         tv_type_name.text = typeName
 
-        (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
 
-        rv_detail.apply {
+        dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
@@ -127,8 +120,8 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    oddsDetailViewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
-                        (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
+                    viewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
+                        (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
                     }
                 }
             }
@@ -138,93 +131,49 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
 
     private fun observeData() {
-        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
-                    tab_cat.removeAllTabs()
+                    dataBinding.tabCat.removeAllTabs()
                     for (element in result.rows) {
-                        tab_cat.addTab(tab_cat.newTab().setText(element.name), false)
+                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(element.name), false)
                     }
 
                     matchId?.let { matchId ->
                         oddsType?.let { oddsType ->
-                            oddsDetailViewModel.getOddsDetail(matchId, oddsType)
+                            viewModel.getOddsDetail(matchId, oddsType)
                         }
                     }
                 }
             }
         })
 
-        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
-
+        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                tv_time.text = TimeUtil.stampToDate(time.toLong())
+                dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
             }
+        })
 
+        viewModel.oddsDetailList.observe(requireActivity(), Observer {
             oddsDetailListAdapter?.oddsDetailListData?.clear()
-            it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
-
-                var odd: Odd?
-
-                viewModel.betInfoList.value.let { list ->
-
-                    if (list != null) {
-                        for (m in list.indices) {
-                            for (i in value.odds.indices) {
-                                odd = value.odds.find { v -> v.id == viewModel.betInfoList.value!![m].matchOdd.oddsId }
-                                odd?.isSelect = true
-                            }
-                        }
-                    }
-                }
-
-                oddsDetailListAdapter?.oddsDetailListData?.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        value.odds,
-                        false
-                    )
-                )
-            }
-
-            tab_cat.getTabAt(0)?.select()
-
+            oddsDetailListAdapter?.oddsDetailListData?.addAll(it)
+            dataBinding.tabCat.getTabAt(0)?.select()
         })
 
         viewModel.betInfoResult.observe(requireActivity(), Observer {
-            if (it.success) {
-                it.betInfoData?.let { data -> viewModel.addToBetInfoList() }
-            } else {
-                oddsDetailViewModel.oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                    var odd: Odd?
-                    viewModel.betInfoList.value.let { list ->
-                        if (list != null) {
-                            for (m in list.indices) {
-                                for (i in value.odds.indices) {
-                                    odd = value.odds.find { v -> v.id == viewModel.betInfoList.value!![m].matchOdd.oddsId }
-                                    odd?.isSelect = false
-                                }
-                            }
-                        }
-                    }
-                    oddsDetailListAdapter?.notifyDataSetChanged()
-                }
-            }
+            oddsDetailListAdapter?.notifyDataSetChanged()
         })
 
         viewModel.betInfoList.observe(requireActivity(), Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-
     }
 
 
     private fun getData() {
         gameType?.let { gameType ->
-            oddsDetailViewModel.getPlayCateList(gameType)
+            viewModel.getPlayCateList(gameType)
         }
     }
 
