@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
+import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
@@ -149,6 +150,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(USER_EDIT_NICKNAME) -> {
                     response = getMockJsonData(request, "user_edit_nickname.mock")
+                }
+                path.contains(USER_EDIT_ICON_URL) -> {
+                    response = getMockJsonData(request, "user_edit_icon_url.mock")
                 }
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")
