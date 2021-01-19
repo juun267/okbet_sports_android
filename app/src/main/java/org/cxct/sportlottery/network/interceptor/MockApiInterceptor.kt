@@ -35,12 +35,12 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
-import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import timber.log.Timber
 import java.io.IOException
 import kotlin.jvm.Throws
@@ -155,6 +155,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(RECHARGE_CONFIG_MAP) ->{
                     response = getMockJsonData(request, "money_recharge_config.mock")
+                }
+                path.contains(UPLOAD_IMG) -> {
+                    response = getMockJsonData(request, "upload_image.mock")
                 }
                 path.contains(BANK_MY) -> {
                     response = getMockJsonData(request, "user_bank_my")
