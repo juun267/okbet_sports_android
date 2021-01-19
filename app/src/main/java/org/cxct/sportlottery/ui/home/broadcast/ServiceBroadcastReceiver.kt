@@ -19,7 +19,6 @@ import org.cxct.sportlottery.ui.home.MainViewModel
 import org.json.JSONArray
 
 class ServiceBroadcastReceiver(val viewModel: MainViewModel) : BroadcastReceiver() {
-    private val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() } //.add(KotlinJsonAdapterFactory())
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
         val channel = bundle?.getString("channel", "")
@@ -34,11 +33,11 @@ class ServiceBroadcastReceiver(val viewModel: MainViewModel) : BroadcastReceiver
                 BackService.URL_ALL -> {
                     when (eventType) {
                         EventType.NOTICE.value -> {
-                            val data = getNotice(jObjStr)
+                            val data = ServiceMessage.getNotice(jObjStr)
 
                         }
                         EventType.GLOBAL_STOP.value -> {
-                            val data = getGlobalStop(jObjStr)
+                            val data = ServiceMessage.getGlobalStop(jObjStr)
 
                         }
                     }
@@ -48,11 +47,11 @@ class ServiceBroadcastReceiver(val viewModel: MainViewModel) : BroadcastReceiver
                 BackService.URL_PRIVATE -> {
                     when (eventType) {
                         EventType.USER_MONEY.value -> {
-                            val data = getUserMoney(jObjStr)
+                            val data = ServiceMessage.getUserMoney(jObjStr)
                             viewModel.setUserMoney(data?.money) //testing
                         }
                         EventType.USER_NOTICE.value -> {
-                            val data = getUserNotice(jObjStr)
+                            val data = ServiceMessage.getUserNotice(jObjStr)
 
                         }
                         EventType.ORDER_SETTLEMENT.value -> {
@@ -100,47 +99,6 @@ class ServiceBroadcastReceiver(val viewModel: MainViewModel) : BroadcastReceiver
             }
         }
 
-    }
-
-
-    private fun getGlobalStop(messageStr: String): GlobalStopEvent? {
-        val adapter = moshi.adapter(GlobalStopEvent::class.java)
-        return adapter.fromJson(messageStr)
-    }
-
-    private fun getMatchClock(messageStr: String): MatchClockEvent? {
-        val adapter = moshi.adapter(MatchClockEvent::class.java)
-        return adapter.fromJson(messageStr)
-    }
-
-    private fun getMatchStatusChange(messageStr: String): MatchStatusChangeEvent? {
-        val adapter = moshi.adapter(MatchStatusChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
-    }
-
-    private fun getNotice(messageStr: String): NoticeEvent? {
-        val adapter = moshi.adapter(NoticeEvent::class.java)
-        return adapter.fromJson(messageStr)
-    }
-
-    private fun getOddsChange(messageStr: String): OddsChangeEvent? {
-        val adapter = moshi.adapter(OddsChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
-    }
-
-    private fun getPingPong(messageStr: String): PingPongEvent? {
-        val adapter = moshi.adapter(PingPongEvent::class.java)
-        return adapter.fromJson(messageStr)
-    }
-
-    private fun getUserMoney(messageStr: String): UserMoneyEvent? {
-        val adapter = moshi.adapter(UserMoneyEvent::class.java)
-        return adapter.fromJson(messageStr)
-    }
-
-    private fun getUserNotice(messageStr: String): UserNoticeEvent? {
-        val adapter = moshi.adapter(UserNoticeEvent::class.java)
-        return adapter.fromJson(messageStr)
     }
 
 }

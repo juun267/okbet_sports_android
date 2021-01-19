@@ -1,11 +1,11 @@
 package org.cxct.sportlottery.service
 
 import android.annotation.SuppressLint
+import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import io.reactivex.CompletableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 
 const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
 
-class BackService : BaseService() {
+class BackService : Service() {
 
     companion object {
         private const val URL_SOCKET_HOST_AND_PORT = "http://sports.cxct.org/api/ws/app/im" //app连接端点,无sockjs
@@ -75,8 +75,7 @@ class BackService : BaseService() {
         disconnect()
     }
 
-    override fun onBind(intent: Intent): IBinder {
-
+    override fun onBind(intent: Intent?): IBinder {
         if (token.isNullOrEmpty()) return mBinder
 
         if (mStompClient?.isConnected != true) {

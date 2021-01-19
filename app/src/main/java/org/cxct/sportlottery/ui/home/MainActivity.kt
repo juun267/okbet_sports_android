@@ -120,12 +120,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
-        doBindService()
     }
 
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        doBindService()
     }
 
     override fun onStop() {
