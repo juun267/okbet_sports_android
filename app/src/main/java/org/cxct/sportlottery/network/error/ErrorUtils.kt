@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
+import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
@@ -58,6 +59,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.UserMoneyResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import retrofit2.Converter
 import retrofit2.Response
@@ -178,6 +180,10 @@ object ErrorUtils {
                     (url.contains(USER_EDIT_NICKNAME)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return NicknameResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(USER_EDIT_ICON_URL)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return IconUrlResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(USER_NOTICE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

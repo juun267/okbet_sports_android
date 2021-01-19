@@ -1,9 +1,12 @@
 package org.cxct.sportlottery.network.user
 
+import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
+import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import retrofit2.Response
@@ -25,4 +28,7 @@ interface UserService {
 
     @POST(USER_EDIT_NICKNAME)
     suspend fun editNickname(@Body nicknameRequest: NicknameRequest): Response<NicknameResult>
+
+    @POST(USER_EDIT_ICON_URL)
+    suspend fun editIconUrl(@Body editIconUrlRequest: IconUrlRequest): Response<IconUrlResult>
 }
