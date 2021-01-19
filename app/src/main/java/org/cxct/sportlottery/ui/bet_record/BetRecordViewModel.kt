@@ -69,8 +69,8 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
         viewModelScope.launch {
             val betListRequest = BetListRequest(championOnly = championOnly,
                                                 statusList = statusList,
-                                                startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START).toString(),
-                                                endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END).toString())
+                                                startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START_OF_DAY).toString(),
+                                                endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END_OF_DAY).toString())
 
             doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)

@@ -97,12 +97,6 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-        <include
-            android:id="@+id/view_no_data"
-            layout="@layout/view_no_record"
-            android:visibility="gone"/>
-
-
         <LinearLayout
             android:id="@+id/linear_layout2"
             android:layout_width="match_parent"

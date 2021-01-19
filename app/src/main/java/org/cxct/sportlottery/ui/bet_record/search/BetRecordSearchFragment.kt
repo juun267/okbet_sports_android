@@ -26,6 +26,7 @@ import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
+import org.cxct.sportlottery.util.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -120,11 +121,10 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
-        val todayCalendar = Calendar.getInstance()
-        val minusDaysCalendar = Calendar.getInstance()
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
         if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
-        return Pair<Calendar, Calendar>(minusDaysCalendar, todayCalendar)
-
+        return Pair(minusDaysCalendar, todayCalendar)
     }
 
     private fun initListView() {

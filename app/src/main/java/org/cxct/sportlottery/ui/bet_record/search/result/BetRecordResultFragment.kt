@@ -42,6 +42,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     private fun initTv() {
         viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
+//            tv_bet_status.text = list.joinToString(",") { it.name }
             if (list.size == viewModel.statusNameMap.values.size) {
                 tv_bet_status.text = getString(R.string.all_order)
             } else {
@@ -60,6 +61,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         rv_bet_record.adapter = rvAdapter
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
             it?.let {
+                /*
                 if (it.rows?.size?:0 <= 0) {
                     view_no_data.visibility = View.VISIBLE
                     rv_bet_record.visibility = View.GONE
@@ -67,6 +69,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                     view_no_data.visibility = View.GONE
                     rv_bet_record.visibility = View.VISIBLE
                 }
+                */
                 rvAdapter.addFooterAndSubmitList(it.rows)
             }
         })
