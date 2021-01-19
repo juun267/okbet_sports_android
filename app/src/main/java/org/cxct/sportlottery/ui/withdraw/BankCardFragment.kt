@@ -14,14 +14,21 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.*
+import kotlinx.android.synthetic.main.fragment_bank_card.btn_delete_bank
+import kotlinx.android.synthetic.main.fragment_bank_card.edit_bank_card_number
+import kotlinx.android.synthetic.main.fragment_bank_card.edit_create_name
+import kotlinx.android.synthetic.main.fragment_bank_card.edit_network_point
+import kotlinx.android.synthetic.main.fragment_bank_card.tv_bank_name
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
+import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.BankUtil
 import org.cxct.sportlottery.util.MD5Util.MD5Encode
 
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
@@ -127,11 +134,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 dismiss()
             }
         }
+        //TODO Dean : initStatus
+        mBankSelectorAdapter.initSelectStatus()
     }
 
     private fun updateSelectedBank(bank: BankCardList) {
         tv_bank_name.text = bank.bankName
-//        iv_bank_icon.setImageResource("") //TODO Dean: mapping bank icon
+        iv_bank_icon.setImageResource(BankUtil.getBankIconByBankName(bank.bankName))
     }
 
     private fun setupEvent() {
@@ -264,8 +273,9 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Mu
 
             view.apply {
                 tv_bank_card.text = String.format(context.getString(R.string.selected_bank_card), data.bankName, data.cardNo)
+                iv_bank_icon.setImageResource(BankUtil.getBankIconByBankName(data.bankName))
                 if (position == selectedPosition)
-                    ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                    this.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
                 else
                     ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
                 ll_select_bank_card.setOnClickListener {
@@ -294,13 +304,15 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Mu
         return 0
     }
 
-    fun initSelectStatus(){
+    fun initSelectStatus() {
         selectedPosition = 0
-        listener.onSelect(dataList[0])
+        if (dataList.size > 0) {
+            listener.onSelect(dataList[0])
+        }
         notifyDataSetChanged()
     }
 }
 
-class BankSelectorAdapterListener(private val selectListener: (item: BankCardList) -> Unit){
+class BankSelectorAdapterListener(private val selectListener: (item: BankCardList) -> Unit) {
     fun onSelect(item: BankCardList) = selectListener(item)
 }
