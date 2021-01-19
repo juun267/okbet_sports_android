@@ -34,7 +34,6 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     private fun initTv() {
         viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
-//            tv_bet_status.text = list.joinToString(",") { it.name }
             if (list.size == viewModel.statusNameMap.values.size) {
                 tv_bet_status.text = getString(R.string.all_order)
             } else {
