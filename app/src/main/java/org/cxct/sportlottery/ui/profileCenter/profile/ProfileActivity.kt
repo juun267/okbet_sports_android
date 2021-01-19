@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
+import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
 
 class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
@@ -99,6 +100,15 @@ class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
         viewModel.uploadImgResult.observe(this, Observer {
             if (it?.success == true)
                 updateAvatar(sConfigData?.resServerHost + it.imgData?.path)
+            else
+                ToastUtil.showToastInCenter(this, it?.msg)
+        })
+
+        viewModel.editIconUrlResult.observe(this, Observer {
+            if (it?.success == true)
+                ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
+            else
+                ToastUtil.showToastInCenter(this, it?.msg)
         })
     }
 }
