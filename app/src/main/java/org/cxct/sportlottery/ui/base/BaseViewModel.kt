@@ -2,15 +2,18 @@ package org.cxct.sportlottery.ui.base
 
 import android.content.Context
 import androidx.annotation.Nullable
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.TokenError
+import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
-import java.lang.Exception
 import java.net.SocketTimeoutException
 
 
@@ -76,10 +79,12 @@ abstract class BaseViewModel : ViewModel() {
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         val errorResult = ErrorUtils.parseError(response)
         errorResult?.let {
-            when ((it as BaseResult).code) {
-                TokenError.EXPIRED.code, TokenError.FAILURE.code, TokenError.REPEAT_LOGIN.code -> {
-                    _errorResultToken.postValue(it)
-                }
+            if (it !is LogoutResult
+                && it.code == TokenError.EXPIRED.code
+                && it.code == TokenError.FAILURE.code
+                && it.code == TokenError.REPEAT_LOGIN.code
+            ) {
+                _errorResultToken.postValue(it)
             }
         }
         return errorResult
