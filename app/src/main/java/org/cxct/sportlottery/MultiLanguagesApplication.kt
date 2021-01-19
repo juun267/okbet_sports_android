@@ -6,17 +6,13 @@ import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.SettlementRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
-import org.cxct.sportlottery.ui.bet_record.BetRecordViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.menu.results.SettlementViewModel
-import org.cxct.sportlottery.ui.odds.OddsDetailViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -37,14 +33,13 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val viewModelModule = module {
-        viewModel { SplashViewModel(get()) }
-        viewModel { MainViewModel(get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
-        viewModel { OddsDetailViewModel(get()) }
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
+        viewModel { SplashViewModel(get()) }
         viewModel { NicknameModel(get()) }
     }
 
@@ -53,6 +48,7 @@ class MultiLanguagesApplication : Application() {
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
+        single { BetInfoRepository() }
     }
 
     override fun attachBaseContext(base: Context) {

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.infoCenter
 
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

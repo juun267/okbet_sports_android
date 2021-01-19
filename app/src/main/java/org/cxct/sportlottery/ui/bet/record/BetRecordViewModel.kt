@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet_record
+package org.cxct.sportlottery.ui.bet.record
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.bet_record.search.BetTypeItemData
+import org.cxct.sportlottery.ui.bet.record.search.BetTypeItemData
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.dateToTimeStamp
 
@@ -44,10 +44,11 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
                               7 to "已取消")
 
     fun checkRequestState(startDate: String, endDate: String) {
-        _betListRequestState.value =
-            BetListRequestState(hasStatus = selectStatusNameList.value?.size ?: 0 > 0,
-                                hasStartDate = startDate.isNotEmpty(),
-                                hasEndDate = endDate.isNotEmpty())
+        _betListRequestState.value = BetListRequestState(
+            hasStatus = selectStatusNameList.value?.size ?: 0 > 0,
+            hasStartDate = startDate.isNotEmpty(),
+            hasEndDate = endDate.isNotEmpty()
+        )
     }
 
     fun addSelectStatus(item: BetTypeItemData) {
