@@ -37,7 +37,7 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
         viewModel { SplashViewModel(get()) }
         viewModel { MainViewModel(get(), get(), get()) }
-        viewModel { MoneyRechViewModel(get()) }
+        viewModel { MoneyRechViewModel(get(),get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
         viewModel { OddsDetailViewModel(get()) }
