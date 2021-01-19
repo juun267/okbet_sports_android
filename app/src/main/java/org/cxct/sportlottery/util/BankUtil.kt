@@ -29,24 +29,3 @@ enum class BankKey(val bankName: String, val iconId: Int) {
     BRCB("北京农商", R.drawable.ic_bank_brcb),
     BOS("上海银行", R.drawable.ic_bank_shcc)
 }
-
-private val bankNameToBankKey = mapOf(
-    "农业银行" to BankKey.ABC,
-    "建设银行" to "CCB",
-    "工商银行" to "ICBC",
-    "招商银行" to "CMB",
-    "交通银行" to "BOCO",
-    "民生银行" to "CMBC",
-    "兴业银行" to "CIB",
-    "中国银行" to "BOC",
-    "邮政银行" to "POST",
-    "光大银行" to "CEBBANK",
-    "中信银行" to "ECITIC",
-    "广发银行" to "CGB",
-    "浦发银行" to "SPDB",
-    "华夏银行" to "HXB",
-    "平安银行" to "PINGAN",
-    "北京银行" to "BCCB",
-    "北京农商" to "BRCB",
-    "上海银行" to "BOS"
-)
