@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +16,7 @@ import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MoneyManager
 
-class MoneyRechViewModel(private val moneyRepository: MoneyRepository) : BaseViewModel() {
+class MoneyRechViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository) : BaseViewModel() {
 
 
     val rechargeConfigs: LiveData<MoneyRechCfgData>
@@ -34,7 +35,7 @@ class MoneyRechViewModel(private val moneyRepository: MoneyRepository) : BaseVie
     fun getRechCfg() {
         try {
             viewModelScope.launch {
-                val result = doNetwork {
+                val result = doNetwork(androidContext) {
                     moneyRepository.getRechCfg("zh")
                 }
                 _rechargeConfigs.value = result?.rechCfg
