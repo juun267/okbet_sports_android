@@ -147,6 +147,20 @@ object TimeUtil {
         }
     }
 
+    fun getAtStartTimeRangeParams(): TimeRangeParams {
+        val calendar = Calendar.getInstance()
+        val startTimeStamp = calendar.timeInMillis
+        calendar.add(Calendar.MINUTE, 60)
+        val endTimeStamp = calendar.timeInMillis
+
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
+                get() = endTimeStamp.toString()
+        }
+    }
+
     fun getOneWeekDate(): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()

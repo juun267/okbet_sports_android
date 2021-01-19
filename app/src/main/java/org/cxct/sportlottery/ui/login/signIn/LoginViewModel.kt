@@ -7,17 +7,20 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.LoginRequest
-import org.cxct.sportlottery.network.index.LoginResult
-import org.cxct.sportlottery.network.index.ValidCodeRequest
-import org.cxct.sportlottery.network.index.ValidCodeResult
+import org.cxct.sportlottery.network.index.login.LoginRequest
+import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 
-class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
+class LoginViewModel(
+    private val androidContext: Context,
+    private val loginRepository: LoginRepository
+) : BaseViewModel() {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
     val loginResult: LiveData<LoginResult>
@@ -55,7 +58,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
             //勾選時記住密碼
             loginRepository.password = if (loginRepository.isRememberPWD) originalPassword else null
 
-            doNetwork {
+            doNetwork(androidContext) {
                 loginRepository.login(loginRequest)
             }?.let { result ->
                 _loginResult.postValue(result)
@@ -65,7 +68,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
 
     fun getValidCode(identity: String?) {
         viewModelScope.launch {
-            val result = doNetwork {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
             }
             _validCodeResult.postValue(result)
@@ -74,14 +77,14 @@ class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewMod
 
     private fun checkAccount(context: Context, username: String): String? {
         return when {
-            username.isBlank() -> context.getString(R.string.error_input_account)
+            username.isBlank() -> context.getString(R.string.please_input_account)
             else -> null
         }
     }
 
     private fun checkPassword(context: Context, password: String): String? {
         return when {
-            password.isBlank() -> context.getString(R.string.error_input_password)
+            password.isBlank() -> context.getString(R.string.please_input_password)
             else -> null
         }
     }

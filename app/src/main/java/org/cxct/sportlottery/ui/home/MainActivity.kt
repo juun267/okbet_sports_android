@@ -169,6 +169,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
 
+            val tabAtStart = tabLayout.getTabAt(6)?.customView
+            tabAtStart?.visibility = View.GONE
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -193,6 +196,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     }
                     5 -> {
                         navGameFragment(MatchType.OUTRIGHT)
+                    }
+                    6 -> {
+                        navGameFragment(MatchType.AT_START)
                     }
                 }
             }
@@ -247,9 +253,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        if (navController.currentDestination?.id != R.id.homeFragment
+            && supportFragmentManager.backStackEntryCount == 0
+        ) {
+            tabLayout.getTabAt(0)?.select()
+            return
+        }
 
-        tabLayout.getTabAt(0)?.select()
+        super.onBackPressed()
     }
 
     private fun initObserve() {
@@ -283,6 +294,19 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     gameType, typeName, matchId, oddsType
                 ), Page.ODDS_DETAIL
             )
+        })
+
+        viewModel.matchTypeCard.observe(this, Observer {
+            when (it) {
+                MatchType.PARLAY -> {
+                    tabLayout.getTabAt(4)?.select()
+                }
+                MatchType.AT_START -> {
+                    tabLayout.getTabAt(6)?.select()
+                }
+                else -> {
+                }
+            }
         })
 
         viewModel.isOpenMatchOdds.observe(this, Observer {

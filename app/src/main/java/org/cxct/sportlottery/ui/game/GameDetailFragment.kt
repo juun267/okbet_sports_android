@@ -122,14 +122,14 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupOddsUpperBar(it)
                 setupMatchOddList(it)
             }
         })
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupLeagueOddsUpperBar()
                 setupOutrightOddList(it)
             }

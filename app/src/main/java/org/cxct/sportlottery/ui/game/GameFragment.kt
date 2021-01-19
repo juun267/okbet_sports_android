@@ -194,7 +194,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 MatchType.OUTRIGHT -> {
                     setupOutrightFilter(it.sportMenuData?.menu?.outright?.items ?: listOf())
                 }
-                else -> {
+                MatchType.AT_START -> {
+                    setupAtStartFilter(it.sportMenuData?.atStart?.items ?: listOf())
                 }
             }
         })
@@ -209,19 +210,19 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+            if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
@@ -269,6 +270,21 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         gameTypeAdapter.data = itemList
 
         hall_match_type_row.type = MatchTypeRow.OUTRIGHT
+        hall_date_list.visibility = View.GONE
+    }
+
+    private fun setupAtStartFilter(itemList: List<Item>) {
+        val selectSportName = itemList.find { sport ->
+            sport.isSelected
+        }?.name
+
+        gameTypeAdapter.data = itemList
+
+        hall_match_type_row.apply {
+            type = MatchTypeRow.AT_START
+            sport = selectSportName
+        }
+
         hall_date_list.visibility = View.GONE
     }
 

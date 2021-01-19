@@ -13,6 +13,10 @@ object Constants {
     const val INDEX_LOGOUT = "/api/front/index/logout"
     const val INDEX_CONFIG = "/api/front/index/config.json" //获取配置信息
     const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
+    const val INDEX_REGISTER = "api/front/index/register" //注册用户
+    const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
+    const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
+    const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
@@ -52,6 +56,7 @@ object Constants {
 
     //user
     const val USER_MONEY = "/api/front/user/money"
+    const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

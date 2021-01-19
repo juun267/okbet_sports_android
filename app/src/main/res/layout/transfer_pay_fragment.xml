@@ -42,7 +42,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:textColor="@color/gray11" />
+                    android:textColor="@color/gray13" />
 
 
                 <Spinner
@@ -351,7 +351,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray11" />
+                    android:textColor="@color/gray13" />
 
 
                 <EditText
@@ -412,7 +412,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray11" />
+                    android:textColor="@color/gray13" />
 
 
                 <EditText
@@ -464,7 +464,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray11" />
+                    android:textColor="@color/gray13" />
 
 
                 <EditText
@@ -516,7 +516,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray11" />
+                    android:textColor="@color/gray13" />
 
 
                 <TextView
@@ -575,7 +575,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray11" />
+                    android:textColor="@color/gray13" />
 
 
                 <TextView

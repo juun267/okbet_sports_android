@@ -19,6 +19,7 @@ class MatchTypeRow @JvmOverloads constructor(
         const val EARLY = 2
         const val PARLAY = 3
         const val OUTRIGHT = 4
+        const val AT_START = 5
     }
 
     var type = IN_PLAY
@@ -76,7 +77,10 @@ class MatchTypeRow @JvmOverloads constructor(
     private fun setupMatchType(type: Int) {
         when (type) {
             IN_PLAY -> {
-                row_inplay.visibility = VISIBLE
+                row_match_type.apply {
+                    visibility = VISIBLE
+                    text = context.getString(R.string.match_type_row_in_play)
+                }
                 row_sport.visibility = VISIBLE
                 row_1x2.visibility = VISIBLE
                 row_ou.visibility = VISIBLE
@@ -91,7 +95,7 @@ class MatchTypeRow @JvmOverloads constructor(
                     visibility = VISIBLE
                     isSelected = true
                 }
-                row_inplay.visibility = GONE
+                row_match_type.visibility = GONE
                 row_sport.visibility = GONE
                 row_1x2.visibility = GONE
                 row_ou.visibility = GONE
@@ -103,10 +107,22 @@ class MatchTypeRow @JvmOverloads constructor(
                     isSelected = true
                 }
                 row_match.visibility = GONE
-                row_inplay.visibility = GONE
+                row_match_type.visibility = GONE
                 row_sport.visibility = GONE
                 row_1x2.visibility = GONE
                 row_ou.visibility = GONE
+            }
+
+            AT_START -> {
+                row_match_type.apply {
+                    visibility = VISIBLE
+                    text = context.getString(R.string.match_type_row_at_start)
+                }
+                row_sport.visibility = VISIBLE
+                row_1x2.visibility = VISIBLE
+                row_ou.visibility = VISIBLE
+                row_match.visibility = GONE
+                row_outright.visibility = GONE
             }
         }
     }
