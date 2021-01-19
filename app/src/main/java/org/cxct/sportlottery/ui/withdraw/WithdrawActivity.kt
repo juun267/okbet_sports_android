@@ -10,7 +10,7 @@ import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
     companion object {
-        val navigateKey = "NAVIGATE_FROM"
+        const val navigateKey = "NAVIGATE_FROM"
     }
 
     private val mNavController by lazy {
