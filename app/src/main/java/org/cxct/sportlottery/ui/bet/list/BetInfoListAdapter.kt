@@ -89,7 +89,7 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
                 else ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_focus)
 
             binding.etBet.setTextColor(
-                if (error) ContextCompat.getColor(binding.root.context, R.color.orangeyRed)
+                if (error) ContextCompat.getColor(binding.root.context, R.color.orangeRed)
                 else ContextCompat.getColor(binding.root.context, R.color.main_dark)
             )
 

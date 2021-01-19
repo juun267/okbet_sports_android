@@ -73,7 +73,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:textColor="@color/orangeyRed"
+                android:textColor="@color/orangeRed"
                 android:visibility="gone"
                 tools:text="投注额大于下注限额" />
 

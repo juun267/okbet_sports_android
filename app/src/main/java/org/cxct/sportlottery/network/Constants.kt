@@ -54,6 +54,14 @@ object Constants {
     const val USER_MONEY = "/api/front/user/money"
     const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称
 
+    //bank
+    const val BANK_MY = "/api/front/user/bank/my"
+    const val BANK_ADD = "/api/front/user/bank/add"
+    const val BANK_DELETE = "/api/front/user/bank/delete/{id}"
+
+    //withdraw
+    const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000

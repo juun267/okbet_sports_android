@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/orangeyRed"
+                android:textColor="@color/orangeRed"
                 android:textSize="14sp"
                 tools:text="\＠ 1.85" />
 
