@@ -1,6 +1,5 @@
-package org.cxct.sportlottery.ui.bet_record.search.result
+package org.cxct.sportlottery.ui.bet.record.search.result
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

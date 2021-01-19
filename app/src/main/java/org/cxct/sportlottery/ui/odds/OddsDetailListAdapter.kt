@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 
-class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetailListData>) :
+class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+
+    private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+
+    var oddsDetailListData: ArrayList<OddsDetailListData> = ArrayList()
+
+    fun setBetInfoList(betInfoList: MutableList<BetInfoListData>) {
+        this.betInfoList.clear()
+        this.betInfoList.addAll(betInfoList)
+        notifyDataSetChanged()
+    }
 
     private lateinit var code: String
 
@@ -44,6 +56,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
         W3("W3", R.layout.content_odds_detail_list_group_item, 21),//三项让球
         TG_OU("TG&O/U", R.layout.content_odds_detail_list_two_sides, 22),//球队进球数&大/小
     }
+
 
     override fun getItemViewType(position: Int): Int {
 
@@ -101,6 +114,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             }
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -241,7 +255,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeOneListAdapter(oddsDetail.oddArrayList)
+                adapter = TypeOneListAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
         }
@@ -266,29 +280,36 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
                         awayList.add(element)
                     }
                 } else {
+
+                    val select = betInfoList.any { it.matchOdd.oddsId == element.id }
+                    element.isSelect = select
+
                     val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
                     tvOdds.text = element.odds.toString()
                     tvOdds.setOnClickListener {
                         tvOdds.isSelected = !tvOdds.isSelected
                         element.isSelect = tvOdds.isSelected
-
-                        //TODO 添加至投注單
+                        if (element.isSelect) {
+                            onOddClickListener.getBetInfoList(element)
+                        } else {
+                            onOddClickListener.removeBetInfoItem(element)
+                        }
                     }
                 }
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
-                adapter = TypeCSAdapter(homeList)
+                adapter = TypeCSAdapter(homeList, onOddClickListener, betInfoList)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_draw).apply {
-                adapter = TypeCSAdapter(drawList)
+                adapter = TypeCSAdapter(drawList, onOddClickListener, betInfoList)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_away).apply {
-                adapter = TypeCSAdapter(awayList)
+                adapter = TypeCSAdapter(awayList, onOddClickListener, betInfoList)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
         }
@@ -297,7 +318,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeGroupItemAdapter(oddsDetail.oddArrayList, groupItemCount)
+                adapter = TypeGroupItemAdapter(oddsDetail.oddArrayList, groupItemCount, onOddClickListener, betInfoList)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
         }
@@ -306,7 +327,7 @@ class OddsDetailListAdapter(private val oddsDetailListData: ArrayList<OddsDetail
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList)
+                adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
