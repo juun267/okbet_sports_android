@@ -51,6 +51,7 @@ object Constants {
     const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
 
     //user
+    const val USER_INFO = "/api/front/user/info"
     const val USER_MONEY = "/api/front/user/money"
     const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称
 
