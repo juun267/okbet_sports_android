@@ -58,9 +58,10 @@ class BetRecordViewModel : BaseViewModel() {
         _selectStatusList.value = _selectStatusList.value
     }
 
-    fun getBetList(statusList: List<Int>, startDate: String, endDate: String) {
+    fun getBetList(championOnly: Int, statusList: List<Int>, startDate: String, endDate: String) {
         viewModelScope.launch {
-            val betListRequest = BetListRequest(statusList = statusList,
+            val betListRequest = BetListRequest(championOnly = championOnly,
+                                                statusList = statusList,
                                                 startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START).toString(),
                                                 endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END).toString())
             doNetwork {
