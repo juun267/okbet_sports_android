@@ -3,7 +3,6 @@ package org.cxct.sportlottery.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import org.greenrobot.eventbus.EventBus
 
 open class BaseService : Service() {
 //    private lateinit var eventBus: EventBus
