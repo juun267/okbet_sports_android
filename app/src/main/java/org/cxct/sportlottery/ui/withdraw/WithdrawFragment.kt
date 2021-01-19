@@ -96,11 +96,11 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         bankCardBottomSheet = BottomSheetDialog(requireContext())
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)
-            bankCardAdapter = BankCardAdapter(lv_bank_card.context, bankCardList, BankCardAdapterListener {
+            bankCardAdapter = BankCardAdapter(lv_bank_item.context, bankCardList, BankCardAdapterListener {
                 view.tv_select_bank_card.text = getBankCardTailNo(it)
                 dismiss()
             })
-            lv_bank_card.adapter = bankCardAdapter
+            lv_bank_item.adapter = bankCardAdapter
             bankCardBottomSheet.btn_close.setOnClickListener {
                 this.dismiss()
             }
