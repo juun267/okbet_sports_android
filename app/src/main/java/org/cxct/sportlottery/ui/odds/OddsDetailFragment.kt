@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -16,12 +15,13 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TimeUtil
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OddsDetailFragment : Fragment(), Animation.AnimationListener {
+class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -45,11 +45,9 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
     private var matchId: String? = null
     private var oddsType: String? = null
 
-    private val oddsDetailListData = ArrayList<OddsDetailListData>()
-
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
-    private val oddsDetailViewModel: OddsDetailViewModel by viewModel()
+    private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +78,7 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
     private fun dataBinding() {
         dataBinding.apply {
             view = this@OddsDetailFragment
-            oddsDetailViewModel = this@OddsDetailFragment.oddsDetailViewModel
+            oddsDetailViewModel= this@OddsDetailFragment.viewModel
             lifecycleOwner = this@OddsDetailFragment
         }
     }
@@ -89,10 +87,12 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
     private fun initUI() {
         tv_type_name.text = typeName
 
-        (rv_detail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        rv_detail.apply {
-            adapter = OddsDetailListAdapter(oddsDetailListData)
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
+
+        dataBinding.rvDetail.apply {
+            adapter = oddsDetailListAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
 
@@ -120,8 +120,8 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    oddsDetailViewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
-                        (rv_detail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
+                    viewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
+                        (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
                     }
                 }
             }
@@ -131,45 +131,60 @@ class OddsDetailFragment : Fragment(), Animation.AnimationListener {
 
 
     private fun observeData() {
-
-        oddsDetailViewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
-                    tab_cat.removeAllTabs()
+                    dataBinding.tabCat.removeAllTabs()
                     for (element in result.rows) {
-                        tab_cat.addTab(tab_cat.newTab().setText(element.name), false)
-                    }
-
-                    matchId?.let { matchId ->
-                        oddsType?.let { oddsType ->
-                            oddsDetailViewModel.getOddsDetail(matchId, oddsType)
-                        }
+                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(element.name), false)
                     }
                 }
             }
         })
 
-        oddsDetailViewModel.oddsDetailResult.observe(requireActivity(), Observer {
-
+        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                tv_time.text = TimeUtil.stampToDate(time.toLong())
+                dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
             }
-
-            oddsDetailListData.clear()
-            it?.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
-                oddsDetailListData.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, value.odds, false))
-            }
-
-            tab_cat.getTabAt(0)?.select()
-
         })
+
+        viewModel.oddsDetailList.observe(requireActivity(), Observer {
+            oddsDetailListAdapter?.oddsDetailListData?.clear()
+            oddsDetailListAdapter?.oddsDetailListData?.addAll(it)
+            dataBinding.tabCat.getTabAt(0)?.select()
+        })
+
+        viewModel.betInfoResult.observe(requireActivity(), Observer {
+            oddsDetailListAdapter?.notifyDataSetChanged()
+        })
+
+        viewModel.betInfoList.observe(requireActivity(), Observer {
+            oddsDetailListAdapter?.setBetInfoList(it)
+        })
+
     }
 
 
     private fun getData() {
         gameType?.let { gameType ->
-            oddsDetailViewModel.getPlayCateList(gameType)
+            viewModel.getPlayCateList(gameType)
         }
+
+        matchId?.let { matchId ->
+            oddsType?.let { oddsType ->
+                viewModel.getOddsDetail(matchId, oddsType)
+            }
+        }
+    }
+
+
+    override fun getBetInfoList(odd: Odd) {
+        viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
+    }
+
+
+    override fun removeBetInfoItem(odd: Odd) {
+        viewModel.removeBetInfoItem(odd.id)
     }
 
 

@@ -9,7 +9,7 @@
 
         <variable
             name="oddsDetailViewModel"
-            type="org.cxct.sportlottery.ui.odds.OddsDetailViewModel" />
+            type="org.cxct.sportlottery.ui.home.MainViewModel" />
     </data>
 
     <LinearLayout
