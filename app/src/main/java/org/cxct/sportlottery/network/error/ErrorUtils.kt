@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_MONEY
@@ -46,6 +47,7 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.MoneyRechCfgResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
@@ -174,6 +176,10 @@ object ErrorUtils {
                     (url.contains(MATCH_RESULT_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MatchResultListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(RECHARGE_CONFIG_MAP)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MoneyRechCfgResult(it.code, it.msg, it.success,  null) as T
                     }
                     (url.contains(BANK_MY)) -> {
                         @Suppress("UNCHECKED_CAST")

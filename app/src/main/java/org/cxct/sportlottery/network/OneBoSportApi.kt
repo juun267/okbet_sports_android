@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.league.LeagueService
 import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.matchresult.MatchResultService
 import org.cxct.sportlottery.network.message.MessageService
+import org.cxct.sportlottery.network.money.MoneyService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
@@ -92,6 +93,12 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(InfoCenterService::class.java)
+    }
+
+    val moneyService: MoneyService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(MoneyService::class.java)
     }
 
     val bankService: BankService by lazy {

@@ -50,6 +50,10 @@ object Constants {
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
     const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
 
+    //money
+    const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
+
+
     //user
     const val USER_MONEY = "/api/front/user/money"
     const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称

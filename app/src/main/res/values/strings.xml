@@ -263,6 +263,28 @@
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
 
+    <!--money-recharge-->
+    <string name="title_bank">选择银行:</string>
+    <string name="title_name">姓名:</string>
+    <string name="title_account">账号:</string>
+    <string name="title_address">地址:</string>
+    <string name="title_deposit_money">充值金额</string>
+    <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
+    <string name="title_real_name">认证姓名</string>
+    <string name="edt_hint_real_name">中文长度2-20,英文长度2-50字</string>
+    <string name="title_bank_account">银行卡号</string>
+    <string name="edt_hint_bank_account">请输入12-19位数内的银行卡号</string>
+    <string name="title_recharge_time">充值时间</string>
+    <string name="title_current_money">当前余额</string>
+    <string name="btn_submit">提交申请</string>
+    <string name="btn_copy">复制</string>
+    <string name="title_qr_pay">扫码支付：</string>
+    <string name="title_hint_qr_pay">扫一扫快捷支付，如有疑问请及时联系客服！</string>
+    <string name="title_remark">备注:</string>
+    <string name="money_recharge_hint1"><font color="#ff4b2c">・请先转账成功后再提交充值信息。</font></string>
+    <string name="money_recharge_hint2"><font color="#ff4b2c">・每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
+
+
     <!--  Withdraw  -->
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>
