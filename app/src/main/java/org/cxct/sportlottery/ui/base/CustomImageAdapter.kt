@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -14,50 +15,63 @@ import org.cxct.sportlottery.R
 /***
  * Created by Dean 2020/09/22
  * 選項包含圖片的 Spinner
- * @param bankIcon:spinner item 要顯示的圖片id
- * @param bankName:spinner item 要顯示的名稱
+ * @param listData:spinner item 要顯示的圖片ID及名稱
  */
 
-class CustomImageAdapter (context: Context?, bankIcon: MutableList<Int>, bankName: MutableList<String>) : BaseAdapter() {
+class CustomImageAdapter(
+    val context: Context?,
+    listData: MutableList<SelectBank>
+) : BaseAdapter() {
     private var mContext = context
-    private var mBankIconList: MutableList<Int> = bankIcon
-    private var mBankNameList: MutableList<String> = bankName
+    private var mBankListData: MutableList<SelectBank> = listData
+
     var mCurrentSelectIndex: Int = -1
 
     data class SelectBank(var bankName: String?, var bankIcon: Int?)
 
-
-    //下拉要顯示顏色變化
-    fun setDefaultSelect(selectIndex: Int) {
-        mCurrentSelectIndex = selectIndex
-    }
-
-    override fun getItem(position: Int): Any? {
-        return SelectBank(mBankNameList[position], mBankIconList[position] ?: 0)
+    override fun getItem(position: Int): Any {
+        return SelectBank(mBankListData[position].bankName, mBankListData[position].bankIcon)
     }
 
     override fun getItemId(position: Int): Long {
         return -1
     }
 
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(mContext).inflate(R.layout.content_spinner_image_item, parent, false)
-        val ivBankIcon: ImageView? = view?.findViewById(R.id.ic_bank)
-        val tvBankName: TextView? = view?.findViewById(R.id.tv_bank_name)
-        ivBankIcon?.visibility = if (mBankIconList[position] == R.drawable.bg_transparent)
-            View.GONE
-        else {
-            ivBankIcon?.setImageResource(mBankIconList[position])
-            View.VISIBLE
-        }
-        tvBankName?.text = mBankNameList[position]
+        val viewHolder = ViewHolder()
+        val view = LayoutInflater.from(mContext)
+            .inflate(R.layout.content_spinner_image_item, parent, false)
+
+        viewHolder.ivBankIcon = view?.findViewById(R.id.ic_bank)
+        viewHolder.tvBankName = view?.findViewById(R.id.tv_bank_name)
+
+        viewHolder.ivBankIcon?.visibility =
+            if (mBankListData[position].bankIcon == R.drawable.bg_transparent)
+                View.GONE
+            else {
+                mBankListData[position].bankIcon?.let { viewHolder.ivBankIcon?.setImageResource(it) }
+                View.VISIBLE
+            }
+        viewHolder.tvBankName?.text = mBankListData[position].bankName
 
         if (position == mCurrentSelectIndex) {
-            tvBankName?.setTextColor(ContextCompat.getColor(MultiLanguagesApplication.appContext, R.color.textColorDark))
+            viewHolder.tvBankName?.setTextColor(
+                ContextCompat.getColor(
+                    MultiLanguagesApplication.appContext,
+                    R.color.textColorDark
+                )
+            )
         }
-
-        return view    }
+        return view
+    }
 
     override fun getCount(): Int {
-        return mBankIconList.size }
+        return mBankListData.size
+    }
+
+    class ViewHolder {
+        var ivBankIcon: ImageView? = null
+        var tvBankName: TextView? = null
+    }
 }
