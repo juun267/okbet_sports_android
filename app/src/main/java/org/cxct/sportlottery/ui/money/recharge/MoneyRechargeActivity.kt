@@ -78,14 +78,21 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             btn_transfer_pay.isSelected = true
             btn_online_pay.isSelected = false
             bankTypeAdapter?.data = transferPayList
+            switchFragment(
+                getPayFragment(transferPayList[0]),
+                "TransferPayFragment"
+            )
         }
         btn_online_pay.setOnClickListener {
             currentTab = RechargeType.ONLINE_PAY
             btn_transfer_pay.isSelected = false
             btn_online_pay.isSelected = true
             bankTypeAdapter?.data = onlinePayList
+            switchFragment(
+                getPayFragment(onlinePayList[0]),
+                "OnlinePayFragment"
+            )
         }
-
     }
 
     private fun initView() {
@@ -117,7 +124,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment? {
         return when (moneyPayWay.rechType) {
-            "onlinePayment" -> TransferPayFragment().setArguments(moneyPayWay)
+            "onlinePayment" -> OnlinePayFragment().setArguments(moneyPayWay)
             else -> TransferPayFragment().setArguments(moneyPayWay)
         }
     }

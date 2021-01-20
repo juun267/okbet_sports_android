@@ -286,6 +286,16 @@
     <string name="title_remark">备注:</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">・请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">・每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
+    <string name="title_pay_gap">支付渠道</string>
+    <string name="title_pay_bank">支付银行</string>
+    <string name="title_rebate_fee">返利手续费</string>
+    <string name="hint_tip"><font color="#ff4b2c">・温馨提示：%1$s。</font></string>
+    <string name="edt_hint_online_pay_money">單筆下限%1$s，上限%2$s</string>
+
+
+
+
+
 
 
     <!--  Withdraw  -->
