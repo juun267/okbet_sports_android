@@ -5,6 +5,7 @@ import android.content.res.AssetManager
 import com.squareup.moshi.Types
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import java.io.BufferedReader
@@ -37,18 +38,22 @@ object MoneyManager {
         }
         return stringBuilder.toString()
     }
+
     //獲取 local 端 充值配置 清單
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
-            mMoneyPayWayList=MoshiUtil.fromJson(getRechargeConfig(mContext),Types.newParameterizedType(List::class.java, MoneyPayWayData::class.java))
+            mMoneyPayWayList = MoshiUtil.fromJson(
+                getRechargeConfig(mContext),
+                Types.newParameterizedType(List::class.java, MoneyPayWayData::class.java)
+            )
         }
         return mMoneyPayWayList
     }
 
     //獲取最大充值金額，沒有值就取 default local value
     fun getMaxMoney(rechConfig: MoneyRechCfg.RechConfig): Double {
-        return rechConfig?.maxMoney ?: 9999999.0
+        return rechConfig.maxMoney ?: 9999999.0
     }
 
     //獲取最小充值金額，沒有值就取 config.json value
@@ -58,13 +63,13 @@ object MoneyManager {
 
 
     fun getBankIcon(bankName: String): Int {
-        return when(bankName) {
-            "bankTransfer"-> R.drawable.ic_bank_atm
-            "alipay"->R.drawable.ic_alipay
-            "weixin"->R.drawable.ic_wechat_pay
-            "cft"->R.drawable.ic_tenpay
-            "onlinePayment"->R.drawable.ic_online_pay
-            else-> R.drawable.ic_bank_atm
+        return when (bankName) {
+            MoneyType.BANK.code -> R.drawable.ic_bank_atm
+            MoneyType.ALI.code -> R.drawable.ic_alipay
+            MoneyType.WX.code -> R.drawable.ic_wechat_pay
+            MoneyType.CTF.code -> R.drawable.ic_tenpay
+            MoneyType.ONLINE.code -> R.drawable.ic_online_pay
+            else -> R.drawable.ic_bank_atm
         }
     }
 }
