@@ -65,8 +65,8 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun setObserver() {
-        viewModel.selectStatusNameList.observe(viewLifecycleOwner, {
-            tv_bet_status.text = viewModel.getBetStatus()
+        viewModel.selectedBetStatus.observe(viewLifecycleOwner, {
+            tv_bet_status.text = it
         })
     }
 

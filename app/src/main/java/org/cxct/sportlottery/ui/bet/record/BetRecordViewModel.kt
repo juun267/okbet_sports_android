@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.android.synthetic.main.fragment_bet_record_search.*
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -22,6 +21,9 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
         get() = _selectStatusList
 
+    val selectedBetStatus: LiveData<String>
+        get() = _selectedBetStatus
+
     val betListRequestState: LiveData<BetListRequestState>
         get() = _betListRequestState
 
@@ -34,6 +36,7 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
 
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
+    private val _selectedBetStatus = MutableLiveData<String>()
 
 
     val statusNameMap = mapOf(0 to "未确认",
@@ -53,7 +56,7 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
         )
     }
 
-    fun getBetStatus (): String? {
+    private fun getBetStatus (): String? {
         return if (selectStatusNameList.value?.size == statusNameMap.values.size) {
             androidContext.getString(R.string.all_order)
         } else {
@@ -63,16 +66,19 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
 
     fun addSelectStatus(item: BetTypeItemData) {
         _selectStatusList.value?.add(item)
+        _selectedBetStatus.value = getBetStatus()
         _selectStatusList.value = _selectStatusList.value
     }
 
     fun clearStatusList() {
         _selectStatusList.value?.clear()
+        _selectedBetStatus.value = getBetStatus()
         _selectStatusList.value = _selectStatusList.value
     }
 
     fun deleteSelectStatus(item: BetTypeItemData) {
         _selectStatusList.value?.remove(item)
+        _selectedBetStatus.value = getBetStatus()
         _selectStatusList.value = _selectStatusList.value
     }
 
