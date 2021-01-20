@@ -42,6 +42,11 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     }
 
+    override fun onDestroy() {
+        hideKeyboard()
+        super.onDestroy()
+    }
+
     fun onNetworkUnavailable() {
         Toast.makeText(activity, R.string.connect_first, Toast.LENGTH_SHORT).show()
     }
