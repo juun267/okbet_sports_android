@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet.record.search.result
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        ITEM, FOOTER
+        ITEM, FOOTER, NO_DATA
     }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -25,8 +26,13 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     fun addFooterAndSubmitList(list: List<Row>?) {
         adapterScope.launch {
             val items = when (list) {
-                null -> listOf(DataItem.Footer)
-                else -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                null -> listOf(DataItem.NoData)
+                else -> {
+                    if (list.isEmpty())
+                        listOf(DataItem.NoData)
+                    else
+                        list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                }
             }
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
@@ -37,7 +43,8 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            else -> FooterViewHolder.from(parent)
+            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
+            else -> NoDataViewHolder.from(parent)
         }
     }
 
@@ -49,13 +56,16 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
             }
 
             is FooterViewHolder -> {}
+
+            is NoDataViewHolder -> {}
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DataItem.Item -> ItemType.ITEM.ordinal
-            else -> ItemType.FOOTER.ordinal
+            is DataItem.Footer -> ItemType.FOOTER.ordinal
+            else -> ItemType.NO_DATA.ordinal
         }
     }
 
@@ -80,6 +90,13 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
         companion object {
             fun from(parent: ViewGroup) =
                 FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
+        }
+    }
+
+    class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup) =
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
         }
     }
 
@@ -109,6 +126,10 @@ sealed class DataItem {
     }
 
     object Footer : DataItem() {
+        override val orderNum: String = ""
+    }
+
+    object NoData : DataItem() {
         override val orderNum: String = ""
     }
 }

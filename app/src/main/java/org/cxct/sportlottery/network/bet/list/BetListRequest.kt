@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 
 data class BetListRequest(
+    val championOnly: Int,
     val statusList: List<Int>,
     val gameType: String? = null,
     override val userId: Int? = null,
