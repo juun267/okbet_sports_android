@@ -27,8 +27,8 @@ import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.BankUtil
 import org.cxct.sportlottery.util.MD5Util.MD5Encode
+import org.cxct.sportlottery.util.MoneyManager
 
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -139,7 +139,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun updateSelectedBank(bank: MoneyRechCfg.Bank) {
         tv_bank_name.text = bank.name
-        iv_bank_icon.setImageResource(BankUtil.getBankIconByBankName(bank.name ?: ""))
+        iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(bank.name ?: ""))
     }
 
     private fun setupEvent() {
@@ -313,7 +313,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
             view.apply {
                 /*val viewHolder = ViewHolder()*/
                 holder.tvBank = tv_bank_card.apply { text = data.name }
-                holder.ivBankIcon = iv_bank_icon.apply { setImageResource(BankUtil.getBankIconByBankName(data.name ?: "")) }
+                holder.ivBankIcon = iv_bank_icon.apply { setImageResource(MoneyManager.getBankIconByBankName(data.name ?: "")) }
                 holder.llSelectBankCard = ll_select_bank_card.apply {
                     if (position == selectedPosition)
                         setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
@@ -337,7 +337,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
             holder.apply {
                 /*val viewHolder = ViewHolder()*/
                 tvBank?.text = data.name
-                ivBankIcon?.setImageResource(BankUtil.getBankIconByBankName(data.name ?: ""))
+                ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.name ?: ""))
                 if (position == selectedPosition)
                     this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
                 else

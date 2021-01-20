@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.*
 import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.util.MoneyManager
 
 class BankListAdapter(private val mBankListClickListener: BankListClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -57,7 +58,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     class ItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(data: BankCardList, mBankListClickListener: BankListClickListener) {
             itemView.apply {
-                iv_bank_icon.setImageResource(R.drawable.ic_bank_default) //TODO Dean : 待匯入銀行icon後對key做mapping
+                iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName)) //TODO Dean : 待匯入銀行icon後對key做mapping
                 tv_bank_name.text = data.bankName
                 tv_name.text = "" //TODO Dean : 與用戶真實姓名相等, Api沒有回傳,根據用戶id或直接抓取自身真實姓名做顯示
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
