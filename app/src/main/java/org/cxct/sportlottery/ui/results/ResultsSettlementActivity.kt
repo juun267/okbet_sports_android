@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.menu.results
+package org.cxct.sportlottery.ui.results
 
 import android.content.Context
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -188,7 +187,8 @@ class ResultsSettlementActivity : BaseToolBarActivity<SettlementViewModel>(Settl
             GameType.values().forEach { gameType -> gameTypeItem.add(GameTypeItemData(null, getString(gameType.string))) }
             settlementGameTypeAdapter = SettlementGameTypeAdapter(lv_game_type.context, gameTypeItem)
             lv_game_type.adapter = settlementGameTypeAdapter
-            settlementGameTypeAdapter.setOnItemCheckedListener(object : OnSelectItemWithPositionListener<GameTypeItemData> {
+            settlementGameTypeAdapter.setOnItemCheckedListener(object :
+                OnSelectItemWithPositionListener<GameTypeItemData> {
                 override fun onClick(select: GameTypeItemData, position: Int) {
                     gameType = GameType.values()[position].key
                     this@ResultsSettlementActivity.tv_game_type.text = select.name
@@ -274,7 +274,8 @@ class ResultsSettlementActivity : BaseToolBarActivity<SettlementViewModel>(Settl
             lv_league.adapter = settlementLeagueAdapter
 
             val cbAll = settlementLeagueBottomSheet.layout_all.checkbox_select_all
-            settlementLeagueAdapter.setOnItemCheckedListener(object : OnSelectItemWithPositionListener<LeagueItemData> {
+            settlementLeagueAdapter.setOnItemCheckedListener(object :
+                OnSelectItemWithPositionListener<LeagueItemData> {
                 override fun onClick(select: LeagueItemData, position: Int) {
                     if (select.isSelected) {
                         selectNameList.add(select.name)
