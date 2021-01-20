@@ -26,10 +26,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             btn_eye.visibility = value
         }
 
-    var clearVisibility
-        get() = btn_clear.visibility
+    var clearIsShow
+        get() = btn_clear.visibility == View.VISIBLE
         set(value) {
-            btn_clear.visibility = value
+            btn_clear.visibility = if(value) View.VISIBLE else View.GONE
         }
 
     init {
