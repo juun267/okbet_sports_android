@@ -50,9 +50,6 @@ class MoneyRechViewModel(
     private fun filterBankList(rechConfigList: MutableList<MoneyRechCfg.RechConfig>) {
         try {
 
-            _onlinePayList.value = null
-            _transferPayList.value = null
-
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
 
