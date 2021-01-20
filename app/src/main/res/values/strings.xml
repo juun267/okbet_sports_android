@@ -6,7 +6,7 @@
 
     <string name="app_name">创信体育</string>
     <!-- Common -->
-        <!--  Symbol  -->
+    <!--  Symbol  -->
     <string name="colon">：</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
@@ -180,7 +180,7 @@
     <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
     <string name="take_a_picture">拍一张照片</string>
     <string name="save_avatar_success">头像设置成功</string>
-    <string name = "no_set_avatar">没有设置头像</string>
+    <string name="no_set_avatar">没有设置头像</string>
 
     <!-- Change nickname page-->
     <string name="change_nickname">更换昵称</string>
@@ -191,10 +191,15 @@
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
     <string name="current_password">当前密码</string>
-    <string name="hint_current_password">请输入当前登录密码</string>
+    <string name="hint_current_login_password">请输入当前登录密码</string>
+    <string name="hint_current_withdrawal_password">请输入旧提款密码</string>
     <string name="new_password">新密码</string>
     <string name="hint_new_password">请输入新密码</string>
     <string name="hint_confirm_new_password">请再次输入新密码</string>
+    <string name="missing_required_fields">未填写必要的字段</string>
+    <string name="error_password_cannot_be_same">新密码与旧密码不能相同</string>
+    <string name="update_login_pwd">修改登录密码成功，下次请使用新密码登录!</string>
+    <string name="update_withdrawal_pwd">修改提现密码成功，下次请使用新密码提现!</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>

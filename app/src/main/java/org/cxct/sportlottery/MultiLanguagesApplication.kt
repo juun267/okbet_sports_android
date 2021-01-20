@@ -14,6 +14,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -47,6 +48,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { WithdrawViewModel(get()) }
         viewModel { ProfileModel(get()) }
         viewModel { NicknameModel(get()) }
+        viewModel { SettingPasswordViewModel(get()) }
     }
 
     private val repoModule = module {

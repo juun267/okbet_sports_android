@@ -88,6 +88,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         Glide.with(this).load(bitmap).into(iv_verification_code)
     }
 
+    fun setHint(value: String?) {
+        et_input.hint = value
+    }
+
     fun setError(value: String?) {
         tv_error.text = value
         if (tv_error.text.isNullOrEmpty()) {
@@ -113,6 +117,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged { afterTextChanged.invoke(it) }
+    }
+
+    fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
+        et_input.setOnFocusChangeListener(listener)
     }
 }
 
