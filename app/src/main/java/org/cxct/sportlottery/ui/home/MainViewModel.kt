@@ -686,10 +686,25 @@ class MainViewModel(
         }
     }
 
+    fun getBetInfoListForParlay(){
+        val list: MutableList<Odd> = mutableListOf()
+        betInfoList.value?.let {
+            for (i in it.indices) {
+                list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
+            }
+        }
+        getBetInfoList(list)
+    }
+
 
     fun removeBetInfoItem(oddId: String) {
         betInfoRepository.removeItem(oddId)
         _betInfoList.postValue(betInfoRepository.betList)
+    }
+
+    fun removeBetInfoItemAndRefresh(oddId: String){
+        removeBetInfoItem(oddId)
+        getBetInfoListForParlay()
     }
 
 

@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/line_start"
             android:layout_width="wrap_content"
@@ -57,7 +56,6 @@
                         android:layout_height="40dp"
                         android:background="@color/colorPrimaryDark">
 
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -75,23 +73,30 @@
                             android:padding="12.5dp"
                             android:src="@drawable/ic_close" />
 
-
                     </RelativeLayout>
 
                     <androidx.core.widget.NestedScrollView
+                        android:id="@+id/scroll_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:fillViewport="true"
+                        android:overScrollMode="never">
 
                         <LinearLayout
+                            android:id="@+id/linear"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
                             android:orientation="vertical">
+
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_match_odd_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                tools:itemCount="1"
+                                android:nestedScrollingEnabled="false"
+                                tools:itemCount="10"
                                 tools:listitem="@layout/content_bet_info_item_detail" />
 
                             <RelativeLayout
@@ -103,28 +108,27 @@
                                     android:id="@+id/tv_sub_title"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
                                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                                     android:layout_marginEnd="@dimen/activity_vertical_margin"
                                     android:text="@string/bet_info_parlay_list"
                                     android:textColor="@color/textColorDark"
-                                    android:layout_centerVertical="true"
                                     android:textSize="14sp" />
 
                                 <ImageView
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_centerVertical="true"
-                                    android:src="@drawable/ic_rule_blue"
-                                    android:layout_toEndOf="@+id/tv_sub_title"/>
-
+                                    android:layout_toEndOf="@+id/tv_sub_title"
+                                    android:src="@drawable/ic_rule_blue" />
 
                                 <ImageView
                                     android:layout_width="10dp"
                                     android:layout_height="10dp"
-                                    android:src="@drawable/ic_arrow_down_dark"
                                     android:layout_alignParentEnd="true"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+                                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                                    android:src="@drawable/ic_arrow_down_dark" />
 
                             </RelativeLayout>
 
@@ -132,10 +136,9 @@
                                 android:id="@+id/rv_parlay_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:clipToPadding="false"
-                                android:clipChildren="false"
-                                tools:listitem="@layout/content_bet_info_parlay"
-                                tools:itemCount="1" />
+                                android:nestedScrollingEnabled="false"
+                                tools:itemCount="4"
+                                tools:listitem="@layout/content_bet_info_parlay_item" />
 
                             <View
                                 android:layout_width="match_parent"

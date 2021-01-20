@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
 import kotlin.reflect.KClass
 import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
+import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -124,7 +125,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
 
         betFloatButtonVisible(false)//default
-        rl_bet_float_button.setOnClickListener { BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG) }
+//        rl_bet_float_button.setOnClickListener { BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG) }
+        rl_bet_float_button.setOnClickListener { BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG) }
     }
 
     private fun checkBetInfoList(count: Int) {

@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:textColor="@color/orangeyRed"
+                android:textColor="@color/orangeRed"
                 android:textSize="14sp"
                 tools:text="\＠ 1.85" />
 
@@ -61,6 +61,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -118,7 +119,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
                     android:clipToPadding="false"
                     android:clipChildren="false"
                     android:orientation="vertical"
@@ -139,10 +140,11 @@
                         android:id="@+id/tv_parlay_win_quota"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:maxLines="2"
+                        android:text="--"
                         android:textColor="@color/textGray"
                         android:textSize="12sp"
-                        tools:text="--" />
+                       />
 
                 </LinearLayout>
 
@@ -155,7 +157,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="5dp"
-                android:textColor="@color/orangeyRed"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/orangeRed"
                 android:visibility="gone"
                 tools:text="投注额大于下注限额" />
 
