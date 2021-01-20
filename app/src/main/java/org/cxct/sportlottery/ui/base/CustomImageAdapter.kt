@@ -37,33 +37,39 @@ class CustomImageAdapter(
         return -1
     }
 
-    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val viewHolder = ViewHolder()
-        val view = LayoutInflater.from(mContext)
-            .inflate(R.layout.content_spinner_image_item, parent, false)
+        if (convertView == null) {
+            val viewHolder = ViewHolder()
+            val view = LayoutInflater.from(mContext)
+                .inflate(R.layout.content_spinner_image_item, parent, false)
 
-        viewHolder.ivBankIcon = view?.findViewById(R.id.ic_bank)
-        viewHolder.tvBankName = view?.findViewById(R.id.tv_bank_name)
+            viewHolder.ivBankIcon = view?.findViewById(R.id.ic_bank)
+            viewHolder.tvBankName = view?.findViewById(R.id.tv_bank_name)
 
-        viewHolder.ivBankIcon?.visibility =
-            if (mBankListData[position].bankIcon == R.drawable.bg_transparent)
-                View.GONE
-            else {
-                mBankListData[position].bankIcon?.let { viewHolder.ivBankIcon?.setImageResource(it) }
-                View.VISIBLE
-            }
-        viewHolder.tvBankName?.text = mBankListData[position].bankName
+            viewHolder.ivBankIcon?.visibility =
+                if (mBankListData[position].bankIcon == R.drawable.bg_transparent)
+                    View.GONE
+                else {
+                    mBankListData[position].bankIcon?.let {
+                        viewHolder.ivBankIcon?.setImageResource(
+                            it
+                        )
+                    }
+                    View.VISIBLE
+                }
+            viewHolder.tvBankName?.text = mBankListData[position].bankName
 
-        if (position == mCurrentSelectIndex) {
-            viewHolder.tvBankName?.setTextColor(
-                ContextCompat.getColor(
-                    MultiLanguagesApplication.appContext,
-                    R.color.textColorDark
+            if (position == mCurrentSelectIndex) {
+                viewHolder.tvBankName?.setTextColor(
+                    ContextCompat.getColor(
+                        MultiLanguagesApplication.appContext,
+                        R.color.textColorDark
+                    )
                 )
-            )
+            }
+            return view
         }
-        return view
+        return convertView
     }
 
     override fun getCount(): Int {
