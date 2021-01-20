@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="org.cxct.sportlottery.ui.menu.results.SettlementItem" />
+            type="org.cxct.sportlottery.ui.results.SettlementItem" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        tools:context="org.cxct.sportlottery.ui.menu.results.SettlementRvAdapter">
+        tools:context="org.cxct.sportlottery.ui.results.SettlementRvAdapter">
 
         <LinearLayout
             android:id="@+id/ll_type"

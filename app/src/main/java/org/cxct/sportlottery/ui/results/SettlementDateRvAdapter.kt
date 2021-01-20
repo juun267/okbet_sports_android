@@ -1,10 +1,9 @@
-package org.cxct.sportlottery.ui.menu.results
+package org.cxct.sportlottery.ui.results
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.CheckedTextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 
