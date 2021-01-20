@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
@@ -16,10 +15,8 @@ import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
-import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.MoneyManager
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
@@ -27,11 +24,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
-
-    private val mNavController by lazy {
-        findNavController()
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -165,25 +157,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 this.dismiss()
             }
         }
-    }
-
-    private fun setupWithdrawData(): WithdrawAddRequest? {
-        if (withdrawBankCardData == null)
-            return null
-        if (et_withdrawal_password.getText().length != 4)
-            return null
-        if (!judgmentWithdrawAmount())
-            return null
-        return WithdrawAddRequest(
-            id = withdrawBankCardData!!.id.toLong(),
-            applyMoney = et_withdrawal_amount.getText().toLong(),
-            withdrawPwd = MD5Util.MD5Encode(et_withdrawal_password.getText())
-        )
-    }
-
-    private fun judgmentWithdrawAmount(): Boolean {
-        //TODO Dean : 判斷因額是否符合範圍
-        return true
     }
 
     private fun getBankCardTailNo(data: BankCardList): String {
