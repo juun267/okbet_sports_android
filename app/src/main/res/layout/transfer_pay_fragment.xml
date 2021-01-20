@@ -164,6 +164,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -255,7 +256,7 @@
                         android:textSize="@dimen/textSize13sp" />
 
                     <ImageView
-                        android:id="@+id/iv_qr"
+                        android:id="@+id/iv_address"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
                         android:layout_marginTop="10dp"
@@ -384,6 +385,61 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_wx_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="4"
+                    android:text="@string/title_wx_id"
+                    android:textColor="@color/gray4"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/gray13" />
+
+
+                <EditText
+                    android:id="@+id/et_wx_id"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/edt_hint_wx_id"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/gray12"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -436,6 +492,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_bank_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -486,6 +543,60 @@
 
 
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="4"
+                    android:text="@string/title_nick_name"
+                    android:textColor="@color/gray4"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/gray13" />
+
+
+                <EditText
+                    android:id="@+id/et_nickname"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/edt_hint_real_name"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/gray12"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
