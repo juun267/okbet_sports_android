@@ -189,7 +189,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         btn_submit.setOnClickListener {
             if (checkAllData()) {
-                viewModel.addBankCard(createBankAddRequest())
+                viewModel.addBankCard(
+                    bankName = tv_bank_name.text.toString(),
+                    subAddress = et_network_point.getText(),
+                    cardNo = et_bank_card_number.getText(),
+                    fundPwd = et_withdrawal_password.getText(),
+                    fullName = et_create_name.getText(),
+                    id = args.editBankCard?.id?.toString(),
+                    userId = sUserInfo.userId.toString(),
+                    uwType = "bank" //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+                )
             }
         }
 
@@ -268,7 +277,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.clearBankCardFragmentStatus()
     }
 
-    private fun createBankAddRequest(): BankAddRequest {
+    private fun s(): BankAddRequest {
         return BankAddRequest(
             bankName = tv_bank_name.text.toString(),
             subAddress = et_network_point.getText(),
@@ -309,50 +318,39 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
             val layoutInflater = LayoutInflater.from(context)
             val view = layoutInflater.inflate(R.layout.item_listview_bank_card, parent, false)
             view.tag = holder
-
             view.apply {
-                /*val viewHolder = ViewHolder()*/
-                holder.tvBank = tv_bank_card.apply { text = data.name }
-                holder.ivBankIcon = iv_bank_icon.apply { setImageResource(MoneyManager.getBankIconByBankName(data.name ?: "")) }
-                holder.llSelectBankCard = ll_select_bank_card.apply {
-                    if (position == selectedPosition)
-                        setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
-                    else
-                        setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-                    setOnClickListener {
-                        if (selectedPosition != position) {
-                            //                data.isSelected = !data.isSelected
-                            selectedPosition = position
-                            notifyDataSetChanged()
-                            listener.onSelect(data)
-                        }
-                    }
-                }
+                holder.tvBank = tv_bank_card
+                holder.ivBankIcon = iv_bank_icon
+                holder.llSelectBankCard = ll_select_bank_card
+                setupView(holder, data, position)
             }
             view.tag = holder
             return view
         } else {
             holder = convertView.tag as ListViewHolder
+            setupView(holder, data, position)
+        }
+        return convertView
+    }
 
-            holder.apply {
-                /*val viewHolder = ViewHolder()*/
-                tvBank?.text = data.name
-                ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.name ?: ""))
-                if (position == selectedPosition)
-                    this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
-                else
-                    llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-                llSelectBankCard?.setOnClickListener {
-                    if (selectedPosition != position) {
-                        //                data.isSelected = !data.isSelected
-                        selectedPosition = position
-                        notifyDataSetChanged()
-                        listener.onSelect(data)
-                    }
+    private fun setupView(holder: ListViewHolder, data: MoneyRechCfg.Bank, position: Int) {
+        holder.apply {
+            /*val viewHolder = ViewHolder()*/
+            tvBank?.text = data.name
+            ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.name ?: ""))
+            if (position == selectedPosition)
+                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+            else
+                llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            llSelectBankCard?.setOnClickListener {
+                if (selectedPosition != position) {
+                    //                data.isSelected = !data.isSelected
+                    selectedPosition = position
+                    notifyDataSetChanged()
+                    listener.onSelect(data)
                 }
             }
         }
-        return convertView
     }
 
     override fun getCount(): Int {

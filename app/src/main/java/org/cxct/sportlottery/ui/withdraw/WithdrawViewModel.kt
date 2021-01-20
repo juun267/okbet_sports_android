@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository) : BaseViewModel() {
@@ -84,15 +86,39 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         }
     }
 
-    fun addBankCard(bankAddRequest: BankAddRequest) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.bankService.bankAdd(bankAddRequest)
-            }?.let { result ->
-                _bankAddResult.value = result
+    fun addBankCard(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, userId: String, uwType: String) {
+        checkInputBankCardData(fullName, cardNo, subAddress, fundPwd)
+        if (checkBankCardData()) {
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userId, uwType))
+                }?.let { result ->
+                    _bankAddResult.value = result
 
+                }
             }
         }
+    }
+
+    private fun checkInputBankCardData(fullName: String, cardNo: String, subAddress: String, withdrawPassword: String) {
+        checkCreateName(fullName)
+        checkBankCardNumber(cardNo)
+        checkNetWorkPoint(subAddress)
+        checkWithdrawPassword(withdrawPassword)
+
+    }
+
+    private fun createBankAddRequest(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, userId: String, uwType: String): BankAddRequest {
+        return BankAddRequest(
+            bankName = bankName,
+            subAddress = subAddress,
+            cardNo = cardNo,
+            fundPwd = MD5Util.MD5Encode(fundPwd),
+            fullName = fullName,
+            id = id,
+            userId = userId,
+            uwType = uwType //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+        )
     }
 
     fun deleteBankCard(id: String) {
