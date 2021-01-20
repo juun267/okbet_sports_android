@@ -25,6 +25,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -64,8 +65,8 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun setObserver() {
-        viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
-            tv_bet_status.text = list.joinToString(",") { it.name }
+        viewModel.selectedBetStatus.observe(viewLifecycleOwner, {
+            tv_bet_status.text = it
         })
     }
 
@@ -116,11 +117,10 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
-        val todayCalendar = Calendar.getInstance()
-        val minusDaysCalendar = Calendar.getInstance()
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
         if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
-        return Pair<Calendar, Calendar>(minusDaysCalendar, todayCalendar)
-
+        return Pair(minusDaysCalendar, todayCalendar)
     }
 
     private fun initListView() {
@@ -219,7 +219,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
                 if (it.hasStatus && it.hasStartDate && it.hasEndDate) {
                     loading()
-                    viewModel.getBetList(statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
+                    viewModel.getBetList(btn_champion.isChecked, statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
                 }
             })
 

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
@@ -34,6 +35,8 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val viewModelModule = module {
+        viewModel { SplashViewModel(get()) }
+        viewModel { MoneyRechViewModel(get(),get()) }
         viewModel { MainViewModel(get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
@@ -41,7 +44,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
         viewModel { WithdrawViewModel(get()) }
-        viewModel { SplashViewModel(get()) }
         viewModel { NicknameModel(get()) }
     }
 
@@ -50,6 +52,7 @@ class MultiLanguagesApplication : Application() {
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
+        single { MoneyRepository() }
         single { BetInfoRepository() }
     }
 

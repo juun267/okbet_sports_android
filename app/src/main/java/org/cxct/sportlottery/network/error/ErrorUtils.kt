@@ -24,8 +24,10 @@ import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
+import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
@@ -46,12 +48,14 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.MoneyRechCfgResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.user.UserMoneyResult
+import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import retrofit2.Converter
 import retrofit2.Response
@@ -79,7 +83,9 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
-                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) || url.contains(INDEX_CHECK_TOKEN) ) -> {
+                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) || url.contains(
+                        INDEX_CHECK_TOKEN
+                    )) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }
@@ -159,6 +165,10 @@ object ErrorUtils {
                             null
                         ) as T
                     }
+                    (url.contains(USER_INFO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return UserInfoResult(it.code, it.msg, it.success, null) as T
+                    }
                     (url.contains(USER_MONEY)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return UserMoneyResult(it.code, it.msg, it.success, null) as T
@@ -174,6 +184,10 @@ object ErrorUtils {
                     (url.contains(MATCH_RESULT_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MatchResultListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(RECHARGE_CONFIG_MAP)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MoneyRechCfgResult(it.code, it.msg, it.success,  null) as T
                     }
                     (url.contains(BANK_MY)) -> {
                         @Suppress("UNCHECKED_CAST")
