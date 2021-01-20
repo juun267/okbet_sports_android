@@ -2,13 +2,11 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import android.content.res.AssetManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Types
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
-import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -43,8 +41,7 @@ object MoneyManager {
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
-            val type = object : TypeToken<List<MoneyPayWayData>>() {}.type
-            mMoneyPayWayList = Gson().fromJson(getRechargeConfig(mContext), type)
+            mMoneyPayWayList=MoshiUtil.fromJson(getRechargeConfig(mContext),Types.newParameterizedType(List::class.java, MoneyPayWayData::class.java))
         }
         return mMoneyPayWayList
     }

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.money
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

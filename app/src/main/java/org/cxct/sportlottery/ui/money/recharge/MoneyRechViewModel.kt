@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
