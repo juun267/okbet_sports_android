@@ -40,18 +40,36 @@ object TimeUtil {
     }
 
     enum class TimeType {
-        START, END
+        START_OF_DAY, END_OF_DAY
     }
 
-    fun dateToTimeStamp(date: String, timeType: TimeType = TimeType.START): Long? {
+    fun dateToTimeStamp(date: String, timeType: TimeType = TimeType.START_OF_DAY): Long? {
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val startTimeStamp = formatter.parse("$date 00:00:00")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59")?.time
-        return if (timeType == TimeType.START) startTimeStamp else endTimeStamp
+        return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
 
     fun getNowTimeStamp(): Long {
         return System.currentTimeMillis()
+    }
+
+    fun getTodayStartTimeCalendar(): Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar
+    }
+
+    fun getTodayEndTimeCalendar(): Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 59)
+        return calendar
     }
 
     fun getTodayStartTimeStamp(): Long {

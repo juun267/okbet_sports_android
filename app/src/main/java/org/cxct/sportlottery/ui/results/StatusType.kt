@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.menu.results
+package org.cxct.sportlottery.ui.results
 
 enum class StatusType(val code: Int) {
     FIRST_HALF(6), //上半場
