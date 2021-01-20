@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.lifecycle.Observer
+import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_register.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -286,7 +287,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val smsCode = et_sms_valid_code.getText()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = et_verification_code.getText()
-        val deviceSn = "" //JPushInterface.getRegistrationID(applicationContext) //極光推播 //TODO 極光推波建置好，要來補齊 deviceSn 參數
+        val deviceSn = JPushInterface.getRegistrationID(applicationContext) //極光推播
         Timber.d("極光推播: RegistrationID = $deviceSn")
 
         val registerRequest = RegisterRequest(
