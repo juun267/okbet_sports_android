@@ -62,7 +62,7 @@ class MoneyRechCfg {
 
     class WithdrawCfg {
         var wdRate: Double? = null//用户提现费率
-        var withDrawBalanceLimit: Int? = null//每笔最小提现金额
+        var withDrawBalanceLimit: Long? = null//每笔最小提现金额
         var maxWithdrawMoney: Long? = null//每笔最高提现金额
     }
 }

@@ -16,6 +16,8 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository) : BaseViewModel() {
@@ -39,7 +41,7 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         get() = _bankDeleteResult
     private var _bankDeleteResult = MutableLiveData<BankDeleteResult>()
 
-    //用來取得銀行列表
+    //獲取資金設定
     val rechargeConfigs: LiveData<MoneyRechCfgData>
         get() = _rechargeConfigs
     private var _rechargeConfigs = MutableLiveData<MoneyRechCfgData>()
@@ -65,12 +67,43 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         get() = _withdrawPasswordMsg
     private var _withdrawPasswordMsg = MutableLiveData<String>()
 
-    fun addWithdraw(withdrawAddRequest: WithdrawAddRequest) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.addWithdraw(withdrawAddRequest)
+    //提款金額錯誤訊息
+    val withdrawAmountMsg: LiveData<String>
+        get() = _withdrawAmountMsg
+    private var _withdrawAmountMsg = MutableLiveData<String>()
+
+    //提款手續費提示
+    val withdrawRateHint: LiveData<String>
+        get() = _withdrawRateHint
+    private var _withdrawRateHint = MutableLiveData<String>()
+
+    fun addWithdraw(bankCardId: Long, applyMoney: String, withdrawPwd: String) {
+        checkWithdrawAmount(applyMoney)
+        checkWithdrawPassword(withdrawPwd)
+        if (checkWithdrawData()) {
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.withdrawService.addWithdraw(getWithdrawAddRequest(bankCardId, applyMoney, withdrawPwd))
+                }
             }
         }
+
+    }
+
+    private fun getWithdrawAddRequest(bankCardId: Long, applyMoney: String, withdrawPwd: String): WithdrawAddRequest {
+        return WithdrawAddRequest(
+            id = bankCardId,
+            applyMoney = applyMoney.toLong(),
+            withdrawPwd = MD5Util.MD5Encode(withdrawPwd)
+        )
+    }
+
+    private fun checkWithdrawData(): Boolean {
+        if (withdrawAmountMsg.value != "")
+            return false
+        if (withdrawPasswordMsg.value != "")
+            return false
+        return true
     }
 
     fun getBankCardList() {
@@ -106,7 +139,7 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         }
     }
 
-    fun getBankList() {
+    fun getMoneyConfigs() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
@@ -185,5 +218,34 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             }
             else -> ""
         }
+    }
+
+    fun checkWithdrawAmount(withdrawAmount: String) {
+        _withdrawAmountMsg.value = when {
+            withdrawAmount.isEmpty() -> {
+                androidContext.getString(R.string.error_withdraw_amount_empty)
+            }
+            !VerifyConstUtil.verifyWithdrawAmount(
+                withdrawAmount,
+                rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 100,
+                rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney
+            ) -> {// TODO Dean : 根據config獲取 但只有最小沒有最大
+                getWithdrawRate(withdrawAmount.toLong())
+                androidContext.getString(R.string.error_withdraw_amount)
+            }
+            else -> {
+                getWithdrawRate(withdrawAmount.toLong())
+                ""
+            }
+        }
+//        getWithdrawRate(withdrawAmount.toLong())
+    }
+
+    fun getWithdrawRate(withdrawAmount: Long) {
+        _withdrawRateHint.value = String.format(
+            androidContext.getString(R.string.withdraw_handling_fee_hint),
+            rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100),
+            ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
+        )
     }
 }
