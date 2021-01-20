@@ -59,7 +59,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             itemView.apply {
                 iv_bank_icon.setImageResource(R.drawable.ic_bank_default) //TODO Dean : 待匯入銀行icon後對key做mapping
                 tv_bank_name.text = data.bankName
-                tv_bank_number.text = "" //TODO Dean : 與用戶真實姓名相等, Api沒有回傳,根據用戶id或直接抓取自身真實姓名做顯示
+                tv_name.text = "" //TODO Dean : 與用戶真實姓名相等, Api沒有回傳,根據用戶id或直接抓取自身真實姓名做顯示
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
                 tv_bind_time.text = data.addTime
                 img_edit_bank.setOnClickListener {
