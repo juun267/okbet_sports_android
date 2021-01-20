@@ -3,6 +3,7 @@ package org.cxct.sportlottery
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
@@ -12,11 +13,11 @@ import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
-import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
+import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -96,11 +97,19 @@ class MultiLanguagesApplication : Application() {
         NetworkStatusManager.init(this)
 
         setupTimber()
+
+        initJPush()
     }
 
     private fun setupTimber() {
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
+    }
+
+    //極光推播
+    private fun initJPush() {
+        JPushInterface.setDebugMode(true) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
+        JPushInterface.init(this)
     }
 }

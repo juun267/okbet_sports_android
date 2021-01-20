@@ -61,8 +61,6 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "65670407e46038b18ee836ed", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
-                    JPUSH_PRIVODER         : applicationId + ".DataProvider",
-                    JPUSH_PERMISSION       : applicationId + ".permission.JPUSH_MESSAGE",
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
@@ -169,6 +167,9 @@ dependencies {
     //相片選擇、拍照、錄影、剪裁 https://github.com/LuckSiege/PictureSelector
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
 
+    //極光推送sdk
+    implementation 'cn.jiguang.sdk:jpush:3.9.1'
+    implementation 'cn.jiguang.sdk:jcore:2.6.0'
 }
 
 multiLanguages {
