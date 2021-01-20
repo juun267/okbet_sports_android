@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
+import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -17,7 +18,6 @@ import org.cxct.sportlottery.util.ToastUtil
 
 class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
 
-    private val FLAG_IS_NEED_SET_PAY_PW = 1
     private var mUpdatePayPw = 0 //TODO simon test 是否需要更新资金密码: 0 不用，1 需要 //等之後串接了 userInfo data 再來修改
 
     enum class PwdPage { LOGIN_PWD, BANK_PWD }
@@ -53,7 +53,7 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
     private fun setupWithdrawalPwdTab() {
         tab_withdrawal_password.setOnClickListener {
             mPwdPage = PwdPage.BANK_PWD
-            if (mUpdatePayPw == FLAG_IS_NEED_SET_PAY_PW)
+            if (mUpdatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
                 et_current_password.setHint(getString(R.string.hint_current_login_password))
             else
                 et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
