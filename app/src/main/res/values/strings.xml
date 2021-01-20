@@ -13,6 +13,7 @@
 
     <string name="error_url_fail">跳转地址错误</string>
     <string name="unknown_error">未知错误</string>
+    <string name="error_reading_file">档案读取错误</string>
 
 
     <!--network message-->

@@ -17,26 +17,37 @@ import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActi
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
+import java.io.File
+import java.io.FileNotFoundException
 
 class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
-            // 图片选择结果回调
-            // LocalMedia 里面返回三种path
-            // 1.media.getPath(); 为原图path
-            // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-            // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-            // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+            try {
+                // 图片选择结果回调
+                // LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
 
-            val media = result?.firstOrNull() //這裡應當只會有一張圖片
-            val path = when {
-                media?.isCompressed == true -> media.compressPath
-                media?.isCut == true -> media.cutPath
-                else -> media?.path
+                val media = result?.firstOrNull() //這裡應當只會有一張圖片
+                val path = when {
+                    media?.isCompressed == true -> media.compressPath
+                    media?.isCut == true -> media.cutPath
+                    else -> media?.path
+                }
+
+                val file = File(path!!)
+                if (file.exists())
+                    uploadImg(file)
+                else
+                    throw FileNotFoundException()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtil.showToastInCenter(this@ProfileActivity, getString(R.string.error_reading_file))
             }
-
-            uploadImg(path ?: "")
         }
 
         override fun onCancel() {
@@ -91,8 +102,8 @@ class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
             .into(iv_head) //載入頭像
     }
 
-    private fun uploadImg(path: String) {
-        val uploadImgRequest = UploadImgRequest(sLoginData?.userId.toString(), path)
+    private fun uploadImg(file: File) {
+        val uploadImgRequest = UploadImgRequest(sLoginData?.userId.toString(), file)
         viewModel.uploadImage(uploadImgRequest)
     }
 
