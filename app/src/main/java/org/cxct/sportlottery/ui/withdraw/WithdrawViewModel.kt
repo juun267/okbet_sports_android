@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
+import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.sUserInfo
@@ -37,6 +38,11 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
     val bankDeleteResult: LiveData<BankDeleteResult>
         get() = _bankDeleteResult
     private var _bankDeleteResult = MutableLiveData<BankDeleteResult>()
+
+    //用來取得銀行列表
+    val rechargeConfigs: LiveData<MoneyRechCfgData>
+        get() = _rechargeConfigs
+    private var _rechargeConfigs = MutableLiveData<MoneyRechCfgData>()
 
     //--銀行卡編輯頁面
     //開戶名錯誤訊息
@@ -96,6 +102,16 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             }?.let { result ->
                 _bankDeleteResult.value = result
 
+            }
+        }
+    }
+
+    fun getBankList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                moneyRepository.getRechCfg()
+            }?.let { result ->
+                _rechargeConfigs.value = result.rechCfg
             }
         }
     }

@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -18,7 +21,8 @@ import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
-import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -56,7 +60,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             setupEvent()
 
             setupObserve()
+
+            setupBankList()
         }
+    }
+
+    private fun setupBankList() {
+        viewModel.getBankList()
     }
 
     private fun setupInitData(view: View) {
@@ -94,9 +104,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initView() {
-        et_create_name.apply {
-            clearVisibility = if (getText().isNotEmpty()) View.VISIBLE else View.GONE
-        }
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
@@ -104,7 +111,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         et_withdrawal_password.eyeVisibility = View.GONE
 
-        setupBankSelector()
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -113,27 +119,27 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun setupBankSelector() {
+    private fun setupBankSelector(rechCfgData: MoneyRechCfgData) {
         mBankSelectorBottomSheetDialog = BottomSheetDialog(requireContext())
         mBankSelectorBottomSheetDialog.apply {
             val bankSelectorBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
             setContentView(bankSelectorBottomSheetView)
-            tv_game_type_title.text = getString(R.string.select_bank)
-            mBankSelectorAdapter = BankSelectorAdapter(lv_bank_item.context, mutableListOf(), BankSelectorAdapterListener {
+            mBankSelectorAdapter = BankSelectorAdapter(lv_bank_item.context, rechCfgData.banks, BankSelectorAdapterListener {
                 updateSelectedBank(it)
                 dismiss()
             })
+            lv_bank_item.adapter = mBankSelectorAdapter
+            mBankSelectorAdapter.initSelectStatus()
+            tv_game_type_title.text = getString(R.string.select_bank)
             btn_close.setOnClickListener {
                 dismiss()
             }
         }
-        //TODO Dean : initStatus
-        mBankSelectorAdapter.initSelectStatus()
     }
 
-    private fun updateSelectedBank(bank: BankCardList) {
-        tv_bank_name.text = bank.bankName
-        iv_bank_icon.setImageResource(BankUtil.getBankIconByBankName(bank.bankName))
+    private fun updateSelectedBank(bank: MoneyRechCfg.Bank) {
+        tv_bank_name.text = bank.name
+        iv_bank_icon.setImageResource(BankUtil.getBankIconByBankName(bank.name ?: ""))
     }
 
     private fun setupEvent() {
@@ -207,6 +213,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupObserve() {
+        viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
+            setupBankSelector(rechCfgData)
+        })
+
         viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 //TODO Dean : bind bank card success Event
@@ -286,25 +296,53 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 }
 
-class BankSelectorAdapter(private val context: Context, private val dataList: MutableList<BankCardList>, private val listener: BankSelectorAdapterListener) : BaseAdapter() {
+class BankSelectorAdapter(private val context: Context, private val dataList: List<MoneyRechCfg.Bank>, private val listener: BankSelectorAdapterListener) : BaseAdapter() {
     //TODO Dean : dataList的型態待充值的recharcfg/map取得後更改為相同資料型態
     private var selectedPosition = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        var holder: ListViewHolder
         // if remove "if (convertView == null)" will get a warning about reuse view.
+        val data = dataList[position]
         if (convertView == null) {
+            holder = ListViewHolder()
             val layoutInflater = LayoutInflater.from(context)
             val view = layoutInflater.inflate(R.layout.item_listview_bank_card, parent, false)
-            val data = dataList[position]
+            view.tag = holder
 
             view.apply {
-                tv_bank_card.text = String.format(context.getString(R.string.selected_bank_card), data.bankName, data.cardNo)
-                iv_bank_icon.setImageResource(BankUtil.getBankIconByBankName(data.bankName))
+                /*val viewHolder = ViewHolder()*/
+                holder.tvBank = tv_bank_card.apply { text = data.name }
+                holder.ivBankIcon = iv_bank_icon.apply { setImageResource(BankUtil.getBankIconByBankName(data.name ?: "")) }
+                holder.llSelectBankCard = ll_select_bank_card.apply {
+                    if (position == selectedPosition)
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                    else
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                    setOnClickListener {
+                        if (selectedPosition != position) {
+                            //                data.isSelected = !data.isSelected
+                            selectedPosition = position
+                            notifyDataSetChanged()
+                            listener.onSelect(data)
+                        }
+                    }
+                }
+            }
+            view.tag = holder
+            return view
+        } else {
+            holder = convertView.tag as ListViewHolder
+
+            holder.apply {
+                /*val viewHolder = ViewHolder()*/
+                tvBank?.text = data.name
+                ivBankIcon?.setImageResource(BankUtil.getBankIconByBankName(data.name ?: ""))
                 if (position == selectedPosition)
-                    this.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                    this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
                 else
-                    ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-                ll_select_bank_card.setOnClickListener {
+                    llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                llSelectBankCard?.setOnClickListener {
                     if (selectedPosition != position) {
                         //                data.isSelected = !data.isSelected
                         selectedPosition = position
@@ -313,7 +351,6 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Mu
                     }
                 }
             }
-            return view
         }
         return convertView
     }
@@ -339,6 +376,12 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Mu
     }
 }
 
-class BankSelectorAdapterListener(private val selectListener: (item: BankCardList) -> Unit) {
-    fun onSelect(item: BankCardList) = selectListener(item)
+class ListViewHolder {
+    var tvBank: TextView? = null
+    var ivBankIcon: ImageView? = null
+    var llSelectBankCard: LinearLayout? = null
+}
+
+class BankSelectorAdapterListener(private val selectListener: (item: MoneyRechCfg.Bank) -> Unit) {
+    fun onSelect(item: MoneyRechCfg.Bank) = selectListener(item)
 }
