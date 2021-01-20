@@ -43,6 +43,7 @@ object MoneyManager {
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
+            //TODO Bill 降低耦合度
             mMoneyPayWayList = MoshiUtil.fromJson(
                 getRechargeConfig(mContext),
                 Types.newParameterizedType(List::class.java, MoneyPayWayData::class.java)
