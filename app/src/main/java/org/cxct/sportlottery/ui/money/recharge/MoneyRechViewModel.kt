@@ -15,7 +15,10 @@ import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MoneyManager
 
-class MoneyRechViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository) : BaseViewModel() {
+class MoneyRechViewModel(
+    private val androidContext: Context,
+    private val moneyRepository: MoneyRepository
+) : BaseViewModel() {
 
 
     val rechargeConfigs: LiveData<MoneyRechCfgData>
@@ -32,19 +35,15 @@ class MoneyRechViewModel(private val androidContext: Context, private val moneyR
 
     //獲取充值的基礎配置
     fun getRechCfg() {
-        try {
-            viewModelScope.launch {
-                val result = doNetwork(androidContext) {
-                    moneyRepository.getRechCfg()
-                }
-                _rechargeConfigs.value = result?.rechCfg
-
-                result?.rechCfg?.rechCfgs?.let { filterBankList(it) }
-
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                moneyRepository.getRechCfg()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+            _rechargeConfigs.value = result?.rechCfg
+
+            result?.rechCfg?.rechCfgs?.let { filterBankList(it) }
         }
+
     }
 
     //篩選List要顯示的資料
@@ -54,12 +53,12 @@ class MoneyRechViewModel(private val androidContext: Context, private val moneyR
             _onlinePayList.value = null
             _transferPayList.value = null
 
-            var onlineData: MutableList<MoneyPayWayData>? = mutableListOf()
-            var transferData: MutableList<MoneyPayWayData>? = mutableListOf()
+            val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
+            val transferData: MutableList<MoneyPayWayData> = mutableListOf()
 
             val dataList: MutableList<MoneyPayWayData> = mutableListOf()
             MoneyManager.getMoneyPayWayList()?.forEach { moneyPayWay ->
-                if (rechConfigList?.firstOrNull {
+                if (rechConfigList.firstOrNull {
                         it.rechType == "onlinePayment" && it.onlineType == moneyPayWay.onlineType
                                 || it.rechType != "onlinePayment" && it.rechType == moneyPayWay.rechType
                     } != null) {
@@ -70,8 +69,8 @@ class MoneyRechViewModel(private val androidContext: Context, private val moneyR
 
             dataList.forEach {
                 when (it.rechType) {
-                    "onlinePayment" -> onlineData?.add(it)
-                    else -> transferData?.add(it)
+                    "onlinePayment" -> onlineData.add(it)
+                    else -> transferData.add(it)
                 }
             }
 
