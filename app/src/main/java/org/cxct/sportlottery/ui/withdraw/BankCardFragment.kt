@@ -7,15 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.*
-import kotlinx.android.synthetic.main.fragment_bank_card.btn_delete_bank
-import kotlinx.android.synthetic.main.fragment_bank_card.tv_bank_name
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
@@ -25,6 +22,7 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.BankUtil
 import org.cxct.sportlottery.util.MD5Util.MD5Encode
 
@@ -96,25 +94,23 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initView() {
-/*        if (edit_create_name.text.isNotEmpty()) {
-            btn_clear_create_name.visibility = View.VISIBLE
-        } else {
-            btn_clear_create_name.visibility = View.GONE
+        et_create_name.apply {
+            clearVisibility = if (getText().isNotEmpty()) View.VISIBLE else View.GONE
         }
+        initEditTextStatus(et_create_name)
+        initEditTextStatus(et_bank_card_number)
+        initEditTextStatus(et_network_point)
 
-        if (edit_bank_card_number.text.isNotEmpty()) {
-            btn_clear_bank_card_number.visibility = View.VISIBLE
-        } else {
-            btn_clear_bank_card_number.visibility = View.GONE
-        }
-
-        if (edit_network_point.text.isNotEmpty()) {
-            btn_clear_network_point.visibility = View.VISIBLE
-        } else {
-            btn_clear_network_point.visibility = View.GONE
-        }*/
+        //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
+        et_withdrawal_password.eyeVisibility = View.GONE
 
         setupBankSelector()
+    }
+
+    private fun initEditTextStatus(setupView: LoginEditText) {
+        setupView.apply {
+            clearVisibility = if (getText().isNotEmpty()) View.VISIBLE else View.GONE
+        }
     }
 
     private fun setupBankSelector() {
@@ -141,12 +137,54 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupEvent() {
+        setupClickEvent()
+
+        setupTextChangeEvent()
+    }
+
+    private fun setupTextChangeEvent() {
+        viewModel.apply {
+            //開戶名
+            setupClearButtonVisibility(et_create_name) { checkCreateName(it) }
+
+            //銀行卡號
+            setupClearButtonVisibility(et_bank_card_number) { checkBankCardNumber(it) }
+
+            //開戶網點
+            setupClearButtonVisibility(et_network_point) { checkNetWorkPoint(it) }
+
+            //提款密碼
+            setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
+        }
+    }
+
+    private fun setupClearButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
+        setupView.let { view ->
+            view.afterTextChanged {
+                view.clearVisibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+                checkFun.invoke(it)
+            }
+        }
+    }
+
+    private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
+        setupView.let { view ->
+            view.afterTextChanged {
+                view.eyeVisibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+                checkFun(it)
+            }
+        }
+    }
+
+    private fun setupClickEvent() {
         item_bank_selector.setOnClickListener {
             mBankSelectorBottomSheetDialog.show()
         }
 
         btn_submit.setOnClickListener {
-            viewModel.addBankCard(createBankAddRequest())
+            if (checkAllData()) {
+                viewModel.addBankCard(createBankAddRequest())
+            }
         }
 
         btn_reset.setOnClickListener {
@@ -156,51 +194,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_delete_bank.setOnClickListener {
             viewModel.deleteBankCard(args.editBankCard?.id.toString())
         }
+    }
 
-/*        btn_clear_create_name.setOnClickListener {
-            edit_create_name.setText("")
+    private fun checkAllData(): Boolean {
+        viewModel.apply {
+            checkCreateName(et_create_name.getText())
+            checkBankCardNumber(et_bank_card_number.getText())
+            checkNetWorkPoint(et_network_point.getText())
+            checkWithdrawPassword(et_withdrawal_password.getText())
+            return checkBankCardData()
         }
-
-        btn_clear_bank_card_number.setOnClickListener {
-            edit_bank_card_number.setText("")
-        }
-
-        btn_clear_network_point.setOnClickListener {
-            edit_network_point.setText("")
-        }*/
-
-        /*edit_create_name.addTextChangedListener {
-            it?.let {
-                if (it.isNotEmpty()) {
-                    btn_clear_create_name.visibility = View.VISIBLE
-                } else {
-                    btn_clear_create_name.visibility = View.GONE
-                }
-
-            }
-        }
-
-        edit_bank_card_number.addTextChangedListener {
-            it?.let {
-                if (it.isNotEmpty()) {
-                    btn_clear_bank_card_number.visibility = View.VISIBLE
-                } else {
-                    btn_clear_bank_card_number.visibility = View.GONE
-                }
-
-            }
-        }
-
-        edit_network_point.addTextChangedListener {
-            it?.let {
-                if (it.isNotEmpty()) {
-                    btn_clear_network_point.visibility = View.VISIBLE
-                } else {
-                    btn_clear_network_point.visibility = View.GONE
-                }
-
-            }
-        }*/
     }
 
     private fun setupObserve() {
@@ -227,6 +230,32 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 mNavController.popBackStack()
             }
         })
+
+        //錯誤訊息
+        //開戶名
+        viewModel.createNameErrorMsg.observe(this.viewLifecycleOwner, Observer {
+            et_create_name.setError(it ?: "")
+        })
+
+        //銀行卡號
+        viewModel.bankCardNumberMsg.observe(this.viewLifecycleOwner, Observer {
+            et_bank_card_number.setError(it ?: "")
+        })
+
+        //開戶網點
+        viewModel.networkPointMsg.observe(this.viewLifecycleOwner, Observer {
+            et_network_point.setError(it ?: "")
+        })
+
+        //提款密碼
+        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer {
+            et_withdrawal_password.setError(it ?: "")
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clearBankCardFragmentStatus()
     }
 
     private fun createBankAddRequest(): BankAddRequest {
