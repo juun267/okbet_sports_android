@@ -18,7 +18,7 @@ enum class BankKey(val bankName: String, val iconId: Int) {
     CMBC("民生银行", R.drawable.ic_bank_cmbc),
     CIB("兴业银行", R.drawable.ic_bank_cib),
     BOC("中国银行", R.drawable.ic_bank_boc),
-    POST("邮政银行", R.drawable.ic_bank_default), // TODO Dean : PM還沒給答案說圖片是哪一張
+    POST("邮政银行", R.drawable.ic_bank_psbc),
     CEBBANK("光大银行", R.drawable.ic_bank_ceb),
     ECITIC("中信银行", R.drawable.ic_bank_ecit),
     CGB("广发银行", R.drawable.ic_bank_cgb),
