@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
+import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
@@ -54,6 +55,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.user.UserMoneyResult
+import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import retrofit2.Converter
 import retrofit2.Response
@@ -81,7 +83,9 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
-                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) || url.contains(INDEX_CHECK_TOKEN) ) -> {
+                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) || url.contains(
+                        INDEX_CHECK_TOKEN
+                    )) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }
@@ -160,6 +164,10 @@ object ErrorUtils {
                             it.success,
                             null
                         ) as T
+                    }
+                    (url.contains(USER_INFO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return UserInfoResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(USER_MONEY)) -> {
                         @Suppress("UNCHECKED_CAST")
