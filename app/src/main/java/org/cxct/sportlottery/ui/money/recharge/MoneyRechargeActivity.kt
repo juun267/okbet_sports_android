@@ -50,21 +50,21 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 //        })
 
         viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
-            transferPayList = it ?: return@Observer
             if (currentTab == RechargeType.TRANSFER_PAY)
-                bankTypeAdapter?.data = transferPayList
+                bankTypeAdapter.data = transferPayList
 
 
             when(currentTab){
                 RechargeType.TRANSFER_PAY->switchFragment(getPayFragment(transferPayList[0]),"TransferPayFragment")
-                RechargeType.TRANSFER_PAY->switchFragment(getPayFragment(transferPayList[0]),"OnlinePayFragment")
+                RechargeType.ONLINE_PAY->switchFragment(getPayFragment(onlinePayList[0]),"OnlinePayFragment")
             }
         })
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
             onlinePayList = it ?: return@Observer
-            if (currentTab == RechargeType.ONLINE_PAY)
-                bankTypeAdapter?.data = onlinePayList
+            if (currentTab == RechargeType.ONLINE_PAY) {
+                bankTypeAdapter.data = onlinePayList
+            }
         })
 
     }
@@ -74,14 +74,14 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             currentTab = RechargeType.TRANSFER_PAY
             btn_transfer_pay.isSelected = true
             btn_online_pay.isSelected = false
-            bankTypeAdapter?.data = transferPayList
+            bankTypeAdapter.data = transferPayList
 
         }
         btn_online_pay.setOnClickListener {
             currentTab = RechargeType.ONLINE_PAY
             btn_transfer_pay.isSelected = false
             btn_online_pay.isSelected = true
-            bankTypeAdapter?.data = onlinePayList
+            bankTypeAdapter.data = onlinePayList
         }
     }
 

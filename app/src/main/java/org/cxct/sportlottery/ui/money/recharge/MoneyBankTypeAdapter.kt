@@ -27,11 +27,11 @@ class MoneyBankTypeAdapter : RecyclerView.Adapter<MoneyBankTypeAdapter.ViewHolde
         holder.bind(item)
     }
 
-    override fun getItemCount() = data?.size
+    override fun getItemCount() = data.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icBank: ImageView = itemView.findViewById(R.id.ic_bank)
-        val tvType: TextView = itemView.findViewById(R.id.tv_type)
+        private val icBank: ImageView = itemView.findViewById(R.id.ic_bank)
+        private val tvType: TextView = itemView.findViewById(R.id.tv_type)
 
         fun bind(item: MoneyPayWayData) {
             icBank.setImageResource(MoneyManager.getBankIcon(item.rechType))
