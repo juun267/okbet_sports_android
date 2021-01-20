@@ -12,11 +12,12 @@ import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
+import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
-class WithdrawViewModel(private val androidContext: Context) : BaseViewModel() {
+class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository) : BaseViewModel() {
 
     val needToUpdateWithdrawPassword: LiveData<Boolean>
         get() = _needToUpdateWithdrawPassword

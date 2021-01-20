@@ -36,14 +36,14 @@ class MultiLanguagesApplication : Application() {
 
     private val viewModelModule = module {
         viewModel { SplashViewModel(get()) }
-        viewModel { MoneyRechViewModel(get(),get()) }
+        viewModel { MoneyRechViewModel(get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
-        viewModel { WithdrawViewModel(get()) }
+        viewModel { WithdrawViewModel(get(), get()) }
         viewModel { NicknameModel(get()) }
     }
 
