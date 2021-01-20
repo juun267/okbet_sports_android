@@ -91,6 +91,7 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
     private fun updatePwd() {
         val updatePwdRequest = UpdatePwdRequest(
             userId = sLoginData?.userId ?: return,
+            platformId = sLoginData?.platformId ?: return,
             oldPassword = MD5Util.MD5Encode(et_current_password.getText()),
             newPassword = MD5Util.MD5Encode(et_new_password.getText())
         )
@@ -102,6 +103,7 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
     private fun updateFundPwd() {
         val updateFundPwdRequest = UpdateFundPwdRequest(
             userId = sLoginData?.userId ?: return,
+            platformId = sLoginData?.platformId ?: return,
             oldPassword = MD5Util.MD5Encode(et_current_password.getText()),
             newPassword = MD5Util.MD5Encode(et_new_password.getText())
         )
