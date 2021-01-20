@@ -45,7 +45,7 @@ class RegisterViewModel(
     private val _smsResult = MutableLiveData<SmsResult?>()
     private val _checkAccountResult = MutableLiveData<CheckAccountResult?>()
 
-    fun registerDataChanged(
+    fun checkInputData(
         context: Context,
         inviteCode: String?,
         memberAccount: String?,
@@ -65,7 +65,7 @@ class RegisterViewModel(
         validCode: String?,
         securityCode: String?,
         checkAgreement: Boolean
-    ) {
+    ): Boolean {
         val inviteCodeError: String? = checkInviteCode(context, inviteCode)
         val memberAccountError = checkMemberAccount(context, memberAccount, isExistAccount)
         val loginPasswordError = checkLoginPassword(context, loginPassword)
@@ -116,9 +116,10 @@ class RegisterViewModel(
             telegramError = telegramError,
             securityCodeError = securityCodeError,
             validCodeError = validCodeError,
-            checkAgreement = checkAgreement,
-            isDataValid = isDataValid
+            checkAgreement = checkAgreement
         )
+
+        return isDataValid
     }
 
     fun getAgreementContent(context: Context): Spanned {
