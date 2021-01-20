@@ -47,7 +47,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun setupAccount() {
         et_account.setText(viewModel.account)
         et_account.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+            checkInputData()
         }
     }
 
@@ -64,7 +64,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         })
 
         et_password.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+            checkInputData()
         }
     }
 
@@ -81,18 +81,20 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         })
 
         et_verification_code.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+            checkInputData()
         }
     }
 
     private fun setupLoginButton() {
         btn_login.setOnClickListener {
-            if (viewModel.loginFormState.value?.isDataValid == true) {
+            if (checkInputData()) {
                 login()
-            } else {
-                viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
             }
         }
+    }
+
+    private fun checkInputData(): Boolean {
+        return viewModel.checkInputData(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
     }
 
     private fun updateValidCode() {
