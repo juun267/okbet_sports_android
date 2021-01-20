@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.android.synthetic.main.fragment_bet_record_search.*
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
@@ -51,6 +53,14 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
         )
     }
 
+    fun getBetStatus (): String? {
+        return if (selectStatusNameList.value?.size == statusNameMap.values.size) {
+            androidContext.getString(R.string.all_order)
+        } else {
+            selectStatusNameList.value?.joinToString(",") { it.name }
+        }
+    }
+
     fun addSelectStatus(item: BetTypeItemData) {
         _selectStatusList.value?.add(item)
         _selectStatusList.value = _selectStatusList.value
@@ -66,7 +76,9 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
         _selectStatusList.value = _selectStatusList.value
     }
 
-    fun getBetList(championOnly: Int, statusList: List<Int>, startDate: String, endDate: String) {
+    fun getBetList(isChampionChecked: Boolean, statusList: List<Int>, startDate: String, endDate: String) {
+        val championOnly = if (isChampionChecked) 1 else 0
+
         viewModelScope.launch {
             val betListRequest = BetListRequest(championOnly = championOnly,
                                                 statusList = statusList,

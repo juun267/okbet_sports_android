@@ -65,12 +65,8 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun setObserver() {
-        viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
-            if (list.size == viewModel.statusNameMap.values.size) {
-                tv_bet_status.text = getString(R.string.all_order)
-            } else {
-                tv_bet_status.text = list.joinToString(",") { it.name }
-            }
+        viewModel.selectStatusNameList.observe(viewLifecycleOwner, {
+            tv_bet_status.text = viewModel.getBetStatus()
         })
     }
 
@@ -223,8 +219,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
                 if (it.hasStatus && it.hasStartDate && it.hasEndDate) {
                     loading()
-                    val championOnly = if (btn_champion.isChecked) 1 else 0
-                    viewModel.getBetList(championOnly, statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
+                    viewModel.getBetList(btn_champion.isChecked, statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
                 }
             })
 

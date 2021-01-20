@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
-import kotlinx.android.synthetic.main.fragment_bet_record_result.tv_bet_status
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordResultBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -21,7 +20,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         binding.apply {
             betRecordViewModel = this@BetRecordResultFragment.viewModel
             lifecycleOwner = this@BetRecordResultFragment
-            other = this@BetRecordResultFragment.viewModel.betRecordResult.value?.other
+//            other = this@BetRecordResultFragment.viewModel.betRecordResult.value?.other
         }
         return binding.root
     }
@@ -33,12 +32,8 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun initTv() {
-        viewModel.selectStatusNameList.observe(viewLifecycleOwner, { list ->
-            if (list.size == viewModel.statusNameMap.values.size) {
-                tv_bet_status.text = getString(R.string.all_order)
-            } else {
-                tv_bet_status.text = list.joinToString(",") { it.name }
-            }
+        viewModel.selectStatusNameList.observe(viewLifecycleOwner, {
+            tv_bet_status.text = viewModel.getBetStatus()
         })
     }
 

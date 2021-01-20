@@ -9,9 +9,6 @@
             name="betRecordViewModel"
             type="org.cxct.sportlottery.ui.bet.record.BetRecordViewModel" />
 
-        <variable
-            name="other"
-            type="org.cxct.sportlottery.network.bet.list.Other" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -123,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{other.totalAmount.toString()}"
+                    android:text="@{betRecordViewModel.betRecordResult.other.totalAmount.toString()}"
                     android:textColor="@color/pumpkinOrange"
                     tools:text="0.0" />
             </LinearLayout>
@@ -143,8 +140,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{other.win.toString()}"
-                    android:textColor="@{other.win > 0 ? @color/green : other.win == 0 ? @color/gray6 : @color/red2}"
+                    android:text="@{betRecordViewModel.betRecordResult.other.win.toString()}"
+                    android:textColor="@{betRecordViewModel.betRecordResult.other.win > 0 ? @color/green : betRecordViewModel.betRecordResult.other.win == 0 ? @color/gray6 : @color/red2}"
                     tools:text="0.0" />
             </LinearLayout>
 
