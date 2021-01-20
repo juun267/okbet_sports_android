@@ -62,8 +62,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         stopSmeTimer()
     }
 
-    private fun checkInputData() {
-        viewModel.registerDataChanged(
+    private fun checkInputData(): Boolean {
+        return viewModel.checkInputData(
             context = this,
             inviteCode = et_recommend_code.getText(),
             memberAccount = et_member_account.getText(),
@@ -239,10 +239,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupRegisterButton() {
         btn_register.setOnClickListener {
-            if (viewModel.registerFormState.value?.isDataValid == true) {
+            if (checkInputData()) {
                 register()
-            } else {
-                checkInputData()
             }
         }
     }
