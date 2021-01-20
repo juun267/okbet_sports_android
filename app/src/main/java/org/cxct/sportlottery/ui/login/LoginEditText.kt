@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.content_bet_info_item_single.view.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 
@@ -23,6 +24,12 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         get() = btn_eye.visibility
         set(value) {
             btn_eye.visibility = value
+        }
+
+    var clearVisibility
+        get() = btn_clear.visibility
+        set(value) {
+            btn_clear.visibility = value
         }
 
     init {
@@ -71,6 +78,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
                 cb_eye.isChecked = true
                 et_input.transformationMethod = HideReturnsTransformationMethod.getInstance() //顯示
             }
+            et_input.setSelection(et_input.length())
         }
     }
 
