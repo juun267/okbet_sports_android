@@ -13,6 +13,7 @@ import android.widget.AdapterView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -26,9 +27,10 @@ import java.util.*
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     companion object {
-        private const val TAG = "TransferPayFragment"    }
+        private const val TAG = "TransferPayFragment"
+    }
 
-    private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("","","","",0) //支付類型
+    private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
 
@@ -65,7 +67,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         val spannerList = mutableListOf<CustomImageAdapter.SelectBank>()
         if (mMoneyPayWay?.rechType == "bankTransfer") //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
-                val selectBank = CustomImageAdapter.SelectBank(it.rechName.toString(),getBankIcon(it.rechName.toString()))
+                val selectBank = CustomImageAdapter.SelectBank(
+                    it.rechName.toString(),
+                    getBankIcon(it.rechName.toString())
+                )
                 spannerList.add(selectBank)
             }
         else {
@@ -73,12 +78,14 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
             if (rechCfgsList.size > 1)
                 rechCfgsList.forEach { _ ->
-                    val selectBank = CustomImageAdapter.SelectBank(title + count++,R.drawable.bg_transparent)
+                    val selectBank =
+                        CustomImageAdapter.SelectBank(title + count++, R.drawable.bg_transparent)
                     spannerList.add(selectBank)
                 }
             else
                 rechCfgsList.forEach { _ ->
-                    val selectBank = CustomImageAdapter.SelectBank(title + "",R.drawable.bg_transparent)
+                    val selectBank =
+                        CustomImageAdapter.SelectBank(title + "", R.drawable.bg_transparent)
                     spannerList.add(selectBank)
                 }
         }
@@ -87,10 +94,15 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //選擇入款帳號
         sp_pay_account.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 try {
                     mSelectRechCfgs = rechCfgsList[position]
-//                    refreshSelectRechCfgs(mSelectRechCfgs)
+                    refreshSelectRechCfgs(mSelectRechCfgs)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -104,7 +116,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             mSelectRechCfgs = null
     }
 
-    /*
+
     //依據選擇的支付渠道，刷新UI
     private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
         //姓名
@@ -123,25 +135,43 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         if (mMoneyPayWay?.rechType == "bankTransfer") {
             ll_qr.visibility = View.GONE
             ll_address.visibility = View.VISIBLE
-
-            cv_wx_id
+            cv_wx_id.visibility = View.GONE
 
         } else {
             ll_qr.visibility = View.VISIBLE
             ll_address.visibility = View.GONE
 
         }
-//
-//        when(mMoneyPayWay?.rechType){
-//
-//            "bankTransfer"->{
-//
-//            }
-//
-//
-//
-//        }
+        when(mMoneyPayWay?.rechType){
+            MoneyType.BANK.code,MoneyType.CTF.code->{
+                ll_qr.visibility = View.GONE
+                ll_address.visibility = View.VISIBLE
+                cv_wx_id.visibility = View.GONE
+                cv_nickname.visibility = View.GONE
+                cv_bank_account.visibility = View.VISIBLE
+                cv_name.visibility = View.VISIBLE
+            }
+            MoneyType.WX.code->{
+                ll_qr.visibility = View.VISIBLE
+                ll_address.visibility = View.GONE
+                cv_wx_id.visibility = View.VISIBLE
+                cv_nickname.visibility = View.GONE
+                cv_bank_account.visibility = View.GONE
+                cv_name.visibility = View.GONE
 
+            }
+            MoneyType.ALI.code->{
+                ll_qr.visibility = View.VISIBLE
+                ll_address.visibility = View.GONE
+                cv_wx_id.visibility = View.GONE
+                cv_nickname.visibility = View.VISIBLE
+                cv_bank_account.visibility = View.GONE
+                cv_name.visibility = View.VISIBLE
+            }
+        }
+
+        //存款時間
+        et_wallet_money.text = TimeUtil.stampToDate(Date().time)
 
 //        //存款金額提示
 //        val maxMoney = ArithUtil.toMoneyFormat(MoneyManager.getMaxMoney(selectRechCfgs))
@@ -182,8 +212,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 //            else -> edit_certified_name.hint = getString(R.string.please_enter_account_name)
 //        }
 //
-        //存款時間
-        et_wallet_money.text = TimeUtil.stampToDate(Date().time)
+
 //
 //        //手續費率/贈送費率 <0是手續費 >0是贈送費率
 //        when {
@@ -207,6 +236,5 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 //        setFeeRateText(edit_pay_amount.text)
     }
 
-     */
 
 }
