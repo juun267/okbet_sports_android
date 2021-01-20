@@ -47,7 +47,7 @@ class MoneyRechViewModel(
     }
 
     //篩選List要顯示的資料
-    private fun filterBankList(rechConfigList: MutableList<MoneyRechCfg.RechConfig>) {
+    private fun filterBankList(rechConfigList: List<MoneyRechCfg.RechConfig>) {
         try {
 
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
