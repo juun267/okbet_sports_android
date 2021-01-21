@@ -2,9 +2,12 @@ package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -35,6 +38,8 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private val _isLogin = MutableLiveData<Boolean>().apply {
         value = sharedPref.getBoolean(KEY_IS_LOGIN, false) && isCheckToken
     }
+
+    val userInfo: Flow<List<UserInfo>> = userInfoDao.getUserInfo()
 
     var account
         get() = sharedPref.getString(KEY_ACCOUNT, "")
@@ -144,17 +149,31 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         }
     }
 
+    suspend fun clear() {
+        with(sharedPref.edit()) {
+            remove(KEY_IS_LOGIN)
+            remove(KEY_TOKEN)
+            apply()
+        }
+
+        clearUserInfo()
+    }
+
+    @WorkerThread
     private suspend fun updateUserInfo(loginData: LoginData?) {
         loginData?.let {
             val userInfo = transform(loginData)
 
-            userInfoDao.getUserInfo(loginData.userId).collect {
-                if (it != null) {
-                    userInfoDao.update(userInfo)
-                } else {
-                    userInfoDao.insert(userInfo)
-                }
+            withContext(Dispatchers.IO) {
+                userInfoDao.upsert(userInfo)
             }
+        }
+    }
+
+    @WorkerThread
+    private suspend fun clearUserInfo() {
+        withContext(Dispatchers.IO) {
+            userInfoDao.deleteAll()
         }
     }
 
@@ -171,12 +190,4 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             userName = loginData.userName,
             userType = loginData.userType
         )
-
-    fun clear() {
-        with(sharedPref.edit()) {
-            remove(KEY_IS_LOGIN)
-            remove(KEY_TOKEN)
-            apply()
-        }
-    }
 }
