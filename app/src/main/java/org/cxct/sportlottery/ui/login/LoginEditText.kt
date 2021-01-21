@@ -26,10 +26,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             btn_eye.visibility = value
         }
 
-    var clearVisibility
-        get() = btn_clear.visibility
+    var clearIsShow
+        get() = btn_clear.visibility == View.VISIBLE
         set(value) {
-            btn_clear.visibility = value
+            btn_clear.visibility = if (value) View.VISIBLE else View.GONE
         }
 
     var getAllIsShow
@@ -111,6 +111,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         Glide.with(this).load(bitmap).into(iv_verification_code)
     }
 
+    fun setHint(value: String?) {
+        et_input.hint = value
+    }
+
     fun setError(value: String?) {
         tv_error.text = value
         if (tv_error.text.isNullOrEmpty()) {
@@ -142,9 +146,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         btn_withdraw_all.setOnClickListener {
             clickGetAll(et_input)
         }
+        fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
+            et_input.setOnFocusChangeListener(listener)
+        }
     }
 }
-
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
  */

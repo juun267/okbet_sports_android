@@ -1,12 +1,11 @@
-package org.cxct.sportlottery.network.user
-
+package org.cxct.sportlottery.network.uploadImg
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
-data class UserMoneyResult(
+data class UploadImgResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
@@ -14,5 +13,5 @@ data class UserMoneyResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val money: Double?
+    val imgData: ImgData?
 ) : BaseResult()

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
 import org.cxct.sportlottery.network.interceptor.LogInterceptor
 import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
+import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.util.NullValueAdapter
@@ -50,6 +51,7 @@ class RequestManager private constructor(context: Context) {
             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+            .addInterceptor(MoreBaseUrlInterceptor())
             .addInterceptor(RequestInterceptor(context))
 
         okHttpClientBuilder.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))

@@ -51,7 +51,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun initView() {
         et_withdrawal_amount.apply {
-            clearVisibility = View.GONE
+            clearIsShow = false
             getAllIsShow = true
         }
     }
