@@ -18,7 +18,7 @@ data class LoginData(
     @Json(name = "loginIp")
     val loginIp: String?, //登录ip
     @Json(name = "nickName")
-    val nickName: String?, //昵称
+    var nickName: String?, //昵称
     @Json(name = "platformId")
     val platformId: Long?, //平台id
     @Json(name = "rechLevel")
