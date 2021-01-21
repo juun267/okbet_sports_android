@@ -14,10 +14,10 @@ interface UserInfoDao {
     fun getUserInfo(userId: Long): Flow<UserInfo?>
 
     @Query("DELETE FROM user_info_table")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(vararg userInfo: UserInfo)
+    suspend fun update(vararg userInfo: UserInfo)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userInfo: UserInfo)
