@@ -30,8 +30,8 @@
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColorDark"
             android:text="0"
+            android:textColor="@color/textColorDark"
             android:textSize="14sp"
             tools:text="19940.000" />
 
@@ -56,29 +56,31 @@
         <LinearLayout
             android:id="@+id/ll_select_bank"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/frame_bank_list_selector"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp">
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:ems="4"
+                android:gravity="start|center_vertical"
                 android:text="@string/select_bank"
                 android:textColor="@color/gray4"
                 android:textSize="@dimen/textSize13sp" />
 
             <View
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
+                android:layout_height="14dp"
                 android:layout_marginEnd="12dp"
                 android:background="@color/bright_gray" />
 
             <ImageView
+                android:id="@+id/iv_bank_card_icon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="12dp"
@@ -96,55 +98,16 @@
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
         <!-- 提款金額 -->
-        <LinearLayout
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_withdrawal_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_frame_5dp"
-            android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/withdraw_amount"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize13sp" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:background="@color/bright_gray" />
-
-            <EditText
-                android:id="@+id/edit_withdraw_amount"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:inputType="numberDecimal"
-                android:background="@color/transparent"
-                android:gravity="start|center_vertical"
-                android:hint="@string/hint_please_enter_withdraw_amount"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize12sp" />
-
-            <TextView
-                android:id="@+id/btn_withdraw_all"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="12dp"
-                android:text="@string/withdraw_all"
-                android:textColor="@color/blue3"
-                android:textSize="@dimen/textSize13sp" />
-        </LinearLayout>
+            app:cvHint="@string/hint_please_enter_withdraw_amount"
+            app:cvInputType="number"
+            app:cvTitle="@string/withdraw_amount" />
         <!-- 提款提示 -->
         <TextView
+            android:id="@+id/tv_hint_withdraw_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -152,45 +115,14 @@
             android:textColor="@color/orangeRed"
             android:textSize="@dimen/textSize12sp" />
         <!-- 提款密碼 -->
-        <LinearLayout
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_withdrawal_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_frame_5dp"
-            android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/withdraw_password"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize13sp" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:background="@color/bright_gray" />
-
-            <EditText
-                android:id="@+id/edit_withdraw_password"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:maxLength="4"
-                android:inputType="numberPassword"
-                android:background="@color/transparent"
-                android:gravity="start|center_vertical"
-                android:hint="@string/hint_four_number_password"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize12sp" />
-        </LinearLayout>
+            app:cvHint="@string/hint_four_number_password"
+            app:cvInputType="textPassword"
+            app:cvTitle="@string/withdraw_password" />
     </LinearLayout>
     <!--  按鈕  -->
     <LinearLayout

@@ -56,6 +56,11 @@ object VerifyConstUtil {
         return Pattern.matches("[$NUMBER]{4}", networkPoint)
     }
 
+    //提款金額 //最低與最高同步後台設定值
+    fun verifyWithdrawAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
+        return (withdrawAmount.toString().toLong().let { it in (minAmount + 1) until (maxAmount ?: it + 1)})
+    }
+
     //暱稱 //中英文組合長度2–50字
     fun verifyNickname(nickname: CharSequence): Boolean {
         return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD]{2,50}", nickname)

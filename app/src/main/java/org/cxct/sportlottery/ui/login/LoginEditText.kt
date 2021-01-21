@@ -29,7 +29,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     var clearIsShow
         get() = btn_clear.visibility == View.VISIBLE
         set(value) {
-            btn_clear.visibility = if(value) View.VISIBLE else View.GONE
+            btn_clear.visibility = if (value) View.VISIBLE else View.GONE
+        }
+
+    var getAllIsShow
+        get() = btn_withdraw_all.visibility == View.VISIBLE
+        set(value) {
+            btn_withdraw_all.visibility = if (value) View.VISIBLE else View.GONE
         }
 
     init {
@@ -47,6 +53,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
+            view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
             view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
         } catch (e: Exception) {
@@ -135,11 +142,16 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         et_input.afterTextChanged { afterTextChanged.invoke(it) }
     }
 
+    fun getAllButton(clickGetAll: (EditText) -> Unit) {
+        btn_withdraw_all.setOnClickListener {
+            clickGetAll(et_input)
+        }
+    }
+
     fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
         et_input.setOnFocusChangeListener(listener)
     }
 }
-
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
  */
