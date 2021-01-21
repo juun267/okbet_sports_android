@@ -97,12 +97,10 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     when (eventType) {
                         EventType.USER_MONEY.value -> {
                             val data = ServiceMessage.getUserMoney(jObjStr)
-//                            Log.e(">>>", "USER_MONEY, data?.money = ${data?.money}")
                             _userMoney.value = data?.money
                         }
                         EventType.USER_NOTICE.value -> {
                             val data = ServiceMessage.getUserNotice(jObjStr)
-                            Log.e(">>>", "USER_NOTICE, list size = ${data?.userNoticeList?.size}")
                             _userNotice.value = data
                         }
                         EventType.ORDER_SETTLEMENT.value -> {

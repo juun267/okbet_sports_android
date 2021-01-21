@@ -115,13 +115,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         refreshTabLayout(null)
         initObserve()
 
-        testGetBCRFromVM()
+        testGetBCRFromVM() //testing
         testSendMatchEventToServer() //testing
     }
 
     private fun testGetBCRFromVM() {
         viewModel.userNotice.observe(this,  {
-            Log.e(">>>", "viewModel userNoticeList size = ${it?.userNoticeList?.size}")
+            Timber.d( ">>> viewModel userNoticeList size = ${it?.userNoticeList?.size}")
         })
     }
 

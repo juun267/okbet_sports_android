@@ -674,47 +674,4 @@ class MainViewModel(
     val userNotice: LiveData<UserNoticeEvent?>
         get() = BroadcastRepository().instance().userNotice
 
-/*
-    //return broadCastReceiver data to view
-    fun getGlobalStop() : LiveData<GlobalStopEvent?> {
-        return BroadcastRepository().instance().globalStop
-    }
-
-    fun getMatchClock() : LiveData<MatchClockEvent?> {
-        return BroadcastRepository().instance().matchClock
-    }
-
-    fun getMatchStatusChange() : LiveData<MatchStatusChangeEvent?> {
-        return BroadcastRepository().instance().matchStatusChange
-    }
-
-    fun getNotice() : LiveData<NoticeEvent?> {
-        return BroadcastRepository().instance().notice
-    }
-
-    fun getOddsChange() : LiveData<OddsChangeEvent?> {
-        return BroadcastRepository().instance().oddsChange
-    }
-
-    fun getOrderSettlement() : LiveData<OrderSettlementEvent?> {
-        return BroadcastRepository().instance().orderSettlement
-    }
-
-    fun getPingPong() : LiveData<PingPongEvent?> {
-        return BroadcastRepository().instance().pingPong
-    }
-
-    fun getProducerUp() : LiveData<ProducerUpEvent?> {
-        return BroadcastRepository().instance().producerUp
-    }
-
-    fun getMoneyFromBCR() : LiveData<Double?> {
-//        _userMoney.value = BroadcastRepository().instance().userMoney.value
-        return BroadcastRepository().instance().userMoney
-    }
-
-    fun getUserNotice() : LiveData<UserNoticeEvent?> {
-        return BroadcastRepository().instance().userNotice
-    }
-    */
 }

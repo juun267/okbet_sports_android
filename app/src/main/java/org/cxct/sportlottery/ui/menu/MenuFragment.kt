@@ -51,7 +51,6 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.userMoney.observe(viewLifecycleOwner,  {
-            Log.e(">>>", "userMoney = $it")
             tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
         })
     }
