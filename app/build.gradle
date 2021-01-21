@@ -158,8 +158,12 @@ dependencies {
 
     //calendar of date range picker
     implementation project(':awesome-calendar')
+
     //glide 處理圖片加載(支援.gif檔)
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    //相片選擇、拍照、錄影、剪裁 https://github.com/LuckSiege/PictureSelector
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
 
 }
 
