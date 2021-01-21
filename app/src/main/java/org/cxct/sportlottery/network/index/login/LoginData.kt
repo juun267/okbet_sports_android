@@ -20,17 +20,17 @@ data class LoginData(
     @Json(name = "nickName")
     val nickName: String?, //昵称
     @Json(name = "platformId")
-    val platformId: Long?, //平台id
+    val platformId: Int?, //平台id
     @Json(name = "rechLevel")
     val rechLevel: String?, //充值层级
     @Json(name = "testFlag")
-    val testFlag: Long?, //是否测试用户（0-正常用户，1-游客，2-内部测试）
+    val testFlag: Int?, //是否测试用户（0-正常用户，1-游客，2-内部测试）
     @Json(name = "token")
     val token: String?,
     @Json(name = "uid")
     val uid: Long?, //用户id（保留，建议用userId
     @Json(name = "userId")
-    val userId: Long?, //用户id
+    val userId: Long, //用户id
     @Json(name = "userName")
     val userName: String?, //用户名
     @Json(name = "userType")
