@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -21,7 +22,7 @@ const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 
-class LoginRepository(private val androidContext: Context) {
+class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
