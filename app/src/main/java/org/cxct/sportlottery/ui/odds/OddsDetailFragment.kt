@@ -154,14 +154,9 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoResult.observe(requireActivity(), Observer {
-            oddsDetailListAdapter?.notifyDataSetChanged()
-        })
-
         viewModel.betInfoList.observe(requireActivity(), Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
-
     }
 
 

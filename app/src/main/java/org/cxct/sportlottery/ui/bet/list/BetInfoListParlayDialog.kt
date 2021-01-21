@@ -1,21 +1,18 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.content_bet_info_item_action.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
-import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -52,9 +49,9 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
     }
 
     private fun initUI() {
-        iv_close.setOnClickListener {
-            dismiss()
-        }
+        iv_close.setOnClickListener { dismiss() }
+        tv_add_more.setOnClickListener { dismiss() }
+        tv_bet.setOnClickListener {  }
 
         matchOddAdapter = BetInfoListMatchOddAdapter(this@BetInfoListParlayDialog)
         parlayAdapter = BetInfoListParlayAdapter(this@BetInfoListParlayDialog)
