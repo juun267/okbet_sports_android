@@ -26,10 +26,10 @@ data class UserInfo(
     val nickName: String? = null,
 
     @ColumnInfo(name = "platform_id")
-    val platformId: Int? = null,
+    val platformId: Long? = null,
 
     @ColumnInfo(name = "test_flag")
-    val testFlag: Int? = null,
+    val testFlag: Long? = null,
 
     @ColumnInfo(name = "user_name")
     val userName: String? = null,

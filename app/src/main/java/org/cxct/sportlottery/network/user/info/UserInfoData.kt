@@ -33,7 +33,7 @@ data class UserInfoData(
     @Json(name = "phone")
     val phone: String,
     @Json(name = "platformId")
-    val platformId: Int,
+    val platformId: Long,
     @Json(name = "qq")
     val qq: String?,
     @Json(name = "remark")
@@ -51,7 +51,7 @@ data class UserInfoData(
     @Json(name = "telegram")
     val telegram: String?,
     @Json(name = "testFlag")
-    val testFlag: Int,
+    val testFlag: Long,
     @Json(name = "updatePayPw")
     val updatePayPw: Int,
     @Json(name = "updatePw")
