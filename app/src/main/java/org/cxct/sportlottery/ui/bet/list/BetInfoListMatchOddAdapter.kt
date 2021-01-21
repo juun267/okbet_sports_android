@@ -10,7 +10,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 class BetInfoListMatchOddAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListMatchOddAdapter.ViewHolder>() {
 
-    var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+    var matchOddList: MutableList<MatchOdd> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -20,12 +20,12 @@ class BetInfoListMatchOddAdapter(private val onItemClickListener: OnItemClickLis
 
 
     override fun getItemCount(): Int {
-        return betInfoList.size
+        return matchOddList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(betInfoList[position].matchOdd, position)
+        holder.bind(matchOddList[position], position)
     }
 
 
@@ -40,10 +40,18 @@ class BetInfoListMatchOddAdapter(private val onItemClickListener: OnItemClickLis
     }
 
 
-    fun modify(list: MutableList<BetInfoListData>) {
-        betInfoList.clear()
-        betInfoList.addAll(list)
-        notifyDataSetChanged()
+    fun modify(list: List<MatchOdd>, position: Int) {
+        if (matchOddList.size == 0) {
+            matchOddList.addAll(list)
+            notifyDataSetChanged()
+        } else if (list.size < matchOddList.size) {
+            with(matchOddList) {
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(0, matchOddList.size)
+                clear()
+                addAll(list)
+            }
+        }
     }
 
 

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.home
 
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -171,6 +172,14 @@ class MainViewModel(
     private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
+
+    private val _isParlayPage = MutableLiveData<Boolean>()
+    val isParlayPage: LiveData<Boolean>
+        get() = _isParlayPage
+
+    fun isParlayPage(boolean: Boolean){
+        _isParlayPage.postValue(boolean)
+    }
 
     private fun checkToken() {
         viewModelScope.launch {
@@ -661,20 +670,22 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
-                                odd?.isSelect = false
+                                betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                    odd = value.odds.find { v -> v.id == it }
+                                    odd?.isSelect = false
+                                }
                             }
                         }
                     }
-                    _betInfoResult.postValue(result)
                 }
+                _betInfoResult.postValue(result)
             }
         }
     }
 
     fun getBetInfoListForParlay(){
         val list: MutableList<Odd> = mutableListOf()
-        betInfoList.value?.let {
+        betInfoRepository.betList.let {
             for (i in it.indices) {
                 list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
             }

@@ -1,10 +1,12 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
@@ -13,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -26,6 +29,8 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
     private lateinit var parlayAdapter: BetInfoListParlayAdapter
 
+    private var deletePosition: Int = -1
+
     init {
         setStyle(R.style.Common)
     }
@@ -36,7 +41,6 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             mainViewModel = this@BetInfoListParlayDialog.viewModel
             lifecycleOwner = this@BetInfoListParlayDialog
         }
-
         return binding.root
     }
 
@@ -56,8 +60,8 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         parlayAdapter = BetInfoListParlayAdapter(this@BetInfoListParlayDialog)
 
         rv_match_odd_list.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
             adapter = matchOddAdapter
-            layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
@@ -67,8 +71,8 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         }
 
         rv_parlay_list.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
             adapter = parlayAdapter
-            layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
@@ -76,26 +80,32 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
                 )
             )
         }
-
     }
+
 
     private fun getData() {
         viewModel.getBetInfoListForParlay()
     }
 
+
     private fun observeData() {
-        viewModel.betInfoList.observe(requireActivity(), Observer {
-            if (it.size == 0) {
-                dismiss()
-            } else {
-                matchOddAdapter.modify(it)
-                parlayAdapter.modify(it)
+        viewModel.betInfoResult.observe(requireActivity(), Observer { result ->
+            result.betInfoData?.matchOdds?.isNotEmpty().let {
+                result.betInfoData?.matchOdds?.let { list ->
+                    matchOddAdapter.modify(list, deletePosition)
+                }
+                result.betInfoData?.parlayOdds?.let { list ->
+                    parlayAdapter.modify(list, deletePosition)
+                }
             }
         })
     }
 
+
     override fun onDeleteClick(position: Int) {
-        viewModel.removeBetInfoItemAndRefresh(matchOddAdapter.betInfoList[position].matchOdd.oddsId)
+        viewModel.removeBetInfoItem(matchOddAdapter.matchOddList[position].oddsId)
+        deletePosition = position
     }
+
 
 }

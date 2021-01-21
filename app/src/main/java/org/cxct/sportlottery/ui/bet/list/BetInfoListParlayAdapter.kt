@@ -18,7 +18,7 @@ import org.cxct.sportlottery.util.TextUtil
 class BetInfoListParlayAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
 
-    var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+    var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -26,14 +26,13 @@ class BetInfoListParlayAdapter(private val onItemClickListener: OnItemClickListe
         return ViewHolder(binding)
     }
 
-
     override fun getItemCount(): Int {
-        return betInfoList.size
+        return parlayOddList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(betInfoList[position].parlayOdds)
+        holder.bind(parlayOddList[position])
     }
 
 
@@ -111,10 +110,18 @@ class BetInfoListParlayAdapter(private val onItemClickListener: OnItemClickListe
     }
 
 
-    fun modify(list: MutableList<BetInfoListData>) {
-        betInfoList.clear()
-        betInfoList.addAll(list)
-        notifyDataSetChanged()
+    fun modify(list: List<ParlayOdd>, position: Int) {
+        if (parlayOddList.size == 0) {
+            parlayOddList.addAll(list)
+            notifyDataSetChanged()
+        } else if (list.size < parlayOddList.size) {
+            with(parlayOddList) {
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(0, parlayOddList.size)
+                clear()
+                addAll(list)
+            }
+        }
     }
 
 

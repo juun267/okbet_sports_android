@@ -33,8 +33,7 @@
         <item name="android:taskCloseExitAnimation">@anim/pop_left_to_right_exit</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen"
-        parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -51,9 +50,9 @@
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
+    <!--＊＊設定layout_gravity會導致NestedScrollView內的RecyclerView item移位-->
     <style name="Common">
         <item name="android:windowBackground">@color/transparent_black_50</item>
-        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
 </resources>

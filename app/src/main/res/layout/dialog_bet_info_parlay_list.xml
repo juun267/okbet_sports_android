@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
     <data>
 
@@ -31,7 +32,7 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/line_end"
             app:layout_constraintStart_toStartOf="@+id/line_start"
@@ -78,25 +79,19 @@
                     <androidx.core.widget.NestedScrollView
                         android:id="@+id/scroll_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fillViewport="true"
-                        android:overScrollMode="never">
+                        android:layout_height="wrap_content">
 
                         <LinearLayout
                             android:id="@+id/linear"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
                             android:orientation="vertical">
-
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_match_odd_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:nestedScrollingEnabled="false"
-                                tools:itemCount="10"
+                                tools:itemCount="2"
                                 tools:listitem="@layout/content_bet_info_item_detail" />
 
                             <RelativeLayout
@@ -136,8 +131,7 @@
                                 android:id="@+id/rv_parlay_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:nestedScrollingEnabled="false"
-                                tools:itemCount="4"
+                                tools:itemCount="2"
                                 tools:listitem="@layout/content_bet_info_parlay_item" />
 
                             <View
@@ -153,14 +147,11 @@
 
                     </androidx.core.widget.NestedScrollView>
 
-
                 </LinearLayout>
-
 
             </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
