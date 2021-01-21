@@ -22,6 +22,7 @@
 
     <!--common-->
     <string name="verse">vs</string>
+    <string name="unknown_data">-</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -365,5 +366,6 @@
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
 
-
+    <!-- finance -->
+    <string name="account_balance">账户余额</string>
 </resources>
