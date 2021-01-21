@@ -176,8 +176,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             e.printStackTrace()
         }
 
+        viewModel.isParlayPage(false)
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                viewModel.isParlayPage(tab?.position == 4)
+
                 when (tab?.position) {
                     0 -> {
                         navController.popBackStack(R.id.homeFragment, false)
