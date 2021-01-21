@@ -22,10 +22,11 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.ToastUtil
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
-    companion object{
+    companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }
 
@@ -33,9 +34,11 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
 
-    private val startForResult by lazy { activity?.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
-        viewModel.checkPermissions()
-    } }
+    private val startForResult by lazy {
+        activity?.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            viewModel.checkPermissions()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -54,7 +57,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initObserve(view)
 
         setupData()
-
 
 
     }
@@ -161,6 +163,15 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //提款密碼訊息
         viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer {
             et_withdrawal_password.setError(it ?: "")
+        })
+
+        //提款
+        viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                ToastUtil.showToastInCenter(this.context, getString(R.string.text_money_get_success))
+            } else {
+                showPromptDialog(getString(R.string.title_withdraw_fail), it.msg) {}
+            }
         })
     }
 
