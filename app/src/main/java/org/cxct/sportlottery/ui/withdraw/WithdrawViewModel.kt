@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -185,7 +184,6 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
     fun checkPermissions() {
         //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
         _needToUpdateWithdrawPassword.value = if (sUserInfo.updatePayPw != 0) {
-            Log.e("Dean" , "checkPermissions true")
             true
         } else {
             getBankCardList()
