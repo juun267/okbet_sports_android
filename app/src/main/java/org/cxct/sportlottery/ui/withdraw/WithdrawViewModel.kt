@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -41,6 +42,10 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
     val bankDeleteResult: LiveData<BankDeleteResult>
         get() = _bankDeleteResult
     private var _bankDeleteResult = MutableLiveData<BankDeleteResult>()
+
+    val withdrawAddResult: LiveData<WithdrawAddResult>
+        get() = _withdrawAddResult
+    private var _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
 
     //獲取資金設定
     val rechargeConfigs: LiveData<MoneyRechCfgData>
@@ -85,6 +90,8 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     OneBoSportApi.withdrawService.addWithdraw(getWithdrawAddRequest(bankCardId, applyMoney, withdrawPwd))
+                }?.let { result ->
+                    _withdrawAddResult.value = result
                 }
             }
         }
@@ -177,10 +184,12 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     fun checkPermissions() {
         //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
-        if (sUserInfo.updatePayPw != 0 && needToUpdateWithdrawPassword.value == false) {
-            _needToUpdateWithdrawPassword.value = true
+        _needToUpdateWithdrawPassword.value = if (sUserInfo.updatePayPw != 0) {
+            getBankCardList()
+            true
+        } else {
+            false
         }
-        getBankCardList()
     }
 
     fun clearBankCardFragmentStatus() {
@@ -193,7 +202,7 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         _withdrawPasswordMsg = MutableLiveData()
     }
 
-    fun checkBankCardData(): Boolean {
+    private fun checkBankCardData(): Boolean {
         if (createNameErrorMsg.value != "")
             return false
         if (bankCardNumberMsg.value != "")

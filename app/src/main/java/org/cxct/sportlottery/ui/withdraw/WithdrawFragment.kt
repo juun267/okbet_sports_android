@@ -1,11 +1,14 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -17,13 +20,26 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.util.MoneyManager
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
+    companion object{
+        const val PWD_PAGE = "PWD_PAGE"
+    }
+
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
+
+    private val startForResult by lazy { activity?.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+        if (result.resultCode == Activity.RESULT_OK){
+
+        }
+        viewModel.checkPermissions()
+    } }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,6 +58,8 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initObserve(view)
 
         setupData()
+
+
 
     }
 
@@ -107,6 +125,15 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initObserve(view: View) {
+
+        //需要更新提款密碼
+        viewModel.needToUpdateWithdrawPassword.observe(this.viewLifecycleOwner, Observer {
+            if (it) {
+                val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
+                startForResult?.launch(intent)
+            }
+        })
+
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
             it.bankCardList?.let { list ->
                 val iniData = it.bankCardList[0]
