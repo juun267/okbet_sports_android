@@ -9,6 +9,8 @@ import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
@@ -19,6 +21,8 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
+import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -36,14 +40,19 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
@@ -51,7 +60,8 @@ import timber.log.Timber
 class MainViewModel(
     private val androidContext: Context,
     private val loginRepository: LoginRepository,
-    private val sportMenuRepository: SportMenuRepository
+    private val sportMenuRepository: SportMenuRepository,
+    private val betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
     val token: LiveData<String?> by lazy {
         loginRepository.token
@@ -153,9 +163,55 @@ class MainViewModel(
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
 
-    fun setOddsDetailMoreList(list: List<*>) {
-        _oddsDetailMoreList.postValue(list)
-    }
+    private val _betInfoResult = MutableLiveData<BetInfoResult>()
+    val betInfoResult: LiveData<BetInfoResult>
+        get() = _betInfoResult
+
+    private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
+    val betInfoList: LiveData<MutableList<BetInfoListData>>
+        get() = _betInfoList
+
+    private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
+    val oddsDetailResult: LiveData<OddsDetailResult?>
+        get() = _oddsDetailResult
+
+    private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
+    val playCateListResult: LiveData<PlayCateListResult?>
+        get() = _playCateListResult
+
+    private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
+    val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
+        get() = _oddsDetailList
+
+
+    //BroadCastReceiver
+
+    val globalStop: LiveData<GlobalStopEvent?>
+        get() = BroadcastRepository().instance().globalStop
+
+    val matchClock: LiveData<MatchClockEvent?>
+        get() = BroadcastRepository().instance().matchClock
+
+    val matchStatusChange: LiveData<MatchStatusChangeEvent?>
+        get() = BroadcastRepository().instance().matchStatusChange
+
+    val notice: LiveData<NoticeEvent?>
+        get() = BroadcastRepository().instance().notice
+
+    val oddsChange: LiveData<OddsChangeEvent?>
+        get() = BroadcastRepository().instance().oddsChange
+
+    val orderSettlement: LiveData<OrderSettlementEvent?>
+        get() = BroadcastRepository().instance().orderSettlement
+
+    val pingPong: LiveData<PingPongEvent?>
+        get() = BroadcastRepository().instance().pingPong
+
+    val producerUp: LiveData<ProducerUpEvent?>
+        get() = BroadcastRepository().instance().producerUp
+
+    val userNotice: LiveData<UserNoticeEvent?>
+        get() = BroadcastRepository().instance().userNotice
 
     fun checkToken() {
         viewModelScope.launch {
@@ -645,33 +701,81 @@ class MainViewModel(
         _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
-//BroadCastReceiver
+    fun setOddsDetailMoreList(list: List<*>) {
+        _oddsDetailMoreList.postValue(list)
+    }
 
-    val globalStop: LiveData<GlobalStopEvent?>
-        get() = BroadcastRepository().instance().globalStop
+    fun getBetInfoList(oddsList: List<Odd>) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                betInfoRepository.getBetInfoList(oddsList)
+            }
+            result?.success?.let {
+                if (it) {
+                    _betInfoList.postValue(betInfoRepository.betList)
+                } else {
+                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = false
+                            }
+                        }
+                    }
+                    _betInfoResult.postValue(result)
+                }
+            }
+        }
+    }
 
-    val matchClock: LiveData<MatchClockEvent?>
-        get() = BroadcastRepository().instance().matchClock
 
-    val matchStatusChange: LiveData<MatchStatusChangeEvent?>
-        get() = BroadcastRepository().instance().matchStatusChange
+    fun removeBetInfoItem(oddId: String) {
+        betInfoRepository.removeItem(oddId)
+        _betInfoList.postValue(betInfoRepository.betList)
+    }
 
-    val notice: LiveData<NoticeEvent?>
-        get() = BroadcastRepository().instance().notice
 
-    val oddsChange: LiveData<OddsChangeEvent?>
-        get() = BroadcastRepository().instance().oddsChange
+    fun getOddsDetail(matchId: String, oddsType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId, oddsType))
+            }
+            _oddsDetailResult.postValue(result)
+            result?.success?.let {
+                val list: ArrayList<OddsDetailListData> = ArrayList()
+                if (it) {
+                    result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                        betInfoList.value?.let { list ->
+                            for (i in list.indices) {
+                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd?.isSelect = true
+                            }
+                        }
+                        list.add(
+                            OddsDetailListData(
+                                key,
+                                TextUtil.split(value.typeCodes),
+                                value.name,
+                                value.odds,
+                                false
+                            )
+                        )
+                    }
+                    _oddsDetailList.postValue(list)
+                }
+            }
+        }
+    }
 
-    val orderSettlement: LiveData<OrderSettlementEvent?>
-        get() = BroadcastRepository().instance().orderSettlement
-
-    val pingPong: LiveData<PingPongEvent?>
-        get() = BroadcastRepository().instance().pingPong
-
-    val producerUp: LiveData<ProducerUpEvent?>
-        get() = BroadcastRepository().instance().producerUp
-
-    val userNotice: LiveData<UserNoticeEvent?>
-        get() = BroadcastRepository().instance().userNotice
+    fun getPlayCateList(gameType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.playCateListService.getPlayCateList(gameType)
+            }
+            _playCateListResult.postValue(result)
+        }
+    }
 
 }

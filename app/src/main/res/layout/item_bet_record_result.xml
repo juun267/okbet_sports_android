@@ -10,7 +10,7 @@
 
         <variable
             name="clickListener"
-            type="org.cxct.sportlottery.ui.bet_record.search.result.ItemClickListener" />
+            type="org.cxct.sportlottery.ui.bet.record.search.result.ItemClickListener" />
     </data>
 
     <LinearLayout

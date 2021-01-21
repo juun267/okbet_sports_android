@@ -4,7 +4,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceEventType
-import org.cxct.sportlottery.ui.bet_record.statusNameMap
 
 @JsonClass(generateAdapter = true)
 data class OrderSettlementEvent(
