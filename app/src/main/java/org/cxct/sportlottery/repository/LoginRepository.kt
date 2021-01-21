@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.collect
 import org.cxct.sportlottery.db.dao.UserInfoDao
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -86,6 +88,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
                 isCheckToken = true
                 account = registerRequest.userName //預設存帳號
                 updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
             }
         }
 
@@ -99,6 +102,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             loginResponse.body()?.let {
                 isCheckToken = true
                 updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
             }
         }
 
@@ -112,6 +116,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             checkTokenResponse.body()?.let {
                 isCheckToken = true
                 updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
             }
         } else {
             isCheckToken = false
@@ -138,6 +143,34 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             apply()
         }
     }
+
+    private suspend fun updateUserInfo(loginData: LoginData?) {
+        loginData?.let {
+            val userInfo = transform(loginData)
+
+            userInfoDao.getUserInfo(loginData.userId).collect {
+                if (it != null) {
+                    userInfoDao.update(userInfo)
+                } else {
+                    userInfoDao.insert(userInfo)
+                }
+            }
+        }
+    }
+
+    private fun transform(loginData: LoginData): UserInfo =
+        UserInfo(
+            loginData.userId,
+            fullName = loginData.fullName,
+            iconUrl = loginData.iconUrl,
+            lastLoginIp = loginData.lastLoginIp,
+            loginIp = loginData.loginIp,
+            nickName = loginData.nickName,
+            platformId = loginData.platformId,
+            testFlag = loginData.testFlag,
+            userName = loginData.userName,
+            userType = loginData.userType
+        )
 
     fun clear() {
         with(sharedPref.edit()) {
