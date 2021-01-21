@@ -146,9 +146,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         btn_withdraw_all.setOnClickListener {
             clickGetAll(et_input)
         }
-        fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
-            et_input.setOnFocusChangeListener(listener)
-        }
+    }
+
+    fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
+        et_input.setOnFocusChangeListener(listener)
     }
 }
 /**
