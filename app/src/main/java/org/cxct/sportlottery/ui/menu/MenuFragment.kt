@@ -11,7 +11,6 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.home.MainActivity
@@ -54,12 +53,19 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initObserve() {
         viewModel.isLogin.observe(viewLifecycleOwner, Observer {
             if (it) {
-                updateUI()
                 getMoney()
             }
         })
         viewModel.userMoney.observe(viewLifecycleOwner, Observer {
             tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
+        })
+
+        viewModel.userInfo.observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()) {
+                val userInfo = it[0]
+
+                updateUI(userInfo.iconUrl, userInfo.userName)
+            }
         })
     }
 
@@ -122,13 +128,13 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
-    private fun updateUI() {
+    private fun updateUI(iconUrl: String?, userName: String?) {
         Glide.with(this)
-            .load(sLoginData?.iconUrl)
+            .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_name.text = sLoginData?.userName
+        tv_name.text = userName
     }
 
     /**
