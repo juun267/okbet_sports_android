@@ -169,7 +169,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //提款
         viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
-                ToastUtil.showToastInCenter(this.context, getString(R.string.text_money_get_success))
+                ToastUtil.showToastInCenter(context, getString(R.string.text_money_get_success))
             } else {
                 showPromptDialog(getString(R.string.title_withdraw_fail), it.msg) {}
             }
