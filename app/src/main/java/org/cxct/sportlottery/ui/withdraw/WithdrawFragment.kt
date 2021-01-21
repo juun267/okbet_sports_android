@@ -137,6 +137,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 val iniData = it.bankCardList[0]
                 withdrawBankCardData = iniData
                 tv_select_bank_card.text = getBankCardTailNo(iniData)
+                iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(iniData.bankName))
                 initSelectBankCardBottomSheet(view, list.toMutableList())
             }
         })
