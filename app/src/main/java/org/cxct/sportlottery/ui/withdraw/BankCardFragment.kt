@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MD5Util.MD5Encode
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.ToastUtil
 
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -230,11 +231,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
 
-        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
+        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer {result ->
+            if (result.success) {
                 //TODO Dean : delete bank card success Event
+                ToastUtil.showToast(context, getString(R.string.text_bank_card_delete_success))
                 //刪除銀行卡成功後回至銀行卡列表bank card list
                 mNavController.popBackStack()
+            }else{
+                showPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
             }
         })
 
