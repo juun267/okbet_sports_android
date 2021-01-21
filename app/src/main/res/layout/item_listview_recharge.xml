@@ -5,6 +5,7 @@
 
     <data>
 
+
         <variable
             name="row"
             type="org.cxct.sportlottery.network.bet.list.Row" />
