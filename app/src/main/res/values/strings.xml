@@ -311,6 +311,10 @@
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount_empty">提款金额为必填栏位</string>
     <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
+        <!--  prompt message  -->
+    <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
+    <string name="title_withdraw_success">提款成功</string>
+    <string name="title_withdraw_fail">提款失败</string>
     <!--  BankList  -->
     <string name="withdraw_setting">提款设置</string>
     <string name="name">姓名</string>
