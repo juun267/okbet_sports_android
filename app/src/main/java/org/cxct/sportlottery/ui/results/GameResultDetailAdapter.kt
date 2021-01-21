@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.menu.results
+package org.cxct.sportlottery.ui.results
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

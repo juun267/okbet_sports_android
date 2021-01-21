@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.content_bet_info_item_single.view.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 
@@ -23,6 +24,12 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         get() = btn_eye.visibility
         set(value) {
             btn_eye.visibility = value
+        }
+
+    var clearIsShow
+        get() = btn_clear.visibility == View.VISIBLE
+        set(value) {
+            btn_clear.visibility = if(value) View.VISIBLE else View.GONE
         }
 
     init {
@@ -40,6 +47,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
+            view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
         } catch (e: Exception) {
             e.printStackTrace()
@@ -49,6 +57,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
         setupFocus()
         setupEye()
+        setupClear()
         setupVerificationCode()
         setError(null)
     }
@@ -69,6 +78,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
                 cb_eye.isChecked = true
                 et_input.transformationMethod = HideReturnsTransformationMethod.getInstance() //顯示
             }
+            et_input.setSelection(et_input.length())
+        }
+    }
+
+    private fun setupClear() {
+        btn_clear.setOnClickListener {
+            et_input.setText("")
         }
     }
 
@@ -86,6 +102,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     fun setVerificationCode(bitmap: Bitmap?) {
         iv_verification_code.visibility = View.VISIBLE
         Glide.with(this).load(bitmap).into(iv_verification_code)
+    }
+
+    fun setHint(value: String?) {
+        et_input.hint = value
     }
 
     fun setError(value: String?) {
@@ -113,6 +133,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged { afterTextChanged.invoke(it) }
+    }
+
+    fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
+        et_input.setOnFocusChangeListener(listener)
     }
 }
 

@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".MultiLanguagesApplication"
         android:allowBackup="true"
@@ -17,7 +21,7 @@
         <activity android:name=".ui.withdraw.WithdrawActivity" />
         <activity android:name=".ui.withdraw.BankActivity" />
         <activity android:name=".ui.infoCenter.InfoCenterActivity" />
-        <activity android:name=".ui.menu.results.ResultsSettlementActivity" />
+        <activity android:name=".ui.results.ResultsSettlementActivity" />
         <activity android:name=".ui.bet.record.BetRecordActivity" />
         <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
@@ -34,7 +38,7 @@
             android:name=".ui.login.signUp.RegisterActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name=".ui.profileCenter.ProfileCenterActivity" />
-        <activity android:name=".ui.profileCenter.ProfileActivity" />
+        <activity android:name=".ui.profileCenter.profile.ProfileActivity" />
         <activity android:name=".ui.profileCenter.nickname.ChangeNicknameActivity" />
         <activity android:name=".ui.profileCenter.changePassword.SettingPasswordActivity" />
 
