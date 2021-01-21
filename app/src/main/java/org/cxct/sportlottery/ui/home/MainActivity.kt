@@ -267,7 +267,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.isLogin.observe(this) {
             if (it) {
                 queryData()
-                updateAvatar()
             }
         }
 
@@ -319,6 +318,12 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.errorResultToken.observe(this, Observer {
             viewModel.logout()
         })
+
+        viewModel.userInfo.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                updateAvatar(it[0].iconUrl)
+            }
+        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
@@ -340,9 +345,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun updateAvatar() {
+    private fun updateAvatar(iconUrl: String?) {
         Glide.with(this)
-            .load(sLoginData?.iconUrl)
+            .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
     }
