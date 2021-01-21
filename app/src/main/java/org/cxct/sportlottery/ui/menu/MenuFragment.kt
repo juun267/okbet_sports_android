@@ -61,11 +61,7 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()) {
-                val userInfo = it[0]
-
-                updateUI(userInfo.iconUrl, userInfo.userName)
-            }
+            updateUI(it?.iconUrl, it?.userName)
         })
     }
 

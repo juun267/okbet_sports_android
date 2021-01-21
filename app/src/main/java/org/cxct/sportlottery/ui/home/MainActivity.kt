@@ -319,9 +319,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.userInfo.observe(this, Observer {
-            if (it.isNotEmpty()) {
-                updateAvatar(it[0].iconUrl)
-            }
+            updateAvatar(it?.iconUrl)
         })
     }
 

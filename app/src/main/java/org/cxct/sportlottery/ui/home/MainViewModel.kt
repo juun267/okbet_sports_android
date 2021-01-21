@@ -104,7 +104,7 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
-    val userInfo: LiveData<List<UserInfo>> = loginRepository.userInfo.asLiveData()
+    val userInfo: LiveData<UserInfo?> = loginRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()

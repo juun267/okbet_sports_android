@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -39,9 +40,14 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         value = sharedPref.getBoolean(KEY_IS_LOGIN, false) && isCheckToken
     }
 
-
     //TODO user info will move to user info repository and instead of static login data in the future
-    val userInfo: Flow<List<UserInfo>> = userInfoDao.getUserInfo()
+    val userInfo: Flow<UserInfo?>
+        get() = userInfoDao.getUserInfo().map {
+            if (it.isNotEmpty()) {
+                return@map it[0]
+            }
+            return@map null
+        }
 
     var account
         get() = sharedPref.getString(KEY_ACCOUNT, "")
