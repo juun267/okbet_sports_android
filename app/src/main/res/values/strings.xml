@@ -6,13 +6,14 @@
 
     <string name="app_name">创信体育</string>
     <!-- Common -->
-        <!--  Symbol  -->
+    <!--  Symbol  -->
     <string name="colon">：</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
 
     <string name="error_url_fail">跳转地址错误</string>
     <string name="unknown_error">未知错误</string>
+    <string name="error_reading_file">档案读取错误</string>
 
 
     <!--network message-->
@@ -175,6 +176,13 @@
     <string name="password_setting">密码设置</string>
     <string name="id">ID</string>
 
+    <!-- Avatar selector -->
+    <string name="modify_avatar">修改头像</string>
+    <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
+    <string name="take_a_picture">拍一张照片</string>
+    <string name="save_avatar_success">头像设置成功</string>
+    <string name="no_set_avatar">没有设置头像</string>
+
     <!-- Change nickname page-->
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2–50字</string>
@@ -184,10 +192,15 @@
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
     <string name="current_password">当前密码</string>
-    <string name="hint_current_password">请输入当前登录密码</string>
+    <string name="hint_current_login_password">请输入当前登录密码</string>
+    <string name="hint_current_withdrawal_password">请输入旧提款密码</string>
     <string name="new_password">新密码</string>
     <string name="hint_new_password">请输入新密码</string>
     <string name="hint_confirm_new_password">请再次输入新密码</string>
+    <string name="missing_required_fields">未填写必要的字段</string>
+    <string name="error_password_cannot_be_same">新密码与旧密码不能相同</string>
+    <string name="update_login_pwd">修改登录密码成功，下次请使用新密码登录!</string>
+    <string name="update_withdrawal_pwd">修改提现密码成功，下次请使用新密码提现!</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
@@ -309,6 +322,7 @@
     <string name="withdraw_handling_fee_hint">・手续费率：2% 须支付手续费：0元</string>
     <string name="hint_please_enter_withdraw_amount">请输入提款金额</string>
     <string name="hint_four_number_password">密碼為4個數字</string>
+    <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_credit_card">新增银行卡</string>
     <!--  BankCard  -->
     <string name="create_bank">开户银行</string>
@@ -321,6 +335,14 @@
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
+    <string name="error_create_name">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
+    <string name="error_create_name_empty">开户名为必填栏位</string>
+    <string name="error_bank_card_number">您输入的银行卡号格式有错误</string>
+    <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
+    <string name="error_network_point">您输入的开户网点格式有错误</string>
+    <string name="error_network_point_empty">开户网点为必填栏位</string>
+    <string name="error_withdraw_password">您输入的密码错误</string>
+    <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--bet info list-->

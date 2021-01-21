@@ -9,6 +9,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
@@ -35,12 +36,15 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
+import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
+import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
-import org.cxct.sportlottery.util.FileUtil.readStringFromInputStream
 import timber.log.Timber
 import java.io.IOException
 import kotlin.jvm.Throws
@@ -150,11 +154,23 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(USER_EDIT_NICKNAME) -> {
                     response = getMockJsonData(request, "user_edit_nickname.mock")
                 }
+                path.contains(USER_EDIT_ICON_URL) -> {
+                    response = getMockJsonData(request, "user_edit_icon_url.mock")
+                }
+                path.contains(USER_UPDATE_PWD) -> {
+                    response = getMockJsonData(request, "user_update_pwd.mock")
+                }
+                path.contains(USER_UPDATE_FUND_PWD) -> {
+                    response = getMockJsonData(request, "user_update_fund_pwd.mock")
+                }
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")
                 }
                 path.contains(RECHARGE_CONFIG_MAP) ->{
                     response = getMockJsonData(request, "money_recharge_config.mock")
+                }
+                path.contains(UPLOAD_IMG) -> {
+                    response = getMockJsonData(request, "upload_image.mock")
                 }
                 path.contains(BANK_MY) -> {
                     response = getMockJsonData(request, "user_bank_my")
