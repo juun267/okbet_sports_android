@@ -42,6 +42,12 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     }
 
+    fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
+        if (activity is BaseActivity<*>) {
+            (activity as BaseActivity<*>).showPromptDialog(message, title, positiveClickListener)
+        }
+    }
+
     override fun onDestroy() {
         hideKeyboard()
         super.onDestroy()

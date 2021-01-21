@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.base
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +16,19 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_bet_info_list_float_button.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.home.MainActivity
-import kotlin.reflect.KClass
 import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
+
+    private var mLayoutHandler = Handler(Looper.getMainLooper())
+    private lateinit var mPromptDialog: CustomAlertDialog
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -166,5 +171,50 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         tv_bet_count.text = count.toString()
     }
 
+    fun showPromptDialog(message: String, title: String, positiveClickListener: () -> Unit?) {
+        showPromptDialog(title, message, null, positiveClickListener)
+        CustomAlertDialog(this).apply {
+            setMessage(message)
+            setTitle(title)
+            setNegativeButtonText(null)
+            setCanceledOnTouchOutside(false)
+            setCancelable(false)
+            show()
+        }
+    }
 
+    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?) {
+        safelyUpdateLayout(Runnable {
+            try {
+                //防止跳出多個 error dialog
+                if (mPromptDialog.isShowing)
+                    mPromptDialog.dismiss()
+
+                mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                    setTitle(title)
+                    setMessage(errorMessage)
+                    setPositiveButtonText(buttonText)
+                    setNegativeButtonText(null)
+                    setPositiveClickListener(View.OnClickListener {
+                        positiveClickListener()
+                        mPromptDialog.dismiss()
+                    })
+
+                    setCanceledOnTouchOutside(false)
+                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
+                    show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
+    }
+
+    protected fun safelyUpdateLayout(runnable: Runnable) {
+        try {
+            mLayoutHandler.post(runnable)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
