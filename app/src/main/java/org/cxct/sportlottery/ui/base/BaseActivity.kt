@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.ui.base
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
 import kotlin.reflect.KClass
 import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
+import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -71,6 +72,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         loading(null)
     }
 
+    @SuppressLint("InflateParams")
     open fun loading(message: String?) {
         if (loadingView == null) {
             loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
@@ -117,14 +119,34 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         floatButtonView = LayoutInflater.from(this).inflate(R.layout.layout_bet_info_list_float_button, contentView, false)
         contentView.addView(floatButtonView)
 
-        if (viewModel is MainViewModel) {
-            (viewModel as MainViewModel).betInfoList.observe(this, Observer {
-                if (it != null) checkBetInfoList(it.size)
-            })
-        }
-
         betFloatButtonVisible(false)//default
-        rl_bet_float_button.setOnClickListener { BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG) }
+
+        if (viewModel is MainViewModel) {
+            val vm = viewModel as MainViewModel
+            vm.betInfoList.observe(this, Observer {
+                if (it != null) {
+                    vm.isParlayPage.value?.let { isParlay ->
+                        checkBetInfoList(if (isParlay) 1 else it.size)
+                    }
+                }
+            })
+
+            vm.isParlayPage.observe(this, Observer {
+                vm.betInfoList.value?.size?.let { size ->
+                    checkBetInfoList(if (it) 1 else size)
+                }
+            })
+
+            rl_bet_float_button.setOnClickListener {
+                vm.isParlayPage.value?.let {
+                    if (it) {
+                        BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
+                    } else {
+                        BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
+                    }
+                }
+            }
+        }
     }
 
     private fun checkBetInfoList(count: Int) {

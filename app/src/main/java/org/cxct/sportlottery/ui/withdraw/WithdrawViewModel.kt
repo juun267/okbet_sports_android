@@ -185,9 +185,10 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
     fun checkPermissions() {
         //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
         _needToUpdateWithdrawPassword.value = if (sUserInfo.updatePayPw != 0) {
-            getBankCardList()
+            Log.e("Dean" , "checkPermissions true")
             true
         } else {
+            getBankCardList()
             false
         }
     }

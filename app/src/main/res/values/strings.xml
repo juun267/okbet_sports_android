@@ -362,4 +362,8 @@
     <string name="bet_info_list_less_than_minimum_limit">投注额小于最低限额：%s</string>
     <string name="bet_info_list_odd">\＠&#160;%s</string>
     <string name="bet_info_list">注单</string>
+    <string name="bet_info_parlay_list">复式连串过关投注</string>
+    <string name="bet_info_parlay_win_quota">可赢金额：</string>
+
+
 </resources>
