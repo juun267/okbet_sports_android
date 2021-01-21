@@ -10,6 +10,8 @@
     <string name="connect_first">请先连上网路</string>
 
     <string name="error_url_fail">跳转地址错误</string>
+    
+    <string name="unknown_data">-</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -199,4 +201,7 @@
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
+    
+    <!-- finance -->
+    <string name="account_balance">账户余额</string>
 </resources>
