@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.home
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -22,9 +21,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.iv_head
+import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
@@ -39,14 +38,15 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MetricsUtil
 import timber.log.Timber
-import org.json.JSONArray
 
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
@@ -62,6 +62,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private lateinit var mService: BackService
+
+    val repo = BroadcastRepository()
 
     private var mIsBound: Boolean = false
 
@@ -85,8 +87,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
-    private val mBroadcastReceiver by lazy {
-        ServiceBroadcastReceiver(viewModel)
+    private val mReceiver by lazy {
+        ServiceBroadcastReceiver()
     }
 
     enum class Page {
@@ -107,14 +109,20 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lifecycleOwner = this@MainActivity
         }
 
-        initBroadcastReceiver()
         initToolBar()
         initMenu()
         initRvMarquee()
         refreshTabLayout(null)
         initObserve()
 
+        testGetBCRFromVM()
         testSendMatchEventToServer() //testing
+    }
+
+    private fun testGetBCRFromVM() {
+        viewModel.userNotice.observe(this,  {
+            Log.e(">>>", "viewModel userNoticeList size = ${it?.userNoticeList?.size}")
+        })
     }
 
     override fun onResume() {
@@ -130,11 +138,30 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onStart() {
         super.onStart()
         doBindService()
+        initBroadcast()
     }
 
     override fun onStop() {
         super.onStop()
         doUnBindService()
+        removeBroadcast()
+    }
+
+    private fun removeBroadcast() {
+
+        val bcRepository = BroadcastRepository().instance()
+        bcRepository.removeDataSource(mReceiver.globalStop,
+                                      mReceiver.matchClock,
+                                      mReceiver.matchStatusChange,
+                                      mReceiver.notice,
+                                      mReceiver.oddsChange,
+                                      mReceiver.orderSettlement,
+                                      mReceiver.pingPong,
+                                      mReceiver.producerUp,
+                                      mReceiver.userMoney,
+                                      mReceiver.userNotice)
+
+        unregisterReceiver(mReceiver)
     }
 
     private fun testSendMatchEventToServer() {
@@ -144,12 +171,24 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun initBroadcastReceiver() {
+    private fun initBroadcast() {
 
         val filter = IntentFilter().apply {
             addAction(SERVICE_SEND_DATA)
         }
-        registerReceiver(mBroadcastReceiver, filter)
+
+        val bcRepository = BroadcastRepository().instance()
+        bcRepository.addDataSources(mReceiver.globalStop,
+                                    mReceiver.matchClock,
+                                    mReceiver.matchStatusChange,
+                                    mReceiver.notice,
+                                    mReceiver.oddsChange,
+                                    mReceiver.orderSettlement,
+                                    mReceiver.pingPong,
+                                    mReceiver.producerUp,
+                                    mReceiver.userMoney,
+                                    mReceiver.userNotice)
+        registerReceiver(mReceiver, filter)
     }
 
     private fun doBindService() {

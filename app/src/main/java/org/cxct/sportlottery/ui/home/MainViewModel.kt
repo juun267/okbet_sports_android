@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -26,12 +27,22 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.notice.NoticeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
+import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.game.data.Date
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
@@ -135,7 +146,8 @@ class MainViewModel(
 
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
+        get() = BroadcastRepository().instance().userMoney
+//        get() = _userMoney
 
     private val _oddsDetailMoreList = MutableLiveData<List<*>>()
     val oddsDetailMoreList: LiveData<List<*>?>
@@ -257,12 +269,14 @@ class MainViewModel(
     }
 
     fun getMoney() {
+        /*
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
         }
+        */
     }
 
     fun getGameHallList(matchType: MatchType, sportType: SportType?) {
@@ -631,8 +645,76 @@ class MainViewModel(
         _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
-    fun setUserMoney(money: Double?) {
-        _userMoney.value = money
+//BroadCastReceiver
+
+    val globalStop: LiveData<GlobalStopEvent?>
+        get() = BroadcastRepository().instance().globalStop
+
+    val matchClock: LiveData<MatchClockEvent?>
+        get() = BroadcastRepository().instance().matchClock
+
+    val matchStatusChange: LiveData<MatchStatusChangeEvent?>
+        get() = BroadcastRepository().instance().matchStatusChange
+
+    val notice: LiveData<NoticeEvent?>
+        get() = BroadcastRepository().instance().notice
+
+    val oddsChange: LiveData<OddsChangeEvent?>
+        get() = BroadcastRepository().instance().oddsChange
+
+    val orderSettlement: LiveData<OrderSettlementEvent?>
+        get() = BroadcastRepository().instance().orderSettlement
+
+    val pingPong: LiveData<PingPongEvent?>
+        get() = BroadcastRepository().instance().pingPong
+
+    val producerUp: LiveData<ProducerUpEvent?>
+        get() = BroadcastRepository().instance().producerUp
+
+    val userNotice: LiveData<UserNoticeEvent?>
+        get() = BroadcastRepository().instance().userNotice
+
+/*
+    //return broadCastReceiver data to view
+    fun getGlobalStop() : LiveData<GlobalStopEvent?> {
+        return BroadcastRepository().instance().globalStop
     }
 
+    fun getMatchClock() : LiveData<MatchClockEvent?> {
+        return BroadcastRepository().instance().matchClock
+    }
+
+    fun getMatchStatusChange() : LiveData<MatchStatusChangeEvent?> {
+        return BroadcastRepository().instance().matchStatusChange
+    }
+
+    fun getNotice() : LiveData<NoticeEvent?> {
+        return BroadcastRepository().instance().notice
+    }
+
+    fun getOddsChange() : LiveData<OddsChangeEvent?> {
+        return BroadcastRepository().instance().oddsChange
+    }
+
+    fun getOrderSettlement() : LiveData<OrderSettlementEvent?> {
+        return BroadcastRepository().instance().orderSettlement
+    }
+
+    fun getPingPong() : LiveData<PingPongEvent?> {
+        return BroadcastRepository().instance().pingPong
+    }
+
+    fun getProducerUp() : LiveData<ProducerUpEvent?> {
+        return BroadcastRepository().instance().producerUp
+    }
+
+    fun getMoneyFromBCR() : LiveData<Double?> {
+//        _userMoney.value = BroadcastRepository().instance().userMoney.value
+        return BroadcastRepository().instance().userMoney
+    }
+
+    fun getUserNotice() : LiveData<UserNoticeEvent?> {
+        return BroadcastRepository().instance().userNotice
+    }
+    */
 }

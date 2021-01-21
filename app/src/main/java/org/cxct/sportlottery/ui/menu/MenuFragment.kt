@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,8 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.userMoney.observe(viewLifecycleOwner, Observer {
+        viewModel.userMoney.observe(viewLifecycleOwner,  {
+            Log.e(">>>", "userMoney = $it")
             tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
         })
     }

@@ -13,6 +13,7 @@ enum class EventType(val value: String) {
     PING_PONG("PING_PONG"), //ping-pong心跳
     MATCH_CLOCK("MATCH_CLOCK"), //赛事时刻
     GLOBAL_STOP("GLOBAL_STOP"), //所有赔率禁用，不允许投注
+    PRODUCER_UP("PRODUCER_UP"), //開啟允許投注
     MATCH_STATUS_CHANGE("MATCH_STATUS_CHANGE"), //賽事比分
 }
 /**
@@ -35,4 +36,5 @@ enum class EventType(val value: String) {
     公共 /notify/all：
     - NOTICE                公告
     - GLOBAL_STOP           所有赔率禁用，不允许投注
+    - PRODUCER_UP           開啟允許投注
  */

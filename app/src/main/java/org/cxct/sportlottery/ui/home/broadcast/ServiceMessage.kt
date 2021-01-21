@@ -7,7 +7,9 @@ import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.user_money.UserMoneyEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 
@@ -17,6 +19,11 @@ object ServiceMessage {
 
     fun getGlobalStop(messageStr: String): GlobalStopEvent? {
         val adapter = moshi.adapter(GlobalStopEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
+    fun getProducerUp(messageStr: String): ProducerUpEvent? {
+        val adapter = moshi.adapter(ProducerUpEvent::class.java)
         return adapter.fromJson(messageStr)
     }
 
@@ -37,6 +44,11 @@ object ServiceMessage {
 
     fun getOddsChange(messageStr: String): OddsChangeEvent? {
         val adapter = moshi.adapter(OddsChangeEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
+    fun getOrderSettlement(messageStr: String): OrderSettlementEvent? {
+        val adapter = moshi.adapter(OrderSettlementEvent::class.java)
         return adapter.fromJson(messageStr)
     }
 
