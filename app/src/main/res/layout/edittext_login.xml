@@ -20,9 +20,10 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="55dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:ems="4"
             android:maxLines="1"
             android:textColor="@color/gray4"
             android:textSize="@dimen/textSize13sp"
@@ -34,7 +35,9 @@
         <View
             android:layout_width="1dp"
             android:layout_height="14dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@color/bright_gray" />
 
         <EditText
@@ -49,6 +52,16 @@
             android:textColorHint="@color/bright_gray"
             android:textSize="@dimen/textSize12sp"
             tools:hint="@string/please_input_account" />
+
+        <ImageView
+            android:id="@+id/btn_clear"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="6dp"
+            android:gravity="center"
+            android:src="@drawable/ic_close_gray">
+
+        </ImageView>
 
         <LinearLayout
             android:id="@+id/btn_eye"

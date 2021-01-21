@@ -50,7 +50,9 @@
             app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
         <action
             android:id="@+id/action_bankCardFragment_to_withdrawFragment"
-            app:destination="@+id/withdrawFragment">
+            app:destination="@+id/withdrawFragment"
+            app:popUpTo="@+id/withdrawFragment"
+            app:popUpToInclusive="true">
             <argument
                 android:name="navigateFrom"
                 app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />

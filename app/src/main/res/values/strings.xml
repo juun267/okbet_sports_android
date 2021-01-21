@@ -322,6 +322,7 @@
     <string name="withdraw_handling_fee_hint">・手续费率：2% 须支付手续费：0元</string>
     <string name="hint_please_enter_withdraw_amount">请输入提款金额</string>
     <string name="hint_four_number_password">密碼為4個數字</string>
+    <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_credit_card">新增银行卡</string>
     <!--  BankCard  -->
     <string name="create_bank">开户银行</string>
@@ -334,6 +335,14 @@
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
+    <string name="error_create_name">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
+    <string name="error_create_name_empty">开户名为必填栏位</string>
+    <string name="error_bank_card_number">您输入的银行卡号格式有错误</string>
+    <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
+    <string name="error_network_point">您输入的开户网点格式有错误</string>
+    <string name="error_network_point_empty">开户网点为必填栏位</string>
+    <string name="error_withdraw_password">您输入的密码错误</string>
+    <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--bet info list-->
