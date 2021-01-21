@@ -9,17 +9,18 @@ import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.content_bet_info_item_single.view.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
-    private var mOnFocusChangeListener: OnFocusChangeListener? = null
+    private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus -> block_editText.isSelected = hasFocus }
+
     var eyeVisibility
         get() = btn_eye.visibility
         set(value) {
@@ -70,10 +71,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun setupFocus() {
-        et_input.setOnFocusChangeListener { v, hasFocus ->
-            block_editText.isSelected = hasFocus
-            mOnFocusChangeListener?.onFocusChange(v, hasFocus)
-        }
+        et_input.onFocusChangeListener = mOnFocusChangeListener
     }
 
     private fun setupEye() {
@@ -134,10 +132,6 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
-    fun setEditTextOnFocusChangeListener(l: OnFocusChangeListener?) {
-        mOnFocusChangeListener = l
-    }
-
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged { afterTextChanged.invoke(it) }
     }
@@ -148,8 +142,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
-        et_input.setOnFocusChangeListener(listener)
+    fun setEditTextOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
+        et_input.setOnFocusChangeListener { v, hasFocus ->
+            mOnFocusChangeListener.onFocusChange(v, hasFocus)
+            listener.invoke(v, hasFocus)
+        }
     }
 }
 /**

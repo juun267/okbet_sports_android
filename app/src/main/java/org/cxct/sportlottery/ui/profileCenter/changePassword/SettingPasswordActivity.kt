@@ -77,16 +77,16 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
 
     private fun setupEditText() {
         //當失去焦點才去檢查 inputData
-        et_current_password.setOnFocusChangeListener { _: View, focus: Boolean ->
-            if (!focus)
+        et_current_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
                 checkInputData()
         }
-        et_new_password.setOnFocusChangeListener { _: View, focus: Boolean ->
-            if (!focus)
+        et_new_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
                 checkInputData()
         }
-        et_confirm_password.setOnFocusChangeListener { _: View, focus: Boolean ->
-            if (!focus)
+        et_confirm_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
                 checkInputData()
         }
     }

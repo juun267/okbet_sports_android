@@ -47,8 +47,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupAccount() {
         et_account.setText(viewModel.account)
-        et_account.afterTextChanged {
-            checkInputData()
+        et_account.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                checkInputData()
         }
     }
 
@@ -57,15 +58,14 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         et_password.eyeVisibility = View.GONE
-        et_password.setEditTextOnFocusChangeListener(View.OnFocusChangeListener { _, hasFocus ->
+        et_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (hasFocus && et_password.eyeVisibility == View.GONE) {
                 et_password.eyeVisibility = View.VISIBLE
                 et_password.setText(null)
             }
-        })
 
-        et_password.afterTextChanged {
-            checkInputData()
+            if (!hasFocus)
+                checkInputData()
         }
     }
 
@@ -81,8 +81,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             updateValidCode()
         })
 
-        et_verification_code.afterTextChanged {
-            checkInputData()
+        et_verification_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                checkInputData()
         }
     }
 
