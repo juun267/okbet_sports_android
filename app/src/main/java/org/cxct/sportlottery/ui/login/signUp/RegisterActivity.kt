@@ -225,16 +225,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupAgreementButton() {
         btn_agreement.setOnClickListener {
-            val dialog = CustomAlertDialog(this)
-            dialog.setTitle(getString(R.string.btn_agreement))
-            val message = viewModel.getAgreementContent(this)
-            dialog.setMessage(message)
-            dialog.setNegativeButtonText(null)
-            dialog.setPositiveButtonText(getString(R.string.btn_confirm))
-            dialog.setPositiveClickListener(View.OnClickListener {
-                dialog.dismiss()
-            })
-            dialog.show()
+            AgreementDialog().show(supportFragmentManager, null)
         }
     }
 
