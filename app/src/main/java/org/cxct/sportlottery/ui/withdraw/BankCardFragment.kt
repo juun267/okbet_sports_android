@@ -20,14 +20,12 @@ import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.MD5Util.MD5Encode
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.ToastUtil
 
@@ -197,7 +195,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 fullName = et_create_name.getText(),
                 id = args.editBankCard?.id?.toString(),
                 userId = sUserInfo.userId.toString(),
-                uwType = "bank" //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+                uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+                bankCode = args.editBankCard?.bankCode.toString()
             )
         }
 
@@ -231,13 +230,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
 
-        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer {result ->
+        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer { result ->
             if (result.success) {
                 //TODO Dean : delete bank card success Event
                 ToastUtil.showToast(context, getString(R.string.text_bank_card_delete_success))
                 //刪除銀行卡成功後回至銀行卡列表bank card list
                 mNavController.popBackStack()
-            }else{
+            } else {
                 showPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
             }
         })
