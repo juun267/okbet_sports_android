@@ -68,7 +68,7 @@ object Constants {
     //bank
     const val BANK_MY = "/api/front/user/bank/my"
     const val BANK_ADD = "/api/front/user/bank/add"
-    const val BANK_DELETE = "/api/front/user/bank/delete/{id}"
+    const val BANK_DELETE = "/api/front/user/bank/delete"
 
     //withdraw
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"

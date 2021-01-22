@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.bank.add.BankAddResult
+import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
@@ -146,7 +147,17 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     }
 
-    private fun createBankAddRequest(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, userId: String, uwType: String, bankCode: String): BankAddRequest {
+    private fun createBankAddRequest(
+        bankName: String,
+        subAddress: String,
+        cardNo: String,
+        fundPwd: String,
+        fullName: String,
+        id: String?,
+        userId: String,
+        uwType: String,
+        bankCode: String
+    ): BankAddRequest {
         return BankAddRequest(
             bankName = bankName,
             subAddress = subAddress,
@@ -160,15 +171,25 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         )
     }
 
-    fun deleteBankCard(id: String) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.bankService.bankDelete(id)
-            }?.let { result ->
-                _bankDeleteResult.value = result
+    fun deleteBankCard(id: Long, fundPwd: String) {
+        checkInputBankCardDeleteData(fundPwd)
+        if (checkBankCardDeleteData())
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.bankService.bankDelete(createBankDeleteRequest(id, MD5Util.MD5Encode(fundPwd)))
+                }?.let { result ->
+                    _bankDeleteResult.value = result
 
+                }
             }
-        }
+    }
+
+    private fun checkInputBankCardDeleteData(fundPwd: String) {
+        checkWithdrawPassword(fundPwd)
+    }
+
+    private fun createBankDeleteRequest(id: Long, fundPwd: String): BankDeleteRequest {
+        return BankDeleteRequest(id = id, fundPwd = fundPwd)
     }
 
     fun getMoneyConfigs() {
@@ -209,6 +230,13 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             return false
         if (networkPointMsg.value != "")
             return false
+        if (withdrawPasswordMsg.value != "")
+            return false
+        return true
+    }
+
+    //TODO Dean : bank delete check
+    private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
         return true

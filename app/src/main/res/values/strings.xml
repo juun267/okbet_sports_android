@@ -22,6 +22,7 @@
 
     <!--common-->
     <string name="verse">vs</string>
+    <string name="error">错误</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -351,6 +352,7 @@
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
     <string name="text_bank_card_delete_success">删除银行卡成功</string>
     <string name="text_bank_card_delete_fail">删除银行卡失败</string>
+    <string name="unknown_bank_card">未知银行卡</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--bet info list-->

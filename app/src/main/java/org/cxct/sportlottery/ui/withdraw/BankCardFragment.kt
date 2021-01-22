@@ -204,7 +204,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         btn_delete_bank.setOnClickListener {
-            viewModel.deleteBankCard(args.editBankCard?.id.toString())
+            if (args.editBankCard?.id != null) {
+                viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), et_withdrawal_password.getText())
+            } else {
+                showPromptDialog(getString(R.string.error), getString(R.string.unknown_bank_card)) {}
+            }
+
         }
     }
 
