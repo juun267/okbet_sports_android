@@ -22,6 +22,7 @@
 
     <!--common-->
     <string name="verse">vs</string>
+    <string name="verse_">&#160;&#160;VS&#160;&#160;</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
