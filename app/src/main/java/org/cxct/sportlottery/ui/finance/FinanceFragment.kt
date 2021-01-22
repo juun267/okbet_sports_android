@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.view_account_balance.*
+import kotlinx.android.synthetic.main.view_account_balance.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 
@@ -36,7 +39,29 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_finance, container, false)
+        return inflater.inflate(R.layout.fragment_finance, container, false).apply {
+            setupRefreshBalance(this)
+        }
+    }
+
+    private fun setupRefreshBalance(view: View) {
+        view.btn_refresh.setOnClickListener {
+            loading()
+            viewModel.getMoney()
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.userMoneyResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
+            if (it != null && it.success) {
+                tv_balance.text = it.money.toString()
+            }
+        })
+
+        viewModel.getMoney()
     }
 
     companion object {
