@@ -7,10 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.money.MoneyRechCfg
-import org.cxct.sportlottery.network.money.MoneyRechCfgData
-import org.cxct.sportlottery.network.money.MoneyRechCfgResult
+import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MoneyManager
@@ -43,7 +40,6 @@ class MoneyRechViewModel(
 
             result?.rechCfg?.rechCfgs?.let { filterBankList(it) }
         }
-
     }
 
     //篩選List要顯示的資料
@@ -76,6 +72,36 @@ class MoneyRechViewModel(
 
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    //轉帳支付充值
+    fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                moneyRepository.rechargeAdd(moneyAddRequest)
+            }.let {
+                if (it?.success == false) {
+                    //顯示彈窗
+                } else {
+                    //顯示成功彈窗
+                }
+            }
+        }
+    }
+
+    //在線支付
+    fun rechargeOnlinePay(moneyAddRequest: MoneyAddRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                moneyRepository.rechargeOnlinePay(moneyAddRequest)
+            }.let {
+                if (it?.success == false) {
+                    //顯示彈窗
+                } else {
+                    //顯示成功彈窗
+                }
+            }
         }
     }
 }

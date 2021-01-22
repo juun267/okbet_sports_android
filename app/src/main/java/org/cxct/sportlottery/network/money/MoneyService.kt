@@ -20,14 +20,6 @@ interface MoneyService {
     @POST(Constants.USER_RECHARGE_ONLINE_PAY)
     suspend fun rechargeOnlinePay(
         @Body moneyAddRequest: MoneyAddRequest
-//        @Query("rechCfgId") rechCfgId: Int,//充值配置id
-//        @Query("bankCode") bankCode: String,//银行代码
-//        @Query("depositMoney") depositMoney: Int,//充值金额
-//        @Query("payer") payer: String,//充值账号
-//        @Query("payerName") payerName: String,//充值人名称
-//        @Query("payerBankName") payerBankName: String,//充值银行名称
-//        @Query("payerInfo") payerInfo: String,//充值附加信息
-//        @Query("depositDate") depositDate: String,//充值日期
     ): Response<MoneyAddResult>
 
 }

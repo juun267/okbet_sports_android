@@ -1,11 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +9,11 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
+import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.MoneyManager.getBankIcon
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
@@ -50,8 +44,24 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         super.onViewCreated(view, savedInstanceState)
 
         initPayAccountSpinner()
-//        initButton()
+        initButton()
 //        initTimePicker()
+    }
+
+    private fun initButton() {
+        btn_submit.setOnClickListener {
+            var moneyAddRequest: MoneyAddRequest = MoneyAddRequest(
+                rechCfgId = mSelectRechCfgs?.id ?: 0,
+                bankCode = "",
+                depositMoney = et_money.text.toString().toInt(),
+                payer = et_bank_account.text.toString(),
+                payerName = et_name.text.toString(),
+                payerBankName = "aaa",
+                payerInfo = "payerInfo",
+                depositDate = "et_wallet_money"
+            )
+            viewModel.rechargeAdd(moneyAddRequest)
+        }
     }
 
     //入款帳號選單
@@ -116,7 +126,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             mSelectRechCfgs = null
     }
 
-
     //依據選擇的支付渠道，刷新UI
     private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
         //姓名
@@ -142,8 +151,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             ll_address.visibility = View.GONE
 
         }
-        when(mMoneyPayWay?.rechType){
-            MoneyType.BANK.code,MoneyType.CTF.code->{
+        when (mMoneyPayWay?.rechType) {
+            MoneyType.BANK.code, MoneyType.CTF.code -> {
                 ll_qr.visibility = View.GONE
                 ll_address.visibility = View.VISIBLE
                 cv_wx_id.visibility = View.GONE
@@ -151,7 +160,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 cv_bank_account.visibility = View.VISIBLE
                 cv_name.visibility = View.VISIBLE
             }
-            MoneyType.WX.code->{
+            MoneyType.WX.code -> {
                 ll_qr.visibility = View.VISIBLE
                 ll_address.visibility = View.GONE
                 cv_wx_id.visibility = View.VISIBLE
@@ -160,7 +169,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 cv_name.visibility = View.GONE
 
             }
-            MoneyType.ALI.code->{
+            MoneyType.ALI.code -> {
                 ll_qr.visibility = View.VISIBLE
                 ll_address.visibility = View.GONE
                 cv_wx_id.visibility = View.GONE

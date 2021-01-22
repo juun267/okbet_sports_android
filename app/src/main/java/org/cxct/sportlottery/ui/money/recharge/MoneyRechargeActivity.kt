@@ -110,29 +110,12 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         }
     }
 
-    private fun refreshPayContainer() {
-
-        when (currentTab) {
-            RechargeType.TRANSFER_PAY -> {
-                if (!transferPayList.isNullOrEmpty()) {
-                    block_no_type.visibility = View.VISIBLE
-
-                }
-            }
-        }
-    }
-
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment? {
         return when (moneyPayWay.rechType) {
             "onlinePayment" -> OnlinePayFragment().setArguments(moneyPayWay)
             else -> TransferPayFragment().setArguments(moneyPayWay)
         }
     }
-
-    private fun refreshView(dataList: MutableList<MoneyPayWayData>) {
-        currentPayList = dataList
-    }
-
 
     /**
      * 導覽列 頁面切換
