@@ -351,7 +351,11 @@
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
     <string name="text_bank_card_delete_success">删除银行卡成功</string>
+    <string name="text_bank_card_add_success">新增银行卡成功</string>
+    <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_bank_card_delete_fail">删除银行卡失败</string>
+    <string name="text_bank_card_add_fail">新增银行卡失败</string>
+    <string name="text_bank_card_modify_fail">编辑银行卡失败</string>
     <string name="unknown_bank_card">未知银行卡</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

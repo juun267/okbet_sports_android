@@ -35,6 +35,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private lateinit var mBankSelectorAdapter: BankSelectorAdapter
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
+    private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,14 +86,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupTitle() {
         when (val currentActivity = this.activity) {
             is WithdrawActivity -> {
-                if (args.editBankCard != null) {
+                if (mBankCardStatus) {
                     currentActivity.setToolBarName(getString(R.string.edit_bank_card))
                 } else {
                     currentActivity.setToolBarName(getString(R.string.add_credit_card))
                 }
             }
             is BankActivity -> {
-                if (args.editBankCard != null) {
+                if (mBankCardStatus) {
                     currentActivity.setToolBarName(getString(R.string.edit_bank_card))
                 } else {
                     currentActivity.setToolBarName(getString(R.string.add_credit_card))
@@ -218,9 +219,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             setupBankSelector(rechCfgData)
         })
 
-        viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
-                //TODO Dean : bind bank card success Event
+        viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
+            if (result.success) {
+                if (mBankCardStatus) {
+                    ToastUtil.showToast(context, getString(R.string.text_bank_card_modify_success))
+                } else {
+                    ToastUtil.showToast(context, getString(R.string.text_bank_card_add_success))
+                }
                 //綁定成功後回至銀行卡列表bank card list
                 when (args.navigateFrom) {
                     PageFrom.WITHDRAW -> {
@@ -231,12 +236,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         mNavController.popBackStack()
                     }
                 }
+            } else {
+                showPromptDialog(if (mBankCardStatus) getString(R.string.text_bank_card_modify_fail) else getString(R.string.text_bank_card_add_fail), result.msg) {}
             }
         })
 
         viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer { result ->
             if (result.success) {
-                //TODO Dean : delete bank card success Event
                 ToastUtil.showToast(context, getString(R.string.text_bank_card_delete_success))
                 //刪除銀行卡成功後回至銀行卡列表bank card list
                 mNavController.popBackStack()
