@@ -49,7 +49,7 @@ class BackService : Service() {
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
 
-//        private const val MAX_RECONNECT_COUNT = 3 //嘗試重新連線次數
+        //        private const val MAX_RECONNECT_COUNT = 3 //嘗試重新連線次數
     }
 
     private val isReConnect = true //預設重連
@@ -89,7 +89,6 @@ class BackService : Service() {
     override fun onBind(intent: Intent?): IBinder {
         if (token.isNullOrEmpty()) return mBinder
 
-        Log.e(">>>", "mStompClient?.isConnected = ${mStompClient?.isConnected}")
         if (mStompClient?.isConnected != true) {
             Timber.d("==尚未建立連線，連線開始==")
             connect()
@@ -143,42 +142,34 @@ class BackService : Service() {
 
                 URL_PRIVATE = "/ws/notify/user/${201}" //test
                 //用户私人频道
-                val privateDisposable: Disposable? =
-                    stompClient.subscribe(URL_PRIVATE) { topicMessage ->
-                        //                    Timber.e("$URL_PRIVATE, msg = ${topicMessage.payload}")
+                val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
+                    Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
                     }
 
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL) { topicMessage ->
-                    Timber.e("$URL_ALL, msg = ${topicMessage.payload}")
+                    Timber.d("$URL_ALL, msg = ${topicMessage.payload}")
                 }
-                /*
-                            //具体赛事/赛季频道
-                            defaultEventDisposable = stompClient.subscribe(URL_EVENT) { topicMessage ->
-                                Timber.e("$URL_EVENT, msg = ${topicMessage.payload}")
-                            }
+                //具体赛事/赛季频道
+                defaultEventDisposable = stompClient.subscribe(URL_EVENT) { topicMessage ->
+                    Timber.d("$URL_EVENT, msg = ${topicMessage.payload}")
+                }
 
-                            //大厅赔率频道
-                            val hallDisposable: Disposable? = stompClient.subscribe(URL_HALL) { topicMessage ->
-                                Timber.e("$URL_HALL, msg = ${topicMessage.payload}")
-                            }
-                            */
+                //大厅赔率频道
+                val hallDisposable: Disposable? = stompClient.subscribe(URL_HALL) { topicMessage ->
+                    Timber.d("$URL_HALL, msg = ${topicMessage.payload}")
+                }
+
                 mCompositeDisposable?.add(lifecycleDisposable)
                 mCompositeDisposable?.add(privateDisposable!!)
                 mCompositeDisposable?.add(allDisposable!!)
-                //            mCompositeDisposable?.add(defaultEventDisposable!!)
-                //            mCompositeDisposable?.add(hallDisposable!!)
+                mCompositeDisposable?.add(defaultEventDisposable!!)
+                mCompositeDisposable?.add(hallDisposable!!)
 
-                /*
-                                stompClient.setPathMatcher { path, msg ->
-
-                                    Timber.e("path = $path")
-                                }
-                                */
                 stompClient.connect(mHeader)
             }
 
-        }  catch (e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
             when (e) {
                 is SocketTimeoutException -> {
