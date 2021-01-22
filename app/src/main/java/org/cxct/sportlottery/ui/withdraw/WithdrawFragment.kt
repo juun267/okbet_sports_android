@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -34,8 +34,11 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
 
-    private val startForResult by lazy {
-        activity?.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var startForResult: ActivityResultLauncher<Intent>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             viewModel.checkPermissions()
         }
     }
