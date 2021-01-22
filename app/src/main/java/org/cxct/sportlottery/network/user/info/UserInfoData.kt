@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.user.info
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.UserRebate
 
 @JsonClass(generateAdapter = true)
 data class UserInfoData(
@@ -57,7 +58,7 @@ data class UserInfoData(
     @Json(name = "updatePw")
     val updatePw: Int,
     @Json(name = "userId")
-    val userId: Int,
+    val userId: Long,
     @Json(name = "userLevelId")
     val userLevelId: Int,
     @Json(name = "userName")
