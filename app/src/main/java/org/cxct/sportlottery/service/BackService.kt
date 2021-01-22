@@ -63,7 +63,8 @@ class BackService : Service() {
     }
 
     val token by lazy {
-        LoginRepository(applicationContext).token.value
+//        LoginRepository(applicationContext).token.value
+        "token"
     }
 
     private var mStompClient: StompClient? = null

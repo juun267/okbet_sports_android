@@ -2,12 +2,15 @@ package org.cxct.sportlottery.ui.home
 
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -15,7 +18,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -63,12 +65,14 @@ class MainViewModel(
     private val sportMenuRepository: SportMenuRepository,
     private val betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
-    val token: LiveData<String?> by lazy {
-        loginRepository.token
-    }
 
-    val checkTokenResult: LiveData<LoginResult?>
-        get() = _checkTokenResult
+    val isLogin: LiveData<Boolean> by lazy {
+        loginRepository.isLogin.apply {
+            if (this.value == false && !loginRepository.isCheckToken) {
+                checkToken()
+            }
+        }
+    }
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -112,7 +116,8 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
-    private val _checkTokenResult = MutableLiveData<LoginResult?>()
+    val userInfo: LiveData<UserInfo?> = loginRepository.userInfo.asLiveData()
+
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
@@ -213,23 +218,31 @@ class MainViewModel(
     val userNotice: LiveData<UserNoticeEvent?>
         get() = BroadcastRepository().instance().userNotice
 
-    fun checkToken() {
+    private val _isParlayPage = MutableLiveData<Boolean>()
+    val isParlayPage: LiveData<Boolean>
+        get() = _isParlayPage
+
+    fun isParlayPage(boolean: Boolean){
+        _isParlayPage.postValue(boolean)
+    }
+
+    private fun checkToken() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.checkToken()
             }
-            _checkTokenResult.postValue(result)
         }
     }
 
     fun logout() {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 loginRepository.logout()
+            }.apply {
+                loginRepository.clear()
+                //TODO change timber to actual logout ui to da
+                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
-
-            //TODO change timber to actual logout ui to da
-            Timber.d("logout result is ${result?.success} ${result?.code} ${result?.msg}")
         }
     }
 
@@ -256,13 +269,13 @@ class MainViewModel(
                 )
             }
 
-            val asStartCount = result?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
+            val asStartCount = result?.sportMenuData?.atStart?.num ?: 0
             _asStartCount.postValue(asStartCount)
-            _allFootballCount.postValue(getAllGameCount(SportType.FOOTBALL.code, result))
-            _allBasketballCount.postValue(getAllGameCount(SportType.BASKETBALL.code, result))
-            _allTennisCount.postValue(getAllGameCount(SportType.TENNIS.code, result))
-            _allBadmintonCount.postValue(getAllGameCount(SportType.BADMINTON.code, result))
-            _allVolleyballCount.postValue(getAllGameCount(SportType.VOLLEYBALL.code, result))
+            _allFootballCount.postValue(getParlayCount(SportType.FOOTBALL, result))
+            _allBasketballCount.postValue(getParlayCount(SportType.BASKETBALL, result))
+            _allTennisCount.postValue(getParlayCount(SportType.TENNIS, result))
+            _allBadmintonCount.postValue(getParlayCount(SportType.BADMINTON, result))
+            _allVolleyballCount.postValue(getParlayCount(SportType.VOLLEYBALL, result))
 
             result?.let {
                 if (it.sportMenuData != null)
@@ -272,24 +285,10 @@ class MainViewModel(
         }
     }
 
-    private fun getAllGameCount(goalCode: String, sportMenuResult: SportMenuResult?): Int {
-        val inPlayCount =
-            sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val todayCount =
-            sportMenuResult?.sportMenuData?.menu?.today?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val earlyCount =
-            sportMenuResult?.sportMenuData?.menu?.early?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val parlayCount =
-            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find { it.code == goalCode }?.num
-                ?: 0
-        val atStartCount =
-            sportMenuResult?.sportMenuData?.atStart?.items?.find { it.code == goalCode }?.num ?: 0
-
-        return inPlayCount + todayCount + earlyCount + parlayCount + atStartCount
-    }
+    private fun getParlayCount(sportType: SportType, sportMenuResult: SportMenuResult?): Int =
+        sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find {
+            it.code == sportType.code
+        }?.num ?: 0
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
         sportMenuData.menu.inPlay.items.map { sport ->
@@ -718,21 +717,38 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
-                                odd?.isSelect = false
+                                betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                    odd = value.odds.find { v -> v.id == it }
+                                    odd?.isSelect = false
+                                }
                             }
                         }
                     }
-                    _betInfoResult.postValue(result)
                 }
+                _betInfoResult.postValue(result)
             }
         }
+    }
+
+    fun getBetInfoListForParlay(){
+        val list: MutableList<Odd> = mutableListOf()
+        betInfoRepository.betList.let {
+            for (i in it.indices) {
+                list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
+            }
+        }
+        getBetInfoList(list)
     }
 
 
     fun removeBetInfoItem(oddId: String) {
         betInfoRepository.removeItem(oddId)
         _betInfoList.postValue(betInfoRepository.betList)
+    }
+
+    fun removeBetInfoItemAndRefresh(oddId: String){
+        removeBetInfoItem(oddId)
+        getBetInfoListForParlay()
     }
 
 

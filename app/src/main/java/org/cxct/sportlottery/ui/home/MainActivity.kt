@@ -296,8 +296,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             e.printStackTrace()
         }
 
+        viewModel.isParlayPage(false)
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                viewModel.isParlayPage(tab?.position == 4)
+
                 when (tab?.position) {
                     0 -> {
                         navController.popBackStack(R.id.homeFragment, false)
@@ -377,11 +382,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.token.observe(this) {
-            //登入成功後要做的事
-            queryData()
-            updateAvatar()
-            updateMenuFragmentUI()
+        viewModel.isLogin.observe(this) {
+            if (it) {
+                queryData()
+            }
         }
 
         viewModel.messageListResult.observe(this, Observer {
@@ -428,6 +432,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 GameDetailFragment(), Page.ODDS
             )
         })
+
+        viewModel.errorResultToken.observe(this, Observer {
+            viewModel.logout()
+        })
+
+        viewModel.userInfo.observe(this, Observer {
+            updateAvatar(it?.iconUrl)
+        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
@@ -449,19 +461,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun updateAvatar() {
-        Glide.with(this).load(sLoginData?.iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
-            iv_head) //載入頭像
-    }
-
-    private fun updateMenuFragmentUI() {
-        try {
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
-            menuFrag.updateUI()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    private fun updateAvatar(iconUrl: String?) {
+        Glide.with(this)
+            .load(iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .into(iv_head) //載入頭像
     }
 
     private fun queryData() {

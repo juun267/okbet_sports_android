@@ -50,9 +50,28 @@ object Constants {
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
     const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
 
+    //money
+    const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
+
+
     //user
+    const val USER_INFO = "/api/front/user/info"
     const val USER_MONEY = "/api/front/user/money"
     const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称
+    const val USER_EDIT_ICON_URL = "/api/front/user/editIconUrl" //更新头像
+    const val USER_UPDATE_PWD = "/api/front/user/updatepwd" //更新密码
+    const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
+
+    //upload image
+    const val UPLOAD_IMG = "/api/upload/image" //上传图片
+
+    //bank
+    const val BANK_MY = "/api/front/user/bank/my"
+    const val BANK_ADD = "/api/front/user/bank/add"
+    const val BANK_DELETE = "/api/front/user/bank/delete/{id}"
+
+    //withdraw
+    const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

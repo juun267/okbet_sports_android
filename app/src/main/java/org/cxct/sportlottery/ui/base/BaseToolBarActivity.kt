@@ -65,4 +65,8 @@ abstract class BaseToolBarActivity<T : BaseViewModel>(claazz: KClass<T>) : BaseA
 
 
     }
+
+    fun setToolBarName(title: String){
+        tv_toolbar_title.text = title
+    }
 }

@@ -20,6 +20,5 @@ data class RegisterFormState(
     val telegramError: String? = null,
     val securityCodeError: String? = null,
     val validCodeError: String? = null,
-    val checkAgreement: Boolean = false,
-    val isDataValid: Boolean = false
+    val checkAgreement: Boolean = false
 )

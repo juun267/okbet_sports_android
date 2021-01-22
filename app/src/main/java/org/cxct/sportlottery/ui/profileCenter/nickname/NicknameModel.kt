@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
@@ -24,10 +25,11 @@ class NicknameModel(
     val nicknameResult: LiveData<NicknameResult?>
         get() = _nicknameResult
 
-    fun nicknameDataChanged(context: Context, nickname: String) {
+    fun nicknameDataChanged(context: Context, nickname: String): Boolean {
         val nicknameError = checkNickname(context, nickname)
-        val isDataValid = nicknameError == null
-        _nicknameFormState.value = NicknameFormState(nicknameError, isDataValid)
+        _nicknameFormState.value = NicknameFormState(nicknameError)
+
+        return nicknameError == null
     }
 
     fun editNickName(nickname: String) {
@@ -35,6 +37,8 @@ class NicknameModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.userService.editNickname(NicknameRequest(nickname))
             }
+            if (result?.success == true)
+                sLoginData?.nickName = nickname
             _nicknameResult.postValue(result)
         }
     }

@@ -5,12 +5,15 @@
     <string name="language_en">English</string>
 
     <string name="app_name">创信体育</string>
-
+    <!-- Common -->
+    <!--  Symbol  -->
+    <string name="colon">：</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
 
     <string name="error_url_fail">跳转地址错误</string>
     <string name="unknown_error">未知错误</string>
+    <string name="error_reading_file">档案读取错误</string>
 
 
     <!--network message-->
@@ -173,6 +176,13 @@
     <string name="password_setting">密码设置</string>
     <string name="id">ID</string>
 
+    <!-- Avatar selector -->
+    <string name="modify_avatar">修改头像</string>
+    <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
+    <string name="take_a_picture">拍一张照片</string>
+    <string name="save_avatar_success">头像设置成功</string>
+    <string name="no_set_avatar">没有设置头像</string>
+
     <!-- Change nickname page-->
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2–50字</string>
@@ -182,10 +192,15 @@
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
     <string name="current_password">当前密码</string>
-    <string name="hint_current_password">请输入当前登录密码</string>
+    <string name="hint_current_login_password">请输入当前登录密码</string>
+    <string name="hint_current_withdrawal_password">请输入旧提款密码</string>
     <string name="new_password">新密码</string>
     <string name="hint_new_password">请输入新密码</string>
     <string name="hint_confirm_new_password">请再次输入新密码</string>
+    <string name="missing_required_fields">未填写必要的字段</string>
+    <string name="error_password_cannot_be_same">新密码与旧密码不能相同</string>
+    <string name="update_login_pwd">修改登录密码成功，下次请使用新密码登录!</string>
+    <string name="update_withdrawal_pwd">修改提现密码成功，下次请使用新密码提现!</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
@@ -217,6 +232,7 @@
     <string name="status_colon">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态：</string>
     <string name="bet_record">投注记录</string>
     <string name="select_all">全选</string>
+    <string name="all_order">全部注单</string>
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="cancel_select">取消选择</string>
@@ -257,10 +273,80 @@
 
     <string name="total_bet_amount">总共有 投注额</string>
     <string name="win_lose">赢 / 输</string>
+    <string name="no_any_bet_record">暂无任何投注纪录</string>
+    <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
 
+    <!--money-recharge-->
+    <string name="title_bank">选择银行:</string>
+    <string name="title_name">姓名:</string>
+    <string name="title_account">账号:</string>
+    <string name="title_address">地址:</string>
+    <string name="title_deposit_money">充值金额</string>
+    <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
+    <string name="title_real_name">认证姓名</string>
+    <string name="edt_hint_real_name">中文长度2-20,英文长度2-50字</string>
+    <string name="title_bank_account">银行卡号</string>
+    <string name="edt_hint_bank_account">请输入12-19位数内的银行卡号</string>
+    <string name="title_recharge_time">充值时间</string>
+    <string name="title_current_money">当前余额</string>
+    <string name="btn_submit">提交申请</string>
+    <string name="btn_copy">复制</string>
+    <string name="title_qr_pay">扫码支付：</string>
+    <string name="title_hint_qr_pay">扫一扫快捷支付，如有疑问请及时联系客服！</string>
+    <string name="title_remark">备注:</string>
+    <string name="money_recharge_hint1"><font color="#ff4b2c">・请先转账成功后再提交充值信息。</font></string>
+    <string name="money_recharge_hint2"><font color="#ff4b2c">・每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
+
+
+    <!--  Withdraw  -->
+    <string name="now_balance">当前余额</string>
+    <string name="withdraw">提款</string>
+    <string name="currency">RMB</string>
+    <string name="submit">提交</string>
+    <string name="reset">重置</string>
+    <string name="select_bank_card">选择银行卡</string>
+    <string name="selected_bank_card">%1$s (尾号%2$s)</string>
+    <string name="error_withdraw_amount_empty">提款金额为必填栏位</string>
+    <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
+    <!--  BankList  -->
+    <string name="withdraw_setting">提款设置</string>
+    <string name="name">姓名</string>
+    <string name="tail_number">尾号</string>
+    <string name="bind_start_time">绑定于</string>
+    <string name="bind_credit_card_not_yet">您尚未绑定银行卡</string>
+    <string name="select_bank">选择银行</string>
+    <string name="withdraw_amount">提款金额</string>
+    <string name="withdraw_password">提款密码</string>
+    <string name="withdraw_all">全部提取</string>
+    <string name="withdraw_handling_fee_hint">・手续费率：%1$s%% 须支付手续费：%2$s元</string>
+    <string name="hint_please_enter_withdraw_amount">请输入提款金额</string>
+    <string name="hint_four_number_password">密碼為4個數字</string>
+    <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
+    <string name="add_credit_card">新增银行卡</string>
+    <!--  BankCard  -->
+    <string name="create_bank">开户银行</string>
+    <string name="create_name">开户名</string>
+    <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
+    <string name="edit_bank_card">编辑银行卡</string>
+    <string name="bank_card_number">银行卡号</string>
+    <string name="withdraw_amount_range">(限額%s~%s RMB)</string>
+    <string name="please_enter_bank_card_rule">請輸入12-19位數內的銀行卡號</string>
+    <string name="network_point">开户网点</string>
+    <string name="please_enter_network_point">请输入开户网点</string>
+    <string name="delete_bank_card">刪除銀行卡</string>
+    <string name="error_create_name">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
+    <string name="error_create_name_empty">开户名为必填栏位</string>
+    <string name="error_bank_card_number">您输入的银行卡号格式有错误</string>
+    <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
+    <string name="error_network_point">您输入的开户网点格式有错误</string>
+    <string name="error_network_point_empty">开户网点为必填栏位</string>
+    <string name="error_withdraw_password">您输入的密码错误</string>
+    <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--bet info list-->
     <string name="bet_info_list_title">投注单</string>
     <string name="bet_info_list_game_closed">盘口已关闭</string>
@@ -276,5 +362,8 @@
     <string name="bet_info_list_less_than_minimum_limit">投注额小于最低限额：%s</string>
     <string name="bet_info_list_odd">\＠&#160;%s</string>
     <string name="bet_info_list">注单</string>
+    <string name="bet_info_parlay_list">复式连串过关投注</string>
+    <string name="bet_info_parlay_win_quota">可赢金额：</string>
+
 
 </resources>

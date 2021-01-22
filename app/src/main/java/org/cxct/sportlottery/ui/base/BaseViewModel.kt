@@ -2,20 +2,24 @@ package org.cxct.sportlottery.ui.base
 
 import android.content.Context
 import androidx.annotation.Nullable
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
+import org.cxct.sportlottery.network.error.TokenError
+import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
-import java.lang.Exception
 import java.net.SocketTimeoutException
 
 
 abstract class BaseViewModel : ViewModel() {
-    val code: LiveData<Int>
-        get() = _code
+    val errorResultToken: LiveData<BaseResult>
+        get() = _errorResultToken
 
     val networkUnavailableMsg: LiveData<String>
         get() = _networkUnavailableMsg
@@ -26,13 +30,16 @@ abstract class BaseViewModel : ViewModel() {
     val networkExceptionUnknown: LiveData<Exception>
         get() = _networkExceptionUnknown
 
-    private val _code = MutableLiveData<Int>()
+    private val _errorResultToken = MutableLiveData<BaseResult>()
     private val _networkUnavailableMsg = MutableLiveData<String>()
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<Exception>()
 
     @Nullable
-    suspend fun <T> doNetwork(context: Context, apiFun: suspend () -> Response<T>): T? {
+    suspend fun <T : BaseResult> doNetwork(
+        context: Context,
+        apiFun: suspend () -> Response<T>
+    ): T? {
         return when (NetworkUtil.isAvailable(context)) {
             true -> {
                 doApiFun(context, apiFun)
@@ -43,7 +50,10 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    private suspend fun <T> doApiFun(context: Context, apiFun: suspend () -> Response<T>): T? {
+    private suspend fun <T : BaseResult> doApiFun(
+        context: Context,
+        apiFun: suspend () -> Response<T>
+    ): T? {
         val apiResult = viewModelScope.async {
             try {
                 val response = apiFun()
@@ -61,18 +71,26 @@ abstract class BaseViewModel : ViewModel() {
         return apiResult.await()
     }
 
-    private fun <T> doNoConnect(context: Context): T? {
+    private fun <T : BaseResult> doNoConnect(context: Context): T? {
         _networkUnavailableMsg.postValue(context.getString(R.string.message_network_no_connect))
         return null
     }
 
-    private fun <T> doResponseError(response: Response<T>): T {
+    private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         val errorResult = ErrorUtils.parseError(response)
-        _code.postValue((errorResult as BaseResult).code)
+        errorResult?.let {
+            if (it !is LogoutResult
+                && it.code == TokenError.EXPIRED.code
+                && it.code == TokenError.FAILURE.code
+                && it.code == TokenError.REPEAT_LOGIN.code
+            ) {
+                _errorResultToken.postValue(it)
+            }
+        }
         return errorResult
     }
 
-    private fun <T> doOnException(context: Context, exception: Exception): T? {
+    private fun <T : BaseResult> doOnException(context: Context, exception: Exception): T? {
         when (exception) {
             is SocketTimeoutException -> doOnTimeOutException(context)
             else -> doOnUnknownException(exception)
