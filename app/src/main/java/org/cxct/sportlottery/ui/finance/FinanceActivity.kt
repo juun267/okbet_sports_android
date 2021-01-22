@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.finance
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.base.BaseActivity
 
-class FinanceActivity : AppCompatActivity() {
+class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
