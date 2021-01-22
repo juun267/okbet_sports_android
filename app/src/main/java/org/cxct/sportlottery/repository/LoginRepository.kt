@@ -40,15 +40,6 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         value = sharedPref.getBoolean(KEY_IS_LOGIN, false) && isCheckToken
     }
 
-    //TODO user info will move to user info repository and instead of static login data in the future
-    val userInfo: Flow<UserInfo?>
-        get() = userInfoDao.getUserInfo().map {
-            if (it.isNotEmpty()) {
-                return@map it[0]
-            }
-            return@map null
-        }
-
     var account
         get() = sharedPref.getString(KEY_ACCOUNT, "")
         set(value) {

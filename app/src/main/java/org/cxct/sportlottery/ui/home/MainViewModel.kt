@@ -38,6 +38,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
@@ -50,6 +51,7 @@ import timber.log.Timber
 
 class MainViewModel(
     private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val betInfoRepository: BetInfoRepository
@@ -105,7 +107,7 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
-    val userInfo: LiveData<UserInfo?> = loginRepository.userInfo.asLiveData()
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
@@ -180,7 +182,7 @@ class MainViewModel(
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
 
-    fun isParlayPage(boolean: Boolean){
+    fun isParlayPage(boolean: Boolean) {
         _isParlayPage.postValue(boolean)
     }
 
@@ -686,7 +688,7 @@ class MainViewModel(
         }
     }
 
-    fun getBetInfoListForParlay(){
+    fun getBetInfoListForParlay() {
         val list: MutableList<Odd> = mutableListOf()
         betInfoRepository.betList.let {
             for (i in it.indices) {
@@ -702,7 +704,7 @@ class MainViewModel(
         _betInfoList.postValue(betInfoRepository.betList)
     }
 
-    fun removeBetInfoItemAndRefresh(oddId: String){
+    fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
         getBetInfoListForParlay()
     }
@@ -721,7 +723,8 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd =
+                                    value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
                                 odd?.isSelect = true
                             }
                         }
