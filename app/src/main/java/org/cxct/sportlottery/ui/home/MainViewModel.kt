@@ -76,6 +76,9 @@ class MainViewModel(
         }
     }
 
+    val token = loginRepository.token
+    val userId = loginRepository.userId
+
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
 

@@ -2,7 +2,9 @@ package org.cxct.sportlottery.service
 
 import android.annotation.SuppressLint
 import android.app.Service
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
@@ -13,8 +15,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.sLoginData
+import org.cxct.sportlottery.db.dao.UserInfoDao
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
@@ -30,20 +32,19 @@ import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
 const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
+const val SERVICE_TOKEN = "TOKEN"
+const val SERVICE_USER_ID = "USER_ID"
 
-class BackService : Service() {
-
+class BackService() : Service() {
     companion object {
         private const val URL_SOCKET_HOST_AND_PORT =
             "http://sports.cxct.org/api/ws/app/im" //app连接端点,无sockjs
         const val URL_ALL = "/ws/notify/all" //全体公共频道
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
-        //    private val URL_PRIVATE by lazy { "/notify/user/{userId}" } //用户私人频道
+        var URL_PRIVATE = "/notify/user/{userId}"  //用户私人频道
         //    private val URL_EVENT by lazy { "/notify/event/{eventId}"} //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id) //TODO Cheryl 替換變數
         //    private val URL_HALL by lazy { "/notify/hall/{gameType}/{cateMenuCode}/{eventId}" }//大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏 //TODO Cheryl 替換變數
-        //        var URL_PRIVATE = "/ws/notify/user/${201}"
-        var URL_PRIVATE = "/ws/notify/user/${sLoginData?.userId}"
         var URL_EVENT = "/ws/notify/event/sr:match:25369136" //.apply { replace(":", "\\") }
         var URL_HALL = "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25305514"
 
@@ -51,6 +52,10 @@ class BackService : Service() {
 
         //        private const val MAX_RECONNECT_COUNT = 3 //嘗試重新連線次數
     }
+
+    lateinit var token: String
+
+    lateinit var userId: String
 
     private val isReConnect = true //預設重連
     private var reconnectCount = 0
@@ -60,11 +65,6 @@ class BackService : Service() {
     inner class MyBinder : Binder() {
         val service: BackService
             get() = this@BackService
-    }
-
-    val token by lazy {
-//        LoginRepository(applicationContext).token.value
-        "token"
     }
 
     private var mStompClient: StompClient? = null
@@ -88,6 +88,8 @@ class BackService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder {
+        token = intent?.getStringExtra(SERVICE_TOKEN) ?:""
+        userId = intent?.getLongExtra(SERVICE_USER_ID, -1).toString()
         if (token.isNullOrEmpty()) return mBinder
 
         if (mStompClient?.isConnected != true) {
@@ -139,9 +141,8 @@ class BackService : Service() {
                         }
                     }
 
-                Timber.e("sLoginData?.userId = ${sLoginData?.userId}")
 
-                URL_PRIVATE = "/ws/notify/user/${201}" //test
+                URL_PRIVATE = "/ws/notify/user/${userId}" //test
                 //用户私人频道
                 val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
                     Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")

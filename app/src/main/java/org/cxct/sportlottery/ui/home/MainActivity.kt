@@ -1,11 +1,7 @@
 package org.cxct.sportlottery.ui.home
 
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Bundle
-import android.content.ComponentName
-import android.content.ServiceConnection
+import android.app.ActivityManager
+import android.content.*
 import android.os.*
 import android.util.Log
 import android.view.View
@@ -30,9 +26,10 @@ import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.SERVICE_SEND_DATA
+import org.cxct.sportlottery.service.SERVICE_TOKEN
+import org.cxct.sportlottery.service.SERVICE_USER_ID
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
@@ -44,7 +41,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MetricsUtil
 import timber.log.Timber
 
@@ -62,8 +58,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private lateinit var mService: BackService
-
-    val repo = BroadcastRepository()
 
     private var mIsBound: Boolean = false
 
@@ -109,6 +103,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lifecycleOwner = this@MainActivity
         }
 
+        doBindService()
+        initBroadcast()
+
         initToolBar()
         initMenu()
         initRvMarquee()
@@ -120,13 +117,19 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun testGetBCRFromVM() {
-        viewModel.userNotice.observe(this,  {
-            Timber.d( ">>> viewModel userNoticeList size = ${it?.userNoticeList?.size}")
+        viewModel.userNotice.observe(this, {
+            Timber.d(">>> viewModel userNoticeList size = ${it?.userNoticeList?.size}")
         })
     }
 
     override fun onResume() {
         super.onResume()
+
+        if (!checkServiceRunning()) { //如果service斷掉則重啟
+            doBindService()
+            initBroadcast()
+        }
+
         rv_marquee.startAuto()
     }
 
@@ -137,18 +140,19 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     override fun onStart() {
         super.onStart()
-        doBindService()
-        initBroadcast()
     }
 
     override fun onStop() {
         super.onStop()
-        removeBroadcast()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        doUnBindService()
+
+        if (mIsBound) {
+            doUnBindService()
+            removeBroadcast()
+        }
     }
 
     private fun removeBroadcast() {
@@ -195,12 +199,24 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         registerReceiver(mReceiver, filter)
     }
 
+
     private fun doBindService() {
         //TODO Cheryl 判斷if is login already
-        bindService(Intent(this, BackService::class.java),
-                    mServiceConnection,
-                    Context.BIND_AUTO_CREATE)
-        mIsBound = true
+            val serviceIntent = Intent(this, BackService::class.java)
+            serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
+            serviceIntent.putExtra(SERVICE_USER_ID, viewModel.userId)
+            bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
+            mIsBound = true
+    }
+
+    private fun checkServiceRunning(): Boolean {
+        val manager: ActivityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (BackService::class.java.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun doUnBindService() {
@@ -349,11 +365,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
             R.id.game2Fragment -> {
                 val action =
-                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(
-                        matchType
-                    )
-                val navOptions =
-                    NavOptions.Builder().setLaunchSingleTop(true).build()
+                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(matchType)
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 navController.navigate(action, navOptions)
             }
         }
@@ -406,11 +419,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            addFragment(
-                OddsDetailFragment.newInstance(
-                    gameType, typeName, matchId, oddsType
-                ), Page.ODDS_DETAIL
-            )
+            addFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
+                        Page.ODDS_DETAIL)
         })
 
         viewModel.matchTypeCard.observe(this, Observer {
@@ -428,9 +438,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
-            addFragment(
-                GameDetailFragment(), Page.ODDS
-            )
+            addFragment(GameDetailFragment(), Page.ODDS)
         })
 
         viewModel.errorResultToken.observe(this, Observer {
