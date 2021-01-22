@@ -127,8 +127,10 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //需要更新提款密碼
         viewModel.needToUpdateWithdrawPassword.observe(this.viewLifecycleOwner, Observer {
             if (it) {
-                val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
-                startForResult?.launch(intent)
+                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                    val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
+                    startForResult?.launch(intent)
+                }
             }
         })
 
