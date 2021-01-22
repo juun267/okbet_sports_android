@@ -181,6 +181,9 @@ dependencies {
     implementation "androidx.room:room-ktx:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
 
+    //極光推送sdk
+    implementation 'cn.jiguang.sdk:jpush:3.9.1'
+    implementation 'cn.jiguang.sdk:jcore:2.6.0'
 }
 
 multiLanguages {
