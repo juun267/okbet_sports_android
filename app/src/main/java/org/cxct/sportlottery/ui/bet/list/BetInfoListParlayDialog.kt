@@ -36,7 +36,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         val binding: DialogBetInfoParlayListBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_parlay_list, container, false)
         binding.apply {
             mainViewModel = this@BetInfoListParlayDialog.viewModel
-            lifecycleOwner = this@BetInfoListParlayDialog
+            lifecycleOwner = this@BetInfoListParlayDialog.viewLifecycleOwner
         }
         return binding.root
     }
@@ -86,7 +86,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
 
 
     private fun observeData() {
-        viewModel.betInfoResult.observe(requireActivity(), Observer { result ->
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
             result.betInfoData?.matchOdds?.isNotEmpty().let {
                 result.betInfoData?.matchOdds?.let { list ->
                     matchOddAdapter.modify(list, deletePosition)

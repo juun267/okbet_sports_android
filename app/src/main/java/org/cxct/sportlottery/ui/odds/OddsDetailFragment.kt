@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -62,25 +63,20 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
+        dataBinding.apply {
+            view = this@OddsDetailFragment
+            oddsDetailViewModel= this@OddsDetailFragment.viewModel
+            lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
+        }
         return dataBinding.root
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dataBinding()
         initUI()
         observeData()
         getData()
-    }
-
-
-    private fun dataBinding() {
-        dataBinding.apply {
-            view = this@OddsDetailFragment
-            oddsDetailViewModel= this@OddsDetailFragment.viewModel
-            lifecycleOwner = this@OddsDetailFragment
-        }
     }
 
 
@@ -131,7 +127,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
 
     private fun observeData() {
-        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
                     dataBinding.tabCat.removeAllTabs()
@@ -142,19 +138,19 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
         })
 
-        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
+        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, Observer {
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
             }
         })
 
-        viewModel.oddsDetailList.observe(requireActivity(), Observer {
+        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.oddsDetailListData?.clear()
             oddsDetailListAdapter?.oddsDetailListData?.addAll(it)
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoList.observe(requireActivity(), Observer {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
     }
