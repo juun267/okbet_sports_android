@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_finance.view.*
 import kotlinx.android.synthetic.main.view_account_balance.*
 import kotlinx.android.synthetic.main.view_account_balance.view.*
 import org.cxct.sportlottery.R
@@ -26,6 +29,10 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
     private var param1: String? = null
     private var param2: String? = null
 
+    private val recordAdapter by lazy {
+        FinanceRecordAdapter()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -41,6 +48,7 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_finance, container, false).apply {
             setupRefreshBalance(this)
+            setupRecordList(this)
         }
     }
 
@@ -48,6 +56,22 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
         view.btn_refresh.setOnClickListener {
             loading()
             viewModel.getMoney()
+        }
+    }
+
+    private fun setupRecordList(view: View) {
+        view.rvlist.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            this.adapter = recordAdapter
+
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
     }
 
@@ -61,7 +85,12 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
             }
         })
 
+        viewModel.recordList.observe(this.viewLifecycleOwner, Observer {
+            recordAdapter.data = it
+        })
+
         viewModel.getMoney()
+        viewModel.getRecordList()
     }
 
     companion object {

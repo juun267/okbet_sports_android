@@ -406,6 +406,11 @@
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
 
     <!-- finance -->
-    <string name="finance">資金明細</string>
+    <string name="finance">资金明细</string>
+    <string name="record_recharge">充值纪录</string>
+    <string name="record_withdrawal">提款记录</string>
+    <string name="record_red_envelope">红包纪录</string>
+    <string name="record_conversion">转换纪录</string>
+    <string name="record_reward">打賞紀錄</string>
     <string name="account_balance">账户余额</string>
 </resources>

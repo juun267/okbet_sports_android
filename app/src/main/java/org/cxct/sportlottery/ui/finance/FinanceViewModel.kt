@@ -15,7 +15,11 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val userMoneyResult: LiveData<UserMoneyResult?>
         get() = _userMoneyResult
 
+    val recordList: LiveData<List<String>>
+        get() = _recordList
+
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
+    private val _recordList = MutableLiveData<List<String>>()
 
     fun getMoney() {
         viewModelScope.launch {
@@ -26,4 +30,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         }
     }
 
+    fun getRecordList() {
+        val recordList = androidContext.resources.getStringArray(R.array.finance_array)
+
+        _recordList.postValue(recordList.asList())
+    }
 }
