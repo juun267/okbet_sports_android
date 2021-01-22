@@ -13,6 +13,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
+import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
@@ -101,7 +102,7 @@ class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
 
         //資金明細
         btn_fund_detail.setOnClickListener {
-            //TODO 資金明細
+            startActivity(Intent(this, FinanceActivity::class.java))
         }
 
         //投注記錄
