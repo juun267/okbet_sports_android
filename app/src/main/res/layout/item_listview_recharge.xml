@@ -8,9 +8,9 @@
             name="row"
             type="org.cxct.sportlottery.network.bet.list.Row" />
 
-        <variable
-            name="clickListener"
-            type="org.cxct.sportlottery.ui.bet_record.search.result.ItemClickListener" />
+<!--        <variable-->
+<!--            name="clickListener"-->
+<!--            type="org.cxct.sportlottery.ui.bet_record.search.result.ItemClickListener" />-->
     </data>
 
     <LinearLayout
@@ -18,9 +18,9 @@
         android:layout_height="wrap_content"
         android:paddingVertical="12dp"
         android:gravity="center"
-        android:onClick="@{() -> clickListener.onClick(row)}"
         android:layout_marginHorizontal="4dp"
         android:orientation="horizontal">
+<!--        android:onClick="@{() -> clickListener.onClick(row)}"-->
 
         <LinearLayout
             android:layout_width="0dp"
