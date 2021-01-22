@@ -75,7 +75,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
                 et_create_name.setText(sLoginData?.fullName)
-                et_bank_card_number.setText(initData.cardNo)
                 et_network_point.setText(initData.subAddress)
             }
             return@setupInitData
