@@ -23,7 +23,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.repository.sLoginData
-import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MoneyManager
@@ -36,6 +35,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
+    private var mUserId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -194,7 +194,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 fundPwd = et_withdrawal_password.getText(),
                 fullName = et_create_name.getText(),
                 id = args.editBankCard?.id?.toString(),
-                userId = sUserInfo.userId.toString(),
+                userId = viewModel.userInfo.value?.userId.toString(),
                 uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
                 bankCode = args.editBankCard?.bankCode.toString()
             )
@@ -215,6 +215,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupObserve() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
+            mUserId = it?.userId
+        })
+
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
         })

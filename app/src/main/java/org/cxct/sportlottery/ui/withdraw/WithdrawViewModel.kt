@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.withdraw
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
@@ -16,13 +17,14 @@ import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.MoneyRepository
-import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository) : BaseViewModel() {
+
+    val userInfo = moneyRepository.userInfo.asLiveData()
 
     val needToUpdateWithdrawPassword: LiveData<Boolean>
         get() = _needToUpdateWithdrawPassword
@@ -197,7 +199,7 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }?.let { result ->
-                _rechargeConfigs.value = result.rechCfg
+                result.rechCfg?.let { _rechargeConfigs.value = it }
             }
         }
     }
@@ -205,7 +207,7 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     fun checkPermissions() {
         //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
-        _needToUpdateWithdrawPassword.value = if (sUserInfo.updatePayPw != 0) {
+        _needToUpdateWithdrawPassword.value = if (userInfo.value?.updatePayPw != 0) {
             true
         } else {
             getBankCardList()
