@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -46,8 +47,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupAccount() {
         et_account.setText(viewModel.account)
-        et_account.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+        et_account.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                checkInputData()
         }
     }
 
@@ -56,15 +58,14 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         et_password.eyeVisibility = View.GONE
-        et_password.setEditTextOnFocusChangeListener(View.OnFocusChangeListener { _, hasFocus ->
+        et_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (hasFocus && et_password.eyeVisibility == View.GONE) {
                 et_password.eyeVisibility = View.VISIBLE
                 et_password.setText(null)
             }
-        })
 
-        et_password.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+            if (!hasFocus)
+                checkInputData()
         }
     }
 
@@ -80,19 +81,22 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             updateValidCode()
         })
 
-        et_verification_code.afterTextChanged {
-            viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+        et_verification_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                checkInputData()
         }
     }
 
     private fun setupLoginButton() {
         btn_login.setOnClickListener {
-            if (viewModel.loginFormState.value?.isDataValid == true) {
+            if (checkInputData()) {
                 login()
-            } else {
-                viewModel.loginDataChanged(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
             }
         }
+    }
+
+    private fun checkInputData(): Boolean {
+        return viewModel.checkInputData(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
     }
 
     private fun updateValidCode() {
@@ -108,7 +112,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val password = et_password.getText()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = et_verification_code.getText()
-        val deviceSn = "" //JPushInterface.getRegistrationID(applicationContext) //極光推播 //TODO 極光推波建置好，要來補齊 deviceSn 參數
+        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
         Timber.d("極光推播: RegistrationID = $deviceSn")
 
         val loginRequest = LoginRequest(

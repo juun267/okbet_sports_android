@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
@@ -26,12 +25,6 @@ class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewMode
                         bundle.putSerializable(navigateKey, PageFrom.WITHDRAW)
                         mNavController.navigate(R.id.bankListFragment, bundle)
                     }
-                }
-            })
-            needToUpdateWithdrawPassword.observe(this@WithdrawActivity, Observer {
-                if (it) {
-                    //TODO Dean : start update withdraw password Activity
-                    Log.e("Dean", "start update withdraw password Activity")
                 }
             })
         }

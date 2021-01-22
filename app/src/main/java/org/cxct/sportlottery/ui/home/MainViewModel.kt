@@ -2,11 +2,14 @@ package org.cxct.sportlottery.ui.home
 
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -14,7 +17,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -36,6 +38,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
@@ -48,6 +51,7 @@ import timber.log.Timber
 
 class MainViewModel(
     private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val betInfoRepository: BetInfoRepository
@@ -102,6 +106,8 @@ class MainViewModel(
 
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
+
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
@@ -171,6 +177,14 @@ class MainViewModel(
     private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
+
+    private val _isParlayPage = MutableLiveData<Boolean>()
+    val isParlayPage: LiveData<Boolean>
+        get() = _isParlayPage
+
+    fun isParlayPage(boolean: Boolean) {
+        _isParlayPage.postValue(boolean)
+    }
 
     private fun checkToken() {
         viewModelScope.launch {
@@ -661,15 +675,27 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
-                                odd?.isSelect = false
+                                betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                    odd = value.odds.find { v -> v.id == it }
+                                    odd?.isSelect = false
+                                }
                             }
                         }
                     }
-                    _betInfoResult.postValue(result)
                 }
+                _betInfoResult.postValue(result)
             }
         }
+    }
+
+    fun getBetInfoListForParlay() {
+        val list: MutableList<Odd> = mutableListOf()
+        betInfoRepository.betList.let {
+            for (i in it.indices) {
+                list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
+            }
+        }
+        getBetInfoList(list)
     }
 
 
@@ -678,6 +704,10 @@ class MainViewModel(
         _betInfoList.postValue(betInfoRepository.betList)
     }
 
+    fun removeBetInfoItemAndRefresh(oddId: String) {
+        removeBetInfoItem(oddId)
+        getBetInfoListForParlay()
+    }
 
     fun getOddsDetail(matchId: String, oddsType: String) {
         viewModelScope.launch {
@@ -692,7 +722,10 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd = value.odds.find { v ->
+                                    //server可能會回傳null
+                                    v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                }
                                 odd?.isSelect = true
                             }
                         }

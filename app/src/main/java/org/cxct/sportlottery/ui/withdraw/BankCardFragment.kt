@@ -66,7 +66,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupBankList() {
-        viewModel.getBankList()
+        viewModel.getMoneyConfigs()
     }
 
     private fun setupInitData(view: View) {

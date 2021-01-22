@@ -2,8 +2,15 @@ package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.db.dao.UserInfoDao
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -21,7 +28,7 @@ const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 
-class LoginRepository(private val androidContext: Context) {
+class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
@@ -85,6 +92,7 @@ class LoginRepository(private val androidContext: Context) {
                 isCheckToken = true
                 account = registerRequest.userName //預設存帳號
                 updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
             }
         }
 
@@ -98,6 +106,7 @@ class LoginRepository(private val androidContext: Context) {
             loginResponse.body()?.let {
                 isCheckToken = true
                 updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
             }
         }
 
@@ -111,6 +120,7 @@ class LoginRepository(private val androidContext: Context) {
             checkTokenResponse.body()?.let {
                 isCheckToken = true
                 updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
             }
         } else {
             isCheckToken = false
@@ -138,11 +148,46 @@ class LoginRepository(private val androidContext: Context) {
         }
     }
 
-    fun clear() {
+    suspend fun clear() {
         with(sharedPref.edit()) {
             remove(KEY_IS_LOGIN)
             remove(KEY_TOKEN)
             apply()
         }
+
+        clearUserInfo()
     }
+
+    @WorkerThread
+    private suspend fun updateUserInfo(loginData: LoginData?) {
+        loginData?.let {
+            val userInfo = transform(loginData)
+
+            withContext(Dispatchers.IO) {
+                userInfoDao.upsert(userInfo)
+            }
+        }
+    }
+
+    @WorkerThread
+    private suspend fun clearUserInfo() {
+        withContext(Dispatchers.IO) {
+            userInfoDao.deleteAll()
+        }
+    }
+
+    private fun transform(loginData: LoginData): UserInfo =
+        UserInfo(
+            loginData.userId,
+            fullName = loginData.fullName,
+            iconUrl = loginData.iconUrl,
+            lastLoginIp = loginData.lastLoginIp,
+            loginIp = loginData.loginIp,
+            nickName = loginData.nickName,
+            platformId = loginData.platformId,
+            testFlag = loginData.testFlag,
+            userName = loginData.userName,
+            userType = loginData.userType,
+            userRebateList = loginData.userRebateList
+        )
 }
