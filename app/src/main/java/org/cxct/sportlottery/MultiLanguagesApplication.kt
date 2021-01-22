@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
@@ -51,6 +52,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { ProfileModel(get()) }
         viewModel { NicknameModel(get()) }
         viewModel { SettingPasswordViewModel(get(), get()) }
+        viewModel { FinanceViewModel() }
     }
 
     private val repoModule = module {
