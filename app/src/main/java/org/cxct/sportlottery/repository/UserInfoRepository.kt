@@ -58,6 +58,7 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             phone = userInfoData.phone,
             wechat = userInfoData.wechat,
             updatePayPw = userInfoData.updatePayPw,
-            setted = userInfoData.setted
+            setted = userInfoData.setted,
+            userRebateList = userInfoData.userRebateList
         )
 }

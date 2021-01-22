@@ -187,6 +187,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             platformId = loginData.platformId,
             testFlag = loginData.testFlag,
             userName = loginData.userName,
-            userType = loginData.userType
+            userType = loginData.userType,
+            userRebateList = loginData.userRebateList
         )
 }
