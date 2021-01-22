@@ -57,7 +57,7 @@ data class UserInfoData(
     @Json(name = "updatePw")
     val updatePw: Int,
     @Json(name = "userId")
-    val userId: Int,
+    val userId: Long,
     @Json(name = "userLevelId")
     val userLevelId: Int,
     @Json(name = "userName")
