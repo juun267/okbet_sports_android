@@ -77,6 +77,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
@@ -99,6 +103,7 @@ android {
 
 ext {
     version_retrofit = "2.9.0"
+    version_room = "2.2.6"
 }
 
 dependencies {
@@ -169,6 +174,10 @@ dependencies {
     //相片選擇、拍照、錄影、剪裁 https://github.com/LuckSiege/PictureSelector
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
 
+    //room
+    implementation "androidx.room:room-runtime:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
 }
 
 multiLanguages {
