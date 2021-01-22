@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
+import org.cxct.sportlottery.db.SportRoomDatabase
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
@@ -52,12 +53,17 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val repoModule = module {
-        single { LoginRepository(get()) }
+        single { LoginRepository(get(), get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
         single { MoneyRepository() }
         single { BetInfoRepository() }
+    }
+
+    private val dbModule = module {
+        single { SportRoomDatabase.getDatabase(get()) }
+        single { get<SportRoomDatabase>().userInfoDao() }
     }
 
     override fun attachBaseContext(base: Context) {
@@ -88,7 +94,8 @@ class MultiLanguagesApplication : Application() {
             modules(
                 listOf(
                     viewModelModule,
-                    repoModule
+                    repoModule,
+                    dbModule
                 )
             )
         }

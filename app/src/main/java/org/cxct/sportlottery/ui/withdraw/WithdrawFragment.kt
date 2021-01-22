@@ -205,7 +205,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val data = dataList[position]
-        var holder: ListViewHolder
+        val holder: ListViewHolder
         // if remove "if (convertView == null)" will get a warning about reuse view.
         if (convertView == null) {
             holder = ListViewHolder()
@@ -231,7 +231,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
         holder.apply {
             /*val viewHolder = ViewHolder()*/
             tvBank?.text = data.bankName
-            ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName ?: ""))
+            ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
             if (position == selectedPosition)
                 this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
             else

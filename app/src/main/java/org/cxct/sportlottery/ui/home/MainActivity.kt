@@ -23,7 +23,6 @@ import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
@@ -272,7 +271,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.isLogin.observe(this) {
             if (it) {
                 queryData()
-                updateAvatar()
             }
         }
 
@@ -324,6 +322,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.errorResultToken.observe(this, Observer {
             viewModel.logout()
         })
+
+        viewModel.userInfo.observe(this, Observer {
+            updateAvatar(it?.iconUrl)
+        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
@@ -345,9 +347,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun updateAvatar() {
+    private fun updateAvatar(iconUrl: String?) {
         Glide.with(this)
-            .load(sLoginData?.iconUrl)
+            .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
     }
