@@ -25,10 +25,11 @@ class NicknameModel(
     val nicknameResult: LiveData<NicknameResult?>
         get() = _nicknameResult
 
-    fun nicknameDataChanged(context: Context, nickname: String) {
+    fun nicknameDataChanged(context: Context, nickname: String): Boolean {
         val nicknameError = checkNickname(context, nickname)
-        val isDataValid = nicknameError == null
-        _nicknameFormState.value = NicknameFormState(nicknameError, isDataValid)
+        _nicknameFormState.value = NicknameFormState(nicknameError)
+
+        return nicknameError == null
     }
 
     fun editNickName(nickname: String) {

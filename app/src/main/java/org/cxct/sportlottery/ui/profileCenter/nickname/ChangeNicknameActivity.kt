@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.nickname
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_change_nickname.*
 import org.cxct.sportlottery.R
@@ -19,8 +20,9 @@ class ChangeNicknameActivity : BaseActivity<NicknameModel>(NicknameModel::class)
     }
 
     private fun setupNickname() {
-        et_nickname.afterTextChanged {
-            checkInputData()
+        et_nickname.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                checkInputData()
         }
     }
 
@@ -30,16 +32,14 @@ class ChangeNicknameActivity : BaseActivity<NicknameModel>(NicknameModel::class)
         }
 
         btn_confirm.setOnClickListener {
-            if (viewModel.nicknameFormState.value?.isDataValid == true) {
+            if (checkInputData()) {
                 editNickName()
-            } else {
-                checkInputData()
             }
         }
     }
 
-    private fun checkInputData() {
-        viewModel.nicknameDataChanged(this, et_nickname.getText())
+    private fun checkInputData(): Boolean {
+        return viewModel.nicknameDataChanged(this, et_nickname.getText())
     }
 
     private fun editNickName() {

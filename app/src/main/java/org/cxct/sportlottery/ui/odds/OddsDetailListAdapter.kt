@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -267,32 +266,31 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val drawList = ArrayList<Odd>()
             val awayList = ArrayList<Odd>()
 
-            for (element in oddsDetail.oddArrayList) {
-                if (element.name.contains(" - ")) {
-                    val stringArray: List<String> = element.name.split(" - ")
+            for (odd in oddsDetail.oddArrayList) {
+                if (odd.name.contains(" - ")) {
+                    val stringArray: List<String> = odd.name.split(" - ")
                     if (stringArray[0].toInt() > stringArray[1].toInt()) {
-                        homeList.add(element)
+                        homeList.add(odd)
                     }
                     if (stringArray[0].toInt() == stringArray[1].toInt()) {
-                        drawList.add(element)
+                        drawList.add(odd)
                     }
                     if (stringArray[0].toInt() < stringArray[1].toInt()) {
-                        awayList.add(element)
+                        awayList.add(odd)
                     }
                 } else {
 
-                    val select = betInfoList.any { it.matchOdd.oddsId == element.id }
-                    element.isSelect = select
-
+                    val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
+                    odd.isSelect = select
                     val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
-                    tvOdds.text = element.odds.toString()
+                    tvOdds.text = odd.odds.toString()
+                    tvOdds.isSelected = odd.isSelect
+
                     tvOdds.setOnClickListener {
-                        tvOdds.isSelected = !tvOdds.isSelected
-                        element.isSelect = tvOdds.isSelected
-                        if (element.isSelect) {
-                            onOddClickListener.getBetInfoList(element)
+                        if (!odd.isSelect) {
+                            onOddClickListener.getBetInfoList(odd)
                         } else {
-                            onOddClickListener.removeBetInfoItem(element)
+                            onOddClickListener.removeBetInfoItem(odd)
                         }
                     }
                 }

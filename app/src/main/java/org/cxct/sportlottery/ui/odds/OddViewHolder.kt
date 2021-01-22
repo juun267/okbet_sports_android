@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    companion object{
+    companion object {
         const val PLAYING = 0
         const val LOCK = 1
     }
@@ -26,17 +25,13 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
         when (odd.status) {
             PLAYING -> {
-
                 val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                 odd.isSelect = select
 
                 vCover.visibility = View.GONE
                 tvOdds.isSelected = odd.isSelect
-
                 tvOdds.setOnClickListener {
-                    tvOdds.isSelected = !tvOdds.isSelected
-                    odd.isSelect = tvOdds.isSelected
-                    if (odd.isSelect) {
+                    if (!odd.isSelect) {
                         onOddClickListener.getBetInfoList(odd)
                     } else {
                         onOddClickListener.removeBetInfoItem(odd)

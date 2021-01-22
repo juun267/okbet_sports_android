@@ -709,7 +709,6 @@ class MainViewModel(
         getBetInfoListForParlay()
     }
 
-
     fun getOddsDetail(matchId: String, oddsType: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -723,8 +722,10 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd =
-                                    value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd = value.odds.find { v ->
+                                    //server可能會回傳null
+                                    v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                }
                                 odd?.isSelect = true
                             }
                         }
