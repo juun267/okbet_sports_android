@@ -9,17 +9,18 @@ import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.content_bet_info_item_single.view.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
-    private var mOnFocusChangeListener: OnFocusChangeListener? = null
+    private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus -> block_editText.isSelected = hasFocus }
+
     var eyeVisibility
         get() = btn_eye.visibility
         set(value) {
@@ -29,7 +30,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     var clearIsShow
         get() = btn_clear.visibility == View.VISIBLE
         set(value) {
-            btn_clear.visibility = if(value) View.VISIBLE else View.GONE
+            btn_clear.visibility = if (value) View.VISIBLE else View.GONE
+        }
+
+    var getAllIsShow
+        get() = btn_withdraw_all.visibility == View.VISIBLE
+        set(value) {
+            btn_withdraw_all.visibility = if (value) View.VISIBLE else View.GONE
         }
 
     init {
@@ -47,6 +54,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
+            view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
             view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
         } catch (e: Exception) {
@@ -63,10 +71,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun setupFocus() {
-        et_input.setOnFocusChangeListener { v, hasFocus ->
-            block_editText.isSelected = hasFocus
-            mOnFocusChangeListener?.onFocusChange(v, hasFocus)
-        }
+        et_input.onFocusChangeListener = mOnFocusChangeListener
     }
 
     private fun setupEye() {
@@ -127,19 +132,23 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
-    fun setEditTextOnFocusChangeListener(l: OnFocusChangeListener?) {
-        mOnFocusChangeListener = l
-    }
-
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged { afterTextChanged.invoke(it) }
     }
 
-    fun setOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
-        et_input.setOnFocusChangeListener(listener)
+    fun getAllButton(clickGetAll: (EditText) -> Unit) {
+        btn_withdraw_all.setOnClickListener {
+            clickGetAll(et_input)
+        }
+    }
+
+    fun setEditTextOnFocusChangeListener(listener: ((View, Boolean) -> Unit)) {
+        et_input.setOnFocusChangeListener { v, hasFocus ->
+            mOnFocusChangeListener.onFocusChange(v, hasFocus)
+            listener.invoke(v, hasFocus)
+        }
     }
 }
-
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
  */

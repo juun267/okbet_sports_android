@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * 常用提示對話框
@@ -38,10 +37,7 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
 
     private fun initView() {
         when (mTitle) {
-            null -> {
-                tv_title.visibility = View.GONE
-                sv_block_content.setPadding(10.dp, 10.dp, 10.dp, 56.dp)
-            }
+            null -> tv_title.visibility = View.GONE
             else -> tv_title.text = mTitle
         }
 

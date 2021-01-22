@@ -5,9 +5,11 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -15,7 +17,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -37,6 +38,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
@@ -49,6 +51,7 @@ import timber.log.Timber
 
 class MainViewModel(
     private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val betInfoRepository: BetInfoRepository
@@ -103,6 +106,8 @@ class MainViewModel(
 
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
+
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()

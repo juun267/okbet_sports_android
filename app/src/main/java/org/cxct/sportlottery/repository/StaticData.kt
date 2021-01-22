@@ -13,7 +13,9 @@ const val LOGIN_SRC: Long = 2 //登录来源，WEB(0), MOBILE_BROWSER(1), ANDROI
 const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 
-var sLoginData: LoginData? = null
 var sConfigData: ConfigData? = null
-//TODO Dean : 測試使用, 串接/api/user/info後將此處重新review
+
+@Deprecated("userData 改成一律從 user info repository 取得")
+var sLoginData: LoginData? = null
+@Deprecated("userData 改成一律從 user info repository 取得")
 var sUserInfo: UserInfo = UserInfo()
