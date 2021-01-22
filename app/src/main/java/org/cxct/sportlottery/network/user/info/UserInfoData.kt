@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.user.info
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.UserRebate
 
 @JsonClass(generateAdapter = true)
 data class UserInfoData(

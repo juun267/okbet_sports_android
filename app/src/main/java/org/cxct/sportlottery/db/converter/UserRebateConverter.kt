@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.cxct.sportlottery.network.user.info.UserRebate
+import org.cxct.sportlottery.network.common.UserRebate
 
 class UserRebateConverter {
 

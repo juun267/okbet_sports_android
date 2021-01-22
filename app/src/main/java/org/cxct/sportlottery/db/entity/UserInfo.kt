@@ -3,7 +3,7 @@ package org.cxct.sportlottery.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.cxct.sportlottery.network.user.info.UserRebate
+import org.cxct.sportlottery.network.common.UserRebate
 
 @Entity(tableName = "user_info_table")
 data class UserInfo(
