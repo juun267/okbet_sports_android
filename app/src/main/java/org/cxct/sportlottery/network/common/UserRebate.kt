@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.user.info
+package org.cxct.sportlottery.network.common
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

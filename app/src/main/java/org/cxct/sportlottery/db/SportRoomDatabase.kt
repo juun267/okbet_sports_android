@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import org.cxct.sportlottery.db.converter.UserRebateConverter
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 
 @Database(entities = [UserInfo::class], version = 1, exportSchema = false)
+@TypeConverters(UserRebateConverter::class)
 abstract class SportRoomDatabase : RoomDatabase() {
 
     abstract fun userInfoDao(): UserInfoDao

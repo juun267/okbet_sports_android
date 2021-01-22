@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.index.login
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.UserRebate
 
 @JsonClass(generateAdapter = true)
 data class LoginData(
@@ -38,5 +39,5 @@ data class LoginData(
     @Json(name = "hyType")
     val hyType: Int?, //会员类型
     @Json(name = "userRebateList")
-    val userRebateList: List<UserRebate> //用户返点数据
+    val userRebateList: List<UserRebate>? //用户返点数据
 )
