@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="finance_array">
+        <item>@string/record_recharge</item>
+        <item>@string/record_withdrawal</item>
+        <item>@string/record_red_envelope</item>
+        <item>@string/record_conversion</item>
+        <item>@string/record_reward</item>
+    </string-array>
+</resources>
