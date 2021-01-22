@@ -38,7 +38,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) : Recyc
         private val rootItem: ConstraintLayout =itemView.findViewById(R.id.rootItem)
 
         fun bind(item: MoneyPayWayData, clickListener: ItemClickListener) {
-            icBank.setImageResource(MoneyManager.getBankIcon(item.rechType))
+            icBank.setImageResource(MoneyManager.getBankIcon(item.image))
             tvType.text = item.title
             rootItem.setOnClickListener {
                 clickListener.onClick(item)

@@ -14,7 +14,9 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
+import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIcon
+import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
@@ -79,7 +81,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             rechCfgsList.forEach {
                 val selectBank = CustomImageAdapter.SelectBank(
                     it.rechName.toString(),
-                    getBankIcon(it.rechName.toString())
+                    getBankIconByBankName(it.rechName.toString())
                 )
                 spannerList.add(selectBank)
             }
@@ -87,15 +89,15 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             val title = mMoneyPayWay?.title
 
             if (rechCfgsList.size > 1)
-                rechCfgsList.forEach { _ ->
+                rechCfgsList.forEach { it ->
                     val selectBank =
-                        CustomImageAdapter.SelectBank(title + count++, R.drawable.bg_transparent)
+                        CustomImageAdapter.SelectBank(title + count++,getBankAccountIcon(it.rechType?:""))
                     spannerList.add(selectBank)
                 }
             else
-                rechCfgsList.forEach { _ ->
+                rechCfgsList.forEach { it ->
                     val selectBank =
-                        CustomImageAdapter.SelectBank(title + "", R.drawable.bg_transparent)
+                        CustomImageAdapter.SelectBank(title + "",getBankAccountIcon(it.rechType?:""))
                     spannerList.add(selectBank)
                 }
         }

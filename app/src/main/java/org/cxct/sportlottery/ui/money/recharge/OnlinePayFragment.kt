@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
-import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -45,15 +44,18 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         super.onViewCreated(view, savedInstanceState)
 
         initPayRoadSpinner()
-        refreshPayBank()
+
         initButton()
-//        initView()
+        initView()
     }
 
-//    private fun initView() {
-////        txv_rebate.text = mSelectRechCfgs?.rebateFee.toString()
-//        refreshSelectRechCfgs(mSelectRechCfgs)
-//    }
+    private fun initView() {
+        if (mMoneyPayWay?.image != "ic_online_pay") {
+            cv_pay_bank.visibility = View.GONE
+        } else {
+            cv_pay_bank.visibility = View.VISIBLE
+        }
+    }
 
     private fun initButton() {
         btn_submit.setOnClickListener {
@@ -69,6 +71,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             )
             viewModel.rechargeOnlinePay(moneyAddRequest)
         }
+
+
     }
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
@@ -87,7 +91,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         val payRoadSpannerList = mutableListOf<String>()
         val title = mMoneyPayWay?.title
-
         if (rechCfgsList.size > 1)
             rechCfgsList.forEach { _ -> payRoadSpannerList.add(title + count++) }
         else
@@ -106,9 +109,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 id: Long
             ) {
                 try {
-//                    sp_pay_gap.text = sp_pay_gap.selectedItem.toString()
                     mSelectRechCfgs = rechCfgsList[position]
                     refreshSelectRechCfgs(mSelectRechCfgs)
+                    refreshPayBank(mSelectRechCfgs)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -134,14 +137,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         )
     }
 
-    //還不知道篩選條件是什麼
-    private fun refreshPayBank() {
+    private fun refreshPayBank(rechCfgsList: MoneyRechCfg.RechConfig?) {
 
-        viewModel.rechargeConfigs.value?.banks?.forEach {
+        rechCfgsList?.banks?.forEach {
             val data =
                 CustomImageAdapter.SelectBank(
-                    it.name,
-                    MoneyManager.getBankIconByBankName(it.name.toString())
+                    it.bankName,
+                    MoneyManager.getBankIconByBankName(it.bankName.toString())
                 )
             mSpannerList.add(data)
         }
