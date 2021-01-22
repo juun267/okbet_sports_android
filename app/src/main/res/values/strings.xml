@@ -307,6 +307,17 @@
     <string name="title_rebate_fee">返利手续费</string>
     <string name="hint_tip"><font color="#ff4b2c">・温馨提示：%1$s。</font></string>
     <string name="edt_hint_online_pay_money">單筆下限%1$s，上限%2$s</string>
+    <string name="title_pay_msg">支付信息</string>
+    <string name="title_pay_way">支付方式：</string>
+    <string name="title_pay_money">支付金额：</string>
+    <string name="hint_pay1">1. 成功付款后将会自动到帐，并弹出到帐提示。</string>
+    <string name="hint_pay2">2. 长时间无反应，请联系客服。</string>
+    <string name="btn_look_for">查看交易</string>
+    <string name="btn_service">联系客服</string>
+    <string name="txv_transfer_pay">转账支付</string>
+    <string name="txv_online_pay">在线支付</string>
+
+
 
 
 

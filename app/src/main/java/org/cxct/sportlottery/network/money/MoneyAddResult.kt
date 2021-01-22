@@ -13,5 +13,5 @@ data class MoneyAddResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val result: String?
+    var result: String?
 ): BaseResult()

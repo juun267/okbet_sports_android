@@ -7,8 +7,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_money_recharge.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 
 class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -24,6 +26,9 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
     private var currentPayList = mutableListOf<MoneyPayWayData>()
 
     private var mCurrentFragment: Fragment? = null
+
+    var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +72,33 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             onlinePayList = it ?: return@Observer
             if (currentTab == RechargeType.ONLINE_PAY) {
                 bankTypeAdapter?.data = onlinePayList
+            }
+        })
+
+        viewModel.apiResult.observe(this@MoneyRechargeActivity, Observer {
+            apiResult = it ?: return@Observer
+
+            var payWay = if (btn_transfer_pay.isSelected)
+                this.getString(R.string.txv_transfer_pay)
+            else
+                this.getString(R.string.txv_online_pay)
+
+            if (!apiResult.success) {
+                //顯示彈窗
+                var customAlertDialog= CustomAlertDialog(this@MoneyRechargeActivity)
+                with(customAlertDialog){
+                    setTitle("提示")
+                    setMessage(apiResult.msg)
+                }.let {
+                    customAlertDialog.show()
+                }
+            } else {
+                //顯示成功彈窗
+                val moneySubmitDialog = MoneySubmitDialog(
+                    payWay,
+                    (apiResult.result ?: 0).toString()
+                )
+                moneySubmitDialog.show(supportFragmentManager, "")
             }
         })
 
@@ -156,7 +188,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
     private fun initRecyclerView() {
         bankTypeAdapter = MoneyBankTypeAdapter(MoneyBankTypeAdapter.ItemClickListener {
-            switchFragment(getPayFragment(it),it.rechType)
+            switchFragment(getPayFragment(it), it.rechType)
         })
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)
         rv_pay_type.adapter = bankTypeAdapter

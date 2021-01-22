@@ -2,14 +2,17 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.provider.Settings.Global.getString
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.util.MoneyManager
 
 class MoneyRechViewModel(
@@ -29,6 +32,10 @@ class MoneyRechViewModel(
     val transferPayList: LiveData<MutableList<MoneyPayWayData>>
         get() = _transferPayList
     private var _transferPayList = MutableLiveData<MutableList<MoneyPayWayData>>()
+
+    val apiResult: LiveData<MoneyAddResult>
+        get() = _apiResult
+    private var _apiResult = MutableLiveData<MoneyAddResult>()
 
     //獲取充值的基礎配置
     fun getRechCfg() {
@@ -81,11 +88,8 @@ class MoneyRechViewModel(
             doNetwork(androidContext) {
                 moneyRepository.rechargeAdd(moneyAddRequest)
             }.let {
-                if (it?.success == false) {
-                    //顯示彈窗
-                } else {
-                    //顯示成功彈窗
-                }
+                it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
+                _apiResult.value = it
             }
         }
     }
@@ -96,10 +100,11 @@ class MoneyRechViewModel(
             doNetwork(androidContext) {
                 moneyRepository.rechargeOnlinePay(moneyAddRequest)
             }.let {
-                if (it?.success == false) {
-                    //顯示彈窗
-                } else {
-                    //顯示成功彈窗
+                doNetwork(androidContext) {
+                    moneyRepository.rechargeAdd(moneyAddRequest)
+                }.let {
+                    it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
+                    _apiResult.value = it
                 }
             }
         }

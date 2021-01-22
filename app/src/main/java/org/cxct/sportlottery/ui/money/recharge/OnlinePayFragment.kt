@@ -67,7 +67,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 payerBankName = "",
                 payerInfo = "",
                 payerName = "",
-                depositDate = "${Date()}"
+                depositDate = Date().time
             )
             viewModel.rechargeOnlinePay(moneyAddRequest)
         }

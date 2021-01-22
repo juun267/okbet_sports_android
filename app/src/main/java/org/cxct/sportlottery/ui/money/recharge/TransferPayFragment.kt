@@ -60,7 +60,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 payerName = et_name.text.toString(),
                 payerBankName = "aaa",
                 payerInfo = "payerInfo",
-                depositDate = "et_wallet_money"
+                depositDate = Date().time
             )
             viewModel.rechargeAdd(moneyAddRequest)
         }
@@ -91,13 +91,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             if (rechCfgsList.size > 1)
                 rechCfgsList.forEach { it ->
                     val selectBank =
-                        CustomImageAdapter.SelectBank(title + count++,getBankAccountIcon(it.rechType?:""))
+                        CustomImageAdapter.SelectBank(
+                            title + count++,
+                            getBankAccountIcon(it.rechType ?: "")
+                        )
                     spannerList.add(selectBank)
                 }
             else
                 rechCfgsList.forEach { it ->
                     val selectBank =
-                        CustomImageAdapter.SelectBank(title + "",getBankAccountIcon(it.rechType?:""))
+                        CustomImageAdapter.SelectBank(
+                            title + "",
+                            getBankAccountIcon(it.rechType ?: "")
+                        )
                     spannerList.add(selectBank)
                 }
         }
