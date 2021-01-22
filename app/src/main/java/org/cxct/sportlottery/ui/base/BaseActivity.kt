@@ -28,7 +28,7 @@ import kotlin.reflect.KClass
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
 
     private var mLayoutHandler = Handler(Looper.getMainLooper())
-    private lateinit var mPromptDialog: CustomAlertDialog
+    private var mPromptDialog: CustomAlertDialog? = null
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -171,33 +171,25 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         tv_bet_count.text = count.toString()
     }
 
-    fun showPromptDialog(message: String, title: String, positiveClickListener: () -> Unit?) {
+    fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
         showPromptDialog(title, message, null, positiveClickListener)
-        CustomAlertDialog(this).apply {
-            setMessage(message)
-            setTitle(title)
-            setNegativeButtonText(null)
-            setCanceledOnTouchOutside(false)
-            setCancelable(false)
-            show()
-        }
     }
 
     fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?) {
         safelyUpdateLayout(Runnable {
             try {
                 //防止跳出多個 error dialog
-                if (mPromptDialog.isShowing)
-                    mPromptDialog.dismiss()
+                if (mPromptDialog?.isShowing == true)
+                    mPromptDialog?.dismiss()
 
                 mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
                     setTitle(title)
                     setMessage(errorMessage)
-                    setPositiveButtonText(buttonText)
+                    setPositiveButtonText(buttonText ?: getString(R.string.btn_confirm))
                     setNegativeButtonText(null)
                     setPositiveClickListener(View.OnClickListener {
                         positiveClickListener()
-                        mPromptDialog.dismiss()
+                        mPromptDialog?.dismiss()
                     })
 
                     setCanceledOnTouchOutside(false)
