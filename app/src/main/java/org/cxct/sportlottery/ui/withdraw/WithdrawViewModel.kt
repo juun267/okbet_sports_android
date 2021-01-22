@@ -124,12 +124,12 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         }
     }
 
-    fun addBankCard(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, userId: String, uwType: String) {
+    fun addBankCard(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, userId: String, uwType: String, bankCode: String) {
         checkInputBankCardData(fullName, cardNo, subAddress, fundPwd)
         if (checkBankCardData()) {
             viewModelScope.launch {
                 doNetwork(androidContext) {
-                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userId, uwType))
+                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userId, uwType, bankCode))
                 }?.let { result ->
                     _bankAddResult.value = result
 
@@ -146,7 +146,7 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     }
 
-    private fun createBankAddRequest(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, userId: String, uwType: String): BankAddRequest {
+    private fun createBankAddRequest(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, userId: String, uwType: String, bankCode: String): BankAddRequest {
         return BankAddRequest(
             bankName = bankName,
             subAddress = subAddress,
@@ -155,7 +155,8 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             fullName = fullName,
             id = id,
             userId = userId,
-            uwType = uwType //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+            uwType = uwType, //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+            bankCode = bankCode
         )
     }
 
