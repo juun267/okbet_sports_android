@@ -143,8 +143,12 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     override fun onStop() {
         super.onStop()
-        doUnBindService()
         removeBroadcast()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        doUnBindService()
     }
 
     private fun removeBroadcast() {
