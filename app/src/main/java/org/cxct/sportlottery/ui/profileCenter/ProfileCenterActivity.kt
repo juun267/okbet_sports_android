@@ -170,7 +170,8 @@ class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
             .into(iv_head) //載入頭像
 
         tv_user_nickname.text = viewModel.sayHello() + userInfo?.userName
-        btn_edit_nickname.visibility = if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
+        btn_edit_nickname.visibility =
+            if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
     }
 }
