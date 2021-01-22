@@ -18,6 +18,7 @@ class ProfileCenterActivity : AppCompatActivity() {
         }
 
         btn_finance.setOnClickListener {
+            startActivity(Intent(this, FinanceActivity::class.java))
         }
     }
 }

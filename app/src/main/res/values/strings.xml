@@ -367,5 +367,6 @@
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
 
     <!-- finance -->
+    <string name="finance">資金明細</string>
     <string name="account_balance">账户余额</string>
 </resources>
