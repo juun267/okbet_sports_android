@@ -52,7 +52,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { ProfileModel(get()) }
         viewModel { NicknameModel(get()) }
         viewModel { SettingPasswordViewModel(get(), get()) }
-        viewModel { FinanceViewModel() }
+        viewModel { FinanceViewModel(get()) }
     }
 
     private val repoModule = module {
