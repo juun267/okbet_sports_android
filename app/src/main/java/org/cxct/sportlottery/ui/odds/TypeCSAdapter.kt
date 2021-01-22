@@ -10,7 +10,8 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 class TypeCSAdapter(
     private val oddsList: List<Odd>, private val onOddClickListener: OnOddClickListener,
-    private val betInfoList: MutableList<BetInfoListData>
+    private val betInfoList: MutableList<BetInfoListData>,
+    private val curMatchId: String?
 ) :
     RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
 
@@ -33,7 +34,7 @@ class TypeCSAdapter(
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList)
+            setData(odd, onOddClickListener, betInfoList, curMatchId)
         }
     }
 

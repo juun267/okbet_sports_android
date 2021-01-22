@@ -14,7 +14,8 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 class TypeTwoSidesAdapter(
     private val oddsList: List<Odd>,
     private val onOddClickListener: OnOddClickListener,
-    private val betInfoList: MutableList<BetInfoListData>
+    private val betInfoList: MutableList<BetInfoListData>,
+    private val curMatchId: String?
 ) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
 
 
@@ -40,7 +41,7 @@ class TypeTwoSidesAdapter(
 
         fun bindModel(odd: Odd, position: Int) {
 
-            setData(odd, onOddClickListener, betInfoList)
+            setData(odd, onOddClickListener, betInfoList, curMatchId)
 
             tvSpread.text = odd.spread
 

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
 
-    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>) {
+    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?) {
 
         tvName.text = odd.name
         tvOdds.text = odd.odds.toString()
@@ -32,6 +33,9 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvOdds.isSelected = odd.isSelect
                 tvOdds.setOnClickListener {
                     if (!odd.isSelect) {
+                        if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
+                            return@setOnClickListener
+                        }
                         onOddClickListener.getBetInfoList(odd)
                     } else {
                         onOddClickListener.removeBetInfoItem(odd)

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -153,6 +152,11 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
+
+        viewModel.isParlayPage.observe(this.viewLifecycleOwner, Observer {
+            oddsDetailListAdapter?.setCurrentMatchId(if(it)matchId else null)
+        })
+
     }
 
 
