@@ -64,14 +64,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val mServiceConnection = object : ServiceConnection {
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Timber.e("$name onServiceConnected")
+            Timber.e(">>> $name onServiceConnected")
             val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
             mService = binder.service
             mIsBound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            Timber.e("$name onServiceDisconnected")
+            Timber.e(">>> $name onServiceDisconnected")
             mIsBound = false
             //service 物件設為null
         }
@@ -103,8 +103,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lifecycleOwner = this@MainActivity
         }
 
-        doBindService()
-        initBroadcast()
+//        doBindService()
+//        initBroadcast()
 
         initToolBar()
         initMenu()
@@ -125,11 +125,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
 
-        if (!checkServiceRunning()) { //如果service斷掉則重啟
-            doBindService()
-            initBroadcast()
-        }
-
+//        doBindService()
         rv_marquee.startAuto()
     }
 
@@ -151,7 +147,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         if (mIsBound) {
             doUnBindService()
-            removeBroadcast()
         }
     }
 
@@ -180,7 +175,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initBroadcast() {
-
         val filter = IntentFilter().apply {
             addAction(SERVICE_SEND_DATA)
         }
@@ -202,11 +196,22 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun doBindService() {
         //TODO Cheryl 判斷if is login already
+//        if (!checkServiceRunning()) { //如果service斷掉則重啟
             val serviceIntent = Intent(this, BackService::class.java)
             serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
             serviceIntent.putExtra(SERVICE_USER_ID, viewModel.userId)
             bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
             mIsBound = true
+//        }
+
+        initBroadcast()
+    }
+
+    private fun doUnBindService() {
+        unbindService(mServiceConnection)
+        removeBroadcast()
+
+        mIsBound = false
     }
 
     private fun checkServiceRunning(): Boolean {
@@ -217,11 +222,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         }
         return false
-    }
-
-    private fun doUnBindService() {
-        unbindService(mServiceConnection)
-        mIsBound = false
     }
 
     private fun initToolBar() {
@@ -395,11 +395,20 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this) {
+        viewModel.isLogin.observe(this,  Observer {
+            Log.e(">>>", "isLogin = $it")
             if (it) {
                 queryData()
+                if (!mIsBound) {
+                    doBindService()
+                }
+            } else {
+                if (mIsBound) {
+                    doUnBindService()
+                }
             }
-        }
+
+        })
 
         viewModel.messageListResult.observe(this, Observer {
             hideLoading()

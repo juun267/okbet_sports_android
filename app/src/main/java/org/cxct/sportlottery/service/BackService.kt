@@ -92,7 +92,7 @@ class BackService() : Service() {
         userId = intent?.getLongExtra(SERVICE_USER_ID, -1).toString()
         if (token.isNullOrEmpty()) return mBinder
 
-        if (mStompClient?.isConnected != true) {
+        if (mStompClient?.isConnected != true && !token.isNullOrEmpty()) {
             Timber.d("==尚未建立連線，連線開始==")
             connect()
         } else {
