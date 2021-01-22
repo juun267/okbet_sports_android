@@ -180,7 +180,7 @@ class MainViewModel(
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
 
-    fun isParlayPage(boolean: Boolean){
+    fun isParlayPage(boolean: Boolean) {
         _isParlayPage.postValue(boolean)
     }
 
@@ -686,7 +686,7 @@ class MainViewModel(
         }
     }
 
-    fun getBetInfoListForParlay(){
+    fun getBetInfoListForParlay() {
         val list: MutableList<Odd> = mutableListOf()
         betInfoRepository.betList.let {
             for (i in it.indices) {
@@ -702,11 +702,10 @@ class MainViewModel(
         _betInfoList.postValue(betInfoRepository.betList)
     }
 
-    fun removeBetInfoItemAndRefresh(oddId: String){
+    fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
         getBetInfoListForParlay()
     }
-
 
     fun getOddsDetail(matchId: String, oddsType: String) {
         viewModelScope.launch {
@@ -721,7 +720,10 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd = value.odds.find { v -> v.id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                odd = value.odds.find { v ->
+                                    //server可能會回傳null
+                                    v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                }
                                 odd?.isSelect = true
                             }
                         }
