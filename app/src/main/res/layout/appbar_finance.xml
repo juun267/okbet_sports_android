@@ -5,11 +5,12 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:orientation="horizontal">
+    android:background="@color/colorPrimary">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/btn_toolbar_back"
             android:layout_width="@dimen/tool_bar_height"
@@ -18,13 +19,14 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_baseline_arrow_back_ios_new_24"
             app:tint="@color/white" />
+
         <TextView
             android:id="@+id/tv_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="@dimen/textSize16sp"
             android:textColor="@color/white"
-            tools:text="@string/unknown_data"/>
+            android:textSize="@dimen/textSize16sp"
+            tools:text="@string/unknown_data" />
     </RelativeLayout>
 </com.google.android.material.appbar.AppBarLayout>
