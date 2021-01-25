@@ -194,7 +194,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 fundPwd = et_withdrawal_password.getText(),
                 fullName = et_create_name.getText(),
                 id = args.editBankCard?.id?.toString(),
-                userId = viewModel.userInfo.value?.userId.toString(),
                 uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
                 bankCode = args.editBankCard?.bankCode.toString()
             )
