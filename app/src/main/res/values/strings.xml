@@ -171,6 +171,25 @@
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
 
+    <!-- Profile center page -->
+    <string name="good_midnight">凌晨好</string>
+    <string name="good_morning">早上好</string>
+    <string name="good_beforenoon">上午好</string>
+    <string name="good_noon">中午好</string>
+    <string name="good_afternoon">下午好</string>
+    <string name="good_evening">傍晚好</string>
+    <string name="good_night">晚上好</string>
+    <string name="good_dreams">夜里好</string>
+    <string name="account_balance">账户余额</string>
+    <string name="user_id_colon">用戶ID：</string>
+    <string name="recharge">充值</string>
+    <string name="more_service">更多服务</string>
+    <string name="fund_detail">资金明细</string>
+    <string name="feedback">建议反馈</string>
+    <string name="promotion">优惠活动</string>
+    <string name="agent">代理加盟</string>
+    <string name="online_service">在线客服</string>
+
     <!-- Profile page-->
     <string name="profile_info">个人资讯</string>
     <string name="avatar">头像</string>
