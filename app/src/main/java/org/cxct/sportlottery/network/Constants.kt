@@ -54,6 +54,7 @@ object Constants {
     const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
     const val USER_RECHARGE_ADD = "/api/front/userrech/add"
     const val USER_RECHARGE_ONLINE_PAY = "/api/front/userrech/onlinepay"
+    const val USER_RECHARGE_LIST = "/api/front/userrech/list"
 
     //user
     const val USER_INFO = "/api/front/user/info"
