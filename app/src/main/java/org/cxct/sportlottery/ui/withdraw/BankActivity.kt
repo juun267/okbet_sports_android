@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -20,7 +21,11 @@ class BankActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewModel::c
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            viewModel.checkPermissions()
+            if (result.resultCode == Activity.RESULT_OK){
+                viewModel.getBankCardList()
+            }else{
+                viewModel.checkPermissions()
+            }
         }
     }
 

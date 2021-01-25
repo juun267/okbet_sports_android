@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
+import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.MoneyRepository
@@ -210,9 +211,25 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             doNetwork(androidContext) {
                 userInfoRepository.getUserInfo()
             }.let {
-                checkPermissions()
+                checkPermissions(it)
             }
 
+        }
+    }
+
+    private fun checkPermissions(userInfoResult: UserInfoResult?) {
+        //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
+        _needToUpdateWithdrawPassword.value = when (userInfoResult?.userInfoData?.updatePayPw) {
+            1 -> {
+                true
+            }
+            0 -> {
+                getBankCardList()
+                false
+            }
+            else -> {
+                null
+            }
         }
     }
 
