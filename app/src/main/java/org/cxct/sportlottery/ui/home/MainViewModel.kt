@@ -1,13 +1,10 @@
 package org.cxct.sportlottery.ui.home
 
-
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -25,7 +22,6 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
-import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
@@ -33,6 +29,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
@@ -42,7 +39,7 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
-import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -58,7 +55,8 @@ import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
-
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainViewModel(
     private val androidContext: Context,
@@ -166,8 +164,7 @@ class MainViewModel(
 
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
-        get() = BroadcastRepository().instance().userMoney
-//        get() = _userMoney
+        get() = _userMoney
 
     private val _oddsDetailMoreList = MutableLiveData<List<*>>()
     val oddsDetailMoreList: LiveData<List<*>?>
@@ -329,14 +326,12 @@ class MainViewModel(
     }
 
     fun getMoney() {
-        /*
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
         }
-        */
     }
 
     fun getGameHallList(matchType: MatchType, sportType: SportType?) {
@@ -807,4 +802,24 @@ class MainViewModel(
         }
     }
 
+    fun getUserInfo() {
+        viewModelScope.launch {
+            userInfoRepository.getUserInfo()
+        }
+    }
+
+    fun sayHello(): String? {
+        val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
+        return when {
+            hour < 6 -> androidContext.getString(R.string.good_midnight) + ", "
+            hour < 9 -> androidContext.getString(R.string.good_morning) + ", "
+            hour < 12 -> androidContext.getString(R.string.good_beforenoon) + ", "
+            hour < 14 -> androidContext.getString(R.string.good_noon) + ", "
+            hour < 17 -> androidContext.getString(R.string.good_afternoon) + ", "
+            hour < 19 -> androidContext.getString(R.string.good_evening) + ", "
+            hour < 22 -> androidContext.getString(R.string.good_night) + ", "
+            hour < 24 -> androidContext.getString(R.string.good_dreams) + ", "
+            else -> null
+        }
+    }
 }
