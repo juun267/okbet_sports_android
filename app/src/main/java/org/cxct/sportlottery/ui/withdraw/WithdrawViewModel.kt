@@ -17,12 +17,13 @@ import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.MoneyRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
-class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository) : BaseViewModel() {
+class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository, private val userInfoRepository: UserInfoRepository) : BaseViewModel() {
 
     val userInfo = moneyRepository.userInfo.asLiveData()
 

@@ -47,7 +47,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
-        viewModel { WithdrawViewModel(get(), get()) }
+        viewModel { WithdrawViewModel(get(), get(), get()) }
         viewModel { ProfileModel(get()) }
         viewModel { NicknameModel(get()) }
         viewModel { SettingPasswordViewModel(get(), get()) }
