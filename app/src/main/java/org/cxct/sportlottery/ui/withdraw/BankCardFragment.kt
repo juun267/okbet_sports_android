@@ -68,6 +68,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupInitData(view: View) {
+        viewModel.clearBankCardFragmentStatus()
         viewModel.getUserInfoData()
 
         val initData = args.editBankCard
