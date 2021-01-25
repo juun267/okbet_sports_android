@@ -323,279 +323,111 @@
             android:text="@string/money_recharge_hint2"
             android:textSize="@dimen/textSize12sp" />
 
-        <androidx.cardview.widget.CardView
+        <!-- 提款金額 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            app:cvHint="@string/edt_hint_deposit_money"
+            app:cvInputType="number"
+            app:cvTitle="@string/title_deposit_money" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="40dp"
-                android:orientation="horizontal">
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            app:cardBackgroundColor="@android:color/white"-->
+<!--            app:cardCornerRadius="5dp"-->
+<!--            app:cardElevation="0dp">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:ems="4"
-                    android:text="@string/title_deposit_money"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp" />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:minHeight="40dp"-->
+<!--                android:orientation="horizontal">-->
 
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray13" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="12dp"-->
+<!--                    android:ems="4"-->
+<!--                    android:text="@string/title_deposit_money"-->
+<!--                    android:textColor="@color/gray4"-->
+<!--                    android:textSize="@dimen/textSize14sp" />-->
 
-
-                <EditText
-                    android:id="@+id/et_money"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:hint="@string/edt_hint_deposit_money"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textColorHint="@color/gray12"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <ImageView
-                    android:id="@+id/iv_money_delete"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_close_gray_blue" />
-
-            </LinearLayout>
+<!--                <View-->
+<!--                    android:layout_width="0.5dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginTop="12dp"-->
+<!--                    android:layout_marginBottom="12dp"-->
+<!--                    android:textColor="@color/gray13" />-->
 
 
-        </androidx.cardview.widget.CardView>
+<!--                <EditText-->
+<!--                    android:id="@+id/et_money"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="9dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@null"-->
+<!--                    android:gravity="start|center_vertical"-->
+<!--                    android:hint="@string/edt_hint_deposit_money"-->
+<!--                    android:inputType="numberDecimal"-->
+<!--                    android:singleLine="true"-->
+<!--                    android:textColor="@color/colorDarkBlack"-->
+<!--                    android:textColorHint="@color/gray12"-->
+<!--                    android:textSize="@dimen/textSize14sp" />-->
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_wx_id"
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_money_delete"-->
+<!--                    android:layout_width="15dp"-->
+<!--                    android:layout_height="15dp"-->
+<!--                    android:layout_marginEnd="16dp"-->
+<!--                    android:contentDescription="@null"-->
+<!--                    android:scaleType="centerInside"-->
+<!--                    android:src="@drawable/ic_close_gray_blue" />-->
+
+<!--            </LinearLayout>-->
+
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+        <!-- 微信 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_wx_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            app:cvHint="@string/edt_hint_wx_id"
+            app:cvInputType="text"
+            app:cvTitle="@string/title_wx_id" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="40dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:ems="4"
-                    android:text="@string/title_wx_id"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray13" />
-
-
-                <EditText
-                    android:id="@+id/et_wx_id"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:hint="@string/edt_hint_wx_id"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textColorHint="@color/gray12"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_name"
+        <!-- 認證姓名 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            app:cvHint="@string/edt_hint_real_name"
+            app:cvInputType="text"
+            app:cvTitle="@string/title_real_name" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="40dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:ems="4"
-                    android:text="@string/title_real_name"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray13" />
-
-
-                <EditText
-                    android:id="@+id/et_name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:hint="@string/edt_hint_real_name"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textColorHint="@color/gray12"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_bank_account"
+        <!-- 銀行卡號 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_bank_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            app:cvHint="@string/edt_hint_bank_account"
+            app:cvInputType="number"
+            app:cvTitle="@string/title_bank_account" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="40dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:ems="4"
-                    android:text="@string/title_bank_account"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray13" />
-
-
-                <EditText
-                    android:id="@+id/et_bank_account"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:hint="@string/edt_hint_bank_account"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textColorHint="@color/gray12"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_nickname"
+        <!-- 暱稱 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="40dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:ems="4"
-                    android:text="@string/title_nick_name"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray13" />
-
-
-                <EditText
-                    android:id="@+id/et_nickname"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:hint="@string/edt_hint_real_name"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textColorHint="@color/gray12"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
+            app:cvHint="@string/edt_hint_real_name"
+            app:cvInputType="text"
+            app:cvTitle="@string/title_nick_name" />
 
 
         <androidx.cardview.widget.CardView
@@ -608,9 +440,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:gravity="center"
-                android:minHeight="40dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -619,15 +450,21 @@
                     android:layout_marginStart="12dp"
                     android:ems="4"
                     android:text="@string/title_recharge_time"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
                     android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp" />
+                    android:textSize="@dimen/textSize13sp"
+                    app:autoSizeMaxTextSize="13dp"
+                    app:autoSizeMinTextSize="6dp"
+                    app:autoSizeTextType="uniform"/>
 
                 <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray13" />
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/bright_gray" />
 
 
                 <TextView
@@ -667,9 +504,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:gravity="center"
-                android:minHeight="40dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -679,15 +515,20 @@
                     android:ems="4"
                     android:text="@string/title_current_money"
                     android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp" />
+                    android:textSize="@dimen/textSize13sp"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    app:autoSizeMaxTextSize="13dp"
+                    app:autoSizeMinTextSize="6dp"
+                    app:autoSizeTextType="uniform"/>
 
                 <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="@color/gray13" />
-
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/bright_gray" />
 
                 <TextView
                     android:id="@+id/txv_wallet_money"

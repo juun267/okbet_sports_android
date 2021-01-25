@@ -182,13 +182,14 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
 
         mCurrentFragment = changeToFragment
-//        ft.addToBackStack(null)
+        ft.addToBackStack(null)
         ft.commitAllowingStateLoss()
     }
 
     private fun initRecyclerView() {
         bankTypeAdapter = MoneyBankTypeAdapter(MoneyBankTypeAdapter.ItemClickListener {
             switchFragment(getPayFragment(it), it.rechType)
+            viewModel.clearnTransferStatus()
         })
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)
         rv_pay_type.adapter = bankTypeAdapter

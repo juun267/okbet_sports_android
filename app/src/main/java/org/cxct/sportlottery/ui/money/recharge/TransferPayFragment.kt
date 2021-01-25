@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
@@ -15,10 +16,10 @@ import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
-import org.cxct.sportlottery.util.MoneyManager.getBankIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
+
 
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -47,15 +48,21 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         initPayAccountSpinner()
         initButton()
-//        initTimePicker()
+        initObserve()
+        initView()
+
     }
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            var moneyAddRequest: MoneyAddRequest = MoneyAddRequest(
+            val moneyAddRequest = MoneyAddRequest(
                 rechCfgId = mSelectRechCfgs?.id ?: 0,
                 bankCode = "",
-                depositMoney = et_money.text.toString().toInt(),
+                depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
+                    et_recharge_amount.getText().toInt()
+                } else {
+                    0
+                },
                 payer = et_bank_account.text.toString(),
                 payerName = et_name.text.toString(),
                 payerBankName = "aaa",
@@ -66,10 +73,39 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
     }
 
+    private fun initView(){
+        setupTextChangeEvent()
+    }
+
+    private fun initObserve() {
+
+        //充值金額訊息
+        viewModel.rechargeAmountMsg.observe(viewLifecycleOwner, {
+            et_recharge_amount.setError(it)
+        })
+        //微信
+        viewModel.wxErrorMsg.observe(viewLifecycleOwner, {
+            et_wx_id.setError(it)
+        })
+        //認證姓名
+        viewModel.nameErrorMsg.observe(viewLifecycleOwner, {
+            et_name.setError(it)
+        })
+        //銀行卡號
+        viewModel.bankIDErrorMsg.observe(viewLifecycleOwner, {
+            et_bank_account.setError(it)
+        })
+        //暱稱
+        viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
+            et_nickname.setError(it)
+        })
+
+    }
+
     //入款帳號選單
     private fun initPayAccountSpinner() {
         //支付類型的入款帳號清單
-        var rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
+        val rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType
         } ?: mutableListOf()
 
@@ -89,7 +125,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             val title = mMoneyPayWay?.title
 
             if (rechCfgsList.size > 1)
-                rechCfgsList.forEach { it ->
+                rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
                             title + count++,
@@ -98,7 +134,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     spannerList.add(selectBank)
                 }
             else
-                rechCfgsList.forEach { it ->
+                rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
                             title + "",
@@ -152,7 +188,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         if (mMoneyPayWay?.rechType == "bankTransfer") {
             ll_qr.visibility = View.GONE
             ll_address.visibility = View.VISIBLE
-            cv_wx_id.visibility = View.GONE
+            et_wx_id.visibility = View.GONE
 
         } else {
             ll_qr.visibility = View.VISIBLE
@@ -160,98 +196,50 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         }
         when (mMoneyPayWay?.rechType) {
-            MoneyType.BANK.code, MoneyType.CTF.code -> {
+            MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 ll_qr.visibility = View.GONE
                 ll_address.visibility = View.VISIBLE
-                cv_wx_id.visibility = View.GONE
-                cv_nickname.visibility = View.GONE
-                cv_bank_account.visibility = View.VISIBLE
-                cv_name.visibility = View.VISIBLE
+                et_wx_id.visibility = View.GONE
+                et_nickname.visibility = View.GONE
+                et_bank_account.visibility = View.VISIBLE
+                et_name.visibility = View.VISIBLE
             }
-            MoneyType.WX.code -> {
+            MoneyType.WX_TYPE.code -> {
                 ll_qr.visibility = View.VISIBLE
                 ll_address.visibility = View.GONE
-                cv_wx_id.visibility = View.VISIBLE
-                cv_nickname.visibility = View.GONE
-                cv_bank_account.visibility = View.GONE
-                cv_name.visibility = View.GONE
-
+                et_wx_id.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
+                et_bank_account.visibility = View.GONE
+                et_name.visibility = View.GONE
             }
-            MoneyType.ALI.code -> {
+            MoneyType.ALI_TYPE.code -> {
                 ll_qr.visibility = View.VISIBLE
                 ll_address.visibility = View.GONE
-                cv_wx_id.visibility = View.GONE
-                cv_nickname.visibility = View.VISIBLE
-                cv_bank_account.visibility = View.GONE
-                cv_name.visibility = View.VISIBLE
+                et_wx_id.visibility = View.GONE
+                et_nickname.visibility = View.VISIBLE
+                et_bank_account.visibility = View.GONE
+                et_name.visibility = View.VISIBLE
             }
         }
 
         //存款時間
         et_wallet_money.text = TimeUtil.stampToDate(Date().time)
 
-//        //存款金額提示
-//        val maxMoney = ArithUtil.toMoneyFormat(MoneyManager.getMaxMoney(selectRechCfgs))
-//        val minMoney = ArithUtil.toMoneyFormat(MoneyManager.getMinMoney(selectRechCfgs))
-//        tv_pay_amount_desc.text = String.format(getString(R.string.deposit_amount_range), minMoney, maxMoney)
-//
-//        //存款金額
-//        val editTextTools = EditTextTools(edit_pay_amount, 15, 0) //輸入到小數點下第二位
-//        editTextTools.setEnableComma(true) //開啟千分位符號顯示功能
-//        //解決hint太長凸出輸入框問題
-//        var hintText = String.format(getString(R.string.limit_lower_100_upper_5000), minMoney, maxMoney)
-//        val span = SpannableString(hintText)
-//        span.setSpan(RelativeSizeSpan(0.9f), 0, hintText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//        edit_pay_amount.hint = span
-//
-//        //帳號信息
-//        if (!selectRechCfgs?.pageDesc.isNullOrEmpty()) {
-//            edit_account_info.hint = selectRechCfgs?.pageDesc
-//        } else {
-//            if (selectRechCfgs?.rechType == "alipay" || selectRechCfgs?.rechType == "cft") {
-//                edit_account_info.hint = getString(R.string.please_enter_account_nickname)
-//            } else {
-//                edit_account_info.hint = getString(R.string.please_enter_account_name)
-//            }
-//        }
-//
-//        //認證姓名
-//        if (selectRechCfgs?.rechType == "cft") {
-//            block_certified_name.visibility = View.VISIBLE
-//            line_certified_name.visibility = View.VISIBLE
-//        } else {
-//            block_certified_name.visibility = View.GONE
-//            line_certified_name.visibility = View.GONE
-//        }
-//        when (selectRechCfgs?.rechType) {
-//            "alipay" -> edit_certified_name.hint = getString(R.string.fill_in_alipay_real_name)
-//            "cft" -> edit_certified_name.hint = getString(R.string.fill_in_CFT_real_name)
-//            else -> edit_certified_name.hint = getString(R.string.please_enter_account_name)
-//        }
-//
-
-//
-//        //手續費率/贈送費率 <0是手續費 >0是贈送費率
-//        when {
-//            selectRechCfgs?.rebateFee ?: 0.0 > 0.0 -> {
-//                line_rate.visibility = View.VISIBLE
-//                block_rate.visibility = View.VISIBLE
-//                tv_rate_title.text = getString(R.string.gift_money)
-//                tv_rate.text = "0"
-//            }
-//            selectRechCfgs?.rebateFee ?: 0.0 < 0.0 -> {
-//                line_rate.visibility = View.VISIBLE
-//                block_rate.visibility = View.VISIBLE
-//                tv_rate_title.text = getString(R.string.fees)
-//                tv_rate.text = "0"
-//            }
-//            else -> {
-//                line_rate.visibility = View.GONE
-//                block_rate.visibility = View.GONE
-//            }
-//        }
-//        setFeeRateText(edit_pay_amount.text)
     }
 
+    private fun setupTextChangeEvent() {
+        viewModel.apply {
+            //充值金額
+            et_recharge_amount.afterTextChanged { checkRechargeAmount(it) }
+            //微信
+            et_wx_id.afterTextChanged { checkWX(it) }
+            //認證姓名
+            et_name.afterTextChanged { checkUserName(it) }
+            //認證銀行卡號
+            et_bank_account.afterTextChanged { checkBankID(it) }
+            //暱稱
+            et_nickname.afterTextChanged { checkNickName(it) }
+        }
+    }
 
 }
