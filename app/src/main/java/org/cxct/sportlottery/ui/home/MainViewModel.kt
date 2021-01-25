@@ -665,7 +665,7 @@ class MainViewModel(
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfoList(oddsList)
+                betInfoRepository.getBetInfo(oddsList)
             }
             result?.success?.let {
                 if (it) {
@@ -695,7 +695,13 @@ class MainViewModel(
                 list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
             }
         }
-        getBetInfoList(list)
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                betInfoRepository.getBetInfoList(list)
+            }
+            _betInfoResult.postValue(result)
+
+        }
     }
 
 
