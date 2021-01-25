@@ -47,6 +47,12 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updateIconUrl(userId: Long, iconUrl: String) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateIconUrl(userId, iconUrl)
+        }
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
