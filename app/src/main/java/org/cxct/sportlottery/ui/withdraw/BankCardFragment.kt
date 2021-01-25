@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
-import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MoneyManager
@@ -35,7 +34,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
-    private var mUserId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,12 +68,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupInitData(view: View) {
+        viewModel.getUserInfoData()
+
         val initData = args.editBankCard
         initData?.let {
             view.apply {
                 btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
-                et_create_name.setText(sLoginData?.fullName)
                 et_network_point.setText(initData.subAddress)
             }
             return@setupInitData
@@ -215,7 +214,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun setupObserve() {
         viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
-            mUserId = it?.userId
+            it?.fullName?.let { fullName -> if (fullName.isNotEmpty()) et_create_name.setText(fullName) }
         })
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
@@ -301,7 +300,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
     private var selectedPosition = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var holder: ListViewHolder
+        val holder: ListViewHolder
         // if remove "if (convertView == null)" will get a warning about reuse view.
         val data = dataList[position]
         if (convertView == null) {

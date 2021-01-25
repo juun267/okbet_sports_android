@@ -25,7 +25,7 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository, private val userInfoRepository: UserInfoRepository) : BaseViewModel() {
 
-    val userInfo = moneyRepository.userInfo.asLiveData()
+    val userInfo = userInfoRepository.userInfo.asLiveData()
 
     val needToUpdateWithdrawPassword: LiveData<Boolean>
         get() = _needToUpdateWithdrawPassword
@@ -205,14 +205,30 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         }
     }
 
+    fun getUserInfoData() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                userInfoRepository.getUserInfo()
+            }.let {
+                checkPermissions()
+            }
+
+        }
+    }
 
     fun checkPermissions() {
         //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
-        _needToUpdateWithdrawPassword.value = if (userInfo.value?.updatePayPw != 0) {
-            true
-        } else {
-            getBankCardList()
-            false
+        _needToUpdateWithdrawPassword.value = when (userInfo.value?.updatePayPw) {
+            1 -> {
+                true
+            }
+            0 -> {
+                getBankCardList()
+                false
+            }
+            else -> {
+                null
+            }
         }
     }
 

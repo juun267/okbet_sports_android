@@ -54,7 +54,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.checkPermissions()
+        viewModel.getUserInfoData()
         initView()
         initEvent()
         initObserve(view)
@@ -133,7 +133,8 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         //需要更新提款密碼
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner, Observer {
-            if (it) {
+
+            if (it == true) {
                 showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
                     val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
                     startForResult?.launch(intent)

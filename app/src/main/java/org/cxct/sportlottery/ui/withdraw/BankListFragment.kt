@@ -41,7 +41,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getBankCardList()
+        viewModel.getUserInfoData()
         setupObserve()
     }
 

@@ -12,7 +12,6 @@ import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.repository.sLoginData
-import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.withdraw.WithdrawFragment.Companion.PWD_PAGE
@@ -162,7 +161,6 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
         hideLoading()
         if (updateFundPwdResult?.success == true) {
             ToastUtil.showToast(this, getString(R.string.update_withdrawal_pwd))
-            sUserInfo.updatePayPw = 0 //TODO Dean : 等待UserInfoData data base 建置好後看如何更新資料
             setResult(Activity.RESULT_OK)
             finish()
         } else {

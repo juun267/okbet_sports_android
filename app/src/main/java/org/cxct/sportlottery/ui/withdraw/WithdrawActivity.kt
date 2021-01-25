@@ -20,9 +20,8 @@ class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewMode
     override fun setContentView(): Int {
         viewModel.apply {
             checkBankCardOrNot.observe(this@WithdrawActivity, Observer {
-                if (!it && (mNavController.currentDestination?.id != R.id.bankListFragment)) {
+                if (!it && (mNavController.currentDestination?.id != R.id.bankCardFragment && mNavController.currentDestination?.id != R.id.bankListFragment)) {
                     showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_bank_card)) {
-                        Log.e("Dean", "setting")
                         val bundle = Bundle()
                         bundle.putSerializable(navigateKey, PageFrom.WITHDRAW)
                         mNavController.navigate(R.id.bankListFragment, bundle)
