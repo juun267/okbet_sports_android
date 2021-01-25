@@ -28,6 +28,8 @@ const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 
+const val KEY_USER_ID = "user_id"
+
 class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
@@ -39,6 +41,24 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private val _isLogin = MutableLiveData<Boolean>().apply {
         value = sharedPref.getBoolean(KEY_IS_LOGIN, false) && isCheckToken
     }
+
+    var token
+        get() = sharedPref.getString(KEY_TOKEN, "")
+        set(value) {
+            with(sharedPref.edit()) {
+                putString(KEY_TOKEN, value)
+                apply()
+            }
+        }
+
+    var userId
+        get() = sharedPref.getLong(KEY_USER_ID, -1)
+        set(value) {
+            with(sharedPref.edit()) {
+                putLong(KEY_USER_ID, value)
+                apply()
+            }
+        }
 
     var account
         get() = sharedPref.getString(KEY_ACCOUNT, "")
@@ -144,6 +164,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         with(sharedPref.edit()) {
             putBoolean(KEY_IS_LOGIN, loginData != null)
             putString(KEY_TOKEN, loginData?.token)
+            putLong(KEY_USER_ID, loginData?.userId ?: -1)
             apply()
         }
     }

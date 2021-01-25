@@ -11,11 +11,13 @@ import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
+import org.cxct.sportlottery.repository.SettingPasswordRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class SettingPasswordViewModel(
-    private val androidContext: Context
+    private val androidContext: Context,
+    private val settingPasswordRepository: SettingPasswordRepository
 ) : BaseViewModel() {
 
     private val _passwordFormState = MutableLiveData<PasswordFormState>()
@@ -57,7 +59,9 @@ class SettingPasswordViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.userService.updateFundPwd(updateFundPwdRequest)
             }
-
+            if (result?.success == true) {
+                settingPasswordRepository.updatePayPwFlag(updateFundPwdRequest.userId)
+            }
             _updateFundPwdResult.postValue(result)
         }
     }
