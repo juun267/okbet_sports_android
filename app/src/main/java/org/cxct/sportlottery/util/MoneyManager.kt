@@ -43,10 +43,8 @@ object MoneyManager {
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
-            mMoneyPayWayList = MoshiUtil.fromJson(
-                getRechargeConfig(mContext),
-                Types.newParameterizedType(List::class.java, MoneyPayWayData::class.java)
-            )
+            //TODO Bill 降低耦合度
+            mMoneyPayWayList = MoshiUtil.fromJson<List<MoneyPayWayData>>(getRechargeConfig(mContext), Types.newParameterizedType(MutableList::class.java, MoneyPayWayData::class.java))
         }
         return mMoneyPayWayList
     }
@@ -69,6 +67,16 @@ object MoneyManager {
             MoneyType.WX.code -> R.drawable.ic_wechat_pay
             MoneyType.CTF.code -> R.drawable.ic_tenpay
             MoneyType.ONLINE.code -> R.drawable.ic_online_pay
+            else -> R.drawable.ic_bank_atm
+        }
+    }
+
+    fun getBankAccountIcon(rechType:String):Int{
+        return when (rechType) {
+            MoneyType.ALI_TYPE.code -> R.drawable.ic_alipay_type
+            MoneyType.WX_TYPE.code -> R.drawable.ic_wechat_pay_type
+            MoneyType.CTF_TYPE.code -> R.drawable.ic_tenpay_type
+            MoneyType.ONLINE_TYPE.code -> R.drawable.ic_online_pay_type
             else -> R.drawable.ic_bank_atm
         }
     }

@@ -1,12 +1,20 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ComplexColorCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,25 +70,20 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
+        dataBinding.apply {
+            view = this@OddsDetailFragment
+            oddsDetailViewModel = this@OddsDetailFragment.viewModel
+            lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
+        }
         return dataBinding.root
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dataBinding()
         initUI()
         observeData()
         getData()
-    }
-
-
-    private fun dataBinding() {
-        dataBinding.apply {
-            view = this@OddsDetailFragment
-            oddsDetailViewModel= this@OddsDetailFragment.viewModel
-            lifecycleOwner = this@OddsDetailFragment
-        }
     }
 
 
@@ -130,8 +133,9 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.playCateListResult.observe(requireActivity(), Observer { result ->
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
             when (result) {
                 is PlayCateListResult -> {
                     dataBinding.tabCat.removeAllTabs()
@@ -142,24 +146,41 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
         })
 
-        viewModel.oddsDetailResult.observe(requireActivity(), Observer {
+        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, Observer {
+
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
             }
+
+            it?.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                it.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                    val strVerse = getString(R.string.verse_)
+                    val strMatch = "$home${strVerse}$away"
+                    val color = ContextCompat.getColor(requireContext(), R.color.text_focus)
+                    val startPosition = strMatch.indexOf(strVerse)
+                    val endPosition = startPosition + strVerse.length
+                    val style = SpannableStringBuilder(strMatch)
+                    style.setSpan(ForegroundColorSpan(color), startPosition, endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    dataBinding.tvMatch.text = style
+
+                }
+            }
+
+
         })
 
-        viewModel.oddsDetailList.observe(requireActivity(), Observer {
+        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.oddsDetailListData?.clear()
             oddsDetailListAdapter?.oddsDetailListData?.addAll(it)
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoResult.observe(requireActivity(), Observer {
-            oddsDetailListAdapter?.notifyDataSetChanged()
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.betInfoList.observe(requireActivity(), Observer {
-            oddsDetailListAdapter?.setBetInfoList(it)
+        viewModel.isParlayPage.observe(this.viewLifecycleOwner, Observer {
+            oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
     }

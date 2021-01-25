@@ -3,6 +3,7 @@ package org.cxct.sportlottery.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import org.cxct.sportlottery.network.common.UserRebate
 
 @Entity(tableName = "user_info_table")
 data class UserInfo(
@@ -53,5 +54,8 @@ data class UserInfo(
     val updatePayPw: Int? = null,
 
     @ColumnInfo(name = "setted")
-    val setted: Int? = null
+    val setted: Int? = null,
+
+    @ColumnInfo(name = "user_rebate_list")
+    val userRebateList: List<UserRebate>? = null
 )

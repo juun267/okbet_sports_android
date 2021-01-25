@@ -41,17 +41,10 @@ class BetInfoListMatchOddAdapter(private val onItemClickListener: OnItemClickLis
 
 
     fun modify(list: List<MatchOdd>, position: Int) {
-        if (matchOddList.size == 0) {
+            matchOddList.clear()
             matchOddList.addAll(list)
             notifyDataSetChanged()
-        } else if (list.size < matchOddList.size) {
-            with(matchOddList) {
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(0, matchOddList.size)
-                clear()
-                addAll(list)
-            }
-        }
+
     }
 
 

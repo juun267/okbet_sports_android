@@ -10,7 +10,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    companion object{
+    companion object {
         const val PLAYING = 0
         const val LOCK = 1
     }
@@ -19,24 +19,23 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
 
-    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>) {
+    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?) {
 
         tvName.text = odd.name
         tvOdds.text = odd.odds.toString()
 
         when (odd.status) {
             PLAYING -> {
-
                 val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                 odd.isSelect = select
 
                 vCover.visibility = View.GONE
                 tvOdds.isSelected = odd.isSelect
-
                 tvOdds.setOnClickListener {
-                    tvOdds.isSelected = !tvOdds.isSelected
-                    odd.isSelect = tvOdds.isSelected
-                    if (odd.isSelect) {
+                    if (!odd.isSelect) {
+                        if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
+                            return@setOnClickListener
+                        }
                         onOddClickListener.getBetInfoList(odd)
                     } else {
                         onOddClickListener.removeBetInfoItem(odd)

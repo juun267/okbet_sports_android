@@ -6,18 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.content_bet_info_item_action.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
-import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
     BetInfoListParlayAdapter.OnItemClickListener {
@@ -39,7 +38,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         val binding: DialogBetInfoParlayListBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_parlay_list, container, false)
         binding.apply {
             mainViewModel = this@BetInfoListParlayDialog.viewModel
-            lifecycleOwner = this@BetInfoListParlayDialog
+            lifecycleOwner = this@BetInfoListParlayDialog.viewLifecycleOwner
         }
         return binding.root
     }
@@ -47,14 +46,14 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        getData()
         observeData()
+        getData()
     }
 
     private fun initUI() {
-        iv_close.setOnClickListener {
-            dismiss()
-        }
+        iv_close.setOnClickListener { dismiss() }
+        tv_add_more.setOnClickListener { dismiss() }
+        tv_bet.setOnClickListener {  }
 
         matchOddAdapter = BetInfoListMatchOddAdapter(this@BetInfoListParlayDialog)
         parlayAdapter = BetInfoListParlayAdapter(this@BetInfoListParlayDialog)
@@ -89,22 +88,31 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
 
 
     private fun observeData() {
-        viewModel.betInfoResult.observe(requireActivity(), Observer { result ->
-            result.betInfoData?.matchOdds?.isNotEmpty().let {
-                result.betInfoData?.matchOdds?.let { list ->
-                    matchOddAdapter.modify(list, deletePosition)
-                }
-                result.betInfoData?.parlayOdds?.let { list ->
-                    parlayAdapter.modify(list, deletePosition)
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
+
+            result?.success?.let {
+                if(it){
+                    result.betInfoData?.matchOdds?.isNotEmpty().let {
+                        result.betInfoData?.matchOdds?.let { list ->
+                            matchOddAdapter.modify(list, deletePosition)
+                        }
+                        result.betInfoData?.parlayOdds?.let { list ->
+                            parlayAdapter.modify(list, deletePosition)
+                        }
+                    }
+                }else{
+                    //確認toast樣式後在調整
+                    ToastUtil.showToast(context, result.msg)
                 }
             }
+
+
         })
     }
 
 
     override fun onDeleteClick(position: Int) {
-        viewModel.removeBetInfoItem(matchOddAdapter.matchOddList[position].oddsId)
-        deletePosition = position
+        viewModel.removeBetInfoItemAndRefresh(matchOddAdapter.matchOddList[position].oddsId)
     }
 
 
