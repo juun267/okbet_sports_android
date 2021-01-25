@@ -7,4 +7,12 @@
         <item>@string/record_conversion</item>
         <item>@string/record_reward</item>
     </string-array>
+
+    <integer-array name="finance_img_array">
+        <item>@drawable/ic_icondrawrechargerecord</item>
+        <item>@drawable/ic_icondrawwithdrawrecord</item>
+        <item>@drawable/ic_icondrawredenvelope</item>
+        <item>@drawable/ic_icondrawtransfer</item>
+        <item>@drawable/ic_icondrawbonusrecord</item>
+    </integer-array>
 </resources>
