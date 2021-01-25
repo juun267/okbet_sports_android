@@ -64,6 +64,10 @@ class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
         btn_recharge.setOnClickListener {
             startActivity(Intent(this, MoneyRechargeActivity::class.java))
         }
+
+        btn_finance.setOnClickListener {
+            startActivity(Intent(this, FinanceActivity::class.java))
+        }
     }
 
     private fun setupWithdrawButton() {
