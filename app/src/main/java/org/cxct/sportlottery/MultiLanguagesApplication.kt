@@ -50,7 +50,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { WithdrawViewModel(get(), get()) }
         viewModel { ProfileModel(get()) }
         viewModel { NicknameModel(get()) }
-        viewModel { SettingPasswordViewModel(get()) }
+        viewModel { SettingPasswordViewModel(get(), get()) }
     }
 
     private val repoModule = module {
@@ -59,8 +59,9 @@ class MultiLanguagesApplication : Application() {
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
-        single { MoneyRepository() }
+        single { MoneyRepository(get()) }
         single { BetInfoRepository() }
+        single { SettingPasswordRepository(get()) }
     }
 
     private val dbModule = module {
