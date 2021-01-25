@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_profile_center.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 
 class ProfileCenterActivity : AppCompatActivity() {
@@ -14,6 +15,9 @@ class ProfileCenterActivity : AppCompatActivity() {
 
         btn_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
+        }
+        btn_recharge.setOnClickListener {
+            startActivity(Intent(this, MoneyRechargeActivity::class.java))
         }
     }
 }
