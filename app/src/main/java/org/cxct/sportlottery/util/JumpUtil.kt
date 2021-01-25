@@ -7,6 +7,7 @@ import android.net.Uri
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.ServiceSelectDialog
+import org.cxct.sportlottery.ui.common.WebActivity
 
 object JumpUtil {
 
@@ -15,11 +16,15 @@ object JumpUtil {
         val zxkfUrl = sConfigData?.customerServiceUrl ?: ""
         val zxkfUrl2 = sConfigData?.customerServiceUrl2 ?: ""
         when {
-            zxkfUrl.isNotEmpty() && zxkfUrl2.isEmpty() -> toOutWeb(context, zxkfUrl)
-            zxkfUrl.isEmpty() && zxkfUrl2.isNotEmpty() -> toOutWeb(context, zxkfUrl2)
+            zxkfUrl.isNotEmpty() && zxkfUrl2.isEmpty() -> toExternalWeb(context, zxkfUrl)
+            zxkfUrl.isEmpty() && zxkfUrl2.isNotEmpty() -> toExternalWeb(context, zxkfUrl2)
             zxkfUrl.isNotEmpty() && zxkfUrl2.isNotEmpty() -> ServiceSelectDialog(context).show()
             else -> ToastUtil.showToastInCenter(context, context.getString(R.string.error_url_fail))
         }
+    }
+
+    fun toInternalWeb(context: Context, href: String?, title: String?) {
+        context.startActivity(Intent(context, WebActivity::class.java).putExtra(WebActivity.KEY_URL, href).putExtra(WebActivity.KEY_TITLE, title))
     }
 
     /**
@@ -28,7 +33,7 @@ object JumpUtil {
      * @param context:
      * @param dnbUrl:  要跳轉的 url
      */
-    fun toOutWeb(context: Context, dnbUrl: String?) {
+    fun toExternalWeb(context: Context, dnbUrl: String?) {
         try {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(dnbUrl))
             context.startActivity(browserIntent)
