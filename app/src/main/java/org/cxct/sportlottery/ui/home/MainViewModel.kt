@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -32,6 +33,15 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.notice.NoticeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
+import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -42,6 +52,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.TextUtil
@@ -64,6 +75,9 @@ class MainViewModel(
             }
         }
     }
+
+    val token = loginRepository.token
+    val userId = loginRepository.userId
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -152,7 +166,8 @@ class MainViewModel(
 
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
+        get() = BroadcastRepository().instance().userMoney
+//        get() = _userMoney
 
     private val _oddsDetailMoreList = MutableLiveData<List<*>>()
     val oddsDetailMoreList: LiveData<List<*>?>
@@ -177,6 +192,36 @@ class MainViewModel(
     private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
+
+
+    //BroadCastReceiver
+
+    val globalStop: LiveData<GlobalStopEvent?>
+        get() = BroadcastRepository().instance().globalStop
+
+    val matchClock: LiveData<MatchClockEvent?>
+        get() = BroadcastRepository().instance().matchClock
+
+    val matchStatusChange: LiveData<MatchStatusChangeEvent?>
+        get() = BroadcastRepository().instance().matchStatusChange
+
+    val notice: LiveData<NoticeEvent?>
+        get() = BroadcastRepository().instance().notice
+
+    val oddsChange: LiveData<OddsChangeEvent?>
+        get() = BroadcastRepository().instance().oddsChange
+
+    val orderSettlement: LiveData<OrderSettlementEvent?>
+        get() = BroadcastRepository().instance().orderSettlement
+
+    val pingPong: LiveData<PingPongEvent?>
+        get() = BroadcastRepository().instance().pingPong
+
+    val producerUp: LiveData<ProducerUpEvent?>
+        get() = BroadcastRepository().instance().producerUp
+
+    val userNotice: LiveData<UserNoticeEvent?>
+        get() = BroadcastRepository().instance().userNotice
 
     private val _isParlayPage = MutableLiveData<Boolean>()
     val isParlayPage: LiveData<Boolean>
@@ -284,12 +329,14 @@ class MainViewModel(
     }
 
     fun getMoney() {
+        /*
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
         }
+        */
     }
 
     fun getGameHallList(matchType: MatchType, sportType: SportType?) {
@@ -759,6 +806,5 @@ class MainViewModel(
             _playCateListResult.postValue(result)
         }
     }
-
 
 }
