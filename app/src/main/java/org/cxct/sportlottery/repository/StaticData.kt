@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.repository
 
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.network.index.login.LoginData
 
@@ -12,7 +13,7 @@ enum class TestFlag(val index: Long) { NORMAL(0), GUEST(1), TEST(2) } //是否�
 
 const val LOGIN_SRC: Long = 2 //登录来源，WEB(0), MOBILE_BROWSER(1), ANDROID(2), IOS(3);
 
-const val PLATFORM_CODE = "def" //平台代碼
+const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
