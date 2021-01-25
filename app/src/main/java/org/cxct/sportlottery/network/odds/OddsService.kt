@@ -19,8 +19,6 @@ interface OddsService {
     ): Response<OddsListResult>
 
     @POST(MATCH_ODDS_DETAIL)
-    suspend fun getOddsDetail(
-        @Body oddsListRequest: OddsDetailRequest
-    ): Response<OddsDetailResult>
+    suspend fun getOddsDetail(@Body oddsListRequest: OddsDetailRequest): Response<OddsDetailResult>
 
 }

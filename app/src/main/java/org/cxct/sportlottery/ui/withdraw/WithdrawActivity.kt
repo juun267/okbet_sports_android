@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
@@ -19,8 +20,9 @@ class WithdrawActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewMode
     override fun setContentView(): Int {
         viewModel.apply {
             checkBankCardOrNot.observe(this@WithdrawActivity, Observer {
-                if (!it) {
-                    if (mNavController.currentDestination?.id != R.id.bankListFragment) {
+                if (!it && (mNavController.currentDestination?.id != R.id.bankListFragment)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_bank_card)) {
+                        Log.e("Dean", "setting")
                         val bundle = Bundle()
                         bundle.putSerializable(navigateKey, PageFrom.WITHDRAW)
                         mNavController.navigate(R.id.bankListFragment, bundle)

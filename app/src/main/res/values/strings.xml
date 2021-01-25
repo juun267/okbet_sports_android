@@ -22,6 +22,7 @@
 
     <!--common-->
     <string name="verse">vs</string>
+    <string name="error">错误</string>
     <string name="verse_">&#160;&#160;VS&#160;&#160;</string>
 
     <!-- Custom alert Dialog -->
@@ -355,6 +356,12 @@
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount_empty">提款金额为必填栏位</string>
     <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
+    <string name="please_setting_withdraw_password">请设置提款密码</string>
+    <string name="please_setting_bank_card">请设置银行卡</string>
+        <!--  prompt message  -->
+    <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
+    <string name="title_withdraw_success">提款成功</string>
+    <string name="title_withdraw_fail">提款失败</string>
     <!--  BankList  -->
     <string name="withdraw_setting">提款设置</string>
     <string name="name">姓名</string>
@@ -389,6 +396,13 @@
     <string name="error_network_point_empty">开户网点为必填栏位</string>
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
+    <string name="text_bank_card_delete_success">删除银行卡成功</string>
+    <string name="text_bank_card_add_success">新增银行卡成功</string>
+    <string name="text_bank_card_modify_success">编辑银行卡成功</string>
+    <string name="text_bank_card_delete_fail">删除银行卡失败</string>
+    <string name="text_bank_card_add_fail">新增银行卡失败</string>
+    <string name="text_bank_card_modify_fail">编辑银行卡失败</string>
+    <string name="unknown_bank_card">未知银行卡</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--bet info list-->

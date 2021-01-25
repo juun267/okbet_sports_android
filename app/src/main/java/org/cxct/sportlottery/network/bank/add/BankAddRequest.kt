@@ -8,5 +8,6 @@ data class BankAddRequest(
     val fullName: String,
     val id: String? = null,
     val uwType: String,
-    val userId: String? = null
+    val userId: String? = null,
+    val bankCode: String
 )
