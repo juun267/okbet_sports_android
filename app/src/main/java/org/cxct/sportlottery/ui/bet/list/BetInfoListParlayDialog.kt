@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
     BetInfoListParlayAdapter.OnItemClickListener {
@@ -44,8 +46,8 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        getData()
         observeData()
+        getData()
     }
 
     private fun initUI() {
@@ -87,21 +89,30 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
 
     private fun observeData() {
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
-            result.betInfoData?.matchOdds?.isNotEmpty().let {
-                result.betInfoData?.matchOdds?.let { list ->
-                    matchOddAdapter.modify(list, deletePosition)
-                }
-                result.betInfoData?.parlayOdds?.let { list ->
-                    parlayAdapter.modify(list, deletePosition)
+
+            result?.success?.let {
+                if(it){
+                    result.betInfoData?.matchOdds?.isNotEmpty().let {
+                        result.betInfoData?.matchOdds?.let { list ->
+                            matchOddAdapter.modify(list, deletePosition)
+                        }
+                        result.betInfoData?.parlayOdds?.let { list ->
+                            parlayAdapter.modify(list, deletePosition)
+                        }
+                    }
+                }else{
+                    //確認toast樣式後在調整
+                    ToastUtil.showToast(context, result.msg)
                 }
             }
+
+
         })
     }
 
 
     override fun onDeleteClick(position: Int) {
-        viewModel.removeBetInfoItem(matchOddAdapter.matchOddList[position].oddsId)
-        deletePosition = position
+        viewModel.removeBetInfoItemAndRefresh(matchOddAdapter.matchOddList[position].oddsId)
     }
 
 

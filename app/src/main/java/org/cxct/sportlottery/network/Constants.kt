@@ -52,7 +52,8 @@ object Constants {
 
     //money
     const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
-
+    const val USER_RECHARGE_ADD = "/api/front/userrech/add"
+    const val USER_RECHARGE_ONLINE_PAY = "/api/front/userrech/onlinepay"
 
     //user
     const val USER_INFO = "/api/front/user/info"
@@ -68,7 +69,7 @@ object Constants {
     //bank
     const val BANK_MY = "/api/front/user/bank/my"
     const val BANK_ADD = "/api/front/user/bank/add"
-    const val BANK_DELETE = "/api/front/user/bank/delete/{id}"
+    const val BANK_DELETE = "/api/front/user/bank/delete"
 
     //withdraw
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"

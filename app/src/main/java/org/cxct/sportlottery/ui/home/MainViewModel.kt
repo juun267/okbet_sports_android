@@ -2,12 +2,10 @@ package org.cxct.sportlottery.ui.home
 
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -329,14 +327,12 @@ class MainViewModel(
     }
 
     fun getMoney() {
-        /*
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
         }
-        */
     }
 
     fun getGameHallList(matchType: MatchType, sportType: SportType?) {
@@ -712,7 +708,7 @@ class MainViewModel(
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfoList(oddsList)
+                betInfoRepository.getBetInfo(oddsList)
             }
             result?.success?.let {
                 if (it) {
@@ -742,7 +738,13 @@ class MainViewModel(
                 list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
             }
         }
-        getBetInfoList(list)
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                betInfoRepository.getBetInfoList(list)
+            }
+            _betInfoResult.postValue(result)
+
+        }
     }
 
 

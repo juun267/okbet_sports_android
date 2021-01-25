@@ -24,5 +24,7 @@ data class BankCardList(
     @Json(name = "userId")
     val userId: Int,
     @Json(name = "uwType")
-    val uwType: String
+    val uwType: String,
+    @Json(name = "bankCode")
+    val bankCode: String,
 ) : Serializable

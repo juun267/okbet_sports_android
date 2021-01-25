@@ -64,14 +64,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val mServiceConnection = object : ServiceConnection {
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Timber.e(">>> $name onServiceConnected")
+            Timber.e(">>> onServiceConnected")
             val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
             mService = binder.service
             mIsBound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            Timber.e(">>> $name onServiceDisconnected")
+            Timber.e(">>> onServiceDisconnected")
             mIsBound = false
             //service 物件設為null
         }
@@ -125,7 +125,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
 
-//        doBindService()
+        if (!mIsBound) doBindService()
         rv_marquee.startAuto()
     }
 
@@ -145,9 +145,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onDestroy() {
         super.onDestroy()
 
-        if (mIsBound) {
-            doUnBindService()
-        }
+        if (mIsBound) doUnBindService()
     }
 
     private fun removeBroadcast() {
@@ -195,19 +193,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
 
     private fun doBindService() {
-        //TODO Cheryl 判斷if is login already
-//        if (!checkServiceRunning()) { //如果service斷掉則重啟
+        if (!checkServiceRunning()) { //如果service斷掉則重啟
             val serviceIntent = Intent(this, BackService::class.java)
             serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
             serviceIntent.putExtra(SERVICE_USER_ID, viewModel.userId)
             bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
             mIsBound = true
-//        }
-
-        initBroadcast()
+            initBroadcast()
+        }
     }
 
     private fun doUnBindService() {
+        Log.e(">>>", "unbind")
         unbindService(mServiceConnection)
         removeBroadcast()
 

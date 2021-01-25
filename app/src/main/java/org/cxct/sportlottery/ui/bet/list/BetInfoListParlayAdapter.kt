@@ -111,17 +111,9 @@ class BetInfoListParlayAdapter(private val onItemClickListener: OnItemClickListe
 
 
     fun modify(list: List<ParlayOdd>, position: Int) {
-        if (parlayOddList.size == 0) {
-            parlayOddList.addAll(list)
-            notifyDataSetChanged()
-        } else if (list.size < parlayOddList.size) {
-            with(parlayOddList) {
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(0, parlayOddList.size)
-                clear()
-                addAll(list)
-            }
-        }
+        parlayOddList.clear()
+        parlayOddList.addAll(list)
+        notifyDataSetChanged()
     }
 
 

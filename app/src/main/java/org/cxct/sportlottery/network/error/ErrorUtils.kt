@@ -32,8 +32,11 @@ import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
+import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ADD
+import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
+import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
@@ -52,6 +55,7 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyRechCfgResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
@@ -65,6 +69,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
+import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import retrofit2.Converter
 import retrofit2.Response
 import java.io.IOException
@@ -224,6 +229,18 @@ object ErrorUtils {
                     (url.contains(BANK_DELETE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BankDeleteResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(WITHDRAW_ADD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return WithdrawAddResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(USER_RECHARGE_ADD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MoneyAddResult(it.code, it.msg, it.success,null) as T
+                    }
+                    (url.contains(USER_RECHARGE_ONLINE_PAY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MoneyAddResult(it.code, it.msg, it.success,null) as T
                     }
                 }
             }

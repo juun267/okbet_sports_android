@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -22,10 +22,11 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.ToastUtil
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
-    companion object{
+    companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }
 
@@ -33,9 +34,14 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
 
-    private val startForResult by lazy { activity?.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
-        viewModel.checkPermissions()
-    } }
+    private var startForResult: ActivityResultLauncher<Intent>? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            viewModel.checkPermissions()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -54,7 +60,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initObserve(view)
 
         setupData()
-
 
 
     }
@@ -122,11 +127,17 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun initObserve(view: View) {
 
+        viewModel.userInfo.observe(viewLifecycleOwner, Observer {
+            viewModel.checkPermissions()
+        })
+
         //需要更新提款密碼
-        viewModel.needToUpdateWithdrawPassword.observe(this.viewLifecycleOwner, Observer {
+        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner, Observer {
             if (it) {
-                val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
-                startForResult?.launch(intent)
+                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                    val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
+                    startForResult?.launch(intent)
+                }
             }
         })
 
@@ -135,6 +146,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 val iniData = it.bankCardList[0]
                 withdrawBankCardData = iniData
                 tv_select_bank_card.text = getBankCardTailNo(iniData)
+                iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(iniData.bankName))
                 initSelectBankCardBottomSheet(view, list.toMutableList())
             }
         })
@@ -161,6 +173,15 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //提款密碼訊息
         viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer {
             et_withdrawal_password.setError(it ?: "")
+        })
+
+        //提款
+        viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
+            if (it.success) {
+                ToastUtil.showToastInCenter(context, getString(R.string.text_money_get_success))
+            } else {
+                showPromptDialog(getString(R.string.title_withdraw_fail), it.msg) {}
+            }
         })
     }
 

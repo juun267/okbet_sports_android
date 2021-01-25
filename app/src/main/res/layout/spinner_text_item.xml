@@ -1,0 +1,10 @@
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:singleLine="true"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:ellipsize="marquee"
+    android:textSize="@dimen/textSize16sp" />
+<!-- 20190826 NA-459 記錄問題: 若使用內建 android.R.layout.simple_spinner_dropdown_item
+可能會因為在不同機型 android 版本，導致套用的資源設定不同，產生不可預期的跑版錯誤，所以自訂一個比較保險-->
