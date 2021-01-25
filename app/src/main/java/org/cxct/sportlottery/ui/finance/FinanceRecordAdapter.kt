@@ -14,6 +14,8 @@ class FinanceRecordAdapter : RecyclerView.Adapter<FinanceRecordAdapter.ViewHolde
             notifyDataSetChanged()
         }
 
+    var financeRecordListener: FinanceRecordListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -21,16 +23,19 @@ class FinanceRecordAdapter : RecyclerView.Adapter<FinanceRecordAdapter.ViewHolde
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, financeRecordListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Pair<String, Int>) {
+        fun bind(item: Pair<String, Int>, financeRecordListener: FinanceRecordListener?) {
             itemView.tv_name.text = item.first
             itemView.iv_icon.setImageResource(item.second)
+            itemView.setOnClickListener {
+                financeRecordListener?.onClick(item)
+            }
         }
 
         companion object {
@@ -44,3 +49,8 @@ class FinanceRecordAdapter : RecyclerView.Adapter<FinanceRecordAdapter.ViewHolde
         }
     }
 }
+
+class FinanceRecordListener(val clickListener: (item: Pair<String, Int>) -> Unit) {
+    fun onClick(item: Pair<String, Int>) = clickListener(item)
+}
+
