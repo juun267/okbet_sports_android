@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.view_item_finance.view.*
 import org.cxct.sportlottery.R
 
 class FinanceRecordAdapter : RecyclerView.Adapter<FinanceRecordAdapter.ViewHolder>() {
-    var data = listOf<String>()
+    var data = listOf<Pair<String, Int>>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -28,8 +28,9 @@ class FinanceRecordAdapter : RecyclerView.Adapter<FinanceRecordAdapter.ViewHolde
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: String) {
-            itemView.tv_name.text = item
+        fun bind(item: Pair<String, Int>) {
+            itemView.tv_name.text = item.first
+            itemView.iv_icon.setImageResource(item.second)
         }
 
         companion object {
