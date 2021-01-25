@@ -20,15 +20,17 @@
         <!-- 後臺服務-長連線 -->
         <service android:name=".service.BackService" />
         <!--broadCast-->
-        <receiver android:name=".ui.home.broadcast.ServiceBroadcastReceiver"  android:exported="true">
+        <receiver
+            android:name=".ui.home.broadcast.ServiceBroadcastReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
 
         <activity android:name=".ui.infoCenter.InfoCenterActivity" />
-        <activity android:name=".ui.finance.FinanceActivity"/>
+        <activity android:name=".ui.finance.FinanceActivity" />
         <activity android:name=".ui.money.recharge.MoneyRechargeActivity" />
         <activity android:name=".ui.withdraw.WithdrawActivity" />
         <activity android:name=".ui.withdraw.BankActivity" />
