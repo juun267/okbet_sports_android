@@ -16,10 +16,11 @@ import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
-    BetInfoListParlayAdapter.OnItemClickListener {
+    BetInfoListParlayAdapter.OnTotalQuotaListener {
 
     companion object {
         val TAG = BetInfoListParlayDialog::class.java.simpleName
@@ -105,14 +106,24 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
                     ToastUtil.showToast(context, result.msg)
                 }
             }
-
-
         })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            if(it.size == 0){
+                dismiss()
+            }
+        })
+
     }
 
 
     override fun onDeleteClick(position: Int) {
         viewModel.removeBetInfoItemAndRefresh(matchOddAdapter.matchOddList[position].oddsId)
+    }
+
+    override fun count(totalWin: Double, totalBet: Double) {
+        tv_win_quota.text = TextUtil.format(totalWin)
+        tv_bet_quota.text = TextUtil.format(totalBet)
     }
 
 

@@ -47,6 +47,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
+import java.lang.Exception
 
 
 class MainViewModel(
@@ -695,6 +696,7 @@ class MainViewModel(
                 list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
             }
         }
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 betInfoRepository.getBetInfoList(list)
@@ -712,7 +714,9 @@ class MainViewModel(
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
-        getBetInfoListForParlay()
+        if(betInfoRepository.betList.size!=0) {
+            getBetInfoListForParlay()
+        }
     }
 
     fun getOddsDetail(matchId: String, oddsType: String) {
@@ -728,11 +732,18 @@ class MainViewModel(
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                         betInfoList.value?.let { list ->
                             for (i in list.indices) {
-                                odd = value.odds.find { v ->
-                                    //server可能會回傳null
-                                    v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+
+                                //server目前可能會回傳null
+                                try {
+                                    odd = value.odds.find { v ->
+                                        v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                    }
+                                    odd?.isSelect = true
+                                }catch (e:Exception){
+                                    e.printStackTrace()
                                 }
-                                odd?.isSelect = true
+
+
                             }
                         }
                         list.add(
