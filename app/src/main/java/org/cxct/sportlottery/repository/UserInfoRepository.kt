@@ -41,6 +41,12 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updatePayPwFlag(userId: Long) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updatePayPw(userId, 0)
+        }
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
