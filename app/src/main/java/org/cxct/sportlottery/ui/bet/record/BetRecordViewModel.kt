@@ -16,6 +16,8 @@ import org.cxct.sportlottery.util.TimeUtil.dateToTimeStamp
 
 data class BetListRequestState(var hasStatus: Boolean, var hasStartDate: Boolean, var hasEndDate: Boolean)
 
+val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 to "赢半", 4 to "全输", 5 to "输半", 6 to "和", 7 to "已取消")
+
 class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
@@ -37,16 +39,6 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
     private val _selectedBetStatus = MutableLiveData<String>()
-
-
-    val statusNameMap = mapOf(0 to "未确认",
-                              1 to "未结算",
-                              2 to "全赢",
-                              3 to "赢半",
-                              4 to "全输",
-                              5 to "输半",
-                              6 to "和",
-                              7 to "已取消")
 
     fun checkRequestState(startDate: String, endDate: String) {
         _betListRequestState.value = BetListRequestState(

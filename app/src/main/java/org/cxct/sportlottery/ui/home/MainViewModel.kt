@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.home
 
-
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -24,7 +22,6 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
-import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
@@ -33,6 +30,16 @@ import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.notice.NoticeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
+import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -42,12 +49,14 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
-
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainViewModel(
     private val androidContext: Context,
@@ -64,6 +73,9 @@ class MainViewModel(
             }
         }
     }
+
+    val token = loginRepository.token
+    val userId = loginRepository.userId
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -177,6 +189,36 @@ class MainViewModel(
     private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
+
+
+    //BroadCastReceiver
+
+    val globalStop: LiveData<GlobalStopEvent?>
+        get() = BroadcastRepository().instance().globalStop
+
+    val matchClock: LiveData<MatchClockEvent?>
+        get() = BroadcastRepository().instance().matchClock
+
+    val matchStatusChange: LiveData<MatchStatusChangeEvent?>
+        get() = BroadcastRepository().instance().matchStatusChange
+
+    val notice: LiveData<NoticeEvent?>
+        get() = BroadcastRepository().instance().notice
+
+    val oddsChange: LiveData<OddsChangeEvent?>
+        get() = BroadcastRepository().instance().oddsChange
+
+    val orderSettlement: LiveData<OrderSettlementEvent?>
+        get() = BroadcastRepository().instance().orderSettlement
+
+    val pingPong: LiveData<PingPongEvent?>
+        get() = BroadcastRepository().instance().pingPong
+
+    val producerUp: LiveData<ProducerUpEvent?>
+        get() = BroadcastRepository().instance().producerUp
+
+    val userNotice: LiveData<UserNoticeEvent?>
+        get() = BroadcastRepository().instance().userNotice
 
     private val _isParlayPage = MutableLiveData<Boolean>()
     val isParlayPage: LiveData<Boolean>
@@ -760,5 +802,24 @@ class MainViewModel(
         }
     }
 
+    fun getUserInfo() {
+        viewModelScope.launch {
+            userInfoRepository.getUserInfo()
+        }
+    }
 
+    fun sayHello(): String? {
+        val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
+        return when {
+            hour < 6 -> androidContext.getString(R.string.good_midnight) + ", "
+            hour < 9 -> androidContext.getString(R.string.good_morning) + ", "
+            hour < 12 -> androidContext.getString(R.string.good_beforenoon) + ", "
+            hour < 14 -> androidContext.getString(R.string.good_noon) + ", "
+            hour < 17 -> androidContext.getString(R.string.good_afternoon) + ", "
+            hour < 19 -> androidContext.getString(R.string.good_evening) + ", "
+            hour < 22 -> androidContext.getString(R.string.good_night) + ", "
+            hour < 24 -> androidContext.getString(R.string.good_dreams) + ", "
+            else -> null
+        }
+    }
 }
