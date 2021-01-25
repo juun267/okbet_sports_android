@@ -15,11 +15,11 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val userMoneyResult: LiveData<UserMoneyResult?>
         get() = _userMoneyResult
 
-    val recordList: LiveData<List<String>>
+    val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
 
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
-    private val _recordList = MutableLiveData<List<String>>()
+    private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
 
     fun getMoney() {
         viewModelScope.launch {
@@ -31,8 +31,14 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     }
 
     fun getRecordList() {
-        val recordList = androidContext.resources.getStringArray(R.array.finance_array)
+        val recordStrList = androidContext.resources.getStringArray(R.array.finance_array)
+        val recordImgList = androidContext.resources.obtainTypedArray(R.array.finance_img_array)
 
-        _recordList.postValue(recordList.asList())
+        val recordList = recordStrList.map {
+            it to recordImgList.getResourceId(recordStrList.indexOf(it), -1)
+        }
+        recordImgList.recycle()
+
+        _recordList.postValue(recordList)
     }
 }
