@@ -161,7 +161,6 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             tag
         )
         mCurrentFragment = changeToFragment
-        ft.addToBackStack(null)
         ft.commitAllowingStateLoss()
     }
 
