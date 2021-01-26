@@ -429,4 +429,9 @@
     <string name="recharge_state_failed">失败</string>
     <string name="recharge_state_processing">处理中</string>
     <string name="recharge_state_recharging">充值中</string>
+
+    <string name="recharge_log_order_time">订单时间</string>
+    <string name="recharge_log_recharge_amount">充值金额</string>
+    <string name="recharge_log_channel_type">渠道类型</string>
+    <string name="recharge_log_order_state">订单状态</string>
 </resources>
