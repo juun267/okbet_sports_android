@@ -71,7 +71,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            val moneyAddRequest: MoneyAddRequest = MoneyAddRequest(
+            val moneyAddRequest = MoneyAddRequest(
                 rechCfgId = mSelectRechCfgs?.id ?: 0,
                 depositMoney = if (et_recharge_online_amount.getText().isNotEmpty()) {
                     et_recharge_online_amount.getText().toInt()
