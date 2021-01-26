@@ -13,7 +13,10 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter
 import org.cxct.sportlottery.util.MoneyManager
 
-class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) : RecyclerView.Adapter<MoneyBankTypeAdapter.ViewHolder>() {
+class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
+    RecyclerView.Adapter<MoneyBankTypeAdapter.ViewHolder>() {
+
+    private var mSelectedPosition = 0
 
     var data = mutableListOf<MoneyPayWayData>()
         set(value) {
@@ -27,7 +30,13 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) : Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item,clickListener)
+        holder.bind(item, clickListener)
+        holder.rootItem.isSelected = mSelectedPosition == position //選中改變背景
+        holder.rootItem.setOnClickListener {
+            mSelectedPosition = position
+            notifyDataSetChanged()
+            clickListener.onClick(item)
+        }
     }
 
     override fun getItemCount() = data.size
@@ -35,14 +44,14 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) : Recyc
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icBank: ImageView = itemView.findViewById(R.id.ic_bank)
         private val tvType: TextView = itemView.findViewById(R.id.tv_type)
-        private val rootItem: ConstraintLayout =itemView.findViewById(R.id.rootItem)
+        val rootItem: ConstraintLayout = itemView.findViewById(R.id.rootItem)
 
         fun bind(item: MoneyPayWayData, clickListener: ItemClickListener) {
             icBank.setImageResource(MoneyManager.getBankIcon(item.image))
             tvType.text = item.title
-            rootItem.setOnClickListener {
-                clickListener.onClick(item)
-            }
+//            rootItem.setOnClickListener {
+//                clickListener.onClick(item)
+//            }
         }
 
         companion object {
