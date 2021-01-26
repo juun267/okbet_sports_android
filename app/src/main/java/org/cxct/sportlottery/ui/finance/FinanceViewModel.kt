@@ -12,6 +12,8 @@ import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.TimeUtil
+import java.sql.Time
+import java.util.*
 
 class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
@@ -24,17 +26,36 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
 
+    val recordCalendarRange: LiveData<Pair<Calendar, Calendar>>
+        get() = _recordCalendarRange
+
+    val recordCalendarStartDate: LiveData<String>
+        get() = _recordCalendarStartDate
+
+    val recordCalendarEndDate: LiveData<String>
+        get() = _recordCalendarEndDate
+
     val recordType: LiveData<String>
         get() = _recordType
 
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
+    private val _recordCalendarRange = MutableLiveData<Pair<Calendar, Calendar>>()
+    private val _recordCalendarStartDate = MutableLiveData<String>()
+    private val _recordCalendarEndDate = MutableLiveData<String>()
     private val _recordType = MutableLiveData<String>()
 
 
     fun setRecordType(recordType: String) {
         _recordType.postValue(recordType)
+    }
+
+    fun setRecordTimeRange(start: Calendar, end: Calendar? = null) {
+        _recordCalendarStartDate.postValue(TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd"))
+        end?.let {
+            _recordCalendarEndDate.postValue(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"))
+        }
     }
 
     fun getMoney() {
@@ -56,6 +77,14 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         recordImgList.recycle()
 
         _recordList.postValue(recordList)
+    }
+
+    fun getCalendarRange() {
+        val calendarToday = TimeUtil.getTodayEndTimeCalendar()
+        val calendarPastMonth = TimeUtil.getTodayEndTimeCalendar()
+        calendarPastMonth.add(Calendar.DATE, -30)
+
+        _recordCalendarRange.postValue(calendarPastMonth to calendarToday)
     }
 
     fun getUserRechargeList() {
