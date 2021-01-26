@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +27,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private var param1: String? = null
     private var param2: String? = null
 
+    private val rechargeLogAdapter by lazy {
+        RechargeLogAdapter()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,7 +44,25 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_recharge_log, container, false)
+        return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
+            setupRechargeLogList(this)
+        }
+    }
+
+    private fun setupRechargeLogList(view: View) {
+        view.rvlist.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            this.adapter = rechargeLogAdapter
+
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,9 +70,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
-                Timber.i("get user recharge success")
-            } else {
-                Timber.i("get user recharge failed")
+                rechargeLogAdapter.data = it.rows ?: listOf()
             }
         })
 
