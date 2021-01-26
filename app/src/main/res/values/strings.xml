@@ -166,11 +166,17 @@
     <string name="fourth_section">第四节</string>
     <string name="total_score_over_time">总分\n含加时</string>
     <string name="plat">盘</string>
+    <string name="round">局</string>
     <string name="first_plat">第一盘</string>
     <string name="second_plat">第二盘</string>
     <string name="third_plat">第三盘</string>
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
+    <string name="first">第一</string>
+    <string name="second">第二</string>
+    <string name="third">第三</string>
+    <string name="fourth">第四</string>
+    <string name="fifth">第五</string>
 
     <!-- Profile center page -->
     <string name="good_midnight">凌晨好</string>

@@ -26,16 +26,27 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="7"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/plat"
-                    android:textColor="@color/textGray"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:gravity="center"
+                        android:text="@string/plat"
+                        android:textColor="@color/textGray"
+                        android:textSize="@dimen/textSize12sp" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"/>
+                </LinearLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -46,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/first_plat"
+                        android:text="@string/first"
                         android:textColor="@color/textGray"
                         android:textSize="@dimen/textSize12sp" />
 
@@ -55,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/second_plat"
+                        android:text="@string/second"
                         android:textColor="@color/textGray"
                         android:textSize="@dimen/textSize12sp" />
 
@@ -64,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/third_plat"
+                        android:text="@string/third"
                         android:textColor="@color/textGray"
                         android:textSize="@dimen/textSize12sp" />
 
@@ -73,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/fourth_plat"
+                        android:text="@string/fourth"
                         android:textColor="@color/textGray"
                         android:textSize="@dimen/textSize12sp" />
 
@@ -82,7 +93,25 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/fifth_plat"
+                        android:text="@string/fifth"
+                        android:textColor="@color/textGray"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/round"
+                        android:textColor="@color/textGray"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/plat"
                         android:textColor="@color/textGray"
                         android:textSize="@dimen/textSize12sp" />
 
@@ -149,7 +178,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="4"
+                android:layout_weight="6"
                 android:gravity="center">
 
 
@@ -205,7 +234,41 @@
                     android:background="@color/light_gray" />
 
                 <TextView
-                    android:id="@+id/tv_home_over_time"
+                    android:id="@+id/tv_home_fifth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/textGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:id="@+id/tv_home_round"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/textGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:id="@+id/tv_home_plat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -277,7 +340,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="4"
+                android:layout_weight="6"
                 android:gravity="center">
 
 
@@ -333,7 +396,39 @@
                     android:background="@color/light_gray" />
 
                 <TextView
-                    android:id="@+id/tv_away_over_time"
+                    android:id="@+id/tv_away_fifth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/textGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:id="@+id/tv_away_round"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/textGray"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:id="@+id/tv_away_plat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

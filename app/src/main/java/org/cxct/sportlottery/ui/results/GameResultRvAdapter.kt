@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.results
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -159,6 +160,7 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             //詳情資料 RecyclerView
             mGameDetailData?.let {
                 rv_time_line_detail.adapter = GameResultDetailAdapter()
+                Log.e("Dean" , "gameType = ${gameType}")
                 (rv_time_line_detail.adapter as GameResultDetailAdapter).setData(
                     gameType,
                     mDataList[position].matchInfo,

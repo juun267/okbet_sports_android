@@ -1,15 +1,27 @@
 package org.cxct.sportlottery.ui.results
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.*
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_first
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_fourth
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_name
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_second
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_third
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_first
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_fourth
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_name
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_second
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_third
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.ll_game_detail_first_item
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.tv_play_cate_name
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.tv_play_name
+import kotlinx.android.synthetic.main.content_game_detail_result_tn_rv.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.matchresult.list.MatchInfo
 import org.cxct.sportlottery.network.matchresult.list.MatchStatus
@@ -17,7 +29,7 @@ import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayListRes
 
 class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ViewHolderType {
-        FT, BK, BVT, OTHER
+        FT, BK, TN, BVT, OTHER
     }
 
     enum class SituationType {
@@ -31,6 +43,7 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
     fun setData(gameType: String, mMatchInfo: MatchInfo, mDataList: List<MatchStatus>, mDetailData: MatchResultPlayListResult?) {
         this.gameType = gameType
+        Log.e("Dean" , "gameType = $gameType")
         this.mMatchInfo = mMatchInfo
         this.mDataList = mDataList
         this.mDetailData = mDetailData
@@ -49,7 +62,11 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             )
             ViewHolderType.BVT.ordinal -> BVTDetailFirstItemViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.content_game_detail_result_bvt_rv, parent, false)
+                    .inflate(R.layout.content_game_detail_result_tn_rv, parent, false)
+            )
+            ViewHolderType.TN.ordinal -> TnDetailFirstItemViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.content_game_detail_result_tn_rv, parent, false)
             )
             else -> DetailItemViewHolder(
                 LayoutInflater.from(parent.context)
@@ -59,7 +76,8 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     override fun getItemCount(): Int {
-        return mDetailData?.rows?.size ?: 0
+        Log.e("Dean" , "((mDetailData?.rows?.size ?: 0) + (mDataList?.size ?: 0)) = ${((mDetailData?.rows?.size ?: 0) + (mDataList?.size ?: 0))}")
+        return ((mDetailData?.rows?.size ?: 0) + (if (!mDataList.isNullOrEmpty()) 1 else 0))
     }
 
     @SuppressLint("SetTextI18n")
@@ -77,6 +95,9 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 setupBVTDetailFirstItem(holder.itemView)
                 setupDetailItem(itemView = holder.itemView, position = position)
             }
+            is TnDetailFirstItemViewHolder -> {
+                holder.bind(mDataList, mMatchInfo, mDetailData, position)
+            }
             else -> {
                 holder.itemView.ll_game_detail_first_item.visibility = View.GONE
                 setupDetailItem(itemView = holder.itemView, position = position)
@@ -91,7 +112,8 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 when (gameType) {
                     GameType.FT.key -> ViewHolderType.FT.ordinal
                     GameType.BK.key -> ViewHolderType.BK.ordinal
-                    GameType.BM.key, GameType.VB.key, GameType.TN.key -> ViewHolderType.BVT.ordinal
+                    GameType.BM.key, GameType.VB.key -> ViewHolderType.BVT.ordinal
+                    GameType.TN.key, -> ViewHolderType.TN.ordinal
                     else -> -1
                 }
             }
@@ -241,6 +263,73 @@ class BkDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(item
 }
 
 class BVTDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+}
+
+class TnDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun bind(data: List<MatchStatus>?, mMatchInfo: MatchInfo?, detailData: MatchResultPlayListResult?, position: Int) {
+        setupBkDetailFirstItem(data, mMatchInfo)
+    }
+
+    private fun setupBkDetailFirstItem(data: List<MatchStatus>?, mMatchInfo: MatchInfo?) {
+        val firstPlat = data?.find { it.status == StatusType.FIRST_PLAT.code }
+        val secondPlat = data?.find { it.status == StatusType.SECOND_PLAT.code }
+        val thirdPlat = data?.find { it.status == StatusType.THIRD_PLAT.code }
+        val fourthPlat = data?.find { it.status == StatusType.FOURTH_PLAT.code }
+        val fifthPlat = data?.find { it.status == StatusType.FIFTH_PLAT.code }
+        val finalPlat = data?.find { it.status == StatusType.END_GAME.code }
+        var homeRound: Int = 0
+        var awayRound: Int = 0
+
+        itemView.apply {
+            ll_game_detail_first_item.visibility = View.VISIBLE
+
+            mMatchInfo?.let {
+                tv_home_name.text = it.homeName
+                tv_away_name.text = it.awayName
+            }
+
+            //第一
+            firstPlat?.let {
+                tv_home_first.text = it.homeScore?.apply { homeRound += this }.toString() ?: ""
+                tv_away_first.text = it.awayScore?.apply { awayRound += this }.toString() ?: ""
+            }
+
+            //第二
+            secondPlat?.let {
+                tv_home_second.text = it.homeScore?.apply { homeRound += this }.toString() ?: ""
+                tv_away_second.text = it.awayScore?.apply { awayRound += this }.toString() ?: ""
+            }
+
+            //第三
+            thirdPlat?.let {
+                tv_home_third.text = it.homeScore?.apply { homeRound += this }.toString() ?: ""
+                tv_away_third.text = it.awayScore?.apply { awayRound += this }.toString() ?: ""
+            }
+
+            //第四
+            fourthPlat?.let {
+                tv_home_fourth.text = it.homeScore?.apply { homeRound += this }.toString() ?: ""
+                tv_away_fourth.text = it.awayScore?.apply { awayRound += this }.toString() ?: ""
+            }
+
+            //第五
+            fifthPlat?.let {
+                tv_home_fifth.text = it.homeScore?.apply { homeRound += this }.toString() ?: ""
+                tv_away_fifth.text = it.awayScore?.apply { awayRound += this }.toString() ?: ""
+            }
+
+            //終局
+            tv_home_round.text = homeRound.toString()
+            tv_away_round.text = awayRound.toString()
+
+            //終盤 完賽(賽果)
+            finalPlat?.let {
+                tv_home_plat.text = it.homeScore?.toString()
+                tv_away_plat.text = it.awayScore?.toString()
+            }
+        }
+    }
+
 }
 
 class DetailItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
