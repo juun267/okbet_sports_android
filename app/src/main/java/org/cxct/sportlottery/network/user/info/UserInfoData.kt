@@ -24,7 +24,7 @@ data class UserInfoData(
     @Json(name = "lastLoginIp")
     val lastLoginIp: String,
     @Json(name = "lastLoginTime")
-    val lastLoginTime: Long,
+    val lastLoginTime: Long?,
     @Json(name = "loginIp")
     val loginIp: String,
     @Json(name = "loginTime")

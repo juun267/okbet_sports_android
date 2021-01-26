@@ -10,7 +10,9 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_profile_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -24,6 +26,9 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.ToastUtil
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 
 class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,7 +136,11 @@ class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
 
         //優惠活動
         btn_promotion.setOnClickListener {
-            //TODO 優惠活動
+            val testFlag = viewModel.userInfo.value?.testFlag
+            if (testFlag == TestFlag.NORMAL.index)
+                JumpUtil.toInternalWeb(this, Constants.getPromotionUrl(viewModel.token), getString(R.string.promotion))
+            else
+                ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
         }
 
         //代理加盟
