@@ -14,6 +14,7 @@
     <string name="error_url_fail">跳转地址错误</string>
     <string name="unknown_error">未知错误</string>
     <string name="error_reading_file">档案读取错误</string>
+    <string name="message_guest_no_permission">试玩账号无权访问，请先注册</string>
 
 
     <!--network message-->
@@ -24,6 +25,7 @@
     <string name="verse">vs</string>
     <string name="error">错误</string>
     <string name="verse_">&#160;&#160;VS&#160;&#160;</string>
+    <string name="unknown_data">-</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -339,13 +341,6 @@
     <string name="txv_online_pay">在线支付</string>
 
 
-
-
-
-
-
-
-
     <!--  Withdraw  -->
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>
@@ -358,7 +353,7 @@
     <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_setting_bank_card">请设置银行卡</string>
-        <!--  prompt message  -->
+    <!--  prompt message  -->
     <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
     <string name="title_withdraw_success">提款成功</string>
     <string name="title_withdraw_fail">提款失败</string>
@@ -423,5 +418,11 @@
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
 
-
+    <!-- finance -->
+    <string name="finance">资金明细</string>
+    <string name="record_recharge">充值纪录</string>
+    <string name="record_withdrawal">提款记录</string>
+    <string name="record_red_envelope">红包纪录</string>
+    <string name="record_conversion">转换纪录</string>
+    <string name="record_reward">打賞紀錄</string>
 </resources>

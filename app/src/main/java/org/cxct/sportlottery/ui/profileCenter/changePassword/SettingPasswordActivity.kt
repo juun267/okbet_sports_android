@@ -6,12 +6,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
-import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.withdraw.WithdrawFragment.Companion.PWD_PAGE
@@ -20,33 +20,20 @@ import org.cxct.sportlottery.util.ToastUtil
 
 class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
 
-    private var mUpdatePayPw = 0 //TODO simon test 是否需要更新资金密码: 0 不用，1 需要 //等之後串接了 userInfo data 再來修改
-
     enum class PwdPage { LOGIN_PWD, BANK_PWD }
 
     private var mPwdPage = PwdPage.LOGIN_PWD //登入密碼 or 提款密碼 page flag
+    private var mUserInfo: UserInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_password)
 
         setupBackButton()
-        setupLoginPwdTab()
-        setupWithdrawalPwdTab()
+        setupTab()
         setupEditText()
         setupConfirmButton()
         initObserve()
-
-        catchFrom()
-    }
-
-    private fun catchFrom() {
-        when (intent.getSerializableExtra(PWD_PAGE)) {
-            PwdPage.BANK_PWD -> tab_withdrawal_password.performClick()
-            else -> {
-                //do nothing
-            }
-        }
     }
 
     private fun setupBackButton() {
@@ -55,22 +42,23 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
         }
     }
 
-    private fun setupLoginPwdTab() {
+    private fun setupTab() {
         tab_login_password.setOnClickListener {
             mPwdPage = PwdPage.LOGIN_PWD
-            et_current_password.setHint(getString(R.string.hint_current_login_password))
+            updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
             cleanField()
         }
-    }
 
-    private fun setupWithdrawalPwdTab() {
         tab_withdrawal_password.setOnClickListener {
             mPwdPage = PwdPage.BANK_PWD
-            if (mUpdatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
-                et_current_password.setHint(getString(R.string.hint_current_login_password))
-            else
-                et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
+            updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
             cleanField()
+        }
+
+        //初始顯示哪個 tab 頁面
+        when (intent.getSerializableExtra(PWD_PAGE)) {
+            PwdPage.BANK_PWD -> tab_withdrawal_password.performClick()
+            else -> tab_login_password.performClick()
         }
     }
 
@@ -107,8 +95,8 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
 
     private fun updatePwd() {
         val updatePwdRequest = UpdatePwdRequest(
-            userId = sLoginData?.userId ?: return,
-            platformId = sLoginData?.platformId ?: return,
+            userId = mUserInfo?.userId ?: return,
+            platformId = mUserInfo?.platformId ?: return,
             oldPassword = MD5Util.MD5Encode(et_current_password.getText()),
             newPassword = MD5Util.MD5Encode(et_new_password.getText())
         )
@@ -119,8 +107,8 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
 
     private fun updateFundPwd() {
         val updateFundPwdRequest = UpdateFundPwdRequest(
-            userId = sLoginData?.userId ?: return,
-            platformId = sLoginData?.platformId ?: return,
+            userId = mUserInfo?.userId ?: return,
+            platformId = mUserInfo?.platformId ?: return,
             oldPassword = MD5Util.MD5Encode(et_current_password.getText()),
             newPassword = MD5Util.MD5Encode(et_new_password.getText())
         )
@@ -144,6 +132,11 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
         viewModel.updateFundPwdResult.observe(this, Observer {
             updateUiWithResult(it)
         })
+
+        viewModel.userInfo.observe(this, Observer {
+            mUserInfo = it
+            updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
+        })
     }
 
     private fun updateUiWithResult(updatePwdResult: UpdatePwdResult?) {
@@ -161,12 +154,19 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
         hideLoading()
         if (updateFundPwdResult?.success == true) {
             ToastUtil.showToast(this, getString(R.string.update_withdrawal_pwd))
-            setResult(Activity.RESULT_OK)
+            setResult(Activity.RESULT_OK) //TODO review: observe userInfo 後應該就不需要 setResult
             finish()
         } else {
             val errorMsg = updateFundPwdResult?.msg ?: getString(R.string.unknown_error)
             showErrorDialog(errorMsg)
         }
+    }
+
+    private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage, updatePayPw: Int?) {
+        if (pwdPage == PwdPage.BANK_PWD && updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
+            et_current_password.setHint(getString(R.string.hint_current_login_password))
+        else
+            et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
     }
 
     private fun cleanField() {
