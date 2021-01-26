@@ -23,7 +23,6 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
     private var transferPayList = mutableListOf<MoneyPayWayData>()
     private var onlinePayList = mutableListOf<MoneyPayWayData>()
-    private var currentPayList = mutableListOf<MoneyPayWayData>()
 
     private var mCurrentFragment: Fragment? = null
 
@@ -44,11 +43,6 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
     }
 
     private fun initLiveData() {
-//        viewModel.rechargeConfigs.observe(this@MoneyRechargeActivity, Observer {
-//            var listData = it ?: return@Observer
-//            bankTypeAdapter?.data=it.rechCfg
-//
-//        })
 
         viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
             transferPayList = it ?: return@Observer
@@ -78,14 +72,14 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         viewModel.apiResult.observe(this@MoneyRechargeActivity, Observer {
             apiResult = it ?: return@Observer
 
-            var payWay = if (btn_transfer_pay.isSelected)
+            val payWay = if (btn_transfer_pay.isSelected)
                 this.getString(R.string.txv_transfer_pay)
             else
                 this.getString(R.string.txv_online_pay)
 
             if (!apiResult.success) {
                 //顯示彈窗
-                var customAlertDialog= CustomAlertDialog(this@MoneyRechargeActivity)
+                val customAlertDialog= CustomAlertDialog(this@MoneyRechargeActivity)
                 with(customAlertDialog){
                     setTitle("提示")
                     setMessage(apiResult.msg)
@@ -144,7 +138,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         }
     }
 
-    private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment? {
+    private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment {
         return when (moneyPayWay.rechType) {
             "onlinePayment" -> OnlinePayFragment().setArguments(moneyPayWay)
             else -> TransferPayFragment().setArguments(moneyPayWay)
@@ -158,31 +152,14 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
     private fun switchFragment(changeToFragment: Fragment?, tag: String) {
 
         if (changeToFragment == null) return
-//        if (mCurrentFragment === changeToFragment) {
-//            return
-//        }
+
         val ft = supportFragmentManager.beginTransaction()
-
-//        ft.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
-
-//        if (mCurrentFragment == null) { //首次添加 fragment
-//            ft.add(R.id.fl_pay_type_container, changeToFragment, tag)
-//
-//        } else if (!changeToFragment.isAdded) {
-//            ft.hide(mCurrentFragment!!).add(R.id.fl_pay_type_container, changeToFragment, tag)
-//        } else {
-//            ft.hide(mCurrentFragment!!).show(changeToFragment)
-//        }
 
         ft.replace(
             R.id.fl_pay_type_container,
             changeToFragment,
             tag
-        ) //replace fragment in the container layout.
-        ft.addToBackStack(tag)
-
-
-
+        )
         mCurrentFragment = changeToFragment
         ft.addToBackStack(null)
         ft.commitAllowingStateLoss()
