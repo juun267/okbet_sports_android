@@ -46,7 +46,6 @@ class NicknameModel(
             }
 
             if (result?.success == true) {
-                //TODO simon test review flow 獲取 data 方式，紀錄：使用 collect 會形成迴圈重複執行
                 val userId = userInfoRepository.userInfo.firstOrNull()?.userId?: -1
                 userInfoRepository.updateNickname(userId, nickname)
                 userInfoRepository.updateSetted(userId, FLAG_NICKNAME_IS_SET)
