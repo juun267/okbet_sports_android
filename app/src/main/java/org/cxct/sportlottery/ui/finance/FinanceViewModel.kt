@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.TimeUtil
 
 class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
@@ -64,6 +65,20 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                     RechargeListRequest()
                 )
             }
+
+            result?.rows?.map {
+                it.rechState = when (it.status) {
+                    RechargeState.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
+                    RechargeState.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
+                    RechargeState.PROCESSING.code -> androidContext.getString(R.string.recharge_state_processing)
+                    RechargeState.RECHARGING.code -> androidContext.getString(R.string.recharge_state_recharging)
+                    else -> ""
+                }
+
+                it.rechDateStr = TimeUtil.timeFormat(it.rechTime, "yyyy-MM-dd")
+                it.rechTimeStr = TimeUtil.timeFormat(it.rechTime, "HH:mm:ss")
+            }
+
             _userRechargeResult.postValue(result)
         }
     }
