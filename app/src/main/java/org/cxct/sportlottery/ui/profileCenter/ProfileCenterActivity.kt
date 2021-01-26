@@ -30,7 +30,7 @@ import org.cxct.sportlottery.util.ToastUtil
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
-class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
