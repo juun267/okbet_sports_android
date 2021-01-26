@@ -259,21 +259,21 @@ class MoneyRechViewModel(
     }
 
     private fun checkTransferPayInput(): Boolean {
-        if (rechargeAmountMsg.value != "")
+        if (!rechargeAmountMsg.value.isNullOrEmpty())
             return false
-        if (wxErrorMsg.value != "")
+        if (!wxErrorMsg.value.isNullOrEmpty())
             return false
-        if (nameErrorMsg.value != "")
+        if (!nameErrorMsg.value.isNullOrEmpty())
             return false
-        if (bankIDErrorMsg.value != "")
+        if (!bankIDErrorMsg.value.isNullOrEmpty())
             return false
-        if (nickNameErrorMsg.value != "")
+        if (!nickNameErrorMsg.value.isNullOrEmpty())
             return false
         return true
     }
 
     private fun onlinePayInput(): Boolean {
-        if (_rechargeOnlineAmountMsg.value != "")
+        if (!_rechargeOnlineAmountMsg.value.isNullOrEmpty())
             return false
         return true
     }

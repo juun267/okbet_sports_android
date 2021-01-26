@@ -8,9 +8,9 @@ import android.widget.AdapterView
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
+import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
@@ -36,6 +36,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
+
+    private val mSpannerList = mutableListOf<CustomImageAdapter.SelectBank>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,16 +65,16 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         btn_submit.setOnClickListener {
             val moneyAddRequest = MoneyAddRequest(
                 rechCfgId = mSelectRechCfgs?.id ?: 0,
-                bankCode = "",
+                bankCode = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
                 depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
                     et_recharge_amount.getText().toInt()
                 } else {
                     0
                 },
-                payer = et_bank_account.text.toString(),
-                payerName = et_name.text.toString(),
-                payerBankName = "aaa",
-                payerInfo = "payerInfo",
+                payer = et_bank_account.getText(),
+                payerName = et_name.getText(),
+                payerBankName = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
+                payerInfo = "",
                 depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
             )
             viewModel.rechargeAdd(moneyAddRequest)
@@ -123,14 +125,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //產生對應 spinner 選單
         var count = 1
 
-        val spannerList = mutableListOf<CustomImageAdapter.SelectBank>()
         if (mMoneyPayWay?.rechType == "bankTransfer") //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
                 val selectBank = CustomImageAdapter.SelectBank(
                     it.rechName.toString(),
                     getBankIconByBankName(it.rechName.toString())
                 )
-                spannerList.add(selectBank)
+                mSpannerList.add(selectBank)
             }
         else {
             val title = mMoneyPayWay?.title
@@ -142,7 +143,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                             title + count++,
                             getBankAccountIcon(it.rechType ?: "")
                         )
-                    spannerList.add(selectBank)
+                    mSpannerList.add(selectBank)
                 }
             else
                 rechCfgsList.forEach {
@@ -151,10 +152,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                             title + "",
                             getBankAccountIcon(it.rechType ?: "")
                         )
-                    spannerList.add(selectBank)
+                    mSpannerList.add(selectBank)
                 }
         }
-        sp_pay_account.adapter = CustomImageAdapter(context, spannerList)
+        sp_pay_account.adapter = CustomImageAdapter(context, mSpannerList)
 
         //選擇入款帳號
         sp_pay_account.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

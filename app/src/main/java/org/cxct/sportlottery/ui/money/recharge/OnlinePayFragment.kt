@@ -80,10 +80,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 },
                 bankCode = mSpannerList[sp_pay_bank?.selectedItemPosition ?: 0].bankName.toString(),
                 payer = "",
-                payerBankName = "",
+                payerBankName = mSpannerList[sp_pay_bank?.selectedItemPosition ?: 0].bankName.toString(),
                 payerInfo = "",
                 payerName = "",
-                depositDate = Date().time
+                depositDate = 0
             )
             viewModel.rechargeOnlinePay(moneyAddRequest)
         }
