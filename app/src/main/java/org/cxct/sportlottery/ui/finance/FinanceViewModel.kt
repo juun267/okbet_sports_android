@@ -19,8 +19,17 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
 
+    val recordType: LiveData<String>
+        get() = _recordType
+
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
+    private val _recordType = MutableLiveData<String>()
+
+
+    fun setRecordType(recordType: String) {
+        _recordType.postValue(recordType)
+    }
 
     fun getMoney() {
         viewModelScope.launch {
@@ -28,16 +37,6 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoneyResult.postValue(userMoneyResult)
-        }
-    }
-
-    fun getUserRechargeList() {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getUserRechargeList(
-                    RechargeListRequest()
-                )
-            }
         }
     }
 
@@ -51,5 +50,15 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         recordImgList.recycle()
 
         _recordList.postValue(recordList)
+    }
+
+    fun getUserRechargeList() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.moneyService.getUserRechargeList(
+                    RechargeListRequest()
+                )
+            }
+        }
     }
 }

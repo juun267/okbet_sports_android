@@ -33,7 +33,7 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
     private val recordAdapter by lazy {
         FinanceRecordAdapter().apply {
             financeRecordListener = FinanceRecordListener {
-                Timber.i("open record ${it.first}")
+                viewModel.setRecordType(it.first)
             }
         }
     }
