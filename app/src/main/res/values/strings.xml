@@ -167,6 +167,7 @@
     <string name="total_score_over_time">总分\n含加时</string>
     <string name="plat">盘</string>
     <string name="round">局</string>
+    <string name="score">分</string>
     <string name="first_plat">第一盘</string>
     <string name="second_plat">第二盘</string>
     <string name="third_plat">第三盘</string>
