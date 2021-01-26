@@ -366,6 +366,7 @@
 
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_recharge_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -403,7 +404,7 @@
 
 
                 <TextView
-                    android:id="@+id/et_wallet_money"
+                    android:id="@+id/txv_recharge_time"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="9dp"

@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
@@ -18,6 +21,7 @@ import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -26,6 +30,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     companion object {
         private const val TAG = "TransferPayFragment"
     }
+
+    lateinit var calendarBottomSheet: BottomSheetDialog
 
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
@@ -47,9 +53,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         super.onViewCreated(view, savedInstanceState)
 
         initPayAccountSpinner()
+        initView()
         initButton()
         initObserve()
-        initView()
 
     }
 
@@ -67,14 +73,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 payerName = et_name.text.toString(),
                 payerBankName = "aaa",
                 payerInfo = "payerInfo",
-                depositDate = Date().time
+                depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
             )
             viewModel.rechargeAdd(moneyAddRequest)
         }
+        cv_recharge_time.setOnClickListener {
+            calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
+            calendarBottomSheet.show()
+        }
     }
 
-    private fun initView(){
+    private fun initView() {
         setupTextChangeEvent()
+        calendarBottomSheet()
     }
 
     private fun initObserve() {
@@ -223,7 +234,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
 
         //存款時間
-        et_wallet_money.text = TimeUtil.stampToDate(Date().time)
+        txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
 
     }
 
@@ -240,6 +251,40 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             //暱稱
             et_nickname.afterTextChanged { checkNickName(it) }
         }
+    }
+
+    //日曆
+    private fun calendarBottomSheet() {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar_single, null)
+        calendarBottomSheet = BottomSheetDialog(this.requireContext())
+        calendarBottomSheet.setContentView(bottomSheetView)
+        calendarBottomSheet.calendar.setSelectableDateRange(
+            getDateInCalendar(30).first,
+            getDateInCalendar(30).second
+        )
+        calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
+            override fun onFirstDateSelected(startDate: Calendar) {
+                var formatter: SimpleDateFormat =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                txv_recharge_time.text = formatter.format(startDate.time)
+                calendarBottomSheet.dismiss()
+            }
+
+            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                var formatter: SimpleDateFormat =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                txv_recharge_time.text = formatter.format(startDate.time)
+                calendarBottomSheet.dismiss()
+            }
+        })
+    }
+
+    private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
+        if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
+        return Pair(minusDaysCalendar, todayCalendar)
     }
 
 }
