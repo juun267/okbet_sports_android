@@ -251,7 +251,7 @@
                     android:background="@color/light_gray" />
 
                 <TextView
-                    android:id="@+id/tv_home_round"
+                    android:id="@+id/tv_home_score"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -268,7 +268,7 @@
                     android:background="@color/light_gray" />
 
                 <TextView
-                    android:id="@+id/tv_home_plat"
+                    android:id="@+id/tv_home_round"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -412,7 +412,7 @@
                     android:background="@color/light_gray" />
 
                 <TextView
-                    android:id="@+id/tv_away_round"
+                    android:id="@+id/tv_away_score"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -428,7 +428,7 @@
                     android:background="@color/light_gray" />
 
                 <TextView
-                    android:id="@+id/tv_away_plat"
+                    android:id="@+id/tv_away_round"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
