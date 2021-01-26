@@ -64,4 +64,8 @@ data class Row(
     val userId: Double,
     @Json(name = "userName")
     val userName: String
-)
+) {
+    var rechDateStr: String? = null
+    var rechTimeStr: String? = null
+    var rechState: String? = null
+}
