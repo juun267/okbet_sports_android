@@ -169,13 +169,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun testSubscribe() {
         iv_logo.setOnClickListener {
             val matchUrl = "/ws/notify/event/sr:match:25367352"
-            mService.subscribeMatchEvent(matchUrl)
+            mService.subscribeChannel(matchUrl)
         }
     }
 
      fun subscribeMatch(eventId: String) {
          val matchUrl = "/ws/notify/event/${eventId}"
-         mService.subscribeMatchEvent(matchUrl)
+         mService.subscribeChannel(matchUrl)
     }
 
     private fun initBroadcast() {
@@ -451,6 +451,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
+            Log.e(">>>", "isOpenMatchOdds = $it")
+//            mService.subscribeChannel(viewModel.getNowUrlHall())
             addFragment(GameDetailFragment(), Page.ODDS)
         })
 

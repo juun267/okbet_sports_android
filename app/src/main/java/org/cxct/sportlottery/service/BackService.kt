@@ -2,20 +2,16 @@ package org.cxct.sportlottery.service
 
 import android.annotation.SuppressLint
 import android.app.Service
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import io.reactivex.CompletableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
@@ -242,7 +238,7 @@ class BackService() : Service() {
     private fun StompClient.subscribe(url: String, respond: (StompMessage) -> Unit): Disposable? {
         return this.topic(url, mHeader).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
             { topicMessage ->
-                Timber.e(">>> $url 訂閱成功")
+//                Timber.e(">>> $url 訂閱成功")
                 respond(topicMessage) //TODO Cheryl: 如果沒有要在service處理的事, 可以刪掉這行
                 sendMessageToActivity(url, topicMessage.payload)
             },
@@ -266,16 +262,22 @@ class BackService() : Service() {
                                                   })
     }
 
-    fun subscribeMatchEvent(newMatchUrl: String) {
-        Timber.e(">>> subScribeMatch")
-        val eventDisposable: Disposable? = mStompClient?.subscribe(newMatchUrl) { topicMessage ->
+    fun subscribeChannel(url: String) {
+        Timber.e(">>> subscribeEvent: $url")
+        val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
             Timber.e(">>> msg = ${topicMessage.payload}")
+//            Timber.e(">>> get msg")
+
         }
-
-        if (defaultEventDisposable != null) mCompositeDisposable?.remove(defaultEventDisposable!!)
+/*
+        if (defaultEventDisposable != null) {
+            Log.e(">>>", "remove previous")
+            mCompositeDisposable?.remove(defaultEventDisposable!!)
+        }
         defaultEventDisposable = eventDisposable
+*/
 
-        mCompositeDisposable?.add(eventDisposable!!)
+        mCompositeDisposable?.add(newDisposable!!)
     }
 
     private fun applySchedulers(): CompletableTransformer {

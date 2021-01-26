@@ -15,5 +15,5 @@ data class MatchOddsChangeEvent(
     @Json(name = "isLongTermEvent")
     val isLongTermEvent: Int,
     @Json(name = "odds")
-    val odds: Map<String, Odds>
+    val odds: Map<String, Odds> // key -> GameBetType ; value -> Odds
 ): ServiceEventType

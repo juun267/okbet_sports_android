@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 
 /**
@@ -35,6 +37,8 @@ import org.cxct.sportlottery.ui.home.MainViewModel
 class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val playType: PlayType by lazy { PlayType.OU_HDP }
+
+    private val service by lazy { (activity as MainActivity).mService }
 
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
@@ -60,7 +64,16 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupEvent(this)
             setupMatchOddList(this)
             setupOutrightOddList(this)
+
+            subscribeChannel()
         }
+    }
+
+    private fun subscribeChannel() {
+//        val nowMatchType = viewModel.matchTypeCard
+//        val gameType = viewModel.sportMenuResult.value?.sportMenuData?.
+//        val hallUrl = service.setUrlHall(gameType = , cateMenuCode = CateMenuCode.HDP_AND_OU.code, eventId = )
+//        service.subscribeEvent(hallUrl)
     }
 
     private fun setupEvent(view: View) {

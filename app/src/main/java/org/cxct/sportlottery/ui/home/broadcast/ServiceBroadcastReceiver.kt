@@ -139,6 +139,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         }
                     }
                 }
+/*
 
                 //具体赛事/赛季频道
                 BackService.URL_EVENT -> {
@@ -150,6 +151,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     }
 
                 }
+*/
 
                 BackService.URL_PING -> {
                     when (eventType) {
@@ -161,6 +163,17 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 }
 
             }
+
+            if (channel?.contains(BackService.URL_EVENT) == true) {
+                when (eventType) {
+                    EventType.MATCH_ODDS_CHANGE.value -> {
+                        val data = ServiceMessage.getMatchOddsChange(jObjStr)
+                        _matchOddsChange.value = data
+                    }
+                }
+            }
+
+
         }
 
     }
