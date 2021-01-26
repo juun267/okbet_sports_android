@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -255,6 +256,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     //日曆
+    @SuppressLint("InflateParams")
     private fun calendarBottomSheet() {
         val bottomSheetView =
             layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar_single, null)
@@ -266,14 +268,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(startDate: Calendar) {
-                var formatter: SimpleDateFormat =
-                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                txv_recharge_time.text = formatter.format(startDate.time)
                 calendarBottomSheet.dismiss()
             }
 
             override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                var formatter: SimpleDateFormat =
+                val formatter =
                     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 txv_recharge_time.text = formatter.format(startDate.time)
                 calendarBottomSheet.dismiss()
