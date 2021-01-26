@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
+import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
@@ -16,6 +17,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val userMoneyResult: LiveData<UserMoneyResult?>
         get() = _userMoneyResult
 
+    val userRechargeListResult: LiveData<RechargeListResult?>
+        get() = _userRechargeResult
+
     val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
 
@@ -23,6 +27,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         get() = _recordType
 
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
+    private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
 
@@ -59,6 +64,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                     RechargeListRequest()
                 )
             }
+            _userRechargeResult.postValue(result)
         }
     }
 }
