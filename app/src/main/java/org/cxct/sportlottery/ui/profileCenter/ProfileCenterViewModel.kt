@@ -24,8 +24,16 @@ class ProfileCenterViewModel(private val androidContext: Context, private val us
         get() = _userMoney
 
     private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>()
-    val needToUpdateWithdrawPassword: LiveData<Boolean> //是否需要更新提款密碼 true: 需要, false: 不需要
+    val needToUpdateWithdrawPassword: LiveData<Boolean> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
         get() = _needToUpdateWithdrawPassword
+
+    private var _settingNeedToUpdateWithdrawPassword = MutableLiveData<Boolean>()
+    val settingNeedToUpdateWithdrawPassword: LiveData<Boolean> //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+        get() = _settingNeedToUpdateWithdrawPassword
+
+    private var _needToBindBankCard = MutableLiveData<Boolean>()
+    val needToBindBankCard: LiveData<Boolean>
+        get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
     fun getMoney() {
         viewModelScope.launch {
@@ -68,5 +76,33 @@ class ProfileCenterViewModel(private val androidContext: Context, private val us
             else -> null
         }
     }
-    
+
+    private fun checkPermissions(): Boolean? {
+        //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
+        return when (userInfo.value?.updatePayPw) {
+            1 -> true
+            0 -> false
+            else -> null
+        }
+    }
+
+    //提款判斷權限
+    fun withdrawCheckPermissions() {
+        checkPermissions()?.let { _needToUpdateWithdrawPassword.value = it }
+    }
+
+    //提款設置判斷權限
+    fun settingCheckPermissions() {
+        checkPermissions()?.let { _settingNeedToUpdateWithdrawPassword.value = it }
+    }
+
+    fun checkBankCardPermissions() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.bankService.getBankMy()
+            }?.let { result ->
+                _needToBindBankCard.value = result.bankCardList.isNullOrEmpty()
+            }
+        }
+    }
 }

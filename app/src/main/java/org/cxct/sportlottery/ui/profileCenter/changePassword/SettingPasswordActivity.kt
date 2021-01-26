@@ -14,11 +14,13 @@ import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.withdraw.WithdrawFragment.Companion.PWD_PAGE
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 
 class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
+    companion object {
+        const val PWD_PAGE = "PWD_PAGE"
+    }
 
     enum class PwdPage { LOGIN_PWD, BANK_PWD }
 
@@ -153,9 +155,7 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
     private fun updateUiWithResult(updateFundPwdResult: UpdateFundPwdResult?) {
         hideLoading()
         if (updateFundPwdResult?.success == true) {
-            ToastUtil.showToast(this, getString(R.string.update_withdrawal_pwd))
-            setResult(Activity.RESULT_OK) //TODO review: observe userInfo 後應該就不需要 setResult
-            finish()
+            showPromptDialog(getString(R.string.setting_password), getString(R.string.update_withdrawal_pwd)) { finish() }
         } else {
             val errorMsg = updateFundPwdResult?.msg ?: getString(R.string.unknown_error)
             showErrorDialog(errorMsg)
