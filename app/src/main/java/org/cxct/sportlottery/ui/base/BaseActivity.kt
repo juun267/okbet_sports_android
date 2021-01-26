@@ -131,7 +131,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             vm.betInfoList.observe(this, Observer {
                 if (it != null) {
                     vm.isParlayPage.value?.let { isParlay ->
-                        checkBetInfoList(if (it.size == 0) 0 else if (isParlay) 1 else it.size)
+                        val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
+                        checkBetInfoList(size)
                     }
                 }
             })
