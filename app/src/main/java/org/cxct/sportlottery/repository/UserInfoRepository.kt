@@ -41,6 +41,31 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updatePayPwFlag(userId: Long) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updatePayPw(userId, 0)
+        }
+    }
+
+    suspend fun updateIconUrl(userId: Long, iconUrl: String) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateIconUrl(userId, iconUrl)
+        }
+    }
+
+    suspend fun updateNickname(userId: Long, nickname: String) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateNickname(userId, nickname)
+        }
+    }
+
+    //是否设置过昵称 0单标未设置过 1代表设置过
+    suspend fun updateSetted(userId: Long, setted: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateSetted(userId, setted)
+        }
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,

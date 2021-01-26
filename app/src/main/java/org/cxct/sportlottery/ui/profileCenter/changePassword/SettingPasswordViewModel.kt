@@ -3,21 +3,23 @@ package org.cxct.sportlottery.ui.profileCenter.changePassword
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
-import org.cxct.sportlottery.repository.SettingPasswordRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class SettingPasswordViewModel(
     private val androidContext: Context,
-    private val settingPasswordRepository: SettingPasswordRepository
+    private val userInfoRepository: UserInfoRepository
 ) : BaseViewModel() {
 
     private val _passwordFormState = MutableLiveData<PasswordFormState>()
@@ -30,6 +32,8 @@ class SettingPasswordViewModel(
         get() = _updatePwdResult
     val updateFundPwdResult: LiveData<UpdateFundPwdResult?>
         get() = _updateFundPwdResult
+
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     fun checkInputField(pwdPage: SettingPasswordActivity.PwdPage, context: Context, currentPwd: String, newPwd: String, confirmPwd: String): Boolean {
         val currentPwdError = checkCurrentPwd(context, currentPwd)
@@ -59,9 +63,10 @@ class SettingPasswordViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.userService.updateFundPwd(updateFundPwdRequest)
             }
-            if (result?.success == true) {
-                settingPasswordRepository.updatePayPwFlag(updateFundPwdRequest.userId)
-            }
+
+            if (result?.success == true)
+                userInfoRepository.updatePayPwFlag(updateFundPwdRequest.userId)
+
             _updateFundPwdResult.postValue(result)
         }
     }
