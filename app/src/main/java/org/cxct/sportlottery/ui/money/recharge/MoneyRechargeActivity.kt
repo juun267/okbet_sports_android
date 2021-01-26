@@ -114,6 +114,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                 getPayFragment(transferPayList[0]),
                 "TransferPayFragment"
             )
+            viewModel.clearnRechargeStatus()
         }
         btn_online_pay.setOnClickListener {
             currentTab = RechargeType.ONLINE_PAY
@@ -124,6 +125,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                 getPayFragment(onlinePayList[0]),
                 "OnlinePayFragment"
             )
+            viewModel.clearnRechargeStatus()
         }
     }
 
@@ -189,7 +191,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
     private fun initRecyclerView() {
         bankTypeAdapter = MoneyBankTypeAdapter(MoneyBankTypeAdapter.ItemClickListener {
             switchFragment(getPayFragment(it), it.rechType)
-            viewModel.clearnTransferStatus()
+            viewModel.clearnRechargeStatus()
         })
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)
         rv_pay_type.adapter = bankTypeAdapter

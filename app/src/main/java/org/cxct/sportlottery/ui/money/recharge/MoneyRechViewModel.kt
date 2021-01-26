@@ -1,13 +1,11 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -64,6 +62,10 @@ class MoneyRechViewModel(
         get() = _nickNameErrorMsg
     private var _nickNameErrorMsg = MutableLiveData<String>()
 
+    //線上支付充值金額
+    val rechargeOnlineAmountMsg: LiveData<String>
+        get() = _rechargeOnlineAmountMsg
+    private var _rechargeOnlineAmountMsg = MutableLiveData<String>()
 
 
 
@@ -114,9 +116,9 @@ class MoneyRechViewModel(
 
     //轉帳支付充值
     fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
-        if(checkBankCardData()){
+        if(checkTransferPayInput()){
             viewModelScope.launch {
-                if (checkBankCardData()) {
+                if (checkTransferPayInput()) {
                     doNetwork(androidContext) {
                         moneyRepository.rechargeAdd(moneyAddRequest)
                     }.let {
@@ -130,15 +132,17 @@ class MoneyRechViewModel(
 
     //在線支付
     fun rechargeOnlinePay(moneyAddRequest: MoneyAddRequest) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                moneyRepository.rechargeOnlinePay(moneyAddRequest)
-            }.let {
+        if(onlinePayInput()){
+            viewModelScope.launch {
                 doNetwork(androidContext) {
-                    moneyRepository.rechargeAdd(moneyAddRequest)
+                    moneyRepository.rechargeOnlinePay(moneyAddRequest)
                 }.let {
-                    it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
-                    _apiResult.value = it
+                    doNetwork(androidContext) {
+                        moneyRepository.rechargeAdd(moneyAddRequest)
+                    }.let {
+                        it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
+                        _apiResult.value = it
+                    }
                 }
             }
         }
@@ -147,6 +151,27 @@ class MoneyRechViewModel(
     //充值金額驗證
     fun checkRechargeAmount(rechargeAmount: String) {
         _rechargeAmountMsg.value = when {
+            rechargeAmount.isEmpty() -> {
+                androidContext.getString(R.string.error_recharge_amount)
+            }
+            !VerifyConstUtil.verifyWithdrawAmount(
+                rechargeAmount,
+                0,
+                9999999
+//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.minMoney?.toLong()?:0,
+//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.maxMoney?.toLong()
+            ) -> {// TODO Bill
+                androidContext.getString(R.string.error_recharge_amount)
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
+    //在線充值金額
+    fun checkRcgOnlineAmount(rechargeAmount: String) {
+        _rechargeOnlineAmountMsg.value = when {
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
@@ -233,7 +258,7 @@ class MoneyRechViewModel(
         })
     }
 
-    private fun checkBankCardData(): Boolean {
+    private fun checkTransferPayInput(): Boolean {
         if (rechargeAmountMsg.value != "")
             return false
         if (wxErrorMsg.value != "")
@@ -247,11 +272,18 @@ class MoneyRechViewModel(
         return true
     }
 
-    fun clearnTransferStatus() {
+    private fun onlinePayInput(): Boolean {
+        if (_rechargeOnlineAmountMsg.value != "")
+            return false
+        return true
+    }
+
+    fun clearnRechargeStatus() {
         _rechargeAmountMsg = MutableLiveData()
         _wxErrorMsg = MutableLiveData()
         _nameErrorMsg = MutableLiveData()
         _bankIDErrorMsg = MutableLiveData()
         _nickNameErrorMsg = MutableLiveData()
+        _rechargeOnlineAmountMsg = MutableLiveData()
     }
 }

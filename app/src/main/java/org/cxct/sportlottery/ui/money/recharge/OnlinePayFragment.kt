@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
+import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -47,6 +48,15 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         initButton()
         initView()
+        initObserve()
+
+    }
+
+    private fun initObserve() {
+        //充值金額訊息
+        viewModel.rechargeOnlineAmountMsg.observe(viewLifecycleOwner, {
+            et_recharge_online_amount.setError(it)
+        })
     }
 
     private fun initView() {
@@ -55,13 +65,19 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         } else {
             cv_pay_bank.visibility = View.VISIBLE
         }
+
+        setupTextChangeEvent()
     }
 
     private fun initButton() {
         btn_submit.setOnClickListener {
             val moneyAddRequest: MoneyAddRequest = MoneyAddRequest(
                 rechCfgId = mSelectRechCfgs?.id ?: 0,
-                depositMoney = et_recharge_money.text.toString().toInt(),
+                depositMoney = if (et_recharge_online_amount.getText().isNotEmpty()) {
+                    et_recharge_online_amount.getText().toInt()
+                } else {
+                    0
+                },
                 bankCode = mSpannerList[sp_pay_bank?.selectedItemPosition ?: 0].bankName.toString(),
                 payer = "",
                 payerBankName = "",
@@ -130,11 +146,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
         //手續費率/贈送費率 <0是手續費 >0是贈送費率 PM還在討論
         txv_rebate.text = "${selectRechCfgs?.rebateFee.toString()}%"
-        et_recharge_money.hint = String.format(
-            getString(R.string.edt_hint_online_pay_money),
-            "${selectRechCfgs?.minMoney}",
-            "${selectRechCfgs?.maxMoney}"
-        )
+//        et_recharge_online_amount.hint = String.format(
+//            getString(R.string.edt_hint_online_pay_money),
+//            "${selectRechCfgs?.minMoney}",
+//            "${selectRechCfgs?.maxMoney}"
+//        )
     }
 
     private fun refreshPayBank(rechCfgsList: MoneyRechCfg.RechConfig?) {
@@ -148,22 +164,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             mSpannerList.add(data)
         }
         sp_pay_bank.adapter = CustomImageAdapter(context, mSpannerList)
-//
-//        sp_pay_account.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(parent: AdapterView<*>?) {}
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                try {
-//                  //TODO Bill
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//            }
-//        }
+
+    }
+
+    private fun setupTextChangeEvent() {
+        viewModel.apply {
+            //充值金額
+            et_recharge_online_amount.afterTextChanged { checkRcgOnlineAmount(it) }
+        }
     }
 
 

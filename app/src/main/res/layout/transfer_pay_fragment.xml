@@ -319,7 +319,7 @@
             android:text="@string/money_recharge_hint2"
             android:textSize="@dimen/textSize12sp" />
 
-        <!-- 提款金額 -->
+        <!-- 充值金額 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
             android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
