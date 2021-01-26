@@ -25,12 +25,12 @@ class ServiceSelectDialog(context: Context) : AlertDialog(context) {
         btn_close.setOnClickListener { dismiss() }
 
         btn_service1.setOnClickListener {
-            JumpUtil.toOutWeb(context, sConfigData?.customerServiceUrl)
+            JumpUtil.toExternalWeb(context, sConfigData?.customerServiceUrl)
             dismiss()
         }
 
         btn_service2.setOnClickListener {
-            JumpUtil.toOutWeb(context, sConfigData?.customerServiceUrl2)
+            JumpUtil.toExternalWeb(context, sConfigData?.customerServiceUrl2)
             dismiss()
         }
     }
