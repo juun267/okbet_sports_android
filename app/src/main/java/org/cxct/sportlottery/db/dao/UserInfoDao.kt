@@ -25,6 +25,12 @@ interface UserInfoDao {
     @Query("UPDATE user_info_table SET icon_url=:iconUrl WHERE user_id=:userId")
     suspend fun updateIconUrl(userId: Long, iconUrl: String)
 
+    @Query("UPDATE user_info_table SET nick_name=:nickname WHERE user_id=:userId")
+    suspend fun updateNickname(userId: Long, nickname: String)
+
+    @Query("UPDATE user_info_table SET setted=:setted WHERE user_id=:userId")
+    suspend fun updateSetted(userId: Long, setted: Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userInfo: UserInfo)
 

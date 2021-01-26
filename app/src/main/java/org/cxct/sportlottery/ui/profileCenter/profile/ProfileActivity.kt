@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -10,6 +11,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
@@ -107,6 +109,14 @@ class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
+
+            if (it?.setted == FLAG_NICKNAME_IS_SET) {
+                btn_nickname.isEnabled = false
+                icon_arrow_nickname.visibility = View.GONE
+            } else {
+                btn_nickname.isEnabled = true
+                icon_arrow_nickname.visibility = View.VISIBLE
+            }
         })
     }
 }

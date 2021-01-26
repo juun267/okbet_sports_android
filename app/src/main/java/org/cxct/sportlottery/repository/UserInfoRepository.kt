@@ -53,6 +53,19 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updateNickname(userId: Long, nickname: String) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateNickname(userId, nickname)
+        }
+    }
+
+    //是否设置过昵称 0单标未设置过 1代表设置过
+    suspend fun updateSetted(userId: Long, setted: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateSetted(userId, setted)
+        }
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
