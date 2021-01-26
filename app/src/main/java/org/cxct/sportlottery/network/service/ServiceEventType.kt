@@ -5,6 +5,7 @@ interface ServiceEventType {
 }
 
 enum class EventType(val value: String) {
+    MATCH_ODDS_CHANGE("MATCH_ODDS_CHANGE"), //赔率变更
     ODDS_CHANGE("ODDS_CHANGE"), //赔率变更
     ORDER_SETTLEMENT("ORDER_SETTLEMENT"), //注单结算通知
     USER_MONEY("USER_MONEY"), //余额变更

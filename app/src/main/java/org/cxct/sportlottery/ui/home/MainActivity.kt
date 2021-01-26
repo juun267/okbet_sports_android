@@ -57,7 +57,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private lateinit var mService: BackService
+    lateinit var mService: BackService
 
     private var mIsBound: Boolean = false
 
@@ -113,7 +113,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         initObserve()
 
         testGetBCRFromVM() //testing
-        testSendMatchEventToServer() //testing
+        testSubscribe() //testing
     }
 
     private fun testGetBCRFromVM() {
@@ -165,11 +165,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         unregisterReceiver(mReceiver)
     }
 
-    private fun testSendMatchEventToServer() {
+    private fun testSubscribe() {
         iv_logo.setOnClickListener {
             val matchUrl = "/ws/notify/event/sr:match:25367352"
             mService.subscribeMatchEvent(matchUrl)
         }
+    }
+
+     fun subscribeMatch(eventId: String) {
+         val matchUrl = "/ws/notify/event/${eventId}"
+         mService.subscribeMatchEvent(matchUrl)
     }
 
     private fun initBroadcast() {
