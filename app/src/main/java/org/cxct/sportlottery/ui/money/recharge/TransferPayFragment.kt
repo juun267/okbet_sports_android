@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +25,7 @@ import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,6 +67,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     private fun initButton() {
+        //提交
         btn_submit.setOnClickListener {
             val moneyAddRequest = MoneyAddRequest(
                 rechCfgId = mSelectRechCfgs?.id ?: 0,
@@ -80,9 +85,38 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             )
             viewModel.rechargeAdd(moneyAddRequest)
         }
+
+        //選取日曆
         cv_recharge_time.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
             calendarBottomSheet.show()
+        }
+
+        //複製姓名
+        btn_name_copy.setOnClickListener {
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(null, tv_name.text)
+            clipboard?.setPrimaryClip(clipData)
+            ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+        }
+
+        //複製帳號
+        btn_account_copy.setOnClickListener {
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(null, tv_account.text)
+            clipboard?.setPrimaryClip(clipData)
+            ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+        }
+
+        //複製地址
+        btn_address_copy.setOnClickListener {
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(null, tv_address.text)
+            clipboard?.setPrimaryClip(clipData)
+            ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
     }
 
