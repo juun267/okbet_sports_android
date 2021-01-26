@@ -30,7 +30,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item, clickListener)
+        holder.bind(item)
         holder.rootItem.isSelected = mSelectedPosition == position //選中改變背景
         holder.rootItem.setOnClickListener {
             mSelectedPosition = position
@@ -46,12 +46,9 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
         private val tvType: TextView = itemView.findViewById(R.id.tv_type)
         val rootItem: ConstraintLayout = itemView.findViewById(R.id.rootItem)
 
-        fun bind(item: MoneyPayWayData, clickListener: ItemClickListener) {
+        fun bind(item: MoneyPayWayData) {
             icBank.setImageResource(MoneyManager.getBankIcon(item.image))
             tvType.text = item.title
-//            rootItem.setOnClickListener {
-//                clickListener.onClick(item)
-//            }
         }
 
         companion object {
