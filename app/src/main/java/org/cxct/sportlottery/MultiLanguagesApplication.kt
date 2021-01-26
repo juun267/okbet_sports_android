@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
@@ -50,7 +51,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { WithdrawViewModel(get(), get()) }
         viewModel { ProfileModel(get()) }
         viewModel { NicknameModel(get()) }
-        viewModel { SettingPasswordViewModel(get()) }
+        viewModel { SettingPasswordViewModel(get(), get()) }
+        viewModel { FinanceViewModel(get()) }
     }
 
     private val repoModule = module {
@@ -59,8 +61,9 @@ class MultiLanguagesApplication : Application() {
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
-        single { MoneyRepository() }
+        single { MoneyRepository(get()) }
         single { BetInfoRepository() }
+        single { SettingPasswordRepository(get()) }
     }
 
     private val dbModule = module {

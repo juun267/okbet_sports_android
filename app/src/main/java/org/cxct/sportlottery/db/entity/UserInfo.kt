@@ -54,7 +54,7 @@ data class UserInfo(
     val updatePayPw: Int? = null,
 
     @ColumnInfo(name = "setted")
-    val setted: Int? = null,
+    val setted: Int? = null, //是否设置过昵称 0单标未设置过 1代表设置过
 
     @ColumnInfo(name = "user_rebate_list")
     val userRebateList: List<UserRebate>? = null

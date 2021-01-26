@@ -22,6 +22,9 @@
 
     <!--common-->
     <string name="verse">vs</string>
+    <string name="error">错误</string>
+    <string name="verse_">&#160;&#160;VS&#160;&#160;</string>
+    <string name="unknown_data">-</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -168,6 +171,25 @@
     <string name="third_plat">第三盘</string>
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
+
+    <!-- Profile center page -->
+    <string name="good_midnight">凌晨好</string>
+    <string name="good_morning">早上好</string>
+    <string name="good_beforenoon">上午好</string>
+    <string name="good_noon">中午好</string>
+    <string name="good_afternoon">下午好</string>
+    <string name="good_evening">傍晚好</string>
+    <string name="good_night">晚上好</string>
+    <string name="good_dreams">夜里好</string>
+    <string name="account_balance">账户余额</string>
+    <string name="user_id_colon">用戶ID：</string>
+    <string name="recharge">充值</string>
+    <string name="more_service">更多服务</string>
+    <string name="fund_detail">资金明细</string>
+    <string name="feedback">建议反馈</string>
+    <string name="promotion">优惠活动</string>
+    <string name="agent">代理加盟</string>
+    <string name="online_service">在线客服</string>
 
     <!-- Profile page-->
     <string name="profile_info">个人资讯</string>
@@ -325,13 +347,6 @@
 
 
 
-
-
-
-
-
-
-
     <!--  Withdraw  -->
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>
@@ -342,6 +357,12 @@
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount_empty">提款金额为必填栏位</string>
     <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
+    <string name="please_setting_withdraw_password">请设置提款密码</string>
+    <string name="please_setting_bank_card">请设置银行卡</string>
+    <!--  prompt message  -->
+    <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
+    <string name="title_withdraw_success">提款成功</string>
+    <string name="title_withdraw_fail">提款失败</string>
     <!--  BankList  -->
     <string name="withdraw_setting">提款设置</string>
     <string name="name">姓名</string>
@@ -376,6 +397,13 @@
     <string name="error_network_point_empty">开户网点为必填栏位</string>
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
+    <string name="text_bank_card_delete_success">删除银行卡成功</string>
+    <string name="text_bank_card_add_success">新增银行卡成功</string>
+    <string name="text_bank_card_modify_success">编辑银行卡成功</string>
+    <string name="text_bank_card_delete_fail">删除银行卡失败</string>
+    <string name="text_bank_card_add_fail">新增银行卡失败</string>
+    <string name="text_bank_card_modify_fail">编辑银行卡失败</string>
+    <string name="unknown_bank_card">未知银行卡</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--bet info list-->
@@ -396,5 +424,11 @@
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
 
-
+    <!-- finance -->
+    <string name="finance">资金明细</string>
+    <string name="record_recharge">充值纪录</string>
+    <string name="record_withdrawal">提款记录</string>
+    <string name="record_red_envelope">红包纪录</string>
+    <string name="record_conversion">转换纪录</string>
+    <string name="record_reward">打賞紀錄</string>
 </resources>

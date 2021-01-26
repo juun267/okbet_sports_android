@@ -20,15 +20,13 @@ import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.repository.sLoginData
-import org.cxct.sportlottery.repository.sUserInfo
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.MD5Util.MD5Encode
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.ToastUtil
 
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -36,6 +34,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private lateinit var mBankSelectorAdapter: BankSelectorAdapter
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
+    private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
+    private var mUserId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,7 +76,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
                 et_create_name.setText(sLoginData?.fullName)
-                et_bank_card_number.setText(initData.cardNo)
                 et_network_point.setText(initData.subAddress)
             }
             return@setupInitData
@@ -87,14 +86,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupTitle() {
         when (val currentActivity = this.activity) {
             is WithdrawActivity -> {
-                if (args.editBankCard != null) {
+                if (mBankCardStatus) {
                     currentActivity.setToolBarName(getString(R.string.edit_bank_card))
                 } else {
                     currentActivity.setToolBarName(getString(R.string.add_credit_card))
                 }
             }
             is BankActivity -> {
-                if (args.editBankCard != null) {
+                if (mBankCardStatus) {
                     currentActivity.setToolBarName(getString(R.string.edit_bank_card))
                 } else {
                     currentActivity.setToolBarName(getString(R.string.add_credit_card))
@@ -195,8 +194,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 fundPwd = et_withdrawal_password.getText(),
                 fullName = et_create_name.getText(),
                 id = args.editBankCard?.id?.toString(),
-                userId = sUserInfo.userId.toString(),
-                uwType = "bank" //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+                userId = viewModel.userInfo.value?.userId.toString(),
+                uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+                bankCode = args.editBankCard?.bankCode.toString()
             )
         }
 
@@ -205,18 +205,31 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         btn_delete_bank.setOnClickListener {
-            viewModel.deleteBankCard(args.editBankCard?.id.toString())
+            if (args.editBankCard?.id != null) {
+                viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), et_withdrawal_password.getText())
+            } else {
+                showPromptDialog(getString(R.string.error), getString(R.string.unknown_bank_card)) {}
+            }
+
         }
     }
 
     private fun setupObserve() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
+            mUserId = it?.userId
+        })
+
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
         })
 
-        viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
-                //TODO Dean : bind bank card success Event
+        viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
+            if (result.success) {
+                if (mBankCardStatus) {
+                    ToastUtil.showToast(context, getString(R.string.text_bank_card_modify_success))
+                } else {
+                    ToastUtil.showToast(context, getString(R.string.text_bank_card_add_success))
+                }
                 //綁定成功後回至銀行卡列表bank card list
                 when (args.navigateFrom) {
                     PageFrom.WITHDRAW -> {
@@ -227,14 +240,18 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         mNavController.popBackStack()
                     }
                 }
+            } else {
+                showPromptDialog(if (mBankCardStatus) getString(R.string.text_bank_card_modify_fail) else getString(R.string.text_bank_card_add_fail), result.msg) {}
             }
         })
 
-        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
-                //TODO Dean : delete bank card success Event
+        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer { result ->
+            if (result.success) {
+                ToastUtil.showToast(context, getString(R.string.text_bank_card_delete_success))
                 //刪除銀行卡成功後回至銀行卡列表bank card list
                 mNavController.popBackStack()
+            } else {
+                showPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
             }
         })
 

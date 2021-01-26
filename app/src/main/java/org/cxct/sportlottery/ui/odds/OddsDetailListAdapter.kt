@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +23,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     var oddsDetailListData: ArrayList<OddsDetailListData> = ArrayList()
 
+    var curMatchId: String? = null
+
     fun setBetInfoList(betInfoList: MutableList<BetInfoListData>) {
         this.betInfoList.clear()
         this.betInfoList.addAll(betInfoList)
         notifyDataSetChanged()
+    }
+
+    fun setCurrentMatchId(mid: String?) {
+        curMatchId = mid
     }
 
     private lateinit var code: String
@@ -254,7 +261,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeOneListAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList)
+                adapter = TypeOneListAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
         }
@@ -288,6 +295,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                     tvOdds.setOnClickListener {
                         if (!odd.isSelect) {
+                            if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
+                                return@setOnClickListener
+                            }
                             onOddClickListener.getBetInfoList(odd)
                         } else {
                             onOddClickListener.removeBetInfoItem(odd)
@@ -297,17 +307,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
-                adapter = TypeCSAdapter(homeList, onOddClickListener, betInfoList)
+                adapter = TypeCSAdapter(homeList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_draw).apply {
-                adapter = TypeCSAdapter(drawList, onOddClickListener, betInfoList)
+                adapter = TypeCSAdapter(drawList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_away).apply {
-                adapter = TypeCSAdapter(awayList, onOddClickListener, betInfoList)
+                adapter = TypeCSAdapter(awayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
         }
@@ -316,7 +326,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeGroupItemAdapter(oddsDetail.oddArrayList, groupItemCount, onOddClickListener, betInfoList)
+                adapter = TypeGroupItemAdapter(oddsDetail.oddArrayList, groupItemCount, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
         }
@@ -325,7 +335,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList)
+                adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }

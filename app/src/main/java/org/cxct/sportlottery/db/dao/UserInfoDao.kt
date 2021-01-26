@@ -19,6 +19,9 @@ interface UserInfoDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(vararg userInfo: UserInfo)
 
+    @Query("UPDATE user_info_table SET update_pay_pw=:updatePayPw WHERE user_id=:userId")
+    suspend fun updatePayPw(userId: Long, updatePayPw: Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userInfo: UserInfo)
 

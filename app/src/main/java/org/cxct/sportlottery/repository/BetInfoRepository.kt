@@ -11,7 +11,7 @@ class BetInfoRepository {
 
     var betList: MutableList<BetInfoListData> = mutableListOf()
 
-    suspend fun getBetInfoList(oddsList: List<Odd>): Response<BetInfoResult> {
+    suspend fun getBetInfo(oddsList: List<Odd>): Response<BetInfoResult> {
         val result = OneBoSportApi.betService.getBetInfo(BetInfoRequest("EU", oddsList))
         result.body()?.success.let {
             result.body()?.betInfoData.let { data ->
@@ -23,6 +23,11 @@ class BetInfoRepository {
             }
         }
         return result
+    }
+
+    suspend fun getBetInfoList(oddsList: List<Odd>): Response<BetInfoResult> {
+        return OneBoSportApi.betService.getBetInfo(BetInfoRequest("EU", oddsList))
+
     }
 
     fun removeItem(oddId: String) {
