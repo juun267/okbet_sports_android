@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
@@ -27,6 +28,16 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoneyResult.postValue(userMoneyResult)
+        }
+    }
+
+    fun getUserRechargeList() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.moneyService.getUserRechargeList(
+                    RechargeListRequest()
+                )
+            }
         }
     }
 
