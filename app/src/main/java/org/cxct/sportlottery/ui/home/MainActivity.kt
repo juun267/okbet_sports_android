@@ -153,6 +153,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         val bcRepository = BroadcastRepository().instance()
         bcRepository.removeDataSource(mReceiver.globalStop,
                                       mReceiver.matchClock,
+                                      mReceiver.matchOddsChange,
                                       mReceiver.matchStatusChange,
                                       mReceiver.notice,
                                       mReceiver.oddsChange,
@@ -185,6 +186,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         val bcRepository = BroadcastRepository().instance()
         bcRepository.addDataSources(mReceiver.globalStop,
                                     mReceiver.matchClock,
+                                    mReceiver.matchOddsChange,
                                     mReceiver.matchStatusChange,
                                     mReceiver.notice,
                                     mReceiver.oddsChange,

@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -198,6 +199,9 @@ class MainViewModel(
 
     val matchClock: LiveData<MatchClockEvent?>
         get() = BroadcastRepository().instance().matchClock
+
+    val matchOddsChange: LiveData<MatchOddsChangeEvent?>
+        get() = BroadcastRepository().instance().matchOddsChange
 
     val matchStatusChange: LiveData<MatchStatusChangeEvent?>
         get() = BroadcastRepository().instance().matchStatusChange

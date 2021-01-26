@@ -87,10 +87,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
             setupSportTypeRow(this)
@@ -104,7 +101,13 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupLeagueList(this)
 
             setupOutrightSeasonList(this)
+
+            testObserve()
         }
+    }
+
+    private fun testObserve() {
+        viewModel.matchClock
     }
 
     private fun setupSportTypeRow(view: View) {
