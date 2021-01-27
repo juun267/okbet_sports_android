@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -106,14 +105,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         refreshTabLayout(null)
         initObserve()
 
-        testGetBCRFromVM() //testing
         testSubscribe() //testing
-    }
-
-    private fun testGetBCRFromVM() {
-        viewModel.userNotice.observe(this, Observer {
-            Timber.d(">>> viewModel userNoticeList size = ${it?.userNoticeList?.size}")
-        })
     }
 
     override fun onResume() {
@@ -138,17 +130,19 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun removeBroadcast() {
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.removeDataSource(mReceiver.globalStop,
-                                      mReceiver.matchClock,
-                                      mReceiver.matchOddsChange,
-                                      mReceiver.matchStatusChange,
-                                      mReceiver.notice,
-                                      mReceiver.oddsChange,
-                                      mReceiver.orderSettlement,
-                                      mReceiver.pingPong,
-                                      mReceiver.producerUp,
-                                      mReceiver.userMoney,
-                                      mReceiver.userNotice)
+        bcRepository.removeDataSource(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchOddsChange,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
 
         unregisterReceiver(mReceiver)
     }
@@ -171,17 +165,19 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.addDataSources(mReceiver.globalStop,
-                                    mReceiver.matchClock,
-                                    mReceiver.matchOddsChange,
-                                    mReceiver.matchStatusChange,
-                                    mReceiver.notice,
-                                    mReceiver.oddsChange,
-                                    mReceiver.orderSettlement,
-                                    mReceiver.pingPong,
-                                    mReceiver.producerUp,
-                                    mReceiver.userMoney,
-                                    mReceiver.userNotice)
+        bcRepository.addDataSources(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchOddsChange,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
         registerReceiver(mReceiver, filter)
     }
 
@@ -370,11 +366,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun addFragment(fragment: Fragment, page: Page) {
         if (supportFragmentManager.findFragmentByTag(page.name) == null) {
-            supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right,
-                                                                          0).add(R.id.odds_detail_container,
-                                                                                 fragment,
-                                                                                 page.name).addToBackStack(
-                page.name).commit()
+            supportFragmentManager.beginTransaction().setCustomAnimations(
+                R.anim.enter_from_right,
+                0
+            ).add(
+                R.id.odds_detail_container,
+                fragment,
+                page.name
+            ).addToBackStack(
+                page.name
+            ).commit()
         }
     }
 
@@ -418,8 +419,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             getAppBarLayout().setExpanded(true, true)
 
             subscribeEventChannel(matchId)
-            addFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
-                        Page.ODDS_DETAIL)
+            addFragment(
+                OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
+                Page.ODDS_DETAIL
+            )
         })
 
         viewModel.matchTypeCard.observe(this, Observer {
@@ -448,6 +451,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
+        })
+
+        viewModel.userNotice.observe(this, Observer {
+            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
+            it?.userNoticeList?.let { list ->
+                if (list.isNotEmpty())
+                    UserNoticeDialog(this).setNoticeList(list).show()
+            }
         })
     }
 
@@ -503,7 +514,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
-            iv_head) //載入頭像
+            iv_head
+        ) //載入頭像
     }
 
     private fun queryData() {
