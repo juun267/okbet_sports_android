@@ -10,6 +10,8 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
+import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
+import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.finance.data.RechargeChannel
 import org.cxct.sportlottery.util.ArithUtil
@@ -27,6 +29,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val userRechargeListResult: LiveData<RechargeListResult?>
         get() = _userRechargeResult
+
+    val userWithdrawListResult: LiveData<WithdrawListResult?>
+        get() = _userWithdrawResult
 
     val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
@@ -51,6 +56,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
+    private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
 
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
@@ -229,6 +235,17 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
             }
 
             _userRechargeResult.postValue(result)
+        }
+    }
+
+    fun getUserWithdrawList() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.getWithdrawList(
+                    WithdrawListRequest()
+                )
+            }
+            _userWithdrawResult.postValue(result)
         }
     }
 }

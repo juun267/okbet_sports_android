@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 
@@ -23,6 +27,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private var param1: String? = null
     private var param2: String? = null
 
+    private val withdrawLogAdapter by lazy {
+        WithdrawLogAdapter()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,7 +44,37 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_recharge_log, container, false)
+        return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
+            setupWithdrawLogList(this)
+        }
+    }
+
+    private fun setupWithdrawLogList(view: View) {
+        view.rvlist.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            this.adapter = withdrawLogAdapter
+
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it?.success == true) {
+                withdrawLogAdapter.data = it.rows ?: listOf()
+            }
+        })
+
+        viewModel.getUserWithdrawList()
     }
 
     companion object {
