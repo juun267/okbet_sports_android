@@ -9,10 +9,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
+import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.TimeUtil
-import java.sql.Time
 import java.util.*
 
 class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
@@ -22,6 +22,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val userRechargeListResult: LiveData<RechargeListResult?>
         get() = _userRechargeResult
+
+    val userRechargeFilterList: LiveData<List<Row>>
+        get() = _userRechargeFilterList
 
     val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
@@ -35,15 +38,25 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val recordCalendarEndDate: LiveData<String>
         get() = _recordCalendarEndDate
 
+    val rechargeStateList: LiveData<List<String>>
+        get() = _rechargeStateList
+
+    val rechargeState: LiveData<String>
+        get() = _rechargeState
+
     val recordType: LiveData<String>
         get() = _recordType
 
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
+    private val _userRechargeFilterList = MutableLiveData<List<Row>>()
+
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordCalendarRange = MutableLiveData<Pair<Calendar, Calendar>>()
     private val _recordCalendarStartDate = MutableLiveData<String>()
     private val _recordCalendarEndDate = MutableLiveData<String>()
+    private val _rechargeStateList = MutableLiveData<List<String>>()
+    private val _rechargeState = MutableLiveData<String>()
     private val _recordType = MutableLiveData<String>()
 
 
@@ -56,6 +69,34 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         end?.let {
             _recordCalendarEndDate.postValue(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"))
         }
+    }
+
+    fun setRechargeState(position: Int) {
+        val rechargeStateList =
+            androidContext.resources.getStringArray(R.array.recharge_state_array)
+
+        var list = _userRechargeResult.value?.rows
+
+        when (rechargeStateList[position]) {
+            androidContext.getString(R.string.recharge_state_processing) -> {
+                list = list?.filter {
+                    it.status == RechargeState.PROCESSING.code
+                } ?: listOf()
+            }
+            androidContext.getString(R.string.recharge_state_success) -> {
+                list = list?.filter {
+                    it.status == RechargeState.SUCCESS.code
+                } ?: listOf()
+            }
+
+            androidContext.getString(R.string.recharge_state_failed) -> {
+                list = list?.filter {
+                    it.status == RechargeState.FAILED.code
+                } ?: listOf()
+            }
+        }
+        _rechargeState.postValue(rechargeStateList[position])
+        _userRechargeFilterList.postValue(list ?: listOf())
     }
 
     fun getMoney() {
@@ -85,6 +126,13 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         calendarPastMonth.add(Calendar.DATE, -30)
 
         _recordCalendarRange.postValue(calendarPastMonth to calendarToday)
+    }
+
+    fun getRechargeState() {
+        val rechargeStateList =
+            androidContext.resources.getStringArray(R.array.recharge_state_array)
+
+        _rechargeStateList.postValue(rechargeStateList.asList())
     }
 
     fun getUserRechargeList() {

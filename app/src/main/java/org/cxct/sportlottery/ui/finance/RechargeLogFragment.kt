@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_state.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import java.util.*
@@ -34,6 +36,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private var param2: String? = null
 
     private lateinit var calendarBottomSheet: BottomSheetDialog
+    private lateinit var rechargeStateBottomSheet: BottomSheetDialog
 
     private val rechargeLogAdapter by lazy {
         RechargeLogAdapter()
@@ -54,7 +57,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
             setupCalendarBottomSheet(container, this)
+            setupRechargeStateBottomSheet(container, this)
             setupDateRangeSelector(this)
+            setupRechargeStateSelector(this)
             setupRechargeLogList(this)
         }
     }
@@ -89,6 +94,25 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
+    private fun setupRechargeStateBottomSheet(container: ViewGroup?, view: View) {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_state, container, false)
+
+        rechargeStateBottomSheet = BottomSheetDialog(this.requireContext())
+        rechargeStateBottomSheet.setContentView(bottomSheetView)
+        rechargeStateBottomSheet.rech_state_list.setOnItemClickListener { _, _, position, _ ->
+            rechargeStateBottomSheet.dismiss()
+
+            viewModel.setRechargeState(position)
+        }
+    }
+
+    private fun setupRechargeStateSelector(view: View) {
+        view.order_status_selector.ll_start_date.setOnClickListener {
+            rechargeStateBottomSheet.show()
+        }
+    }
+
     private fun setupRechargeLogList(view: View) {
         view.rvlist.apply {
             this.layoutManager =
@@ -120,13 +144,28 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             date_range_selector.tv_end_date.text = it
         })
 
+        viewModel.rechargeStateList.observe(this.viewLifecycleOwner, Observer {
+            rechargeStateBottomSheet.rech_state_list.apply {
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
+            }
+        })
+
+        viewModel.rechargeState.observe(this.viewLifecycleOwner, Observer {
+            order_status_selector.tv_start_date.text = it
+        })
+
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
                 rechargeLogAdapter.data = it.rows ?: listOf()
             }
         })
 
+        viewModel.userRechargeFilterList.observe(this.viewLifecycleOwner, Observer {
+            rechargeLogAdapter.data = it
+        })
+
         viewModel.getCalendarRange()
+        viewModel.getRechargeState()
         viewModel.getUserRechargeList()
     }
 
