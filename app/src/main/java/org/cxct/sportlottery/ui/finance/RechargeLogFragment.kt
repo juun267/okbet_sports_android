@@ -37,6 +37,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private lateinit var calendarBottomSheet: BottomSheetDialog
     private lateinit var rechargeStateBottomSheet: BottomSheetDialog
+    private lateinit var rechargeChannelBottomSheet: BottomSheetDialog
 
     private val rechargeLogAdapter by lazy {
         RechargeLogAdapter()
@@ -58,8 +59,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
             setupCalendarBottomSheet(container, this)
             setupRechargeStateBottomSheet(container, this)
+            setupRechargeChannelBottomSheet(container, this)
             setupDateRangeSelector(this)
             setupRechargeStateSelector(this)
+            setupRechargeChannelSelector(this)
             setupRechargeLogList(this)
         }
     }
@@ -113,6 +116,27 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
+
+    private fun setupRechargeChannelBottomSheet(container: ViewGroup?, view: View) {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_state, container, false)
+
+        rechargeChannelBottomSheet = BottomSheetDialog(this.requireContext())
+        rechargeChannelBottomSheet.setContentView(bottomSheetView)
+        rechargeChannelBottomSheet.rech_state_list.setOnItemClickListener { _, _, position, _ ->
+            rechargeChannelBottomSheet.dismiss()
+
+            viewModel.setRechargeChannel(position)
+
+        }
+    }
+
+    private fun setupRechargeChannelSelector(view: View) {
+        view.order_status_selector.ll_end_date.setOnClickListener {
+            rechargeChannelBottomSheet.show()
+        }
+    }
+
     private fun setupRechargeLogList(view: View) {
         view.rvlist.apply {
             this.layoutManager =
@@ -154,6 +178,16 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             order_status_selector.tv_start_date.text = it
         })
 
+        viewModel.rechargeChannelList.observe(this.viewLifecycleOwner, Observer {
+            rechargeChannelBottomSheet.rech_state_list.apply {
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
+            }
+        })
+
+        viewModel.rechargeChannel.observe(this.viewLifecycleOwner, Observer {
+            order_status_selector.tv_end_date.text = it
+        })
+
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
                 rechargeLogAdapter.data = it.rows ?: listOf()
@@ -166,6 +200,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         viewModel.getCalendarRange()
         viewModel.getRechargeState()
+        viewModel.getRechargeChannel()
         viewModel.getUserRechargeList()
     }
 

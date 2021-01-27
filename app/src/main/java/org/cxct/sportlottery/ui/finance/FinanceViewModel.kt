@@ -44,6 +44,12 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val rechargeState: LiveData<String>
         get() = _rechargeState
 
+    val rechargeChannelList: LiveData<List<String>>
+        get() = _rechargeChannelList
+
+    val rechargeChannel: LiveData<String>
+        get() = _rechargeChannel
+
     val recordType: LiveData<String>
         get() = _recordType
 
@@ -52,11 +58,17 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     private val _userRechargeFilterList = MutableLiveData<List<Row>>()
 
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
+
     private val _recordCalendarRange = MutableLiveData<Pair<Calendar, Calendar>>()
     private val _recordCalendarStartDate = MutableLiveData<String>()
     private val _recordCalendarEndDate = MutableLiveData<String>()
+
     private val _rechargeStateList = MutableLiveData<List<String>>()
     private val _rechargeState = MutableLiveData<String>()
+
+    private val _rechargeChannelList = MutableLiveData<List<String>>()
+    private val _rechargeChannel = MutableLiveData<String>()
+
     private val _recordType = MutableLiveData<String>()
 
 
@@ -99,6 +111,13 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         _userRechargeFilterList.postValue(list ?: listOf())
     }
 
+    fun setRechargeChannel(position: Int) {
+        val rechargeChannelList =
+            androidContext.resources.getStringArray(R.array.recharge_channel_array)
+
+        _rechargeChannel.postValue(rechargeChannelList[position])
+    }
+
     fun getMoney() {
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
@@ -133,6 +152,13 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
             androidContext.resources.getStringArray(R.array.recharge_state_array)
 
         _rechargeStateList.postValue(rechargeStateList.asList())
+    }
+
+    fun getRechargeChannel() {
+        val rechargeChannelList =
+            androidContext.resources.getStringArray(R.array.recharge_channel_array)
+
+        _rechargeChannelList.postValue(rechargeChannelList.asList())
     }
 
     fun getUserRechargeList() {
