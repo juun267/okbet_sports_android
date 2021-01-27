@@ -24,9 +24,9 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
+            android:text="@string/start_date"
             android:textColor="@color/textColorDark"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="@string/unknown_data" />
+            android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
 
@@ -54,9 +54,9 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
+            android:text="@string/end_date"
             android:textColor="@color/textColorDark"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="@string/unknown_data" />
+            android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
 
