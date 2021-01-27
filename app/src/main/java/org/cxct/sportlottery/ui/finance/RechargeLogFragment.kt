@@ -42,6 +42,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupRechargeStateSelector(this)
             setupRechargeChannelSelector(this)
             setupRechargeLogList(this)
+            setupSearch(this)
         }
     }
 
@@ -126,6 +127,12 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     DividerItemDecoration.VERTICAL
                 )
             )
+        }
+    }
+
+    private fun setupSearch(view: View) {
+        view.date_range_selector.btn_search.setOnClickListener {
+            viewModel.getUserRechargeList()
         }
     }
 
