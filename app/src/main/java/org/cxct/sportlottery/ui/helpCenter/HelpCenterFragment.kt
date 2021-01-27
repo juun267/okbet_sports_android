@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_help_center.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.JumpUtil
 
-class HelpCenterFragment: BaseFragment<HelpCenterViewModel>(HelpCenterViewModel::class) {
-
-    private val mNavController by lazy {
-        findNavController()
-    }
+class HelpCenterFragment : BaseFragment<HelpCenterViewModel>(HelpCenterViewModel::class) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_help_center, container, false)
@@ -26,8 +23,7 @@ class HelpCenterFragment: BaseFragment<HelpCenterViewModel>(HelpCenterViewModel:
 
     private fun setupEvent() {
         linear_game_rule.setOnClickListener {
-            val action = HelpCenterFragmentDirections.actionHelpCenterFragmentToGameRuleFragment()
-            mNavController.navigate(action)
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(viewModel.token), getString(R.string.game_rule))
         }
     }
 }

@@ -16,6 +16,16 @@ object Constants {
         }
     }
 
+    //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
+    fun getGameRuleUrl(token: String?): String? {
+        return try {
+            BASE_URL + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     //bet
     const val MATCH_BET_INFO = "/api/front/match/bet/info"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
