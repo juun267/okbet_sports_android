@@ -431,6 +431,14 @@
     <string name="recharge_state_recharging">充值中</string>
     <string name="recharge_state_all">全部订单状态</string>
 
+    <string name="recharge_channel_all">全部渠道类型</string>
+    <string name="recharge_channel_online">在线支付</string>
+    <string name="recharge_channel_bank">银行汇款</string>
+    <string name="recharge_channel_alipay">支付宝支付</string>
+    <string name="recharge_channel_weixin">微信支付</string>
+    <string name="recharge_channel_cft">财付通</string>
+    <string name="recharge_channel_admin">后台加款</string>
+
     <string name="recharge_log_order_time">订单时间</string>
     <string name="recharge_log_recharge_amount">充值金额</string>
     <string name="recharge_log_channel_type">渠道类型</string>
