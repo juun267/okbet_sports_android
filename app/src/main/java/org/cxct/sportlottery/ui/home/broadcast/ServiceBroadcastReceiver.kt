@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.home.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.service.EventType

@@ -132,14 +132,11 @@ class BackService : Service() {
                     }
 
                 //用户私人频道
-                val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
-                    Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
-                }
+                val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE)
 
                 //全体公共频道
-                val allDisposable: Disposable? = stompClient.subscribe(URL_ALL) { topicMessage ->
-                    Timber.d("$URL_ALL, msg = ${topicMessage.payload}")
-                }
+                val allDisposable: Disposable? = stompClient.subscribe(URL_ALL)
+
                 /*
                 //具体赛事/赛季频道
                 defaultEventDisposable = stompClient.subscribe(URL_EVENT) { topicMessage ->
@@ -222,20 +219,18 @@ class BackService : Service() {
 
         mStompClient?.disconnect()
         mStompClient = null
-
-        //        mRoomInfoList = mutableMapOf()
     }
 
-    @SuppressLint("CheckResult")
-    private fun StompClient.subscribe(url: String, respond: (StompMessage) -> Unit): Disposable? {
-        return this.topic(url, mHeader).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-            { topicMessage ->
-//                Timber.e(">>> $url 訂閱成功")
+    private fun StompClient.subscribe(url: String, respond : (StompMessage) -> Unit = { }): Disposable? {
+        return this.topic(url, mHeader)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ topicMessage ->
+                Timber.i("[$url] 訂閱接收訊息: ${topicMessage.payload}")
                 respond(topicMessage) //TODO Cheryl: 如果沒有要在service處理的事, 可以刪掉這行
                 sendMessageToActivity(url, topicMessage.payload)
-            },
-            { throwable ->
-                Timber.e("訂閱失敗 : $throwable")
+            }, { throwable ->
+                Timber.e("[$url] 訂閱通道失敗: $throwable")
             })
     }
 
