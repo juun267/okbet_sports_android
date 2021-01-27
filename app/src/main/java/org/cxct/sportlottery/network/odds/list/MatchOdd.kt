@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 data class MatchOdd(
     @Json(name = "matchInfo")
     val matchInfo: MatchInfo,
-    @Json(name = "odds") var odds: Map<String, List<Odd>>
+    @Json(name = "odds") var odds: Map<String, MutableList<Odd>>
 ) {
     var isExpand = false
 }

@@ -42,20 +42,46 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
+        Log.e(">>>", "before matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}}")
+
         if (updatedOddsMap.isNotEmpty()) {
-            for ((key, value) in item.odds) {
-                if (key == "HDP") {
-                    Log.e(">>>", "before matchOdd, key = $key, value = ${value.firstOrNull()?.odds}")
+            for ((key, value) in updatedOddsMap) {
+                when (key) {
+                    PlayType.OU.code -> {
+                        value.forEach {
+                            when (it.id) {
+                                item.odds[PlayType.OU.code]?.firstOrNull()?.id -> item.odds[PlayType.OU.code]?.set(0, it)
+
+//                           if (item.odds[PlayType.OU.code]?.size?:0 > 1)
+                                item.odds[PlayType.OU.code]?.get(1)?.id -> item.odds[PlayType.OU.code]?.set(1, it)
+
+                            }
+                        }
+                    }
+
+                    PlayType.HDP.code -> {
+                        value.forEach {
+                            when (it.id) {
+                                item.odds[PlayType.HDP.code]?.firstOrNull()?.id -> item.odds[PlayType.HDP.code]?.set(0, it)
+                                item.odds[PlayType.HDP.code]?.get(1)?.id -> item.odds[PlayType.HDP.code]?.set(1, it)
+                            }
+                        }
+                    }
+
+                    PlayType.X12.code -> {
+                        value.forEach {
+                            when (it.id) {
+                                item.odds[PlayType.HDP.code]?.firstOrNull()?.id -> item.odds[PlayType.HDP.code]?.set(0, it)
+                                item.odds[PlayType.HDP.code]?.get(1)?.id -> item.odds[PlayType.HDP.code]?.set(1, it)
+                            }
+                        }
+                    }
+
                 }
             }
 
-            item.odds = updatedOddsMap
+            Log.e(">>>", "after matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}}")
 
-            for ((key, value) in item.odds) {
-                if (key == "HDP") {
-                    Log.e(">>>", "after matchOdd, key = $key, value = ${value.firstOrNull()?.odds}")
-                }
-            }
 
         }
         holder.bind(item, playType, matchOddListener)
