@@ -11,7 +11,12 @@ import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.finance.data.RechargeChannel
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.ui.finance.data.RechargeState
+import org.cxct.sportlottery.ui.finance.data.RechargeTime
+import org.cxct.sportlottery.ui.finance.df.RechType
+import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
@@ -29,23 +34,17 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val recordCalendarRange: LiveData<Pair<Calendar, Calendar>>
         get() = _recordCalendarRange
 
-    val recordCalendarStartDate: LiveData<String>
+    val recordCalendarStartDate: LiveData<RechargeTime>
         get() = _recordCalendarStartDate
 
-    val recordCalendarEndDate: LiveData<String>
+    val recordCalendarEndDate: LiveData<RechargeTime>
         get() = _recordCalendarEndDate
 
-    val rechargeStateList: LiveData<List<String>>
+    val rechargeStateList: LiveData<List<RechargeState>>
         get() = _rechargeStateList
 
-    val rechargeState: LiveData<String>
-        get() = _rechargeState
-
-    val rechargeChannelList: LiveData<List<String>>
+    val rechargeChannelList: LiveData<List<RechargeChannel>>
         get() = _rechargeChannelList
-
-    val rechargeChannel: LiveData<String>
-        get() = _rechargeChannel
 
     val recordType: LiveData<String>
         get() = _recordType
@@ -57,14 +56,11 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     private val _recordType = MutableLiveData<String>()
 
     private val _recordCalendarRange = MutableLiveData<Pair<Calendar, Calendar>>()
-    private val _recordCalendarStartDate = MutableLiveData<String>()
-    private val _recordCalendarEndDate = MutableLiveData<String>()
+    private val _recordCalendarStartDate = MutableLiveData<RechargeTime>()
+    private val _recordCalendarEndDate = MutableLiveData<RechargeTime>()
 
-    private val _rechargeStateList = MutableLiveData<List<String>>()
-    private val _rechargeState = MutableLiveData<String>()
-
-    private val _rechargeChannelList = MutableLiveData<List<String>>()
-    private val _rechargeChannel = MutableLiveData<String>()
+    private val _rechargeStateList = MutableLiveData<List<RechargeState>>()
+    private val _rechargeChannelList = MutableLiveData<List<RechargeChannel>>()
 
 
     fun setRecordType(recordType: String) {
@@ -72,24 +68,35 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     }
 
     fun setRecordTimeRange(start: Calendar, end: Calendar? = null) {
-        _recordCalendarStartDate.postValue(TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd"))
+        val startDate =
+            RechargeTime(TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd"), start.timeInMillis)
+        _recordCalendarStartDate.postValue(startDate)
+
         end?.let {
-            _recordCalendarEndDate.postValue(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"))
+            val endDate =
+                RechargeTime(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"), end.timeInMillis)
+            _recordCalendarEndDate.postValue(endDate)
         }
     }
 
     fun setRechargeState(position: Int) {
-        val rechargeStateList =
-            androidContext.resources.getStringArray(R.array.recharge_state_array)
+        val list = _rechargeStateList.value
 
-        _rechargeState.postValue(rechargeStateList[position])
+        list?.forEach {
+            it.isSelected = (list.indexOf(it) == position)
+        }
+
+        _rechargeStateList.postValue(list ?: listOf())
     }
 
     fun setRechargeChannel(position: Int) {
-        val rechargeChannelList =
-            androidContext.resources.getStringArray(R.array.recharge_channel_array)
+        val list = _rechargeChannelList.value
 
-        _rechargeChannel.postValue(rechargeChannelList[position])
+        list?.forEach {
+            it.isSelected = (list.indexOf(it) == position)
+        }
+
+        _rechargeChannelList.postValue(list ?: listOf())
     }
 
     fun getMoney() {
@@ -128,14 +135,58 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         val rechargeStateList =
             androidContext.resources.getStringArray(R.array.recharge_state_array)
 
-        _rechargeStateList.postValue(rechargeStateList.asList())
+        val list = rechargeStateList.map {
+            when (it) {
+                androidContext.getString(R.string.recharge_state_processing) -> {
+                    RechargeState(Status.PROCESSING.code, it)
+                }
+                androidContext.getString(R.string.recharge_state_success) -> {
+                    RechargeState(Status.SUCCESS.code, it)
+
+                }
+                androidContext.getString(R.string.recharge_state_failed) -> {
+                    RechargeState(Status.FAILED.code, it)
+                }
+                else -> {
+                    RechargeState(null, it).apply { isSelected = true }
+                }
+            }
+        }
+
+        _rechargeStateList.postValue(list)
     }
 
     fun getRechargeChannel() {
         val rechargeChannelList =
             androidContext.resources.getStringArray(R.array.recharge_channel_array)
 
-        _rechargeChannelList.postValue(rechargeChannelList.asList())
+        val list = rechargeChannelList.map {
+            when (it) {
+                androidContext.getString(R.string.recharge_channel_online) -> {
+                    RechargeChannel(RechType.ONLINE_PAYMENT.type, it)
+                }
+                androidContext.getString(R.string.recharge_channel_bank) -> {
+                    RechargeChannel(RechType.BANK_TRANSFER.type, it)
+                }
+                androidContext.getString(R.string.recharge_channel_alipay) -> {
+                    RechargeChannel(RechType.ALIPAY.type, it)
+                }
+                androidContext.getString(R.string.recharge_channel_weixin) -> {
+                    RechargeChannel(RechType.WEIXIN.type, it)
+                }
+                androidContext.getString(R.string.recharge_channel_cft) -> {
+                    RechargeChannel(RechType.CFT.type, it)
+                }
+                androidContext.getString(R.string.recharge_channel_admin) -> {
+                    RechargeChannel(RechType.ADMIN_ADD_MONEY.type, it)
+                }
+                else -> {
+                    RechargeChannel(null, it).apply { isSelected = true }
+                }
+            }
+        }
+
+        _rechargeChannelList.postValue(list)
     }
 
     fun getUserRechargeList() {
@@ -148,10 +199,10 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
             result?.rows?.map {
                 it.rechState = when (it.status) {
-                    RechargeState.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
-                    RechargeState.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
-                    RechargeState.PROCESSING.code -> androidContext.getString(R.string.recharge_state_processing)
-                    RechargeState.RECHARGING.code -> androidContext.getString(R.string.recharge_state_recharging)
+                    Status.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
+                    Status.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
+                    Status.PROCESSING.code -> androidContext.getString(R.string.recharge_state_processing)
+                    Status.RECHARGING.code -> androidContext.getString(R.string.recharge_state_recharging)
                     else -> ""
                 }
 

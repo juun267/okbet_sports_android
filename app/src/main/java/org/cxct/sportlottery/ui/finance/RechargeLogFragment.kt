@@ -89,7 +89,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             rechargeChannelBottomSheet.dismiss()
 
             viewModel.setRechargeChannel(position)
-
         }
     }
 
@@ -138,31 +137,35 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.rechargeStateList.observe(this.viewLifecycleOwner, Observer {
+            val textList = it.map { rechargeState -> rechargeState.state }
+
             rechargeStateBottomSheet.rech_list.apply {
-                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
             }
+
+            order_status_selector.tv_start_date.text = it.find { rechargeState ->
+                rechargeState.isSelected
+            }?.state
         })
 
         viewModel.rechargeChannelList.observe(this.viewLifecycleOwner, Observer {
+            val textList = it.map { rechargeChannel -> rechargeChannel.channel }
+
             rechargeChannelBottomSheet.rech_list.apply {
-                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
             }
+
+            order_status_selector.tv_end_date.text = it.find { rechargeChannel ->
+                rechargeChannel.isSelected
+            }?.channel
         })
 
         viewModel.recordCalendarStartDate.observe(this.viewLifecycleOwner, Observer {
-            date_range_selector.tv_start_date.text = it
+            date_range_selector.tv_start_date.text = it.date
         })
 
         viewModel.recordCalendarEndDate.observe(this.viewLifecycleOwner, Observer {
-            date_range_selector.tv_end_date.text = it
-        })
-
-        viewModel.rechargeState.observe(this.viewLifecycleOwner, Observer {
-            order_status_selector.tv_start_date.text = it
-        })
-
-        viewModel.rechargeChannel.observe(this.viewLifecycleOwner, Observer {
-            order_status_selector.tv_end_date.text = it
+            date_range_selector.tv_end_date.text = it.date
         })
 
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
