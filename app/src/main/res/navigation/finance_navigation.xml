@@ -9,6 +9,18 @@
         android:id="@+id/financeFragment"
         android:name="org.cxct.sportlottery.ui.finance.FinanceFragment"
         android:label="fragment_finance"
-        tools:layout="@layout/fragment_finance" />
+        tools:layout="@layout/fragment_finance">
+
+        <action
+            android:id="@+id/action_financeFragment_to_rechargeLogFragment"
+            app:destination="@id/rechargeLogFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/rechargeLogFragment"
+        android:name="org.cxct.sportlottery.ui.finance.RechargeLogFragment"
+        android:label="fragment_recharge_log"
+        tools:layout="@layout/activity_recharge_log" />
 
 </navigation>
