@@ -26,15 +26,15 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository, private val userInfoRepository: UserInfoRepository) : BaseViewModel() {
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> //使用者餘額
+        get() = _loading
+
     val userInfo = userInfoRepository.userInfo.asLiveData()
 
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
-
-    val checkBankCardOrNot: LiveData<Boolean>
-        get() = _checkBankCardOrNot
-    private var _checkBankCardOrNot = MutableLiveData<Boolean>()
 
     val bankCardList: LiveData<BankMyResult>
         get() = _bankCardList
@@ -92,11 +92,13 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         checkWithdrawAmount(applyMoney)
         checkWithdrawPassword(withdrawPwd)
         if (checkWithdrawData()) {
+            loading()
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     OneBoSportApi.withdrawService.addWithdraw(getWithdrawAddRequest(bankCardId, applyMoney, withdrawPwd))
                 }?.let { result ->
                     _withdrawAddResult.value = result
+                    hideLoading()
                 }
             }
         }
@@ -121,11 +123,12 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     fun getBankCardList() {
         viewModelScope.launch {
+            loading()
             doNetwork(androidContext) {
                 OneBoSportApi.bankService.getBankMy()
             }?.let { result ->
                 _bankCardList.value = result
-                _checkBankCardOrNot.value = !result.bankCardList.isNullOrEmpty()
+                hideLoading()
             }
         }
     }
@@ -134,12 +137,13 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         checkInputBankCardData(fullName, cardNo, subAddress, fundPwd)
         if (checkBankCardData()) {
             viewModelScope.launch {
+                loading()
                 doNetwork(androidContext) {
                     val userId = userInfoRepository.userInfo.firstOrNull()?.userId.toString()
                     OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userId, uwType, bankCode))
                 }?.let { result ->
                     _bankAddResult.value = result
-
+                    hideLoading()
                 }
             }
         }
@@ -179,15 +183,17 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     fun deleteBankCard(id: Long, fundPwd: String) {
         checkInputBankCardDeleteData(fundPwd)
-        if (checkBankCardDeleteData())
+        if (checkBankCardDeleteData()) {
+            loading()
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     OneBoSportApi.bankService.bankDelete(createBankDeleteRequest(id, MD5Util.MD5Encode(fundPwd)))
                 }?.let { result ->
                     _bankDeleteResult.value = result
-
+                    hideLoading()
                 }
             }
+        }
     }
 
     private fun checkInputBankCardDeleteData(fundPwd: String) {
@@ -200,20 +206,24 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     fun getMoneyConfigs() {
         viewModelScope.launch {
+            loading()
             doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }?.let { result ->
                 result.rechCfg?.let { _rechargeConfigs.value = it }
+                hideLoading()
             }
         }
     }
 
     fun getMoney() {
+        loading()
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
+            hideLoading()
         }
     }
 
@@ -313,5 +323,13 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
             rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100),
             ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
         )
+    }
+
+    private fun loading() {
+        _loading.postValue(true)
+    }
+
+    private fun hideLoading() {
+        _loading.postValue(false)
     }
 }

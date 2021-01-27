@@ -1,14 +1,11 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -20,22 +17,15 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.ToastUtil
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
-    companion object {
-        const val PWD_PAGE = "PWD_PAGE"
-    }
-
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
-
-    private var startForResult: ActivityResultLauncher<Intent>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -53,8 +43,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initObserve(view)
 
         setupData()
-
-
     }
 
     private fun setupData() {
@@ -123,6 +111,13 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initObserve(view: View) {
+        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        })
+
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
             tv_balance.text = ArithUtil.toMoneyFormat(it)
         })

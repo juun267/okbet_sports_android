@@ -83,21 +83,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupTitle() {
-        when (val currentActivity = this.activity) {
-            is WithdrawActivity -> {
-                if (mBankCardStatus) {
-                    currentActivity.setToolBarName(getString(R.string.edit_bank_card))
-                } else {
-                    currentActivity.setToolBarName(getString(R.string.add_credit_card))
-                }
-            }
-            is BankActivity -> {
-                if (mBankCardStatus) {
-                    currentActivity.setToolBarName(getString(R.string.edit_bank_card))
-                } else {
-                    currentActivity.setToolBarName(getString(R.string.add_credit_card))
-                }
-            }
+        if (mBankCardStatus) {
+            (activity as BankActivity).changeTitle(getString(R.string.edit_bank_card))
+        } else {
+            (activity as BankActivity).changeTitle(getString(R.string.add_credit_card))
         }
     }
 
@@ -213,6 +202,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupObserve() {
+        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        })
+
         viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
             it?.fullName?.let { fullName -> if (fullName.isNotEmpty()) et_create_name.setText(fullName) }
         })
