@@ -458,10 +458,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun subscribeHallChannel() {
 
-        val oddsFirst = viewModel.oddsListResult.value?.oddsListData?.leagueOdds?.get(0)
-        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
-        mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
-
         //一般遊戲
         viewModel.oddsListResult.observe(this, Observer {
             if (it != null && it.success) {

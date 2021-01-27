@@ -149,20 +149,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             Log.e(">>>testttt", "${it?.eventType.toString()}")
         })
     }
-/*
-
-    private fun subscribeChannel(oddsListResult: OddsListResult) {
-        val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
-        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
-        service.subscribeChannel(viewModel.getHallUrl(eventId = id))
-    }
-
-    private fun subscribeChampionChannel(outrightOddsListResult: OutrightOddsListResult) {
-        val oddsFirst = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)
-        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
-        service.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
-    }
-*/
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
         league_odd_count.visibility = View.VISIBLE
