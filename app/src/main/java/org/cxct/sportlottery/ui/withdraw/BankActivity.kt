@@ -13,37 +13,11 @@ import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActi
 
 class BankActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
-    private var startForResult: ActivityResultLauncher<Intent>? = null
     private val mNavController by lazy {
         findNavController(R.id.bank_container)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK){
-                viewModel.getBankCardList()
-            }else{
-                viewModel.checkPermissions()
-            }
-        }
-    }
-
     override fun setContentView(): Int {
-        viewModel.apply {
-            needToUpdateWithdrawPassword.observe(this@BankActivity, Observer {
-                if (it == true) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
-                        val intent = Intent(this@BankActivity, SettingPasswordActivity::class.java).putExtra(WithdrawFragment.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
-                        startForResult?.launch(intent)
-                    }
-                }
-            })
-
-            userInfo.observe(this@BankActivity, Observer {
-                viewModel.checkPermissions()
-            })
-        }
         return R.layout.activity_bank
     }
 

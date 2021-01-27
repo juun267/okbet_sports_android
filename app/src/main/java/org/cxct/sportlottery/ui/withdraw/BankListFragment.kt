@@ -41,8 +41,12 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getUserInfoData()
+        initData()
         setupObserve()
+    }
+
+    private fun initData() {
+        viewModel.getBankCardList()
     }
 
     private fun setupTitle() {
@@ -57,6 +61,10 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupObserve() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
+            mBankListAdapter.fullName = it?.fullName ?: ""
+        })
+
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
             it.bankCardList.let { data ->
                 mBankListAdapter.bankList = data ?: listOf()

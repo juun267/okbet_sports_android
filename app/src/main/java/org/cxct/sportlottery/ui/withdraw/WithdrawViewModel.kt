@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -14,7 +15,6 @@ import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
-import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.MoneyRepository
@@ -28,9 +28,10 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
 
-    val needToUpdateWithdrawPassword: LiveData<Boolean>
-        get() = _needToUpdateWithdrawPassword
-    private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>()
+    private val _userMoney = MutableLiveData<Double?>()
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = _userMoney
+
     val checkBankCardOrNot: LiveData<Boolean>
         get() = _checkBankCardOrNot
     private var _checkBankCardOrNot = MutableLiveData<Boolean>()
@@ -134,7 +135,8 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         if (checkBankCardData()) {
             viewModelScope.launch {
                 doNetwork(androidContext) {
-                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userInfo.value?.userId.toString(), uwType, bankCode))
+                    val userId = userInfoRepository.userInfo.firstOrNull()?.userId.toString()
+                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userId, uwType, bankCode))
                 }?.let { result ->
                     _bankAddResult.value = result
 
@@ -206,46 +208,12 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
         }
     }
 
-    fun getUserInfoData() {
+    fun getMoney() {
         viewModelScope.launch {
-            doNetwork(androidContext) {
-                userInfoRepository.getUserInfo()
-            }.let {
-                checkPermissions(it)
+            val userMoneyResult = doNetwork(androidContext) {
+                OneBoSportApi.userService.getMoney()
             }
-
-        }
-    }
-
-    private fun checkPermissions(userInfoResult: UserInfoResult?) {
-        //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
-        _needToUpdateWithdrawPassword.value = when (userInfoResult?.userInfoData?.updatePayPw) {
-            1 -> {
-                true
-            }
-            0 -> {
-                getBankCardList()
-                false
-            }
-            else -> {
-                null
-            }
-        }
-    }
-
-    fun checkPermissions() {
-        //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
-        _needToUpdateWithdrawPassword.value = when (userInfo.value?.updatePayPw) {
-            1 -> {
-                true
-            }
-            0 -> {
-                getBankCardList()
-                false
-            }
-            else -> {
-                null
-            }
+            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 

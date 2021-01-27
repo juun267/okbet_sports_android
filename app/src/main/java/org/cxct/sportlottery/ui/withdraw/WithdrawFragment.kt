@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.ToastUtil
 
@@ -36,13 +37,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private var startForResult: ActivityResultLauncher<Intent>? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            viewModel.checkPermissions()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -54,7 +48,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getUserInfoData()
         initView()
         initEvent()
         initObserve(view)
@@ -65,7 +58,11 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupData() {
-        viewModel.getMoneyConfigs()
+        viewModel.apply {
+            getMoneyConfigs()
+            getBankCardList()
+            getMoney()
+        }
     }
 
     private fun initView() {
@@ -126,20 +123,8 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initObserve(view: View) {
-
-        viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            viewModel.checkPermissions()
-        })
-
-        //需要更新提款密碼
-        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner, Observer {
-
-            if (it == true) {
-                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
-                    val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
-                    startForResult?.launch(intent)
-                }
-            }
+        viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
+            tv_balance.text = ArithUtil.toMoneyFormat(it)
         })
 
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
