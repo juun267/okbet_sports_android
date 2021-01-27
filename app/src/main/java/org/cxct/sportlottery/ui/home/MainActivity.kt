@@ -2,7 +2,8 @@ package org.cxct.sportlottery.ui.home
 
 import android.app.ActivityManager
 import android.content.*
-import android.os.*
+import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -18,8 +19,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.iv_head
-import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
@@ -47,8 +46,6 @@ import timber.log.Timber
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
-        private const val TAG = "MainActivity"
-
         //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -103,9 +100,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lifecycleOwner = this@MainActivity
         }
 
-//        doBindService()
-//        initBroadcast()
-
         initToolBar()
         initMenu()
         initRvMarquee()
@@ -125,7 +119,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
 
-        if (!mIsBound) doBindService()
+        val isLogin = viewModel.isLogin.value ?: false
+        doBackService(isLogin)
+
         rv_marquee.startAuto()
     }
 
@@ -134,34 +130,27 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         rv_marquee.stopAuto()
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-
-        if (mIsBound) doUnBindService()
+        doUnBindService()
     }
 
     private fun removeBroadcast() {
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.removeDataSource(mReceiver.globalStop,
-                                      mReceiver.matchClock,
-                                      mReceiver.matchOddsChange,
-                                      mReceiver.matchStatusChange,
-                                      mReceiver.notice,
-                                      mReceiver.oddsChange,
-                                      mReceiver.orderSettlement,
-                                      mReceiver.pingPong,
-                                      mReceiver.producerUp,
-                                      mReceiver.userMoney,
-                                      mReceiver.userNotice)
+        bcRepository.removeDataSource(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchOddsChange,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
 
         unregisterReceiver(mReceiver)
     }
@@ -173,9 +162,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-     fun subscribeMatch(eventId: String) {
-         val matchUrl = "/ws/notify/event/${eventId}"
-         mService.subscribeChannel(matchUrl)
+    fun subscribeMatch(eventId: String) {
+        val matchUrl = "/ws/notify/event/${eventId}"
+        mService.subscribeChannel(matchUrl)
     }
 
     private fun initBroadcast() {
@@ -184,22 +173,27 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.addDataSources(mReceiver.globalStop,
-                                    mReceiver.matchClock,
-                                    mReceiver.matchOddsChange,
-                                    mReceiver.matchStatusChange,
-                                    mReceiver.notice,
-                                    mReceiver.oddsChange,
-                                    mReceiver.orderSettlement,
-                                    mReceiver.pingPong,
-                                    mReceiver.producerUp,
-                                    mReceiver.userMoney,
-                                    mReceiver.userNotice)
+        bcRepository.addDataSources(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchOddsChange,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
         registerReceiver(mReceiver, filter)
     }
 
 
     private fun doBindService() {
+        if (mIsBound) return
+
+        Timber.i("bind service")
         if (!checkServiceRunning()) { //如果service斷掉則重啟
             val serviceIntent = Intent(this, BackService::class.java)
             serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
@@ -211,7 +205,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun doUnBindService() {
-        Log.e(">>>", "unbind")
+        if (!mIsBound) return
+
+        Timber.i("unbind service")
         unbindService(mServiceConnection)
         removeBroadcast()
 
@@ -398,20 +394,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         super.onBackPressed()
     }
 
-    private fun initObserve() {
-        viewModel.isLogin.observe(this,  Observer {
-            Log.e(">>>", "isLogin = $it")
-            if (it) {
-                queryData()
-                if (!mIsBound) {
-                    doBindService()
-                }
-            } else {
-                if (mIsBound) {
-                    doUnBindService()
-                }
-            }
+    private fun doBackService(isLogin: Boolean) {
+        if (isLogin)
+            doBindService()
+        else
+            doUnBindService()
+    }
 
+    private fun initObserve() {
+        viewModel.isLogin.observe(this, Observer {
+            doBackService(it)
+            queryData()
         })
 
         viewModel.messageListResult.observe(this, Observer {
@@ -432,8 +425,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            addFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
-                        Page.ODDS_DETAIL)
+            addFragment(
+                OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
+                Page.ODDS_DETAIL
+            )
         })
 
         viewModel.matchTypeCard.observe(this, Observer {

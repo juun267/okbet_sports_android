@@ -12,7 +12,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
@@ -31,10 +30,9 @@ const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
 const val SERVICE_TOKEN = "TOKEN"
 const val SERVICE_USER_ID = "USER_ID"
 
-class BackService() : Service() {
+class BackService : Service() {
     companion object {
-        private const val URL_SOCKET_HOST_AND_PORT =
-            "http://sports.cxct.org/api/ws/app/im" //app连接端点,无sockjs
+        private const val URL_SOCKET_HOST_AND_PORT = "http://sports.cxct.org/api/ws/app/im" //app连接端点,无sockjs
         const val URL_ALL = "/ws/notify/all" //全体公共频道
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
@@ -70,25 +68,17 @@ class BackService() : Service() {
     private val mPingDisposable: Disposable? = null //TODO Cheryl
 
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         releaseSocket()
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return super.onStartCommand(intent, flags, startId)
-    }
-
     override fun onBind(intent: Intent?): IBinder {
-        token = intent?.getStringExtra(SERVICE_TOKEN) ?:""
+        token = intent?.getStringExtra(SERVICE_TOKEN) ?: ""
         userId = intent?.getLongExtra(SERVICE_USER_ID, -1).toString()
-        if (token.isNullOrEmpty()) return mBinder
+        if (token.isEmpty()) return mBinder
 
-        if (mStompClient?.isConnected != true && !token.isNullOrEmpty()) {
+        if (mStompClient?.isConnected != true && token.isNotEmpty()) {
             Timber.d("==尚未建立連線，連線開始==")
             connect()
         } else {
@@ -98,18 +88,24 @@ class BackService() : Service() {
         return mBinder
     }
 
-    @SuppressLint("CheckResult") fun connect() {
+    @SuppressLint("CheckResult")
+    fun connect() {
         try {
             val headerMap = mHeader.map { it.key to it.value }.toMap()
             Timber.e(">>>token = ${token}, url = $URL_SOCKET_HOST_AND_PORT")
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
-            mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP,
-                                      URL_SOCKET_HOST_AND_PORT,
-                                      headerMap,
-                                      httpClient.newBuilder().pingInterval(40,
-                                                                           TimeUnit.SECONDS).retryOnConnectionFailure(
-                                          true).build())
+            mStompClient = Stomp.over(
+                Stomp.ConnectionProvider.OKHTTP,
+                URL_SOCKET_HOST_AND_PORT,
+                headerMap,
+                httpClient.newBuilder().pingInterval(
+                    40,
+                    TimeUnit.SECONDS
+                ).retryOnConnectionFailure(
+                    true
+                ).build()
+            )
 
             mStompClient?.let { stompClient ->
 
@@ -142,7 +138,7 @@ class BackService() : Service() {
                 //用户私人频道
                 val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
                     Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
-                    }
+                }
 
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL) { topicMessage ->
@@ -247,19 +243,21 @@ class BackService() : Service() {
             })
     }
 
-    @SuppressLint("CheckResult") fun sendMessage(url: String, content: String) {
+    @SuppressLint("CheckResult")
+    fun sendMessage(url: String, content: String) {
         Timber.e("start sending message to server")
         val sendHeader = mHeader.toMutableList().apply {
             this.add(StompHeader(StompHeader.DESTINATION, url))
         }
 
         mStompClient?.send(StompMessage(StompCommand.SEND, sendHeader, content))?.compose(
-            applySchedulers())?.subscribe({
-                                                      Timber.e("sending message to server succeed!!!")
-                                                  }, { throwable ->
-                                                      Timber.e("傳送訊息失敗 ==> $throwable")
-                                                      reconnect()
-                                                  })
+            applySchedulers()
+        )?.subscribe({
+            Timber.e("sending message to server succeed!!!")
+        }, { throwable ->
+            Timber.e("傳送訊息失敗 ==> $throwable")
+            reconnect()
+        })
     }
 
     fun subscribeChannel(url: String) {
@@ -283,7 +281,8 @@ class BackService() : Service() {
     private fun applySchedulers(): CompletableTransformer {
         return CompletableTransformer { upstream ->
             upstream.unsubscribeOn(Schedulers.newThread()).subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread())
+                AndroidSchedulers.mainThread()
+            )
         }
     }
 
