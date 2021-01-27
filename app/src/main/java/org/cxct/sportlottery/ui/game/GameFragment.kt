@@ -72,7 +72,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it.list.first().id)
+            viewModel.getLeagueOddsList(args.matchType, it)
         })
     }
 
