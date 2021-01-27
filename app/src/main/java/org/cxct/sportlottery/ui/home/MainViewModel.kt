@@ -10,6 +10,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
@@ -192,6 +194,9 @@ class MainViewModel(
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
 
+    private val _betAddResult = MutableLiveData<BetAddResult>()
+    val betAddResult: LiveData<BetAddResult>
+        get() = _betAddResult
 
     //BroadCastReceiver
 
@@ -811,6 +816,27 @@ class MainViewModel(
                 OneBoSportApi.playCateListService.getPlayCateList(gameType)
             }
             _playCateListResult.postValue(result)
+        }
+    }
+
+    fun addBet(betAddRequest: BetAddRequest, isParlay: Boolean) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.betService.addBet(betAddRequest)
+            }
+            _betAddResult.postValue(result)
+            result?.success?.let {
+                if(it){
+                    if(!isParlay) {
+                        result.rows?.let { rowList ->
+                            removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
+                        }
+                    }else{
+                        betInfoRepository.betList.clear()
+                        _betInfoList.postValue(betInfoRepository.betList)
+                    }
+                }
+            }
         }
     }
 
