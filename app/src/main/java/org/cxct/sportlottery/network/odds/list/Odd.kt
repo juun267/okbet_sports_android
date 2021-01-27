@@ -14,5 +14,5 @@ data class Odd(
     @Json(name = "spread")
     val spread: String?,
     @Json(name = "status")
-    val status: Int
+    val status: Int //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
 )

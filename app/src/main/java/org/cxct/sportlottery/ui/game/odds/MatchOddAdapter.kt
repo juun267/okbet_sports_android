@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.odds
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,16 @@ import kotlinx.android.synthetic.main.play_category_ou_hdp.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 
 class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     var data = listOf<MatchOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var updatedOddsMap = mapOf<String, List<Odd>>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -34,6 +42,22 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
+        if (updatedOddsMap.isNotEmpty()) {
+            for ((key, value) in item.odds) {
+                if (key == "HDP") {
+                    Log.e(">>>", "before matchOdd, key = $key, value = ${value.firstOrNull()?.odds}")
+                }
+            }
+
+            item.odds = updatedOddsMap
+
+            for ((key, value) in item.odds) {
+                if (key == "HDP") {
+                    Log.e(">>>", "after matchOdd, key = $key, value = ${value.firstOrNull()?.odds}")
+                }
+            }
+
+        }
         holder.bind(item, playType, matchOddListener)
     }
 
