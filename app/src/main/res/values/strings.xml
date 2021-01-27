@@ -461,4 +461,8 @@
     <string name="withdraw_log_state_processing">处理中</string>
     <string name="withdraw_log_state_pass">通过</string>
     <string name="withdraw_log_state_un_pass">不通过</string>
+
+    <string name="withdraw_log_type_all">全部渠道类型</string>
+    <string name="withdraw_log_type_bank_trans">银行提款</string>
+    <string name="withdraw_log_type_admin">后台扣款</string>
 </resources>

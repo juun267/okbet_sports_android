@@ -39,4 +39,10 @@
         <item>@string/withdraw_log_state_pass</item>
         <item>@string/withdraw_log_state_un_pass</item>
     </string-array>
+
+    <string-array name="withdraw_type_array">
+        <item>@string/withdraw_log_type_all</item>
+        <item>@string/withdraw_log_type_bank_trans</item>
+        <item>@string/withdraw_log_type_admin</item>
+    </string-array>
 </resources>
