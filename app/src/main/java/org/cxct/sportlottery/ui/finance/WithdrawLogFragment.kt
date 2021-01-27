@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import java.util.*
@@ -20,6 +22,7 @@ import java.util.*
 
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     private lateinit var calendarBottomSheet: BottomSheetDialog
+    private lateinit var withdrawStateBottomSheet: BottomSheetDialog
 
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter()
@@ -32,7 +35,9 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
             setupCalendarBottomSheet(container)
+            setupWithdrawStateBottomSheet(container)
             setupDateRangeSelector(this)
+            setupWithdrawStateSelector(this)
             setupWithdrawLogList(this)
         }
     }
@@ -58,6 +63,19 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
     }
 
+    private fun setupWithdrawStateBottomSheet(container: ViewGroup?) {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
+
+        withdrawStateBottomSheet = BottomSheetDialog(this.requireContext())
+        withdrawStateBottomSheet.setContentView(bottomSheetView)
+        withdrawStateBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
+            withdrawStateBottomSheet.dismiss()
+
+            viewModel.setWithdrawState(position)
+        }
+    }
+
     private fun setupDateRangeSelector(view: View) {
         view.date_range_selector.ll_start_date.setOnClickListener {
             calendarBottomSheet.show()
@@ -66,6 +84,13 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             calendarBottomSheet.show()
         }
     }
+
+    private fun setupWithdrawStateSelector(view: View) {
+        view.order_status_selector.ll_start_date.setOnClickListener {
+            withdrawStateBottomSheet.show()
+        }
+    }
+
 
     private fun setupWithdrawLogList(view: View) {
         view.rvlist.apply {
@@ -98,6 +123,18 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             date_range_selector.tv_end_date.text = it.date
         })
 
+        viewModel.withdrawStateList.observe(this.viewLifecycleOwner, Observer {
+            val textList = it.map { withdrawState -> withdrawState.state }
+
+            withdrawStateBottomSheet.rech_list.apply {
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
+            }
+
+            order_status_selector.tv_start_date.text = it.find { withdrawState ->
+                withdrawState.isSelected
+            }?.state
+        })
+
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
                 withdrawLogAdapter.data = it.rows ?: listOf()
@@ -105,6 +142,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.getCalendarRange()
+        viewModel.getWithdrawState()
         viewModel.getUserWithdrawList()
     }
 }

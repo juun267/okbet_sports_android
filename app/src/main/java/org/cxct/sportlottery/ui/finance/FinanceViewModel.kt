@@ -17,6 +17,8 @@ import org.cxct.sportlottery.ui.finance.data.RechargeChannel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.ui.finance.data.RechargeState
 import org.cxct.sportlottery.ui.finance.data.RechargeTime
+import org.cxct.sportlottery.ui.finance.data.WithdrawState
+import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.TimeUtil
@@ -54,6 +56,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val recordType: LiveData<String>
         get() = _recordType
 
+    val withdrawStateList: LiveData<List<WithdrawState>>
+        get() = _withdrawStateList
+
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
     private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
@@ -67,6 +72,8 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     private val _rechargeStateList = MutableLiveData<List<RechargeState>>()
     private val _rechargeChannelList = MutableLiveData<List<RechargeChannel>>()
+
+    private val _withdrawStateList = MutableLiveData<List<WithdrawState>>()
 
 
     fun setRecordType(recordType: String) {
@@ -236,6 +243,40 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
             _userRechargeResult.postValue(result)
         }
+    }
+
+    fun setWithdrawState(position: Int) {
+        val list = _withdrawStateList.value
+
+        list?.forEach {
+            it.isSelected = (list.indexOf(it) == position)
+        }
+
+        _withdrawStateList.postValue(list ?: listOf())
+    }
+
+    fun getWithdrawState() {
+        val withdrawStateList =
+            androidContext.resources.getStringArray(R.array.withdraw_state_array)
+
+        val list = withdrawStateList.map {
+            when (it) {
+                androidContext.getString(R.string.withdraw_log_state_processing) -> {
+                    WithdrawState(CheckStatus.PROCESSING.code, it)
+                }
+                androidContext.getString(R.string.withdraw_log_state_pass) -> {
+                    WithdrawState(CheckStatus.PASS.code, it)
+                }
+                androidContext.getString(R.string.withdraw_log_state_un_pass) -> {
+                    WithdrawState(CheckStatus.UN_PASS.code, it)
+                }
+                else -> {
+                    WithdrawState(null, it).apply { isSelected = true }
+                }
+            }
+        }
+
+        _withdrawStateList.postValue(list)
     }
 
     fun getUserWithdrawList() {

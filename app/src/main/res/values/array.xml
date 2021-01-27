@@ -32,4 +32,11 @@
         <item>@string/recharge_channel_cft</item>
         <item>@string/recharge_channel_admin</item>
     </string-array>
+
+    <string-array name="withdraw_state_array">
+        <item>@string/withdraw_log_state_all</item>
+        <item>@string/withdraw_log_state_processing</item>
+        <item>@string/withdraw_log_state_pass</item>
+        <item>@string/withdraw_log_state_un_pass</item>
+    </string-array>
 </resources>
