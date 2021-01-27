@@ -49,7 +49,7 @@ object ServiceMessage {
 
     fun getMatchOddsChange(messageStr: String): MatchOddsChangeEvent? {
         val adapter = moshi.adapter(MatchOddsChangeEvent::class.java)
-        val data = adapter.fromJson(messageStr)
+//        val data = adapter.fromJson(messageStr)
 //        val jsonStructure = adapter.toJsonValue(obj)
 //        val type = Types.newParameterizedType(MutableMap::class.java, String::class.java, Odd::class.java)
 //        val adapter2 = moshi.adapter<Map<String, Odd>>(type)

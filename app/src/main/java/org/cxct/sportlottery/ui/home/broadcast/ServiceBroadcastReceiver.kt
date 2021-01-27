@@ -118,7 +118,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         }
                     }
                 }
-
+/*
                 //大廳賠率
                 BackService.URL_HALL -> {
                     when (eventType) {
@@ -139,7 +139,6 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         }
                     }
                 }
-/*
 
                 //具体赛事/赛季频道
                 BackService.URL_EVENT -> {
@@ -161,9 +160,30 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         }
                     }
                 }
-
             }
 
+            //大廳賠率
+            if (channel?.contains(BackService.URL_HALL) == true) {
+                when (eventType) {
+                    EventType.MATCH_STATUS_CHANGE.value -> {
+                        val data = ServiceMessage.getMatchStatusChange(jObjStr)
+                        _matchStatusChange.value = data
+
+                    }
+                    EventType.MATCH_CLOCK.value -> {
+                        val data = ServiceMessage.getMatchClock(jObjStr)
+                        _matchClock.value = data
+
+                    }
+                    EventType.ODDS_CHANGE.value -> {
+                        val data = ServiceMessage.getOddsChange(jObjStr)
+                        _oddsChange.value = data
+
+                    }
+                }
+            }
+
+            //具体赛事/赛季频道
             if (channel?.contains(BackService.URL_EVENT) == true) {
                 when (eventType) {
                     EventType.MATCH_ODDS_CHANGE.value -> {
@@ -172,8 +192,6 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     }
                 }
             }
-
-
         }
 
     }

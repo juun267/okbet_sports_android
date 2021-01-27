@@ -41,19 +41,16 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val service by lazy { (activity as MainActivity).mService }
 
-    private var nowSelectedSportCode = SportType.FOOTBALL.code
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            Log.e(">>>", "onclick gameTypeAdapter, code = ${it.code}")
-            nowSelectedSportCode = it.code
+            Log.e(">>>", "onclick gameTypeAdapter")
             viewModel.getGameHallList(args.matchType, it)
         })
     }
 
     private val gameDateAdapter by lazy {
         GameDateAdapter(GameDateListener {
-            Log.e(">>>", "onclick gameDateAdapter")
             viewModel.getGameHallList(args.matchType, it)
         })
     }
@@ -61,6 +58,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener {
+                Log.e(">>>", "onclick LeagueOddAdapter")
                 viewModel.getOddsDetail(it.matchInfo.id)
             }
         }
@@ -68,6 +66,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
+            Log.e(">>>", "onclick LeagueAdapter")
             viewModel.getLeagueOddsList(args.matchType, it.list.first().id)
         })
     }
