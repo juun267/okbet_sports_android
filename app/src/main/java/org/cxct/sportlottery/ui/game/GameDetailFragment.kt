@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.fragment_game_detail.view.*
-import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.odds.OnMatchOddClickListener
 
 /**
  * A simple [Fragment] subclass.
@@ -37,7 +38,16 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val playType: PlayType by lazy { PlayType.OU_HDP }
 
     private val matchOddAdapter by lazy {
-        MatchOddAdapter().apply {
+        MatchOddAdapter(object : OnMatchOddClickListener {
+            override fun getBetInfoList(odd: Odd) {
+                viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
+            }
+
+            override fun removeBetInfoItem(odd: Odd) {
+                viewModel.removeBetInfoItem(odd.id)
+            }
+
+        }).apply {
             matchOddListener = MatchOddListener {
                 viewModel.getOddsDetail(it.matchInfo.id)
             }

@@ -9,8 +9,9 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.ui.odds.OnMatchOddClickListener
 
-class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
+class LeagueOddAdapter(private val onMatchOddClickListener: OnMatchOddClickListener) : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     var data = listOf<LeagueOdd>()
         set(value) {
             field = value
@@ -28,7 +29,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     override fun getItemCount(): Int = data.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, onMatchOddClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,9 +38,9 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
         holder.bind(item, playType, matchOddListener)
     }
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder private constructor(itemView: View, private val onMatchOddClickListener: OnMatchOddClickListener) : RecyclerView.ViewHolder(itemView) {
         private val matchOddAdapter by lazy {
-            MatchOddAdapter()
+            MatchOddAdapter(onMatchOddClickListener)
         }
 
         fun bind(item: LeagueOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
@@ -83,12 +84,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, onMatchOddClickListener: OnMatchOddClickListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.itemview_league_odd, parent, false)
 
-                return ViewHolder(view)
+                return ViewHolder(view, onMatchOddClickListener)
             }
         }
     }
