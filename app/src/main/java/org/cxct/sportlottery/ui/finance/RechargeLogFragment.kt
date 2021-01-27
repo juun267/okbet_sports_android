@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,26 +14,13 @@ import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_state.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RechargeLogFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
     private lateinit var calendarBottomSheet: BottomSheetDialog
     private lateinit var rechargeStateBottomSheet: BottomSheetDialog
     private lateinit var rechargeChannelBottomSheet: BottomSheetDialog
@@ -43,23 +29,15 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         RechargeLogAdapter()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
-            setupCalendarBottomSheet(container, this)
-            setupRechargeStateBottomSheet(container, this)
-            setupRechargeChannelBottomSheet(container, this)
+            setupCalendarBottomSheet(container)
+            setupRechargeStateBottomSheet(container)
+            setupRechargeChannelBottomSheet(container)
             setupDateRangeSelector(this)
             setupRechargeStateSelector(this)
             setupRechargeChannelSelector(this)
@@ -67,7 +45,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
-    private fun setupCalendarBottomSheet(container: ViewGroup?, view: View) {
+    private fun setupCalendarBottomSheet(container: ViewGroup?) {
         val bottomSheetView =
             layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar, container, false)
 
@@ -88,6 +66,33 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
     }
 
+    private fun setupRechargeStateBottomSheet(container: ViewGroup?) {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
+
+        rechargeStateBottomSheet = BottomSheetDialog(this.requireContext())
+        rechargeStateBottomSheet.setContentView(bottomSheetView)
+        rechargeStateBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
+            rechargeStateBottomSheet.dismiss()
+
+            viewModel.setRechargeState(position)
+        }
+    }
+
+    private fun setupRechargeChannelBottomSheet(container: ViewGroup?) {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
+
+        rechargeChannelBottomSheet = BottomSheetDialog(this.requireContext())
+        rechargeChannelBottomSheet.setContentView(bottomSheetView)
+        rechargeChannelBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
+            rechargeChannelBottomSheet.dismiss()
+
+            viewModel.setRechargeChannel(position)
+
+        }
+    }
+
     private fun setupDateRangeSelector(view: View) {
         view.date_range_selector.ll_start_date.setOnClickListener {
             calendarBottomSheet.show()
@@ -97,37 +102,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
-    private fun setupRechargeStateBottomSheet(container: ViewGroup?, view: View) {
-        val bottomSheetView =
-            layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_state, container, false)
-
-        rechargeStateBottomSheet = BottomSheetDialog(this.requireContext())
-        rechargeStateBottomSheet.setContentView(bottomSheetView)
-        rechargeStateBottomSheet.rech_state_list.setOnItemClickListener { _, _, position, _ ->
-            rechargeStateBottomSheet.dismiss()
-
-            viewModel.setRechargeState(position)
-        }
-    }
-
     private fun setupRechargeStateSelector(view: View) {
         view.order_status_selector.ll_start_date.setOnClickListener {
             rechargeStateBottomSheet.show()
-        }
-    }
-
-
-    private fun setupRechargeChannelBottomSheet(container: ViewGroup?, view: View) {
-        val bottomSheetView =
-            layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_state, container, false)
-
-        rechargeChannelBottomSheet = BottomSheetDialog(this.requireContext())
-        rechargeChannelBottomSheet.setContentView(bottomSheetView)
-        rechargeChannelBottomSheet.rech_state_list.setOnItemClickListener { _, _, position, _ ->
-            rechargeChannelBottomSheet.dismiss()
-
-            viewModel.setRechargeChannel(position)
-
         }
     }
 
@@ -160,6 +137,18 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             calendarBottomSheet.calendar.setSelectableDateRange(it.first, it.second)
         })
 
+        viewModel.rechargeStateList.observe(this.viewLifecycleOwner, Observer {
+            rechargeStateBottomSheet.rech_list.apply {
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
+            }
+        })
+
+        viewModel.rechargeChannelList.observe(this.viewLifecycleOwner, Observer {
+            rechargeChannelBottomSheet.rech_list.apply {
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
+            }
+        })
+
         viewModel.recordCalendarStartDate.observe(this.viewLifecycleOwner, Observer {
             date_range_selector.tv_start_date.text = it
         })
@@ -168,20 +157,8 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             date_range_selector.tv_end_date.text = it
         })
 
-        viewModel.rechargeStateList.observe(this.viewLifecycleOwner, Observer {
-            rechargeStateBottomSheet.rech_state_list.apply {
-                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
-            }
-        })
-
         viewModel.rechargeState.observe(this.viewLifecycleOwner, Observer {
             order_status_selector.tv_start_date.text = it
-        })
-
-        viewModel.rechargeChannelList.observe(this.viewLifecycleOwner, Observer {
-            rechargeChannelBottomSheet.rech_state_list.apply {
-                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, it)
-            }
         })
 
         viewModel.rechargeChannel.observe(this.viewLifecycleOwner, Observer {
@@ -194,33 +171,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             }
         })
 
-        viewModel.userRechargeFilterList.observe(this.viewLifecycleOwner, Observer {
-            rechargeLogAdapter.data = it
-        })
-
         viewModel.getCalendarRange()
         viewModel.getRechargeState()
         viewModel.getRechargeChannel()
         viewModel.getUserRechargeList()
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RechargeLogFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RechargeLogFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
