@@ -19,7 +19,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.iv_head
-import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
@@ -439,7 +438,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             )
         })
 
-        viewModel.matchTypeCard.observe(this, Observer {
+        viewModel.matchTypeCardForParlay.observe(this, Observer {
             when (it) {
                 MatchType.PARLAY -> {
                     tabLayout.getTabAt(4)?.select()

@@ -16,7 +16,6 @@ import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.league.LeagueListResult
-import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
@@ -29,7 +28,6 @@ import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.ui.odds.OnMatchOddClickListener
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -54,19 +52,10 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val leagueOddAdapter by lazy {
-        LeagueOddAdapter(object : OnMatchOddClickListener {
-            override fun getBetInfoList(odd: Odd) {
-                viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
-            }
-
-            override fun removeBetInfoItem(odd: Odd) {
-                viewModel.removeBetInfoItem(odd.id)
-            }
-
-        }).apply {
-            matchOddListener = MatchOddListener {
+        LeagueOddAdapter().apply {
+            matchOddListener = MatchOddListener({
                 viewModel.getOddsDetail(it.matchInfo.id)
-            }
+            }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
     }
 
@@ -82,10 +71,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 viewModel.getOutrightOddsList(it.id)
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

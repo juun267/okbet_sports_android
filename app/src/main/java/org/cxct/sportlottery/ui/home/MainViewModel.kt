@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
@@ -57,7 +58,6 @@ import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
-import java.lang.Exception
 
 
 class MainViewModel(
@@ -78,6 +78,7 @@ class MainViewModel(
 
     val token = loginRepository.token
     val userId = loginRepository.userId
+    var mathType: MatchType? = null
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
@@ -115,8 +116,8 @@ class MainViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
-    val matchTypeCard: LiveData<MatchType>
-        get() = _matchTypeCard
+    val matchTypeCardForParlay: LiveData<MatchType>
+        get() = _matchTypeCardForParlay
 
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
@@ -138,7 +139,7 @@ class MainViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
-    private val _matchTypeCard = MutableLiveData<MatchType>()
+    private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isOpenMatchOdds = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -342,8 +343,7 @@ class MainViewModel(
                 it.isSelected = (it.code == sportType.code)
             }
         }
-
-        _matchTypeCard.postValue(matchType)
+        _matchTypeCardForParlay.postValue(matchType)
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
@@ -357,6 +357,7 @@ class MainViewModel(
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean) {
+        mathType = matchType
         if (isReloadDate) {
             getDateRow(matchType)
         }
@@ -521,6 +522,45 @@ class MainViewModel(
         }
 
         _outrightOddsListResult.postValue(result)
+    }
+
+    fun updateMatchBetList(matchOdd: MatchOdd, oddString: String, odd: org.cxct.sportlottery.network.odds.list.Odd) {
+        val result = if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value
+        val match =
+            result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find { it.odds[oddString]?.contains(odd) ?: false }?.odds?.get(oddString)
+                ?.find { it == odd }
+        if (_isParlayPage.value == true) {
+            val isBetMatchId = betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo.id }
+            val isBetOddId = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+            when {
+                isBetMatchId == null -> {
+                    match?.isSelected = true
+                    getBetInfoList(listOf(Odd(odd.id, odd.odds)))
+                }
+                isBetOddId != null -> {
+                    match?.isSelected = false
+                    removeBetInfoItem(odd.id)
+                }
+                else -> {
+                    return
+                }
+            }
+        } else {
+            val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+            if (betItem == null) {
+                match?.isSelected = true
+                getBetInfoList(listOf(Odd(odd.id, odd.odds)))
+            } else {
+                match?.isSelected = false
+                removeBetInfoItem(odd.id)
+            }
+        }
+
+        if (mathType == MatchType.IN_PLAY) {
+            _oddsListGameHallResult.value = result
+        } else {
+            _oddsListResult.value = result
+        }
     }
 
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
