@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_finance.view.*
-import kotlinx.android.synthetic.main.view_account_balance.*
-import kotlinx.android.synthetic.main.view_account_balance.view.*
+import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,20 +19,16 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [FinanceFragment.newInstance] factory method to
+ * Use the [RechargeLogFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    private val recordAdapter by lazy {
-        FinanceRecordAdapter().apply {
-            financeRecordListener = FinanceRecordListener {
-                viewModel.setRecordType(it.first)
-            }
-        }
+    private val rechargeLogAdapter by lazy {
+        RechargeLogAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,25 +44,17 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_finance, container, false).apply {
-            setupRefreshBalance(this)
-            setupRecordList(this)
+        return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
+            setupRechargeLogList(this)
         }
     }
 
-    private fun setupRefreshBalance(view: View) {
-        view.btn_refresh.setOnClickListener {
-            loading()
-            viewModel.getMoney()
-        }
-    }
-
-    private fun setupRecordList(view: View) {
+    private fun setupRechargeLogList(view: View) {
         view.rvlist.apply {
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-            this.adapter = recordAdapter
+            this.adapter = rechargeLogAdapter
 
             addItemDecoration(
                 DividerItemDecoration(
@@ -83,19 +68,13 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.userMoneyResult.observe(this.viewLifecycleOwner, Observer {
-            hideLoading()
-            if (it != null && it.success) {
-                tv_balance.text = it.displayMoney
+        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it?.success == true) {
+                rechargeLogAdapter.data = it.rows ?: listOf()
             }
         })
 
-        viewModel.recordList.observe(this.viewLifecycleOwner, Observer {
-            recordAdapter.data = it
-        })
-
-        viewModel.getMoney()
-        viewModel.getRecordList()
+        viewModel.getUserRechargeList()
     }
 
     companion object {
@@ -105,12 +84,12 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment FinanceFragment.
+         * @return A new instance of fragment RechargeLogFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            FinanceFragment().apply {
+            RechargeLogFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

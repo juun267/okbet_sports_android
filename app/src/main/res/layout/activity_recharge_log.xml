@@ -1,83 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <!-- 充值紀錄 -->
-    <include layout="@layout/appbar_finance"/>
+    android:layout_height="match_parent">
 
     <org.cxct.sportlottery.ui.component.DateRangeSelectorComponent
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/app_bar_layout"/>
+        android:layout_height="42dp"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <org.cxct.sportlottery.ui.component.OrderStatusSelectorComponent
         android:id="@+id/order_status_selector"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/date_range_selector"/>
+        android:layout_height="44dp"
+        app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
-    <!-- TODO Hewie: Component -->
-    <LinearLayout
-        android:id="@+id/labels"
+    <View
+        android:id="@+id/rech_log_column"
         android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/order_status_selector" />
+
+    <TextView
+        android:id="@+id/rech_log_order_time"
+        android:layout_width="68dp"
         android:layout_height="wrap_content"
-        android:background="@color/gray5"
-        android:orientation="horizontal"
-        android:paddingVertical="4dp"
-        android:layout_below="@+id/order_status_selector">
+        android:layout_marginStart="14dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/recharge_log_order_time"
+        android:textColor="@color/gray4"
+        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMinTextSize="@dimen/textSize8sp"
+        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
+        app:layout_constraintEnd_toStartOf="@id/rech_log_recharge_amount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:gravity="center"
-            android:text="@string/order_number"
-            android:textColor="@color/gray4" />
+    <TextView
+        android:id="@+id/rech_log_recharge_amount"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/recharge_log_recharge_amount"
+        android:textColor="@color/gray4"
+        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMinTextSize="@dimen/textSize8sp"
+        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
+        app:layout_constraintEnd_toStartOf="@id/recg_log_channel_type"
+        app:layout_constraintStart_toEndOf="@id/rech_log_order_time"
+        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:text="@string/bet_type"
-            android:textColor="@color/gray4" />
+    <TextView
+        android:id="@+id/recg_log_channel_type"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/recharge_log_channel_type"
+        android:textColor="@color/gray4"
+        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMinTextSize="@dimen/textSize8sp"
+        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
+        app:layout_constraintEnd_toStartOf="@id/rech_log_order_state"
+        app:layout_constraintStart_toEndOf="@id/rech_log_recharge_amount"
+        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:gravity="center"
-            android:text="@string/total_bet_money"
-            android:textColor="@color/gray4" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
-            android:gravity="center"
-            android:text="@string/status"
-            android:textColor="@color/gray4" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/rech_log_order_state"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="14dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/recharge_log_order_state"
+        android:textColor="@color/gray4"
+        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMinTextSize="@dimen/textSize8sp"
+        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/recg_log_channel_type"
+        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvlist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/labels"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/rech_log_column" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
