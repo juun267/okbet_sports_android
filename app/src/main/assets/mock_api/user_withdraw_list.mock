@@ -1,0 +1,27 @@
+{
+	"success":true,
+	"msg":"y0ame4",
+	"code":888,
+	"rows":[
+		{
+			"id":506,
+			"userId":754,
+			"userName":"健柏.沈",
+			"applyMoney":625,
+			"applyTime":"2021-01-21",
+			"bankName":"健柏.沈",
+			"bankCard":"m1pggi",
+			"bankAccount":"naka15",
+			"appendInfo":"717x8x",
+			"checkStatus":730,
+			"reason":"54kaki",
+			"orderNo":"i5pgug",
+			"fee":294,
+			"accountMoney":659,
+			"channel":653,
+			"operatorTime":"2021-01-21",
+			"uwType":"h4gkgy"
+		}
+	],
+	"total":948
+}
