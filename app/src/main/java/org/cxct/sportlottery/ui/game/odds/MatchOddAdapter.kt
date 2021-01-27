@@ -41,50 +41,60 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-
-        Log.e(">>>", "before matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}}")
-
-        if (updatedOddsMap.isNotEmpty()) {
-            for ((key, value) in updatedOddsMap) {
-                when (key) {
-                    PlayType.OU.code -> {
-                        value.forEach {
-                            when (it.id) {
-                                item.odds[PlayType.OU.code]?.firstOrNull()?.id -> item.odds[PlayType.OU.code]?.set(0, it)
-
-//                           if (item.odds[PlayType.OU.code]?.size?:0 > 1)
-                                item.odds[PlayType.OU.code]?.get(1)?.id -> item.odds[PlayType.OU.code]?.set(1, it)
-
-                            }
-                        }
-                    }
-
-                    PlayType.HDP.code -> {
-                        value.forEach {
-                            when (it.id) {
-                                item.odds[PlayType.HDP.code]?.firstOrNull()?.id -> item.odds[PlayType.HDP.code]?.set(0, it)
-                                item.odds[PlayType.HDP.code]?.get(1)?.id -> item.odds[PlayType.HDP.code]?.set(1, it)
-                            }
-                        }
-                    }
-
-                    PlayType.X12.code -> {
-                        value.forEach {
-                            when (it.id) {
-                                item.odds[PlayType.HDP.code]?.firstOrNull()?.id -> item.odds[PlayType.HDP.code]?.set(0, it)
-                                item.odds[PlayType.HDP.code]?.get(1)?.id -> item.odds[PlayType.HDP.code]?.set(1, it)
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            Log.e(">>>", "after matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}}")
-
-
-        }
+        Log.e(">>>", "before matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
+        updateItemDataFromSocket(item)
+        Log.e(">>>", "after matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
         holder.bind(item, playType, matchOddListener)
+    }
+
+    private fun updateItemDataFromSocket(item: MatchOdd) {
+        if (updatedOddsMap.isNullOrEmpty()) return
+        for ((key, value) in updatedOddsMap) {
+            when (key) {
+                PlayType.OU.code -> {
+                    value.forEach {
+                        when (it.id) {
+                            item.odds[PlayType.OU.code]?.firstOrNull()?.id -> item.odds[PlayType.OU.code]?.set(
+                                0,
+                                it)
+
+                            //                           if (item.odds[PlayType.OU.code]?.size?:0 > 1)
+                            item.odds[PlayType.OU.code]?.get(1)?.id -> item.odds[PlayType.OU.code]?.set(
+                                1,
+                                it)
+
+                        }
+                    }
+                }
+
+                PlayType.HDP.code -> {
+                    value.forEach {
+                        when (it.id) {
+                            item.odds[PlayType.HDP.code]?.firstOrNull()?.id -> item.odds[PlayType.HDP.code]?.set(
+                                0,
+                                it)
+                            item.odds[PlayType.HDP.code]?.get(1)?.id -> item.odds[PlayType.HDP.code]?.set(
+                                1,
+                                it)
+                        }
+                    }
+                }
+
+                PlayType.X12.code -> {
+                    value.forEach {
+                        when (it.id) {
+                            item.odds[PlayType.HDP.code]?.firstOrNull()?.id -> item.odds[PlayType.HDP.code]?.set(
+                                0,
+                                it)
+                            item.odds[PlayType.HDP.code]?.get(1)?.id -> item.odds[PlayType.HDP.code]?.set(
+                                1,
+                                it)
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
     override fun getItemCount(): Int = data.size
@@ -146,21 +156,25 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             oddOUHome?.let {
                 itemView.ou_hdp_home_ou.bet_top_text.text = it.spread
                 itemView.ou_hdp_home_ou.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_home_ou.setupStatus(it.odds.toString().isEmpty(), it.status)
             }
 
             oddOUAway?.let {
                 itemView.ou_hdp_away_ou.bet_top_text.text = it.spread
                 itemView.ou_hdp_away_ou.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_away_ou.setupStatus(it.odds.toString().isEmpty(), it.status)
             }
 
             oddHDPHome?.let {
                 itemView.ou_hdp_home_hdp.bet_top_text.text = it.spread
                 itemView.ou_hdp_home_hdp.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_home_hdp.setupStatus(it.odds.toString().isEmpty(), it.status)
             }
 
             oddHDPAway?.let {
                 itemView.ou_hdp_away_hdp.bet_top_text.text = it.spread
                 itemView.ou_hdp_away_hdp.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_away_hdp.setupStatus(it.odds.toString().isEmpty(), it.status)
             }
         }
 
