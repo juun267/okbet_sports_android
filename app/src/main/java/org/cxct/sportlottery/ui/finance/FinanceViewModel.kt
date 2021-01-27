@@ -313,10 +313,27 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     }
 
     fun getUserWithdrawList() {
+        val checkStatus = _withdrawStateList.value?.find {
+            it.isSelected
+        }?.code
+
+        val uwType = _withdrawTypeList.value?.find {
+            it.isSelected
+        }?.type
+
+        val startTime = _recordCalendarStartDate.value?.date
+        val endTime = _recordCalendarEndDate.value?.date
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.withdrawService.getWithdrawList(
-                    WithdrawListRequest()
+                    WithdrawListRequest(
+                        checkStatus = checkStatus,
+                        uwType = uwType,
+                        startTime = startTime,
+                        endTime = endTime,
+
+                        )
                 )
             }
             _userWithdrawResult.postValue(result)

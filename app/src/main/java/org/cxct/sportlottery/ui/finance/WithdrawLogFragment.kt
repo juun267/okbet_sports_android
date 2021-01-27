@@ -42,6 +42,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupWithdrawStateSelector(this)
             setupWithdrawTypeSelector(this)
             setupWithdrawLogList(this)
+            setupSearch(this)
         }
     }
 
@@ -127,6 +128,12 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     DividerItemDecoration.VERTICAL
                 )
             )
+        }
+    }
+
+    private fun setupSearch(view: View) {
+        view.date_range_selector.btn_search.setOnClickListener {
+            viewModel.getUserWithdrawList()
         }
     }
 
