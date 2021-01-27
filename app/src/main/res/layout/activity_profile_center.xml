@@ -648,9 +648,9 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_recharge"
+        android:id="@+id/btn_finance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="充值" />
+        android:text="@string/finance" />
 
 </LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/finance_navigation"
+    app:startDestination="@id/financeFragment">
+
+    <fragment
+        android:id="@+id/financeFragment"
+        android:name="org.cxct.sportlottery.ui.finance.FinanceFragment"
+        android:label="fragment_finance"
+        tools:layout="@layout/fragment_finance" />
+
+</navigation>
