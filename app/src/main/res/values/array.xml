@@ -15,4 +15,11 @@
         <item>@drawable/ic_icondrawtransfer</item>
         <item>@drawable/ic_icondrawbonusrecord</item>
     </integer-array>
+
+    <string-array name="recharge_state_array">
+        <item>@string/recharge_state_all</item>
+        <item>@string/recharge_state_processing</item>
+        <item>@string/recharge_state_success</item>
+        <item>@string/recharge_state_failed</item>
+    </string-array>
 </resources>
