@@ -164,10 +164,6 @@ class MainViewModel(
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
 
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
-
     private val _oddsDetailMoreList = MutableLiveData<List<*>>()
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
@@ -222,8 +218,13 @@ class MainViewModel(
     val producerUp: LiveData<ProducerUpEvent?>
         get() = BroadcastRepository().instance().producerUp
 
+    private val _userMoney = BroadcastRepository().instance().userMoney
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = _userMoney
+
     val userNotice: LiveData<UserNoticeEvent?>
         get() = BroadcastRepository().instance().userNotice
+
 
     private val _isParlayPage = MutableLiveData<Boolean>()
     val isParlayPage: LiveData<Boolean>
@@ -422,8 +423,12 @@ class MainViewModel(
         }
     }
 
-    fun getNowUrlHall (cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
+    fun getHallUrl (cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
         return "${BackService.URL_HALL}$nowGameType/$cateMenuCode/$eventId"
+    }
+
+    fun getEventUrl (eventId: String?): String {
+        return "${BackService.URL_EVENT}${eventId}"
     }
 
     var nowGameType: String? = SportType.FOOTBALL.code
@@ -434,7 +439,6 @@ class MainViewModel(
         }
         when (matchType) {
             MatchType.TODAY -> {
-                Log.e(">>>", "today")
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
                     it.isSelected
                 }?.code
@@ -572,7 +576,6 @@ class MainViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null
     ) {
-        Log.e(">>>", "getOddsList")
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(

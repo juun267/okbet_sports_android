@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -83,8 +84,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     enum class Page {
-        ODDS_DETAIL,
-        ODDS
+        ODDS_DETAIL, ODDS
     }
 
     private val navController by lazy {
@@ -111,7 +111,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun testGetBCRFromVM() {
-        viewModel.userNotice.observe(this, {
+        viewModel.userNotice.observe(this, Observer {
             Timber.d(">>> viewModel userNoticeList size = ${it?.userNoticeList?.size}")
         })
     }
@@ -138,19 +138,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun removeBroadcast() {
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.removeDataSource(
-            mReceiver.globalStop,
-            mReceiver.matchClock,
-            mReceiver.matchOddsChange,
-            mReceiver.matchStatusChange,
-            mReceiver.notice,
-            mReceiver.oddsChange,
-            mReceiver.orderSettlement,
-            mReceiver.pingPong,
-            mReceiver.producerUp,
-            mReceiver.userMoney,
-            mReceiver.userNotice
-        )
+        bcRepository.removeDataSource(mReceiver.globalStop,
+                                      mReceiver.matchClock,
+                                      mReceiver.matchOddsChange,
+                                      mReceiver.matchStatusChange,
+                                      mReceiver.notice,
+                                      mReceiver.oddsChange,
+                                      mReceiver.orderSettlement,
+                                      mReceiver.pingPong,
+                                      mReceiver.producerUp,
+                                      mReceiver.userMoney,
+                                      mReceiver.userNotice)
 
         unregisterReceiver(mReceiver)
     }
@@ -173,19 +171,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.addDataSources(
-            mReceiver.globalStop,
-            mReceiver.matchClock,
-            mReceiver.matchOddsChange,
-            mReceiver.matchStatusChange,
-            mReceiver.notice,
-            mReceiver.oddsChange,
-            mReceiver.orderSettlement,
-            mReceiver.pingPong,
-            mReceiver.producerUp,
-            mReceiver.userMoney,
-            mReceiver.userNotice
-        )
+        bcRepository.addDataSources(mReceiver.globalStop,
+                                    mReceiver.matchClock,
+                                    mReceiver.matchOddsChange,
+                                    mReceiver.matchStatusChange,
+                                    mReceiver.notice,
+                                    mReceiver.oddsChange,
+                                    mReceiver.orderSettlement,
+                                    mReceiver.pingPong,
+                                    mReceiver.producerUp,
+                                    mReceiver.userMoney,
+                                    mReceiver.userNotice)
         registerReceiver(mReceiver, filter)
     }
 
@@ -374,19 +370,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun addFragment(fragment: Fragment, page: Page) {
         if (supportFragmentManager.findFragmentByTag(page.name) == null) {
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, 0)
-                .add(R.id.odds_detail_container, fragment, page.name)
-                .addToBackStack(page.name)
-                .commit()
+            supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right,
+                                                                          0).add(R.id.odds_detail_container,
+                                                                                 fragment,
+                                                                                 page.name).addToBackStack(
+                page.name).commit()
         }
     }
 
 
     override fun onBackPressed() {
-        if (navController.currentDestination?.id != R.id.homeFragment
-            && supportFragmentManager.backStackEntryCount == 0
-        ) {
+        if (navController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
             tabLayout.getTabAt(0)?.select()
             return
         }
@@ -395,10 +389,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun doBackService(isLogin: Boolean) {
-        if (isLogin)
-            doBindService()
-        else
-            doUnBindService()
+        if (isLogin) doBindService()
+        else doUnBindService()
     }
 
     private fun initObserve() {
@@ -425,10 +417,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            addFragment(
-                OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
-                Page.ODDS_DETAIL
-            )
+            subscribeEventChannel(matchId)
+            addFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
+                        Page.ODDS_DETAIL)
         })
 
         viewModel.matchTypeCard.observe(this, Observer {
@@ -445,9 +436,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
-            getAppBarLayout().setExpanded(true, true)
             Log.e(">>>", "isOpenMatchOdds = $it")
-//            mService.subscribeChannel(viewModel.getNowUrlHall())
+            getAppBarLayout().setExpanded(true, true)
+            subscribeHallChannel()
             addFragment(GameDetailFragment(), Page.ODDS)
         })
 
@@ -458,6 +449,37 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
+    }
+
+    private fun subscribeEventChannel(eventId: String) {
+        if (eventId.isEmpty()) return
+        mService.subscribeChannel(viewModel.getEventUrl(eventId))
+    }
+
+    private fun subscribeHallChannel() {
+
+        val oddsFirst = viewModel.oddsListResult.value?.oddsListData?.leagueOdds?.get(0)
+        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
+        mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
+
+        //一般遊戲
+        viewModel.oddsListResult.observe(this, Observer {
+            if (it != null && it.success) {
+                val eventId = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                if (!eventId.isNullOrEmpty())
+                    mService.subscribeChannel(viewModel.getHallUrl(eventId = eventId))
+            }
+        })
+
+        //冠軍玩法
+        viewModel.outrightOddsListResult.observe(this, Observer {
+            if (it != null && it.success) {
+                val eventId = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                if (!eventId.isNullOrEmpty())
+                    mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = eventId))
+            }
+        })
+
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
@@ -480,10 +502,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        Glide.with(this)
-            .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
-            .into(iv_head) //載入頭像
+        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
+            iv_head) //載入頭像
     }
 
     private fun queryData() {

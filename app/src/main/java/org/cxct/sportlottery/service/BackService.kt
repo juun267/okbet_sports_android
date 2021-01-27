@@ -259,9 +259,9 @@ class BackService : Service() {
     fun subscribeChannel(url: String) {
         Timber.e(">>> subscribeEvent: $url")
         val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
-            Timber.e(">>> msg = ${topicMessage.payload}")
-//            Timber.e(">>> get msg")
-
+            Timber.e(">>> returned msg: ${topicMessage.payload}")
+//            if (!topicMessage.payload.isNullOrEmpty())
+//                Timber.e(">>> has sth returned")
         }
 /*
         if (defaultEventDisposable != null) {
