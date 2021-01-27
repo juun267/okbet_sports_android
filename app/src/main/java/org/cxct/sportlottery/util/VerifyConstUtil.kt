@@ -30,9 +30,9 @@ object VerifyConstUtil {
         return Pattern.matches("[$NUMBER$ENGLISH_WORD]{6,20}$", pwd)
     }
 
-    //真實姓名 //中文2-20 可空格 可點 ,英文2-50 可空格 可點
+    //真實姓名 //中文2-20,英文2-50 可空格 可點
     fun verifyFullName(fullName: CharSequence): Boolean {
-        return Pattern.matches("[\\s.$CHINESE_WORD]{2,20}", fullName) ||
+        return Pattern.matches("[$CHINESE_WORD]{2,20}", fullName) ||
                 Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
     }
 

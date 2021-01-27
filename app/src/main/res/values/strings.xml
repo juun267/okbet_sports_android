@@ -346,6 +346,15 @@
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
+    <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
+    <string name="error_wx">您输入的微信格式或数值错误</string>
+    <string name="error_user_name">您输入的姓名格式或数值错误</string>
+    <string name="error_bank_id">您输入的银行卡号格式或数值错误</string>
+    <string name="text_money_copy_success">复制成功</string>
+
+
+
+
 
 
     <!--  Withdraw  -->
@@ -432,4 +441,14 @@
     <string name="record_red_envelope">红包纪录</string>
     <string name="record_conversion">转换纪录</string>
     <string name="record_reward">打賞紀錄</string>
+
+    <string name="recharge_state_success">成功</string>
+    <string name="recharge_state_failed">失败</string>
+    <string name="recharge_state_processing">处理中</string>
+    <string name="recharge_state_recharging">充值中</string>
+
+    <string name="recharge_log_order_time">订单时间</string>
+    <string name="recharge_log_recharge_amount">充值金额</string>
+    <string name="recharge_log_channel_type">渠道类型</string>
+    <string name="recharge_log_order_state">订单状态</string>
 </resources>
