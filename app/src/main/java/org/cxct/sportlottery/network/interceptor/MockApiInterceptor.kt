@@ -45,6 +45,7 @@ import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
+import org.cxct.sportlottery.network.Constants.WITHDRAW_LIST
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
 import timber.log.Timber
 import java.io.IOException
@@ -181,6 +182,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(USER_RECHARGE_LIST) -> {
                     response = getMockJsonData(request, "userrech_list.mock")
+                }
+                path.contains(WITHDRAW_LIST) -> {
+                    response = getMockJsonData(request, "user_withdraw_list.mock")
                 }
             }
         }

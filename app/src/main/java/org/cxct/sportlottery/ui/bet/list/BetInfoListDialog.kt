@@ -10,9 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
+import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListAdapter.OnItemClickListener {
 
@@ -32,7 +36,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
         val binding: DialogBetInfoListBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
         binding.apply {
             mainViewModel = this@BetInfoListDialog.viewModel
-            lifecycleOwner = this@BetInfoListDialog
+            lifecycleOwner = this@BetInfoListDialog.viewLifecycleOwner
         }
 
         return binding.root
@@ -66,13 +70,22 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
     }
 
     private fun observeData() {
-        viewModel.betInfoList.observe(requireActivity(), Observer {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
             } else {
                 betInfoListAdapter.modify(it, deletePosition)
             }
         })
+
+        viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
+            if(!it.success){
+                //確認toast樣式後在調整
+                ToastUtil.showToast(context, it.msg)
+            }
+        })
+
+
     }
 
     override fun onDeleteClick(position: Int) {
@@ -82,7 +95,13 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
     }
 
 
-    override fun onBetClick() {
+    override fun onBetClick(betInfoListData:BetInfoListData, stake: Double) {
+       viewModel.addBet(BetAddRequest(
+           listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
+           listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+           1,
+           "EU"
+       ), false)
 
     }
 

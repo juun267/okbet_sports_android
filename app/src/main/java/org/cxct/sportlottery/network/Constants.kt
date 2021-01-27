@@ -87,6 +87,7 @@ object Constants {
 
     //withdraw
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
+    const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
