@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -65,15 +66,8 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupMatchOddList(this)
             setupOutrightOddList(this)
 
-            subscribeChannel()
+//            subscribeChannel()
         }
-    }
-
-    private fun subscribeChannel() {
-//        val nowMatchType = viewModel.matchTypeCard
-//        val gameType = viewModel.sportMenuResult.value?.sportMenuData?.
-//        val hallUrl = service.setUrlHall(gameType = , cateMenuCode = CateMenuCode.HDP_AND_OU.code, eventId = )
-//        service.subscribeEvent(hallUrl)
     }
 
     private fun setupEvent(view: View) {
@@ -136,6 +130,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
+                subscribeChampionChannel(it)
                 setupOddsUpperBar(it)
                 setupMatchOddList(it)
             }
@@ -143,10 +138,31 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
+                subscribeChampionChannel(it)
                 setupLeagueOddsUpperBar()
                 setupOutrightOddList(it)
             }
         })
+
+        setSocketObserver()
+    }
+
+    private fun setSocketObserver() {
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, {
+            Log.e(">>>", "${it?.eventType.toString()}")
+        })
+    }
+
+    private fun subscribeChampionChannel(outrightOddsListResult: OutrightOddsListResult) {
+        val oddsFirst = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)
+        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
+        service.subscribeChannel(viewModel.getNowUrlHall(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
+    }
+
+    private fun subscribeChampionChannel(oddsListResult: OddsListResult) {
+        val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
+        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
+        service.subscribeChannel(viewModel.getNowUrlHall(eventId = id))
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
