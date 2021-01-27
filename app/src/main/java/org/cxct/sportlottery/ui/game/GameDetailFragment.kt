@@ -126,6 +126,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e(">>>", "GameDetailFragment")
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
                 setupOddsUpperBar(it)

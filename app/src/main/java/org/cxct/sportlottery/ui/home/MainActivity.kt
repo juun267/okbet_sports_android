@@ -111,7 +111,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun testGetBCRFromVM() {
-        viewModel.userNotice.observe(this, {
+        viewModel.userNotice.observe(this, Observer {
             Timber.d(">>> viewModel userNoticeList size = ${it?.userNoticeList?.size}")
         })
     }
@@ -451,6 +451,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun subscribeEventChannel(eventId: String) {
+        if (eventId.isEmpty()) return
         mService.subscribeChannel(viewModel.getEventUrl(eventId))
     }
 
@@ -460,20 +461,21 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
         mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
 
+        //一般遊戲
         viewModel.oddsListResult.observe(this, Observer {
             if (it != null && it.success) {
-                val id =
-                    it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
-                mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
+                val eventId = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                if (!eventId.isNullOrEmpty())
+                    mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
             }
         })
 
+        //冠軍玩法
         viewModel.outrightOddsListResult.observe(this, Observer {
             if (it != null && it.success) {
-                val id =
-                    it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
-                mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code,
-                                                               eventId = id))
+                val eventId = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                if (!eventId.isNullOrEmpty())
+                    mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
             }
         })
 

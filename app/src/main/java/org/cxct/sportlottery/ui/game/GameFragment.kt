@@ -61,7 +61,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener {
-                service.subscribeChannel(viewModel.getEventUrl(it.matchInfo.id))
                 viewModel.getOddsDetail(it.matchInfo.id)
             }
         }
