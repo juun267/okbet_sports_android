@@ -153,16 +153,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun removeBroadcast() {
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.removeDataSource(mReceiver.globalStop,
-                                      mReceiver.matchClock,
-                                      mReceiver.matchStatusChange,
-                                      mReceiver.notice,
-                                      mReceiver.oddsChange,
-                                      mReceiver.orderSettlement,
-                                      mReceiver.pingPong,
-                                      mReceiver.producerUp,
-                                      mReceiver.userMoney,
-                                      mReceiver.userNotice)
+        bcRepository.removeDataSource(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
 
         unregisterReceiver(mReceiver)
     }
@@ -180,16 +182,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
         val bcRepository = BroadcastRepository().instance()
-        bcRepository.addDataSources(mReceiver.globalStop,
-                                    mReceiver.matchClock,
-                                    mReceiver.matchStatusChange,
-                                    mReceiver.notice,
-                                    mReceiver.oddsChange,
-                                    mReceiver.orderSettlement,
-                                    mReceiver.pingPong,
-                                    mReceiver.producerUp,
-                                    mReceiver.userMoney,
-                                    mReceiver.userNotice)
+        bcRepository.addDataSources(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
         registerReceiver(mReceiver, filter)
     }
 
@@ -197,11 +201,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun doBindService() {
         //TODO Cheryl 判斷if is login already
 //        if (!checkServiceRunning()) { //如果service斷掉則重啟
-            val serviceIntent = Intent(this, BackService::class.java)
-            serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
-            serviceIntent.putExtra(SERVICE_USER_ID, viewModel.userId)
-            bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
-            mIsBound = true
+        val serviceIntent = Intent(this, BackService::class.java)
+        serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
+        serviceIntent.putExtra(SERVICE_USER_ID, viewModel.userId)
+        bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
+        mIsBound = true
 //        }
 
         initBroadcast()
@@ -317,6 +321,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
+                popAllFragment()
                 viewModel.isParlayPage(tab?.position == 4)
 
                 when (tab?.position) {
@@ -395,7 +400,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this,  Observer {
+        viewModel.isLogin.observe(this, Observer {
             Log.e(">>>", "isLogin = $it")
             if (it) {
                 queryData()
@@ -428,8 +433,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            addFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
-                        Page.ODDS_DETAIL)
+            addFragment(
+                OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
+                Page.ODDS_DETAIL
+            )
         })
 
         viewModel.matchTypeCard.observe(this, Observer {
@@ -501,6 +508,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
+    }
+
+    private fun popAllFragment() {
+        val manager = supportFragmentManager
+        for (i in 0 until manager.backStackEntryCount) {
+            supportFragmentManager.popBackStack()
+        }
     }
 
 }
