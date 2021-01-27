@@ -1,12 +1,20 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
+import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
@@ -15,10 +23,12 @@ import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
-import org.cxct.sportlottery.util.MoneyManager.getBankIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -26,9 +36,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         private const val TAG = "TransferPayFragment"
     }
 
+    lateinit var calendarBottomSheet: BottomSheetDialog
+
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
+
+    private val mSpannerList = mutableListOf<CustomImageAdapter.SelectBank>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,68 +60,137 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         super.onViewCreated(view, savedInstanceState)
 
         initPayAccountSpinner()
+        initView()
         initButton()
-//        initTimePicker()
+        initObserve()
+
     }
 
     private fun initButton() {
+        //提交
         btn_submit.setOnClickListener {
-            var moneyAddRequest: MoneyAddRequest = MoneyAddRequest(
+            val moneyAddRequest = MoneyAddRequest(
                 rechCfgId = mSelectRechCfgs?.id ?: 0,
-                bankCode = "",
-                depositMoney = et_money.text.toString().toInt(),
-                payer = et_bank_account.text.toString(),
-                payerName = et_name.text.toString(),
-                payerBankName = "aaa",
-                payerInfo = "payerInfo",
-                depositDate = Date().time
+                bankCode = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
+                depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
+                    et_recharge_amount.getText().toInt()
+                } else {
+                    0
+                },
+                payer = et_bank_account.getText(),
+                payerName = et_name.getText(),
+                payerBankName = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
+                payerInfo = "",
+                depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
             )
             viewModel.rechargeAdd(moneyAddRequest)
         }
+
+        //選取日曆
+        cv_recharge_time.setOnClickListener {
+            calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
+            calendarBottomSheet.show()
+        }
+
+        //複製姓名
+        btn_name_copy.setOnClickListener {
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(null, tv_name.text)
+            clipboard?.setPrimaryClip(clipData)
+            ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+        }
+
+        //複製帳號
+        btn_account_copy.setOnClickListener {
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(null, tv_account.text)
+            clipboard?.setPrimaryClip(clipData)
+            ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+        }
+
+        //複製地址
+        btn_address_copy.setOnClickListener {
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(null, tv_address.text)
+            clipboard?.setPrimaryClip(clipData)
+            ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
+        }
+    }
+
+    private fun initView() {
+        setupTextChangeEvent()
+        calendarBottomSheet()
+    }
+
+    private fun initObserve() {
+
+        //充值金額訊息
+        viewModel.rechargeAmountMsg.observe(viewLifecycleOwner, {
+            et_recharge_amount.setError(it)
+        })
+        //微信
+        viewModel.wxErrorMsg.observe(viewLifecycleOwner, {
+            et_wx_id.setError(it)
+        })
+        //認證姓名
+        viewModel.nameErrorMsg.observe(viewLifecycleOwner, {
+            et_name.setError(it)
+        })
+        //銀行卡號
+        viewModel.bankIDErrorMsg.observe(viewLifecycleOwner, {
+            et_bank_account.setError(it)
+        })
+        //暱稱
+        viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
+            et_nickname.setError(it)
+        })
+
     }
 
     //入款帳號選單
     private fun initPayAccountSpinner() {
         //支付類型的入款帳號清單
-        var rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
+        val rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType
         } ?: mutableListOf()
 
         //產生對應 spinner 選單
         var count = 1
 
-        val spannerList = mutableListOf<CustomImageAdapter.SelectBank>()
         if (mMoneyPayWay?.rechType == "bankTransfer") //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
                 val selectBank = CustomImageAdapter.SelectBank(
                     it.rechName.toString(),
                     getBankIconByBankName(it.rechName.toString())
                 )
-                spannerList.add(selectBank)
+                mSpannerList.add(selectBank)
             }
         else {
             val title = mMoneyPayWay?.title
 
             if (rechCfgsList.size > 1)
-                rechCfgsList.forEach { it ->
+                rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
                             title + count++,
                             getBankAccountIcon(it.rechType ?: "")
                         )
-                    spannerList.add(selectBank)
+                    mSpannerList.add(selectBank)
                 }
             else
-                rechCfgsList.forEach { it ->
+                rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
                             title + "",
                             getBankAccountIcon(it.rechType ?: "")
                         )
-                    spannerList.add(selectBank)
+                    mSpannerList.add(selectBank)
                 }
         }
-        sp_pay_account.adapter = CustomImageAdapter(context, spannerList)
+        sp_pay_account.adapter = CustomImageAdapter(context, mSpannerList)
 
         //選擇入款帳號
         sp_pay_account.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -152,7 +235,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         if (mMoneyPayWay?.rechType == "bankTransfer") {
             ll_qr.visibility = View.GONE
             ll_address.visibility = View.VISIBLE
-            cv_wx_id.visibility = View.GONE
+            et_wx_id.visibility = View.GONE
 
         } else {
             ll_qr.visibility = View.VISIBLE
@@ -160,98 +243,82 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         }
         when (mMoneyPayWay?.rechType) {
-            MoneyType.BANK.code, MoneyType.CTF.code -> {
+            MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 ll_qr.visibility = View.GONE
                 ll_address.visibility = View.VISIBLE
-                cv_wx_id.visibility = View.GONE
-                cv_nickname.visibility = View.GONE
-                cv_bank_account.visibility = View.VISIBLE
-                cv_name.visibility = View.VISIBLE
+                et_wx_id.visibility = View.GONE
+                et_nickname.visibility = View.GONE
+                et_bank_account.visibility = View.VISIBLE
+                et_name.visibility = View.VISIBLE
             }
-            MoneyType.WX.code -> {
+            MoneyType.WX_TYPE.code -> {
                 ll_qr.visibility = View.VISIBLE
                 ll_address.visibility = View.GONE
-                cv_wx_id.visibility = View.VISIBLE
-                cv_nickname.visibility = View.GONE
-                cv_bank_account.visibility = View.GONE
-                cv_name.visibility = View.GONE
-
+                et_wx_id.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
+                et_bank_account.visibility = View.GONE
+                et_name.visibility = View.GONE
             }
-            MoneyType.ALI.code -> {
+            MoneyType.ALI_TYPE.code -> {
                 ll_qr.visibility = View.VISIBLE
                 ll_address.visibility = View.GONE
-                cv_wx_id.visibility = View.GONE
-                cv_nickname.visibility = View.VISIBLE
-                cv_bank_account.visibility = View.GONE
-                cv_name.visibility = View.VISIBLE
+                et_wx_id.visibility = View.GONE
+                et_nickname.visibility = View.VISIBLE
+                et_bank_account.visibility = View.GONE
+                et_name.visibility = View.VISIBLE
             }
         }
 
         //存款時間
-        et_wallet_money.text = TimeUtil.stampToDate(Date().time)
+        txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
 
-//        //存款金額提示
-//        val maxMoney = ArithUtil.toMoneyFormat(MoneyManager.getMaxMoney(selectRechCfgs))
-//        val minMoney = ArithUtil.toMoneyFormat(MoneyManager.getMinMoney(selectRechCfgs))
-//        tv_pay_amount_desc.text = String.format(getString(R.string.deposit_amount_range), minMoney, maxMoney)
-//
-//        //存款金額
-//        val editTextTools = EditTextTools(edit_pay_amount, 15, 0) //輸入到小數點下第二位
-//        editTextTools.setEnableComma(true) //開啟千分位符號顯示功能
-//        //解決hint太長凸出輸入框問題
-//        var hintText = String.format(getString(R.string.limit_lower_100_upper_5000), minMoney, maxMoney)
-//        val span = SpannableString(hintText)
-//        span.setSpan(RelativeSizeSpan(0.9f), 0, hintText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//        edit_pay_amount.hint = span
-//
-//        //帳號信息
-//        if (!selectRechCfgs?.pageDesc.isNullOrEmpty()) {
-//            edit_account_info.hint = selectRechCfgs?.pageDesc
-//        } else {
-//            if (selectRechCfgs?.rechType == "alipay" || selectRechCfgs?.rechType == "cft") {
-//                edit_account_info.hint = getString(R.string.please_enter_account_nickname)
-//            } else {
-//                edit_account_info.hint = getString(R.string.please_enter_account_name)
-//            }
-//        }
-//
-//        //認證姓名
-//        if (selectRechCfgs?.rechType == "cft") {
-//            block_certified_name.visibility = View.VISIBLE
-//            line_certified_name.visibility = View.VISIBLE
-//        } else {
-//            block_certified_name.visibility = View.GONE
-//            line_certified_name.visibility = View.GONE
-//        }
-//        when (selectRechCfgs?.rechType) {
-//            "alipay" -> edit_certified_name.hint = getString(R.string.fill_in_alipay_real_name)
-//            "cft" -> edit_certified_name.hint = getString(R.string.fill_in_CFT_real_name)
-//            else -> edit_certified_name.hint = getString(R.string.please_enter_account_name)
-//        }
-//
-
-//
-//        //手續費率/贈送費率 <0是手續費 >0是贈送費率
-//        when {
-//            selectRechCfgs?.rebateFee ?: 0.0 > 0.0 -> {
-//                line_rate.visibility = View.VISIBLE
-//                block_rate.visibility = View.VISIBLE
-//                tv_rate_title.text = getString(R.string.gift_money)
-//                tv_rate.text = "0"
-//            }
-//            selectRechCfgs?.rebateFee ?: 0.0 < 0.0 -> {
-//                line_rate.visibility = View.VISIBLE
-//                block_rate.visibility = View.VISIBLE
-//                tv_rate_title.text = getString(R.string.fees)
-//                tv_rate.text = "0"
-//            }
-//            else -> {
-//                line_rate.visibility = View.GONE
-//                block_rate.visibility = View.GONE
-//            }
-//        }
-//        setFeeRateText(edit_pay_amount.text)
     }
 
+    private fun setupTextChangeEvent() {
+        viewModel.apply {
+            //充值金額
+            et_recharge_amount.afterTextChanged { checkRechargeAmount(it) }
+            //微信
+            et_wx_id.afterTextChanged { checkWX(it) }
+            //認證姓名
+            et_name.afterTextChanged { checkUserName(it) }
+            //認證銀行卡號
+            et_bank_account.afterTextChanged { checkBankID(it) }
+            //暱稱
+            et_nickname.afterTextChanged { checkNickName(it) }
+        }
+    }
+
+    //日曆
+    @SuppressLint("InflateParams")
+    private fun calendarBottomSheet() {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar_single, null)
+        calendarBottomSheet = BottomSheetDialog(this.requireContext())
+        calendarBottomSheet.setContentView(bottomSheetView)
+        calendarBottomSheet.calendar.setSelectableDateRange(
+            getDateInCalendar(30).first,
+            getDateInCalendar(30).second
+        )
+        calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
+            override fun onFirstDateSelected(startDate: Calendar) {
+                calendarBottomSheet.dismiss()
+            }
+
+            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                val formatter =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                txv_recharge_time.text = formatter.format(startDate.time)
+                calendarBottomSheet.dismiss()
+            }
+        })
+    }
+
+    private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
+        if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
+        return Pair(minusDaysCalendar, todayCalendar)
+    }
 
 }

@@ -1,7 +1,20 @@
 package org.cxct.sportlottery.network
 
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
+
 object Constants {
     const val BASE_URL = "https://sports.cxct.org"
+
+    //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
+    fun getPromotionUrl(token: String?): String? {
+        return try {
+            BASE_URL + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     //bet
     const val MATCH_BET_INFO = "/api/front/match/bet/info"

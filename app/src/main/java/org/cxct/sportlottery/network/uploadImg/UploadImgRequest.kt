@@ -7,7 +7,7 @@ import org.cxct.sportlottery.repository.PLATFORM_CODE
 import org.cxct.sportlottery.repository.PROJECT_CODE
 import java.io.File
 
-class UploadImgRequest(private val userId: String, private val file: File) {
+class UploadImgRequest(val userId: String, private val file: File) {
 
     fun toParts(): List<MultipartBody.Part> {
         val mediaType = "image/*".toMediaTypeOrNull()

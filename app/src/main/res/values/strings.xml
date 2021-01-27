@@ -14,6 +14,7 @@
     <string name="error_url_fail">跳转地址错误</string>
     <string name="unknown_error">未知错误</string>
     <string name="error_reading_file">档案读取错误</string>
+    <string name="message_guest_no_permission">试玩账号无权访问，请先注册</string>
 
 
     <!--network message-->
@@ -166,11 +167,18 @@
     <string name="fourth_section">第四节</string>
     <string name="total_score_over_time">总分\n含加时</string>
     <string name="plat">盘</string>
+    <string name="round">局</string>
+    <string name="score">分</string>
     <string name="first_plat">第一盘</string>
     <string name="second_plat">第二盘</string>
     <string name="third_plat">第三盘</string>
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
+    <string name="first">第一</string>
+    <string name="second">第二</string>
+    <string name="third">第三</string>
+    <string name="fourth">第四</string>
+    <string name="fifth">第五</string>
 
     <!-- Profile center page -->
     <string name="good_midnight">凌晨好</string>
@@ -338,6 +346,15 @@
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
+    <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
+    <string name="error_wx">您输入的微信格式或数值错误</string>
+    <string name="error_user_name">您输入的姓名格式或数值错误</string>
+    <string name="error_bank_id">您输入的银行卡号格式或数值错误</string>
+    <string name="text_money_copy_success">复制成功</string>
+
+
+
+
 
 
     <!--  Withdraw  -->

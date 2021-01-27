@@ -54,6 +54,7 @@
         <activity android:name=".ui.profileCenter.profile.ProfileActivity" />
         <activity android:name=".ui.profileCenter.nickname.ChangeNicknameActivity" />
         <activity android:name=".ui.profileCenter.changePassword.SettingPasswordActivity" />
+        <activity android:name=".ui.common.WebActivity" />
 
 
         <!-- Since JCore2.0.0 Required SDK核心功能-->
