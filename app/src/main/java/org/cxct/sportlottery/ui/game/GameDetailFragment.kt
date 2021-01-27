@@ -65,8 +65,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupEvent(this)
             setupMatchOddList(this)
             setupOutrightOddList(this)
-
-//            subscribeChannel()
         }
     }
 
@@ -130,7 +128,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
-                subscribeChampionChannel(it)
                 setupOddsUpperBar(it)
                 setupMatchOddList(it)
             }
@@ -138,7 +135,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
-                subscribeChampionChannel(it)
                 setupLeagueOddsUpperBar()
                 setupOutrightOddList(it)
             }
@@ -149,21 +145,23 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setSocketObserver() {
         viewModel.oddsChange.observe(this.viewLifecycleOwner, {
-            Log.e(">>>", "${it?.eventType.toString()}")
+            Log.e(">>>testttt", "${it?.eventType.toString()}")
         })
+    }
+/*
+
+    private fun subscribeChannel(oddsListResult: OddsListResult) {
+        val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
+        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
+        service.subscribeChannel(viewModel.getHallUrl(eventId = id))
     }
 
     private fun subscribeChampionChannel(outrightOddsListResult: OutrightOddsListResult) {
         val oddsFirst = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)
         val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
-        service.subscribeChannel(viewModel.getNowUrlHall(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
+        service.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
     }
-
-    private fun subscribeChampionChannel(oddsListResult: OddsListResult) {
-        val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
-        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
-        service.subscribeChannel(viewModel.getNowUrlHall(eventId = id))
-    }
+*/
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
         league_odd_count.visibility = View.VISIBLE

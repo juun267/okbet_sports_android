@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -432,6 +433,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
+            subscribeEventChannel(matchId)
             addFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
                         Page.ODDS_DETAIL)
         })
@@ -451,8 +453,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
-            Log.e(">>>", "isOpenMatchOdds = $it")
-//            mService.subscribeChannel(viewModel.getNowUrlHall())
+            subscribeHallChannel()
             addFragment(GameDetailFragment(), Page.ODDS)
         })
 
@@ -463,6 +464,32 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
+    }
+
+    private fun subscribeEventChannel(eventId: String) {
+        mService.subscribeChannel(viewModel.getEventUrl(eventId))
+    }
+
+    private fun subscribeHallChannel() {
+
+        val oddsFirst = viewModel.oddsListResult.value?.oddsListData?.leagueOdds?.get(0)
+        val id = oddsFirst?.matchOdds?.firstOrNull()?.matchInfo?.id
+        mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
+
+        viewModel.oddsListResult.observe(this, Observer {
+            if (it != null && it.success) {
+                val id = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
+            }
+        })
+
+        viewModel.outrightOddsListResult.observe(this, Observer {
+            if (it != null && it.success) {
+                val id = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
+            }
+        })
+
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {

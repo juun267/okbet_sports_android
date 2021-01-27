@@ -421,11 +421,11 @@ class MainViewModel(
         }
     }
 
-    fun getNowUrlHall (cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
+    fun getHallUrl (cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
         return "${BackService.URL_HALL}$nowGameType/$cateMenuCode/$eventId"
     }
 
-    fun getNowUrlEvent (eventId: String?): String {
+    fun getEventUrl (eventId: String?): String {
         return "${BackService.URL_EVENT}${eventId}"
     }
 

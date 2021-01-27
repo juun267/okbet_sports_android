@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.service.BackService.Companion.URL_EVENT
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
@@ -62,7 +61,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener {
-                service.subscribeChannel(viewModel.getNowUrlEvent(it.matchInfo.id))
+                service.subscribeChannel(viewModel.getEventUrl(it.matchInfo.id))
                 viewModel.getOddsDetail(it.matchInfo.id)
             }
         }
