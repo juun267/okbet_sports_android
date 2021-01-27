@@ -462,8 +462,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         })
     }
 
-    private fun subscribeEventChannel(eventId: String) {
-        if (eventId.isEmpty()) return
+    private fun subscribeEventChannel(eventId: String?) {
+        if (eventId.isNullOrEmpty()) return
         mService.subscribeChannel(viewModel.getEventUrl(eventId))
     }
 
