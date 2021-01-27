@@ -20,20 +20,28 @@ import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListAdapter.OnItemClickListener {
 
+
     companion object {
         val TAG = BetInfoListDialog::class.java.simpleName
     }
 
+
+    private lateinit var binding: DialogBetInfoListBinding
+
+
     private lateinit var betInfoListAdapter: BetInfoListAdapter
 
+
     private var deletePosition: Int = -1
+
 
     init {
         setStyle(R.style.Common)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding: DialogBetInfoListBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
         binding.apply {
             mainViewModel = this@BetInfoListDialog.viewModel
             lifecycleOwner = this@BetInfoListDialog.viewLifecycleOwner
@@ -41,6 +49,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -69,6 +78,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
 
     }
 
+
     private fun observeData() {
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
@@ -79,14 +89,12 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
-            if(!it.success){
-                //確認toast樣式後在調整
-                ToastUtil.showToast(context, it.msg)
+            it.getContentIfNotHandled()?.let { result ->
+                ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
             }
         })
-
-
     }
+
 
     override fun onDeleteClick(position: Int) {
         //mock模式下 因為回傳內容都一樣 所以不會移除
@@ -95,19 +103,19 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
     }
 
 
-    override fun onBetClick(betInfoListData:BetInfoListData, stake: Double) {
-       viewModel.addBet(BetAddRequest(
-           listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
-           listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
-           1,
-           "EU"
-       ), false)
-
+    override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
+        viewModel.addBet(
+            BetAddRequest(
+                listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
+                listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+                1,
+                "EU"
+            ), false
+        )
     }
 
 
     override fun onAddMoreClick() {
         dismiss()
     }
-
 }

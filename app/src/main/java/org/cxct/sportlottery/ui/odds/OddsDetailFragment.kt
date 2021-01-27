@@ -1,12 +1,10 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +12,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ComplexColorCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,12 +21,12 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
 class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
+
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -48,14 +45,18 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
     }
 
+
     private var gameType: String? = null
     private var typeName: String? = null
     private var matchId: String? = null
     private var oddsType: String? = null
 
+
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
+
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,11 +137,11 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     @SuppressLint("SetTextI18n")
     private fun observeData() {
         viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is PlayCateListResult -> {
+            result?.success?.let {
+                if (it){
                     dataBinding.tabCat.removeAllTabs()
-                    for (element in result.rows) {
-                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(element.name), false)
+                    for (row in result.rows) {
+                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(row.name), false)
                     }
                 }
             }

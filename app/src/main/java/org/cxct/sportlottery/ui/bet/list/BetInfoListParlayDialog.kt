@@ -30,6 +30,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         val TAG = BetInfoListParlayDialog::class.java.simpleName
     }
 
+
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
     private lateinit var parlayAdapter: BetInfoListParlayAdapter
 
@@ -65,6 +66,18 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         tv_add_more.setOnClickListener { dismiss() }
         tv_bet.setOnClickListener {
             addBet()
+        }
+
+        rl_expandable.setOnClickListener {
+            el_expandable_area.apply {
+                if (this.isExpanded) {
+                    iv_arrow_up.animate().rotation(180f).setDuration(200).start()
+                    el_expandable_area.collapse(true)
+                } else {
+                    iv_arrow_up.animate().rotation(0f).setDuration(200).start()
+                    el_expandable_area.setExpanded(true, true)
+                }
+            }
         }
 
         matchOddAdapter = BetInfoListMatchOddAdapter(this@BetInfoListParlayDialog)
@@ -107,7 +120,6 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
 
     private fun observeData() {
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
-
             result?.success?.let {
                 if (it) {
                     result.betInfoData?.matchOdds?.isNotEmpty().let {
@@ -119,8 +131,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
                         }
                     }
                 } else {
-                    //確認toast樣式後在調整
-                    ToastUtil.showToast(context, result.msg)
+                    ToastUtil.showBetResultToast(requireActivity(), result.msg, false)
                 }
             }
         })
@@ -132,12 +143,10 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
-            if (!it.success) {
-                //確認toast樣式後在調整
-                ToastUtil.showToast(context, it.msg)
+            it.getContentIfNotHandled()?.let { result ->
+                ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
             }
         })
-
     }
 
 

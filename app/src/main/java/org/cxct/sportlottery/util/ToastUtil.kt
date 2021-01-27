@@ -1,9 +1,17 @@
 package org.cxct.sportlottery.util
 
+import android.app.Activity
 import android.content.Context
 import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import kotlinx.android.synthetic.main.activity_web.view.*
+import org.cxct.sportlottery.R
+import org.w3c.dom.Text
 
 /**
  * Created by pengweiqiang on 16/3/15.
@@ -46,4 +54,19 @@ object ToastUtil {
         val text = context?.resources?.getString(resId)
         showToastInCenter(context, text, duration)
     }
+
+    fun showBetResultToast(activity: Activity, msg: String, success: Boolean) {
+        val contentView: ViewGroup = activity.window.decorView.findViewById(android.R.id.content)
+        val view = LayoutInflater.from(activity).inflate(R.layout.toast_top_bet_result, contentView, false)
+        view.findViewById<TextView>(R.id.tv_message).text = msg
+        val height: Int? = activity.resources?.getDimensionPixelOffset(R.dimen.tool_bar_height)
+        height?.let {
+            val myToast = Toast(activity)
+            myToast.duration = Toast.LENGTH_SHORT
+            myToast.setGravity(Gravity.FILL_HORIZONTAL or Gravity.TOP, 0, it)
+            myToast.view = view
+            myToast.show()
+        }
+    }
+
 }
