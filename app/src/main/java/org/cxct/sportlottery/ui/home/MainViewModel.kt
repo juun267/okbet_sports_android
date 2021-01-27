@@ -510,7 +510,14 @@ class MainViewModel(
             )?.odds?.values?.first() ?: listOf()
 
         winnerList.map {
-            it.isSelected = (it == winner)
+            it.isSelected = if (it == winner) {
+                getBetInfoList(listOf(Odd(winner.id, winner.odds)))
+                true
+            } else {
+                removeBetInfoItem(winner.id)
+                false
+            }
+
         }
 
         _outrightOddsListResult.postValue(result)
@@ -757,7 +764,7 @@ class MainViewModel(
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
-        if(betInfoRepository.betList.size!=0) {
+        if (betInfoRepository.betList.size != 0) {
             getBetInfoListForParlay()
         }
     }
@@ -782,7 +789,7 @@ class MainViewModel(
                                         v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
                                     }
                                     odd?.isSelect = true
-                                }catch (e:Exception){
+                                } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
 
