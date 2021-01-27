@@ -8,9 +8,15 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.component_date_range_selector.view.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +32,8 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private lateinit var calendarBottomSheet: BottomSheetDialog
 
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter()
@@ -45,7 +53,39 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
+            setupCalendarBottomSheet(container)
+            setupDateRangeSelector(this)
             setupWithdrawLogList(this)
+        }
+    }
+
+    private fun setupCalendarBottomSheet(container: ViewGroup?) {
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar, container, false)
+
+        calendarBottomSheet = BottomSheetDialog(this.requireContext())
+        calendarBottomSheet.setContentView(bottomSheetView)
+        calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
+            override fun onFirstDateSelected(startDate: Calendar) {
+                calendarBottomSheet.dismiss()
+
+                viewModel.setRecordTimeRange(startDate)
+            }
+
+            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                calendarBottomSheet.dismiss()
+
+                viewModel.setRecordTimeRange(startDate, endDate)
+            }
+        })
+    }
+
+    private fun setupDateRangeSelector(view: View) {
+        view.date_range_selector.ll_start_date.setOnClickListener {
+            calendarBottomSheet.show()
+        }
+        view.date_range_selector.ll_end_date.setOnClickListener {
+            calendarBottomSheet.show()
         }
     }
 
@@ -68,12 +108,25 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.recordCalendarRange.observe(this.viewLifecycleOwner, Observer {
+            calendarBottomSheet.calendar.setSelectableDateRange(it.first, it.second)
+        })
+
+        viewModel.recordCalendarStartDate.observe(this.viewLifecycleOwner, Observer {
+            date_range_selector.tv_start_date.text = it.date
+        })
+
+        viewModel.recordCalendarEndDate.observe(this.viewLifecycleOwner, Observer {
+            date_range_selector.tv_end_date.text = it.date
+        })
+
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
                 withdrawLogAdapter.data = it.rows ?: listOf()
             }
         })
 
+        viewModel.getCalendarRange()
         viewModel.getUserWithdrawList()
     }
 
