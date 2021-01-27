@@ -436,6 +436,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
+            Log.e(">>>", "isOpenMatchOdds = $it")
             getAppBarLayout().setExpanded(true, true)
             subscribeHallChannel()
             addFragment(GameDetailFragment(), Page.ODDS)
@@ -465,8 +466,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.oddsListResult.observe(this, Observer {
             if (it != null && it.success) {
                 val eventId = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                Log.e(">>>", "eventId = ${eventId}")
                 if (!eventId.isNullOrEmpty())
-                    mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
+                    mService.subscribeChannel(viewModel.getHallUrl(eventId = eventId))
             }
         })
 
@@ -474,8 +476,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.outrightOddsListResult.observe(this, Observer {
             if (it != null && it.success) {
                 val eventId = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                Log.e(">>>", "eventId = ${eventId}")
                 if (!eventId.isNullOrEmpty())
-                    mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
+                    mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = eventId))
             }
         })
 
