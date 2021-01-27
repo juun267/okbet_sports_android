@@ -1,18 +1,22 @@
 package org.cxct.sportlottery.network
 
-import org.cxct.sportlottery.network.infoCenter.InfoCenterService
-import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.network.bank.BankService
 import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.index.IndexService
+import org.cxct.sportlottery.network.infoCenter.InfoCenterService
 import org.cxct.sportlottery.network.league.LeagueService
+import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.matchresult.MatchResultService
 import org.cxct.sportlottery.network.message.MessageService
+import org.cxct.sportlottery.network.money.MoneyService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.sport.SportService
+import org.cxct.sportlottery.network.uploadImg.UploadImgService
 import org.cxct.sportlottery.network.user.UserService
+import org.cxct.sportlottery.network.withdraw.WithdrawService
 
 
 object OneBoSportApi {
@@ -86,9 +90,33 @@ object OneBoSportApi {
             .create(UserService::class.java)
     }
 
+    val uploadImgService: UploadImgService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(UploadImgService::class.java)
+    }
+
     val infoCenterService: InfoCenterService by lazy {
         RequestManager.instance
             .retrofit
             .create(InfoCenterService::class.java)
+    }
+
+    val moneyService: MoneyService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(MoneyService::class.java)
+    }
+
+    val bankService: BankService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(BankService::class.java)
+    }
+
+    val withdrawService: WithdrawService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(WithdrawService::class.java)
     }
 }

@@ -7,23 +7,23 @@
 
         <variable
             name="item"
-            type="org.cxct.sportlottery.ui.menu.results.SettlementItem" />
+            type="org.cxct.sportlottery.ui.results.SettlementItem" />
     </data>
 
     <LinearLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        tools:context="org.cxct.sportlottery.ui.menu.results.SettlementRvAdapter">
+        tools:context="org.cxct.sportlottery.ui.results.SettlementRvAdapter">
 
         <LinearLayout
             android:id="@+id/block_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:background="@drawable/expandable_results_settlement"
             android:orientation="horizontal"
             android:paddingTop="8dp"
@@ -113,6 +113,7 @@
             android:id="@+id/block_drawer_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             app:el_duration="500"
             app:el_expanded="false"
             app:el_parallax="0.5"

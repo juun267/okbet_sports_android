@@ -5,21 +5,26 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.ServiceSelectDialog
+import org.cxct.sportlottery.ui.common.WebActivity
 
 object JumpUtil {
 
     //跳轉線上客服 //當只有一個線路直接跳轉，當兩個都有跳 dialog 讓 user 選擇
     fun toOnlineService(context: Context) {
-        //TODO simon test 客服 url 獲取
-        val zxkfUrl: String = "https://www.google.com/" //AppConfigManager.INSTANCE.getAppConfig().zxkfUrl
-        val zxkfUrl2: String = "https://www.yahoo.com.tw/" //AppConfigManager.INSTANCE.getAppConfig().zxkfUrl2
+        val zxkfUrl = sConfigData?.customerServiceUrl ?: ""
+        val zxkfUrl2 = sConfigData?.customerServiceUrl2 ?: ""
         when {
-            zxkfUrl.isNotEmpty() && zxkfUrl2.isEmpty() -> toOutWeb(context, zxkfUrl)
-            zxkfUrl.isEmpty() && zxkfUrl2.isNotEmpty() -> toOutWeb(context, zxkfUrl2)
+            zxkfUrl.isNotEmpty() && zxkfUrl2.isEmpty() -> toExternalWeb(context, zxkfUrl)
+            zxkfUrl.isEmpty() && zxkfUrl2.isNotEmpty() -> toExternalWeb(context, zxkfUrl2)
             zxkfUrl.isNotEmpty() && zxkfUrl2.isNotEmpty() -> ServiceSelectDialog(context).show()
             else -> ToastUtil.showToastInCenter(context, context.getString(R.string.error_url_fail))
         }
+    }
+
+    fun toInternalWeb(context: Context, href: String?, title: String?) {
+        context.startActivity(Intent(context, WebActivity::class.java).putExtra(WebActivity.KEY_URL, href).putExtra(WebActivity.KEY_TITLE, title))
     }
 
     /**
@@ -28,7 +33,7 @@ object JumpUtil {
      * @param context:
      * @param dnbUrl:  要跳轉的 url
      */
-    fun toOutWeb(context: Context, dnbUrl: String?) {
+    fun toExternalWeb(context: Context, dnbUrl: String?) {
         try {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(dnbUrl))
             context.startActivity(browserIntent)

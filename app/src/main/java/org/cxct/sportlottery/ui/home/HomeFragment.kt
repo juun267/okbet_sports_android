@@ -1,21 +1,19 @@
 package org.cxct.sportlottery.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.match.Match
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
-import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 
 
 class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -43,34 +41,35 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initEvent() {
         card_football.setOnClickListener {
-            //TODO simon test 實作點擊跳轉事件
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.FOOTBALL)
         }
 
         card_basketball.setOnClickListener {
-            //TODO simon test 實作點擊跳轉事件
-        }
-
-        card_game_soon.setOnClickListener {
-            //TODO simon test 實作點擊跳轉事件
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.BASKETBALL)
         }
 
         card_tennis.setOnClickListener {
-            //TODO simon test 實作點擊跳轉事件
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.TENNIS)
         }
 
         card_badminton.setOnClickListener {
-            //TODO simon test 實作點擊跳轉事件
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.BADMINTON)
         }
 
         card_volleyball.setOnClickListener {
-            //TODO simon test 實作點擊跳轉事件
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.VOLLEYBALL)
+        }
+
+        card_game_soon.setOnClickListener {
+            viewModel.getGameHallList(MatchType.AT_START, null)
         }
     }
 
     private fun initObserve() {
-        viewModel.token.observe(viewLifecycleOwner, Observer {
-            //登入、登出 token 改變重新接資料
-            queryData()
+        viewModel.isLogin.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                queryData()
+            }
         })
 
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {

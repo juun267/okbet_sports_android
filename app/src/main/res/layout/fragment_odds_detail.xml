@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="view"
             type="org.cxct.sportlottery.ui.odds.OddsDetailFragment" />
 
         <variable
             name="oddsDetailViewModel"
-            type="org.cxct.sportlottery.ui.odds.OddsDetailViewModel" />
+            type="org.cxct.sportlottery.ui.home.MainViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -72,48 +76,27 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginEnd="5dp"
                 android:layout_toStartOf="@+id/tv_more"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_match"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    tools:text="纽卡斯尔  VS  切尔西" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{oddsDetailViewModel.oddsDetailResult.oddsDetailData.matchOdd.matchInfo.homeName}"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="VS"
-                        android:textColor="@color/text_focus"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{oddsDetailViewModel.oddsDetailResult.oddsDetailData.matchOdd.matchInfo.awayName}"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text=""
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="2020-11-21 08:30" />
 
 
             </LinearLayout>
@@ -159,10 +142,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_detail"
-            android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background"
+            tools:listitem="@layout/content_odds_detail_list_item"
+            android:clipToPadding="false"
             android:paddingTop="10dp" />
 
     </LinearLayout>

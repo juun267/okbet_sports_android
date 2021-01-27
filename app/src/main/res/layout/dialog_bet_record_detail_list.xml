@@ -7,7 +7,7 @@
 
         <variable
             name="betRecordDetailViewModel"
-            type="org.cxct.sportlottery.ui.bet_record.BetRecordViewModel" />
+            type="org.cxct.sportlottery.ui.bet.record.BetRecordViewModel" />
 
         <variable
             name="row"
@@ -18,7 +18,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.bet_record.search.result.BetRecordDetailDialog">
+        tools:context=".ui.bet.record.search.result.BetRecordDetailDialog">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

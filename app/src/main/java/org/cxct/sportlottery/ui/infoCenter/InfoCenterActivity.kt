@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.infoCenter
 
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,6 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_info_center)
         initLiveData()
         initRecyclerView()
         initData()

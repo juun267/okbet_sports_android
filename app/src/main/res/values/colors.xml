@@ -36,11 +36,13 @@
     <color name="button_unfocus">#F7F7F7</color>
     <color name="button_disable">#80000000</color>
     <color name="pumpkinOrange">#F98B00</color>
-    <color name="orangeyRed">#FF4B2C</color>
+    <color name="orangeRed">#FF4B2C</color>
     <color name="tab_ripple">#1AF98B00</color>
 
     <color name="bottom_sheet_top_bar_background">#EEEEEE</color>
     <color name="bottom_sheet_top_bar_close_text">#999999</color>
+
+    <color name="bet_list_warning">#DC474A</color>
 
 
 
@@ -51,6 +53,7 @@
     <color name="dark_gray">#E7E7E7</color>
     <color name="golden">#ECA906</color>
     <color name="light_gray">#DDDDDD</color>
+    <color name="dark_blue">#3b5f79</color>
 
     <color name="transparent">#00000000</color>
     <color name="transparent_black_10">#26000000</color>
@@ -84,6 +87,9 @@
     <color name="gray8">#4a4a4a</color>
     <color name="gray9">#f0f0f0</color>
     <color name="gray10">#dddddd</color>
+    <color name="gray12">#cccccc</color>
+    <color name="gray11">#f0f2f6</color>
+    <color name="gray13">#e1e6e8</color>
 
 
     <!--紅色系-->
@@ -95,6 +101,8 @@
 
     <!--綠色系-->
     <color name="green">#3eca71</color>
+    <color name="green_blue">#00BF71</color>
+
 
     <!-- 藍色系 -->
     <color name="blue_transparent_40">#64c8d7e8</color>
@@ -102,6 +110,7 @@
     <color name="blue2">#c8d7e8</color>
     <color name="blue3">#445e77</color>
     <color name="blue4">#dae2eb</color>
+    <color name="blue5">#4d7fde</color>
 
     <color name="date_select_orange">#F98B00</color>
 

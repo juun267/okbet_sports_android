@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="matchOdd"
+            type="org.cxct.sportlottery.network.bet.info.MatchOdd" />
+
+        <variable
+            name="parlayOdd"
+            type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/iv_bet_type"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_bet_type" />
+
+            <!--確認是不是需要parlayType-->
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/iv_delete"
+                android:layout_toEndOf="@+id/iv_bet_type"
+                android:text="@{matchOdd.playCateName}"
+                android:textColor="@color/textGray"
+                android:textSize="14sp"
+                tools:text="让球" />
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_bet_delete" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tv_odds_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{matchOdd.playName}"
+                android:textColor="@color/gray6"
+                android:textSize="14sp"
+                tools:text="皇家马德里" />
+
+            <TextView
+                android:id="@+id/tv_odds_spread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@{matchOdd.spread}"
+                android:textColor="@color/gray6"
+                android:textSize="14sp"
+                tools:text="+0/0.5" />
+
+            <TextView
+                android:id="@+id/tv_odds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/orangeRed"
+                android:textSize="14sp"
+                tools:text="\＠ 1.85" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{matchOdd.homeName}"
+                android:textColor="@color/gray6"
+                android:textSize="12sp"
+                tools:text="皇家马德里" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/gray6"
+                android:textSize="12sp"
+                android:text="VS"
+                tools:text="VS" />
+
+            <TextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{matchOdd.awayName}"
+                android:textColor="@color/gray6"
+                android:textSize="12sp"
+                tools:text="利物浦" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
+
+
+

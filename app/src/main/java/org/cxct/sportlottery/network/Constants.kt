@@ -1,7 +1,20 @@
 package org.cxct.sportlottery.network
 
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
+
 object Constants {
     const val BASE_URL = "https://sports.cxct.org"
+
+    //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
+    fun getPromotionUrl(token: String?): String? {
+        return try {
+            BASE_URL + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     //bet
     const val MATCH_BET_INFO = "/api/front/match/bet/info"
@@ -12,6 +25,11 @@ object Constants {
     const val INDEX_LOGIN = "/api/front/index/login"
     const val INDEX_LOGOUT = "/api/front/index/logout"
     const val INDEX_CONFIG = "/api/front/index/config.json" //获取配置信息
+    const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
+    const val INDEX_REGISTER = "api/front/index/register" //注册用户
+    const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
+    const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
+    const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
@@ -45,8 +63,30 @@ object Constants {
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
     const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
 
+    //money
+    const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
+    const val USER_RECHARGE_ADD = "/api/front/userrech/add"
+    const val USER_RECHARGE_ONLINE_PAY = "/api/front/userrech/onlinepay"
+    const val USER_RECHARGE_LIST = "/api/front/userrech/list"
+
     //user
+    const val USER_INFO = "/api/front/user/info"
     const val USER_MONEY = "/api/front/user/money"
+    const val USER_EDIT_NICKNAME = "/api/front/user/editNickName" //更新昵称
+    const val USER_EDIT_ICON_URL = "/api/front/user/editIconUrl" //更新头像
+    const val USER_UPDATE_PWD = "/api/front/user/updatepwd" //更新密码
+    const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
+
+    //upload image
+    const val UPLOAD_IMG = "/api/upload/image" //上传图片
+
+    //bank
+    const val BANK_MY = "/api/front/user/bank/my"
+    const val BANK_ADD = "/api/front/user/bank/add"
+    const val BANK_DELETE = "/api/front/user/bank/delete"
+
+    //withdraw
+    const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

@@ -1,53 +1,73 @@
 package org.cxct.sportlottery.ui.base
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.layout_bet_info_list_float_button.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
-import kotlin.reflect.KClass
+import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
+import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.home.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
-    companion object {
-        private const val TAG = "BaseActivity"
-    }
+
+    private var mLayoutHandler = Handler(Looper.getMainLooper())
+    private var mPromptDialog: CustomAlertDialog? = null
 
     val viewModel: T by viewModel(clazz = clazz)
 
     private var loadingView: View? = null
+
+    private var floatButtonView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         onTokenStateChanged()
         onNetworkException()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        createOddButton()
     }
 
     private fun onTokenStateChanged() {
-        viewModel.code.observe(this, Observer {
-            when (it) {
-                2014 -> {
-                    //TODO deal response code 2014
-                }
-                2015 -> {
-                    //TODO deal response code 2015
-                }
-                2018 -> {
-                    //TODO deal response code 2018
-                }
-            }
+        viewModel.errorResultToken.observe(this, Observer {
+            showDialogLogout(it.msg)
         })
     }
 
+    private fun showDialogLogout(message: String) {
+        val dialog = CustomAlertDialog(this)
+        dialog.setMessage(message)
+        dialog.setPositiveClickListener {
+            MainActivity.reStart(this)
+            dialog.dismiss()
+        }
+        dialog.setNegativeButtonText(null)
+        dialog.show()
+    }
+
     private fun onNetworkException() {
-        viewModel.networkException.observe(this, Observer {
+        viewModel.networkExceptionUnknown.observe(this, Observer {
             //TODO show network exception message
         })
     }
@@ -57,6 +77,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         loading(null)
     }
 
+    @SuppressLint("InflateParams")
     open fun loading(message: String?) {
         if (loadingView == null) {
             loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
@@ -97,4 +118,100 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         Toast.makeText(applicationContext, R.string.connect_first, Toast.LENGTH_SHORT).show()
     }
 
+    private fun createOddButton() {
+        if (floatButtonView != null) return
+        val contentView: ViewGroup = window.decorView.findViewById(android.R.id.content)
+        floatButtonView = LayoutInflater.from(this).inflate(R.layout.layout_bet_info_list_float_button, contentView, false)
+        contentView.addView(floatButtonView)
+
+        betFloatButtonVisible(false)//default
+
+        if (viewModel is MainViewModel) {
+            val vm = viewModel as MainViewModel
+            vm.betInfoList.observe(this, Observer {
+                if (it != null) {
+                    vm.isParlayPage.value?.let { isParlay ->
+                        val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
+                        checkBetInfoList(size)
+                    }
+                }
+            })
+
+            vm.isParlayPage.observe(this, Observer {
+                vm.betInfoList.value?.size?.let { size ->
+                    if (it) {
+                        checkBetInfoList(if (size == 0) 0 else 1)
+                    } else {
+                        checkBetInfoList(size)
+                    }
+                }
+            })
+
+            rl_bet_float_button.setOnClickListener {
+                vm.isParlayPage.value?.let {
+                    if (it) {
+                        BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
+                    } else {
+                        BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkBetInfoList(count: Int) {
+        if (count > 0) {
+            betFloatButtonVisible(true)
+            setBetCount(count)
+        } else {
+            betFloatButtonVisible(false)
+        }
+    }
+
+    open fun betFloatButtonVisible(visible: Boolean) {
+        rl_bet_float_button.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    open fun setBetCount(count: Int) {
+        tv_bet_count.text = count.toString()
+    }
+
+    fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
+        showPromptDialog(title, message, null, positiveClickListener)
+    }
+
+    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?) {
+        safelyUpdateLayout(Runnable {
+            try {
+                //防止跳出多個 error dialog
+                if (mPromptDialog?.isShowing == true)
+                    mPromptDialog?.dismiss()
+
+                mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                    setTitle(title)
+                    setMessage(errorMessage)
+                    setPositiveButtonText(buttonText ?: getString(R.string.btn_confirm))
+                    setNegativeButtonText(null)
+                    setPositiveClickListener(View.OnClickListener {
+                        positiveClickListener()
+                        mPromptDialog?.dismiss()
+                    })
+
+                    setCanceledOnTouchOutside(false)
+                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
+                    show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
+    }
+
+    protected fun safelyUpdateLayout(runnable: Runnable) {
+        try {
+            mLayoutHandler.post(runnable)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
