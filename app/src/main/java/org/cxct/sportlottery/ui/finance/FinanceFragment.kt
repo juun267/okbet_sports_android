@@ -86,7 +86,7 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
         viewModel.userMoneyResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
             if (it != null && it.success) {
-                tv_balance.text = it.money.toString()
+                tv_balance.text = it.displayMoney
             }
         })
 

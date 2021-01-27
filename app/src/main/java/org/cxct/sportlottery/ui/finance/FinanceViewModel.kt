@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
@@ -42,6 +43,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
+
+            userMoneyResult?.displayMoney = ArithUtil.toMoneyFormat(userMoneyResult?.money)
+
             _userMoneyResult.postValue(userMoneyResult)
         }
     }
@@ -77,6 +81,8 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
                 it.rechDateStr = TimeUtil.timeFormat(it.rechTime, "yyyy-MM-dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.rechTime, "HH:mm:ss")
+
+                it.displayMoney = ArithUtil.toMoneyFormat(it.rechMoney)
             }
 
             _userRechargeResult.postValue(result)

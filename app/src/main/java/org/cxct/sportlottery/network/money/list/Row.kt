@@ -68,4 +68,5 @@ data class Row(
     var rechDateStr: String? = null
     var rechTimeStr: String? = null
     var rechState: String? = null
+    var displayMoney: String? = null
 }
