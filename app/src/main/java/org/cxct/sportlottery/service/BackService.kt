@@ -36,7 +36,8 @@ class BackService : Service() {
         const val URL_ALL = "/ws/notify/all" //全体公共频道
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
-        var URL_PRIVATE = "/notify/user/{userId}"  //用户私人频道
+        private var mUserId: Long? = null
+        val URL_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
         var URL_EVENT = "/ws/notify/event/" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
         var URL_HALL = "/ws/notify/hall/" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
@@ -48,11 +49,9 @@ class BackService : Service() {
         //        private const val MAX_RECONNECT_COUNT = 3 //嘗試重新連線次數
     }
 
-    lateinit var token: String
+    private var mToken = ""
 
-    lateinit var userId: String
-
-    private var reconnectCount = 0
+    private var mReconnectCount = 0
 
     private val mBinder: IBinder = MyBinder()
 
@@ -63,8 +62,8 @@ class BackService : Service() {
 
     private var mStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
-    private val mHeader: List<StompHeader> by lazy { listOf(StompHeader("token", token)) }
-    private var defaultEventDisposable: Disposable? = null
+    private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
+    private var mDefaultEventDisposable: Disposable? = null
     private val mPingDisposable: Disposable? = null //TODO Cheryl
 
 
@@ -74,11 +73,11 @@ class BackService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        token = intent?.getStringExtra(SERVICE_TOKEN) ?: ""
-        userId = intent?.getLongExtra(SERVICE_USER_ID, -1).toString()
-        if (token.isEmpty()) return mBinder
+        mToken = intent?.getStringExtra(SERVICE_TOKEN) ?: ""
+        mUserId = intent?.getLongExtra(SERVICE_USER_ID, -1)
+        if (mToken.isEmpty()) return mBinder
 
-        if (mStompClient?.isConnected != true && token.isNotEmpty()) {
+        if (mStompClient?.isConnected != true && mToken.isNotEmpty()) {
             Timber.d("==尚未建立連線，連線開始==")
             connect()
         } else {
@@ -88,11 +87,10 @@ class BackService : Service() {
         return mBinder
     }
 
-    @SuppressLint("CheckResult")
-    fun connect() {
+    private fun connect() {
         try {
             val headerMap = mHeader.map { it.key to it.value }.toMap()
-            Timber.e(">>>token = ${token}, url = $URL_SOCKET_HOST_AND_PORT")
+            Timber.e(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
             mStompClient = Stomp.over(
@@ -133,8 +131,6 @@ class BackService : Service() {
                         }
                     }
 
-
-                URL_PRIVATE = "/ws/notify/user/${userId}" //test
                 //用户私人频道
                 val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE) { topicMessage ->
                     Timber.d("$URL_PRIVATE, msg = ${topicMessage.payload}")
@@ -206,7 +202,7 @@ class BackService : Service() {
     }
 
     private fun reconnect() {
-        reconnectCount++
+        mReconnectCount++
         releaseSocket()
         connect()
         /* //重連次數
@@ -292,7 +288,7 @@ class BackService : Service() {
     }
 
     fun unSubscribeGame() {
-        if (defaultEventDisposable != null) mCompositeDisposable?.remove(defaultEventDisposable!!)
+        if (mDefaultEventDisposable != null) mCompositeDisposable?.remove(mDefaultEventDisposable!!)
     }
 
 
