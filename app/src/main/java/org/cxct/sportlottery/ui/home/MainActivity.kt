@@ -2,7 +2,8 @@ package org.cxct.sportlottery.ui.home
 
 import android.app.ActivityManager
 import android.content.*
-import android.os.*
+import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -18,8 +19,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.iv_head
-import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
@@ -48,8 +47,6 @@ import timber.log.Timber
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
-        private const val TAG = "MainActivity"
-
         //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -87,8 +84,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     enum class Page {
-        ODDS_DETAIL,
-        ODDS
+        ODDS_DETAIL, ODDS
     }
 
     private val navController by lazy {
@@ -103,9 +99,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             mainViewModel = this@MainActivity.viewModel
             lifecycleOwner = this@MainActivity
         }
-
-//        doBindService()
-//        initBroadcast()
 
         initToolBar()
         initMenu()
@@ -126,7 +119,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
 
-        if (!mIsBound) doBindService()
+        val isLogin = viewModel.isLogin.value ?: false
+        doBackService(isLogin)
+
         rv_marquee.startAuto()
     }
 
@@ -135,18 +130,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         rv_marquee.stopAuto()
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-
-        if (mIsBound) doUnBindService()
+        doUnBindService()
     }
 
     private fun removeBroadcast() {
@@ -174,9 +160,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-     fun subscribeMatch(eventId: String) {
-         val matchUrl = "/ws/notify/event/${eventId}"
-         mService.subscribeChannel(matchUrl)
+    fun subscribeMatch(eventId: String) {
+        val matchUrl = "/ws/notify/event/${eventId}"
+        mService.subscribeChannel(matchUrl)
     }
 
     private fun initBroadcast() {
@@ -201,6 +187,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
 
     private fun doBindService() {
+        if (mIsBound) return
+
+        Timber.i("bind service")
         if (!checkServiceRunning()) { //如果service斷掉則重啟
             val serviceIntent = Intent(this, BackService::class.java)
             serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
@@ -212,7 +201,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun doUnBindService() {
-        Log.e(">>>", "unbind")
+        if (!mIsBound) return
+
+        Timber.i("unbind service")
         unbindService(mServiceConnection)
         removeBroadcast()
 
@@ -379,19 +370,17 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun addFragment(fragment: Fragment, page: Page) {
         if (supportFragmentManager.findFragmentByTag(page.name) == null) {
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, 0)
-                .add(R.id.odds_detail_container, fragment, page.name)
-                .addToBackStack(page.name)
-                .commit()
+            supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_from_right,
+                                                                          0).add(R.id.odds_detail_container,
+                                                                                 fragment,
+                                                                                 page.name).addToBackStack(
+                page.name).commit()
         }
     }
 
 
     override fun onBackPressed() {
-        if (navController.currentDestination?.id != R.id.homeFragment
-            && supportFragmentManager.backStackEntryCount == 0
-        ) {
+        if (navController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
             tabLayout.getTabAt(0)?.select()
             return
         }
@@ -399,20 +388,15 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         super.onBackPressed()
     }
 
-    private fun initObserve() {
-        viewModel.isLogin.observe(this,  Observer {
-            Log.e(">>>", "isLogin = $it")
-            if (it) {
-                queryData()
-                if (!mIsBound) {
-                    doBindService()
-                }
-            } else {
-                if (mIsBound) {
-                    doUnBindService()
-                }
-            }
+    private fun doBackService(isLogin: Boolean) {
+        if (isLogin) doBindService()
+        else doUnBindService()
+    }
 
+    private fun initObserve() {
+        viewModel.isLogin.observe(this, Observer {
+            doBackService(it)
+            queryData()
         })
 
         viewModel.messageListResult.observe(this, Observer {
@@ -478,15 +462,18 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         viewModel.oddsListResult.observe(this, Observer {
             if (it != null && it.success) {
-                val id = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                val id =
+                    it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
                 mService.subscribeChannel(viewModel.getHallUrl(eventId = id))
             }
         })
 
         viewModel.outrightOddsListResult.observe(this, Observer {
             if (it != null && it.success) {
-                val id = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
-                mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = id))
+                val id =
+                    it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code,
+                                                               eventId = id))
             }
         })
 
@@ -512,10 +499,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        Glide.with(this)
-            .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
-            .into(iv_head) //載入頭像
+        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
+            iv_head) //載入頭像
     }
 
     private fun queryData() {
