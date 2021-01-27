@@ -6,6 +6,7 @@ enum class MoneyType(val code: String) {
     WX("ic_wechat_pay"),
     CTF("ic_tenpay"),
     ONLINE("ic_online_pay"),
+    BANK_TYPE("bankTransfer"),
     ALI_TYPE("alipay"),
     WX_TYPE("weixin"),
     CTF_TYPE("cft"),

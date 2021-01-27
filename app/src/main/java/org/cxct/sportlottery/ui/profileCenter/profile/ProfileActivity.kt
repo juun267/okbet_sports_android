@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -10,8 +11,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
-import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.repository.sLoginData
+import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
@@ -64,11 +64,6 @@ class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
         initObserve()
     }
 
-    override fun onResume() {
-        super.onResume()
-        refreshView()
-    }
-
     private fun initButton() {
         btn_back.setOnClickListener {
             finish()
@@ -87,14 +82,6 @@ class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
         }
     }
 
-    private fun refreshView() {
-        updateAvatar(sLoginData?.iconUrl)
-        tv_nickname.text = sLoginData?.nickName
-        tv_member_account.text = sLoginData?.userName
-        tv_id.text = sLoginData?.userId?.toString()
-        tv_real_name.text = sLoginData?.fullName
-    }
-
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(iv_head.context)
             .load(iconUrl)
@@ -103,23 +90,33 @@ class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun uploadImg(file: File) {
-        val uploadImgRequest = UploadImgRequest(sLoginData?.userId.toString(), file)
+        val userId = viewModel.userInfo.value?.userId.toString()
+        val uploadImgRequest = UploadImgRequest(userId, file)
         viewModel.uploadImage(uploadImgRequest)
     }
 
     private fun initObserve() {
-        viewModel.uploadImgResult.observe(this, Observer {
-            if (it?.success == true)
-                updateAvatar(sConfigData?.resServerHost + it.imgData?.path)
-            else
-                ToastUtil.showToastInCenter(this, it?.msg)
-        })
-
         viewModel.editIconUrlResult.observe(this, Observer {
             if (it?.success == true)
                 ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
             else
                 ToastUtil.showToastInCenter(this, it?.msg)
+        })
+
+        viewModel.userInfo.observe(this, Observer {
+            updateAvatar(it?.iconUrl)
+            tv_nickname.text = it?.nickName
+            tv_member_account.text = it?.userName
+            tv_id.text = it?.userId?.toString()
+            tv_real_name.text = it?.fullName
+
+            if (it?.setted == FLAG_NICKNAME_IS_SET) {
+                btn_nickname.isEnabled = false
+                icon_arrow_nickname.visibility = View.GONE
+            } else {
+                btn_nickname.isEnabled = true
+                icon_arrow_nickname.visibility = View.VISIBLE
+            }
         })
     }
 }
