@@ -158,6 +158,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
                 1,
                 "EU"
             ), true
+            , null
         )
     }
 

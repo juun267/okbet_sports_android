@@ -79,7 +79,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
-            if(!it.success){
+            if (!it.success) {
                 //確認toast樣式後在調整
                 ToastUtil.showToast(context, it.msg)
             }
@@ -95,13 +95,15 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
     }
 
 
-    override fun onBetClick(betInfoListData:BetInfoListData, stake: Double) {
-       viewModel.addBet(BetAddRequest(
-           listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
-           listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
-           1,
-           "EU"
-       ), false)
+    override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
+        viewModel.addBet(
+            BetAddRequest(
+                listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
+                listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+                1,
+                "EU"
+            ), false, betInfoListData.matchType
+        )
 
     }
 
