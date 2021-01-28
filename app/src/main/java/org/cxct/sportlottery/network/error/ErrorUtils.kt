@@ -63,7 +63,6 @@ import org.cxct.sportlottery.network.money.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
-import org.cxct.sportlottery.network.outright.bet.add.OutrightBetAddResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
