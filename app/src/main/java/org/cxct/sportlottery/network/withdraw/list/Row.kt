@@ -40,4 +40,7 @@ data class Row(
     val userName: String?,
     @Json(name = "uwType")
     val uwType: String?
-)
+) {
+    var withdrawState: String? = null
+    var displayMoney: String? = null
+}
