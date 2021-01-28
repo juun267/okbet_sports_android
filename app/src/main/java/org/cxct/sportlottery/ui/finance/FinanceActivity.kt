@@ -18,8 +18,10 @@ class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) 
 
         setContentView(R.layout.activity_finance)
 
+        setupToolbarBack()
+
         viewModel.recordType.observe(this, Observer {
-            setupToolbar(it)
+            setupToolbarTitle(it)
 
             when (it) {
                 getString(R.string.record_recharge) -> {
@@ -32,8 +34,15 @@ class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) 
         })
     }
 
-    private fun setupToolbar(title: String) {
+    private fun setupToolbarTitle(title: String) {
         tv_toolbar_title.text = title
+
+    }
+
+    private fun setupToolbarBack() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun navRechargeLogFragment(type: String) {
