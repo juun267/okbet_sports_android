@@ -529,6 +529,7 @@ class MainViewModel(
         _outrightOddsListResult.postValue(result)
     }
 
+    //TODO Dean : 重構，整理、提取程式碼
     fun updateMatchBetList(matchOdd: MatchOdd, oddString: String, odd: org.cxct.sportlottery.network.odds.list.Odd) {
         val result = if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value
         val match =
