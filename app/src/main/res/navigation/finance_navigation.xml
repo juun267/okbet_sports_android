@@ -15,12 +15,22 @@
             android:id="@+id/action_financeFragment_to_rechargeLogFragment"
             app:destination="@id/rechargeLogFragment" />
 
+        <action
+            android:id="@+id/action_financeFragment_to_withdrawLogFragment"
+            app:destination="@id/withdrawLogFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/rechargeLogFragment"
         android:name="org.cxct.sportlottery.ui.finance.RechargeLogFragment"
         android:label="fragment_recharge_log"
+        tools:layout="@layout/activity_recharge_log" />
+
+    <fragment
+        android:id="@+id/withdrawLogFragment"
+        android:name="org.cxct.sportlottery.ui.finance.WithdrawLogFragment"
+        android:label="fragment_withdraw_log"
         tools:layout="@layout/activity_recharge_log" />
 
 </navigation>
