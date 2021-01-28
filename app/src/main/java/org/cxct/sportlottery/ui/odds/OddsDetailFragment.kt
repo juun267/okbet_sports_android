@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 
 class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
 
@@ -138,7 +139,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     private fun observeData() {
         viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
             result?.success?.let {
-                if (it){
+                if (it) {
                     dataBinding.tabCat.removeAllTabs()
                     for (row in result.rows) {
                         dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(row.name), false)
@@ -166,8 +167,6 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
                 }
             }
-
-
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
@@ -182,6 +181,12 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
         viewModel.isParlayPage.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
+        })
+
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer {
+            if (!it.success) {
+                ToastUtil.showBetResultToast(requireActivity(), it.msg, false)
+            }
         })
 
     }

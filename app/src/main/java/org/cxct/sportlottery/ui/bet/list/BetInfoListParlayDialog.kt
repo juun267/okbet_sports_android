@@ -121,19 +121,18 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
     private fun observeData() {
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
             result?.success?.let {
-                if (it) {
-                    result.betInfoData?.matchOdds?.isNotEmpty().let {
-                        result.betInfoData?.matchOdds?.let { list ->
-                            matchOddAdapter.modify(list, deletePosition)
-                        }
-                        result.betInfoData?.parlayOdds?.let { list ->
-                            parlayAdapter.modify(list)
-                        }
-                    }
-                } else {
+                if (!it) {
                     ToastUtil.showBetResultToast(requireActivity(), result.msg, false)
                 }
             }
+        })
+
+        viewModel.matchOddList.observe(this.viewLifecycleOwner, Observer {
+            matchOddAdapter.modify(it, deletePosition)
+        })
+
+        viewModel.parlayList.observe(this.viewLifecycleOwner, Observer {
+            parlayAdapter.modify(it)
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
