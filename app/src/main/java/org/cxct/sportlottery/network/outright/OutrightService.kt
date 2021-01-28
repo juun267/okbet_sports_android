@@ -4,8 +4,8 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
-import org.cxct.sportlottery.network.outright.add.OutrightBetAddRequest
-import org.cxct.sportlottery.network.outright.add.OutrightBetAddResult
+import org.cxct.sportlottery.network.outright.bet.add.OutrightBetAddRequest
+import org.cxct.sportlottery.network.outright.bet.add.OutrightBetAddResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
