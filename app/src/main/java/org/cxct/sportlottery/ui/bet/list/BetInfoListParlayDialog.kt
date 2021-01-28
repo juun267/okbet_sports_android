@@ -30,6 +30,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         val TAG = BetInfoListParlayDialog::class.java.simpleName
     }
 
+
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
     private lateinit var parlayAdapter: BetInfoListParlayAdapter
 
@@ -65,6 +66,18 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         tv_add_more.setOnClickListener { dismiss() }
         tv_bet.setOnClickListener {
             addBet()
+        }
+
+        rl_expandable.setOnClickListener {
+            el_expandable_area.apply {
+                if (this.isExpanded) {
+                    iv_arrow_up.animate().rotation(180f).setDuration(200).start()
+                    el_expandable_area.collapse(true)
+                } else {
+                    iv_arrow_up.animate().rotation(0f).setDuration(200).start()
+                    el_expandable_area.setExpanded(true, true)
+                }
+            }
         }
 
         matchOddAdapter = BetInfoListMatchOddAdapter(this@BetInfoListParlayDialog)
@@ -107,22 +120,19 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
 
     private fun observeData() {
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
-
             result?.success?.let {
-                if (it) {
-                    result.betInfoData?.matchOdds?.isNotEmpty().let {
-                        result.betInfoData?.matchOdds?.let { list ->
-                            matchOddAdapter.modify(list, deletePosition)
-                        }
-                        result.betInfoData?.parlayOdds?.let { list ->
-                            parlayAdapter.modify(list)
-                        }
-                    }
-                } else {
-                    //確認toast樣式後在調整
-                    ToastUtil.showToast(context, result.msg)
+                if (!it) {
+                    ToastUtil.showBetResultToast(requireActivity(), result.msg, false)
                 }
             }
+        })
+
+        viewModel.matchOddList.observe(this.viewLifecycleOwner, Observer {
+            matchOddAdapter.modify(it, deletePosition)
+        })
+
+        viewModel.parlayList.observe(this.viewLifecycleOwner, Observer {
+            parlayAdapter.modify(it)
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
@@ -132,12 +142,10 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
-            if (!it.success) {
-                //確認toast樣式後在調整
-                ToastUtil.showToast(context, it.msg)
+            it.getContentIfNotHandled()?.let { result ->
+                ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
             }
         })
-
     }
 
 

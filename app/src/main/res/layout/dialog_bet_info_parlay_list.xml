@@ -95,6 +95,7 @@
                                 tools:listitem="@layout/content_bet_info_item_detail" />
 
                             <RelativeLayout
+                                android:id="@+id/rl_expandable"
                                 android:layout_width="match_parent"
                                 android:layout_height="38dp"
                                 android:background="@color/blue4">
@@ -118,6 +119,7 @@
                                     android:src="@drawable/ic_rule_blue" />
 
                                 <ImageView
+                                    android:id="@+id/iv_arrow_up"
                                     android:layout_width="10dp"
                                     android:layout_height="10dp"
                                     android:layout_alignParentEnd="true"
@@ -127,21 +129,44 @@
 
                             </RelativeLayout>
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_parlay_list"
+                            <net.cachapa.expandablelayout.ExpandableLayout
+                                android:id="@+id/el_expandable_area"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                tools:itemCount="2"
-                                tools:listitem="@layout/content_bet_info_parlay_item" />
+                                android:background="@color/white"
+                                app:el_duration="500"
+                                app:el_expanded="true"
+                                app:el_parallax="0.5"
+                                tools:el_expanded="true">
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/light_gray" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
 
-                            <include
-                                android:id="@+id/bet_info_action"
-                                layout="@layout/content_bet_info_item_action" />
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rv_parlay_list"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        tools:itemCount="2"
+                                        tools:listitem="@layout/content_bet_info_parlay_item" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:background="@color/light_gray" />
+
+                                    <include
+                                        android:id="@+id/bet_info_action"
+                                        layout="@layout/content_bet_info_item_action" />
+
+                                </LinearLayout>
+
+                            </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+
+
 
                         </LinearLayout>
 

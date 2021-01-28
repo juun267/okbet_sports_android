@@ -18,7 +18,14 @@ class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) 
         setContentView(R.layout.activity_finance)
 
         viewModel.recordType.observe(this, Observer {
-            navRechargeLogFragment(it)
+            when (it) {
+                getString(R.string.record_recharge) -> {
+                    navRechargeLogFragment(it)
+                }
+                getString(R.string.record_withdrawal) -> {
+                    navRechargeWithdrawFragment(it)
+                }
+            }
         })
     }
 
@@ -26,6 +33,15 @@ class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) 
         when (navController.currentDestination?.id) {
             R.id.financeFragment -> {
                 val action = FinanceFragmentDirections.actionFinanceFragmentToRechargeLogFragment()
+                navController.navigate(action)
+            }
+        }
+    }
+
+    private fun navRechargeWithdrawFragment(type: String) {
+        when (navController.currentDestination?.id) {
+            R.id.financeFragment -> {
+                val action = FinanceFragmentDirections.actionFinanceFragmentToWithdrawLogFragment()
                 navController.navigate(action)
             }
         }
