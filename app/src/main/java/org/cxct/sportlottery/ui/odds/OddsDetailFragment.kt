@@ -84,6 +84,25 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         initUI()
         observeData()
         getData()
+        observeSocketData()
+    }
+
+
+    private fun observeSocketData() {
+        viewModel.matchStatusChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchStatusChange")
+        })
+
+        viewModel.matchClock.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchClock")
+        })
+
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchOddsChange")
+        })
     }
 
 

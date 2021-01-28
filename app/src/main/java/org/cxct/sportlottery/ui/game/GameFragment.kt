@@ -39,9 +39,6 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
 
-    private val service by lazy { (activity as MainActivity).mService }
-
-
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
             Log.e(">>>", "onclick gameTypeAdapter")
@@ -106,14 +103,17 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initObserve() {
         viewModel.matchStatusChange.observe(viewLifecycleOwner, {
             if (it == null) return@observe
+            Log.e(">>>>>", "matchStatusChange")
         })
 
         viewModel.matchClock.observe(viewLifecycleOwner, {
             if (it == null) return@observe
+            Log.e(">>>>>", "matchClock")
         })
 
         viewModel.matchOddsChange.observe(viewLifecycleOwner, {
             if (it == null) return@observe
+            Log.e(">>>>>", "matchOddsChange")
         })
     }
 

@@ -42,9 +42,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        Log.e(">>>", "before matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
+//        Log.e(">>>", "before matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
         updateItemDataFromSocket(item)
-        Log.e(">>>", "after matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
+//        Log.e(">>>", "after matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
         holder.bind(item, playType, matchOddListener)
     }
 
