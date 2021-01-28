@@ -24,9 +24,16 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private lateinit var calendarBottomSheet: BottomSheetDialog
     private lateinit var withdrawStateBottomSheet: BottomSheetDialog
     private lateinit var withdrawTypeBottomSheet: BottomSheetDialog
+    private val logDetailDialog by lazy {
+        LogDetailDialog()
+    }
 
     private val withdrawLogAdapter by lazy {
-        WithdrawLogAdapter()
+        WithdrawLogAdapter().apply {
+            withdrawLogListener = WithdrawLogListener {
+                viewModel.setLogDetail(it)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -180,6 +187,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             if (it?.success == true) {
                 withdrawLogAdapter.data = it.rows ?: listOf()
             }
+        })
+
+        viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
+            logDetailDialog.show(parentFragmentManager, WithdrawLogFragment::class.java.simpleName)
         })
 
         viewModel.getCalendarRange()

@@ -16,6 +16,8 @@ class WithdrawLogAdapter : RecyclerView.Adapter<WithdrawLogAdapter.ViewHolder>()
             notifyDataSetChanged()
         }
 
+    var withdrawLogListener: WithdrawLogListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -23,19 +25,23 @@ class WithdrawLogAdapter : RecyclerView.Adapter<WithdrawLogAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, withdrawLogListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Row) {
+        fun bind(item: Row, withdrawLogListener: WithdrawLogListener?) {
             itemView.rech_log_date.text = item.withdrawDate
             itemView.rech_log_time.text = item.withdrawTime
             itemView.rech_log_amount.text = item.displayMoney
             itemView.rech_log_type.text = item.withdrawType
             itemView.rech_log_state.text = item.withdrawState
+
+            itemView.setOnClickListener {
+                withdrawLogListener?.onClick(item)
+            }
         }
 
         companion object {
@@ -48,4 +54,8 @@ class WithdrawLogAdapter : RecyclerView.Adapter<WithdrawLogAdapter.ViewHolder>()
             }
         }
     }
+}
+
+class WithdrawLogListener(val clickListener: (row: Row) -> Unit) {
+    fun onClick(row: Row) = clickListener(row)
 }
