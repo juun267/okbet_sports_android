@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
@@ -61,6 +62,7 @@ import org.cxct.sportlottery.network.money.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
+import org.cxct.sportlottery.network.outright.add.OutrightBetAddResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -247,6 +249,10 @@ object ErrorUtils {
                     (url.contains(USER_RECHARGE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return RechargeListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(OUTRIGHT_BET_ADD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OutrightBetAddResult(it.code, it.msg, null, it.success, null) as T
                     }
                 }
             }
