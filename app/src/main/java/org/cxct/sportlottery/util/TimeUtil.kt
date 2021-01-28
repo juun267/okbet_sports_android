@@ -17,6 +17,12 @@ object TimeUtil {
     }
 
     @JvmStatic
+    fun stampToDateHMS(time: Long): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
+        return simpleDateFormat.format(Date(time))
+    }
+
+    @JvmStatic
     fun dateToStamp(date: String): Long {
         return SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date).time
     }

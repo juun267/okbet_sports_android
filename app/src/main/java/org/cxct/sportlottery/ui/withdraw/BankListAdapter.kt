@@ -9,12 +9,19 @@ import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.TimeUtil.stampToDateHMS
 
 class BankListAdapter(private val mBankListClickListener: BankListClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class CardType { EDIT, ADD }
 
     var bankList = listOf<BankCardList>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var fullName = ""
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -47,7 +54,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                holder.bind(bankList[position], mBankListClickListener)
+                holder.bind(bankList[position], fullName, mBankListClickListener)
             }
             is LastViewHolder -> {
                 holder.bind(mBankListClickListener)
@@ -56,13 +63,13 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class ItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(data: BankCardList, mBankListClickListener: BankListClickListener) {
+        fun bind(data: BankCardList, fullName: String, mBankListClickListener: BankListClickListener) {
             itemView.apply {
-                iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName)) //TODO Dean : 待匯入銀行icon後對key做mapping
+                iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
                 tv_bank_name.text = data.bankName
-                tv_name.text = "" //TODO Dean : 與用戶真實姓名相等, Api沒有回傳,根據用戶id或直接抓取自身真實姓名做顯示
+                tv_name.text = fullName
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
-                tv_bind_time.text = data.addTime
+                tv_bind_time.text = stampToDateHMS(data.addTime.toLong())
                 img_edit_bank.setOnClickListener {
                     mBankListClickListener.onEdit(data)
                 }

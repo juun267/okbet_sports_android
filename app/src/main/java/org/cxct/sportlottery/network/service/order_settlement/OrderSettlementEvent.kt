@@ -22,15 +22,15 @@ data class SportBet (
     val testFlag: Int?, //测试试玩账号类型：0-普通账号，2-内部测试账号，1-游客
     val gameType: String?,
     val matchOdds: List<MatchOdds>? = listOf(),
-    val stake: Number?,
+    val stake: Double?,
     val num: Int?,
-    val totalAmount: Number?,
-    val winnable: Number?,
-    val grossWin: Number?,
-    val netWin: Number?,
-    val rebate: Number?,
-    val rebateAmount: Number?,
-    val win: Number?,
+    val totalAmount: Double?,
+    val winnable: Double?,
+    val grossWin: Double?,
+    val netWin: Double?,
+    val rebate: Double?,
+    val rebateAmount: Double?,
+    val win: Double?,
     val status: Int?,  //状态 0：未确认，1：未结算，2：赢，3：赢半，4：输，5：输半，6：和，7：已取消 //statusNameMap
     val cancelReason: String?,
     val cancelledBy: String?, //取消触发来源（ source: 数据源，own: 自有平台），数据源取消的注单允许回滚
@@ -40,7 +40,7 @@ data class SportBet (
     val parlayType: String?,
     val workerNo: Int?,
     val platformId: Int?,
-    val winCount: Number?,
+    val winCount: Double?,
     val isChampionship: Int?, //0：普通投注，1：冠军投注
 )
 

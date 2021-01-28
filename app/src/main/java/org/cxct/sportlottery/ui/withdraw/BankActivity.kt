@@ -1,32 +1,24 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.util.Log
-import androidx.lifecycle.Observer
+import android.os.Bundle
 import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.activity_bank.*
+import kotlinx.android.synthetic.main.activity_setting_password.btn_back
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.base.BaseActivity
 
-class BankActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewModel::class) {
-
+class BankActivity : BaseActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private val mNavController by lazy {
         findNavController(R.id.bank_container)
     }
 
-    override fun setContentView(): Int {
-        viewModel.apply {
-            needToUpdateWithdrawPassword.observe(this@BankActivity, Observer {
-                if (it) {
-                    //TODO Dean : start update withdraw password Activity
-                    Log.e("Dean", "start update withdraw password Activity")
-                }
-            })
-        }
-        return R.layout.activity_bank
-    }
 
-    override fun setToolBarName(): String {
-        return getString(R.string.withdraw)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_bank)
+
+        setupBackButton()
     }
 
     override fun onBackPressed() {
@@ -34,6 +26,15 @@ class BankActivity : BaseToolBarActivity<WithdrawViewModel>(WithdrawViewModel::c
             mNavController.popBackStack()
             return
         }
-        super.onBackPressed()
+    }
+
+    private fun setupBackButton() {
+        btn_back.setOnClickListener {
+            finish()
+        }
+    }
+
+    fun changeTitle(title: String) {
+        tv_title.text = title
     }
 }
