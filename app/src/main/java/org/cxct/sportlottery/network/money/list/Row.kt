@@ -55,7 +55,7 @@ data class Row(
     @Json(name = "statDate")
     val statDate: Long,
     @Json(name = "status")
-    val status: Double,
+    val status: Int,
     @Json(name = "thirdChannel")
     val thirdChannel: String?,
     @Json(name = "thirdOrderNo")

@@ -34,7 +34,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>()
             itemView.rech_log_date.text = item.rechDateStr
             itemView.rech_log_time.text = item.rechTimeStr
             itemView.rech_log_amount.text = item.displayMoney
-            itemView.rech_log_type.text = item.rechType
+            itemView.rech_log_type.text = item.rechName
             itemView.rech_log_state.text = item.rechState
         }
 

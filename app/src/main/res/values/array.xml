@@ -15,4 +15,21 @@
         <item>@drawable/ic_icondrawtransfer</item>
         <item>@drawable/ic_icondrawbonusrecord</item>
     </integer-array>
+
+    <string-array name="recharge_state_array">
+        <item>@string/recharge_state_all</item>
+        <item>@string/recharge_state_processing</item>
+        <item>@string/recharge_state_success</item>
+        <item>@string/recharge_state_failed</item>
+    </string-array>
+
+    <string-array name="recharge_channel_array">
+        <item>@string/recharge_channel_all</item>
+        <item>@string/recharge_channel_online</item>
+        <item>@string/recharge_channel_bank</item>
+        <item>@string/recharge_channel_weixin</item>
+        <item>@string/recharge_channel_alipay</item>
+        <item>@string/recharge_channel_cft</item>
+        <item>@string/recharge_channel_admin</item>
+    </string-array>
 </resources>
