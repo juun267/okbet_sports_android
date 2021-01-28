@@ -13,7 +13,7 @@ data class MatchInfo(
     @Json(name = "homeName")
     val homeName: String,
     @Json(name = "id")
-    val id: String,
+    val id: String, //赛事或赛季id
     @Json(name = "playCateNum")
     val playCateNum: Int,
     @Json(name = "startTime")

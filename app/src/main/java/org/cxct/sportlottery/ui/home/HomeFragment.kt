@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,7 +78,6 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             drawer_in_play.setRvGameData(it.matchPreloadData)
             drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
                 override fun onClick(select: GameEntity) {
-
                     //使用於投注細項 -> [更多]
                    val selectData = it.matchPreloadData?.datas?.find { data -> select.code == data.code }
                     selectData?.matchs?.let { list -> viewModel.setOddsDetailMoreList(list) }

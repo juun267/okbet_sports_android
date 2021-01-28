@@ -8,13 +8,20 @@ data class Odd(
     @Json(name = "id")
     val id: String,
     @Json(name = "odds")
-    val odds: Double,
+    val odds: Double?,
     @Json(name = "producerId")
     val producerId: Int,
     @Json(name = "spread")
     val spread: String?,
     @Json(name = "status")
-    val status: Int
+    val status: Int //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
 ) {
+    var oddState: Int = OddState.SAME.state
     var isSelected = false
+}
+
+enum class OddState(val state : Int) {
+    SAME(0),
+    LARGER(1),
+    SMALLER(2)
 }
