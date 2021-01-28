@@ -6,9 +6,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_web.view.*
 import org.cxct.sportlottery.R
 import org.w3c.dom.Text
@@ -59,7 +61,12 @@ object ToastUtil {
         val contentView: ViewGroup = activity.window.decorView.findViewById(android.R.id.content)
         val view = LayoutInflater.from(activity).inflate(R.layout.toast_top_bet_result, contentView, false)
         view.findViewById<TextView>(R.id.tv_message).text = msg
+
+        val color = if (success) ContextCompat.getColor(activity, R.color.green_blue) else ContextCompat.getColor(activity, R.color.red2)
+        view.findViewById<RelativeLayout>(R.id.rl_bg).setBackgroundColor(color)
+
         val height: Int? = activity.resources?.getDimensionPixelOffset(R.dimen.tool_bar_height)
+
         height?.let {
             val myToast = Toast(activity)
             myToast.duration = Toast.LENGTH_SHORT
