@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.play_category_ou_hdp.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 
 class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     var data = listOf<MatchOdd>()
@@ -51,7 +52,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 matchOddListener?.onClick(item)
             }
 
-            setupMatchOddDetail(item, playType)
+            setupMatchOddDetail(item, playType, matchOddListener)
             setupMatchOddDetailExpand(item)
         }
 
@@ -64,22 +65,24 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             }
         }
 
-        private fun setupMatchOddDetail(item: MatchOdd, playType: PlayType) {
+        private fun setupMatchOddDetail(item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
             when (playType) {
                 PlayType.OU_HDP -> {
-                    setupMatchOddOuHdp(item)
+                    setupMatchOddOuHdp(item, matchOddListener)
                 }
                 PlayType.X12 -> {
-                    setupMatchOdd1x2(item)
+                    setupMatchOdd1x2(item, matchOddListener) //TODO Dean : review
                 }
                 else -> {
                 }
             }
         }
 
-        private fun setupMatchOddOuHdp(item: MatchOdd) {
-            val oddListOU = item.odds[PlayType.OU.code]
-            val oddListHDP = item.odds[PlayType.HDP.code]
+        private fun setupMatchOddOuHdp(item: MatchOdd, matchOddListener: MatchOddListener?) {
+            val ouOddString = PlayType.OU.code
+            val hdpOddString = PlayType.HDP.code
+            val oddListOU = item.odds[ouOddString]
+            val oddListHDP = item.odds[hdpOddString]
 
             val oddOUHome = if (oddListOU?.size ?: 0 >= 1) oddListOU?.get(0) else null
             val oddOUAway = if (oddListOU?.size ?: 0 >= 2) oddListOU?.get(1) else null
@@ -94,28 +97,53 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.ou_hdp_away_name.text = item.matchInfo.awayName
 
             oddOUHome?.let {
-                itemView.ou_hdp_home_ou.bet_top_text.text = it.spread
-                itemView.ou_hdp_home_ou.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_home_ou.apply {
+                    isSelected = it.isSelected
+                    bet_top_text.text = it.spread
+                    bet_bottom_text.text = it.odds.toString()
+                    setOnClickListener { _ ->
+                        matchOddListener?.onBet(item, ouOddString, it)
+                    }
+                }
             }
 
             oddOUAway?.let {
-                itemView.ou_hdp_away_ou.bet_top_text.text = it.spread
-                itemView.ou_hdp_away_ou.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_away_ou.apply {
+                    isSelected = it.isSelected
+                    bet_top_text.text = it.spread
+                    bet_bottom_text.text = it.odds.toString()
+                    setOnClickListener { _ ->
+                        matchOddListener?.onBet(item, ouOddString, it)
+                    }
+                }
             }
 
             oddHDPHome?.let {
-                itemView.ou_hdp_home_hdp.bet_top_text.text = it.spread
-                itemView.ou_hdp_home_hdp.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_home_hdp.apply {
+                    isSelected = it.isSelected
+                    bet_top_text.text = it.spread
+                    bet_bottom_text.text = it.odds.toString()
+                    setOnClickListener { _ ->
+                        matchOddListener?.onBet(item, hdpOddString, it)
+                    }
+                }
             }
 
             oddHDPAway?.let {
-                itemView.ou_hdp_away_hdp.bet_top_text.text = it.spread
-                itemView.ou_hdp_away_hdp.bet_bottom_text.text = it.odds.toString()
+                itemView.ou_hdp_away_hdp.apply {
+                    isSelected = it.isSelected
+                    bet_top_text.text = it.spread
+                    bet_bottom_text.text = it.odds.toString()
+                    setOnClickListener { _ ->
+                        matchOddListener?.onBet(item, hdpOddString, it)
+                    }
+                }
             }
         }
 
-        private fun setupMatchOdd1x2(item: MatchOdd) {
-            val oddList1X2 = item.odds[PlayType.X12.code]
+        private fun setupMatchOdd1x2(item: MatchOdd, matchOddListener: MatchOddListener?) {
+            val odd1X2String = PlayType.X12.code
+            val oddList1X2 = item.odds[odd1X2String]
 
             val oddBet1 = if (oddList1X2?.size ?: 0 >= 1) oddList1X2?.get(0) else null
             val oddBetX = if (oddList1X2?.size ?: 0 >= 2) oddList1X2?.get(1) else null
@@ -128,15 +156,33 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.x12_away_name.text = item.matchInfo.awayName
 
             oddBet1?.let {
-                itemView.x12_bet_1.bet_bottom_text.text = it.odds.toString()
+                itemView.x12_bet_1.apply {
+                    isSelected = it.isSelected
+                    bet_bottom_text.text = it.odds.toString()
+                    setOnClickListener { _ ->
+                        matchOddListener?.onBet(item, odd1X2String, it)
+                    }
+                }
             }
 
             oddBetX?.let {
-                itemView.x12_bet_x.bet_bottom_text.text = it.odds.toString()
+                itemView.x12_bet_x.apply {
+                    isSelected = it.isSelected
+                    bet_bottom_text.text = it.odds.toString()
+                    setOnClickListener { _ ->
+                        matchOddListener?.onBet(item, odd1X2String, it)
+                    }
+                }
             }
 
             oddBet2?.let {
-                itemView.x12_bet_2.bet_bottom_text.text = it.odds.toString()
+                itemView.x12_bet_2.apply {
+                    isSelected = it.isSelected
+                    bet_bottom_text.text = it.odds.toString()
+                    setOnClickListener { _ ->
+                        matchOddListener?.onBet(item, odd1X2String, it)
+                    }
+                }
             }
         }
 
@@ -159,6 +205,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     }
 }
 
-class MatchOddListener(val clickListener: (matchOdd: MatchOdd) -> Unit) {
+class MatchOddListener(val clickListener: (matchOdd: MatchOdd) -> Unit, val betClickListener: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit) {
     fun onClick(matchOdd: MatchOdd) = clickListener(matchOdd)
+    fun onBet(matchOdd: MatchOdd, oddString: String, odd: Odd) = betClickListener(matchOdd, oddString, odd)
 }
