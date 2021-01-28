@@ -23,6 +23,7 @@
         android:layout_width="64dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_play_category_bet_bg"
+        android:stateListAnimator="@null"
         android:textColor="@color/selector_play_category_bet_bottom_text"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
