@@ -142,6 +142,14 @@
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号 Ver %s</string>
 
+    <!--  HelpCenter  -->
+    <string name="contact_us">联络我们</string>
+    <string name="game_rule">游戏规则</string>
+        <!--  GameRule  -->
+    <string name="sport_bet_rule">体育投注规则</string>
+    <string name="common_sport_description">一般体育说明</string>
+    <string name="overview">概述</string>
+
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>
     <string name="select_all_league">选择所有联赛</string>
@@ -446,6 +454,15 @@
     <string name="recharge_state_failed">失败</string>
     <string name="recharge_state_processing">处理中</string>
     <string name="recharge_state_recharging">充值中</string>
+    <string name="recharge_state_all">全部订单状态</string>
+
+    <string name="recharge_channel_all">全部渠道类型</string>
+    <string name="recharge_channel_online">在线支付</string>
+    <string name="recharge_channel_bank">银行汇款</string>
+    <string name="recharge_channel_alipay">支付宝支付</string>
+    <string name="recharge_channel_weixin">微信支付</string>
+    <string name="recharge_channel_cft">财付通</string>
+    <string name="recharge_channel_admin">后台加款</string>
 
     <string name="recharge_log_order_time">订单时间</string>
     <string name="recharge_log_recharge_amount">充值金额</string>

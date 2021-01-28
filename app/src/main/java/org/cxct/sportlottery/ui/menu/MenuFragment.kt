@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,14 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
+import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -81,17 +80,6 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_game_result)
         }
 
-        //TODO Dean : Test for withdraw page
-        menu_test_withdraw.setOnClickListener {
-            startActivity(Intent(activity, WithdrawActivity::class.java))
-            mDownMenuListener?.onClick(menu_test_withdraw)
-        }
-
-        menu_test_withdraw_setting.setOnClickListener {
-            startActivity(Intent(activity, BankActivity::class.java))
-            mDownMenuListener?.onClick(menu_test_withdraw_setting)
-        }
-
         menu_sign_out.setOnClickListener {
             viewModel.logout()
             context?.run {
@@ -111,6 +99,11 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         menu_news.setOnClickListener {
             startActivity(Intent(context, InfoCenterActivity::class.java))
             mDownMenuListener?.onClick(menu_news)
+        }
+
+        menu_help.setOnClickListener {
+            startActivity(Intent(context, HelpCenterActivity::class.java))
+            mDownMenuListener?.onClick(menu_help)
         }
     }
 

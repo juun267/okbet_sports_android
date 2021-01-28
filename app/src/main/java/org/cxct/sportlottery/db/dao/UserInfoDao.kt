@@ -39,6 +39,7 @@ interface UserInfoDao {
         try {
             insert(userInfo)
         } catch (e: SQLiteConstraintException) {
+            e.printStackTrace()
             update(userInfo)
         }
     }

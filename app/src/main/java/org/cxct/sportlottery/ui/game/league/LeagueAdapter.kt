@@ -41,8 +41,8 @@ class LeagueAdapter(private val leagueListener: LeagueListener) : RecyclerView.A
         }
 
         private fun setupLeagueSubAdapter(item: Row, leagueListener: LeagueListener) {
-            leagueSubAdapter = LeagueSubAdapter(LeagueSubAdapter.LeagueSubListener {
-                leagueListener.onClick(item)
+            leagueSubAdapter = LeagueSubAdapter(LeagueSubAdapter.LeagueSubListener {league ->
+                leagueListener.onClick(item.list.find { it == league }?.id ?: "")
             })
         }
 
@@ -84,6 +84,6 @@ class LeagueAdapter(private val leagueListener: LeagueListener) : RecyclerView.A
     }
 }
 
-class LeagueListener(val clickListener: (item: Row) -> Unit) {
-    fun onClick(item: Row) = clickListener(item)
+class LeagueListener(val clickListener: (item: String) -> Unit) {
+    fun onClick(item: String) = clickListener(item)
 }

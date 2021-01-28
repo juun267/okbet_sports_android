@@ -75,6 +75,7 @@ import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
+import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
 import retrofit2.Response
 import java.io.IOException
@@ -258,6 +259,10 @@ object ErrorUtils {
                     (url.contains(OUTRIGHT_BET_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return OutrightBetAddResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(WITHDRAW_ADD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return WithdrawListResult(it.code, it.msg, null, it.success, null) as T
                     }
                 }
             }
