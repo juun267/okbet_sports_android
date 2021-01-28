@@ -54,17 +54,17 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
-            matchOddListener = MatchOddListener {
+            matchOddListener = MatchOddListener ({
                 Log.e(">>>", "onclick LeagueOddAdapter")
                 viewModel.getOddsDetail(it.matchInfo.id)
+               }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
             }
         }
-    }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
             Log.e(">>>", "onclick LeagueAdapter")
-            viewModel.getLeagueOddsList(args.matchType, it.list.first().id)
+            viewModel.getLeagueOddsList(args.matchType, it)
         })
     }
 

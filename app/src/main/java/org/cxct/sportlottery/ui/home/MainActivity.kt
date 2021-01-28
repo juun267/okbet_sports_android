@@ -375,7 +375,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             )
         })
 
-        viewModel.matchTypeCard.observe(this, Observer {
+        viewModel.matchTypeCardForParlay.observe(this, Observer {
             when (it) {
                 MatchType.PARLAY -> {
                     tabLayout.getTabAt(4)?.select()

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.fragment_game_detail.view.*
-import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
@@ -39,9 +38,9 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
-            matchOddListener = MatchOddListener {
+            matchOddListener = MatchOddListener({
                 viewModel.getOddsDetail(it.matchInfo.id)
-            }
+            }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
     }
 
