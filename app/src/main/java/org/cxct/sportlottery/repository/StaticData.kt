@@ -17,9 +17,3 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
-
-@Deprecated("userData 改成一律從 user info repository 取得")
-var sLoginData: LoginData? = null
-
-@Deprecated("userData 改成一律從 user info repository 取得")
-var sUserInfo: UserInfo = UserInfo()

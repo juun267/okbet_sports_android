@@ -9,6 +9,8 @@ import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoData
+import org.cxct.sportlottery.network.user.info.UserInfoResult
+import retrofit2.Response
 
 class UserInfoRepository(private val userInfoDao: UserInfoDao) {
 
@@ -20,7 +22,7 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             return@map null
         }
 
-    suspend fun getUserInfo() {
+    suspend fun getUserInfo(): Response<UserInfoResult> {
         val userInfoResponse = OneBoSportApi.userService.getUserInfo()
 
         if (userInfoResponse.isSuccessful) {
@@ -28,6 +30,7 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
                 updateUserInfo(it.userInfoData)
             }
         }
+        return userInfoResponse
     }
 
     @WorkerThread

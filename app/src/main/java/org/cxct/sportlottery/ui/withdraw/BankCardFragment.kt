@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
-import org.cxct.sportlottery.repository.sLoginData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MoneyManager
@@ -35,7 +34,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
-    private var mUserId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,12 +68,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupInitData(view: View) {
+        viewModel.clearBankCardFragmentStatus()
+
         val initData = args.editBankCard
         initData?.let {
             view.apply {
                 btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
-                et_create_name.setText(sLoginData?.fullName)
                 et_network_point.setText(initData.subAddress)
             }
             return@setupInitData
@@ -84,21 +83,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupTitle() {
-        when (val currentActivity = this.activity) {
-            is WithdrawActivity -> {
-                if (mBankCardStatus) {
-                    currentActivity.setToolBarName(getString(R.string.edit_bank_card))
-                } else {
-                    currentActivity.setToolBarName(getString(R.string.add_credit_card))
-                }
-            }
-            is BankActivity -> {
-                if (mBankCardStatus) {
-                    currentActivity.setToolBarName(getString(R.string.edit_bank_card))
-                } else {
-                    currentActivity.setToolBarName(getString(R.string.add_credit_card))
-                }
-            }
+        if (mBankCardStatus) {
+            (activity as BankActivity).changeTitle(getString(R.string.edit_bank_card))
+        } else {
+            (activity as BankActivity).changeTitle(getString(R.string.add_credit_card))
         }
     }
 
@@ -194,7 +182,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 fundPwd = et_withdrawal_password.getText(),
                 fullName = et_create_name.getText(),
                 id = args.editBankCard?.id?.toString(),
-                userId = viewModel.userInfo.value?.userId.toString(),
                 uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
                 bankCode = args.editBankCard?.bankCode.toString()
             )
@@ -215,8 +202,15 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupObserve() {
+        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        })
+
         viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
-            mUserId = it?.userId
+            it?.fullName?.let { fullName -> if (fullName.isNotEmpty()) et_create_name.setText(fullName) }
         })
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
@@ -302,7 +296,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
     private var selectedPosition = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var holder: ListViewHolder
+        val holder: ListViewHolder
         // if remove "if (convertView == null)" will get a warning about reuse view.
         val data = dataList[position]
         if (convertView == null) {

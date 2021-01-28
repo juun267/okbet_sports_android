@@ -36,6 +36,7 @@
         <activity android:name=".ui.withdraw.BankActivity" />
         <activity android:name=".ui.results.ResultsSettlementActivity" />
         <activity android:name=".ui.bet.record.BetRecordActivity" />
+        <activity android:name=".ui.helpCenter.HelpCenterActivity" />
         <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

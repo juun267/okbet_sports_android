@@ -99,18 +99,6 @@
                 app:cvTitle="@string/profile_center" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_test_withdraw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cvTitle="提款" />
-
-            <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_test_withdraw_setting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cvTitle="提款設置" />
-
-            <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_news"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

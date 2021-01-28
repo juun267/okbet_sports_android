@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.view_account_balance.*
 import kotlinx.android.synthetic.main.view_account_balance.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +31,11 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
     private var param2: String? = null
 
     private val recordAdapter by lazy {
-        FinanceRecordAdapter()
+        FinanceRecordAdapter().apply {
+            financeRecordListener = FinanceRecordListener {
+                viewModel.setRecordType(it.first)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +86,7 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
         viewModel.userMoneyResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
             if (it != null && it.success) {
-                tv_balance.text = it.money.toString()
+                tv_balance.text = it.displayMoney
             }
         })
 

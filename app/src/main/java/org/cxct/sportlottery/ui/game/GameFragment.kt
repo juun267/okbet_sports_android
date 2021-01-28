@@ -53,15 +53,15 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
-            matchOddListener = MatchOddListener {
+            matchOddListener = MatchOddListener({
                 viewModel.getOddsDetail(it.matchInfo.id)
-            }
+            }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
     }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it.list.first().id)
+            viewModel.getLeagueOddsList(args.matchType, it)
         })
     }
 
@@ -71,10 +71,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 viewModel.getOutrightOddsList(it.id)
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

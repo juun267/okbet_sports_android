@@ -33,30 +33,37 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_bank_list, container, false).apply {
-            setupTitle()
-
             setupRecyclerView(this)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getBankCardList()
+        initData()
         setupObserve()
+        setupTitle()
+    }
+
+    private fun initData() {
+        viewModel.getBankCardList()
     }
 
     private fun setupTitle() {
-        when (val currentActivity = this.activity) {
-            is WithdrawActivity -> {
-                currentActivity.setToolBarName(getString(R.string.withdraw_setting))
-            }
-            is BankActivity -> {
-                currentActivity.setToolBarName(getString(R.string.withdraw_setting))
-            }
-        }
+        (activity as BankActivity).changeTitle(getString(R.string.withdraw_setting))
     }
 
     private fun setupObserve() {
+        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        })
+
+        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
+            mBankListAdapter.fullName = it?.fullName ?: ""
+        })
+
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
             it.bankCardList.let { data ->
                 mBankListAdapter.bankList = data ?: listOf()
