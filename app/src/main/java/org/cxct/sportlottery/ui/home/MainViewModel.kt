@@ -522,7 +522,7 @@ class MainViewModel(
         _isOpenMatchOdds.postValue(true)
     }
 
-    fun updateOutrightOddsSelectedState(winner: Winner) {
+    fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
         val result = _outrightOddsListResult.value
 
         val winnerList =
@@ -532,7 +532,7 @@ class MainViewModel(
 
         winnerList.map {
             it.isSelected = if (it == winner) {
-                getBetInfoList(listOf(Odd(winner.id, winner.odds)))
+                getBetInfoList(listOf(Odd(winner.id, winner.odds?:0.0)))
                 true
             } else {
                 removeBetInfoItem(winner.id)

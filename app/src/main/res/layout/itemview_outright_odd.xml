@@ -30,4 +30,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="2.25" />
 
+    <ImageView
+        android:id="@+id/bet_lock_img"
+        android:layout_width="16dp"
+        android:layout_height="22dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_iconlockbet"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/outright_bet"
+        app:layout_constraintEnd_toEndOf="@id/outright_bet"
+        app:layout_constraintStart_toStartOf="@id/outright_bet"
+        app:layout_constraintTop_toTopOf="@id/outright_bet"
+        tools:tint="@color/gray6" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

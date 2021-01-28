@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import java.lang.Exception
@@ -34,7 +35,7 @@ class OddsBetButton @JvmOverloads constructor(context: Context, attrs: Attribute
         try {
             setupOUType(typedArray.getInteger(R.styleable.OddsBetButton_ouType, -1))
 
-            setStatus(false, typedArray.getInteger(R.styleable.OddsBetButton_status, 0))
+            setStatus(false, typedArray.getInteger(R.styleable.OddsBetButton_status, BetStatus.ACTIVATED.code))
 
             bet_top_text.text = typedArray.getString(R.styleable.OddsBetButton_topText)
 
@@ -66,18 +67,18 @@ class OddsBetButton @JvmOverloads constructor(context: Context, attrs: Attribute
     //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
     fun setStatus(isOddsNull: Boolean, status: Int) {
         var itemState = status
-        if (isOddsNull) itemState = 2
+        if (isOddsNull) itemState = BetStatus.DEACTIVATED.code
 
         when (itemState) {
-            0 -> {
+            BetStatus.ACTIVATED.code -> {
                 bet_lock.visibility = View.GONE
                 bet_layout.isEnabled = true
             }
-            1 -> {
+            BetStatus.LOCKED.code -> {
                 bet_lock.visibility = View.VISIBLE
                 bet_layout.isEnabled = false
             }
-            2 -> {
+            BetStatus.DEACTIVATED.code -> {
                 bet_layout.visibility = View.GONE
                 bet_layout.isEnabled = false
             }

@@ -118,7 +118,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.e(">>>", "GameDetailFragment")
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
                 setupOddsUpperBar(it)
@@ -142,6 +141,9 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             it?.let {
                 if (it.odds.isNullOrEmpty()) return@observe
                 matchOddAdapter.updatedOddsMap = it.odds
+
+                Log.e(">>>>>", "winnerItemKey = $winnerItemKey")
+                outrightOddAdapter.updatedWinnerOddsList = it.odds[winnerItemKey] ?: listOf()
 
             }
         })
@@ -173,9 +175,13 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         league_odd_count.visibility = View.GONE
     }
 
+    var winnerItemKey: String = ""
+
     private fun setupOutrightOddList(outrightOddsListResult: OutrightOddsListResult) {
         league_odd_sub_list.visibility = View.GONE
         outright_odd_sub_list.visibility = View.VISIBLE
+
+        winnerItemKey = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.keys?.firstOrNull() ?:""
 
         outrightOddAdapter.data =
             outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.values?.first()
