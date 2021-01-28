@@ -15,13 +15,16 @@ import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.service.match_odds_change.Odds
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
+import org.cxct.sportlottery.ui.game.odds.ItemExpandListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
@@ -39,6 +42,8 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
 
+    private val service by lazy { (activity as MainActivity).mService }
+
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
             Log.e(">>>", "onclick gameTypeAdapter")
@@ -55,11 +60,19 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener ({
-                Log.e(">>>", "onclick LeagueOddAdapter")
                 viewModel.getOddsDetail(it.matchInfo?.id)
                }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
+
+            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
+                if (isExpand) {
+                    service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                }
+
+
+
             }
         }
+     }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
@@ -96,25 +109,44 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             setupOutrightSeasonList(this)
 
-//            initObserve()
+            initObserve()
         }
     }
 
     private fun initObserve() {
-        viewModel.matchStatusChange.observe(viewLifecycleOwner, {
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
             if (it == null) return@observe
-            Log.e(">>>>>", "matchStatusChange")
+            Log.e(">>>>>", "g matchStatusChange")
         })
 
-        viewModel.matchClock.observe(viewLifecycleOwner, {
+        viewModel.matchClock.observe(this.viewLifecycleOwner, {
             if (it == null) return@observe
-            Log.e(">>>>>", "matchClock")
-        })
+            Log.e(">>>>>", "g matchClock")
 
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            Log.e(">>>>>", "matchOddsChange")
         })
+/*
+        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "g matchOddsChange")
+            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
+        })
+        */
+
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, {
+            if (it == null) return@observe
+            leagueOddAdapter.updatedOddsMap = it.odds
+        })
+    }
+
+    private fun transformData(odds: Map<String, Odds>): Map<String, List<Odd>> {
+
+        val newMap = mutableMapOf<String, List<Odd>>()
+
+        for ( (key, value) in odds) {
+            newMap[key] = value.odds
+        }
+
+        return newMap
     }
 
     private fun setupSportTypeRow(view: View) {

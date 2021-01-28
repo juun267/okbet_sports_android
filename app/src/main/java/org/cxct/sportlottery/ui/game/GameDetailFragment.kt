@@ -41,6 +41,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
             matchOddListener = MatchOddListener({
+                Log.e(">>>", "onclick MatchOddAdapter")
                 viewModel.getOddsDetail(it.matchInfo?.id)
             }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
@@ -48,6 +49,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
+            Log.e(">>>", "onclick OutrightOddAdapter")
             outrightOddListener = OutrightOddAdapter.OutrightOddListener {
                 viewModel.updateOutrightOddsSelectedState(it)
             }
@@ -155,7 +157,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         oddsFirst?.let {
             league_odd_name.text = it.league.name
-            league_odd_count.text = it.matchOdds?.size.toString()
+            league_odd_count.text = it.matchOdds.size.toString()
         }
     }
 
@@ -166,7 +168,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
 
         oddsFirst?.let {
-            matchOddAdapter.data = it.matchOdds.apply { this?.get(0)?.isExpand = true }
+            matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
         }
     }
 

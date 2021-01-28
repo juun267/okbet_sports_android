@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.service.match_odds_change
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.odds.list.Odd
 
 @JsonClass(generateAdapter = true)
 data class Odds(
