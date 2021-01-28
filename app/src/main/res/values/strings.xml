@@ -465,4 +465,11 @@
     <string name="withdraw_log_type_all">全部渠道类型</string>
     <string name="withdraw_log_type_bank_trans">银行提款</string>
     <string name="withdraw_log_type_admin">后台扣款</string>
+
+    <string name="log_detail_title">查看详情</string>
+    <string name="log_detail_trans_num_sub">交易编号：</string>
+    <string name="log_detail_time_sub">发起时间：</string>
+    <string name="log_detail_type_sub">交易类型：</string>
+    <string name="log_detail_amount_sub">交易金额：</string>
+    <string name="log_detail_status_sub">交易状态：</string>
 </resources>
