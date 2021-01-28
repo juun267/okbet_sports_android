@@ -142,6 +142,14 @@
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号 Ver %s</string>
 
+    <!--  HelpCenter  -->
+    <string name="contact_us">联络我们</string>
+    <string name="game_rule">游戏规则</string>
+        <!--  GameRule  -->
+    <string name="sport_bet_rule">体育投注规则</string>
+    <string name="common_sport_description">一般体育说明</string>
+    <string name="overview">概述</string>
+
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>
     <string name="select_all_league">选择所有联赛</string>

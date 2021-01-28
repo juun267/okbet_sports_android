@@ -8,6 +8,11 @@ import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.db.SportRoomDatabase
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.SettlementRepository
+import org.cxct.sportlottery.repository.SportMenuRepository
+import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
@@ -49,6 +54,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettlementViewModel(get(), get()) }
         viewModel { BetRecordViewModel(get()) }
         viewModel { InfoCenterViewModel(get(), get()) }
+        viewModel { HelpCenterViewModel(get()) }
         viewModel { WithdrawViewModel(get(), get(), get()) }
         viewModel { ProfileModel(get(), get()) }
         viewModel { NicknameModel(get(), get()) }
