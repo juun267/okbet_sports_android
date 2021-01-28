@@ -551,7 +551,7 @@ class MainViewModel(
             result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find { it.odds[oddString]?.contains(odd) ?: false }?.odds?.get(oddString)
                 ?.find { it == odd }
         if (_isParlayPage.value == true) {
-            val isBetMatchId = betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo.id }
+            val isBetMatchId = betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
             val isBetOddId = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
             when {
                 isBetMatchId == null -> {

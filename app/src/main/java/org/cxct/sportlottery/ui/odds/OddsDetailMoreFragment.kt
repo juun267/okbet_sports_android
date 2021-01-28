@@ -82,10 +82,10 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewMo
 
                 is MatchOdd -> {
                     m = (list.value!![i] as MatchOdd).matchInfo
-                    if (m.id != matchId) {
-                        matchOddList.add(
-                            MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status)
-                        )
+                    m?.apply {
+                        if (m.id != matchId) {
+                            matchOddList.add(MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status))
+                        }
                     }
                 }
             }

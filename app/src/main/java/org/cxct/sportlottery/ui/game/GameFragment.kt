@@ -56,7 +56,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener ({
                 Log.e(">>>", "onclick LeagueOddAdapter")
-                viewModel.getOddsDetail(it.matchInfo.id)
+                viewModel.getOddsDetail(it.matchInfo?.id)
                }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
             }
         }
