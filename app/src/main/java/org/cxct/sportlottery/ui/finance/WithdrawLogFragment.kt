@@ -20,17 +20,17 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import java.util.*
 
 
-class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     private lateinit var calendarBottomSheet: BottomSheetDialog
-    private lateinit var rechargeStateBottomSheet: BottomSheetDialog
-    private lateinit var rechargeChannelBottomSheet: BottomSheetDialog
+    private lateinit var withdrawStateBottomSheet: BottomSheetDialog
+    private lateinit var withdrawTypeBottomSheet: BottomSheetDialog
     private val logDetailDialog by lazy {
         LogDetailDialog()
     }
 
-    private val rechargeLogAdapter by lazy {
-        RechargeLogAdapter().apply {
-            rechargeLogListener = RechargeLogListener {
+    private val withdrawLogAdapter by lazy {
+        WithdrawLogAdapter().apply {
+            withdrawLogListener = WithdrawLogListener {
                 viewModel.setLogDetail(it)
             }
         }
@@ -43,12 +43,12 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
             setupCalendarBottomSheet(container)
-            setupRechargeStateBottomSheet(container)
-            setupRechargeChannelBottomSheet(container)
+            setupWithdrawStateBottomSheet(container)
+            setupWithdrawTypeBottomSheet(container)
             setupDateRangeSelector(this)
-            setupRechargeStateSelector(this)
-            setupRechargeChannelSelector(this)
-            setupRechargeLogList(this)
+            setupWithdrawStateSelector(this)
+            setupWithdrawTypeSelector(this)
+            setupWithdrawLogList(this)
             setupSearch(this)
         }
     }
@@ -74,31 +74,32 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
     }
 
-    private fun setupRechargeStateBottomSheet(container: ViewGroup?) {
+    private fun setupWithdrawStateBottomSheet(container: ViewGroup?) {
         val bottomSheetView =
             layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
 
-        rechargeStateBottomSheet = BottomSheetDialog(this.requireContext())
-        rechargeStateBottomSheet.setContentView(bottomSheetView)
-        rechargeStateBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
-            rechargeStateBottomSheet.dismiss()
+        withdrawStateBottomSheet = BottomSheetDialog(this.requireContext())
+        withdrawStateBottomSheet.setContentView(bottomSheetView)
+        withdrawStateBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
+            withdrawStateBottomSheet.dismiss()
 
-            viewModel.setRechargeState(position)
+            viewModel.setWithdrawState(position)
         }
     }
 
-    private fun setupRechargeChannelBottomSheet(container: ViewGroup?) {
+    private fun setupWithdrawTypeBottomSheet(container: ViewGroup?) {
         val bottomSheetView =
             layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
 
-        rechargeChannelBottomSheet = BottomSheetDialog(this.requireContext())
-        rechargeChannelBottomSheet.setContentView(bottomSheetView)
-        rechargeChannelBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
-            rechargeChannelBottomSheet.dismiss()
+        withdrawTypeBottomSheet = BottomSheetDialog(this.requireContext())
+        withdrawTypeBottomSheet.setContentView(bottomSheetView)
+        withdrawTypeBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
+            withdrawTypeBottomSheet.dismiss()
 
-            viewModel.setRechargeChannel(position)
+            viewModel.setWithdrawType(position)
         }
     }
+
 
     private fun setupDateRangeSelector(view: View) {
         view.date_range_selector.ll_start_date.setOnClickListener {
@@ -109,24 +110,24 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
-    private fun setupRechargeStateSelector(view: View) {
+    private fun setupWithdrawStateSelector(view: View) {
         view.order_status_selector.ll_start_date.setOnClickListener {
-            rechargeStateBottomSheet.show()
+            withdrawStateBottomSheet.show()
         }
     }
 
-    private fun setupRechargeChannelSelector(view: View) {
+    private fun setupWithdrawTypeSelector(view: View) {
         view.order_status_selector.ll_end_date.setOnClickListener {
-            rechargeChannelBottomSheet.show()
+            withdrawTypeBottomSheet.show()
         }
     }
 
-    private fun setupRechargeLogList(view: View) {
+    private fun setupWithdrawLogList(view: View) {
         view.rvlist.apply {
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-            this.adapter = rechargeLogAdapter
+            this.adapter = withdrawLogAdapter
 
             addItemDecoration(
                 DividerItemDecoration(
@@ -139,7 +140,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupSearch(view: View) {
         view.date_range_selector.btn_search.setOnClickListener {
-            viewModel.getUserRechargeList()
+            viewModel.getUserWithdrawList()
         }
     }
 
@@ -150,30 +151,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             calendarBottomSheet.calendar.setSelectableDateRange(it.first, it.second)
         })
 
-        viewModel.rechargeStateList.observe(this.viewLifecycleOwner, Observer {
-            val textList = it.map { rechargeState -> rechargeState.state }
-
-            rechargeStateBottomSheet.rech_list.apply {
-                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
-            }
-
-            order_status_selector.tv_start_date.text = it.find { rechargeState ->
-                rechargeState.isSelected
-            }?.state
-        })
-
-        viewModel.rechargeChannelList.observe(this.viewLifecycleOwner, Observer {
-            val textList = it.map { rechargeChannel -> rechargeChannel.channel }
-
-            rechargeChannelBottomSheet.rech_list.apply {
-                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
-            }
-
-            order_status_selector.tv_end_date.text = it.find { rechargeChannel ->
-                rechargeChannel.isSelected
-            }?.channel
-        })
-
         viewModel.recordCalendarStartDate.observe(this.viewLifecycleOwner, Observer {
             date_range_selector.tv_start_date.text = it.date
         })
@@ -182,9 +159,33 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             date_range_selector.tv_end_date.text = it.date
         })
 
-        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawStateList.observe(this.viewLifecycleOwner, Observer {
+            val textList = it.map { withdrawState -> withdrawState.state }
+
+            withdrawStateBottomSheet.rech_list.apply {
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
+            }
+
+            order_status_selector.tv_start_date.text = it.find { withdrawState ->
+                withdrawState.isSelected
+            }?.state
+        })
+
+        viewModel.withdrawTypeList.observe(this.viewLifecycleOwner, Observer {
+            val textList = it.map { withdrawType -> withdrawType.channel }
+
+            withdrawTypeBottomSheet.rech_list.apply {
+                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
+            }
+
+            order_status_selector.tv_end_date.text = it.find { withdrawType ->
+                withdrawType.isSelected
+            }?.channel
+        })
+
+        viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
-                rechargeLogAdapter.data = it.rows ?: listOf()
+                withdrawLogAdapter.data = it.rows ?: listOf()
             }
         })
 
@@ -193,14 +194,14 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
                 logDetailDialog.show(
                     parentFragmentManager,
-                    RechargeLogFragment::class.java.simpleName
+                    WithdrawLogFragment::class.java.simpleName
                 )
             }
         })
 
         viewModel.getCalendarRange()
-        viewModel.getRechargeState()
-        viewModel.getRechargeChannel()
-        viewModel.getUserRechargeList()
+        viewModel.getWithdrawState()
+        viewModel.getWithdrawType()
+        viewModel.getUserWithdrawList()
     }
 }

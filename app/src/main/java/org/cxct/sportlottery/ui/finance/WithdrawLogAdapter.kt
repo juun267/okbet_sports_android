@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.list.Row
+import org.cxct.sportlottery.network.withdraw.list.Row
 
-class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>() {
+class WithdrawLogAdapter : RecyclerView.Adapter<WithdrawLogAdapter.ViewHolder>() {
 
     var data = listOf<Row>()
         set(value) {
@@ -16,7 +16,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>()
             notifyDataSetChanged()
         }
 
-    var rechargeLogListener: RechargeLogListener? = null
+    var withdrawLogListener: WithdrawLogListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -25,21 +25,22 @@ class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, rechargeLogListener)
+        holder.bind(item, withdrawLogListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Row, rechargeLogListener: RechargeLogListener?) {
-            itemView.rech_log_date.text = item.rechDateStr
-            itemView.rech_log_time.text = item.rechTimeStr
+        fun bind(item: Row, withdrawLogListener: WithdrawLogListener?) {
+            itemView.rech_log_date.text = item.withdrawDate
+            itemView.rech_log_time.text = item.withdrawTime
             itemView.rech_log_amount.text = item.displayMoney
-            itemView.rech_log_type.text = item.rechName
-            itemView.rech_log_state.text = item.rechState
+            itemView.rech_log_type.text = item.withdrawType
+            itemView.rech_log_state.text = item.withdrawState
+
             itemView.setOnClickListener {
-                rechargeLogListener?.onClick(item)
+                withdrawLogListener?.onClick(item)
             }
         }
 
@@ -55,6 +56,6 @@ class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>()
     }
 }
 
-class RechargeLogListener(val clickListener: (row: Row) -> Unit) {
+class WithdrawLogListener(val clickListener: (row: Row) -> Unit) {
     fun onClick(row: Row) = clickListener(row)
 }

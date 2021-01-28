@@ -361,10 +361,6 @@
     <string name="text_money_copy_success">复制成功</string>
 
 
-
-
-
-
     <!--  Withdraw  -->
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>
@@ -441,6 +437,7 @@
     <string name="bet_info_list">注单</string>
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
+    <string name="bet_info_add_bet_success">投注成功</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
@@ -468,4 +465,20 @@
     <string name="recharge_log_recharge_amount">充值金额</string>
     <string name="recharge_log_channel_type">渠道类型</string>
     <string name="recharge_log_order_state">订单状态</string>
+
+    <string name="withdraw_log_state_all">全部订单状态</string>
+    <string name="withdraw_log_state_processing">处理中</string>
+    <string name="withdraw_log_state_pass">通过</string>
+    <string name="withdraw_log_state_un_pass">不通过</string>
+
+    <string name="withdraw_log_type_all">全部渠道类型</string>
+    <string name="withdraw_log_type_bank_trans">银行提款</string>
+    <string name="withdraw_log_type_admin">后台扣款</string>
+
+    <string name="log_detail_title">查看详情</string>
+    <string name="log_detail_trans_num_sub">交易编号：</string>
+    <string name="log_detail_time_sub">发起时间：</string>
+    <string name="log_detail_type_sub">交易类型：</string>
+    <string name="log_detail_amount_sub">交易金额：</string>
+    <string name="log_detail_status_sub">交易状态：</string>
 </resources>
