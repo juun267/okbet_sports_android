@@ -6,12 +6,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Odd(
     @Json(name = "id")
-    val id: String,
+    val id: String? = null,
     @Json(name = "odds")
-    var odds: Double?,
-    @Json(name = "producerId") var producerId: Int,
+    var odds: Double? = null,
+    @Json(name = "producerId")
+    var producerId: Int? = null,
     @Json(name = "spread")
-    val spread: String?,
+    val spread: String? = null,
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code
 ) {

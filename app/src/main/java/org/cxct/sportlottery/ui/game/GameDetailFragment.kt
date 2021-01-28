@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -39,7 +41,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
             matchOddListener = MatchOddListener({
-                viewModel.getOddsDetail(it.matchInfo.id)
+                viewModel.getOddsDetail(it.matchInfo?.id)
             }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
     }
@@ -137,12 +139,10 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setSocketObserver() {
         viewModel.oddsChange.observe(this.viewLifecycleOwner, {
-            Log.e(">>>testttt", "${it?.eventType.toString()}")
             it?.let {
                 if (it.odds.isNullOrEmpty()) return@observe
                 matchOddAdapter.updatedOddsMap = it.odds
 
-                Log.e(">>>>>", "winnerItemKey = $winnerItemKey")
                 outrightOddAdapter.updatedWinnerOddsList = it.odds[winnerItemKey] ?: listOf()
 
             }
@@ -155,7 +155,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         oddsFirst?.let {
             league_odd_name.text = it.league.name
-            league_odd_count.text = it.matchOdds.size.toString()
+            league_odd_count.text = it.matchOdds?.size.toString()
         }
     }
 
@@ -166,7 +166,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
 
         oddsFirst?.let {
-            matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
+            matchOddAdapter.data = it.matchOdds.apply { this?.get(0)?.isExpand = true }
         }
     }
 
@@ -183,9 +183,10 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         winnerItemKey = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.keys?.firstOrNull() ?:""
 
+        val emptyList = listOf(Odd(), Odd()) //default放入兩個空值, 以便socket比對並更新內容
         outrightOddAdapter.data =
             outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.values?.first()
-                ?: listOf()
+                ?: emptyList
     }
 
     override fun onResume() {

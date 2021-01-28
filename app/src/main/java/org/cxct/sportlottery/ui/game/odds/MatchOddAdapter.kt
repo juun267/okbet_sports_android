@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.odds
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,39 +49,43 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     private fun updateItemDataFromSocket(originItem: MatchOdd) {
         if (updatedOddsMap.isNullOrEmpty()) return
+
         for ((key, value) in updatedOddsMap) {
             when (key) {
                 PlayType.OU.code -> {
                     value.forEach {
+                        val oddItem = originItem.odds?.get(PlayType.OU.code)
+
                         when (it.id) {
-                            originItem.odds[PlayType.OU.code]?.firstOrNull()?.id -> {
-                                val oddData = originItem.odds[PlayType.OU.code]?.get(0)
+                            oddItem?.firstOrNull()?.id -> {
+                                val oddData = oddItem?.get(0)
                                 oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.OU.code]?.set(0, it)
+                                oddItem?.set(0, it)
                             }
-
-                            originItem.odds[PlayType.OU.code]?.get(1)?.id -> {
-                                val oddData = originItem.odds[PlayType.OU.code]?.get(1)
+                            oddItem?.get(1)?.id -> {
+                                val oddData = oddItem?.get(1)
                                 oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.OU.code]?.set(1, it)
+                                oddItem?.set(1, it)
                             }
-
                         }
+
                     }
                 }
 
                 PlayType.HDP.code -> {
                     value.forEach {
+                        val oddItem = originItem.odds?.get(PlayType.HDP.code)
+
                         when (it.id) {
-                            originItem.odds[PlayType.HDP.code]?.firstOrNull()?.id -> {
-                                val oddData = originItem.odds[PlayType.HDP.code]?.get(0)
+                            oddItem?.firstOrNull()?.id -> {
+                                val oddData = oddItem?.get(0)
                                 oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.HDP.code]?.set(0, it)
+                                oddItem?.set(0, it)
                             }
-                            originItem.odds[PlayType.HDP.code]?.get(1)?.id -> {
-                                val oddData = originItem.odds[PlayType.HDP.code]?.get(1)
+                            oddItem?.get(1)?.id -> {
+                                val oddData = oddItem?.get(1)
                                 oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.HDP.code]?.set(1, it)
+                                oddItem?.set(1, it)
                             }
                         }
                     }
@@ -90,16 +93,17 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
                 PlayType.X12.code -> {
                     value.forEach {
+                        val oddItem = originItem.odds?.get(PlayType.X12.code)
                         when (it.id) {
-                            originItem.odds[PlayType.X12.code]?.firstOrNull()?.id -> {
-                                val oddData = originItem.odds[PlayType.X12.code]?.get(0)
+                            oddItem?.firstOrNull()?.id -> {
+                                val oddData = oddItem?.get(0)
                                 oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.X12.code]?.set(0, it)
+                                oddItem?.set(0, it)
                             }
-                            originItem.odds[PlayType.X12.code]?.get(1)?.id -> {
-                                val oddData = originItem.odds[PlayType.X12.code]?.get(1)
+                            oddItem?.get(1)?.id -> {
+                                val oddData = oddItem?.get(1)
                                 oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.X12.code]?.set(1, it)
+                                oddItem?.set(1, it)
                             }
                         }
                     }
@@ -125,9 +129,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
-            itemView.match_odd_home_name.text = item.matchInfo.homeName
-            itemView.match_odd_away_name.text = item.matchInfo.awayName
-            itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
+            itemView.match_odd_home_name.text = item.matchInfo?.homeName
+            itemView.match_odd_away_name.text = item.matchInfo?.awayName
+            itemView.match_odd_count.text = item.matchInfo?.playCateNum.toString()
             itemView.setOnClickListener {
                 matchOddListener?.onClick(item)
             }
@@ -173,8 +177,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.match_odd_ou_hdp.visibility = View.VISIBLE
             itemView.match_odd_1x2.visibility = View.GONE
 
-            itemView.ou_hdp_home_name.text = item.matchInfo.homeName
-            itemView.ou_hdp_away_name.text = item.matchInfo.awayName
+            itemView.ou_hdp_home_name.text = item.matchInfo?.homeName
+            itemView.ou_hdp_away_name.text = item.matchInfo?.awayName
 
             oddOUHome?.let {
                 itemView.ou_hdp_home_ou.apply {
@@ -231,7 +235,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
         private fun setupMatchOdd1x2(item: MatchOdd, matchOddListener: MatchOddListener?) {
             val odd1X2String = PlayType.X12.code
-            val oddList1X2 = item.odds[odd1X2String]
+            val oddList1X2 = item.odds?.get(odd1X2String)
 
             val oddBet1 = if (oddList1X2?.size ?: 0 >= 1) oddList1X2?.get(0) else null
             val oddBetX = if (oddList1X2?.size ?: 0 >= 2) oddList1X2?.get(1) else null
@@ -240,8 +244,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.match_odd_1x2.visibility = View.VISIBLE
             itemView.match_odd_ou_hdp.visibility = View.GONE
 
-            itemView.x12_home_name.text = item.matchInfo.homeName
-            itemView.x12_away_name.text = item.matchInfo.awayName
+            itemView.x12_home_name.text = item.matchInfo?.homeName
+            itemView.x12_away_name.text = item.matchInfo?.awayName
 
             oddBet1?.let {
                 itemView.x12_bet_1.apply {

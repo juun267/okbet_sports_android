@@ -759,7 +759,7 @@ class MainViewModel(
         _curPlayType.postValue(playType)
     }
 
-    fun getOddsDetail(oddId: String) {
+    fun getOddsDetail(oddId: String?) {
         val item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
             it.isSelected
         }
