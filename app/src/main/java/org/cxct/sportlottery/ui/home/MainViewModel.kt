@@ -839,25 +839,4 @@ class MainViewModel(
             }
         }
     }
-
-    fun getUserInfo() {
-        viewModelScope.launch {
-            userInfoRepository.getUserInfo()
-        }
-    }
-
-    fun sayHello(): String? {
-        val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
-        return when {
-            hour < 6 -> androidContext.getString(R.string.good_midnight) + ", "
-            hour < 9 -> androidContext.getString(R.string.good_morning) + ", "
-            hour < 12 -> androidContext.getString(R.string.good_beforenoon) + ", "
-            hour < 14 -> androidContext.getString(R.string.good_noon) + ", "
-            hour < 17 -> androidContext.getString(R.string.good_afternoon) + ", "
-            hour < 19 -> androidContext.getString(R.string.good_evening) + ", "
-            hour < 22 -> androidContext.getString(R.string.good_night) + ", "
-            hour < 24 -> androidContext.getString(R.string.good_dreams) + ", "
-            else -> null
-        }
-    }
 }

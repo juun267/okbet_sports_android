@@ -81,17 +81,6 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_game_result)
         }
 
-        //TODO Dean : Test for withdraw page
-        menu_test_withdraw.setOnClickListener {
-            startActivity(Intent(activity, WithdrawActivity::class.java))
-            mDownMenuListener?.onClick(menu_test_withdraw)
-        }
-
-        menu_test_withdraw_setting.setOnClickListener {
-            startActivity(Intent(activity, BankActivity::class.java))
-            mDownMenuListener?.onClick(menu_test_withdraw_setting)
-        }
-
         menu_sign_out.setOnClickListener {
             viewModel.logout()
             context?.run {

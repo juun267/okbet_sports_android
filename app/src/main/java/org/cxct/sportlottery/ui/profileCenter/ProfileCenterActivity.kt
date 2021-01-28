@@ -17,9 +17,10 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
@@ -27,10 +28,8 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
 
-class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
@@ -77,7 +76,7 @@ class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
-            startActivity(Intent(this, WithdrawActivity::class.java))
+            viewModel.withdrawCheckPermissions()
         }
     }
 
@@ -121,7 +120,7 @@ class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
 
         //提款設置
         btn_withdrawal_setting.setOnClickListener {
-            startActivity(Intent(this, BankActivity::class.java))
+            viewModel.settingCheckPermissions()
         }
 
         //消息中心
@@ -172,6 +171,36 @@ class ProfileCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
 
         viewModel.userInfo.observe(this, Observer {
             updateUI(it)
+        })
+
+        viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
+            if (it == true) {
+                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                    startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                }
+            } else if (it == false) {
+                viewModel.checkBankCardPermissions()
+            }
+        })
+
+        viewModel.needToBindBankCard.observe(this, Observer {
+            if (it == true) {
+                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_bank_card)) {
+                    startActivity(Intent(this, BankActivity::class.java))
+                }
+            } else {
+                startActivity(Intent(this, WithdrawActivity::class.java))
+            }
+        })
+
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
+            if (it == true) {
+                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                    startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                }
+            } else if (it == false) {
+                startActivity(Intent(this, BankActivity::class.java))
+            }
         })
     }
 
