@@ -254,11 +254,11 @@ object ErrorUtils {
                     }
                     (url.contains(OUTRIGHT_BET_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OutrightBetAddResult(it.code, it.msg, null, it.success, null) as T
+                        return BetAddResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(OUTRIGHT_BET_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OutrightBetAddResult(it.code, it.msg, null, it.success, null) as T
+                        return BetInfoResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(WITHDRAW_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
