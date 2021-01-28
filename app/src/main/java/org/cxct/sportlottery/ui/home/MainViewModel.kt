@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
-import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
@@ -187,8 +186,8 @@ class MainViewModel(
     val betInfoList: LiveData<MutableList<BetInfoListData>>
         get() = _betInfoList
 
-    private val _matchOddList = MutableLiveData<MutableList<MatchOdd>>()
-    val matchOddList: LiveData<MutableList<MatchOdd>>
+    private val _matchOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>()
+    val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = _matchOddList
 
     private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
