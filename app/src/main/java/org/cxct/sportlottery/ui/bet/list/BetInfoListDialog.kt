@@ -63,7 +63,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
             dismiss()
         }
 
-        betInfoListAdapter = BetInfoListAdapter(this@BetInfoListDialog)
+        betInfoListAdapter = BetInfoListAdapter(requireContext(),this@BetInfoListDialog)
 
         rv_bet_list.apply {
             adapter = betInfoListAdapter

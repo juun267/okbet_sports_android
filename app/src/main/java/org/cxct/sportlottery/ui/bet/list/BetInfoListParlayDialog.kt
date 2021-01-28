@@ -80,7 +80,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             }
         }
 
-        matchOddAdapter = BetInfoListMatchOddAdapter(this@BetInfoListParlayDialog)
+        matchOddAdapter = BetInfoListMatchOddAdapter(requireContext(),this@BetInfoListParlayDialog)
         parlayAdapter = BetInfoListParlayAdapter(this@BetInfoListParlayDialog)
 
         rv_match_odd_list.apply {
