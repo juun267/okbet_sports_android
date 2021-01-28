@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
@@ -251,6 +252,10 @@ object ErrorUtils {
                         return RechargeListResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(OUTRIGHT_BET_ADD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OutrightBetAddResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(OUTRIGHT_BET_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return OutrightBetAddResult(it.code, it.msg, null, it.success, null) as T
                     }
