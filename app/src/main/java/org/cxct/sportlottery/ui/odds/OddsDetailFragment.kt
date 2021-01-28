@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -91,18 +92,18 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
 
     private fun observeSocketData() {
-        viewModel.matchStatusChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
+            if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
         })
 
-        viewModel.matchClock.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
+        viewModel.matchClock.observe(viewLifecycleOwner, Observer{
+            if (it == null) return@Observer
             Log.e(">>>>>", "matchClock")
         })
 
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
+            if (it == null) return@Observer
             Log.e(">>>>>", "matchOddsChange")
         })
     }
@@ -214,8 +215,8 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     }
 
     private fun socketObserve() {
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
+            if (it == null) return@Observer
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
         })
     }
