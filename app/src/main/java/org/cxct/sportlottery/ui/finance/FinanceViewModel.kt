@@ -9,14 +9,17 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
+import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
+import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
+import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.finance.data.RechargeChannel
+import org.cxct.sportlottery.ui.finance.data.*
 import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.ui.finance.data.RechargeState
-import org.cxct.sportlottery.ui.finance.data.RechargeTime
+import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
@@ -27,6 +30,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val userRechargeListResult: LiveData<RechargeListResult?>
         get() = _userRechargeResult
+
+    val userWithdrawListResult: LiveData<WithdrawListResult?>
+        get() = _userWithdrawResult
 
     val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
@@ -49,8 +55,18 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val recordType: LiveData<String>
         get() = _recordType
 
+    val withdrawStateList: LiveData<List<WithdrawState>>
+        get() = _withdrawStateList
+
+    val withdrawTypeList: LiveData<List<WithdrawType>>
+        get() = _withdrawTypeList
+
+    val logDetail: LiveData<LogDetail>
+        get() = _logDetail
+
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
+    private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
 
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
@@ -61,6 +77,11 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     private val _rechargeStateList = MutableLiveData<List<RechargeState>>()
     private val _rechargeChannelList = MutableLiveData<List<RechargeChannel>>()
+
+    private val _withdrawStateList = MutableLiveData<List<WithdrawState>>()
+    private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
+
+    private val _logDetail = MutableLiveData<LogDetail>()
 
 
     fun setRecordType(recordType: String) {
@@ -230,5 +251,143 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
             _userRechargeResult.postValue(result)
         }
+    }
+
+    fun setWithdrawState(position: Int) {
+        val list = _withdrawStateList.value
+
+        list?.forEach {
+            it.isSelected = (list.indexOf(it) == position)
+        }
+
+        _withdrawStateList.postValue(list ?: listOf())
+    }
+
+    fun setWithdrawType(position: Int) {
+        val list = _withdrawTypeList.value
+
+        list?.forEach {
+            it.isSelected = (list.indexOf(it) == position)
+        }
+
+        _withdrawTypeList.postValue(list ?: listOf())
+    }
+
+    fun getWithdrawState() {
+        val withdrawStateList =
+            androidContext.resources.getStringArray(R.array.withdraw_state_array)
+
+        val list = withdrawStateList.map {
+            when (it) {
+                androidContext.getString(R.string.withdraw_log_state_processing) -> {
+                    WithdrawState(CheckStatus.PROCESSING.code, it)
+                }
+                androidContext.getString(R.string.withdraw_log_state_pass) -> {
+                    WithdrawState(CheckStatus.PASS.code, it)
+                }
+                androidContext.getString(R.string.withdraw_log_state_un_pass) -> {
+                    WithdrawState(CheckStatus.UN_PASS.code, it)
+                }
+                else -> {
+                    WithdrawState(null, it).apply { isSelected = true }
+                }
+            }
+        }
+
+        _withdrawStateList.postValue(list)
+    }
+
+    fun getWithdrawType() {
+        val withdrawTypeList =
+            androidContext.resources.getStringArray(R.array.withdraw_type_array)
+
+        val list = withdrawTypeList.map {
+            when (it) {
+                androidContext.getString(R.string.withdraw_log_type_bank_trans) -> {
+                    WithdrawType(UWType.BANK_TRANSFER.type, it)
+                }
+                androidContext.getString(R.string.withdraw_log_type_admin) -> {
+                    WithdrawType(UWType.ADMIN_SUB_MONEY.type, it)
+                }
+                else -> {
+                    WithdrawType(null, it).apply { isSelected = true }
+                }
+            }
+        }
+
+        _withdrawTypeList.postValue(list)
+    }
+
+    fun getUserWithdrawList() {
+        val checkStatus = _withdrawStateList.value?.find {
+            it.isSelected
+        }?.code
+
+        val uwType = _withdrawTypeList.value?.find {
+            it.isSelected
+        }?.type
+
+        val startTime = _recordCalendarStartDate.value?.date
+        val endTime = _recordCalendarEndDate.value?.date
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.getWithdrawList(
+                    WithdrawListRequest(
+                        checkStatus = checkStatus,
+                        uwType = uwType,
+                        startTime = startTime,
+                        endTime = endTime,
+
+                        )
+                )
+            }
+
+            result?.rows?.map {
+                it.withdrawState = when (it.checkStatus) {
+                    CheckStatus.PROCESSING.code -> androidContext.getString(R.string.withdraw_log_state_processing)
+                    CheckStatus.UN_PASS.code -> androidContext.getString(R.string.withdraw_log_state_un_pass)
+                    CheckStatus.PASS.code -> androidContext.getString(R.string.withdraw_log_state_pass)
+                    else -> ""
+                }
+
+                it.withdrawType = when (it.uwType) {
+                    UWType.ADMIN_SUB_MONEY.type -> androidContext.getString(R.string.withdraw_log_type_admin)
+                    UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
+                    else -> ""
+                }
+
+                it.withdrawDate = TimeUtil.timeFormat(it.applyTime, "yyyy-MM-dd")
+                it.withdrawTime = TimeUtil.timeFormat(it.applyTime, "HH:mm:ss")
+
+                it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
+            }
+
+            _userWithdrawResult.postValue(result)
+        }
+    }
+
+    fun setLogDetail(row: Row) {
+        val logDetail = LogDetail(
+            row.orderNo,
+            TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
+            row.rechName,
+            row.displayMoney,
+            row.rechState
+        )
+
+        _logDetail.postValue(logDetail)
+    }
+
+    fun setLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
+        val logDetail = LogDetail(
+            row.orderNo,
+            TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
+            row.uwType,
+            row.displayMoney,
+            row.withdrawState
+        )
+
+        _logDetail.postValue(logDetail)
     }
 }

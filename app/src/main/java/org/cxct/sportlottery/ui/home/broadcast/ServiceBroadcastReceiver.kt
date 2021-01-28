@@ -3,12 +3,12 @@ package org.cxct.sportlottery.ui.home.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -26,6 +26,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     val matchClock: LiveData<MatchClockEvent?>
         get() = _matchClock
+
+    val matchOddsChange: LiveData<MatchOddsChangeEvent?>
+        get() = _matchOddsChange
 
     val matchStatusChange: LiveData<MatchStatusChangeEvent?>
         get() = _matchStatusChange
@@ -53,6 +56,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
+    private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
     private val _matchStatusChange = MutableLiveData<MatchStatusChangeEvent?>()
     private val _notice = MutableLiveData<NoticeEvent?>()
     private val _oddsChange = MutableLiveData<OddsChangeEvent?>()
@@ -113,7 +117,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         }
                     }
                 }
-
+/*
                 //大廳賠率
                 BackService.URL_HALL -> {
                     when (eventType) {
@@ -138,13 +142,14 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 //具体赛事/赛季频道
                 BackService.URL_EVENT -> {
                     when (eventType) {
-                        EventType.ODDS_CHANGE.value -> {
-                            val data = ServiceMessage.getOddsChange(jObjStr)
-                            _oddsChange.value = data
+                        EventType.MATCH_ODDS_CHANGE.value -> {
+                            val data = ServiceMessage.getMatchOddsChange(jObjStr)
+                            _matchOddsChange.value = data
                         }
                     }
 
                 }
+*/
 
                 BackService.URL_PING -> {
                     when (eventType) {
@@ -154,7 +159,37 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         }
                     }
                 }
+            }
 
+            //大廳賠率
+            if (channel?.contains(BackService.URL_HALL) == true) {
+                when (eventType) {
+                    EventType.MATCH_STATUS_CHANGE.value -> {
+                        val data = ServiceMessage.getMatchStatusChange(jObjStr)
+                        _matchStatusChange.value = data
+
+                    }
+                    EventType.MATCH_CLOCK.value -> {
+                        val data = ServiceMessage.getMatchClock(jObjStr)
+                        _matchClock.value = data
+
+                    }
+                    EventType.ODDS_CHANGE.value -> {
+                        val data = ServiceMessage.getOddsChange(jObjStr)
+                        _oddsChange.value = data
+
+                    }
+                }
+            }
+
+            //具体赛事/赛季频道
+            if (channel?.contains(BackService.URL_EVENT) == true) {
+                when (eventType) {
+                    EventType.MATCH_ODDS_CHANGE.value -> {
+                        val data = ServiceMessage.getMatchOddsChange(jObjStr)
+                        _matchOddsChange.value = data
+                    }
+                }
             }
         }
 

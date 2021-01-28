@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -24,6 +25,7 @@ class BroadcastRepository {
 
     val globalStop = MediatorLiveData<GlobalStopEvent?>()
     val matchClock = MediatorLiveData<MatchClockEvent?>()
+    val matchOddsChange = MediatorLiveData<MatchOddsChangeEvent?>()
     val matchStatusChange = MediatorLiveData<MatchStatusChangeEvent?>()
     val notice = MediatorLiveData<NoticeEvent?>()
     val oddsChange = MediatorLiveData<OddsChangeEvent?>()
@@ -39,6 +41,7 @@ class BroadcastRepository {
 
     fun addDataSources(_globalStop: LiveData<GlobalStopEvent?>,
                        _matchClock: LiveData<MatchClockEvent?>,
+                       _matchOddsChange: LiveData<MatchOddsChangeEvent?>,
                        _matchStatusChange: LiveData<MatchStatusChangeEvent?>,
                        _notice: LiveData<NoticeEvent?>,
                        _oddsChange: LiveData<OddsChangeEvent?>,
@@ -52,6 +55,9 @@ class BroadcastRepository {
         }
         matchClock.addSource(_matchClock)  {
             matchClock.postValue(it)
+        }
+        matchOddsChange.addSource(_matchOddsChange)  {
+            matchOddsChange.postValue(it)
         }
         matchStatusChange.addSource(_matchStatusChange)  {
             matchStatusChange.postValue(it)
@@ -79,9 +85,10 @@ class BroadcastRepository {
         }
     }
 
-    fun removeDataSource(_globalStop: LiveData<GlobalStopEvent?>, _matchClock: LiveData<MatchClockEvent?>, _matchStatusChange: LiveData<MatchStatusChangeEvent?>, _notice: LiveData<NoticeEvent?>, _oddsChange: LiveData<OddsChangeEvent?>, _orderSettlement: LiveData<OrderSettlementEvent?>, _pingPong: LiveData<PingPongEvent?>, _producerUp: LiveData<ProducerUpEvent?>, _userMoney: LiveData<Double?>, _userNotice: LiveData<UserNoticeEvent?>) {
+    fun removeDataSource(_globalStop: LiveData<GlobalStopEvent?>, _matchClock: LiveData<MatchClockEvent?>, _matchOddsChange: LiveData<MatchOddsChangeEvent?>, _matchStatusChange: LiveData<MatchStatusChangeEvent?>, _notice: LiveData<NoticeEvent?>, _oddsChange: LiveData<OddsChangeEvent?>, _orderSettlement: LiveData<OrderSettlementEvent?>, _pingPong: LiveData<PingPongEvent?>, _producerUp: LiveData<ProducerUpEvent?>, _userMoney: LiveData<Double?>, _userNotice: LiveData<UserNoticeEvent?>) {
         globalStop.removeSource(_globalStop)
         matchClock.removeSource(_matchClock)
+        matchOddsChange.removeSource(_matchOddsChange)
         matchStatusChange.removeSource(_matchStatusChange)
         notice.removeSource(_notice)
         oddsChange.removeSource(_oddsChange)

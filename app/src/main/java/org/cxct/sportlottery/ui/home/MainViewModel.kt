@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.home
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -14,6 +13,7 @@ import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
@@ -37,6 +37,7 @@ import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -51,6 +52,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
@@ -170,10 +172,6 @@ class MainViewModel(
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
 
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
-
     private val _oddsDetailMoreList = MutableLiveData<List<*>>()
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
@@ -218,6 +216,9 @@ class MainViewModel(
     val matchClock: LiveData<MatchClockEvent?>
         get() = BroadcastRepository().instance().matchClock
 
+    val matchOddsChange: LiveData<MatchOddsChangeEvent?>
+        get() = BroadcastRepository().instance().matchOddsChange
+
     val matchStatusChange: LiveData<MatchStatusChangeEvent?>
         get() = BroadcastRepository().instance().matchStatusChange
 
@@ -236,8 +237,13 @@ class MainViewModel(
     val producerUp: LiveData<ProducerUpEvent?>
         get() = BroadcastRepository().instance().producerUp
 
+    private val _userMoney = BroadcastRepository().instance().userMoney
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = _userMoney
+
     val userNotice: LiveData<UserNoticeEvent?>
         get() = BroadcastRepository().instance().userNotice
+
 
     private val _isParlayPage = MutableLiveData<Boolean>()
     val isParlayPage: LiveData<Boolean>
@@ -436,19 +442,26 @@ class MainViewModel(
         }
     }
 
-    fun getLeagueOddsList(
-        matchType: MatchType,
-        leagueId: String
-    ) {
+    fun getHallUrl (cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
+        return "${BackService.URL_HALL}$nowGameType/$cateMenuCode/$eventId"
+    }
+
+    fun getEventUrl (eventId: String?): String {
+        return "${BackService.URL_EVENT}${eventId}"
+    }
+
+    var nowGameType: String? = SportType.FOOTBALL.code
+
+    fun getLeagueOddsList(matchType: MatchType, leagueId: String) {
         val leagueIdList by lazy {
             listOf(leagueId)
         }
-
         when (matchType) {
             MatchType.TODAY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
                     it.isSelected
                 }?.code
+                nowGameType = gameType
 
                 gameType?.let {
                     getOddsList(
@@ -464,6 +477,8 @@ class MainViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
                     it.isSelected
                 }?.code
+                nowGameType = gameType
+
 
                 gameType?.let {
                     getOddsList(
@@ -479,6 +494,8 @@ class MainViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
+                nowGameType = gameType
+
 
                 gameType?.let {
                     getOddsList(
@@ -552,7 +569,7 @@ class MainViewModel(
             when {
                 isBetMatchId == null -> {
                     match?.isSelected = true
-                    getBetInfoList(listOf(Odd(odd.id, odd.odds)))
+                    getBetInfoList(listOf(Odd(odd.id, odd.odds?:0.0)))
                 }
                 isBetOddId != null -> {
                     match?.isSelected = false
@@ -566,7 +583,7 @@ class MainViewModel(
             val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
             if (betItem == null) {
                 match?.isSelected = true
-                getBetInfoList(listOf(Odd(odd.id, odd.odds)))
+                getBetInfoList(listOf(Odd(odd.id, odd.odds?:0.0)))
             } else {
                 match?.isSelected = false
                 removeBetInfoItem(odd.id)

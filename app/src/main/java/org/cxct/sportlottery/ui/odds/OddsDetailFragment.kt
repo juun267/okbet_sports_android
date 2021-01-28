@@ -86,6 +86,25 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         initUI()
         observeData()
         getData()
+        observeSocketData()
+    }
+
+
+    private fun observeSocketData() {
+        viewModel.matchStatusChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchStatusChange")
+        })
+
+        viewModel.matchClock.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchClock")
+        })
+
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchOddsChange")
+        })
     }
 
 
@@ -189,6 +208,16 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
         })
 
+
+        socketObserve()
+
+    }
+
+    private fun socketObserve() {
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
+        })
     }
 
 

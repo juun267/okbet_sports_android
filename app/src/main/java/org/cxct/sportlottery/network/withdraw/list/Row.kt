@@ -13,7 +13,7 @@ data class Row(
     @Json(name = "applyMoney")
     val applyMoney: Double?,
     @Json(name = "applyTime")
-    val applyTime: String?,
+    val applyTime: Long?,
     @Json(name = "bankAccount")
     val bankAccount: String?,
     @Json(name = "bankCard")
@@ -29,7 +29,7 @@ data class Row(
     @Json(name = "id")
     val id: Long,
     @Json(name = "operatorTime")
-    val operatorTime: String?,
+    val operatorTime: Long?,
     @Json(name = "orderNo")
     val orderNo: String?,
     @Json(name = "reason")
@@ -40,4 +40,10 @@ data class Row(
     val userName: String?,
     @Json(name = "uwType")
     val uwType: String?
-)
+) {
+    var withdrawDate: String? = null
+    var withdrawTime: String? = null
+    var withdrawState: String? = null
+    var withdrawType: String? = null
+    var displayMoney: String? = null
+}
