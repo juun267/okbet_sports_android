@@ -351,6 +351,15 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                     else -> ""
                 }
 
+                it.withdrawType = when (it.uwType) {
+                    UWType.ADMIN_SUB_MONEY.type -> androidContext.getString(R.string.withdraw_log_type_admin)
+                    UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
+                    else -> ""
+                }
+
+                it.withdrawDate = TimeUtil.timeFormat(it.applyTime, "yyyy-MM-dd")
+                it.withdrawTime = TimeUtil.timeFormat(it.applyTime, "HH:mm:ss")
+
                 it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
             }
 
@@ -373,7 +382,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     fun setLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
         val logDetail = LogDetail(
             row.orderNo,
-            row.operatorTime,
+            TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
             row.uwType,
             row.displayMoney,
             row.withdrawState

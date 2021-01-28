@@ -31,7 +31,11 @@ class WithdrawLogAdapter : RecyclerView.Adapter<WithdrawLogAdapter.ViewHolder>()
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Row) {
-            itemView.rech_log_type.text = item.uwType
+            itemView.rech_log_date.text = item.withdrawDate
+            itemView.rech_log_time.text = item.withdrawTime
+            itemView.rech_log_amount.text = item.displayMoney
+            itemView.rech_log_type.text = item.withdrawType
+            itemView.rech_log_state.text = item.withdrawState
         }
 
         companion object {
