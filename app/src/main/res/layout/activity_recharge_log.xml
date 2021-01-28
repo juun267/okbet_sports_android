@@ -7,7 +7,7 @@
     <org.cxct.sportlottery.ui.component.DateRangeSelectorComponent
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="42dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <org.cxct.sportlottery.ui.component.OrderStatusSelectorComponent
