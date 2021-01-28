@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
+import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
@@ -60,6 +61,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val withdrawTypeList: LiveData<List<WithdrawType>>
         get() = _withdrawTypeList
 
+    val logDetail: LiveData<LogDetail>
+        get() = _logDetail
+
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
     private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
@@ -76,6 +80,8 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     private val _withdrawStateList = MutableLiveData<List<WithdrawState>>()
     private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
+
+    private val _logDetail = MutableLiveData<LogDetail>()
 
 
     fun setRecordType(recordType: String) {
@@ -350,5 +356,29 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
             _userWithdrawResult.postValue(result)
         }
+    }
+
+    fun setLogDetail(row: Row) {
+        val logDetail = LogDetail(
+            row.orderNo,
+            TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
+            row.rechName,
+            row.displayMoney,
+            row.rechState
+        )
+
+        _logDetail.postValue(logDetail)
+    }
+
+    fun setLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
+        val logDetail = LogDetail(
+            row.orderNo,
+            row.operatorTime,
+            row.uwType,
+            row.displayMoney,
+            row.withdrawState
+        )
+
+        _logDetail.postValue(logDetail)
     }
 }

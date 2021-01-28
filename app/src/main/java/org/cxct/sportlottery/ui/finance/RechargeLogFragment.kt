@@ -24,9 +24,16 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private lateinit var calendarBottomSheet: BottomSheetDialog
     private lateinit var rechargeStateBottomSheet: BottomSheetDialog
     private lateinit var rechargeChannelBottomSheet: BottomSheetDialog
+    private val logDetailDialog by lazy {
+        LogDetailDialog()
+    }
 
     private val rechargeLogAdapter by lazy {
-        RechargeLogAdapter()
+        RechargeLogAdapter().apply {
+            rechargeLogListener = RechargeLogListener {
+                viewModel.setLogDetail(it)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -179,6 +186,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             if (it?.success == true) {
                 rechargeLogAdapter.data = it.rows ?: listOf()
             }
+        })
+
+        viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
+            logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
         })
 
         viewModel.getCalendarRange()
