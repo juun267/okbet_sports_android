@@ -60,7 +60,7 @@ object ToastUtil {
     fun showBetResultToast(activity: Activity, msg: String, success: Boolean) {
         val contentView: ViewGroup = activity.window.decorView.findViewById(android.R.id.content)
         val view = LayoutInflater.from(activity).inflate(R.layout.toast_top_bet_result, contentView, false)
-        view.findViewById<TextView>(R.id.tv_message).text = msg
+        view.findViewById<TextView>(R.id.tv_message).text = if (success) activity.resources.getString(R.string.bet_info_add_bet_success) else msg
 
         val color = if (success) ContextCompat.getColor(activity, R.color.green_blue) else ContextCompat.getColor(activity, R.color.red2)
         view.findViewById<RelativeLayout>(R.id.rl_bg).setBackgroundColor(color)

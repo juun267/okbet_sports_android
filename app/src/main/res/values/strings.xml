@@ -441,6 +441,7 @@
     <string name="bet_info_list">注单</string>
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
+    <string name="bet_info_add_bet_success">投注成功</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
