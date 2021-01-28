@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,11 +17,14 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_bet_info_list_float_button.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.service.SERVICE_SEND_DATA
 import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
+import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -36,12 +40,63 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private var floatButtonView: View? = null
 
+    private val mReceiver by lazy {
+        ServiceBroadcastReceiver()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         onTokenStateChanged()
         onNetworkException()
+        subscribeBroadCastReceiver()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        removeBroadcast()
+    }
+
+    private fun subscribeBroadCastReceiver() {
+        val filter = IntentFilter().apply {
+            addAction(SERVICE_SEND_DATA)
+        }
+
+        val bcRepository = BroadcastRepository().instance()
+        bcRepository.addDataSources(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchOddsChange,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
+        registerReceiver(mReceiver, filter)
+    }
+
+    private fun removeBroadcast() {
+
+        val bcRepository = BroadcastRepository().instance()
+        bcRepository.removeDataSource(
+            mReceiver.globalStop,
+            mReceiver.matchClock,
+            mReceiver.matchOddsChange,
+            mReceiver.matchStatusChange,
+            mReceiver.notice,
+            mReceiver.oddsChange,
+            mReceiver.orderSettlement,
+            mReceiver.pingPong,
+            mReceiver.producerUp,
+            mReceiver.userMoney,
+            mReceiver.userNotice
+        )
+
+        unregisterReceiver(mReceiver)
     }
 
     override fun onResume() {
