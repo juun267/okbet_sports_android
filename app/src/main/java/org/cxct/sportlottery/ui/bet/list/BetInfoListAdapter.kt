@@ -120,7 +120,8 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             binding.betInfoAction.tv_bet.setOnClickListener {
                 if (!check(binding.etBet.text.toString(), matchOdd, parlayOdd)) {
-                    onItemClickListener.onBetClick()
+                    val stake = TextUtil.format(binding.etBet.text.toString().toDouble()).toDouble()
+                    onItemClickListener.onBetClick(betInfoList[position], stake)
                 }
             }
             binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick() }
@@ -147,7 +148,7 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
 
     interface OnItemClickListener {
         fun onDeleteClick(position: Int)
-        fun onBetClick()
+        fun onBetClick(betInfoListData: BetInfoListData, stake: Double)
         fun onAddMoreClick()
     }
 

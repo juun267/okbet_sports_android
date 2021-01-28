@@ -7,8 +7,8 @@ import retrofit2.Response
 
 class InfoCenterRepository {
 
-    suspend fun getUserNoticeList(page: Int, pageSize: Int): Response<InfoCenterResult> {
-        return OneBoSportApi.infoCenterService.getInfoList(InfoCenterRequest(page, pageSize))
+    suspend fun getUserNoticeList(infoCenterRequest: InfoCenterRequest): Response<InfoCenterResult> {
+        return OneBoSportApi.infoCenterService.getInfoList(infoCenterRequest)
     }
 
     suspend fun setMsgReaded(msgId: String): Response<InfoCenterResult> {

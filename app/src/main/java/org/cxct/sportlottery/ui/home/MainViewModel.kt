@@ -11,6 +11,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListRequest
@@ -188,6 +190,9 @@ class MainViewModel(
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
 
+    private val _betAddResult = MutableLiveData<BetAddResult>()
+    val betAddResult: LiveData<BetAddResult>
+        get() = _betAddResult
 
     //BroadCastReceiver
 
@@ -829,24 +834,24 @@ class MainViewModel(
         }
     }
 
-    fun getUserInfo() {
+    fun addBet(betAddRequest: BetAddRequest, isParlay: Boolean) {
         viewModelScope.launch {
-            userInfoRepository.getUserInfo()
-        }
-    }
-
-    fun sayHello(): String? {
-        val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
-        return when {
-            hour < 6 -> androidContext.getString(R.string.good_midnight) + ", "
-            hour < 9 -> androidContext.getString(R.string.good_morning) + ", "
-            hour < 12 -> androidContext.getString(R.string.good_beforenoon) + ", "
-            hour < 14 -> androidContext.getString(R.string.good_noon) + ", "
-            hour < 17 -> androidContext.getString(R.string.good_afternoon) + ", "
-            hour < 19 -> androidContext.getString(R.string.good_evening) + ", "
-            hour < 22 -> androidContext.getString(R.string.good_night) + ", "
-            hour < 24 -> androidContext.getString(R.string.good_dreams) + ", "
-            else -> null
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.betService.addBet(betAddRequest)
+            }
+            _betAddResult.postValue(result)
+            result?.success?.let {
+                if(it){
+                    if(!isParlay) {
+                        result.rows?.let { rowList ->
+                            removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
+                        }
+                    }else{
+                        betInfoRepository.betList.clear()
+                        _betInfoList.postValue(betInfoRepository.betList)
+                    }
+                }
+            }
         }
     }
 }
