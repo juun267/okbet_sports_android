@@ -515,15 +515,13 @@ class MainViewModel(
                 0
             )?.odds?.values?.first() ?: listOf()
 
-        winnerList.map {
-            it.isSelected = if (it == winner) {
-                getBetInfoList(listOf(Odd(winner.id, winner.odds)))
-                true
-            } else {
-                removeBetInfoItem(winner.id)
-                false
-            }
-
+        val isBet = betInfoList.value?.any { it.matchOdd.oddsId == winner.id } ?: false
+        if (!isBet) {
+            winnerList.first { it == winner }.isSelected = true
+            getBetInfoList(listOf(Odd(winner.id, winner.odds)), true)
+        } else {
+            winnerList.first { it == winner }.isSelected = false
+            removeBetInfoItem(winner.id)
         }
 
         _outrightOddsListResult.postValue(result)
@@ -531,6 +529,7 @@ class MainViewModel(
 
     //TODO Dean : 重構，整理、提取程式碼
     fun updateMatchBetList(matchOdd: MatchOdd, oddString: String, odd: org.cxct.sportlottery.network.odds.list.Odd) {
+        val isOutright = mathType == MatchType.OUTRIGHT
         val result = if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value
         val match =
             result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find { it.odds[oddString]?.contains(odd) ?: false }?.odds?.get(oddString)
@@ -541,7 +540,7 @@ class MainViewModel(
             when {
                 isBetMatchId == null -> {
                     match?.isSelected = true
-                    getBetInfoList(listOf(Odd(odd.id, odd.odds)))
+                    getBetInfoList(listOf(Odd(odd.id, odd.odds)), isOutright)
                 }
                 isBetOddId != null -> {
                     match?.isSelected = false
@@ -555,7 +554,7 @@ class MainViewModel(
             val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
             if (betItem == null) {
                 match?.isSelected = true
-                getBetInfoList(listOf(Odd(odd.id, odd.odds)))
+                getBetInfoList(listOf(Odd(odd.id, odd.odds)), isOutright)
             } else {
                 match?.isSelected = false
                 removeBetInfoItem(odd.id)
@@ -759,10 +758,10 @@ class MainViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
-    fun getBetInfoList(oddsList: List<Odd>) {
+    fun getBetInfoList(oddsList: List<Odd>, isOutright: Boolean) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfo(oddsList)
+                betInfoRepository.getBetInfo(oddsList, isOutright)
             }
             result?.success?.let {
                 if (it) {
@@ -874,12 +873,12 @@ class MainViewModel(
             }
             _betAddResult.postValue(result)
             result?.success?.let {
-                if(it){
-                    if(!isParlay) {
+                if (it) {
+                    if (!isParlay) {
                         result.rows?.let { rowList ->
                             removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
                         }
-                    }else{
+                    } else {
                         betInfoRepository.betList.clear()
                         _betInfoList.postValue(betInfoRepository.betList)
                     }

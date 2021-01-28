@@ -11,8 +11,12 @@ class BetInfoRepository {
 
     var betList: MutableList<BetInfoListData> = mutableListOf()
 
-    suspend fun getBetInfo(oddsList: List<Odd>): Response<BetInfoResult> {
-        val result = OneBoSportApi.betService.getBetInfo(BetInfoRequest("EU", oddsList))
+    suspend fun getBetInfo(oddsList: List<Odd>, isOutright: Boolean): Response<BetInfoResult> {
+        val result = if (!isOutright) {
+            OneBoSportApi.betService.getBetInfo(BetInfoRequest("EU", oddsList))
+        } else {
+            OneBoSportApi.outrightService.getOutrightBetInfo(BetInfoRequest("EU", oddsList))
+        }
         result.body()?.success.let {
             result.body()?.betInfoData.let { data ->
                 if (data != null) {
