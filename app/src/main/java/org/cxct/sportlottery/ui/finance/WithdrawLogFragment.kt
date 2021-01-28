@@ -190,7 +190,13 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
-            logDetailDialog.show(parentFragmentManager, WithdrawLogFragment::class.java.simpleName)
+            if (logDetailDialog.dialog?.isShowing != true) {
+
+                logDetailDialog.show(
+                    parentFragmentManager,
+                    WithdrawLogFragment::class.java.simpleName
+                )
+            }
         })
 
         viewModel.getCalendarRange()

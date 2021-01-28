@@ -189,7 +189,13 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
-            logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
+            if (logDetailDialog.dialog?.isShowing != true) {
+
+                logDetailDialog.show(
+                    parentFragmentManager,
+                    RechargeLogFragment::class.java.simpleName
+                )
+            }
         })
 
         viewModel.getCalendarRange()
