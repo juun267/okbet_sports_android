@@ -336,6 +336,18 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                         )
                 )
             }
+
+            result?.rows?.map {
+                it.withdrawState = when (it.checkStatus) {
+                    CheckStatus.PROCESSING.code -> androidContext.getString(R.string.withdraw_log_state_processing)
+                    CheckStatus.UN_PASS.code -> androidContext.getString(R.string.withdraw_log_state_un_pass)
+                    CheckStatus.PASS.code -> androidContext.getString(R.string.withdraw_log_state_pass)
+                    else -> ""
+                }
+
+                it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
+            }
+
             _userWithdrawResult.postValue(result)
         }
     }
