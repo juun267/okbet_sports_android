@@ -274,8 +274,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val awayList = ArrayList<Odd>()
 
             for (odd in oddsDetail.oddArrayList) {
-                if (odd.name.contains(" - ")) {
-                    val stringArray: List<String> = odd.name.split(" - ")
+                if (odd.name?.contains(" - ") == true) {
+                    val stringArray: List<String> = odd.name?.split(" - ")?: listOf()
                     if (stringArray[0].toInt() > stringArray[1].toInt()) {
                         homeList.add(odd)
                     }

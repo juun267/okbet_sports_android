@@ -98,6 +98,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
             setupSportTypeRow(this)
@@ -117,7 +118,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+        /*//TODO : crash
+        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "g matchStatusChange")
         })
@@ -126,7 +128,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             if (it == null) return@Observer
             Log.e(">>>>>", "g matchClock")
 
-        })
+        })*/
 /*
         viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
             if (it == null) return@observe

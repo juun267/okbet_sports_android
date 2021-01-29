@@ -8,7 +8,7 @@ data class Odd(
     @Json(name = "id")
     val id: String,
     @Json(name = "name")
-    val name: String,
+    val name: String?,
     @Json(name = "odds")
     val odds: Double,
     @Json(name = "producerId")

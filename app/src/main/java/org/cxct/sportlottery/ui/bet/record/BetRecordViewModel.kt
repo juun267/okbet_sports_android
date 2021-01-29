@@ -23,7 +23,7 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
         get() = _selectStatusList
 
-    val selectedBetStatus: LiveData<String>
+    val selectedBetStatus: LiveData<String?>
         get() = _selectedBetStatus
 
     val betListRequestState: LiveData<BetListRequestState>
@@ -38,7 +38,7 @@ class BetRecordViewModel(private val androidContext: Context) : BaseViewModel() 
 
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
-    private val _selectedBetStatus = MutableLiveData<String>()
+    private val _selectedBetStatus = MutableLiveData<String?>()
 
     fun checkRequestState(startDate: String, endDate: String) {
         _betListRequestState.value = BetListRequestState(

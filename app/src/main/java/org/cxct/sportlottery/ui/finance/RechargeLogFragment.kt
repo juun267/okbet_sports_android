@@ -49,6 +49,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupRechargeStateSelector(this)
             setupRechargeChannelSelector(this)
             setupRechargeLogList(this)
+            setupSwipeRefreshLayout(this)
             setupSearch(this)
         }
     }
@@ -137,9 +138,19 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
+    private fun setupSwipeRefreshLayout(view: View) {
+        view.list_swipe_refresh_layout.apply {
+            setOnRefreshListener {
+                viewModel.getUserRechargeList(false)
+                this.isRefreshing = false
+            }
+        }
+    }
+
     private fun setupSearch(view: View) {
         view.date_range_selector.btn_search.setOnClickListener {
-            viewModel.getUserRechargeList()
+            viewModel.getUserRechargeList(true)
+            loading()
         }
     }
 
@@ -184,8 +195,12 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
-                rechargeLogAdapter.data = it.rows ?: listOf()
+                val list = it.rows ?: listOf()
+
+                rechargeLogAdapter.data = list
+                setupNoRecordView(list.isEmpty())
             }
+            hideLoading()
         })
 
         viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
@@ -198,9 +213,26 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             }
         })
 
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
+            rechargeLogAdapter.isFinalPage = it
+        })
+
         viewModel.getCalendarRange()
         viewModel.getRechargeState()
         viewModel.getRechargeChannel()
-        viewModel.getUserRechargeList()
+        viewModel.getUserRechargeList(true)
+        loading()
+    }
+
+    private fun setupNoRecordView(visible: Boolean) {
+        if (visible) {
+            list_swipe_refresh_layout.visibility = View.GONE
+            list_no_record_img.visibility = View.VISIBLE
+            list_no_record_text.visibility = View.VISIBLE
+        } else {
+            list_swipe_refresh_layout.visibility = View.VISIBLE
+            list_no_record_img.visibility = View.GONE
+            list_no_record_text.visibility = View.GONE
+        }
     }
 }

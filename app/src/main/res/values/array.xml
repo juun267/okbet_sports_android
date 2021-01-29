@@ -3,17 +3,17 @@
     <string-array name="finance_array">
         <item>@string/record_recharge</item>
         <item>@string/record_withdrawal</item>
-        <item>@string/record_red_envelope</item>
-        <item>@string/record_conversion</item>
-        <item>@string/record_reward</item>
+        <!--        <item>@string/record_red_envelope</item>-->
+        <!--        <item>@string/record_conversion</item>-->
+        <!--        <item>@string/record_reward</item>-->
     </string-array>
 
     <integer-array name="finance_img_array">
         <item>@drawable/ic_icondrawrechargerecord</item>
         <item>@drawable/ic_icondrawwithdrawrecord</item>
-        <item>@drawable/ic_icondrawredenvelope</item>
-        <item>@drawable/ic_icondrawtransfer</item>
-        <item>@drawable/ic_icondrawbonusrecord</item>
+        <!--        <item>@drawable/ic_icondrawredenvelope</item>-->
+        <!--        <item>@drawable/ic_icondrawtransfer</item>-->
+        <!--        <item>@drawable/ic_icondrawbonusrecord</item>-->
     </integer-array>
 
     <string-array name="recharge_state_array">
