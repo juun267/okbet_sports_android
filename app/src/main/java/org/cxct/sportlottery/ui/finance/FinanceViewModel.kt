@@ -232,18 +232,18 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
             }
         }
 
+        val rechType = _rechargeChannelList.value?.find {
+            it.isSelected
+        }?.type
+
+        val status = _rechargeStateList.value?.find {
+            it.isSelected
+        }?.code
+
+        val startTime = _recordCalendarStartDate.value?.date
+        val endTime = _recordCalendarEndDate.value?.date
+
         viewModelScope.launch {
-            val rechType = _rechargeChannelList.value?.find {
-                it.isSelected
-            }?.type
-
-            val status = _rechargeStateList.value?.find {
-                it.isSelected
-            }?.code
-
-            val startTime = _recordCalendarStartDate.value?.date
-            val endTime = _recordCalendarEndDate.value?.date
-
             val result = doNetwork(androidContext) {
                 OneBoSportApi.moneyService.getUserRechargeList(
                     RechargeListRequest(
