@@ -63,6 +63,7 @@ class ProfileCenterViewModel(private val androidContext: Context, private val us
         }
     }
 
+    @Deprecated("20210129 拿掉問候語")
     fun sayHello(): String? {
         val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
         return when {
