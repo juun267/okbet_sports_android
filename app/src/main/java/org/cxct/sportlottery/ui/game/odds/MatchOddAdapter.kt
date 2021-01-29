@@ -250,6 +250,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.x12_bet_1.apply {
                     isSelected = it.isSelected
                     bet_bottom_text.text = it.odds.toString()
+                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
                     }
@@ -260,6 +262,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.x12_bet_x.apply {
                     isSelected = it.isSelected
                     bet_bottom_text.text = it.odds.toString()
+                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
                     }
@@ -270,6 +274,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.x12_bet_2.apply {
                     isSelected = it.isSelected
                     bet_bottom_text.text = it.odds.toString()
+                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
                     }

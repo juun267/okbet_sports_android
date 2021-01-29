@@ -71,15 +71,18 @@ class OddsBetButton @JvmOverloads constructor(context: Context, attrs: Attribute
 
         when (itemState) {
             BetStatus.ACTIVATED.code -> {
+                bet_layout.visibility = View.VISIBLE
                 bet_lock.visibility = View.GONE
                 bet_layout.isEnabled = true
             }
             BetStatus.LOCKED.code -> {
+                bet_layout.visibility = View.VISIBLE
                 bet_lock.visibility = View.VISIBLE
                 bet_layout.isEnabled = false
             }
             BetStatus.DEACTIVATED.code -> {
                 bet_layout.visibility = View.GONE
+                bet_lock.visibility = View.GONE
                 bet_layout.isEnabled = false
             }
         }
