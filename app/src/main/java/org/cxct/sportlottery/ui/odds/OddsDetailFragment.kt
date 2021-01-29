@@ -199,7 +199,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.isParlayPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.br?.isParlayPage?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 

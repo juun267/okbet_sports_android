@@ -23,11 +23,6 @@ abstract class BaseViewModel : ViewModel() {
 
     var br: BetInfoRepository? = null
 
-    val _isParlayPage = MutableLiveData<Boolean>()
-    val isParlayPage: LiveData<Boolean>
-        get() = _isParlayPage
-
-
     val errorResultToken: LiveData<BaseResult>
         get() = _errorResultToken
 

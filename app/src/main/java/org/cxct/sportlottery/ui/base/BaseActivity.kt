@@ -184,14 +184,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         viewModel.br?.betInfoList?.observe(this, Observer {
             if (it != null) {
-                viewModel.isParlayPage.value?.let { isParlay ->
+                viewModel.br?.isParlayPage?.value?.let { isParlay ->
                     val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
                     checkBetInfoList(size)
                 }
             }
         })
 
-        viewModel.isParlayPage.observe(this, Observer {
+        viewModel.br?.isParlayPage?.observe(this, Observer {
             viewModel.br?.betInfoList?.value?.size?.let { size ->
                 if (it) {
                     checkBetInfoList(if (size == 0) 0 else 1)
@@ -202,14 +202,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         })
 
         rl_bet_float_button.setOnClickListener {
-            //test
-            BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
-            viewModel.isParlayPage.value?.let {
-//                if (it) {
-//                    BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
-//                } else {
-//                    BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
-//                }
+            viewModel.br?.isParlayPage?.value?.let {
+                if (it) {
+                    BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
+                } else {
+                    BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
+                }
             }
         }
 

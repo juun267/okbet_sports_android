@@ -19,6 +19,10 @@ class BetInfoRepository {
     val betInfoList: LiveData<MutableList<BetInfoListData>>
         get() = _betInfoList
 
+    val _isParlayPage = MutableLiveData<Boolean>()
+    val isParlayPage: LiveData<Boolean>
+        get() = _isParlayPage
+
 
     var betList: MutableList<BetInfoListData> = mutableListOf()
 

@@ -246,7 +246,7 @@ class MainViewModel(
 
 
     fun isParlayPage(boolean: Boolean) {
-        _isParlayPage.postValue(boolean)
+        br?._isParlayPage?.postValue(boolean)
     }
 
     private fun checkToken() {
@@ -559,7 +559,7 @@ class MainViewModel(
         val match =
             result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find { it.odds[oddString]?.contains(odd) ?: false }?.odds?.get(oddString)
                 ?.find { it == odd }
-        if (_isParlayPage.value == true) {
+        if (br?._isParlayPage?.value == true) {
             val isBetMatchId = br?.betList?.find { it.matchOdd.matchId == matchOdd.matchInfo.id }
             val isBetOddId = br?.betList?.find { it.matchOdd.oddsId == odd.id }
             when {
