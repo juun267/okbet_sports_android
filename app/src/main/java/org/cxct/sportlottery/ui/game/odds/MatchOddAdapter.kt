@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.ui.game.odds
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_match_odd.view.*
 import kotlinx.android.synthetic.main.play_category_1x2.view.*
@@ -13,6 +15,7 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.util.TimeUtil
 
 class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     var data = listOf<MatchOdd>()
@@ -126,6 +129,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        lateinit var timer: CountDownTimer
+
         fun bind(item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
             itemView.match_odd_home_name.text = item.matchInfo?.homeName
             itemView.match_odd_away_name.text = item.matchInfo?.awayName
@@ -178,8 +183,6 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.ou_hdp_home_name.text = item.matchInfo?.homeName
             itemView.ou_hdp_away_name.text = item.matchInfo?.awayName
 
-            itemView.ou_hdp_game_time.text = item.leagueTime.toString()
-
             oddOUHome?.let {
                 itemView.ou_hdp_home_ou.apply {
                     isSelected = it.isSelected
@@ -231,6 +234,10 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setHighlight(it.oddState)
                 }
             }
+
+            item.leagueTime?.let {
+                updateLeagueTime(itemView.ou_hdp_game_time, it.toLong())
+            }
         }
 
         private fun setupMatchOdd1x2(item: MatchOdd, matchOddListener: MatchOddListener?) {
@@ -246,8 +253,6 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             itemView.x12_home_name.text = item.matchInfo?.homeName
             itemView.x12_away_name.text = item.matchInfo?.awayName
-
-            itemView.x12_game_time.text = item.leagueTime.toString()
 
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
@@ -278,6 +283,10 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     }
                 }
             }
+
+            item.leagueTime?.let {
+                updateLeagueTime(itemView.x12_game_time, it.toLong())
+            }
         }
 
         private fun updateArrowExpand() {
@@ -285,6 +294,23 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 true -> itemView.match_odd_arrow.setImageResource(R.drawable.ic_arrow_gray_up)
                 false -> itemView.match_odd_arrow.setImageResource(R.drawable.ic_arrow_gray)
             }
+        }
+
+        private fun updateLeagueTime(textView: TextView, leagueTime: Long) {
+            val upperBound = ((59 * 60 + 59) * 1000).toLong() //at most 59:59
+
+            timer = object : CountDownTimer(upperBound, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    val leagueTimeDisplay = TimeUtil.timeFormat(
+                        leagueTime * 1000 + (upperBound - millisUntilFinished),
+                        "mm:ss"
+                    )
+                    textView.text = leagueTimeDisplay
+                }
+
+                override fun onFinish() {
+                }
+            }.start()
         }
 
         companion object {
