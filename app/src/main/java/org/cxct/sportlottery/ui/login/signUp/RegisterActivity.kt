@@ -309,7 +309,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (sConfigData?.enableFullName == FLAG_OPEN)
                 this.fullName = fullName
             if (sConfigData?.enableFundPwd == FLAG_OPEN)
-                this.fundPwd = fundPwd
+                this.fundPwd = MD5Util.MD5Encode(fundPwd)
             if (sConfigData?.enableQQ == FLAG_OPEN)
                 this.qq = qq
             if (sConfigData?.enablePhone == FLAG_OPEN)

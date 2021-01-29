@@ -18,6 +18,7 @@ import org.cxct.sportlottery.util.TextUtil
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
     RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
 
+
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
 
     val winQuotaList: MutableList<Double> = mutableListOf()
@@ -130,12 +131,13 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
 
     fun modify(list: List<ParlayOdd>) {
-         winQuotaList.clear()
-         betQuotaList.clear()
-         statusList.clear()
-
+        winQuotaList.clear()
+        betQuotaList.clear()
+        statusList.clear()
         parlayOddList.clear()
-        parlayOddList.addAll(list)
+        parlayOddList.addAll(list.filterNot {
+            it.parlayType == "1C1"
+        })
         notifyDataSetChanged()
     }
 

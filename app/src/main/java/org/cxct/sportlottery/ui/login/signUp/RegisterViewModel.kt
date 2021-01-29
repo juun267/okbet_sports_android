@@ -97,7 +97,7 @@ class RegisterViewModel(
                 (sConfigData?.enableWhatsApp != FLAG_OPEN || whatsAppError == null) &&
                 (sConfigData?.enableTelegram != FLAG_OPEN || telegramError == null) &&
                 (sConfigData?.enableSmsValidCode != FLAG_OPEN || securityCodeError == null) &&
-                (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null) &&
+                (sConfigData?.enableRegValidCode != FLAG_OPEN || validCodeError == null) &&
                 checkAgreement
 
         _registerFormState.value = RegisterFormState(

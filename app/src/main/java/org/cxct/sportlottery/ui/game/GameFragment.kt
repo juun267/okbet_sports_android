@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
@@ -27,6 +26,7 @@ import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -41,6 +41,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
+            Log.e(">>>", "onclick gameTypeAdapter")
             viewModel.getGameHallList(args.matchType, it)
         })
     }
@@ -53,21 +54,24 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
-            matchOddListener = MatchOddListener {
+            matchOddListener = MatchOddListener ({
+                Log.e(">>>", "onclick LeagueOddAdapter")
                 viewModel.getOddsDetail(it.matchInfo.id)
+               }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
             }
         }
-    }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it.list.first().id)
+            Log.e(">>>", "onclick LeagueAdapter")
+            viewModel.getLeagueOddsList(args.matchType, it)
         })
     }
 
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
             seasonSubListener = SeasonSubAdapter.SeasonSubListener {
+                Log.e(">>>", "onclick outrightSeasonAdapter")
                 viewModel.getOutrightOddsList(it.id)
             }
         }
@@ -77,10 +81,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
             setupSportTypeRow(this)
@@ -94,7 +95,26 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupLeagueList(this)
 
             setupOutrightSeasonList(this)
+
+//            initObserve()
         }
+    }
+
+    private fun initObserve() {
+        viewModel.matchStatusChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchStatusChange")
+        })
+
+        viewModel.matchClock.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchClock")
+        })
+
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            Log.e(">>>>>", "matchOddsChange")
+        })
     }
 
     private fun setupSportTypeRow(view: View) {

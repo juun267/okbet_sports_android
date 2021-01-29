@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_detail.*
 import kotlinx.android.synthetic.main.fragment_game_detail.view.*
-import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
@@ -38,9 +38,9 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
-            matchOddListener = MatchOddListener {
+            matchOddListener = MatchOddListener({
                 viewModel.getOddsDetail(it.matchInfo.id)
-            }
+            }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
     }
 
@@ -52,10 +52,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_game_detail, container, false).apply {
             setupEvent(this)
             setupMatchOddList(this)
@@ -121,6 +118,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e(">>>", "GameDetailFragment")
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
                 setupOddsUpperBar(it)
@@ -132,6 +130,19 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             if (it != null && it.success) {
                 setupLeagueOddsUpperBar()
                 setupOutrightOddList(it)
+            }
+        })
+
+        setSocketObserver()
+    }
+
+    private fun setSocketObserver() {
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, {
+            Log.e(">>>testttt", "${it?.eventType.toString()}")
+            it?.let {
+                if (it.odds.isNullOrEmpty()) return@observe
+                matchOddAdapter.updatedOddsMap = it.odds
+
             }
         })
     }

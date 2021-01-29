@@ -57,13 +57,13 @@ abstract class BaseViewModel : ViewModel() {
         val apiResult = viewModelScope.async {
             try {
                 val response = apiFun()
-
                 when (response.isSuccessful) {
                     true -> return@async response.body()
                     false -> return@async doResponseError(response)
                 }
 
             } catch (e: Exception) {
+                e.printStackTrace()
                 return@async doOnException(context, e)
             }
         }
