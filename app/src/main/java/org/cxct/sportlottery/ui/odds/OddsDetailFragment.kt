@@ -92,10 +92,10 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
 
     private fun observeSocketData() {
-        /*viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
             if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
-        })*/
+        })
 
         viewModel.matchClock.observe(viewLifecycleOwner, Observer{
             if (it == null) return@Observer

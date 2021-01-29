@@ -96,7 +96,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        Log.e("Dean" , "onCreateView")
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
             setupSportTypeRow(this)
