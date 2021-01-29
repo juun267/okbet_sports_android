@@ -92,10 +92,10 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
 
     private fun observeSocketData() {
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
+        /*viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
             if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
-        })
+        })*/
 
         viewModel.matchClock.observe(viewLifecycleOwner, Observer{
             if (it == null) return@Observer
@@ -204,8 +204,8 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer {
-            if (!it.success) {
-                ToastUtil.showBetResultToast(requireActivity(), it.msg, false)
+            if (it?.success != true) {
+                ToastUtil.showBetResultToast(requireActivity(), it?.msg?: getString(R.string.unknown_error), false)
             }
         })
 

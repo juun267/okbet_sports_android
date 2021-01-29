@@ -481,4 +481,7 @@
     <string name="log_detail_type_sub">交易类型：</string>
     <string name="log_detail_amount_sub">交易金额：</string>
     <string name="log_detail_status_sub">交易状态：</string>
+
+    <string name="finance_log_selector_until">到</string>
+    <string name="finance_list_no_more">没有更多数据了</string>
 </resources>

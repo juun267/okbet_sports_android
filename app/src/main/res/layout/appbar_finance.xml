@@ -25,8 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="@string/finance"
             android:textColor="@color/white"
-            android:textSize="@dimen/textSize16sp"
-            tools:text="@string/unknown_data" />
+            android:textSize="@dimen/textSize16sp" />
     </RelativeLayout>
 </com.google.android.material.appbar.AppBarLayout>

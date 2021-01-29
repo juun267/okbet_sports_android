@@ -15,13 +15,16 @@ import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.service.match_odds_change.Odds
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
+import org.cxct.sportlottery.ui.game.odds.ItemExpandListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
@@ -39,6 +42,8 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
 
+    private val service by lazy { (activity as MainActivity).mService }
+
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
             Log.e(">>>", "onclick gameTypeAdapter")
@@ -55,11 +60,19 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener ({
-                Log.e(">>>", "onclick LeagueOddAdapter")
-                viewModel.getOddsDetail(it.matchInfo.id)
+                viewModel.getOddsDetail(it.matchInfo?.id)
                }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
+
+            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
+                if (isExpand) {
+                    service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                }
+
+
+
             }
         }
+     }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
@@ -82,6 +95,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        Log.e("Dean" , "onCreateView")
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
             setupSportTypeRow(this)
@@ -96,25 +111,45 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             setupOutrightSeasonList(this)
 
-//            initObserve()
+            initObserve()
         }
     }
 
     private fun initObserve() {
-        viewModel.matchStatusChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            Log.e(">>>>>", "matchStatusChange")
+        /*//TODO : crash
+        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "g matchStatusChange")
         })
 
-        viewModel.matchClock.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            Log.e(">>>>>", "matchClock")
-        })
+        viewModel.matchClock.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "g matchClock")
 
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, {
+        })*/
+/*
+        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
             if (it == null) return@observe
-            Log.e(">>>>>", "matchOddsChange")
+            Log.e(">>>>>", "g matchOddsChange")
+            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
         })
+        */
+
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            leagueOddAdapter.updatedOddsMap = it.odds
+        })
+    }
+
+    private fun transformData(odds: Map<String, Odds>): Map<String, List<Odd>> {
+
+        val newMap = mutableMapOf<String, List<Odd>>()
+
+        for ( (key, value) in odds) {
+            newMap[key] = value.odds
+        }
+
+        return newMap
     }
 
     private fun setupSportTypeRow(view: View) {
@@ -200,22 +235,22 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    setupInPlayFilter(it.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                    setupInPlayFilter(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
                 }
                 MatchType.TODAY -> {
-                    setupTodayFilter(it.sportMenuData?.menu?.today?.items ?: listOf())
+                    setupTodayFilter(it?.sportMenuData?.menu?.today?.items ?: listOf())
                 }
                 MatchType.EARLY -> {
-                    setupEarlyFilter(it.sportMenuData?.menu?.early?.items ?: listOf())
+                    setupEarlyFilter(it?.sportMenuData?.menu?.early?.items ?: listOf())
                 }
                 MatchType.PARLAY -> {
-                    setupParlayFilter(it.sportMenuData?.menu?.parlay?.items ?: listOf())
+                    setupParlayFilter(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
                 }
                 MatchType.OUTRIGHT -> {
-                    setupOutrightFilter(it.sportMenuData?.menu?.outright?.items ?: listOf())
+                    setupOutrightFilter(it?.sportMenuData?.menu?.outright?.items ?: listOf())
                 }
                 MatchType.AT_START -> {
-                    setupAtStartFilter(it.sportMenuData?.atStart?.items ?: listOf())
+                    setupAtStartFilter(it?.sportMenuData?.atStart?.items ?: listOf())
                 }
             }
         })

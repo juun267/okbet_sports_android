@@ -42,47 +42,49 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-//        Log.e(">>>", "before matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
         updateItemDataFromSocket(item)
-//        Log.e(">>>", "after matchOdd, HDP first = ${item.odds[PlayType.HDP.code]?.firstOrNull()?.odds}")
         holder.bind(item, playType, matchOddListener)
     }
 
     private fun updateItemDataFromSocket(originItem: MatchOdd) {
         if (updatedOddsMap.isNullOrEmpty()) return
+
         for ((key, value) in updatedOddsMap) {
             when (key) {
                 PlayType.OU.code -> {
                     value.forEach {
+                        val oddItem = originItem.odds[PlayType.OU.code]
+
                         when (it.id) {
-                            originItem.odds[PlayType.OU.code]?.firstOrNull()?.id -> {
-                                val oddData = originItem.odds[PlayType.OU.code]?.get(0)
-                                oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.OU.code]?.set(0, it)
+                            oddItem?.firstOrNull()?.id -> {
+                                val oddData = oddItem[0]
+                                oddData.oddState = getOddState(oddData, it)
+                                oddItem[0] = it
                             }
-
-                            originItem.odds[PlayType.OU.code]?.get(1)?.id -> {
-                                val oddData = originItem.odds[PlayType.OU.code]?.get(1)
-                                oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.OU.code]?.set(1, it)
+                            oddItem?.get(1)?.id -> {
+                                val oddData = oddItem[1]
+                                oddData.oddState = getOddState(oddData, it)
+                                oddItem[1] = it
                             }
-
                         }
+
                     }
                 }
 
                 PlayType.HDP.code -> {
                     value.forEach {
+                        val oddItem = originItem.odds[PlayType.HDP.code]
+
                         when (it.id) {
-                            originItem.odds[PlayType.HDP.code]?.firstOrNull()?.id -> {
-                                val oddData = originItem.odds[PlayType.HDP.code]?.get(0)
-                                oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.HDP.code]?.set(0, it)
+                            oddItem?.firstOrNull()?.id -> {
+                                val oddData = oddItem[0]
+                                oddData.oddState = getOddState(oddData, it)
+                                oddItem[0] = it
                             }
-                            originItem.odds[PlayType.HDP.code]?.get(1)?.id -> {
-                                val oddData = originItem.odds[PlayType.HDP.code]?.get(1)
-                                oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.HDP.code]?.set(1, it)
+                            oddItem?.get(1)?.id -> {
+                                val oddData = oddItem[1]
+                                oddData.oddState = getOddState(oddData, it)
+                                oddItem[1] = it
                             }
                         }
                     }
@@ -90,16 +92,17 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
                 PlayType.X12.code -> {
                     value.forEach {
+                        val oddItem = originItem.odds[PlayType.X12.code]
                         when (it.id) {
-                            originItem.odds[PlayType.X12.code]?.firstOrNull()?.id -> {
-                                val oddData = originItem.odds[PlayType.X12.code]?.get(0)
-                                oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.X12.code]?.set(0, it)
+                            oddItem?.firstOrNull()?.id -> {
+                                val oddData = oddItem[0]
+                                oddData.oddState = getOddState(oddData, it)
+                                oddItem[0] = it
                             }
-                            originItem.odds[PlayType.X12.code]?.get(1)?.id -> {
-                                val oddData = originItem.odds[PlayType.X12.code]?.get(1)
-                                oddData?.oddState = getOddState(oddData, it)
-                                originItem.odds[PlayType.X12.code]?.set(1, it)
+                            oddItem?.get(1)?.id -> {
+                                val oddData = oddItem[1]
+                                oddData.oddState = getOddState(oddData, it)
+                                oddItem[1] = it
                             }
                         }
                     }
@@ -125,11 +128,11 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
-            itemView.match_odd_home_name.text = item.matchInfo.homeName
-            itemView.match_odd_away_name.text = item.matchInfo.awayName
-            itemView.match_odd_count.text = item.matchInfo.playCateNum.toString()
+            itemView.match_odd_home_name.text = item.matchInfo?.homeName
+            itemView.match_odd_away_name.text = item.matchInfo?.awayName
+            itemView.match_odd_count.text = item.matchInfo?.playCateNum.toString()
             itemView.setOnClickListener {
-                matchOddListener?.onClick(item)
+                matchOddListener?.onItemClick(item)
             }
 
             setupMatchOddDetail(item, playType, matchOddListener)
@@ -164,17 +167,17 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             val oddListOU = item.odds[ouOddString]
             val oddListHDP = item.odds[hdpOddString]
 
-            val oddOUHome = if (oddListOU?.size ?: 0 >= 1) oddListOU?.get(0) else null
-            val oddOUAway = if (oddListOU?.size ?: 0 >= 2) oddListOU?.get(1) else null
+            val oddOUHome = if (oddListOU?.size ?: 0 >= 1) oddListOU?.get(0) else Odd()
+            val oddOUAway = if (oddListOU?.size ?: 0 >= 2) oddListOU?.get(1) else Odd()
 
-            val oddHDPHome = if (oddListHDP?.size ?: 0 >= 1) oddListHDP?.get(0) else null
-            val oddHDPAway = if (oddListHDP?.size ?: 0 >= 2) oddListHDP?.get(1) else null
+            val oddHDPHome = if (oddListHDP?.size ?: 0 >= 1) oddListHDP?.get(0) else Odd()
+            val oddHDPAway = if (oddListHDP?.size ?: 0 >= 2) oddListHDP?.get(1) else Odd()
 
             itemView.match_odd_ou_hdp.visibility = View.VISIBLE
             itemView.match_odd_1x2.visibility = View.GONE
 
-            itemView.ou_hdp_home_name.text = item.matchInfo.homeName
-            itemView.ou_hdp_away_name.text = item.matchInfo.awayName
+            itemView.ou_hdp_home_name.text = item.matchInfo?.homeName
+            itemView.ou_hdp_away_name.text = item.matchInfo?.awayName
 
             oddOUHome?.let {
                 itemView.ou_hdp_home_ou.apply {
@@ -184,7 +187,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
-                    setStatus(it.odds.toString().isEmpty(), it.status)
+                    setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -197,7 +200,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
-                    setStatus(it.odds.toString().isEmpty(), it.status)
+                    setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -210,7 +213,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
-                    setStatus(it.odds.toString().isEmpty(), it.status)
+                    setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -223,7 +226,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
-                    setStatus(it.odds.toString().isEmpty(), it.status)
+                    setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -240,8 +243,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.match_odd_1x2.visibility = View.VISIBLE
             itemView.match_odd_ou_hdp.visibility = View.GONE
 
-            itemView.x12_home_name.text = item.matchInfo.homeName
-            itemView.x12_away_name.text = item.matchInfo.awayName
+            itemView.x12_home_name.text = item.matchInfo?.homeName
+            itemView.x12_away_name.text = item.matchInfo?.awayName
 
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
@@ -293,6 +296,6 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 }
 
 class MatchOddListener(val clickListener: (matchOdd: MatchOdd) -> Unit, val betClickListener: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit) {
-    fun onClick(matchOdd: MatchOdd) = clickListener(matchOdd)
+    fun onItemClick(matchOdd: MatchOdd) = clickListener(matchOdd)
     fun onBet(matchOdd: MatchOdd, oddString: String, odd: Odd) = betClickListener(matchOdd, oddString, odd)
 }
