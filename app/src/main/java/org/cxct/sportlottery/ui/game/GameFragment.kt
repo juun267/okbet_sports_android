@@ -65,7 +65,10 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
                 if (isExpand) {
+                    Log.e(">>>", "")
                     service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                } else {
+                    service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
                 }
 
 

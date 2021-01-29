@@ -63,7 +63,7 @@ class BackService : Service() {
     private var mStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
-    private var mDefaultEventDisposable: Disposable? = null
+//    private var mDefaultEventDisposable: Disposable? = null
     private val mPingDisposable: Disposable? = null //TODO Cheryl
 
 
@@ -251,6 +251,8 @@ class BackService : Service() {
         })
     }
 
+    private val subscribedMap = mutableMapOf<String, Disposable?>()
+
     fun subscribeChannel(url: String) {
         Timber.e(">>> subscribeEvent: $url")
         val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
@@ -267,6 +269,11 @@ class BackService : Service() {
 */
 
         mCompositeDisposable?.add(newDisposable!!)
+        subscribedMap[url] = newDisposable
+    }
+
+    fun unSubscribe(url: String) {
+        subscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
     }
 
     private fun applySchedulers(): CompletableTransformer {
@@ -280,10 +287,6 @@ class BackService : Service() {
     private fun resetSubscriptions() {
         mCompositeDisposable?.dispose()
         mCompositeDisposable = CompositeDisposable()
-    }
-
-    fun unSubscribeGame() {
-        if (mDefaultEventDisposable != null) mCompositeDisposable?.remove(mDefaultEventDisposable!!)
     }
 
 

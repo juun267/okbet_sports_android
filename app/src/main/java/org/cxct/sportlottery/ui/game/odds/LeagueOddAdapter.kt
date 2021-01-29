@@ -78,7 +78,6 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
                 }
             }
 */
-
             matchOddAdapter.data = item.matchOdds
             matchOddAdapter.playType = playType
             matchOddAdapter.matchOddListener = matchOddListener
