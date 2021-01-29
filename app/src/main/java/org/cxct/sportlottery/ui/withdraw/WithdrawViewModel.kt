@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -32,7 +33,7 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
 
-    private val _userMoney = MutableLiveData<Double?>()
+    private val _userMoney = BroadcastRepository().instance().userMoney
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
