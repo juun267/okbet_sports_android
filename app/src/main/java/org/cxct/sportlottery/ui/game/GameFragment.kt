@@ -15,10 +15,8 @@ import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
-import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
-import org.cxct.sportlottery.network.service.match_odds_change.Odds
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
@@ -115,41 +113,48 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        /*//TODO : crash
-        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            Log.e(">>>>>", "g matchStatusChange")
-        })
+        viewModel.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
+            if (matchClockEvent == null) return@Observer
 
-        viewModel.matchClock.observe(this.viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            Log.e(">>>>>", "g matchClock")
+            val leagueOdds = leagueOddAdapter.data
 
-        })*/
-/*
-        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
-            if (it == null) return@observe
-            Log.e(">>>>>", "g matchOddsChange")
-            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
+            leagueOdds.forEach {
+                val updateMatchOdd = it.matchOdds.find { matchOdd ->
+                    matchOdd.matchInfo?.id == matchClockEvent.matchClockCO?.matchId
+                }
+                updateMatchOdd?.leagueTime = matchClockEvent.matchClockCO?.matchTime
+            }
+
+            leagueOddAdapter.data = leagueOdds
         })
-        */
 
         viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             leagueOddAdapter.updatedOddsMap = it.odds
         })
+
+//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
+//            if (it == null) return@Observer
+//            Log.e(">>>>>", "g matchStatusChange")
+//        })
+
+//        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
+//            if (it == null) return@observe
+//            Log.e(">>>>>", "g matchOddsChange")
+//            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
+//        })
     }
 
-    private fun transformData(odds: Map<String, Odds>): Map<String, List<Odd>> {
-
-        val newMap = mutableMapOf<String, List<Odd>>()
-
-        for ( (key, value) in odds) {
-            newMap[key] = value.odds
-        }
-
-        return newMap
-    }
+//    private fun transformData(odds: Map<String, Odds>): Map<String, List<Odd>> {
+//
+//        val newMap = mutableMapOf<String, List<Odd>>()
+//
+//        for ( (key, value) in odds) {
+//            newMap[key] = value.odds
+//        }
+//
+//        return newMap
+//    }
 
     private fun setupSportTypeRow(view: View) {
         view.hall_game_type_list.apply {

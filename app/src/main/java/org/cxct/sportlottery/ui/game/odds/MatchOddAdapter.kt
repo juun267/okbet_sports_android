@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.odds
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -179,6 +178,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             itemView.ou_hdp_home_name.text = item.matchInfo?.homeName
             itemView.ou_hdp_away_name.text = item.matchInfo?.awayName
 
+            itemView.ou_hdp_game_time.text = item.leagueTime.toString()
+
             oddOUHome?.let {
                 itemView.ou_hdp_home_ou.apply {
                     isSelected = it.isSelected
@@ -245,6 +246,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             itemView.x12_home_name.text = item.matchInfo?.homeName
             itemView.x12_away_name.text = item.matchInfo?.awayName
+
+            itemView.x12_game_time.text = item.leagueTime.toString()
 
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
