@@ -10,16 +10,16 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.money.list.Row
-import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.finance.data.*
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.ui.finance.df.UWType
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
@@ -28,8 +28,8 @@ const val pageSize = 20
 
 class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
-    val userMoneyResult: LiveData<UserMoneyResult?>
-        get() = _userMoneyResult
+    val userMoney: LiveData<Double?>
+        get() = _userMoney
 
     val userRechargeListResult: LiveData<RechargeListResult?>
         get() = _userRechargeResult
@@ -71,6 +71,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         get() = _isFinalPage
 
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
+    private val _userMoney = BroadcastRepository().instance().userMoney
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
     private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
 
@@ -135,9 +136,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                 OneBoSportApi.userService.getMoney()
             }
 
-            userMoneyResult?.displayMoney = ArithUtil.toMoneyFormat(userMoneyResult?.money)
-
-            _userMoneyResult.postValue(userMoneyResult)
+            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 

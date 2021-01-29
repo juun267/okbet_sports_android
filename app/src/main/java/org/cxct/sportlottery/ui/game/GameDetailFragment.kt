@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -39,13 +41,15 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
             matchOddListener = MatchOddListener({
-                viewModel.getOddsDetail(it.matchInfo.id)
+                Log.e(">>>", "onclick MatchOddAdapter")
+                viewModel.getOddsDetail(it.matchInfo?.id)
             }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
     }
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
+            Log.e(">>>", "onclick OutrightOddAdapter")
             outrightOddListener = OutrightOddAdapter.OutrightOddListener {
                 viewModel.updateOutrightOddsSelectedState(it)
             }
@@ -118,7 +122,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.e(">>>", "GameDetailFragment")
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
                 setupOddsUpperBar(it)
@@ -138,10 +141,11 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setSocketObserver() {
         viewModel.oddsChange.observe(this.viewLifecycleOwner, {
-            Log.e(">>>testttt", "${it?.eventType.toString()}")
             it?.let {
                 if (it.odds.isNullOrEmpty()) return@observe
                 matchOddAdapter.updatedOddsMap = it.odds
+
+                outrightOddAdapter.updatedWinnerOddsList = it.odds[winnerItemKey] ?: listOf()
 
             }
         })
@@ -173,13 +177,18 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         league_odd_count.visibility = View.GONE
     }
 
+    var winnerItemKey: String = ""
+
     private fun setupOutrightOddList(outrightOddsListResult: OutrightOddsListResult) {
         league_odd_sub_list.visibility = View.GONE
         outright_odd_sub_list.visibility = View.VISIBLE
 
+        winnerItemKey = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.keys?.firstOrNull() ?:""
+
+        val emptyList = listOf(Odd(), Odd()) //default放入兩個空值, 以便socket比對並更新內容
         outrightOddAdapter.data =
             outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.values?.first()
-                ?: listOf()
+                ?: emptyList
     }
 
     override fun onResume() {

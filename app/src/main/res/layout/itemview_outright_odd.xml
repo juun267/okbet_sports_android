@@ -23,11 +23,25 @@
         android:layout_width="64dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_play_category_bet_bg"
+        android:stateListAnimator="@null"
         android:textColor="@color/selector_play_category_bet_bottom_text"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="2.25" />
+
+    <ImageView
+        android:id="@+id/bet_lock_img"
+        android:layout_width="16dp"
+        android:layout_height="22dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_iconlockbet"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/outright_bet"
+        app:layout_constraintEnd_toEndOf="@id/outright_bet"
+        app:layout_constraintStart_toStartOf="@id/outright_bet"
+        app:layout_constraintTop_toTopOf="@id/outright_bet"
+        tools:tint="@color/gray6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
