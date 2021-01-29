@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.*
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MoneyManager
@@ -14,9 +15,13 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 class MoneyRechViewModel(
     private val androidContext: Context,
-    private val moneyRepository: MoneyRepository
+    private val moneyRepository: MoneyRepository,
+    betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
 
+    init {
+        br = betInfoRepository
+    }
 
     val rechargeConfigs: LiveData<MoneyRechCfgData>
         get() = _rechargeConfigs

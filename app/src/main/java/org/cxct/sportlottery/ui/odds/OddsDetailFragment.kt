@@ -195,7 +195,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.br?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
@@ -213,6 +213,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         socketObserve()
 
     }
+
 
     private fun socketObserve() {
         viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{

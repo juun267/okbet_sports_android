@@ -135,7 +135,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             parlayAdapter.modify(it)
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.br?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
             }

@@ -12,13 +12,20 @@ import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class SettlementViewModel(
     private val androidContext: Context,
-    private val settlementRepository: SettlementRepository
+    private val settlementRepository: SettlementRepository,
+    betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
+
+    init {
+        br = betInfoRepository
+    }
+
     val matchResultListResult: LiveData<MatchResultListResult>
         get() = _matchResultListResult
     val gameResultDetailResult: LiveData<SettlementRvData>

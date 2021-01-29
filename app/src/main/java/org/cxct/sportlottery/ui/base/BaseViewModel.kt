@@ -12,12 +12,22 @@ import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.TokenError
 import org.cxct.sportlottery.network.index.logout.LogoutResult
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
 import java.net.SocketTimeoutException
 
 
 abstract class BaseViewModel : ViewModel() {
+
+    var br: BetInfoRepository? = null
+
+    val _isParlayPage = MutableLiveData<Boolean>()
+    val isParlayPage: LiveData<Boolean>
+        get() = _isParlayPage
+
+
     val errorResultToken: LiveData<BaseResult>
         get() = _errorResultToken
 
@@ -37,8 +47,8 @@ abstract class BaseViewModel : ViewModel() {
 
     @Nullable
     suspend fun <T : BaseResult> doNetwork(
-        context: Context,
-        apiFun: suspend () -> Response<T>
+            context: Context,
+            apiFun: suspend () -> Response<T>
     ): T? {
         return when (NetworkUtil.isAvailable(context)) {
             true -> {
@@ -51,8 +61,8 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     private suspend fun <T : BaseResult> doApiFun(
-        context: Context,
-        apiFun: suspend () -> Response<T>
+            context: Context,
+            apiFun: suspend () -> Response<T>
     ): T? {
         val apiResult = viewModelScope.async {
             try {
@@ -80,9 +90,9 @@ abstract class BaseViewModel : ViewModel() {
         val errorResult = ErrorUtils.parseError(response)
         errorResult?.let {
             if (it !is LogoutResult
-                && it.code == TokenError.EXPIRED.code
-                && it.code == TokenError.FAILURE.code
-                && it.code == TokenError.REPEAT_LOGIN.code
+                    && it.code == TokenError.EXPIRED.code
+                    && it.code == TokenError.FAILURE.code
+                    && it.code == TokenError.REPEAT_LOGIN.code
             ) {
                 _errorResultToken.postValue(it)
             }

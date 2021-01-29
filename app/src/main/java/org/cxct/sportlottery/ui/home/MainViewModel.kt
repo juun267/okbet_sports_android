@@ -72,8 +72,12 @@ class MainViewModel(
     private val userInfoRepository: UserInfoRepository,
     private val loginRepository: LoginRepository,
     private val sportMenuRepository: SportMenuRepository,
-    private val betInfoRepository: BetInfoRepository
+    betInfoRepository: BetInfoRepository
 ) : BaseViewModel() {
+
+    init {
+        br = betInfoRepository
+    }
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin.apply {
@@ -180,10 +184,6 @@ class MainViewModel(
     val betInfoResult: LiveData<BetInfoResult>
         get() = _betInfoResult
 
-    private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
-    val betInfoList: LiveData<MutableList<BetInfoListData>>
-        get() = _betInfoList
-
     private val _matchOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>()
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = _matchOddList
@@ -244,10 +244,6 @@ class MainViewModel(
     val userNotice: LiveData<UserNoticeEvent?>
         get() = BroadcastRepository().instance().userNotice
 
-
-    private val _isParlayPage = MutableLiveData<Boolean>()
-    val isParlayPage: LiveData<Boolean>
-        get() = _isParlayPage
 
     fun isParlayPage(boolean: Boolean) {
         _isParlayPage.postValue(boolean)
@@ -564,8 +560,8 @@ class MainViewModel(
             result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find { it.odds[oddString]?.contains(odd) ?: false }?.odds?.get(oddString)
                 ?.find { it == odd }
         if (_isParlayPage.value == true) {
-            val isBetMatchId = betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo.id }
-            val isBetOddId = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+            val isBetMatchId = br?.betList?.find { it.matchOdd.matchId == matchOdd.matchInfo.id }
+            val isBetOddId = br?.betList?.find { it.matchOdd.oddsId == odd.id }
             when {
                 isBetMatchId == null -> {
                     match?.isSelected = true
@@ -580,7 +576,7 @@ class MainViewModel(
                 }
             }
         } else {
-            val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+            val betItem = br?.betList?.find { it.matchOdd.oddsId == odd.id }
             if (betItem == null) {
                 match?.isSelected = true
                 getBetInfoList(listOf(Odd(odd.id, odd.odds?:0.0)))
@@ -790,17 +786,17 @@ class MainViewModel(
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfo(oddsList)
+                br?.getBetInfo(oddsList)!!
             }
             result?.success?.let {
                 if (it) {
-                    _betInfoList.postValue(betInfoRepository.betList)
+                    br?._betInfoList?.postValue(br?.betList)
                 } else {
                     oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoList.value?.let { list ->
+                        br?.betInfoList?.value?.let { list ->
                             for (i in list.indices) {
-                                betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                br?.betInfoList?.value?.get(i)?.matchOdd?.oddsId?.let {
                                     odd = value.odds.find { v -> v.id == it }
                                     odd?.isSelect = false
                                 }
@@ -815,15 +811,15 @@ class MainViewModel(
 
     fun getBetInfoListForParlay() {
         val sendList: MutableList<Odd> = mutableListOf()
-        betInfoRepository.betList.let { list ->
+        br?.betList.let { list ->
 
             //以matchId分組 key為matchOdd(object)
-            val groupList = list.groupBy { data ->
+            val groupList = list?.groupBy { data ->
                 list.find { d -> data.matchOdd.matchId == d.matchOdd.matchId }
             }
 
             //各別取第一項做為串關項目送出
-            groupList.keys.forEach {
+            groupList?.keys?.forEach {
                 it?.matchOdd?.let { matchOdd ->
                     sendList.add(Odd(matchOdd.oddsId, matchOdd.odds))
                 }
@@ -832,23 +828,23 @@ class MainViewModel(
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfoList(sendList)
+                br?.getBetInfoList(sendList)!!
             }
             result?.success?.let { success ->
 
                 if (success) {
 
                     //回傳成功 兩個list不一定數量相等 各別載入列表
-                    _matchOddList.postValue(betInfoRepository.matchOddList)
-                    _parlayList.postValue(betInfoRepository.parlayOddList)
+                    _matchOddList.postValue(br?.matchOddList)
+                    _parlayList.postValue(br?.parlayOddList)
 
                     //載入串關注單後比對一般注單
                     val newBetList: MutableList<BetInfoListData> = mutableListOf()
-                    betInfoRepository.matchOddList.let { mList ->
+                    br?.matchOddList?.let { mList ->
                         for (i in mList.indices) {
-                            betInfoRepository.betList.let { bList ->
+                            br?.betList?.let { bList ->
                                 val oid = mList[i].oddsId
-                                val item = betInfoRepository.betList.find {
+                                val item = br?.betList?.find {
                                     it.matchOdd.oddsId == oid
                                 }
                                 item?.let {
@@ -856,17 +852,19 @@ class MainViewModel(
                                 }
                             }
                         }
-                        betInfoRepository.betList.clear()
-                        betInfoRepository.betList.addAll(newBetList)
+                        br?.betList?.clear()
+                        br?.betList?.addAll(newBetList)
+
+
                     }
-                    _betInfoList.postValue(newBetList)
+                    br?._betInfoList?.postValue(newBetList)
 
                 } else {
                     oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoList.value?.let { list ->
+                        br?.betInfoList?.value?.let { list ->
                             for (i in list.indices) {
-                                betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                br?.betInfoList?.value?.get(i)?.matchOdd?.oddsId?.let {
                                     odd = value.odds.find { v -> v.id == it }
                                     odd?.isSelect = false
                                 }
@@ -881,13 +879,13 @@ class MainViewModel(
 
 
     fun removeBetInfoItem(oddId: String) {
-        betInfoRepository.removeItem(oddId)
-        _betInfoList.postValue(betInfoRepository.betList)
+        br?.removeItem(oddId)
+        br?._betInfoList?.postValue(br?.betList)
     }
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
-        if (betInfoRepository.betList.size != 0) {
+        if (br?.betList?.size != 0) {
             getBetInfoListForParlay()
         }
     }
@@ -903,13 +901,13 @@ class MainViewModel(
                 if (it) {
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoList.value?.let { list ->
+                        br?.betInfoList?.value?.let { list ->
                             for (i in list.indices) {
 
                                 //server目前可能會回傳null
                                 try {
                                     odd = value.odds.find { v ->
-                                        v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                        v.id.let { id -> id == br?.betInfoList?.value?.get(i)?.matchOdd?.oddsId }
                                     }
                                     odd?.isSelect = true
                                 } catch (e: Exception) {
@@ -960,8 +958,8 @@ class MainViewModel(
                             removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
                         }
                     } else {
-                        betInfoRepository.betList.clear()
-                        _betInfoList.postValue(betInfoRepository.betList)
+                        br?.betList?.clear()
+                        br?._betInfoList?.postValue(br?.betList)
                     }
                 }
             }

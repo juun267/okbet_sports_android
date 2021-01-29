@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.info.BetInfoRequest
@@ -7,9 +9,16 @@ import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import retrofit2.Response
 
 class BetInfoRepository {
+
+    //每個畫面都要觀察
+    val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
+    val betInfoList: LiveData<MutableList<BetInfoListData>>
+        get() = _betInfoList
+
 
     var betList: MutableList<BetInfoListData> = mutableListOf()
 

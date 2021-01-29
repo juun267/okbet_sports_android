@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.finance.data.*
 import org.cxct.sportlottery.util.ArithUtil
@@ -23,7 +24,11 @@ import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
+class FinanceViewModel(private val androidContext: Context, betInfoRepository: BetInfoRepository) : BaseViewModel() {
+
+    init {
+        br = betInfoRepository
+    }
 
     val userMoneyResult: LiveData<UserMoneyResult?>
         get() = _userMoneyResult
