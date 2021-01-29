@@ -110,7 +110,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
                 listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
                 1,
                 "EU"
-            ), false, betInfoListData.matchType
+            ), betInfoListData.matchType
         )
     }
 

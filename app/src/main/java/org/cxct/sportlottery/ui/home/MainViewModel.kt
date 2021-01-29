@@ -941,8 +941,7 @@ class MainViewModel(
         }
     }
 
-    //TODO : review params:isParlay是否可整併至matchType
-    fun addBet(betAddRequest: BetAddRequest, isParlay: Boolean, matchType: MatchType?) {
+    fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
             val result = getBetApi(matchType, betAddRequest)
             Event(result).let {
@@ -951,14 +950,7 @@ class MainViewModel(
 
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
-                    if (!isParlay) {
-                        result?.rows?.let { rowList ->
-                            removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
-                        }
-                    } else {
-                        betInfoRepository.betList.clear()
-                        _betInfoList.postValue(betInfoRepository.betList)
-                    }
+                    afterBet(matchType, result)
                 }
             }
         }
@@ -974,6 +966,17 @@ class MainViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.betService.addBet(betAddRequest)
             }
+        }
+    }
+
+    private fun afterBet(matchType: MatchType?, result: BetAddResult?) {
+        if (matchType != MatchType.PARLAY) {
+            result?.rows?.let { rowList ->
+                removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
+            }
+        } else {
+            betInfoRepository.betList.clear()
+            _betInfoList.postValue(betInfoRepository.betList)
         }
     }
 }
