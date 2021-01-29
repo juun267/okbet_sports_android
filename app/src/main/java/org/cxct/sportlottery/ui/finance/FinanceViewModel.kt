@@ -25,15 +25,13 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class FinanceViewModel(private val androidContext: Context, betInfoRepository: BetInfoRepository) : BaseViewModel() {
-
-    init {
-        br = betInfoRepository
-    }
-
 const val pageSize = 20
 
-class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
+class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfoRepository) : BaseViewModel() {
+
+    init {
+        betInfoRepository = betInfoRepo
+    }
 
     val userMoney: LiveData<Double?>
         get() = _userMoney
@@ -107,12 +105,12 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     fun setRecordTimeRange(start: Calendar, end: Calendar? = null) {
         val startDate =
-            RechargeTime(TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd"), start.timeInMillis)
+                RechargeTime(TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd"), start.timeInMillis)
         _recordCalendarStartDate.postValue(startDate)
 
         end?.let {
             val endDate =
-                RechargeTime(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"), end.timeInMillis)
+                    RechargeTime(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"), end.timeInMillis)
             _recordCalendarEndDate.postValue(endDate)
         }
     }
@@ -169,7 +167,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     fun getRechargeState() {
         val rechargeStateList =
-            androidContext.resources.getStringArray(R.array.recharge_state_array)
+                androidContext.resources.getStringArray(R.array.recharge_state_array)
 
         val list = rechargeStateList.map {
             when (it) {
@@ -194,7 +192,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     fun getRechargeChannel() {
         val rechargeChannelList =
-            androidContext.resources.getStringArray(R.array.recharge_channel_array)
+                androidContext.resources.getStringArray(R.array.recharge_channel_array)
 
         val list = rechargeChannelList.map {
             when (it) {
@@ -252,14 +250,14 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.moneyService.getUserRechargeList(
-                    RechargeListRequest(
-                        rechType = rechType,
-                        status = status,
-                        startTime = startTime,
-                        endTime = endTime,
-                        page = page,
-                        pageSize = pageSize
-                    )
+                        RechargeListRequest(
+                                rechType = rechType,
+                                status = status,
+                                startTime = startTime,
+                                endTime = endTime,
+                                page = page,
+                                pageSize = pageSize
+                        )
                 )
             }
 
@@ -308,7 +306,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     fun getWithdrawState() {
         val withdrawStateList =
-            androidContext.resources.getStringArray(R.array.withdraw_state_array)
+                androidContext.resources.getStringArray(R.array.withdraw_state_array)
 
         val list = withdrawStateList.map {
             when (it) {
@@ -332,7 +330,7 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     fun getWithdrawType() {
         val withdrawTypeList =
-            androidContext.resources.getStringArray(R.array.withdraw_type_array)
+                androidContext.resources.getStringArray(R.array.withdraw_type_array)
 
         val list = withdrawTypeList.map {
             when (it) {
@@ -378,13 +376,13 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.withdrawService.getWithdrawList(
-                    WithdrawListRequest(
-                        checkStatus = checkStatus,
-                        uwType = uwType,
-                        startTime = startTime,
-                        endTime = endTime,
+                        WithdrawListRequest(
+                                checkStatus = checkStatus,
+                                uwType = uwType,
+                                startTime = startTime,
+                                endTime = endTime,
 
-                        )
+                                )
                 )
             }
 
@@ -418,11 +416,11 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     fun setLogDetail(row: Row) {
         val logDetail = LogDetail(
-            row.orderNo,
-            TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
-            row.rechName,
-            row.displayMoney,
-            row.rechState
+                row.orderNo,
+                TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
+                row.rechName,
+                row.displayMoney,
+                row.rechState
         )
 
         _logDetail.postValue(logDetail)
@@ -430,13 +428,14 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     fun setLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
         val logDetail = LogDetail(
-            row.orderNo,
-            TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
-            row.uwType,
-            row.displayMoney,
-            row.withdrawState
+                row.orderNo,
+                TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
+                row.uwType,
+                row.displayMoney,
+                row.withdrawState
         )
 
         _logDetail.postValue(logDetail)
     }
+
 }

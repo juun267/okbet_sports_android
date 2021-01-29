@@ -21,11 +21,11 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 class SettingPasswordViewModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
-    betInfoRepository: BetInfoRepository
+    betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     private val _passwordFormState = MutableLiveData<PasswordFormState>()

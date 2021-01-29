@@ -85,4 +85,11 @@ class BetInfoRepository {
         })
     }
 
+    fun clear(){
+        betList.clear()
+        matchOddList.clear()
+        parlayOddList.clear()
+        _betInfoList.postValue(betList)
+    }
+
 }

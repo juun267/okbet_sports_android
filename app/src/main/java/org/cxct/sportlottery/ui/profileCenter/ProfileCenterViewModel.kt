@@ -20,11 +20,11 @@ class ProfileCenterViewModel(
         private val androidContext: Context,
         private val userInfoRepository: UserInfoRepository,
         private val loginRepository: LoginRepository,
-        betInfoRepository: BetInfoRepository
+        betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
@@ -61,6 +61,7 @@ class ProfileCenterViewModel(
                 loginRepository.logout()
             }.apply {
                 loginRepository.clear()
+                betInfoRepository?.clear()
                 //TODO change timber to actual logout ui to da
                 Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }

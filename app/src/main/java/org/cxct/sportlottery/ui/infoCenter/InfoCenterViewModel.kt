@@ -14,11 +14,11 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 class InfoCenterViewModel(
     private val androidContext: Context,
     private val infoCenterRepository: InfoCenterRepository,
-    betInfoRepository: BetInfoRepository
+    betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     enum class DataType { UNREAD, READED }//未讀,已讀

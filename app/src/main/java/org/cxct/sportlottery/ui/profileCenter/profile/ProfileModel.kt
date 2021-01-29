@@ -20,11 +20,11 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 class ProfileModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
-    betInfoRepository: BetInfoRepository
+    betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     private val _editIconUrlResult = MutableLiveData<IconUrlResult?>()

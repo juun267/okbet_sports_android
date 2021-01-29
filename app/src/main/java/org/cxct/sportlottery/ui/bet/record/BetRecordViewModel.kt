@@ -19,10 +19,10 @@ data class BetListRequestState(var hasStatus: Boolean, var hasStartDate: Boolean
 
 val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 to "赢半", 4 to "全输", 5 to "输半", 6 to "和", 7 to "已取消")
 
-class BetRecordViewModel(private val androidContext: Context, betInfoRepository: BetInfoRepository) : BaseViewModel() {
+class BetRecordViewModel(private val androidContext: Context, betInfoRepo: BetInfoRepository) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>

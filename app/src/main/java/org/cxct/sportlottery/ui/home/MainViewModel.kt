@@ -65,11 +65,11 @@ class MainViewModel(
         private val userInfoRepository: UserInfoRepository,
         private val loginRepository: LoginRepository,
         private val sportMenuRepository: SportMenuRepository,
-        betInfoRepository: BetInfoRepository
+        betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -239,11 +239,11 @@ class MainViewModel(
 
 
     fun isParlayPage(boolean: Boolean) {
-        br?._isParlayPage?.postValue(boolean)
+        betInfoRepository?._isParlayPage?.postValue(boolean)
 
         //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
         val listWithOutOutright = mutableListOf<String>()
-        br?.betList?.forEach {
+        betInfoRepository?.betList?.forEach {
             if (it.matchType == MatchType.OUTRIGHT) {
                 listWithOutOutright.add(it.matchOdd.oddsId)
             }
@@ -267,6 +267,7 @@ class MainViewModel(
                 loginRepository.logout()
             }.apply {
                 loginRepository.clear()
+                betInfoRepository?.clear()
                 //TODO change timber to actual logout ui to da
                 Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
@@ -543,7 +544,7 @@ class MainViewModel(
                         0
                 )?.odds?.values?.first() ?: listOf()
 
-        val isBet = br?.betInfoList?.value?.any { it.matchOdd.oddsId == winner.id } ?: false
+        val isBet = betInfoRepository?.betInfoList?.value?.any { it.matchOdd.oddsId == winner.id } ?: false
         if (!isBet) {
             winnerList.first { it == winner }.isSelected = true
             getBetInfoList(listOf(Odd(winner.id, winner.odds).apply { matchType = this@MainViewModel.mathType }))
@@ -565,9 +566,9 @@ class MainViewModel(
                     it.odds[oddString]?.contains(odd) ?: false
                 }?.odds?.get(oddString)
                         ?.find { it == odd }
-        if (br?._isParlayPage?.value == true) {
-            val isBetMatchId = br?.betList?.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
-            val isBetOddId = br?.betList?.find { it.matchOdd.oddsId == odd.id }
+        if (betInfoRepository?._isParlayPage?.value == true) {
+            val isBetMatchId = betInfoRepository?.betList?.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
+            val isBetOddId = betInfoRepository?.betList?.find { it.matchOdd.oddsId == odd.id }
             when {
                 isBetMatchId == null -> {
                     match?.isSelected = true
@@ -582,7 +583,7 @@ class MainViewModel(
                 }
             }
         } else {
-            val betItem = br?.betList?.find { it.matchOdd.oddsId == odd.id }
+            val betItem = betInfoRepository?.betList?.find { it.matchOdd.oddsId == odd.id }
             if (betItem == null) {
                 match?.isSelected = true
                 getBetInfoList(listOf(Odd(odd.id, odd.odds ?: 0.0).apply { matchType = this@MainViewModel.mathType }))
@@ -793,33 +794,35 @@ class MainViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                br?.getBetInfo(oddsList)!!
-            }
-            result?.success?.let {
-                if (it) {
-                    br?._betInfoList?.postValue(br?.betList)
-                } else {
-                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        br?.betInfoList?.value?.let { list ->
-                            for (i in list.indices) {
-                                br?.betInfoList?.value?.get(i)?.matchOdd?.oddsId?.let {
-                                    odd = value.odds.find { v -> v.id == it }
-                                    odd?.isSelect = false
+            betInfoRepository?.let { br ->
+                val result = doNetwork(androidContext) {
+                    br.getBetInfo(oddsList)
+                }
+                result?.success?.let {
+                    if (it) {
+                        br._betInfoList.postValue(br.betList)
+                    } else {
+                        oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                            var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                            br.betInfoList.value?.let { list ->
+                                for (i in list.indices) {
+                                    br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                        odd = value.odds.find { v -> v.id == it }
+                                        odd?.isSelect = false
+                                    }
                                 }
                             }
                         }
                     }
+                    _betInfoResult.postValue(result)
                 }
-                _betInfoResult.postValue(result)
             }
         }
     }
 
     fun getBetInfoListForParlay() {
         val sendList: MutableList<Odd> = mutableListOf()
-        br?.betList.let { list ->
+        betInfoRepository?.betList.let { list ->
 
             //以matchId分組 key為matchOdd(object)
             val groupList = list?.groupBy { data ->
@@ -835,65 +838,66 @@ class MainViewModel(
         }
 
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                br?.getBetInfoList(sendList)!!
-            }
-            result?.success?.let { success ->
+            betInfoRepository?.let { br ->
+                val result = doNetwork(androidContext) {
+                    br.getBetInfoList(sendList)
+                }
+                result?.success?.let { success ->
 
-                if (success) {
+                    if (success) {
 
-                    //回傳成功 兩個list不一定數量相等 各別載入列表
-                    _matchOddList.postValue(br?.matchOddList)
-                    _parlayList.postValue(br?.parlayOddList)
+                        //回傳成功 兩個list不一定數量相等 各別載入列表
+                        _matchOddList.postValue(br.matchOddList)
+                        _parlayList.postValue(br.parlayOddList)
 
-                    //載入串關注單後比對一般注單
-                    val newBetList: MutableList<BetInfoListData> = mutableListOf()
-                    br?.matchOddList?.let { mList ->
-                        for (i in mList.indices) {
-                            br?.betList?.let { bList ->
-                                val oid = mList[i].oddsId
-                                val item = br?.betList?.find {
-                                    it.matchOdd.oddsId == oid
-                                }
-                                item?.let {
-                                    newBetList.add(it)
+                        //載入串關注單後比對一般注單
+                        val newBetList: MutableList<BetInfoListData> = mutableListOf()
+                        br.matchOddList.let { mList ->
+                            for (i in mList.indices) {
+                                br.betList.let { bList ->
+                                    val oid = mList[i].oddsId
+                                    val item = bList.find {
+                                        it.matchOdd.oddsId == oid
+                                    }
+                                    item?.let {
+                                        newBetList.add(it)
+                                    }
                                 }
                             }
+                            br.betList.clear()
+                            br.betList.addAll(newBetList)
                         }
-                        br?.betList?.clear()
-                        br?.betList?.addAll(newBetList)
+                        br._betInfoList.postValue(newBetList)
 
-
-                    }
-                    br?._betInfoList?.postValue(newBetList)
-
-                } else {
-                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        br?.betInfoList?.value?.let { list ->
-                            for (i in list.indices) {
-                                br?.betInfoList?.value?.get(i)?.matchOdd?.oddsId?.let {
-                                    odd = value.odds.find { v -> v.id == it }
-                                    odd?.isSelect = false
+                    } else {
+                        oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                            var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                            br.betInfoList.value?.let { list ->
+                                for (i in list.indices) {
+                                    br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                        odd = value.odds.find { v -> v.id == it }
+                                        odd?.isSelect = false
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                _betInfoResult.postValue(result)
             }
-            _betInfoResult.postValue(result)
+
         }
     }
 
 
     fun removeBetInfoItem(oddId: String) {
-        br?.removeItem(oddId)
-        br?._betInfoList?.postValue(br?.betList)
+        betInfoRepository?.removeItem(oddId)
+        betInfoRepository?._betInfoList?.postValue(betInfoRepository?.betList)
     }
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
-        if (br?.betList?.size != 0) {
+        if (betInfoRepository?.betList?.size != 0) {
             getBetInfoListForParlay()
         }
     }
@@ -909,13 +913,13 @@ class MainViewModel(
                 if (it) {
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        br?.betInfoList?.value?.let { list ->
+                        betInfoRepository?.betInfoList?.value?.let { list ->
                             for (i in list.indices) {
 
                                 //server目前可能會回傳null
                                 try {
                                     odd = value.odds.find { v ->
-                                        v.id.let { id -> id == br?.betInfoList?.value?.get(i)?.matchOdd?.oddsId }
+                                        v.id.let { id -> id == betInfoRepository?.betInfoList?.value?.get(i)?.matchOdd?.oddsId }
                                     }
                                     odd?.isSelect = true
                                 } catch (e: Exception) {
@@ -969,7 +973,7 @@ class MainViewModel(
         //冠軍的投注要使用不同的api
         return if (matchType == MatchType.OUTRIGHT) {
             doNetwork(androidContext) {
-                OneBoSportApi.outrightService.addOutrightBet(betAddRequest)!!
+                OneBoSportApi.outrightService.addOutrightBet(betAddRequest)
             }
         } else {
             doNetwork(androidContext) {
@@ -984,8 +988,8 @@ class MainViewModel(
                 removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
             }
         } else {
-            br?.betList?.clear()
-            br?._betInfoList?.postValue(br?.betList)
+            betInfoRepository?.betList?.clear()
+            betInfoRepository?._betInfoList?.postValue(betInfoRepository?.betList)
         }
     }
 }

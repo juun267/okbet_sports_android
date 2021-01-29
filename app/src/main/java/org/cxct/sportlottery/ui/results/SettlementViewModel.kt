@@ -19,11 +19,11 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 class SettlementViewModel(
     private val androidContext: Context,
     private val settlementRepository: SettlementRepository,
-    betInfoRepository: BetInfoRepository
+    betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     val matchResultListResult: LiveData<MatchResultListResult>

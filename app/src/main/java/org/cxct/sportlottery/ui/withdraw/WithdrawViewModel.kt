@@ -30,11 +30,11 @@ class WithdrawViewModel(
         private val androidContext: Context,
         private val moneyRepository: MoneyRepository,
         private val userInfoRepository: UserInfoRepository,
-        betInfoRepository: BetInfoRepository
+        betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     private val _loading = MutableLiveData<Boolean>()

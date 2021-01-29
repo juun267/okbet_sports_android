@@ -21,7 +21,7 @@ import java.net.SocketTimeoutException
 
 abstract class BaseViewModel : ViewModel() {
 
-    var br: BetInfoRepository? = null
+    var betInfoRepository: BetInfoRepository? = null
 
     val errorResultToken: LiveData<BaseResult>
         get() = _errorResultToken

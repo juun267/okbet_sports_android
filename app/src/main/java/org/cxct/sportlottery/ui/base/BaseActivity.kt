@@ -182,17 +182,17 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         betFloatButtonVisible(false)//default
 
-        viewModel.br?.betInfoList?.observe(this, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this, Observer {
             if (it != null) {
-                viewModel.br?.isParlayPage?.value?.let { isParlay ->
+                viewModel.betInfoRepository?.isParlayPage?.value?.let { isParlay ->
                     val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
                     checkBetInfoList(size)
                 }
             }
         })
 
-        viewModel.br?.isParlayPage?.observe(this, Observer {
-            viewModel.br?.betInfoList?.value?.size?.let { size ->
+        viewModel.betInfoRepository?.isParlayPage?.observe(this, Observer {
+            viewModel.betInfoRepository?.betInfoList?.value?.size?.let { size ->
                 if (it) {
                     checkBetInfoList(if (size == 0) 0 else 1)
                 } else {
@@ -202,7 +202,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         })
 
         rl_bet_float_button.setOnClickListener {
-            viewModel.br?.isParlayPage?.value?.let {
+            viewModel.betInfoRepository?.isParlayPage?.value?.let {
                 if (it) {
                     BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
                 } else {
@@ -213,7 +213,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
 
         //default
-        viewModel.br?.let {
+        viewModel.betInfoRepository?.let {
             checkBetInfoList(it.betList.size)//test
             it._betInfoList.postValue(it.betList)
         }

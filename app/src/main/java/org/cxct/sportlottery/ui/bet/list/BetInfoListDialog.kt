@@ -80,7 +80,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
 
 
     private fun observeData() {
-        viewModel.br?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
             } else {

@@ -16,11 +16,11 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 class MoneyRechViewModel(
     private val androidContext: Context,
     private val moneyRepository: MoneyRepository,
-    betInfoRepository: BetInfoRepository
+    betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
 
     init {
-        br = betInfoRepository
+        betInfoRepository = betInfoRepo
     }
 
     val rechargeConfigs: LiveData<MoneyRechCfgData>
