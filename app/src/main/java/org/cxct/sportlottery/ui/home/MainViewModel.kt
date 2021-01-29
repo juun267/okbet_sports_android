@@ -13,12 +13,8 @@ import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
-import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -249,6 +245,17 @@ class MainViewModel(
 
     fun isParlayPage(boolean: Boolean) {
         _isParlayPage.postValue(boolean)
+
+        //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
+        val listWithOutOutright = mutableListOf<String>()
+        betInfoRepository.betList.forEach {
+            if (it.matchType == MatchType.OUTRIGHT) {
+                listWithOutOutright.add(it.matchOdd.oddsId)
+            }
+        }
+        listWithOutOutright.forEach {
+            removeBetInfoItem(it)
+        }
     }
 
     private fun checkToken() {
