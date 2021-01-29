@@ -345,7 +345,19 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         _withdrawTypeList.postValue(list)
     }
 
-    fun getUserWithdrawList() {
+    fun getUserWithdrawList(isFirstFetch: Boolean) {
+        when {
+            isFirstFetch -> {
+                _isFinalPage.postValue(false)
+                page = 1
+            }
+            else -> {
+                if (isFinalPage.value == false) {
+                    page++
+                }
+            }
+        }
+
         val checkStatus = _withdrawStateList.value?.find {
             it.isSelected
         }?.code
@@ -388,6 +400,10 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                 it.withdrawTime = TimeUtil.timeFormat(it.applyTime, "HH:mm:ss")
 
                 it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
+            }
+
+            result?.total?.let {
+                _isFinalPage.postValue(page * pageSize >= it)
             }
 
             _userWithdrawResult.postValue(result)
