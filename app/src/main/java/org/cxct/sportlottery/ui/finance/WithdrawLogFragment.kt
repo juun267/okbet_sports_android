@@ -137,6 +137,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 )
             )
 
+            //TODO current pull gesture will call over one time api, need to fix
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     if (!recyclerView.canScrollVertically(1)) {
