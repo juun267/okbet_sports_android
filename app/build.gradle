@@ -25,11 +25,10 @@ android {
 
     signingConfigs {
         release {
-            //TODO
-//            storeFile file("../signKey/key3.jks")
-//            storePassword "desheng@2020"
-//            keyAlias "fungame"
-//            keyPassword "desheng@2020"
+            storeFile file("../signKey/key3.jks")
+            storePassword "desheng@2020"
+            keyAlias "fungame"
+            keyPassword "desheng@2020"
         }
     }
 
