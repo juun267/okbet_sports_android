@@ -3,10 +3,12 @@ package org.cxct.sportlottery.ui.finance
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.list.Row
+import org.cxct.sportlottery.ui.finance.df.CheckStatus
 
 class WithdrawLogAdapter : RecyclerView.Adapter<WithdrawLogAdapter.ViewHolder>() {
 
@@ -42,6 +44,39 @@ class WithdrawLogAdapter : RecyclerView.Adapter<WithdrawLogAdapter.ViewHolder>()
             itemView.setOnClickListener {
                 withdrawLogListener?.onClick(item)
             }
+
+            setupStateTextColor(item)
+        }
+
+        private fun setupStateTextColor(item: Row) {
+            when (item.checkStatus) {
+                CheckStatus.PROCESSING.code -> {
+                    itemView.rech_log_state.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            R.color.textGray
+                        )
+                    )
+                }
+                CheckStatus.PASS.code -> {
+                    itemView.rech_log_state.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            R.color.green_blue
+                        )
+                    )
+                }
+
+                CheckStatus.UN_PASS.code -> {
+                    itemView.rech_log_state.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            R.color.orangeRed
+                        )
+                    )
+                }
+            }
+
         }
 
         companion object {

@@ -1,64 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
-    android:orientation="horizontal"
-    android:padding="6dp">
+    android:layout_height="44dp"
+    android:background="@android:color/white"
+    android:paddingStart="10dp"
+    android:paddingTop="5dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="5dp">
 
-    <LinearLayout
+    <View
         android:id="@+id/ll_start_date"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="4dp"
-        android:layout_weight="2"
-        android:background="@drawable/spinner_gray_5dp"
-        android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingEnd="24dp">
-
-        <TextView
-            android:id="@+id/tv_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/textColorDark"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="@string/unknown_data" />
-
-    </LinearLayout>
+        android:layout_width="187dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColorDark"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/ll_start_date"
+        app:layout_constraintEnd_toEndOf="@id/ll_start_date"
+        app:layout_constraintStart_toStartOf="@id/ll_start_date"
+        app:layout_constraintTop_toTopOf="@id/ll_start_date"
+        tools:text="全部订单状态" />
+
+    <ImageView
+        android:id="@+id/tv_start_date_arrow"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_arrow_down_dark"
+        app:layout_constraintBottom_toBottomOf="@id/tv_start_date"
+        app:layout_constraintStart_toEndOf="@id/tv_start_date"
+        app:layout_constraintTop_toTopOf="@id/tv_start_date" />
+
+    <TextView
+        android:id="@+id/order_selector_div"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="4dp"
-        android:text="｜" />
+        android:text="｜"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ll_start_date"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+
+    <View
         android:id="@+id/ll_end_date"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="4dp"
-        android:layout_weight="2"
-        android:background="@drawable/spinner_gray_5dp"
-        android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingEnd="24dp">
+        android:layout_width="187dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/order_selector_div"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_end_date"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/textColorDark"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="@string/unknown_data" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColorDark"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/ll_end_date"
+        app:layout_constraintEnd_toEndOf="@id/ll_end_date"
+        app:layout_constraintStart_toStartOf="@id/ll_end_date"
+        app:layout_constraintTop_toTopOf="@id/ll_end_date"
+        tools:text="全部渠道类型" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/tv_end_date_arrow"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/ic_arrow_down_dark"
+        app:layout_constraintBottom_toBottomOf="@id/tv_end_date"
+        app:layout_constraintStart_toEndOf="@id/tv_end_date"
+        app:layout_constraintTop_toTopOf="@id/tv_end_date" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

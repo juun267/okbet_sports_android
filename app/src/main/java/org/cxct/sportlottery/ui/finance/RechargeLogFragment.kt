@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_recharge_log.*
@@ -134,12 +135,23 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     DividerItemDecoration.VERTICAL
                 )
             )
+
+            //TODO current pull gesture will call over one time api, need to fix
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (!recyclerView.canScrollVertically(1)) {
+                        viewModel.getUserRechargeList(false)
+                        loading()
+                    }
+                }
+            })
         }
     }
 
     private fun setupSearch(view: View) {
         view.date_range_selector.btn_search.setOnClickListener {
-            viewModel.getUserRechargeList()
+            viewModel.getUserRechargeList(true)
+            loading()
         }
     }
 
@@ -186,6 +198,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             if (it?.success == true) {
                 rechargeLogAdapter.data = it.rows ?: listOf()
             }
+            hideLoading()
         })
 
         viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
@@ -198,9 +211,18 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             }
         })
 
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
+            if (it) {
+                list_no_more.visibility = View.VISIBLE
+            } else {
+                list_no_more.visibility = View.GONE
+            }
+        })
+
         viewModel.getCalendarRange()
         viewModel.getRechargeState()
         viewModel.getRechargeChannel()
-        viewModel.getUserRechargeList()
+        viewModel.getUserRechargeList(true)
+        loading()
     }
 }
