@@ -246,6 +246,12 @@ class MainViewModel(
         _isParlayPage.postValue(boolean)
 
         //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
+        cleanOutrightBetOrder()
+        //組成串關注單
+        getBetInfoListForParlay()
+    }
+
+    private fun cleanOutrightBetOrder() {
         val listWithOutOutright = mutableListOf<String>()
         betInfoRepository.betList.forEach {
             if (it.matchType == MatchType.OUTRIGHT) {
@@ -255,8 +261,6 @@ class MainViewModel(
         listWithOutOutright.forEach {
             removeBetInfoItem(it)
         }
-
-        getBetInfoListForParlay()
     }
 
     private fun checkToken() {
