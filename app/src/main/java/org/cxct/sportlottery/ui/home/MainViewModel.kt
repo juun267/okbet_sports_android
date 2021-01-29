@@ -63,8 +63,6 @@ import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainViewModel(
@@ -442,11 +440,11 @@ class MainViewModel(
         }
     }
 
-    fun getHallUrl (cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
+    fun getHallUrl(cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
         return "${BackService.URL_HALL}$nowGameType/$cateMenuCode/$eventId"
     }
 
-    fun getEventUrl (eventId: String?): String {
+    fun getEventUrl(eventId: String?): String {
         return "${BackService.URL_EVENT}${eventId}"
     }
 
@@ -543,15 +541,13 @@ class MainViewModel(
                 0
             )?.odds?.values?.first() ?: listOf()
 
-        winnerList.map {
-            it.isSelected = if (it == winner) {
-                getBetInfoList(listOf(Odd(winner.id, winner.odds)))
-                true
-            } else {
-                removeBetInfoItem(winner.id)
-                false
-            }
-
+        val isBet = betInfoList.value?.any { it.matchOdd.oddsId == winner.id } ?: false
+        if (!isBet) {
+            winnerList.first { it == winner }.isSelected = true
+            getBetInfoList(listOf(Odd(winner.id, winner.odds).apply { matchType = this@MainViewModel.mathType }))
+        } else {
+            winnerList.first { it == winner }.isSelected = false
+            removeBetInfoItem(winner.id)
         }
 
         _outrightOddsListResult.postValue(result)
@@ -559,6 +555,7 @@ class MainViewModel(
 
     //TODO Dean : 重構，整理、提取程式碼
     fun updateMatchBetList(matchOdd: MatchOdd, oddString: String, odd: org.cxct.sportlottery.network.odds.list.Odd) {
+        val isOutright = mathType == MatchType.OUTRIGHT
         val result = if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value
         val match =
             result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find { it.odds[oddString]?.contains(odd) ?: false }?.odds?.get(oddString)
@@ -569,7 +566,7 @@ class MainViewModel(
             when {
                 isBetMatchId == null -> {
                     match?.isSelected = true
-                    getBetInfoList(listOf(Odd(odd.id, odd.odds?:0.0)))
+                    getBetInfoList(listOf(Odd(odd.id, odd.odds ?: 0.0).apply { matchType = this@MainViewModel.mathType }))
                 }
                 isBetOddId != null -> {
                     match?.isSelected = false
@@ -583,7 +580,7 @@ class MainViewModel(
             val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
             if (betItem == null) {
                 match?.isSelected = true
-                getBetInfoList(listOf(Odd(odd.id, odd.odds?:0.0)))
+                getBetInfoList(listOf(Odd(odd.id, odd.odds ?: 0.0).apply { matchType = this@MainViewModel.mathType }))
             } else {
                 match?.isSelected = false
                 removeBetInfoItem(odd.id)
@@ -944,27 +941,42 @@ class MainViewModel(
         }
     }
 
-    fun addBet(betAddRequest: BetAddRequest, isParlay: Boolean) {
+    fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.betService.addBet(betAddRequest)
-            }
+            val result = getBetApi(matchType, betAddRequest)
             Event(result).let {
                 _betAddResult.postValue(it)
             }
 
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
-                    if (!isParlay) {
-                        result?.rows?.let { rowList ->
-                            removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
-                        }
-                    } else {
-                        betInfoRepository.betList.clear()
-                        _betInfoList.postValue(betInfoRepository.betList)
-                    }
+                    afterBet(matchType, result)
                 }
             }
+        }
+    }
+
+    private suspend fun getBetApi(matchType: MatchType?, betAddRequest: BetAddRequest): BetAddResult? {
+        //冠軍的投注要使用不同的api
+        return if (matchType == MatchType.OUTRIGHT) {
+            doNetwork(androidContext) {
+                OneBoSportApi.outrightService.addOutrightBet(betAddRequest)
+            }
+        } else {
+            doNetwork(androidContext) {
+                OneBoSportApi.betService.addBet(betAddRequest)
+            }
+        }
+    }
+
+    private fun afterBet(matchType: MatchType?, result: BetAddResult?) {
+        if (matchType != MatchType.PARLAY) {
+            result?.rows?.let { rowList ->
+                removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
+            }
+        } else {
+            betInfoRepository.betList.clear()
+            _betInfoList.postValue(betInfoRepository.betList)
         }
     }
 }

@@ -30,6 +30,8 @@ import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
@@ -182,6 +184,12 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(USER_RECHARGE_LIST) -> {
                     response = getMockJsonData(request, "userrech_list.mock")
+                }
+                path.contains(OUTRIGHT_BET_ADD) -> {
+                    response = getMockJsonData(request, "outright_bet_add.mock")
+                }
+                path.contains(OUTRIGHT_BET_INFO) -> {
+                    response = getMockJsonData(request, "outright_bet_info.mock")
                 }
                 path.contains(WITHDRAW_LIST) -> {
                     response = getMockJsonData(request, "user_withdraw_list.mock")
