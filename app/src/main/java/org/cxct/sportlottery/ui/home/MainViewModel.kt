@@ -13,12 +13,8 @@ import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
-import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -31,7 +27,6 @@ import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
-import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
@@ -88,7 +83,7 @@ class MainViewModel(
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
 
-    val sportMenuResult: LiveData<SportMenuResult>
+    val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
     val matchPreloadInPlay: LiveData<MatchPreloadResult>
@@ -130,7 +125,7 @@ class MainViewModel(
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
-    private val _sportMenuResult = MutableLiveData<SportMenuResult>()
+    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListGameHallResult = MutableLiveData<OddsListResult?>()
@@ -174,8 +169,8 @@ class MainViewModel(
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
 
-    private val _betInfoResult = MutableLiveData<BetInfoResult>()
-    val betInfoResult: LiveData<BetInfoResult>
+    private val _betInfoResult = MutableLiveData<BetInfoResult?>()
+    val betInfoResult: LiveData<BetInfoResult?>
         get() = _betInfoResult
 
     private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
@@ -533,7 +528,7 @@ class MainViewModel(
         _isOpenMatchOdds.postValue(true)
     }
 
-    fun updateOutrightOddsSelectedState(winner: Winner) {
+    fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
         val result = _outrightOddsListResult.value
 
         val winnerList =
@@ -548,6 +543,7 @@ class MainViewModel(
         } else {
             winnerList.first { it == winner }.isSelected = false
             removeBetInfoItem(winner.id)
+
         }
 
         _outrightOddsListResult.postValue(result)
@@ -561,7 +557,7 @@ class MainViewModel(
             result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find { it.odds[oddString]?.contains(odd) ?: false }?.odds?.get(oddString)
                 ?.find { it == odd }
         if (_isParlayPage.value == true) {
-            val isBetMatchId = betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo.id }
+            val isBetMatchId = betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
             val isBetOddId = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
             when {
                 isBetMatchId == null -> {
@@ -756,7 +752,9 @@ class MainViewModel(
             it.isSelected = (it == date)
         }
 
-        _curDate.postValue(dateRow)
+        dateRow?.let {
+            _curDate.postValue(it)
+        }
     }
 
     private fun getCurrentTimeRangeParams(): TimeRangeParams? {
@@ -769,7 +767,7 @@ class MainViewModel(
         _curPlayType.postValue(playType)
     }
 
-    fun getOddsDetail(oddId: String) {
+    fun getOddsDetail(oddId: String?) {
         val item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
             it.isSelected
         }

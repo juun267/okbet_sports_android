@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.view_account_balance.*
 import kotlinx.android.synthetic.main.view_account_balance.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.ArithUtil
 import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
@@ -83,11 +84,9 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.userMoneyResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
-            if (it != null && it.success) {
-                tv_balance.text = it.displayMoney
-            }
+            tv_balance.text = ArithUtil.toMoneyFormat(it)
         })
 
         viewModel.recordList.observe(this.viewLifecycleOwner, Observer {

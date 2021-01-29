@@ -17,7 +17,7 @@ data class MatchStatusCO(
     @Json(name = "awayYellowCards")
     val awayYellowCards: Int,
     @Json(name = "dataId")
-    val dataId: Any,
+    val dataId: String? = null,
     @Json(name = "homeCards")
     val homeCards: Int,
     @Json(name = "homeCornerKicks")

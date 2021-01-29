@@ -453,8 +453,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         mMarqueeAdapter.setData(titleList)
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult) {
-        if (sportMenuResult.success) {
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
+        if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
         }
     }
