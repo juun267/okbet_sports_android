@@ -23,6 +23,9 @@ import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
+
+const val pageSize = 20
+
 class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
 
     val userMoneyResult: LiveData<UserMoneyResult?>
@@ -64,6 +67,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     val logDetail: LiveData<LogDetail>
         get() = _logDetail
 
+    val isFinalPage: LiveData<Boolean>
+        get() = _isFinalPage
+
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
     private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
@@ -82,6 +88,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
     private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
 
     private val _logDetail = MutableLiveData<LogDetail>()
+
+    private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
+    private var page = 1
 
 
     fun setRecordType(recordType: String) {
@@ -210,7 +219,19 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
         _rechargeChannelList.postValue(list)
     }
 
-    fun getUserRechargeList() {
+    fun getUserRechargeList(isFirstFetch: Boolean) {
+        when {
+            isFirstFetch -> {
+                _isFinalPage.postValue(false)
+                page = 1
+            }
+            else -> {
+                if (isFinalPage.value == false) {
+                    page++
+                }
+            }
+        }
+
         viewModelScope.launch {
             val rechType = _rechargeChannelList.value?.find {
                 it.isSelected
@@ -229,7 +250,9 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                         rechType = rechType,
                         status = status,
                         startTime = startTime,
-                        endTime = endTime
+                        endTime = endTime,
+                        page = page,
+                        pageSize = pageSize
                     )
                 )
             }
@@ -247,6 +270,10 @@ class FinanceViewModel(private val androidContext: Context) : BaseViewModel() {
                 it.rechTimeStr = TimeUtil.timeFormat(it.rechTime, "HH:mm:ss")
 
                 it.displayMoney = ArithUtil.toMoneyFormat(it.rechMoney)
+            }
+
+            result?.total?.let {
+                _isFinalPage.postValue(page * pageSize >= it)
             }
 
             _userRechargeResult.postValue(result)
