@@ -484,4 +484,5 @@
 
     <string name="finance_log_selector_until">到</string>
     <string name="finance_list_no_more">没有更多数据了</string>
+    <string name="finance_list_no_record">暂无纪录</string>
 </resources>

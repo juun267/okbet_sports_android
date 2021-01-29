@@ -196,7 +196,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
-                withdrawLogAdapter.data = it.rows ?: listOf()
+                val list = it.rows ?: listOf()
+
+                withdrawLogAdapter.data = list
+                setupNoRecordView(list.isEmpty())
             }
 
             hideLoading()
@@ -221,5 +224,17 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         viewModel.getWithdrawType()
         viewModel.getUserWithdrawList(true)
         loading()
+    }
+
+    private fun setupNoRecordView(visible: Boolean) {
+        if (visible) {
+            list_swipe_refresh_layout.visibility = View.GONE
+            list_no_record_img.visibility = View.VISIBLE
+            list_no_record_text.visibility = View.VISIBLE
+        } else {
+            list_swipe_refresh_layout.visibility = View.VISIBLE
+            list_no_record_img.visibility = View.GONE
+            list_no_record_text.visibility = View.GONE
+        }
     }
 }
