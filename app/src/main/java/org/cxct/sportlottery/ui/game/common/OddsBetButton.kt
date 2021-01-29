@@ -101,7 +101,7 @@ class OddsBetButton @JvmOverloads constructor(context: Context, attrs: Attribute
 
         Handler().postDelayed(
             {
-                bet_layout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.light_gray))
+                bet_layout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
             },
             CHANGING_COLOR_DURATION
         )

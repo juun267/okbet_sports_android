@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.odds
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,71 +45,88 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         holder.bind(item, playType, matchOddListener)
     }
 
-    private fun updateItemDataFromSocket(originItem: MatchOdd) {
-        if (updatedOddsMap.isNullOrEmpty()) return
-
-        for ((key, value) in updatedOddsMap) {
-            when (key) {
-                PlayType.OU.code -> {
-                    value.forEach {
-                        val oddItem = originItem.odds[PlayType.OU.code]
-
-                        when (it.id) {
-                            oddItem?.firstOrNull()?.id -> {
-                                val oddData = oddItem[0]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[0] = it
-                            }
-                            oddItem?.get(1)?.id -> {
-                                val oddData = oddItem[1]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[1] = it
-                            }
-                        }
-
-                    }
+    private fun addDataIfNotEnough(originItem: MatchOdd, code: String) {
+        val oddList = originItem.odds[code]
+        if (oddList?.size?:0 < 2) {
+            for (i in 0 until (2 - (oddList?.size?:0))) {
+                originItem.odds[code]?.add(Odd())
+                if (updatedOddsMap[code]?.size?:0 > i ) {
+                    updatedOddsMap[code]?.get(i)?.let { originItem.odds[code]?.set(i, it) }
                 }
-
-                PlayType.HDP.code -> {
-                    value.forEach {
-                        val oddItem = originItem.odds[PlayType.HDP.code]
-
-                        when (it.id) {
-                            oddItem?.firstOrNull()?.id -> {
-                                val oddData = oddItem[0]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[0] = it
-                            }
-                            oddItem?.get(1)?.id -> {
-                                val oddData = oddItem[1]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[1] = it
-                            }
-                        }
-                    }
-                }
-
-                PlayType.X12.code -> {
-                    value.forEach {
-                        val oddItem = originItem.odds[PlayType.X12.code]
-                        when (it.id) {
-                            oddItem?.firstOrNull()?.id -> {
-                                val oddData = oddItem[0]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[0] = it
-                            }
-                            oddItem?.get(1)?.id -> {
-                                val oddData = oddItem[1]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[1] = it
-                            }
-                        }
-                    }
-                }
-
             }
         }
     }
+
+
+    private fun updateItemDataFromSocket(originItem: MatchOdd) {
+        if (updatedOddsMap.isNullOrEmpty()) return
+
+        addDataIfNotEnough(originItem, PlayType.OU.code)
+        addDataIfNotEnough(originItem, PlayType.HDP.code)
+        addDataIfNotEnough(originItem, PlayType.X12.code)
+
+            for ((key, value) in updatedOddsMap) {
+                when (key) {
+                    PlayType.OU.code -> {
+                        value.forEach {
+                            val oddItem = originItem.odds[PlayType.OU.code]
+                            when (it.id) {
+                                oddItem?.firstOrNull()?.id -> {
+                                    val oddData = oddItem[0]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[0] = it
+                                }
+                                oddItem?.get(1)?.id -> {
+                                    val oddData = oddItem[1]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[1] = it
+                                }
+                            }
+
+                        }
+                    }
+
+                    PlayType.HDP.code -> {
+                        value.forEach {
+                            val oddItem = originItem.odds[PlayType.HDP.code]
+
+                            when (it.id) {
+                                oddItem?.firstOrNull()?.id -> {
+                                    val oddData = oddItem[0]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[0] = it
+                                }
+                                oddItem?.get(1)?.id -> {
+                                    val oddData = oddItem[1]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[1] = it
+                                }
+                            }
+                        }
+                    }
+
+                    PlayType.X12.code -> {
+                        value.forEach {
+                            val oddItem = originItem.odds[PlayType.X12.code]
+                            when (it.id) {
+                                oddItem?.firstOrNull()?.id -> {
+                                    val oddData = oddItem[0]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[0] = it
+                                }
+                                oddItem?.get(1)?.id -> {
+                                    val oddData = oddItem[1]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[1] = it
+                                }
+                            }
+                        }
+                    }
+
+                }
+        }
+    }
+
 
     private fun getOddState(oldItem: Odd?, it: Odd): Int {
         val oldOdd = oldItem?.odds ?: 0.0
@@ -185,6 +201,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     bet_top_text.text = it.spread
                     bet_bottom_text.text = it.odds.toString()
                     setOnClickListener { _ ->
+//                        setHighlight(OddState.LARGER.state)
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
                     setStatus(it.odds?.isNaN()?:true, it.status)
