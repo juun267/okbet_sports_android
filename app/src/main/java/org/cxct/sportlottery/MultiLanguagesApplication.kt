@@ -84,7 +84,7 @@ class MultiLanguagesApplication : Application() {
         super.attachBaseContext(MultiLanguage.setLocal(base))
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         //用户在系统设置页面切换语言时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(applicationContext, newConfig)
