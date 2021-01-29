@@ -259,6 +259,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
+                popAllFragment()
                 viewModel.isParlayPage(tab?.position == 4)
 
                 when (tab?.position) {
@@ -452,8 +453,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         mMarqueeAdapter.setData(titleList)
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult) {
-        if (sportMenuResult.success) {
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
+        if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
         }
     }
@@ -480,6 +481,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
+    }
+
+    private fun popAllFragment() {
+        val manager = supportFragmentManager
+        for (i in 0 until manager.backStackEntryCount) {
+            supportFragmentManager.popBackStack()
+        }
     }
 
 }

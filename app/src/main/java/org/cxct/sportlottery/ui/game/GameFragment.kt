@@ -117,13 +117,13 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
-            if (it == null) return@observe
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
             Log.e(">>>>>", "g matchStatusChange")
         })
 
-        viewModel.matchClock.observe(this.viewLifecycleOwner, {
-            if (it == null) return@observe
+        viewModel.matchClock.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
             Log.e(">>>>>", "g matchClock")
 
         })
@@ -135,8 +135,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
         */
 
-        viewModel.oddsChange.observe(this.viewLifecycleOwner, {
-            if (it == null) return@observe
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
             leagueOddAdapter.updatedOddsMap = it.odds
         })
     }
@@ -235,22 +235,22 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    setupInPlayFilter(it.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                    setupInPlayFilter(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
                 }
                 MatchType.TODAY -> {
-                    setupTodayFilter(it.sportMenuData?.menu?.today?.items ?: listOf())
+                    setupTodayFilter(it?.sportMenuData?.menu?.today?.items ?: listOf())
                 }
                 MatchType.EARLY -> {
-                    setupEarlyFilter(it.sportMenuData?.menu?.early?.items ?: listOf())
+                    setupEarlyFilter(it?.sportMenuData?.menu?.early?.items ?: listOf())
                 }
                 MatchType.PARLAY -> {
-                    setupParlayFilter(it.sportMenuData?.menu?.parlay?.items ?: listOf())
+                    setupParlayFilter(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
                 }
                 MatchType.OUTRIGHT -> {
-                    setupOutrightFilter(it.sportMenuData?.menu?.outright?.items ?: listOf())
+                    setupOutrightFilter(it?.sportMenuData?.menu?.outright?.items ?: listOf())
                 }
                 MatchType.AT_START -> {
-                    setupAtStartFilter(it.sportMenuData?.atStart?.items ?: listOf())
+                    setupAtStartFilter(it?.sportMenuData?.atStart?.items ?: listOf())
                 }
             }
         })
