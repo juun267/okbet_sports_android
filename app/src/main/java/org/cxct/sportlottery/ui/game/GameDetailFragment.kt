@@ -129,6 +129,10 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            matchOddAdapter.betInfoListData = it
+        })
+
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
                 setupLeagueOddsUpperBar()
@@ -169,6 +173,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         oddsFirst?.let {
             matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
+            matchOddAdapter.betInfoListData = viewModel.betInfoList.value
         }
     }
 
@@ -183,7 +188,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         league_odd_sub_list.visibility = View.GONE
         outright_odd_sub_list.visibility = View.VISIBLE
 
-        winnerItemKey = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.keys?.firstOrNull() ?:""
+        winnerItemKey = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.keys?.firstOrNull() ?: ""
 
         val emptyList = listOf(Odd(), Odd()) //default放入兩個空值, 以便socket比對並更新內容
         outrightOddAdapter.data =
