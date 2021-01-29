@@ -1,8 +1,14 @@
 package org.cxct.sportlottery.network.outright
 
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.info.BetInfoRequest
+import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
@@ -27,4 +33,14 @@ interface OutrightService {
     suspend fun getOutrightSeasonList(
         @Body outrightSeasonListRequest: OutrightSeasonListRequest
     ): Response<OutrightSeasonListResult>
+
+    @POST(OUTRIGHT_BET_ADD)
+    suspend fun addOutrightBet(
+        @Body outrightBetAddRequest: BetAddRequest
+    ): Response<BetAddResult>
+
+    @POST(OUTRIGHT_BET_INFO)
+    suspend fun getOutrightBetInfo(
+        @Body outrightBetInfoRequest: BetInfoRequest
+    ): Response<BetInfoResult>
 }

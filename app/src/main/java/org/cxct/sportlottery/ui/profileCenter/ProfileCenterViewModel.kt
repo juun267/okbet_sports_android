@@ -12,6 +12,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import timber.log.Timber
 import java.util.*
 
@@ -29,7 +30,7 @@ class ProfileCenterViewModel(
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
 
-    private val _userMoney = MutableLiveData<Double?>()
+    private val _userMoney = BroadcastRepository().instance().userMoney
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
@@ -72,6 +73,7 @@ class ProfileCenterViewModel(
         }
     }
 
+    @Deprecated("20210129 拿掉問候語")
     fun sayHello(): String? {
         val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
         return when {

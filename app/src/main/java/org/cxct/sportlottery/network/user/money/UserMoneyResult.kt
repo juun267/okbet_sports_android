@@ -15,6 +15,4 @@ data class UserMoneyResult(
     override val success: Boolean,
     @Json(name = "t")
     val money: Double?
-) : BaseResult() {
-    var displayMoney: String? = null
-}
+) : BaseResult()

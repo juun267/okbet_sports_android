@@ -110,19 +110,22 @@
                     android:src="@drawable/ic_profile_nickname" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
                     android:text="@string/nickname"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tv_nickname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ia***18" />
@@ -198,19 +201,22 @@
                     android:src="@drawable/ic_profile_account" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
                     android:text="@string/member_account"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tv_member_account"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee0518" />
@@ -238,19 +244,22 @@
                     android:src="@drawable/ic_profile_id" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
                     android:text="@string/id"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tv_id"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="235291" />
@@ -279,19 +288,22 @@
                     android:src="@drawable/ic_profile_real_name" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
                     android:text="@string/real_name"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tv_real_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
                     android:textColor="@color/textColorDark"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee051**" />
