@@ -255,6 +255,8 @@ class MainViewModel(
         listWithOutOutright.forEach {
             removeBetInfoItem(it)
         }
+
+        getBetInfoListForParlay()
     }
 
     private fun checkToken() {

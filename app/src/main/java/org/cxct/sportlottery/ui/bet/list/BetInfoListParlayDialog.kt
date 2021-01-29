@@ -57,7 +57,6 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
-        getData()
     }
 
 
@@ -111,12 +110,6 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
         }
     }
-
-
-    private fun getData() {
-        viewModel.getBetInfoListForParlay()
-    }
-
 
     private fun observeData() {
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
