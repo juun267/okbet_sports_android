@@ -19,10 +19,11 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
@@ -140,15 +141,51 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setSocketObserver() {
-        viewModel.oddsChange.observe(this.viewLifecycleOwner, {
-            it?.let {
-                if (it.odds.isNullOrEmpty()) return@observe
-                matchOddAdapter.updatedOddsMap = it.odds
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
+            if (oddsChangeEvent == null) return@Observer
 
-                outrightOddAdapter.updatedWinnerOddsList = it.odds[winnerItemKey] ?: listOf()
+            updateMatchOdd(oddsChangeEvent)
 
-            }
+            outrightOddAdapter.updatedWinnerOddsList = oddsChangeEvent.odds[winnerItemKey] ?: listOf()
         })
+    }
+
+    private fun updateMatchOdd(oddsChangeEvent: OddsChangeEvent) {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.forEach { oldOdds ->
+                val newOdds = oddsChangeEvent.odds[oldOdds.key]
+
+                oldOdds.value.forEach { oldOdd ->
+                    val updateOdd = newOdds?.find { newOdd ->
+                        newOdd.id == oldOdd.id
+                    }
+
+                    updateOdd?.odds?.let { nonNullUpdateOdd ->
+                        oldOdd.odds?.let { nonNullOldOdd ->
+                            when {
+                                (nonNullUpdateOdd > nonNullOldOdd) -> {
+                                    oldOdd.oddState = OddState.LARGER.state
+                                }
+
+                                (nonNullUpdateOdd == nonNullOldOdd) -> {
+                                    oldOdd.oddState = OddState.SAME.state
+                                }
+
+                                (nonNullUpdateOdd < nonNullOldOdd) -> {
+                                    oldOdd.oddState = OddState.SMALLER.state
+                                }
+                            }
+
+                            oldOdd.odds = updateOdd.odds
+                        }
+                    }
+                }
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
