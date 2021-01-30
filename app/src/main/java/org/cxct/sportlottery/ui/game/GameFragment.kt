@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
@@ -116,6 +117,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
+/*
+
         viewModel.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
             if (matchClockEvent == null) return@Observer
 
@@ -135,29 +138,49 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             if (it == null) return@Observer
             leagueOddAdapter.updatedOddsMap = it.odds
         })
+*/
 
-//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            Log.e(">>>>>", "g matchStatusChange")
-//        })
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
+            if (oddsChangeEvent == null) return@Observer
 
-//        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
-//            if (it == null) return@observe
-//            Log.e(">>>>>", "g matchOddsChange")
-//            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
-//        })
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { oldOdds ->
+                        val newOdds = oddsChangeEvent.odds[oldOdds.key]
+
+                        oldOdds.value.forEach { oldOdd ->
+                            val updateOdd = newOdds?.find { newOdd ->
+                                newOdd.id == oldOdd.id
+                            }
+
+                            updateOdd?.odds?.let { nonNullUpdateOdd ->
+                                oldOdd.odds?.let { nonNullOldOdd ->
+                                    when {
+                                        (nonNullUpdateOdd > nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.LARGER.state
+                                        }
+
+                                        (nonNullUpdateOdd == nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.SAME.state
+                                        }
+
+                                        (nonNullUpdateOdd < nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.SMALLER.state
+                                        }
+                                    }
+
+                                    oldOdd.odds = updateOdd.odds
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            leagueOddAdapter.data = leagueOdds
+        })
     }
-
-//    private fun transformData(odds: Map<String, Odds>): Map<String, List<Odd>> {
-//
-//        val newMap = mutableMapOf<String, List<Odd>>()
-//
-//        for ( (key, value) in odds) {
-//            newMap[key] = value.odds
-//        }
-//
-//        return newMap
-//    }
 
     private fun setupSportTypeRow(view: View) {
         view.hall_game_type_list.apply {

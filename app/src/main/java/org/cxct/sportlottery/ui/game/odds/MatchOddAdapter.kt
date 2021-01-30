@@ -209,7 +209,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 //                        setHighlight(OddState.LARGER.state)
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -222,7 +222,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -235,7 +235,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -248,7 +248,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
