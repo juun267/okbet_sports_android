@@ -70,24 +70,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 this.adapter = matchOddAdapter
             }
-/*
 
-            if (item.matchOdds.size < 2)  {
-                for (i in 0 until (2 - item.matchOdds.size)) {
-                    item.matchOdds.add(MatchOdd())
-                }
-            }
-*/
             matchOddAdapter.data = item.matchOdds
             matchOddAdapter.playType = playType
             matchOddAdapter.matchOddListener = matchOddListener
             matchOddAdapter.updatedOddsMap = updatedOddsMap
         }
-/*
-        fun updateMatchOddList(updatedOddsMap: Map<String, List<Odd>>) {
-            matchOddAdapter.updatedOddsMap = updatedOddsMap
-        }
-*/
 
         private fun setupMatchOddExpand(item: LeagueOdd, position: Int, itemExpandListener: ItemExpandListener?) {
             itemView.league_odd_sub_expand.setExpanded(item.isExpand, false)
