@@ -18,9 +18,9 @@ class MoneyRechViewModel(
 ) : BaseViewModel() {
 
 
-    val rechargeConfigs: LiveData<MoneyRechCfgData>
+    val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs
-    private var _rechargeConfigs = MutableLiveData<MoneyRechCfgData>()
+    private var _rechargeConfigs = MutableLiveData<MoneyRechCfgData?>()
 
     //在線支付
     val onlinePayList: LiveData<MutableList<MoneyPayWayData>>

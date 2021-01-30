@@ -16,4 +16,5 @@ data class MatchOdd(
                                                                   PlayType.X12.code to mutableListOf())
 ) {
     var isExpand = false
+    var leagueTime: Int? = null
 }
