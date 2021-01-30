@@ -178,15 +178,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         var newOddList = listOf<Odd>()
 
         for (item in updatedOddsDetail) {
-            Log.e(">>>>>", "oddsDetail.gameType = ${oddsDetail.gameType}, item.gameType = ${item.gameType}")
-
             if (item.gameType == oddsDetail.gameType) {
                 newOddList = item.oddArrayList
-                Log.e(">>>>>", "newOddList = $newOddList")
                 return
-//                oddsDetail.oddArrayList = item.oddArrayList
             }
-
         }
 
         oldOddList.forEach {  oldOddData ->

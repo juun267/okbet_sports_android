@@ -97,11 +97,12 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
         })
-
+/*
         viewModel.matchClock.observe(viewLifecycleOwner, Observer{
             if (it == null) return@Observer
             Log.e(">>>>>", "matchClock")
         })
+*/
 
         viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
             if (it == null) return@Observer

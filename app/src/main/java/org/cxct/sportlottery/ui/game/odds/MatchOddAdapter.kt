@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
 
 class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
@@ -25,6 +26,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         }
 
     var updatedOddsMap = mapOf<String, List<Odd>>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var updatedMatchStatus: MatchStatusCO? = MatchStatusCO()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -45,7 +52,21 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
         updateItemDataFromSocket(item)
+        updatedMatchStatusFromSocket(item)
         holder.bind(item, playType, matchOddListener)
+    }
+
+    private fun updatedMatchStatusFromSocket(originItem: MatchOdd) {
+        val originMatchInfo = originItem.matchInfo
+
+        if (originMatchInfo?.id == updatedMatchStatus?.matchId) {
+            originItem.matchInfo?.apply {
+                awayScore = updatedMatchStatus?.awayScore
+                homeScore = updatedMatchStatus?.homeScore
+                statusName = updatedMatchStatus?.statusName //TODO Cheryl: 這值是放ＵＩ的哪？
+            }
+        }
+
     }
 
     private fun addDataIfNotEnough(originItem: MatchOdd, code: String) {
@@ -256,6 +277,22 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             item.leagueTime?.let {
                 updateLeagueTime(itemView.ou_hdp_game_time, it.toLong())
             }
+
+            item.matchInfo?.apply {
+                awayScore?.let {
+                    itemView.ou_hdp_away_score.text = it.toString()
+                }
+
+                homeScore?.let {
+                    itemView.ou_hdp_home_score.text = it.toString()
+                }
+
+                statusName?.let {
+                    itemView.ou_hdp_game_state.text = it
+                }
+            }
+
+
         }
 
         private fun setupMatchOdd1x2(item: MatchOdd, matchOddListener: MatchOddListener?) {
@@ -311,6 +348,21 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             item.leagueTime?.let {
                 updateLeagueTime(itemView.x12_game_time, it.toLong())
             }
+
+            item.matchInfo?.apply {
+                awayScore.let {
+                    itemView.ou_hdp_away_score.text = it.toString()
+                }
+
+                homeScore.let {
+                    itemView.ou_hdp_home_score.text = it.toString()
+                }
+
+                statusName.let {
+                    itemView.ou_hdp_game_state.text = it
+                }
+            }
+
         }
 
         private fun updateArrowExpand() {

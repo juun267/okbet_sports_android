@@ -137,6 +137,11 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             if (it == null) return@Observer
             leagueOddAdapter.updatedOddsMap = it.odds
         })
+
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
+        })
 /*
         viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
             if (oddsChangeEvent == null) return@Observer

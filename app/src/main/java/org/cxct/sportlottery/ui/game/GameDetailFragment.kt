@@ -154,10 +154,12 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             it?.let {
                 if (it.odds.isNullOrEmpty()) return@observe
                 matchOddAdapter.updatedOddsMap = it.odds
-
                 outrightOddAdapter.updatedWinnerOddsList = it.odds[winnerItemKey] ?: listOf()
-
             }
+        })
+
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
+            Log.e(">>>", "hello world")
         })
     }
 
