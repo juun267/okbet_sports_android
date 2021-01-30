@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 
+const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
 class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>() {
     var data = listOf<Odd>()
@@ -106,12 +107,11 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             Handler().postDelayed(
                 {
                     button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.white))
-                }, CHANGING_COLOR_DURATION
+                }, CHANGING_ITEM_BG_COLOR_DURATION
             )
         }
 
         companion object {
-            private const val CHANGING_COLOR_DURATION: Long = 3000
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater

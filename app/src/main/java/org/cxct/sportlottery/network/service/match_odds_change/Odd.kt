@@ -4,7 +4,7 @@ package org.cxct.sportlottery.network.service.match_odds_change
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@Deprecated(message = "不取extInfo和name, 以Odd取代", replaceWith = ReplaceWith("org.cxct.sportlottery.network.odds.list.Odd"))
+@Deprecated(message = "", replaceWith = ReplaceWith("org.cxct.sportlottery.network.odds.detail"))
 @JsonClass(generateAdapter = true)
 data class Odd(
     @Json(name = "extInfo")

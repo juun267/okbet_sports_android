@@ -20,6 +20,7 @@ data class Odd(
     var isSelected = false
 }
 
+//socket進來的新賠率較大或較小
 enum class OddState(val state : Int) {
     SAME(0),
     LARGER(1),
