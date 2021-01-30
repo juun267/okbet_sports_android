@@ -105,7 +105,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
             Handler().postDelayed(
                 {
-                    button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.light_gray))
+                    button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.white))
                 }, CHANGING_COLOR_DURATION
             )
         }
