@@ -43,7 +43,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
             matchOddListener = MatchOddListener({
-                Log.e(">>>", "onclick MatchOddAdapter")
                 viewModel.getOddsDetail(it.matchInfo?.id)
             }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
@@ -51,7 +50,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
-            Log.e(">>>", "onclick OutrightOddAdapter")
             outrightOddListener = OutrightOddAdapter.OutrightOddListener {
                 viewModel.updateOutrightOddsSelectedState(it)
             }
@@ -93,6 +91,8 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     DividerItemDecoration.VERTICAL
                 )
             )
+            //TODO : 重構, view不應該直接去拿repository東西。應該要再view model去操作repository.
+            outrightOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
 
@@ -129,6 +129,11 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 setupOddsUpperBar(it)
                 setupMatchOddList(it)
             }
+        })
+
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+            matchOddAdapter.betInfoListData = it
+            outrightOddAdapter.betInfoListData = it
         })
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
@@ -311,6 +316,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         oddsFirst?.let {
             matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
+            matchOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
 
@@ -325,7 +331,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         league_odd_sub_list.visibility = View.GONE
         outright_odd_sub_list.visibility = View.VISIBLE
 
-        winnerItemKey = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.keys?.firstOrNull() ?:""
+        winnerItemKey = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.odds?.keys?.firstOrNull() ?: ""
 
         val emptyList = listOf(Odd(), Odd()) //default放入兩個空值, 以便socket比對並更新內容
         outrightOddAdapter.data =

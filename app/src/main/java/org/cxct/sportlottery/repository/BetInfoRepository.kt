@@ -79,13 +79,17 @@ class BetInfoRepository {
         return result
     }
 
+    fun getCurrentBetInfoList() {
+        _betInfoList.postValue(betList)
+    }
+
     fun removeItem(oddId: String) {
         betList.remove(betList.find {
             it.matchOdd.oddsId == oddId
         })
     }
 
-    fun clear(){
+    fun clear() {
         betList.clear()
         matchOddList.clear()
         parlayOddList.clear()

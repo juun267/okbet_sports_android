@@ -15,10 +15,11 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TextUtil
 
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-    RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+        RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
@@ -184,7 +185,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        oldOddList.forEach {  oldOddData ->
+        oldOddList.forEach { oldOddData ->
             newOddList.forEach { newOddData ->
                 if (oldOddData.id == newOddData.id) {
                     oldOddData.name = newOddData.name
@@ -321,35 +322,40 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val awayList = ArrayList<Odd>()
 
             for (odd in oddsDetail.oddArrayList) {
-                if (odd.name?.contains(" - ") == true) {
-                    val stringArray: List<String> = odd.name?.split(" - ")?: listOf()
-                    if (stringArray[0].toInt() > stringArray[1].toInt()) {
-                        homeList.add(odd)
-                    }
-                    if (stringArray[0].toInt() == stringArray[1].toInt()) {
-                        drawList.add(odd)
-                    }
-                    if (stringArray[0].toInt() < stringArray[1].toInt()) {
-                        awayList.add(odd)
-                    }
-                } else {
+                odd.name?.let { name ->
+                    if (name.contains(" - ")) {
+                        val stringArray: List<String> = name.split(" - ") ?: listOf()
+                        if (stringArray[0].toInt() > stringArray[1].toInt()) {
+                            homeList.add(odd)
+                        }
+                        if (stringArray[0].toInt() == stringArray[1].toInt()) {
+                            drawList.add(odd)
+                        }
+                        if (stringArray[0].toInt() < stringArray[1].toInt()) {
+                            awayList.add(odd)
+                        }
+                    } else {
 
-                    val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
-                    odd.isSelect = select
-                    val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
-                    tvOdds.text = odd.odds.toString()
-                    tvOdds.isSelected = odd.isSelect
+                        val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
+                        odd.isSelect = select
+                        val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
 
-                    tvOdds.setOnClickListener {
-                        if (!odd.isSelect) {
-                            if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
-                                return@setOnClickListener
+                        odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
+
+                        tvOdds.isSelected = odd.isSelect
+
+                        tvOdds.setOnClickListener {
+                            if (!odd.isSelect) {
+                                if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
+                                    return@setOnClickListener
+                                }
+                                onOddClickListener.getBetInfoList(odd)
+                            } else {
+                                onOddClickListener.removeBetInfoItem(odd)
                             }
-                            onOddClickListener.getBetInfoList(odd)
-                        } else {
-                            onOddClickListener.removeBetInfoItem(odd)
                         }
                     }
+
                 }
             }
 

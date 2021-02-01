@@ -14,6 +14,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
@@ -32,6 +34,18 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
     var outrightOddListener: OutrightOddListener? = null
 
+    var betInfoListData: List<BetInfoListData>? = null
+        set(value) {
+            field = value
+            //TODO : review why not work first time
+            data.forEach { odd ->
+                odd.isSelected = value?.any {
+                    it.matchOdd.oddsId == odd.id
+                } ?: false
+            }
+            notifyDataSetChanged()
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -40,15 +54,14 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         val item = data[position]
         updateItemDataFromSocket(item)
 
-
-        holder.bind(item, outrightOddListener)
+        holder.bind(item, outrightOddListener, betInfoListData)
     }
 
     private fun updateItemDataFromSocket(originItem: Odd) {
         if (updatedWinnerOddsList.isNullOrEmpty()) return
 
         updatedWinnerOddsList.forEach {
-            if (originItem.id == it.id ) {
+            if (originItem.id == it.id) {
                 //後端表示originItem.spread的值只用api回傳, socket不可覆蓋
                 originItem.odds = it.odds
                 originItem.status = it.status
@@ -57,14 +70,25 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         }
 
     }
+
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Odd, outrightOddListener: OutrightOddListener?) {
+        fun bind(item: Odd, outrightOddListener: OutrightOddListener?, betInfoListData: List<BetInfoListData>?) {
             itemView.apply {
+                kotlin.run status@{
+                    betInfoListData?.forEach {
+                        if (it.matchOdd.oddsId == item.id) {
+                            item.isSelected = true
+                            return@status
+                        } else {
+                            item.isSelected = false
+                        }
+                    }
+                }
                 outright_name.text = item.spread
-                outright_bet.text = item.odds.toString()
+                item.odds?.let { odd -> outright_bet.text = TextUtil.formatForOdd(odd) }
                 isSelected = item.isSelected
                 outright_bet.setOnClickListener {
                     outrightOddListener?.onClick(item)
@@ -115,7 +139,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd, parent, false)
+                        .inflate(R.layout.itemview_outright_odd, parent, false)
 
                 return ViewHolder(view)
             }
