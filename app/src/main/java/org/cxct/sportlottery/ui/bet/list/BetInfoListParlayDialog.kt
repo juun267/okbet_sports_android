@@ -57,6 +57,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
+        getData()
     }
 
 
@@ -139,6 +140,10 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
                 ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
             }
         })
+    }
+
+    private fun getData() {
+        viewModel.getBetInfoListForParlay()
     }
 
 
