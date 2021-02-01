@@ -201,25 +201,50 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun updateSocketGlobalStop() {
         viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
-            val stopProducerId = it?.producerId
+            if (it == null) return@Observer
 
-            stopProducerId?.let {
-                val leagueOdds = leagueOddAdapter.data
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { odds ->
-                            val updateOdd = odds.find { odd ->
-                                odd.producerId == stopProducerId
-                            }
-
-                            updateOdd?.status = BetStatus.DEACTIVATED.code
-                        }
-                    }
+            when (val stopProducerId = it.producerId) {
+                null -> {
+                    updateAllOddDeActivated()
                 }
-
-                leagueOddAdapter.data = leagueOdds
+                else -> {
+                    updateOddDeActivated(stopProducerId)
+                }
             }
         })
+    }
+
+    private fun updateAllOddDeActivated() {
+        val leagueOdds = leagueOddAdapter.data
+        leagueOdds.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.odds.values.forEach { odds ->
+                    odds.forEach { odd ->
+
+                        odd.status = BetStatus.DEACTIVATED.code
+                    }
+                }
+            }
+        }
+
+        leagueOddAdapter.data = leagueOdds
+    }
+
+    private fun updateOddDeActivated(stopProducerId: Int) {
+        val leagueOdds = leagueOddAdapter.data
+        leagueOdds.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.odds.values.forEach { odds ->
+                    val updateOdd = odds.find { odd ->
+                        odd.producerId == stopProducerId
+                    }
+
+                    updateOdd?.status = BetStatus.DEACTIVATED.code
+                }
+            }
+        }
+
+        leagueOddAdapter.data = leagueOdds
     }
 
     private fun setupSportTypeRow(view: View) {
