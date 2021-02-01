@@ -228,8 +228,6 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
         })
 
-        socketObserve()
-
     }
 
     private fun getData() {
