@@ -199,6 +199,7 @@
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">充值</string>
     <string name="more_service">更多服务</string>
+    <string name="account_transfer">额度转换</string>
     <string name="news_center">消息中心</string>
     <string name="help_center">帮助中心</string>
     <string name="fund_detail">资金明细</string>

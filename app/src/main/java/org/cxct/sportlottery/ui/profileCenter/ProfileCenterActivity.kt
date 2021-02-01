@@ -105,9 +105,14 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
-        //資金明細
-        btn_fund_detail.setOnClickListener {
-            startActivity(Intent(this, FinanceActivity::class.java))
+        //額度轉換
+        btn_account_transfer.setOnClickListener {
+            //TODO 額度轉換
+        }
+
+        //提款設置
+        btn_withdrawal_setting.setOnClickListener {
+            viewModel.settingCheckPermissions()
         }
 
         //投注記錄
@@ -115,9 +120,9 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             startActivity(Intent(this, BetRecordActivity::class.java))
         }
 
-        //提款設置
-        btn_withdrawal_setting.setOnClickListener {
-            viewModel.settingCheckPermissions()
+        //資金明細
+        btn_fund_detail.setOnClickListener {
+            startActivity(Intent(this, FinanceActivity::class.java))
         }
 
         //消息中心
@@ -126,11 +131,6 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         }
         btn_bell.setOnClickListener {
             btn_news_center.performClick()
-        }
-
-        //建議反饋
-        btn_feedback.setOnClickListener {
-            //TODO 建議反饋
         }
 
         //優惠活動
@@ -152,9 +152,9 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             startActivity(Intent(this, HelpCenterActivity::class.java))
         }
 
-        //在線客服
-        btn_online_service.setOnClickListener {
-            JumpUtil.toOnlineService(this)
+        //建議反饋
+        btn_feedback.setOnClickListener {
+            //TODO 建議反饋
         }
     }
 
