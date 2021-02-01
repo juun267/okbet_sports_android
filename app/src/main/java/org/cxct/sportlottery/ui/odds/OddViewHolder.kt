@@ -25,7 +25,10 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         setHighlight(tvOdds, odd.oddState)
 
         tvName.text = odd.name
-        tvOdds.text = TextUtil.formatForOdd(odd.odds)
+        odd.odds?.let { odds ->
+            tvOdds.text = TextUtil.formatForOdd(odds)
+        }
+
 
         when (odd.status) {
             BetStatus.ACTIVATED.code -> {

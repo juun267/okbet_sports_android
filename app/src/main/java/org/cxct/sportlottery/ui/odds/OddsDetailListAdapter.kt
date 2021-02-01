@@ -19,7 +19,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-    RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+        RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
@@ -185,7 +185,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        oldOddList.forEach {  oldOddData ->
+        oldOddList.forEach { oldOddData ->
             newOddList.forEach { newOddData ->
                 if (oldOddData.id == newOddData.id) {
                     oldOddData.name = newOddData.name
@@ -324,7 +324,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             for (odd in oddsDetail.oddArrayList) {
                 odd.name?.let { name ->
                     if (name.contains(" - ")) {
-                        val stringArray: List<String> = name.split(" - ")?: listOf()
+                        val stringArray: List<String> = name.split(" - ") ?: listOf()
                         if (stringArray[0].toInt() > stringArray[1].toInt()) {
                             homeList.add(odd)
                         }
@@ -339,7 +339,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                         odd.isSelect = select
                         val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
-                        tvOdds.text = TextUtil.formatForOdd(odd.odds)
+
+                        odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
+
                         tvOdds.isSelected = odd.isSelect
 
                         tvOdds.setOnClickListener {
