@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -14,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ComplexColorCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,12 +22,14 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 
 class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
+
 
     companion object {
         const val GAME_TYPE = "gameType"
@@ -48,14 +48,18 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
     }
 
+
     private var gameType: String? = null
     private var typeName: String? = null
     private var matchId: String? = null
     private var oddsType: String? = null
 
+
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
+
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +87,44 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
+        observeSocketData()
         getData()
+    }
+
+
+    private fun observeSocketData() {
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
+            if (it == null) return@Observer
+            Log.e(">>>>>", "matchStatusChange")
+        })
+/*
+        viewModel.matchClock.observe(viewLifecycleOwner, Observer{
+            if (it == null) return@Observer
+            Log.e(">>>>>", "matchClock")
+        })
+*/
+
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
+            if (it == null) return@Observer
+            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
+
+            Log.e(">>>>>", "matchOddsChange")
+
+            val newList = arrayListOf<OddsDetailListData>()
+
+            for ( (key, value) in it.odds) {
+                newList.add(
+                    OddsDetailListData(
+                        key,
+                        TextUtil.split(value.typeCodes),
+                        value.name,
+                        value.odds
+                    )
+                )
+            }
+
+            oddsDetailListAdapter?.updatedOddsDetailDataList = newList
+        })
     }
 
 
@@ -136,11 +177,11 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     @SuppressLint("SetTextI18n")
     private fun observeData() {
         viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is PlayCateListResult -> {
+            result?.success?.let {
+                if (it) {
                     dataBinding.tabCat.removeAllTabs()
-                    for (element in result.rows) {
-                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(element.name), false)
+                    for (row in result.rows) {
+                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(row.name), false)
                     }
                 }
             }
@@ -165,26 +206,29 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
                 }
             }
-
-
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
-            oddsDetailListAdapter?.oddsDetailListData?.clear()
-            oddsDetailListAdapter?.oddsDetailListData?.addAll(it)
+            oddsDetailListAdapter?.oddsDetailDataList?.clear()
+            oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.isParlayPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.isParlayPage?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
-    }
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer {
+            if (it?.success != true) {
+                ToastUtil.showBetResultToast(requireActivity(), it?.msg?: getString(R.string.unknown_error), false)
+            }
+        })
 
+    }
 
     private fun getData() {
         gameType?.let { gameType ->

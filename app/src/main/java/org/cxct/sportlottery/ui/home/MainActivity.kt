@@ -2,14 +2,15 @@ package org.cxct.sportlottery.ui.home
 
 import android.app.ActivityManager
 import android.content.*
-import android.os.*
+import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,16 +19,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.iv_head
-import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.SERVICE_SEND_DATA
 import org.cxct.sportlottery.service.SERVICE_TOKEN
 import org.cxct.sportlottery.service.SERVICE_USER_ID
 import org.cxct.sportlottery.ui.MarqueeAdapter
@@ -35,8 +34,6 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
-import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
-import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -47,8 +44,6 @@ import timber.log.Timber
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
-        private const val TAG = "MainActivity"
-
         //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -57,21 +52,21 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private lateinit var mService: BackService
+    lateinit var mService: BackService
 
     private var mIsBound: Boolean = false
 
     private val mServiceConnection = object : ServiceConnection {
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Timber.e(">>> $name onServiceConnected")
+            Timber.e(">>> onServiceConnected")
             val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
             mService = binder.service
             mIsBound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            Timber.e(">>> $name onServiceDisconnected")
+            Timber.e(">>> onServiceDisconnected")
             mIsBound = false
             //service 物件設為null
         }
@@ -81,13 +76,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mMarqueeAdapter = MarqueeAdapter()
 
-    private val mReceiver by lazy {
-        ServiceBroadcastReceiver()
-    }
-
     enum class Page {
-        ODDS_DETAIL,
-        ODDS
+        ODDS_DETAIL, ODDS
     }
 
     private val navController by lazy {
@@ -103,29 +93,21 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lifecycleOwner = this@MainActivity
         }
 
-//        doBindService()
-//        initBroadcast()
-
         initToolBar()
         initMenu()
         initRvMarquee()
         refreshTabLayout(null)
         initObserve()
 
-        testGetBCRFromVM() //testing
-        testSendMatchEventToServer() //testing
-    }
-
-    private fun testGetBCRFromVM() {
-        viewModel.userNotice.observe(this, {
-            Timber.d(">>> viewModel userNoticeList size = ${it?.userNoticeList?.size}")
-        })
+        testSubscribe() //testing
     }
 
     override fun onResume() {
         super.onResume()
 
-//        doBindService()
+        val isLogin = viewModel.isLogin.value ?: false
+        doBackService(isLogin)
+
         rv_marquee.startAuto()
     }
 
@@ -134,82 +116,43 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         rv_marquee.stopAuto()
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-
-        if (mIsBound) {
-            doUnBindService()
-        }
+        doUnBindService()
     }
 
-    private fun removeBroadcast() {
-
-        val bcRepository = BroadcastRepository().instance()
-        bcRepository.removeDataSource(mReceiver.globalStop,
-                                      mReceiver.matchClock,
-                                      mReceiver.matchStatusChange,
-                                      mReceiver.notice,
-                                      mReceiver.oddsChange,
-                                      mReceiver.orderSettlement,
-                                      mReceiver.pingPong,
-                                      mReceiver.producerUp,
-                                      mReceiver.userMoney,
-                                      mReceiver.userNotice)
-
-        unregisterReceiver(mReceiver)
-    }
-
-    private fun testSendMatchEventToServer() {
+    private fun testSubscribe() {
         iv_logo.setOnClickListener {
             val matchUrl = "/ws/notify/event/sr:match:25367352"
-            mService.subscribeMatchEvent(matchUrl)
+            mService.subscribeChannel(matchUrl)
         }
     }
 
-    private fun initBroadcast() {
-        val filter = IntentFilter().apply {
-            addAction(SERVICE_SEND_DATA)
-        }
-
-        val bcRepository = BroadcastRepository().instance()
-        bcRepository.addDataSources(mReceiver.globalStop,
-                                    mReceiver.matchClock,
-                                    mReceiver.matchStatusChange,
-                                    mReceiver.notice,
-                                    mReceiver.oddsChange,
-                                    mReceiver.orderSettlement,
-                                    mReceiver.pingPong,
-                                    mReceiver.producerUp,
-                                    mReceiver.userMoney,
-                                    mReceiver.userNotice)
-        registerReceiver(mReceiver, filter)
+    fun subscribeMatch(eventId: String) {
+        val matchUrl = "/ws/notify/event/${eventId}"
+        mService.subscribeChannel(matchUrl)
     }
-
 
     private fun doBindService() {
-        //TODO Cheryl 判斷if is login already
-//        if (!checkServiceRunning()) { //如果service斷掉則重啟
+        if (mIsBound) return
+
+        Timber.i("bind service")
+        if (!checkServiceRunning()) { //如果service斷掉則重啟
             val serviceIntent = Intent(this, BackService::class.java)
             serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
             serviceIntent.putExtra(SERVICE_USER_ID, viewModel.userId)
             bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
             mIsBound = true
-//        }
-
-        initBroadcast()
+//            initBroadcast()
+        }
     }
 
     private fun doUnBindService() {
+        if (!mIsBound) return
+
+        Timber.i("unbind service")
         unbindService(mServiceConnection)
-        removeBroadcast()
+//        removeBroadcast()
 
         mIsBound = false
     }
@@ -317,6 +260,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
+                popAllFragment()
                 viewModel.isParlayPage(tab?.position == 4)
 
                 when (tab?.position) {
@@ -374,19 +318,22 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private fun addFragment(fragment: Fragment, page: Page) {
         if (supportFragmentManager.findFragmentByTag(page.name) == null) {
-            supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, 0)
-                .add(R.id.odds_detail_container, fragment, page.name)
-                .addToBackStack(page.name)
-                .commit()
+            supportFragmentManager.beginTransaction().setCustomAnimations(
+                R.anim.enter_from_right,
+                0
+            ).add(
+                R.id.odds_detail_container,
+                fragment,
+                page.name
+            ).addToBackStack(
+                page.name
+            ).commit()
         }
     }
 
 
     override fun onBackPressed() {
-        if (navController.currentDestination?.id != R.id.homeFragment
-            && supportFragmentManager.backStackEntryCount == 0
-        ) {
+        if (navController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
             tabLayout.getTabAt(0)?.select()
             return
         }
@@ -394,20 +341,15 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         super.onBackPressed()
     }
 
-    private fun initObserve() {
-        viewModel.isLogin.observe(this,  Observer {
-            Log.e(">>>", "isLogin = $it")
-            if (it) {
-                queryData()
-                if (!mIsBound) {
-                    doBindService()
-                }
-            } else {
-                if (mIsBound) {
-                    doUnBindService()
-                }
-            }
+    private fun doBackService(isLogin: Boolean) {
+        if (isLogin) doBindService()
+        else doUnBindService()
+    }
 
+    private fun initObserve() {
+        viewModel.isLogin.observe(this, Observer {
+            doBackService(it)
+            queryData()
         })
 
         viewModel.messageListResult.observe(this, Observer {
@@ -428,11 +370,14 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             getAppBarLayout().setExpanded(true, true)
 
-            addFragment(OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
-                        Page.ODDS_DETAIL)
+            subscribeEventChannel(matchId)
+            addFragment(
+                OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
+                Page.ODDS_DETAIL
+            )
         })
 
-        viewModel.matchTypeCard.observe(this, Observer {
+        viewModel.matchTypeCardForParlay.observe(this, Observer {
             when (it) {
                 MatchType.PARLAY -> {
                     tabLayout.getTabAt(4)?.select()
@@ -446,7 +391,9 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
+            Log.e(">>>", "isOpenMatchOdds = $it")
             getAppBarLayout().setExpanded(true, true)
+            subscribeHallChannel()
             addFragment(GameDetailFragment(), Page.ODDS)
         })
 
@@ -457,6 +404,48 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
+
+        viewModel.userNotice.observe(this, Observer {
+            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
+            it?.userNoticeList?.let { list ->
+                if (list.isNotEmpty())
+                    UserNoticeDialog(this).setNoticeList(list).show()
+            }
+        })
+
+        viewModel.notice.observe(this, Observer {
+            hideLoading()
+            if (it != null) {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun subscribeEventChannel(eventId: String?) {
+        if (eventId.isNullOrEmpty()) return
+        mService.subscribeChannel(viewModel.getEventUrl(eventId))
+    }
+
+    private fun subscribeHallChannel() {
+
+        //一般遊戲
+        viewModel.oddsListResult.observe(this, Observer {
+            if (it != null && it.success) {
+                val eventId = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                if (!eventId.isNullOrEmpty())
+                    mService.subscribeChannel(viewModel.getHallUrl(eventId = eventId))
+            }
+        })
+
+        //冠軍玩法
+        viewModel.outrightOddsListResult.observe(this, Observer {
+            if (it != null && it.success) {
+                val eventId = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
+                if (!eventId.isNullOrEmpty())
+                    mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = eventId))
+            }
+        })
+
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
@@ -472,17 +461,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         mMarqueeAdapter.setData(titleList)
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult) {
-        if (sportMenuResult.success) {
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
+        if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
         }
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        Glide.with(this)
-            .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
-            .into(iv_head) //載入頭像
+        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
+            iv_head
+        ) //載入頭像
     }
 
     private fun queryData() {
@@ -501,6 +489,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     fun getAppBarLayout(): AppBarLayout {
         return mainBinding.appBarLayout
+    }
+
+    private fun popAllFragment() {
+        val manager = supportFragmentManager
+        for (i in 0 until manager.backStackEntryCount) {
+            supportFragmentManager.popBackStack()
+        }
     }
 
 }

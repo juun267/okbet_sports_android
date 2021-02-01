@@ -1,14 +1,11 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -20,28 +17,15 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.ToastUtil
 
 class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
-    companion object {
-        const val PWD_PAGE = "PWD_PAGE"
-    }
-
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
-
-    private var startForResult: ActivityResultLauncher<Intent>? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            viewModel.checkPermissions()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -54,18 +38,19 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.checkPermissions()
         initView()
         initEvent()
         initObserve(view)
 
         setupData()
-
-
     }
 
     private fun setupData() {
-        viewModel.getMoneyConfigs()
+        viewModel.apply {
+            getMoneyConfigs()
+            getBankCardList()
+            getMoney()
+        }
     }
 
     private fun initView() {
@@ -126,19 +111,15 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initObserve(view: View) {
-
-        viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            viewModel.checkPermissions()
+        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                loading()
+            else
+                hideLoading()
         })
 
-        //需要更新提款密碼
-        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
-                    val intent = Intent(this.context, SettingPasswordActivity::class.java).putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD)
-                    startForResult?.launch(intent)
-                }
-            }
+        viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
+            tv_balance.text = ArithUtil.toMoneyFormat(it)
         })
 
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {

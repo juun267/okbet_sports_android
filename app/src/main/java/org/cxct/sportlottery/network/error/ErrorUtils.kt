@@ -21,6 +21,8 @@ import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
@@ -72,6 +74,7 @@ import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
+import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
 import retrofit2.Response
 import java.io.IOException
@@ -247,6 +250,18 @@ object ErrorUtils {
                     (url.contains(USER_RECHARGE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return RechargeListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(OUTRIGHT_BET_ADD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BetAddResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(OUTRIGHT_BET_INFO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BetInfoResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(WITHDRAW_ADD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return WithdrawListResult(it.code, it.msg, null, it.success, null) as T
                     }
                 }
             }

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="5dp"
     android:background="@color/background"
     android:clickable="true"
     android:focusable="true"
@@ -70,7 +69,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/league_odd_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/league_odd_layout"
+
+        tools:listitem="@layout/itemview_match_odd"
+        tools:itemCount="1"
+        tools:layout_height="wrap_content"
+        tools:layout_constraintVertical_bias="0"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/outright_odd_sub_list"
@@ -80,6 +84,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/league_odd_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/league_odd_layout"
+
+        tools:visibility="visible"
+        tools:itemCount="1"
+        tools:layout_height="wrap_content"
+        tools:layout_constraintVertical_bias="0"
+        tools:listitem="@layout/itemview_outright_odd"
+        tools:layout_constraintTop_toBottomOf="@+id/league_odd_sub_list"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

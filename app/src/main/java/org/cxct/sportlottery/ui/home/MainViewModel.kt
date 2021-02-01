@@ -10,11 +10,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -22,16 +22,17 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
-import org.cxct.sportlottery.network.outright.odds.Winner
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -46,27 +47,30 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
-import java.util.*
-import kotlin.collections.ArrayList
-import java.lang.Exception
 
 
 class MainViewModel(
-    private val androidContext: Context,
-    private val userInfoRepository: UserInfoRepository,
-    private val loginRepository: LoginRepository,
-    private val sportMenuRepository: SportMenuRepository,
-    private val betInfoRepository: BetInfoRepository
+        private val androidContext: Context,
+        private val userInfoRepository: UserInfoRepository,
+        private val loginRepository: LoginRepository,
+        private val sportMenuRepository: SportMenuRepository,
+        betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
+
+    init {
+        betInfoRepository = betInfoRepo
+    }
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin.apply {
@@ -78,11 +82,12 @@ class MainViewModel(
 
     val token = loginRepository.token
     val userId = loginRepository.userId
+    var mathType: MatchType? = null
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
 
-    val sportMenuResult: LiveData<SportMenuResult>
+    val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
     val matchPreloadInPlay: LiveData<MatchPreloadResult>
@@ -115,8 +120,8 @@ class MainViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
-    val matchTypeCard: LiveData<MatchType>
-        get() = _matchTypeCard
+    val matchTypeCardForParlay: LiveData<MatchType>
+        get() = _matchTypeCardForParlay
 
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
@@ -124,7 +129,7 @@ class MainViewModel(
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
-    private val _sportMenuResult = MutableLiveData<SportMenuResult>()
+    private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListGameHallResult = MutableLiveData<OddsListResult?>()
@@ -138,7 +143,7 @@ class MainViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
-    private val _matchTypeCard = MutableLiveData<MatchType>()
+    private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isOpenMatchOdds = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -164,21 +169,21 @@ class MainViewModel(
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
 
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
-
     private val _oddsDetailMoreList = MutableLiveData<List<*>>()
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
 
-    private val _betInfoResult = MutableLiveData<BetInfoResult>()
-    val betInfoResult: LiveData<BetInfoResult>
+    private val _betInfoResult = MutableLiveData<BetInfoResult?>()
+    val betInfoResult: LiveData<BetInfoResult?>
         get() = _betInfoResult
 
-    private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
-    val betInfoList: LiveData<MutableList<BetInfoListData>>
-        get() = _betInfoList
+    private val _matchOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>()
+    val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
+        get() = _matchOddList
+
+    private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
+    val parlayList: LiveData<MutableList<ParlayOdd>>
+        get() = _parlayList
 
     private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
     val oddsDetailResult: LiveData<OddsDetailResult?>
@@ -192,6 +197,9 @@ class MainViewModel(
     val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
         get() = _oddsDetailList
 
+    private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
+    val betAddResult: LiveData<Event<BetAddResult?>>
+        get() = _betAddResult
 
     //BroadCastReceiver
 
@@ -200,6 +208,9 @@ class MainViewModel(
 
     val matchClock: LiveData<MatchClockEvent?>
         get() = BroadcastRepository().instance().matchClock
+
+    val matchOddsChange: LiveData<MatchOddsChangeEvent?>
+        get() = BroadcastRepository().instance().matchOddsChange
 
     val matchStatusChange: LiveData<MatchStatusChangeEvent?>
         get() = BroadcastRepository().instance().matchStatusChange
@@ -219,15 +230,27 @@ class MainViewModel(
     val producerUp: LiveData<ProducerUpEvent?>
         get() = BroadcastRepository().instance().producerUp
 
+    private val _userMoney = BroadcastRepository().instance().userMoney
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = _userMoney
+
     val userNotice: LiveData<UserNoticeEvent?>
         get() = BroadcastRepository().instance().userNotice
 
-    private val _isParlayPage = MutableLiveData<Boolean>()
-    val isParlayPage: LiveData<Boolean>
-        get() = _isParlayPage
 
     fun isParlayPage(boolean: Boolean) {
-        _isParlayPage.postValue(boolean)
+        betInfoRepository?._isParlayPage?.postValue(boolean)
+
+        //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
+        val listWithOutOutright = mutableListOf<String>()
+        betInfoRepository?.betList?.forEach {
+            if (it.matchType == MatchType.OUTRIGHT) {
+                listWithOutOutright.add(it.matchOdd.oddsId)
+            }
+        }
+        listWithOutOutright.forEach {
+            removeBetInfoItem(it)
+        }
     }
 
     private fun checkToken() {
@@ -244,6 +267,7 @@ class MainViewModel(
                 loginRepository.logout()
             }.apply {
                 loginRepository.clear()
+                betInfoRepository?.clear()
                 //TODO change timber to actual logout ui to da
                 Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
@@ -268,8 +292,8 @@ class MainViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
-                    now.toString(),
-                    todayStart.toString()
+                        now.toString(),
+                        todayStart.toString()
                 )
             }
 
@@ -290,9 +314,9 @@ class MainViewModel(
     }
 
     private fun getParlayCount(sportType: SportType, sportMenuResult: SportMenuResult?): Int =
-        sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find {
-            it.code == sportType.code
-        }?.num ?: 0
+            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find {
+                it.code == sportType.code
+            }?.num ?: 0
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
         sportMenuData.menu.inPlay.items.map { sport ->
@@ -319,7 +343,7 @@ class MainViewModel(
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(MatchType.IN_PLAY.postValue)
+                        MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
             }?.let { result ->
                 _matchPreloadInPlay.postValue(result)
@@ -342,8 +366,7 @@ class MainViewModel(
                 it.isSelected = (it.code == sportType.code)
             }
         }
-
-        _matchTypeCard.postValue(matchType)
+        _matchTypeCardForParlay.postValue(matchType)
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
@@ -357,6 +380,7 @@ class MainViewModel(
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean) {
+        mathType = matchType
         if (isReloadDate) {
             getDateRow(matchType)
         }
@@ -419,26 +443,33 @@ class MainViewModel(
         }
     }
 
-    fun getLeagueOddsList(
-        matchType: MatchType,
-        leagueId: String
-    ) {
+    fun getHallUrl(cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
+        return "${BackService.URL_HALL}$nowGameType/$cateMenuCode/$eventId"
+    }
+
+    fun getEventUrl(eventId: String?): String {
+        return "${BackService.URL_EVENT}${eventId}"
+    }
+
+    var nowGameType: String? = SportType.FOOTBALL.code
+
+    fun getLeagueOddsList(matchType: MatchType, leagueId: String) {
         val leagueIdList by lazy {
             listOf(leagueId)
         }
-
         when (matchType) {
             MatchType.TODAY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
                     it.isSelected
                 }?.code
+                nowGameType = gameType
 
                 gameType?.let {
                     getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
+                            gameType,
+                            matchType.postValue,
+                            getCurrentTimeRangeParams(),
+                            leagueIdList
                     )
                 }
             }
@@ -447,13 +478,15 @@ class MainViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
                     it.isSelected
                 }?.code
+                nowGameType = gameType
+
 
                 gameType?.let {
                     getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
+                            gameType,
+                            matchType.postValue,
+                            getCurrentTimeRangeParams(),
+                            leagueIdList
                     )
                 }
             }
@@ -462,13 +495,15 @@ class MainViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
+                nowGameType = gameType
+
 
                 gameType?.let {
                     getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
+                            gameType,
+                            matchType.postValue,
+                            getCurrentTimeRangeParams(),
+                            leagueIdList
                     )
                 }
             }
@@ -488,10 +523,10 @@ class MainViewModel(
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
-                        OutrightOddsListRequest(
-                            gameType,
-                            leagueIdList = listOf(leagueId)
-                        )
+                            OutrightOddsListRequest(
+                                    gameType,
+                                    leagueIdList = listOf(leagueId)
+                            )
                     )
                 }
                 _outrightOddsListResult.postValue(result)
@@ -501,19 +536,68 @@ class MainViewModel(
         _isOpenMatchOdds.postValue(true)
     }
 
-    fun updateOutrightOddsSelectedState(winner: Winner) {
+    fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
         val result = _outrightOddsListResult.value
 
         val winnerList =
-            result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
-                0
-            )?.odds?.values?.first() ?: listOf()
+                result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
+                        0
+                )?.odds?.values?.first() ?: listOf()
 
-        winnerList.map {
-            it.isSelected = (it == winner)
+        val isBet = betInfoRepository?.betInfoList?.value?.any { it.matchOdd.oddsId == winner.id } ?: false
+        if (!isBet) {
+            winnerList.first { it == winner }.isSelected = true
+            getBetInfoList(listOf(Odd(winner.id, winner.odds).apply { matchType = this@MainViewModel.mathType }))
+        } else {
+            winnerList.first { it == winner }.isSelected = false
+            removeBetInfoItem(winner.id)
+
         }
 
         _outrightOddsListResult.postValue(result)
+    }
+
+    //TODO Dean : 重構，整理、提取程式碼
+    fun updateMatchBetList(matchOdd: MatchOdd, oddString: String, odd: org.cxct.sportlottery.network.odds.list.Odd) {
+        val isOutright = mathType == MatchType.OUTRIGHT
+        val result = if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value
+        val match =
+                result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find {
+                    it.odds[oddString]?.contains(odd) ?: false
+                }?.odds?.get(oddString)
+                        ?.find { it == odd }
+        if (betInfoRepository?._isParlayPage?.value == true) {
+            val isBetMatchId = betInfoRepository?.betList?.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
+            val isBetOddId = betInfoRepository?.betList?.find { it.matchOdd.oddsId == odd.id }
+            when {
+                isBetMatchId == null -> {
+                    match?.isSelected = true
+                    getBetInfoList(listOf(Odd(odd.id, odd.odds ?: 0.0).apply { matchType = this@MainViewModel.mathType }))
+                }
+                isBetOddId != null -> {
+                    match?.isSelected = false
+                    removeBetInfoItem(odd.id)
+                }
+                else -> {
+                    return
+                }
+            }
+        } else {
+            val betItem = betInfoRepository?.betList?.find { it.matchOdd.oddsId == odd.id }
+            if (betItem == null) {
+                match?.isSelected = true
+                getBetInfoList(listOf(Odd(odd.id, odd.odds ?: 0.0).apply { matchType = this@MainViewModel.mathType }))
+            } else {
+                match?.isSelected = false
+                removeBetInfoItem(odd.id)
+            }
+        }
+
+        if (mathType == MatchType.IN_PLAY) {
+            _oddsListGameHallResult.value = result
+        } else {
+            _oddsListResult.value = result
+        }
     }
 
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
@@ -556,21 +640,21 @@ class MainViewModel(
     }
 
     private fun getOddsList(
-        gameType: String,
-        matchType: String,
-        timeRangeParams: TimeRangeParams? = null,
-        leagueIdList: List<String>? = null
+            gameType: String,
+            matchType: String,
+            timeRangeParams: TimeRangeParams? = null,
+            leagueIdList: List<String>? = null
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
-                    OddsListRequest(
-                        gameType,
-                        matchType,
-                        leagueIdList = leagueIdList,
-                        startTime = timeRangeParams?.startTime,
-                        endTime = timeRangeParams?.endTime
-                    )
+                        OddsListRequest(
+                                gameType,
+                                matchType,
+                                leagueIdList = leagueIdList,
+                                startTime = timeRangeParams?.startTime,
+                                endTime = timeRangeParams?.endTime
+                        )
                 )
             }
 
@@ -583,19 +667,19 @@ class MainViewModel(
     }
 
     private fun getLeagueList(
-        gameType: String,
-        matchType: String,
-        timeRangeParams: TimeRangeParams?
+            gameType: String,
+            matchType: String,
+            timeRangeParams: TimeRangeParams?
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.leagueService.getLeagueList(
-                    LeagueListRequest(
-                        gameType,
-                        matchType,
-                        startTime = timeRangeParams?.startTime,
-                        endTime = timeRangeParams?.endTime
-                    )
+                        LeagueListRequest(
+                                gameType,
+                                matchType,
+                                startTime = timeRangeParams?.startTime,
+                                endTime = timeRangeParams?.endTime
+                        )
                 )
             }
             _leagueListResult.postValue(result)
@@ -606,7 +690,7 @@ class MainViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightSeasonList(
-                    OutrightSeasonListRequest(gameType)
+                        OutrightSeasonListRequest(gameType)
                 )
             }
 
@@ -626,35 +710,35 @@ class MainViewModel(
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
                 }
                 dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams()
-                    )
+                        Date(
+                                androidContext.getString(R.string.date_row_other),
+                                TimeUtil.getOtherEarlyDateTimeRangeParams()
+                        )
                 )
             }
             MatchType.PARLAY -> {
                 dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_all),
-                        TimeUtil.getParlayAllTimeRangeParams()
-                    )
+                        Date(
+                                androidContext.getString(R.string.date_row_all),
+                                TimeUtil.getParlayAllTimeRangeParams()
+                        )
                 )
                 dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_today),
-                        TimeUtil.getParlayTodayTimeRangeParams()
+                        Date(
+                                androidContext.getString(R.string.date_row_today),
+                                TimeUtil.getParlayTodayTimeRangeParams()
 
-                    )
+                        )
                 )
                 TimeUtil.getOneWeekDate().forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
                 }
 
                 dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams()
-                    )
+                        Date(
+                                androidContext.getString(R.string.date_row_other),
+                                TimeUtil.getOtherEarlyDateTimeRangeParams()
+                        )
                 )
             }
             MatchType.AT_START -> {
@@ -678,7 +762,9 @@ class MainViewModel(
             it.isSelected = (it == date)
         }
 
-        _curDate.postValue(dateRow)
+        dateRow?.let {
+            _curDate.postValue(it)
+        }
     }
 
     private fun getCurrentTimeRangeParams(): TimeRangeParams? {
@@ -691,7 +777,7 @@ class MainViewModel(
         _curPlayType.postValue(playType)
     }
 
-    fun getOddsDetail(oddId: String) {
+    fun getOddsDetail(oddId: String?) {
         val item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
             it.isSelected
         }
@@ -708,20 +794,90 @@ class MainViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfo(oddsList)
+            betInfoRepository?.let { br ->
+                val result = doNetwork(androidContext) {
+                    br.getBetInfo(oddsList)
+                }
+                result?.success?.let {
+                    if (it) {
+                        br._betInfoList.postValue(br.betList)
+                    } else {
+                        oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                            var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                            br.betInfoList.value?.let { list ->
+                                for (i in list.indices) {
+                                    br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                        odd = value.odds.find { v -> v.id == it }
+                                        odd?.isSelect = false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _betInfoResult.postValue(result)
+                }
             }
-            result?.success?.let {
-                if (it) {
-                    _betInfoList.postValue(betInfoRepository.betList)
-                } else {
-                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoList.value?.let { list ->
-                            for (i in list.indices) {
-                                betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
-                                    odd = value.odds.find { v -> v.id == it }
-                                    odd?.isSelect = false
+        }
+    }
+
+    fun getBetInfoListForParlay() {
+        val sendList: MutableList<Odd> = mutableListOf()
+        betInfoRepository?.betList.let { list ->
+
+            //以matchId分組 key為matchOdd(object)
+            val groupList = list?.groupBy { data ->
+                list.find { d -> data.matchOdd.matchId == d.matchOdd.matchId }
+            }
+
+            //各別取第一項做為串關項目送出
+            groupList?.keys?.forEach {
+                it?.matchOdd?.let { matchOdd ->
+                    sendList.add(Odd(matchOdd.oddsId, matchOdd.odds))
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            betInfoRepository?.let { br ->
+                val result = doNetwork(androidContext) {
+                    br.getBetInfoList(sendList)
+                }
+                result?.success?.let { success ->
+
+                    if (success) {
+
+                        //回傳成功 兩個list不一定數量相等 各別載入列表
+                        _matchOddList.postValue(br.matchOddList)
+                        _parlayList.postValue(br.parlayOddList)
+
+                        //載入串關注單後比對一般注單
+                        val newBetList: MutableList<BetInfoListData> = mutableListOf()
+                        br.matchOddList.let { mList ->
+                            for (i in mList.indices) {
+                                br.betList.let { bList ->
+                                    val oid = mList[i].oddsId
+                                    val item = bList.find {
+                                        it.matchOdd.oddsId == oid
+                                    }
+                                    item?.let {
+                                        newBetList.add(it)
+                                    }
+                                }
+                            }
+                            br.betList.clear()
+                            br.betList.addAll(newBetList)
+                        }
+                        br._betInfoList.postValue(newBetList)
+
+                    } else {
+                        oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
+                            var odd: org.cxct.sportlottery.network.odds.detail.Odd?
+                            br.betInfoList.value?.let { list ->
+                                for (i in list.indices) {
+                                    br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                        odd = value.odds.find { v -> v.id == it }
+                                        odd?.isSelect = false
+                                    }
                                 }
                             }
                         }
@@ -729,35 +885,19 @@ class MainViewModel(
                 }
                 _betInfoResult.postValue(result)
             }
-        }
-    }
-
-    fun getBetInfoListForParlay() {
-        val list: MutableList<Odd> = mutableListOf()
-        betInfoRepository.betList.let {
-            for (i in it.indices) {
-                list.add(Odd(it[i].matchOdd.oddsId, it[i].matchOdd.odds))
-            }
-        }
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfoList(list)
-            }
-            _betInfoResult.postValue(result)
 
         }
     }
 
 
     fun removeBetInfoItem(oddId: String) {
-        betInfoRepository.removeItem(oddId)
-        _betInfoList.postValue(betInfoRepository.betList)
+        betInfoRepository?.removeItem(oddId)
+        betInfoRepository?._betInfoList?.postValue(betInfoRepository?.betList)
     }
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
-        if(betInfoRepository.betList.size!=0) {
+        if (betInfoRepository?.betList?.size != 0) {
             getBetInfoListForParlay()
         }
     }
@@ -773,16 +913,16 @@ class MainViewModel(
                 if (it) {
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoList.value?.let { list ->
+                        betInfoRepository?.betInfoList?.value?.let { list ->
                             for (i in list.indices) {
 
                                 //server目前可能會回傳null
                                 try {
                                     odd = value.odds.find { v ->
-                                        v.id.let { id -> id == betInfoList.value?.get(i)?.matchOdd?.oddsId }
+                                        v.id.let { id -> id == betInfoRepository?.betInfoList?.value?.get(i)?.matchOdd?.oddsId }
                                     }
                                     odd?.isSelect = true
-                                }catch (e:Exception){
+                                } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
 
@@ -794,11 +934,11 @@ class MainViewModel(
                                 key,
                                 TextUtil.split(value.typeCodes),
                                 value.name,
-                                value.odds,
-                                false
+                                value.odds as MutableList<org.cxct.sportlottery.network.odds.detail.Odd>,
                             )
                         )
                     }
+
                     _oddsDetailList.postValue(list)
                 }
             }
@@ -814,24 +954,42 @@ class MainViewModel(
         }
     }
 
-    fun getUserInfo() {
+    fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
-            userInfoRepository.getUserInfo()
+            val result = getBetApi(matchType, betAddRequest)
+            Event(result).let {
+                _betAddResult.postValue(it)
+            }
+
+            Event(result).getContentIfNotHandled()?.success?.let {
+                if (it) {
+                    afterBet(matchType, result)
+                }
+            }
         }
     }
 
-    fun sayHello(): String? {
-        val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
-        return when {
-            hour < 6 -> androidContext.getString(R.string.good_midnight) + ", "
-            hour < 9 -> androidContext.getString(R.string.good_morning) + ", "
-            hour < 12 -> androidContext.getString(R.string.good_beforenoon) + ", "
-            hour < 14 -> androidContext.getString(R.string.good_noon) + ", "
-            hour < 17 -> androidContext.getString(R.string.good_afternoon) + ", "
-            hour < 19 -> androidContext.getString(R.string.good_evening) + ", "
-            hour < 22 -> androidContext.getString(R.string.good_night) + ", "
-            hour < 24 -> androidContext.getString(R.string.good_dreams) + ", "
-            else -> null
+    private suspend fun getBetApi(matchType: MatchType?, betAddRequest: BetAddRequest): BetAddResult? {
+        //冠軍的投注要使用不同的api
+        return if (matchType == MatchType.OUTRIGHT) {
+            doNetwork(androidContext) {
+                OneBoSportApi.outrightService.addOutrightBet(betAddRequest)
+            }
+        } else {
+            doNetwork(androidContext) {
+                OneBoSportApi.betService.addBet(betAddRequest)
+            }
+        }
+    }
+
+    private fun afterBet(matchType: MatchType?, result: BetAddResult?) {
+        if (matchType != MatchType.PARLAY) {
+            result?.rows?.let { rowList ->
+                removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
+            }
+        } else {
+            betInfoRepository?.betList?.clear()
+            betInfoRepository?._betInfoList?.postValue(betInfoRepository?.betList)
         }
     }
 }

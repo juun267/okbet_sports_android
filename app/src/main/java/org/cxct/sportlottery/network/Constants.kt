@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network
 
+import android.content.Context
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
@@ -10,6 +13,20 @@ object Constants {
     fun getPromotionUrl(token: String?): String? {
         return try {
             BASE_URL + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
+    fun getGameRuleUrl(context: Context): String? {
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/"
+                else -> "https://sportsrule.cxct.org/us"
+            }
+
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             null
@@ -58,6 +75,9 @@ object Constants {
     const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/list"
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
     const val OUTRIGHT_SEASON_LIST = "/api/front/outright/season/list"
+    const val OUTRIGHT_BET_ADD = "/api/front/outright/bet/add"
+    const val OUTRIGHT_BET_INFO = "/api/front/outright/bet/info"
+
 
     //infoCenter
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
@@ -87,6 +107,7 @@ object Constants {
 
     //withdraw
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
+    const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

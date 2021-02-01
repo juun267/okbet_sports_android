@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoMatchOddItemBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 
-class BetInfoListMatchOddAdapter(private val onItemClickListener: OnItemClickListener) :
+class BetInfoListMatchOddAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListMatchOddAdapter.ViewHolder>() {
 
     var matchOddList: MutableList<MatchOdd> = mutableListOf()
@@ -35,6 +36,10 @@ class BetInfoListMatchOddAdapter(private val onItemClickListener: OnItemClickLis
             binding.matchOdd = matchOdd
             binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), matchOdd.odds.toString())
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
+            val strVerse = context.getString(R.string.verse_)
+            val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
+            binding.betInfoDetail.tvMatch.text = strMatch
+
             binding.executePendingBindings()
         }
     }

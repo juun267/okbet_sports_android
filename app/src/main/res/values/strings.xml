@@ -4,7 +4,6 @@
     <string name="language_cn">简体中文</string>
     <string name="language_en">English</string>
 
-    <string name="app_name">创信体育</string>
     <!-- Common -->
     <!--  Symbol  -->
     <string name="colon">：</string>
@@ -142,6 +141,14 @@
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号 Ver %s</string>
 
+    <!--  HelpCenter  -->
+    <string name="contact_us">联络我们</string>
+    <string name="game_rule">游戏规则</string>
+        <!--  GameRule  -->
+    <string name="sport_bet_rule">体育投注规则</string>
+    <string name="common_sport_description">一般体育说明</string>
+    <string name="overview">概述</string>
+
     <!--  results settlement  -->
     <string name="results_toolbar_title">賽果結算</string>
     <string name="select_all_league">选择所有联赛</string>
@@ -167,11 +174,18 @@
     <string name="fourth_section">第四节</string>
     <string name="total_score_over_time">总分\n含加时</string>
     <string name="plat">盘</string>
+    <string name="round">局</string>
+    <string name="score">分</string>
     <string name="first_plat">第一盘</string>
     <string name="second_plat">第二盘</string>
     <string name="third_plat">第三盘</string>
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
+    <string name="first">第一</string>
+    <string name="second">第二</string>
+    <string name="third">第三</string>
+    <string name="fourth">第四</string>
+    <string name="fifth">第五</string>
 
     <!-- Profile center page -->
     <string name="good_midnight">凌晨好</string>
@@ -346,10 +360,6 @@
     <string name="text_money_copy_success">复制成功</string>
 
 
-
-
-
-
     <!--  Withdraw  -->
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>
@@ -426,6 +436,7 @@
     <string name="bet_info_list">注单</string>
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
+    <string name="bet_info_add_bet_success">投注成功</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
@@ -434,4 +445,43 @@
     <string name="record_red_envelope">红包纪录</string>
     <string name="record_conversion">转换纪录</string>
     <string name="record_reward">打賞紀錄</string>
+
+    <string name="recharge_state_success">成功</string>
+    <string name="recharge_state_failed">失败</string>
+    <string name="recharge_state_processing">处理中</string>
+    <string name="recharge_state_recharging">充值中</string>
+    <string name="recharge_state_all">全部订单状态</string>
+
+    <string name="recharge_channel_all">全部渠道类型</string>
+    <string name="recharge_channel_online">在线支付</string>
+    <string name="recharge_channel_bank">银行汇款</string>
+    <string name="recharge_channel_alipay">支付宝支付</string>
+    <string name="recharge_channel_weixin">微信支付</string>
+    <string name="recharge_channel_cft">财付通</string>
+    <string name="recharge_channel_admin">后台加款</string>
+
+    <string name="recharge_log_order_time">订单时间</string>
+    <string name="recharge_log_recharge_amount">充值金额</string>
+    <string name="recharge_log_channel_type">渠道类型</string>
+    <string name="recharge_log_order_state">订单状态</string>
+
+    <string name="withdraw_log_state_all">全部订单状态</string>
+    <string name="withdraw_log_state_processing">处理中</string>
+    <string name="withdraw_log_state_pass">通过</string>
+    <string name="withdraw_log_state_un_pass">不通过</string>
+
+    <string name="withdraw_log_type_all">全部渠道类型</string>
+    <string name="withdraw_log_type_bank_trans">银行提款</string>
+    <string name="withdraw_log_type_admin">后台扣款</string>
+
+    <string name="log_detail_title">查看详情</string>
+    <string name="log_detail_trans_num_sub">交易编号：</string>
+    <string name="log_detail_time_sub">发起时间：</string>
+    <string name="log_detail_type_sub">交易类型：</string>
+    <string name="log_detail_amount_sub">交易金额：</string>
+    <string name="log_detail_status_sub">交易状态：</string>
+
+    <string name="finance_log_selector_until">到</string>
+    <string name="finance_list_no_more">没有更多数据了</string>
+    <string name="finance_list_no_record">暂无纪录</string>
 </resources>

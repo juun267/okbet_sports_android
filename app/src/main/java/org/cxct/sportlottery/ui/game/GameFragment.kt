@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
@@ -23,10 +23,12 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
+import org.cxct.sportlottery.ui.game.odds.ItemExpandListener
 import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -39,8 +41,11 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
 
+    private val service by lazy { (activity as MainActivity).mService }
+
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
+            Log.e(">>>", "onclick gameTypeAdapter")
             viewModel.getGameHallList(args.matchType, it)
         })
     }
@@ -53,21 +58,35 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
-            matchOddListener = MatchOddListener {
-                viewModel.getOddsDetail(it.matchInfo.id)
+            matchOddListener = MatchOddListener ({
+                viewModel.getOddsDetail(it.matchInfo?.id)
+               }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
+
+            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
+                if (isExpand) {
+                    Log.e(">>>", "")
+                    service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                } else {
+                    service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                }
+
+
+
             }
         }
-    }
+     }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it.list.first().id)
+            Log.e(">>>", "onclick LeagueAdapter")
+            viewModel.getLeagueOddsList(args.matchType, it)
         })
     }
 
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
             seasonSubListener = SeasonSubAdapter.SeasonSubListener {
+                Log.e(">>>", "onclick outrightSeasonAdapter")
                 viewModel.getOutrightOddsList(it.id)
             }
         }
@@ -77,10 +96,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
             setupSportTypeRow(this)
@@ -94,7 +111,79 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setupLeagueList(this)
 
             setupOutrightSeasonList(this)
+
+            initObserve()
         }
+    }
+
+    private fun initObserve() {
+
+        viewModel.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
+            if (matchClockEvent == null) return@Observer
+
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach {
+                val updateMatchOdd = it.matchOdds.find { matchOdd ->
+                    matchOdd.matchInfo?.id == matchClockEvent.matchClockCO?.matchId
+                }
+                updateMatchOdd?.leagueTime = matchClockEvent.matchClockCO?.matchTime
+            }
+
+            leagueOddAdapter.data = leagueOdds
+        })
+
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            leagueOddAdapter.updatedOddsMap = it.odds
+        })
+
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
+        })
+/*
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
+            if (oddsChangeEvent == null) return@Observer
+
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { oldOdds ->
+                        val newOdds = oddsChangeEvent.odds[oldOdds.key]
+
+                        oldOdds.value.forEach { oldOdd ->
+                            val updateOdd = newOdds?.find { newOdd ->
+                                newOdd.id == oldOdd.id
+                            }
+
+                            updateOdd?.odds?.let { nonNullUpdateOdd ->
+                                oldOdd.odds?.let { nonNullOldOdd ->
+                                    when {
+                                        (nonNullUpdateOdd > nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.LARGER.state
+                                        }
+
+                                        (nonNullUpdateOdd == nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.SAME.state
+                                        }
+
+                                        (nonNullUpdateOdd < nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.SMALLER.state
+                                        }
+                                    }
+
+                                    oldOdd.odds = updateOdd.odds
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            leagueOddAdapter.data = leagueOdds
+        })
+        */
     }
 
     private fun setupSportTypeRow(view: View) {
@@ -180,22 +269,22 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    setupInPlayFilter(it.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                    setupInPlayFilter(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
                 }
                 MatchType.TODAY -> {
-                    setupTodayFilter(it.sportMenuData?.menu?.today?.items ?: listOf())
+                    setupTodayFilter(it?.sportMenuData?.menu?.today?.items ?: listOf())
                 }
                 MatchType.EARLY -> {
-                    setupEarlyFilter(it.sportMenuData?.menu?.early?.items ?: listOf())
+                    setupEarlyFilter(it?.sportMenuData?.menu?.early?.items ?: listOf())
                 }
                 MatchType.PARLAY -> {
-                    setupParlayFilter(it.sportMenuData?.menu?.parlay?.items ?: listOf())
+                    setupParlayFilter(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
                 }
                 MatchType.OUTRIGHT -> {
-                    setupOutrightFilter(it.sportMenuData?.menu?.outright?.items ?: listOf())
+                    setupOutrightFilter(it?.sportMenuData?.menu?.outright?.items ?: listOf())
                 }
                 MatchType.AT_START -> {
-                    setupAtStartFilter(it.sportMenuData?.atStart?.items ?: listOf())
+                    setupAtStartFilter(it?.sportMenuData?.atStart?.items ?: listOf())
                 }
             }
         })

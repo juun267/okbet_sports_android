@@ -9,6 +9,47 @@
     tools:context=".ui.infoCenter.InfoCenterActivity">
 
     <LinearLayout
+        android:id="@+id/ll_tab"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/btn_readed_letters"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selected_under_yellow_line_effect"
+            android:clickable="true"
+            android:ems="5"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/inbox"
+            android:textColor="@color/pumpkinOrange"
+            android:textSize="@dimen/textSize14sp" />
+
+        <TextView
+            android:id="@+id/btn_unread_letters"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selected_under_yellow_line_effect"
+            android:clickable="true"
+            android:ems="5"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/unread_letters"
+            android:textColor="@color/pumpkinOrange"
+            android:textSize="@dimen/textSize14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

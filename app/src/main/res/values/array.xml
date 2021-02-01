@@ -3,16 +3,46 @@
     <string-array name="finance_array">
         <item>@string/record_recharge</item>
         <item>@string/record_withdrawal</item>
-        <item>@string/record_red_envelope</item>
-        <item>@string/record_conversion</item>
-        <item>@string/record_reward</item>
+        <!--        <item>@string/record_red_envelope</item>-->
+        <!--        <item>@string/record_conversion</item>-->
+        <!--        <item>@string/record_reward</item>-->
     </string-array>
 
     <integer-array name="finance_img_array">
         <item>@drawable/ic_icondrawrechargerecord</item>
         <item>@drawable/ic_icondrawwithdrawrecord</item>
-        <item>@drawable/ic_icondrawredenvelope</item>
-        <item>@drawable/ic_icondrawtransfer</item>
-        <item>@drawable/ic_icondrawbonusrecord</item>
+        <!--        <item>@drawable/ic_icondrawredenvelope</item>-->
+        <!--        <item>@drawable/ic_icondrawtransfer</item>-->
+        <!--        <item>@drawable/ic_icondrawbonusrecord</item>-->
     </integer-array>
+
+    <string-array name="recharge_state_array">
+        <item>@string/recharge_state_all</item>
+        <item>@string/recharge_state_processing</item>
+        <item>@string/recharge_state_success</item>
+        <item>@string/recharge_state_failed</item>
+    </string-array>
+
+    <string-array name="recharge_channel_array">
+        <item>@string/recharge_channel_all</item>
+        <item>@string/recharge_channel_online</item>
+        <item>@string/recharge_channel_bank</item>
+        <item>@string/recharge_channel_weixin</item>
+        <item>@string/recharge_channel_alipay</item>
+        <item>@string/recharge_channel_cft</item>
+        <item>@string/recharge_channel_admin</item>
+    </string-array>
+
+    <string-array name="withdraw_state_array">
+        <item>@string/withdraw_log_state_all</item>
+        <item>@string/withdraw_log_state_processing</item>
+        <item>@string/withdraw_log_state_pass</item>
+        <item>@string/withdraw_log_state_un_pass</item>
+    </string-array>
+
+    <string-array name="withdraw_type_array">
+        <item>@string/withdraw_log_type_all</item>
+        <item>@string/withdraw_log_type_bank_trans</item>
+        <item>@string/withdraw_log_type_admin</item>
+    </string-array>
 </resources>

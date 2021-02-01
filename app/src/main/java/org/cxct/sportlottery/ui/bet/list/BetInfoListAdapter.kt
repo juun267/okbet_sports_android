@@ -1,6 +1,10 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.content.Context
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +21,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 
 
-class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
+class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
@@ -120,11 +124,18 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             binding.betInfoAction.tv_bet.setOnClickListener {
                 if (!check(binding.etBet.text.toString(), matchOdd, parlayOdd)) {
-                    onItemClickListener.onBetClick()
+                    val stake = binding.etBet.text.toString().toDouble()
+                    onItemClickListener.onBetClick(betInfoList[position], stake)
                 }
             }
             binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick() }
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
+
+            val strVerse = context.getString(R.string.verse_)
+            val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
+
+            binding.betInfoDetail.tvMatch.text = strMatch
+
             binding.executePendingBindings()
         }
     }
@@ -147,7 +158,7 @@ class BetInfoListAdapter(private val onItemClickListener: OnItemClickListener) :
 
     interface OnItemClickListener {
         fun onDeleteClick(position: Int)
-        fun onBetClick()
+        fun onBetClick(betInfoListData: BetInfoListData, stake: Double)
         fun onAddMoreClick()
     }
 

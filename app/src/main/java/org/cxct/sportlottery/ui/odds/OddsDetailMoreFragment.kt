@@ -64,34 +64,39 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewMo
     }
 
     private fun getData() {
-
         val list: LiveData<List<*>?> = viewModel.oddsDetailMoreList
-
-        //後續再重構較好的資料判別方式
         var m: Any?
-        for (i in list.value?.indices!!) {
-            when (list.value!![i]) {
-                is Match -> {
-                    m = (list.value!![i] as Match)
-                    if (m.id != matchId) {
-                        matchOddList.add(
-                            MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime.toString(), m.status)
-                        )
-                    }
-                }
+        //後續再重構較好的資料判別方式
+        list.value?.indices?.let {
+            for (i in it) {
+                list.value?.let { value ->
+                    val m: Any?
+                    when (value[i]) {
+                        is Match -> {
+                            m = (value[i] as Match)
+                            m.apply {
+                                if (m.id != matchId) {
+                                    matchOddList.add(MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime.toString(), m.status))
+                                }
+                            }
+                        }
+                        is MatchOdd -> {
+                            m = (value[i] as MatchOdd).matchInfo
+                            m?.apply {
+                                if (m.id != matchId) {
+                                    matchOddList.add(
+                                        MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status)
+                                    )
+                                }
+                            }
+                        }
 
-                is MatchOdd -> {
-                    m = (list.value!![i] as MatchOdd).matchInfo
-                    if (m.id != matchId) {
-                        matchOddList.add(
-                            MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status)
-                        )
+                        else -> {}
                     }
                 }
             }
         }
         rv_more.adapter?.notifyDataSetChanged()
-
     }
 
     override fun onItemClick(matchId: String) {

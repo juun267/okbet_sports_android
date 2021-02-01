@@ -18,16 +18,20 @@ import org.cxct.sportlottery.util.TextUtil
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
     RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
 
+
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
 
     val winQuotaList: MutableList<Double> = mutableListOf()
     val betQuotaList: MutableList<Double> = mutableListOf()
+    val statusList: MutableList<Boolean> = mutableListOf()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding: ContentBetInfoParlayItemBinding = ContentBetInfoParlayItemBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
+
 
     override fun getItemCount(): Int {
         return parlayOddList.size
@@ -46,6 +50,8 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             if (TextUtils.isEmpty(it)) {
                 binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_bigger_than_zero)
                 binding.tvParlayWinQuota.text = "--"
+                winQuotaList[position] = 0.0
+                betQuotaList[position] = 0.0
                 error = true
             } else {
 
@@ -74,13 +80,13 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                         error = false
                     }
                 }
+
                 winQuotaList[position] = it.toDouble() * parlayOdd.odds
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
 
                 binding.tvParlayWinQuota.text = TextUtil.format(it.toDouble() * parlayOdd.odds)
-
-                onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())
             }
+            onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())
 
             (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (error) 0.dp else 10.dp
 
@@ -102,6 +108,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             winQuotaList.add(0.0)
             betQuotaList.add(0.0)
+            statusList.add(true)
 
             binding.parlayOdd = parlayOdd
 
@@ -109,7 +116,8 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.tvParlayOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), parlayOdd.odds.toString())
 
             binding.etBet.afterTextChanged {
-                check(it, parlayOdd, position)
+                statusList[position] = check(it, parlayOdd, position)
+                onTotalQuotaListener.status(statusList)
             }
 
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
@@ -117,19 +125,26 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.tvNum.text = "x${parlayOdd.num}"
 
             binding.executePendingBindings()
+
         }
     }
 
 
-    fun modify(list: List<ParlayOdd>, position: Int) {
+    fun modify(list: List<ParlayOdd>) {
+        winQuotaList.clear()
+        betQuotaList.clear()
+        statusList.clear()
         parlayOddList.clear()
-        parlayOddList.addAll(list)
+        parlayOddList.addAll(list.filterNot {
+            it.parlayType == "1C1"
+        })
         notifyDataSetChanged()
     }
 
 
     interface OnTotalQuotaListener {
         fun count(totalWin: Double, totalBet: Double)
+        fun status(statusList: MutableList<Boolean>)
     }
 
 }

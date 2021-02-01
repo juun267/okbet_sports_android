@@ -157,7 +157,6 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     }
 
     private fun updateLoginData(loginData: LoginData?) {
-        sLoginData = loginData
 
         _isLogin.postValue(loginData != null)
 

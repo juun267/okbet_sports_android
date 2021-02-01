@@ -19,13 +19,24 @@ object LanguageManager {
         return SPUtil.getInstance(context).getSystemCurrentLocal()
     }
 
-    fun getSelectLanguage(context: Context): Language {
+    fun getSelectLanguage(context: Context?): Language {
         return when (SPUtil.getInstance(context).getSelectLanguage()) {
             Language.ZH.key -> Language.ZH
             Language.ZHT.key -> Language.ZHT
             Language.EN.key ->  Language.EN
             Language.VI.key -> Language.VI
-            else -> Language.EN
+            else -> {
+                //若APP local 未設定過語系，就使用系統語系判斷
+                val local = getSystemLocale(context)
+
+                when {
+                    local.language == Locale.ENGLISH.language -> Language.EN
+                    local.language == Locale("vi").language -> Language.VI
+                    local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country -> Language.ZH
+                    local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZHT
+                    else -> Language.EN
+                }
+            }
         }
     }
 
@@ -36,12 +47,11 @@ object LanguageManager {
      * @return
      */
     fun getSetLanguageLocale(context: Context?): Locale {
-        return when (SPUtil.getInstance(context).getSelectLanguage()) {
-            Language.ZH.key -> Locale.SIMPLIFIED_CHINESE
-            Language.ZHT.key -> Locale.TRADITIONAL_CHINESE
-            Language.EN.key -> Locale.ENGLISH
-            Language.VI.key -> Locale.forLanguageTag("vi_VN")
-            else -> Locale.ENGLISH //預設使用英文
+        return when (getSelectLanguage(context)) {
+            Language.ZH -> Locale.SIMPLIFIED_CHINESE
+            Language.ZHT -> Locale.TRADITIONAL_CHINESE
+            Language.EN -> Locale.ENGLISH
+            Language.VI -> Locale("vi")
         }
     }
 

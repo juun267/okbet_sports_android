@@ -9,9 +9,23 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 
 class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     var data = listOf<LeagueOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var updatedOddsMap = mapOf<String, List<Odd>>()
+        set(value) {
+            field = value
+            notifyDataSetChanged() //TODO Cheryl: 優化 -> 只更新展開的item
+        }
+
+    var updatedMatchStatus: MatchStatusCO? = MatchStatusCO()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -25,6 +39,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
 
     var matchOddListener: MatchOddListener? = null
 
+    var itemExpandListener: ItemExpandListener? = null
+
     override fun getItemCount(): Int = data.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,7 +50,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, playType, matchOddListener)
+        holder.bind(item, updatedOddsMap, updatedMatchStatus, playType, matchOddListener, itemExpandListener)
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -42,18 +58,20 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             MatchOddAdapter()
         }
 
-        fun bind(item: LeagueOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
+        fun bind(item: LeagueOdd, updatedOddsMap: Map<String, List<Odd>>, updatedMatchStatus: MatchStatusCO?, playType: PlayType, matchOddListener: MatchOddListener?, itemExpandListener: ItemExpandListener?) {
             itemView.league_odd_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupMatchOddList(item, playType, matchOddListener)
-            setupMatchOddExpand(item)
+            setupMatchOddList(item, updatedOddsMap, updatedMatchStatus, playType, matchOddListener)
+            setupMatchOddExpand(item, adapterPosition, itemExpandListener)
         }
 
         private fun setupMatchOddList(
             item: LeagueOdd,
+            updatedOddsMap: Map<String, List<Odd>>,
+            updatedMatchStatus: MatchStatusCO?,
             playType: PlayType,
-            matchOddListener: MatchOddListener?
+            matchOddListener: MatchOddListener?,
         ) {
             itemView.league_odd_sub_list.apply {
                 this.layoutManager =
@@ -64,13 +82,16 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             matchOddAdapter.data = item.matchOdds
             matchOddAdapter.playType = playType
             matchOddAdapter.matchOddListener = matchOddListener
+            matchOddAdapter.updatedOddsMap = updatedOddsMap
+            matchOddAdapter.updatedMatchStatus = updatedMatchStatus
         }
 
-        private fun setupMatchOddExpand(item: LeagueOdd) {
+        private fun setupMatchOddExpand(item: LeagueOdd, position: Int, itemExpandListener: ItemExpandListener?) {
             itemView.league_odd_sub_expand.setExpanded(item.isExpand, false)
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_sub_expand.setExpanded(item.isExpand, true)
+                itemExpandListener?.onItemExpand(item.isExpand, item, position)
                 updateArrowExpand()
             }
         }
@@ -92,4 +113,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
             }
         }
     }
+}
+
+class ItemExpandListener(val clickListener: (isExpand: Boolean, leagueOdd: LeagueOdd, position: Int) -> Unit) {
+    fun onItemExpand(isExpand: Boolean, leagueOdd: LeagueOdd, position: Int) = clickListener(isExpand, leagueOdd, position)
 }
