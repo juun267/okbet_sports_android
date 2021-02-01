@@ -90,7 +90,7 @@ class InfoCenterViewModel(
                         }
 
                         _userUnreadMsgList.value = result?.infoCenterData
-                        _totalUnreadMsgCount.value = result?.total
+                        _totalUnreadMsgCount.value = result?.total?: 0
 
                         //判斷是不是可以再加載
                         mNeedMoreLoadingUnRead =
@@ -110,7 +110,7 @@ class InfoCenterViewModel(
                         }
 
                         _userReadedMsgList.value = result?.infoCenterData
-                        _totalReadedMsgCount.value = result?.total
+                        _totalReadedMsgCount.value = result?.total?: 0
 
                         //判斷是不是可以再加載
                         mNeedMoreLoadingReaded =
@@ -141,10 +141,10 @@ class InfoCenterViewModel(
             }
             when (dataType) {
                 DataType.UNREAD -> {
-                    _totalUnreadMsgCount.value = result?.total
+                    _totalUnreadMsgCount.value = result?.total?: 0
                 }
                 DataType.READED -> {
-                    _totalReadedMsgCount.value = result?.total
+                    _totalReadedMsgCount.value = result?.total?: 0
                 }
             }
             _isLoading.value = false

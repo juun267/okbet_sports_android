@@ -10,7 +10,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.ui.finance.df.Status
 
-class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>() {
+class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    enum class ItemType {
+        ITEM, NO_DATA
+    }
 
     var data = listOf<Row>()
         set(value) {
@@ -18,19 +22,43 @@ class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>()
             notifyDataSetChanged()
         }
 
+    var isFinalPage: Boolean = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var rechargeLogListener: RechargeLogListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            (data.size) -> {
+                ItemType.NO_DATA.ordinal
+            }
+            else -> ItemType.ITEM.ordinal
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
-
-        holder.bind(item, rechargeLogListener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ItemType.NO_DATA.ordinal -> NoDataViewHolder.from(parent)
+            else -> ViewHolder.from(parent)
+        }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> {
+                val item = data[position]
+                holder.bind(item, rechargeLogListener)
+            }
+            is NoDataViewHolder -> {
+                holder.bind(isFinalPage)
+            }
+        }
+    }
+
+    override fun getItemCount(): Int = data.size + 1
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -86,6 +114,25 @@ class RechargeLogAdapter : RecyclerView.Adapter<RechargeLogAdapter.ViewHolder>()
 
                 return ViewHolder(view)
             }
+        }
+    }
+
+    class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(isFinalPage: Boolean) {
+            itemView.visibility = if (isFinalPage) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup) =
+                NoDataViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_finance_no_data, parent, false)
+                )
         }
     }
 }

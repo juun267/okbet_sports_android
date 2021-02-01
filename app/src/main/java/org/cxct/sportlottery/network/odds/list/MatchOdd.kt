@@ -13,4 +13,5 @@ data class MatchOdd(
     var odds: MutableMap<String, MutableList<Odd>> = mutableMapOf()
 ) {
     var isExpand = false
+    var leagueTime: Int? = null
 }

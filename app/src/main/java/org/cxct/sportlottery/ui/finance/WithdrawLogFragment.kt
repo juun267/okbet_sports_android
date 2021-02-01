@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_recharge_log.*
@@ -50,6 +49,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupWithdrawStateSelector(this)
             setupWithdrawTypeSelector(this)
             setupWithdrawLogList(this)
+            setupSwipeRefreshLayout(this)
             setupSearch(this)
         }
     }
@@ -136,16 +136,15 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     DividerItemDecoration.VERTICAL
                 )
             )
+        }
+    }
 
-            //TODO current pull gesture will call over one time api, need to fix
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (!recyclerView.canScrollVertically(1)) {
-                        viewModel.getUserWithdrawList(false)
-                        loading()
-                    }
-                }
-            })
+    private fun setupSwipeRefreshLayout(view: View) {
+        view.list_swipe_refresh_layout.apply {
+            setOnRefreshListener {
+                viewModel.getUserWithdrawList(false)
+                this.isRefreshing = false
+            }
         }
     }
 
@@ -197,7 +196,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
-                withdrawLogAdapter.data = it.rows ?: listOf()
+                val list = it.rows ?: listOf()
+
+                withdrawLogAdapter.data = list
+                setupNoRecordView(list.isEmpty())
             }
 
             hideLoading()
@@ -214,11 +216,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
-            if (it) {
-                list_no_more.visibility = View.VISIBLE
-            } else {
-                list_no_more.visibility = View.GONE
-            }
+            withdrawLogAdapter.isFinalPage = it
         })
 
         viewModel.getCalendarRange()
@@ -226,5 +224,17 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         viewModel.getWithdrawType()
         viewModel.getUserWithdrawList(true)
         loading()
+    }
+
+    private fun setupNoRecordView(visible: Boolean) {
+        if (visible) {
+            list_swipe_refresh_layout.visibility = View.GONE
+            list_no_record_img.visibility = View.VISIBLE
+            list_no_record_text.visibility = View.VISIBLE
+        } else {
+            list_swipe_refresh_layout.visibility = View.VISIBLE
+            list_no_record_img.visibility = View.GONE
+            list_no_record_text.visibility = View.GONE
+        }
     }
 }

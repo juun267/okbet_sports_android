@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_recharge_log.*
@@ -50,6 +49,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupRechargeStateSelector(this)
             setupRechargeChannelSelector(this)
             setupRechargeLogList(this)
+            setupSwipeRefreshLayout(this)
             setupSearch(this)
         }
     }
@@ -135,16 +135,15 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     DividerItemDecoration.VERTICAL
                 )
             )
+        }
+    }
 
-            //TODO current pull gesture will call over one time api, need to fix
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (!recyclerView.canScrollVertically(1)) {
-                        viewModel.getUserRechargeList(false)
-                        loading()
-                    }
-                }
-            })
+    private fun setupSwipeRefreshLayout(view: View) {
+        view.list_swipe_refresh_layout.apply {
+            setOnRefreshListener {
+                viewModel.getUserRechargeList(false)
+                this.isRefreshing = false
+            }
         }
     }
 
@@ -196,7 +195,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
-                rechargeLogAdapter.data = it.rows ?: listOf()
+                val list = it.rows ?: listOf()
+
+                rechargeLogAdapter.data = list
+                setupNoRecordView(list.isEmpty())
             }
             hideLoading()
         })
@@ -212,11 +214,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
-            if (it) {
-                list_no_more.visibility = View.VISIBLE
-            } else {
-                list_no_more.visibility = View.GONE
-            }
+            rechargeLogAdapter.isFinalPage = it
         })
 
         viewModel.getCalendarRange()
@@ -224,5 +222,17 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         viewModel.getRechargeChannel()
         viewModel.getUserRechargeList(true)
         loading()
+    }
+
+    private fun setupNoRecordView(visible: Boolean) {
+        if (visible) {
+            list_swipe_refresh_layout.visibility = View.GONE
+            list_no_record_img.visibility = View.VISIBLE
+            list_no_record_text.visibility = View.VISIBLE
+        } else {
+            list_swipe_refresh_layout.visibility = View.VISIBLE
+            list_no_record_img.visibility = View.GONE
+            list_no_record_text.visibility = View.GONE
+        }
     }
 }
