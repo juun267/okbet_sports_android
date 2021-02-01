@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,6 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
@@ -41,7 +39,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val matchOddAdapter by lazy {
         MatchOddAdapter().apply {
             matchOddListener = MatchOddListener({
-                Log.e(">>>", "onclick MatchOddAdapter")
                 viewModel.getOddsDetail(it.matchInfo?.id)
             }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
@@ -49,7 +46,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
-            Log.e(">>>", "onclick OutrightOddAdapter")
             outrightOddListener = OutrightOddAdapter.OutrightOddListener {
                 viewModel.updateOutrightOddsSelectedState(it)
             }
@@ -91,6 +87,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     DividerItemDecoration.VERTICAL
                 )
             )
+            outrightOddAdapter.betInfoListData = viewModel.betInfoList.value
         }
     }
 
@@ -131,6 +128,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
             matchOddAdapter.betInfoListData = it
+            outrightOddAdapter.betInfoListData = it
         })
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
