@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
@@ -63,7 +64,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         initView()
         initButton()
         initObserve()
-
     }
 
     private fun initButton() {
@@ -123,8 +123,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun initView() {
         setupTextChangeEvent()
         calendarBottomSheet()
+        getMoney()
+        updateMoneyRange()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initObserve() {
 
         //充值金額訊息
@@ -146,6 +149,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //暱稱
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
+        })
+        viewModel.userMoneyResult.observe(viewLifecycleOwner, {
+            txv_wallet_money.text = (it?.money ?: "").toString() + " RMB"
         })
 
     }
@@ -204,6 +210,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 try {
                     mSelectRechCfgs = rechCfgsList[position]
                     refreshSelectRechCfgs(mSelectRechCfgs)
+                    getMoney()
+                    updateMoneyRange()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -321,4 +329,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         return Pair(minusDaysCalendar, todayCalendar)
     }
 
+    //取得餘額
+    private fun getMoney() {
+        viewModel.getMoney()
+    }
+
+    //修改hint
+    private fun updateMoneyRange() {
+        et_recharge_amount.setHint(
+            String.format(
+                getString(R.string.edt_hint_deposit_money),
+                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
+                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
+            )
+        )
+    }
 }

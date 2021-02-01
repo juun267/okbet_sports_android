@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -23,6 +24,19 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     var data = listOf<MatchOdd>()
         set(value) {
             field = value
+            notifyDataSetChanged()
+        }
+
+    var betInfoListData: List<BetInfoListData>? = null
+        set(value) {
+            field = value
+            data.forEach { matchOdd ->
+                matchOdd.odds.forEach { map ->
+                    map.value.forEach { odd ->
+                        odd.isSelected = value?.any { it.matchOdd.oddsId == odd.id } ?: false
+                    }
+                }
+            }
             notifyDataSetChanged()
         }
 
@@ -328,7 +342,6 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
-                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
                     }

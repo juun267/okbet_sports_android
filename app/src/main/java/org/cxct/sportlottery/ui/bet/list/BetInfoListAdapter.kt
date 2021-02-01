@@ -19,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemSingleBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
@@ -72,8 +73,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(betInfoList[position], position)
         updateItemDataFromSocket(betInfoList[position], updatedBetInfoList)
-        holder.bind(betInfoList[position].matchOdd, betInfoList[position].parlayOdds, position)
     }
 
 
@@ -145,9 +146,23 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             return error
         }
 
-        fun bind(matchOdd: MatchOdd, parlayOdd: ParlayOdd, position: Int) {
+        fun bind(mBetInfoList: BetInfoListData, position: Int) {
+            val matchOdd = mBetInfoList.matchOdd
+            val parlayOdd = mBetInfoList.parlayOdds
             binding.matchOdd = matchOdd
             binding.parlayOdd = parlayOdd
+            binding.betInfoDetail.apply {
+                when (mBetInfoList.matchType) {
+                    MatchType.OUTRIGHT -> {
+                        tvOddsSpread.visibility = View.GONE
+                        tvMatch.visibility = View.GONE
+                    }
+                    else -> {
+                        tvOddsSpread.visibility = View.VISIBLE
+                        tvMatch.visibility = View.VISIBLE
+                    }
+                }
+            }
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
             binding.betInfoDetail.tvOdds.text =
                     String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))

@@ -69,10 +69,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 } else {
                     service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
                 }
-
-
-
             }
+            betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
      }
 
@@ -137,6 +135,23 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             if (it == null) return@Observer
             leagueOddAdapter.updatedOddsMap = it.odds
         })
+
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+            leagueOddAdapter.betInfoListData = it
+        })
+
+
+
+//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
+//            if (it == null) return@Observer
+//            Log.e(">>>>>", "g matchStatusChange")
+//        })
+
+//        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
+//            if (it == null) return@observe
+//            Log.e(">>>>>", "g matchOddsChange")
+//            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
+//        })
 
         viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer

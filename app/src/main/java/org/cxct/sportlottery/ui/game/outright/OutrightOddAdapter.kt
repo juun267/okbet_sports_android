@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
@@ -33,6 +34,18 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
     var outrightOddListener: OutrightOddListener? = null
 
+    var betInfoListData: List<BetInfoListData>? = null
+        set(value) {
+            field = value
+            //TODO : review why not work first time
+            data.forEach { odd ->
+                odd.isSelected = value?.any {
+                    it.matchOdd.oddsId == odd.id
+                } ?: false
+            }
+            notifyDataSetChanged()
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -41,8 +54,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         val item = data[position]
         updateItemDataFromSocket(item)
 
-
-        holder.bind(item, outrightOddListener)
+        holder.bind(item, outrightOddListener, betInfoListData)
     }
 
     private fun updateItemDataFromSocket(originItem: Odd) {
@@ -63,8 +75,18 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Odd, outrightOddListener: OutrightOddListener?) {
+        fun bind(item: Odd, outrightOddListener: OutrightOddListener?, betInfoListData: List<BetInfoListData>?) {
             itemView.apply {
+                kotlin.run status@{
+                    betInfoListData?.forEach {
+                        if (it.matchOdd.oddsId == item.id) {
+                            item.isSelected = true
+                            return@status
+                        } else {
+                            item.isSelected = false
+                        }
+                    }
+                }
                 outright_name.text = item.spread
                 item.odds?.let { odd -> outright_bet.text = TextUtil.formatForOdd(odd) }
                 isSelected = item.isSelected
