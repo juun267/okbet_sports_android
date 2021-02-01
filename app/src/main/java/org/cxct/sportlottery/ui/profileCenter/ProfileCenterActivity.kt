@@ -124,6 +124,9 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         btn_news_center.setOnClickListener {
             startActivity(Intent(this, InfoCenterActivity::class.java))
         }
+        btn_bell.setOnClickListener {
+            btn_news_center.performClick()
+        }
 
         //建議反饋
         btn_feedback.setOnClickListener {
