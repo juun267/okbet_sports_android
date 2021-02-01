@@ -43,6 +43,10 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     var itemExpandListener: ItemExpandListener? = null
 
     var betInfoListData: List<BetInfoListData>? = null
+        set(value){
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemCount(): Int = data.size
 
