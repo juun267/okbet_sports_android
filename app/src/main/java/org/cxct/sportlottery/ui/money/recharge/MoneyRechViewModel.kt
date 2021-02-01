@@ -86,9 +86,8 @@ class MoneyRechViewModel(
             val result = doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }
-            _rechargeConfigs.value = result?.rechCfg!!
-
-            result.rechCfg.rechCfgs.let { filterBankList(it) }
+            result?.rechCfg?.let { _rechargeConfigs.value = result.rechCfg }
+            result?.rechCfg?.rechCfgs?.let { filterBankList(it) }
         }
     }
 
