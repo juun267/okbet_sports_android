@@ -209,21 +209,25 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             val stopProducerId = it?.producerId
 
             stopProducerId?.let {
-                val matchOdds = matchOddAdapter.data
-
-                matchOdds.forEach { matchOdd ->
-                    matchOdd.odds.values.forEach { odds ->
-                        val updateOdd = odds.find { odd ->
-                            odd.producerId == stopProducerId
-                        }
-
-                        updateOdd?.status = BetStatus.LOCKED.code
-                    }
-                }
-
-                matchOddAdapter.data = matchOdds
+                updateSocketGlobalStopOddList(stopProducerId)
             }
         })
+    }
+
+    private fun updateSocketGlobalStopOddList(stopProducerId: Int) {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.values.forEach { odds ->
+                val updateOdd = odds.find { odd ->
+                    odd.producerId == stopProducerId
+                }
+
+                updateOdd?.status = BetStatus.LOCKED.code
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
