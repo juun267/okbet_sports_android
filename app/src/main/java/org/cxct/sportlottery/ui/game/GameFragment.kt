@@ -66,7 +66,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
                 }
             }
-            betInfoListData = viewModel.betInfoList.value
+            betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
      }
 
@@ -131,7 +131,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             leagueOddAdapter.updatedOddsMap = it.odds
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             leagueOddAdapter.betInfoListData = it
         })
     }

@@ -87,7 +87,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            outrightOddAdapter.betInfoListData = viewModel.betInfoList.value
+            outrightOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
 
@@ -126,7 +126,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             matchOddAdapter.betInfoListData = it
             outrightOddAdapter.betInfoListData = it
         })
@@ -171,7 +171,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         oddsFirst?.let {
             matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
-            matchOddAdapter.betInfoListData = viewModel.betInfoList.value
+            matchOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
 

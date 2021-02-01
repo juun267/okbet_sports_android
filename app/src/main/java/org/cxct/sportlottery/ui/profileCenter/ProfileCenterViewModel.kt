@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -15,7 +16,16 @@ import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import timber.log.Timber
 import java.util.*
 
-class ProfileCenterViewModel(private val androidContext: Context, private val userInfoRepository: UserInfoRepository, private val loginRepository: LoginRepository) : BaseViewModel() {
+class ProfileCenterViewModel(
+        private val androidContext: Context,
+        private val userInfoRepository: UserInfoRepository,
+        private val loginRepository: LoginRepository,
+        betInfoRepo: BetInfoRepository
+) : BaseViewModel() {
+
+    init {
+        betInfoRepository = betInfoRepo
+    }
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
@@ -51,6 +61,7 @@ class ProfileCenterViewModel(private val androidContext: Context, private val us
                 loginRepository.logout()
             }.apply {
                 loginRepository.clear()
+                betInfoRepository?.clear()
                 //TODO change timber to actual logout ui to da
                 Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }

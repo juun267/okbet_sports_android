@@ -79,7 +79,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             }
         }
 
-        matchOddAdapter = BetInfoListMatchOddAdapter(this@BetInfoListParlayDialog)
+        matchOddAdapter = BetInfoListMatchOddAdapter(requireContext(),this@BetInfoListParlayDialog)
         parlayAdapter = BetInfoListParlayAdapter(this@BetInfoListParlayDialog)
 
         rv_match_odd_list.apply {
@@ -128,7 +128,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             parlayAdapter.modify(it)
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
             }
