@@ -41,6 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        tools:background="@color/transparent_black_30"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

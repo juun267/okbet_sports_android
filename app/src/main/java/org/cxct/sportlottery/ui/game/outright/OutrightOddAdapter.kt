@@ -108,8 +108,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
             Handler().postDelayed(
                 {
-//                    button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.white))
-//                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg)
+                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg)
                 }, CHANGING_ITEM_BG_COLOR_DURATION
             )
         }
