@@ -16,6 +16,7 @@ import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -165,7 +166,7 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
                 parlayList,
                 1,
                 "EU"
-            ), null
+            ), MatchType.PARLAY
         )
     }
 
