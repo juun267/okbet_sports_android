@@ -90,6 +90,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     DividerItemDecoration.VERTICAL
                 )
             )
+            //TODO : 重構, view不應該直接去拿repository東西。應該要再view model去操作repository.
             outrightOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
