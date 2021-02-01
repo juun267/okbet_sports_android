@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
@@ -279,9 +280,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //存款時間
         txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
 
-        //充值金額hint
-        txv_wallet_money.hint= String().format(getString(R.string.edt_hint_deposit_money))
-
     }
 
     private fun setupTextChangeEvent() {
@@ -332,14 +330,18 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     //取得餘額
-    private fun getMoney(){
+    private fun getMoney() {
         viewModel.getMoney()
     }
+
     //修改hint
-    private fun updateMoneyRange(){
-        val minMoney =mSelectRechCfgs?.minMoney ?:0.0
-        val maxMoney =mSelectRechCfgs?.maxMoney?:999999.0
-        et_recharge_amount.setHint(String().format(getString(R.string.edt_hint_deposit_money),
-            minMoney.toString(),maxMoney.toString()))
+    private fun updateMoneyRange() {
+        et_recharge_amount.setHint(
+            String.format(
+                getString(R.string.edt_hint_deposit_money),
+                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
+                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
+            )
+        )
     }
 }
