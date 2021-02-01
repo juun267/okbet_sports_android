@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -25,7 +26,16 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
-class WithdrawViewModel(private val androidContext: Context, private val moneyRepository: MoneyRepository, private val userInfoRepository: UserInfoRepository) : BaseViewModel() {
+class WithdrawViewModel(
+        private val androidContext: Context,
+        private val moneyRepository: MoneyRepository,
+        private val userInfoRepository: UserInfoRepository,
+        betInfoRepo: BetInfoRepository
+) : BaseViewModel() {
+
+    init {
+        betInfoRepository = betInfoRepo
+    }
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
@@ -108,9 +118,9 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     private fun getWithdrawAddRequest(bankCardId: Long, applyMoney: String, withdrawPwd: String): WithdrawAddRequest {
         return WithdrawAddRequest(
-            id = bankCardId,
-            applyMoney = applyMoney.toLong(),
-            withdrawPwd = MD5Util.MD5Encode(withdrawPwd)
+                id = bankCardId,
+                applyMoney = applyMoney.toLong(),
+                withdrawPwd = MD5Util.MD5Encode(withdrawPwd)
         )
     }
 
@@ -159,26 +169,26 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
     }
 
     private fun createBankAddRequest(
-        bankName: String,
-        subAddress: String,
-        cardNo: String,
-        fundPwd: String,
-        fullName: String,
-        id: String?,
-        userId: String,
-        uwType: String,
-        bankCode: String
+            bankName: String,
+            subAddress: String,
+            cardNo: String,
+            fundPwd: String,
+            fullName: String,
+            id: String?,
+            userId: String,
+            uwType: String,
+            bankCode: String
     ): BankAddRequest {
         return BankAddRequest(
-            bankName = bankName,
-            subAddress = subAddress,
-            cardNo = cardNo,
-            fundPwd = MD5Util.MD5Encode(fundPwd),
-            fullName = fullName,
-            id = id,
-            userId = userId,
-            uwType = uwType, //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
-            bankCode = bankCode
+                bankName = bankName,
+                subAddress = subAddress,
+                cardNo = cardNo,
+                fundPwd = MD5Util.MD5Encode(fundPwd),
+                fullName = fullName,
+                id = id,
+                userId = userId,
+                uwType = uwType, //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+                bankCode = bankCode
         )
     }
 
@@ -303,9 +313,9 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
                 androidContext.getString(R.string.error_withdraw_amount_empty)
             }
             !VerifyConstUtil.verifyWithdrawAmount(
-                withdrawAmount,
-                rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 100,
-                rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney
+                    withdrawAmount,
+                    rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 100,
+                    rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney
             ) -> {// TODO Dean : 根據config獲取 但只有最小沒有最大
                 getWithdrawRate(withdrawAmount.toLong())
                 androidContext.getString(R.string.error_withdraw_amount)
@@ -320,9 +330,9 @@ class WithdrawViewModel(private val androidContext: Context, private val moneyRe
 
     fun getWithdrawRate(withdrawAmount: Long) {
         _withdrawRateHint.value = String.format(
-            androidContext.getString(R.string.withdraw_handling_fee_hint),
-            rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100),
-            ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
+                androidContext.getString(R.string.withdraw_handling_fee_hint),
+                rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100),
+                ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
         )
     }
 

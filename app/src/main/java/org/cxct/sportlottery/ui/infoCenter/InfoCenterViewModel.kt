@@ -1,20 +1,25 @@
 package org.cxct.sportlottery.ui.infoCenter
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class InfoCenterViewModel(
     private val androidContext: Context,
-    private val infoCenterRepository: InfoCenterRepository
+    private val infoCenterRepository: InfoCenterRepository,
+    betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
+
+    init {
+        betInfoRepository = betInfoRepo
+    }
 
     enum class DataType { UNREAD, READED }//未讀,已讀
 
@@ -90,7 +95,7 @@ class InfoCenterViewModel(
                         }
 
                         _userUnreadMsgList.value = result?.infoCenterData
-                        _totalUnreadMsgCount.value = result?.total
+                        _totalUnreadMsgCount.value = result?.total?: 0
 
                         //判斷是不是可以再加載
                         mNeedMoreLoadingUnRead =
@@ -110,7 +115,7 @@ class InfoCenterViewModel(
                         }
 
                         _userReadedMsgList.value = result?.infoCenterData
-                        _totalReadedMsgCount.value = result?.total
+                        _totalReadedMsgCount.value = result?.total?: 0
 
                         //判斷是不是可以再加載
                         mNeedMoreLoadingReaded =
@@ -141,10 +146,10 @@ class InfoCenterViewModel(
             }
             when (dataType) {
                 DataType.UNREAD -> {
-                    _totalUnreadMsgCount.value = result?.total
+                    _totalUnreadMsgCount.value = result?.total?: 0
                 }
                 DataType.READED -> {
-                    _totalReadedMsgCount.value = result?.total
+                    _totalReadedMsgCount.value = result?.total?: 0
                 }
             }
             _isLoading.value = false

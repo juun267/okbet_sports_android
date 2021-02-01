@@ -68,10 +68,6 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         btn_recharge.setOnClickListener {
             startActivity(Intent(this, MoneyRechargeActivity::class.java))
         }
-
-        btn_finance.setOnClickListener {
-            startActivity(Intent(this, FinanceActivity::class.java))
-        }
     }
 
     private fun setupWithdrawButton() {
@@ -212,7 +208,7 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_user_nickname.text = viewModel.sayHello() + userInfo?.userName
+        tv_user_nickname.text = userInfo?.userName
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()

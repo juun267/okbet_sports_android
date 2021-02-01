@@ -31,10 +31,11 @@ class TypeOneListAdapter(
     }
 
 
+
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
-        fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId)
+        fun bindModel(originOdd: Odd) {
+            setData(originOdd, onOddClickListener, betInfoList, curMatchId)
         }
     }
 

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +20,10 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_li
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
@@ -87,7 +90,8 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            outrightOddAdapter.betInfoListData = viewModel.betInfoList.value
+            //TODO : 重構, view不應該直接去拿repository東西。應該要再view model去操作repository.
+            outrightOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
 
@@ -126,7 +130,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             matchOddAdapter.betInfoListData = it
             outrightOddAdapter.betInfoListData = it
         })
@@ -142,15 +146,64 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setSocketObserver() {
+        /*
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
+            if (oddsChangeEvent == null) return@Observer
+
+            updateMatchOdd(oddsChangeEvent)
+
+            outrightOddAdapter.updatedWinnerOddsList = oddsChangeEvent.odds[winnerItemKey] ?: listOf()
+        })
+*/
         viewModel.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let {
                 if (it.odds.isNullOrEmpty()) return@observe
                 matchOddAdapter.updatedOddsMap = it.odds
-
                 outrightOddAdapter.updatedWinnerOddsList = it.odds[winnerItemKey] ?: listOf()
-
             }
         })
+
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
+            Log.e(">>>", "hello world")
+        })
+    }
+
+    private fun updateMatchOdd(oddsChangeEvent: OddsChangeEvent) {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.forEach { oldOdds ->
+                val newOdds = oddsChangeEvent.odds[oldOdds.key]
+
+                oldOdds.value.forEach { oldOdd ->
+                    val updateOdd = newOdds?.find { newOdd ->
+                        newOdd.id == oldOdd.id
+                    }
+
+                    updateOdd?.odds?.let { nonNullUpdateOdd ->
+                        oldOdd.odds?.let { nonNullOldOdd ->
+                            when {
+                                (nonNullUpdateOdd > nonNullOldOdd) -> {
+                                    oldOdd.oddState = OddState.LARGER.state
+                                }
+
+                                (nonNullUpdateOdd == nonNullOldOdd) -> {
+                                    oldOdd.oddState = OddState.SAME.state
+                                }
+
+                                (nonNullUpdateOdd < nonNullOldOdd) -> {
+                                    oldOdd.oddState = OddState.SMALLER.state
+                                }
+                            }
+
+                            oldOdd.odds = updateOdd.odds
+                        }
+                    }
+                }
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
@@ -171,7 +224,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         oddsFirst?.let {
             matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
-            matchOddAdapter.betInfoListData = viewModel.betInfoList.value
+            matchOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
 

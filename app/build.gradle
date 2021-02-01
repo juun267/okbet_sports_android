@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -25,11 +27,10 @@ android {
 
     signingConfigs {
         release {
-            //TODO
-//            storeFile file("../signKey/key3.jks")
-//            storePassword "desheng@2020"
-//            keyAlias "fungame"
-//            keyPassword "desheng@2020"
+            storeFile file("../signKey/key3.jks")
+            storePassword "desheng@2020"
+            keyAlias "fungame"
+            keyPassword "desheng@2020"
         }
     }
 
@@ -57,7 +58,7 @@ android {
             buildConfigField "String", "CHANNEL_NAME", "\"test\""
             applicationId "com.happysport.sl.test"
             manifestPlaceholders = [
-                    app_name               : "测试体育",
+                    app_name               : "1bo sports",
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "65670407e46038b18ee836ed", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
@@ -95,6 +96,23 @@ android {
                     delete(fileTree(dir: outputDir, includes: ['**/*.mock']))
                 }
             }
+        }
+    }
+
+    //rename release .apk file
+    applicationVariants.all { variant ->
+        //判斷只有 release 版本才處理以下任務
+        if (variant.buildType.name == 'release') {
+            //改輸出名稱
+            variant.outputs.all { output ->
+                def name = variant.flavorName
+                def date = new SimpleDateFormat("yyyyMMdd").format(new Date())
+                outputFileName = name + '_' + getVersionCode() + '_' + getVersionName() + '_' + date + '.apk'
+            }
+
+            //強制改寫 apk 輸出路徑, ex: ..\app\build/outputs/releaseAPK
+            //方便不同平台的 apk 可以在同一層級的資料夾整理
+            variant.getPackageApplication().outputDirectory = new File(project.buildDir.absolutePath + "/outputs/releaseAPK")
         }
     }
 }

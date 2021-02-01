@@ -24,6 +24,7 @@ import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 
@@ -86,8 +87,8 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
-        getData()
         observeSocketData()
+        getData()
     }
 
 
@@ -96,15 +97,33 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
         })
-
+/*
         viewModel.matchClock.observe(viewLifecycleOwner, Observer{
             if (it == null) return@Observer
             Log.e(">>>>>", "matchClock")
         })
+*/
 
         viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
             if (it == null) return@Observer
+            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
+
             Log.e(">>>>>", "matchOddsChange")
+
+            val newList = arrayListOf<OddsDetailListData>()
+
+            for ( (key, value) in it.odds) {
+                newList.add(
+                    OddsDetailListData(
+                        key,
+                        TextUtil.split(value.typeCodes),
+                        value.name,
+                        value.odds
+                    )
+                )
+            }
+
+            oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
     }
 
@@ -190,16 +209,16 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
-            oddsDetailListAdapter?.oddsDetailListData?.clear()
-            oddsDetailListAdapter?.oddsDetailListData?.addAll(it)
+            oddsDetailListAdapter?.oddsDetailDataList?.clear()
+            oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.isParlayPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.isParlayPage?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
@@ -209,18 +228,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
         })
 
-
-        socketObserve()
-
     }
-
-    private fun socketObserve() {
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
-            if (it == null) return@Observer
-            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
-        })
-    }
-
 
     private fun getData() {
         gameType?.let { gameType ->
