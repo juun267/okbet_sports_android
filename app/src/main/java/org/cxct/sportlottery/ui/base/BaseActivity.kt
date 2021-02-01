@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,17 +65,17 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         val bcRepository = BroadcastRepository().instance()
         bcRepository.addDataSources(
-            mReceiver.globalStop,
-            mReceiver.matchClock,
-            mReceiver.matchOddsChange,
-            mReceiver.matchStatusChange,
-            mReceiver.notice,
-            mReceiver.oddsChange,
-            mReceiver.orderSettlement,
-            mReceiver.pingPong,
-            mReceiver.producerUp,
-            mReceiver.userMoney,
-            mReceiver.userNotice
+                mReceiver.globalStop,
+                mReceiver.matchClock,
+                mReceiver.matchOddsChange,
+                mReceiver.matchStatusChange,
+                mReceiver.notice,
+                mReceiver.oddsChange,
+                mReceiver.orderSettlement,
+                mReceiver.pingPong,
+                mReceiver.producerUp,
+                mReceiver.userMoney,
+                mReceiver.userNotice
         )
         registerReceiver(mReceiver, filter)
     }
@@ -83,17 +84,17 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         val bcRepository = BroadcastRepository().instance()
         bcRepository.removeDataSource(
-            mReceiver.globalStop,
-            mReceiver.matchClock,
-            mReceiver.matchOddsChange,
-            mReceiver.matchStatusChange,
-            mReceiver.notice,
-            mReceiver.oddsChange,
-            mReceiver.orderSettlement,
-            mReceiver.pingPong,
-            mReceiver.producerUp,
-            mReceiver.userMoney,
-            mReceiver.userNotice
+                mReceiver.globalStop,
+                mReceiver.matchClock,
+                mReceiver.matchOddsChange,
+                mReceiver.matchStatusChange,
+                mReceiver.notice,
+                mReceiver.oddsChange,
+                mReceiver.orderSettlement,
+                mReceiver.pingPong,
+                mReceiver.producerUp,
+                mReceiver.userMoney,
+                mReceiver.userNotice
         )
 
         unregisterReceiver(mReceiver)
@@ -159,10 +160,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     fun hideSoftKeyboard(activity: Activity) {
         try {
             val inputMethodManager = activity.getSystemService(
-                Activity.INPUT_METHOD_SERVICE
+                    Activity.INPUT_METHOD_SERVICE
             ) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                activity.currentFocus?.windowToken, 0
+                    activity.currentFocus?.windowToken, 0
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -181,37 +182,42 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         betFloatButtonVisible(false)//default
 
-        if (viewModel is MainViewModel) {
-            val vm = viewModel as MainViewModel
-            vm.betInfoList.observe(this, Observer {
-                if (it != null) {
-                    vm.isParlayPage.value?.let { isParlay ->
-                        val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
-                        checkBetInfoList(size)
-                    }
+        viewModel.betInfoRepository?.betInfoList?.observe(this, Observer {
+            if (it != null) {
+                viewModel.betInfoRepository?.isParlayPage?.value?.let { isParlay ->
+                    val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
+                    checkBetInfoList(size)
                 }
-            })
+            }
+        })
 
-            vm.isParlayPage.observe(this, Observer {
-                vm.betInfoList.value?.size?.let { size ->
-                    if (it) {
-                        checkBetInfoList(if (size == 0) 0 else 1)
-                    } else {
-                        checkBetInfoList(size)
-                    }
+        viewModel.betInfoRepository?.isParlayPage?.observe(this, Observer {
+            viewModel.betInfoRepository?.betInfoList?.value?.size?.let { size ->
+                if (it) {
+                    checkBetInfoList(if (size == 0) 0 else 1)
+                } else {
+                    checkBetInfoList(size)
                 }
-            })
+            }
+        })
 
-            rl_bet_float_button.setOnClickListener {
-                vm.isParlayPage.value?.let {
-                    if (it) {
-                        BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
-                    } else {
-                        BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
-                    }
+        rl_bet_float_button.setOnClickListener {
+            viewModel.betInfoRepository?.isParlayPage?.value?.let {
+                if (it) {
+                    BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
+                } else {
+                    BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
                 }
             }
         }
+
+
+        //default
+        viewModel.betInfoRepository?.let {
+            checkBetInfoList(it.betList.size)//test
+            it._betInfoList.postValue(it.betList)
+        }
+
     }
 
     private fun checkBetInfoList(count: Int) {

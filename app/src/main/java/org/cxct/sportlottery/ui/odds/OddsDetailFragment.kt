@@ -214,11 +214,11 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.isParlayPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.isParlayPage?.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
@@ -227,6 +227,8 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
                 ToastUtil.showBetResultToast(requireActivity(), it?.msg?: getString(R.string.unknown_error), false)
             }
         })
+
+        socketObserve()
 
     }
 

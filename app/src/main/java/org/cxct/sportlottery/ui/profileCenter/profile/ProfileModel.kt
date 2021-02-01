@@ -12,14 +12,20 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class ProfileModel(
     private val androidContext: Context,
-    private val userInfoRepository: UserInfoRepository
+    private val userInfoRepository: UserInfoRepository,
+    betInfoRepo: BetInfoRepository
 ) : BaseViewModel() {
+
+    init {
+        betInfoRepository = betInfoRepo
+    }
 
     private val _editIconUrlResult = MutableLiveData<IconUrlResult?>()
 
