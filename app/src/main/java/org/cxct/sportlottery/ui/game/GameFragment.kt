@@ -212,7 +212,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                                 odd.producerId == stopProducerId
                             }
 
-                            updateOdd?.status = BetStatus.LOCKED.code
+                            updateOdd?.status = BetStatus.DEACTIVATED.code
                         }
                     }
                 }
