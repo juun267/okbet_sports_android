@@ -63,7 +63,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         initView()
         initButton()
         initObserve()
-
     }
 
     private fun initButton() {
@@ -123,8 +122,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun initView() {
         setupTextChangeEvent()
         calendarBottomSheet()
+        getMoney()
+        updateMoneyRange()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initObserve() {
 
         //充值金額訊息
@@ -146,6 +148,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //暱稱
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
+        })
+        viewModel.userMoneyResult.observe(viewLifecycleOwner, {
+            txv_wallet_money.text = it?.money.toString() + " RMB"
         })
 
     }
@@ -204,6 +209,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 try {
                     mSelectRechCfgs = rechCfgsList[position]
                     refreshSelectRechCfgs(mSelectRechCfgs)
+                    getMoney()
+                    updateMoneyRange()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -272,6 +279,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //存款時間
         txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
 
+        //充值金額hint
+        txv_wallet_money.hint= String().format(getString(R.string.edt_hint_deposit_money))
+
     }
 
     private fun setupTextChangeEvent() {
@@ -321,4 +331,15 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         return Pair(minusDaysCalendar, todayCalendar)
     }
 
+    //取得餘額
+    private fun getMoney(){
+        viewModel.getMoney()
+    }
+    //修改hint
+    private fun updateMoneyRange(){
+        val minMoney =mSelectRechCfgs?.minMoney ?:0.0
+        val maxMoney =mSelectRechCfgs?.maxMoney?:999999.0
+        et_recharge_amount.setHint(String().format(getString(R.string.edt_hint_deposit_money),
+            minMoney.toString(),maxMoney.toString()))
+    }
 }

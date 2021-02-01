@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.*
+import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.MoneyManager
@@ -67,6 +69,10 @@ class MoneyRechViewModel(
         get() = _rechargeOnlineAmountMsg
     private var _rechargeOnlineAmountMsg = MutableLiveData<String>()
 
+    //使用者餘額
+    val userMoneyResult: LiveData<UserMoneyResult?>
+        get() = _userMoneyResult
+    private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
 
 
     //獲取充值的基礎配置
@@ -75,9 +81,9 @@ class MoneyRechViewModel(
             val result = doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }
-            _rechargeConfigs.value = result?.rechCfg
+            _rechargeConfigs.value = result?.rechCfg!!
 
-            result?.rechCfg?.rechCfgs?.let { filterBankList(it) }
+            result.rechCfg.rechCfgs.let { filterBankList(it) }
         }
     }
 
@@ -116,7 +122,7 @@ class MoneyRechViewModel(
 
     //轉帳支付充值
     fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
-        if(checkTransferPayInput()){
+        if (checkTransferPayInput()) {
             viewModelScope.launch {
                 if (checkTransferPayInput()) {
                     doNetwork(androidContext) {
@@ -132,7 +138,7 @@ class MoneyRechViewModel(
 
     //在線支付
     fun rechargeOnlinePay(moneyAddRequest: MoneyAddRequest) {
-        if(onlinePayInput()){
+        if (onlinePayInput()) {
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     moneyRepository.rechargeOnlinePay(moneyAddRequest)
@@ -243,19 +249,30 @@ class MoneyRechViewModel(
 
     //銀行卡號認證
     fun checkBankID(bankId: String) {
-        _bankIDErrorMsg.postValue(when {
-            bankId.isEmpty() -> {
-                androidContext.getString(R.string.error_bank_id)
+        _bankIDErrorMsg.postValue(
+            when {
+                bankId.isEmpty() -> {
+                    androidContext.getString(R.string.error_bank_id)
+                }
+                !VerifyConstUtil.verifyBankCardNumber(
+                    bankId
+                ) -> {
+                    androidContext.getString(R.string.error_bank_id)
+                }
+                else -> {
+                    ""
+                }
             }
-            !VerifyConstUtil.verifyBankCardNumber(
-                bankId
-            ) -> {
-                androidContext.getString(R.string.error_bank_id)
+        )
+    }
+    //獲取使用者餘額
+    fun getMoney() {
+        viewModelScope.launch {
+            val userMoneyResult = doNetwork(androidContext) {
+                OneBoSportApi.userService.getMoney()
             }
-            else -> {
-                ""
-            }
-        })
+            _userMoneyResult.postValue(userMoneyResult)
+        }
     }
 
     private fun checkTransferPayInput(): Boolean {
