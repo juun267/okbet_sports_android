@@ -211,9 +211,11 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             when (val stopProducerId = it.producerId) {
                 null -> {
                     updateAllOddDeActivated()
+                    updateAllOutrightOddDeActivated()
                 }
                 else -> {
                     updateOddDeActivated(stopProducerId)
+                    updateOutrightOddDeActivated(stopProducerId)
                 }
             }
         })
@@ -234,6 +236,16 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         matchOddAdapter.data = matchOdds
     }
 
+    private fun updateAllOutrightOddDeActivated() {
+        val odds = outrightOddAdapter.data
+
+        odds.forEach {
+            it.status = BetStatus.DEACTIVATED.code
+        }
+
+        outrightOddAdapter.data = odds
+    }
+
     private fun updateOddDeActivated(stopProducerId: Int) {
         val matchOdds = matchOddAdapter.data
 
@@ -248,6 +260,18 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateOutrightOddDeActivated(stopProducerId: Int) {
+        val odds = outrightOddAdapter.data
+
+        val updateOdd = odds.find {
+            it.producerId == stopProducerId
+        }
+
+        updateOdd?.status = BetStatus.DEACTIVATED.code
+
+        outrightOddAdapter.data = odds
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
