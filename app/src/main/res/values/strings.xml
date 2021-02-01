@@ -133,18 +133,18 @@
     <string name="sunday">星期日</string>
 
     <!-- MenuFragment -->
-    <string name="betting_record">投注纪录</string>
-    <string name="game_settlement">赛果结算</string>
     <string name="profile_center">个人中心</string>
-    <string name="news_center">消息中心</string>
-    <string name="help_center">帮助中心</string>
+    <string name="member_level">会员层级</string>
+    <string name="game_settlement">赛果结算</string>
+    <string name="version_update">版本更新</string>
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号 Ver %s</string>
 
     <!--  HelpCenter  -->
     <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
-        <!--  GameRule  -->
+
+    <!--  GameRule  -->
     <string name="sport_bet_rule">体育投注规则</string>
     <string name="common_sport_description">一般体育说明</string>
     <string name="overview">概述</string>
@@ -200,6 +200,9 @@
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">充值</string>
     <string name="more_service">更多服务</string>
+    <string name="account_transfer">额度转换</string>
+    <string name="news_center">消息中心</string>
+    <string name="help_center">帮助中心</string>
     <string name="fund_detail">资金明细</string>
     <string name="feedback">建议反馈</string>
     <string name="promotion">优惠活动</string>

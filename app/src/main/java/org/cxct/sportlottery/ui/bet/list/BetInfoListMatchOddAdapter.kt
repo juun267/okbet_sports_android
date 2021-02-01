@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoMatchOddItemBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
+import org.cxct.sportlottery.util.TextUtil
 
 class BetInfoListMatchOddAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListMatchOddAdapter.ViewHolder>() {
@@ -34,7 +35,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
         fun bind(matchOdd: MatchOdd, position: Int) {
             binding.matchOdd = matchOdd
-            binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), matchOdd.odds.toString())
+            binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             val strVerse = context.getString(R.string.verse_)
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
