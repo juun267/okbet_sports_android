@@ -380,23 +380,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 tvOdds.isEnabled = false
                             }
                         }
-
-
-
-//                        odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
-//
-//                        tvOdds.isSelected = odd.isSelect
-//
-//                        tvOdds.setOnClickListener {
-//                            if (!odd.isSelect) {
-//                                if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
-//                                    return@setOnClickListener
-//                                }
-//                                onOddClickListener.getBetInfoList(odd)
-//                            } else {
-//                                onOddClickListener.removeBetInfoItem(odd)
-//                            }
-//                        }
                     }
                 }
             }
