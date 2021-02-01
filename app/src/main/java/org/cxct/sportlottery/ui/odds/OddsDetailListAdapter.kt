@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.content.res.ColorStateList
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,13 +9,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 
@@ -322,9 +327,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val awayList = ArrayList<Odd>()
 
             for (odd in oddsDetail.oddArrayList) {
-                odd.name?.let { name ->
-                    if (name.contains(" - ")) {
-                        val stringArray: List<String> = name.split(" - ") ?: listOf()
+
+                if(odd.name!=null) {
+                    if (odd.name?.contains(" - ") == true) {
+                        val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
                         if (stringArray[0].toInt() > stringArray[1].toInt()) {
                             homeList.add(odd)
                         }
@@ -338,24 +344,60 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                         val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                         odd.isSelect = select
+
                         val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
+                        val vCover = itemView.findViewById<ImageView>(R.id.iv_disable_cover)
 
                         odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
 
-                        tvOdds.isSelected = odd.isSelect
+                        setHighlight(tvOdds, odd.oddState)
 
-                        tvOdds.setOnClickListener {
-                            if (!odd.isSelect) {
-                                if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
-                                    return@setOnClickListener
+                        when (odd.status) {
+                            BetStatus.ACTIVATED.code -> {
+                                itemView.visibility = View.VISIBLE
+                                vCover.visibility = View.GONE
+                                tvOdds.isEnabled = true
+                                tvOdds.isSelected = odd.isSelect
+                                tvOdds.setOnClickListener {
+                                    if (!odd.isSelect) {
+                                        if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
+                                            return@setOnClickListener
+                                        }
+                                        onOddClickListener.getBetInfoList(odd)
+                                    } else {
+                                        onOddClickListener.removeBetInfoItem(odd)
+                                    }
                                 }
-                                onOddClickListener.getBetInfoList(odd)
-                            } else {
-                                onOddClickListener.removeBetInfoItem(odd)
+                            }
+                            BetStatus.LOCKED.code -> {
+                                itemView.visibility = View.VISIBLE
+                                vCover.visibility = View.VISIBLE
+                                tvOdds.isEnabled = false
+                            }
+                            BetStatus.DEACTIVATED.code -> {
+                                itemView.visibility = View.GONE
+                                vCover.visibility = View.GONE
+                                tvOdds.isEnabled = false
                             }
                         }
-                    }
 
+
+
+//                        odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
+//
+//                        tvOdds.isSelected = odd.isSelect
+//
+//                        tvOdds.setOnClickListener {
+//                            if (!odd.isSelect) {
+//                                if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
+//                                    return@setOnClickListener
+//                                }
+//                                onOddClickListener.getBetInfoList(odd)
+//                            } else {
+//                                onOddClickListener.removeBetInfoItem(odd)
+//                            }
+//                        }
+                    }
                 }
             }
 
@@ -393,6 +435,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
+    }
+
+    private fun setHighlight(textView: TextView, status: Int) {
+        when (status) {
+            OddState.LARGER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
+            OddState.SMALLER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
+        }
+
+        Handler().postDelayed(
+                {
+                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.light_gray))
+                }, CHANGING_ITEM_BG_COLOR_DURATION
+        )
     }
 
 

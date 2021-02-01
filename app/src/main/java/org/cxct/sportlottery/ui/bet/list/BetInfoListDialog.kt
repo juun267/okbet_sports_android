@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,9 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListAdapter.OnItemClickListener {
@@ -63,16 +66,16 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
             dismiss()
         }
 
-        betInfoListAdapter = BetInfoListAdapter(requireContext(),this@BetInfoListDialog)
+        betInfoListAdapter = BetInfoListAdapter(requireContext(), this@BetInfoListDialog)
 
         rv_bet_list.apply {
             adapter = betInfoListAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec_bet_info_list
-                )
+                    SpaceItemDecoration(
+                            context,
+                            R.dimen.recyclerview_item_dec_spec_bet_info_list
+                    )
             )
         }
 
@@ -93,6 +96,25 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
                 ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
             }
         })
+
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "matchOddsChange")
+            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+            for ((key, value) in it.odds) {
+                newList.addAll(value.odds)
+            }
+
+            newList.forEach { odd ->
+                if (odd.name != null) {
+                    Log.e("[kevin]", odd.name)
+                }
+            }
+
+            betInfoListAdapter.updatedBetInfoList = newList
+
+        })
+
     }
 
 
@@ -105,12 +127,12 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
 
     override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
         viewModel.addBet(
-            BetAddRequest(
-                listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
-                listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
-                1,
-                "EU"
-            ), betInfoListData.matchType
+                BetAddRequest(
+                        listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
+                        listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+                        1,
+                        "EU"
+                ), betInfoListData.matchType
         )
     }
 
