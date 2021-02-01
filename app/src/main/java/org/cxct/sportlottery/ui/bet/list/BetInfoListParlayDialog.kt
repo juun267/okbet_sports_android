@@ -113,12 +113,6 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         }
     }
 
-
-    private fun getData() {
-        viewModel.getBetInfoListForParlay()
-    }
-
-
     private fun observeData() {
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
             result?.success?.let {
@@ -147,6 +141,10 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
                 ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
             }
         })
+    }
+
+    private fun getData() {
+        viewModel.getBetInfoListForParlay()
     }
 
 
