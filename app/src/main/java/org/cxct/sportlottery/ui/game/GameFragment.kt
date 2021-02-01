@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
@@ -63,7 +64,10 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
                 if (isExpand) {
+                    Log.e(">>>", "")
                     service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                } else {
+                    service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
                 }
             }
             betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
@@ -111,6 +115,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
+
         viewModel.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
             if (matchClockEvent == null) return@Observer
 
@@ -134,7 +139,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             leagueOddAdapter.betInfoListData = it
         })
-    }
+
 
 
 //        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
@@ -148,17 +153,53 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 //            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
 //        })
 
+        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
+        })
+/*
+        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
+            if (oddsChangeEvent == null) return@Observer
 
-//    private fun transformData(odds: Map<String, Odds>): Map<String, List<Odd>> {
-//
-//        val newMap = mutableMapOf<String, List<Odd>>()
-//
-//        for ( (key, value) in odds) {
-//            newMap[key] = value.odds
-//        }
-//
-//        return newMap
-//    }
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { oldOdds ->
+                        val newOdds = oddsChangeEvent.odds[oldOdds.key]
+
+                        oldOdds.value.forEach { oldOdd ->
+                            val updateOdd = newOdds?.find { newOdd ->
+                                newOdd.id == oldOdd.id
+                            }
+
+                            updateOdd?.odds?.let { nonNullUpdateOdd ->
+                                oldOdd.odds?.let { nonNullOldOdd ->
+                                    when {
+                                        (nonNullUpdateOdd > nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.LARGER.state
+                                        }
+
+                                        (nonNullUpdateOdd == nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.SAME.state
+                                        }
+
+                                        (nonNullUpdateOdd < nonNullOldOdd) -> {
+                                            oldOdd.oddState = OddState.SMALLER.state
+                                        }
+                                    }
+
+                                    oldOdd.odds = updateOdd.odds
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            leagueOddAdapter.data = leagueOdds
+        })
+        */
+    }
 
     private fun setupSportTypeRow(view: View) {
         view.hall_game_type_list.apply {
