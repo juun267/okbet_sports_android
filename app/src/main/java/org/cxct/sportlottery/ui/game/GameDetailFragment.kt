@@ -164,6 +164,8 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         updateSocketGlobalStop()
+
+        updateSocketProducerUp()
     }
 
     private fun updateMatchOdd(oddsChangeEvent: OddsChangeEvent) {
@@ -210,25 +212,42 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             when (val stopProducerId = it.producerId) {
                 null -> {
-                    updateAllOddLock()
-                    updateAllOutrightOddLock()
+                    updateAllOddStatus(BetStatus.LOCKED)
+                    updateAllOutrightOddStatus(BetStatus.LOCKED)
                 }
                 else -> {
-                    updateOddLock(stopProducerId)
-                    updateOutrightOddLock(stopProducerId)
+                    updateOddStatus(stopProducerId, BetStatus.LOCKED)
+                    updateOutrightOddStatus(stopProducerId, BetStatus.LOCKED)
                 }
             }
         })
     }
 
-    private fun updateAllOddLock() {
+    private fun updateSocketProducerUp() {
+        viewModel.producerUp.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+
+            when (val upProducerId = it.producerId) {
+                null -> {
+                    updateAllOddStatus(BetStatus.ACTIVATED)
+                    updateAllOutrightOddStatus(BetStatus.ACTIVATED)
+                }
+                else -> {
+                    updateOddStatus(upProducerId, BetStatus.ACTIVATED)
+                    updateOutrightOddStatus(upProducerId, BetStatus.ACTIVATED)
+                }
+            }
+        })
+    }
+
+    private fun updateAllOddStatus(betStatus: BetStatus) {
         val matchOdds = matchOddAdapter.data
 
         matchOdds.forEach { matchOdd ->
             matchOdd.odds.values.forEach { odds ->
                 odds.forEach {
 
-                    it.status = BetStatus.LOCKED.code
+                    it.status = betStatus.code
                 }
             }
         }
@@ -236,17 +255,17 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         matchOddAdapter.data = matchOdds
     }
 
-    private fun updateAllOutrightOddLock() {
+    private fun updateAllOutrightOddStatus(betStatus: BetStatus) {
         val odds = outrightOddAdapter.data
 
         odds.forEach {
-            it.status = BetStatus.LOCKED.code
+            it.status = betStatus.code
         }
 
         outrightOddAdapter.data = odds
     }
 
-    private fun updateOddLock(stopProducerId: Int) {
+    private fun updateOddStatus(stopProducerId: Int, betStatus: BetStatus) {
         val matchOdds = matchOddAdapter.data
 
         matchOdds.forEach { matchOdd ->
@@ -255,14 +274,14 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     odd.producerId == stopProducerId
                 }
 
-                updateOdd?.status = BetStatus.LOCKED.code
+                updateOdd?.status = betStatus.code
             }
         }
 
         matchOddAdapter.data = matchOdds
     }
 
-    private fun updateOutrightOddLock(stopProducerId: Int) {
+    private fun updateOutrightOddStatus(stopProducerId: Int, betStatus: BetStatus) {
         val odds = outrightOddAdapter.data
 
         val updateOdd = odds.find {
