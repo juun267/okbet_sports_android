@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,7 +25,10 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         setHighlight(tvOdds, odd.oddState)
 
         tvName.text = odd.name
-        tvOdds.text = odd.odds.toString()
+        odd.odds?.let { odds ->
+            tvOdds.text = TextUtil.formatForOdd(odds)
+        }
+
 
         when (odd.status) {
             BetStatus.ACTIVATED.code -> {

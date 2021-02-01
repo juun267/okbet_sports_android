@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
@@ -87,7 +88,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
                     }
                 }
                 outright_name.text = item.spread
-                outright_bet.text = item.odds.toString()
+                item.odds?.let { odd -> outright_bet.text = TextUtil.formatForOdd(odd) }
                 isSelected = item.isSelected
                 outright_bet.setOnClickListener {
                     outrightOddListener?.onClick(item)
@@ -138,7 +139,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd, parent, false)
+                        .inflate(R.layout.itemview_outright_odd, parent, false)
 
                 return ViewHolder(view)
             }
