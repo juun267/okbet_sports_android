@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network
 
+import android.content.Context
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
@@ -17,9 +20,13 @@ object Constants {
     }
 
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getGameRuleUrl(token: String?): String? {
+    fun getGameRuleUrl(context: Context): String? {
         return try {
-            BASE_URL + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/"
+                else -> "https://sportsrule.cxct.org/us"
+            }
+
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             null
