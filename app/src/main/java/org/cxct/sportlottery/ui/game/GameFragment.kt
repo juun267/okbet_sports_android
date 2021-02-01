@@ -205,23 +205,23 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             when (val stopProducerId = it.producerId) {
                 null -> {
-                    updateAllOddDeActivated()
+                    updateAllOddLock()
                 }
                 else -> {
-                    updateOddDeActivated(stopProducerId)
+                    updateOddLock(stopProducerId)
                 }
             }
         })
     }
 
-    private fun updateAllOddDeActivated() {
+    private fun updateAllOddLock() {
         val leagueOdds = leagueOddAdapter.data
         leagueOdds.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 matchOdd.odds.values.forEach { odds ->
                     odds.forEach { odd ->
 
-                        odd.status = BetStatus.DEACTIVATED.code
+                        odd.status = BetStatus.LOCKED.code
                     }
                 }
             }
@@ -230,7 +230,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         leagueOddAdapter.data = leagueOdds
     }
 
-    private fun updateOddDeActivated(stopProducerId: Int) {
+    private fun updateOddLock(stopProducerId: Int) {
         val leagueOdds = leagueOddAdapter.data
         leagueOdds.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
@@ -239,7 +239,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                         odd.producerId == stopProducerId
                     }
 
-                    updateOdd?.status = BetStatus.DEACTIVATED.code
+                    updateOdd?.status = BetStatus.LOCKED.code
                 }
             }
         }

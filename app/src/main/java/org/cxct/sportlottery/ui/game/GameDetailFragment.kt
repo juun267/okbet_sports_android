@@ -210,25 +210,25 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             when (val stopProducerId = it.producerId) {
                 null -> {
-                    updateAllOddDeActivated()
-                    updateAllOutrightOddDeActivated()
+                    updateAllOddLock()
+                    updateAllOutrightOddLock()
                 }
                 else -> {
-                    updateOddDeActivated(stopProducerId)
-                    updateOutrightOddDeActivated(stopProducerId)
+                    updateOddLock(stopProducerId)
+                    updateOutrightOddLock(stopProducerId)
                 }
             }
         })
     }
 
-    private fun updateAllOddDeActivated() {
+    private fun updateAllOddLock() {
         val matchOdds = matchOddAdapter.data
 
         matchOdds.forEach { matchOdd ->
             matchOdd.odds.values.forEach { odds ->
                 odds.forEach {
 
-                    it.status = BetStatus.DEACTIVATED.code
+                    it.status = BetStatus.LOCKED.code
                 }
             }
         }
@@ -236,17 +236,17 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         matchOddAdapter.data = matchOdds
     }
 
-    private fun updateAllOutrightOddDeActivated() {
+    private fun updateAllOutrightOddLock() {
         val odds = outrightOddAdapter.data
 
         odds.forEach {
-            it.status = BetStatus.DEACTIVATED.code
+            it.status = BetStatus.LOCKED.code
         }
 
         outrightOddAdapter.data = odds
     }
 
-    private fun updateOddDeActivated(stopProducerId: Int) {
+    private fun updateOddLock(stopProducerId: Int) {
         val matchOdds = matchOddAdapter.data
 
         matchOdds.forEach { matchOdd ->
@@ -255,21 +255,21 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     odd.producerId == stopProducerId
                 }
 
-                updateOdd?.status = BetStatus.DEACTIVATED.code
+                updateOdd?.status = BetStatus.LOCKED.code
             }
         }
 
         matchOddAdapter.data = matchOdds
     }
 
-    private fun updateOutrightOddDeActivated(stopProducerId: Int) {
+    private fun updateOutrightOddLock(stopProducerId: Int) {
         val odds = outrightOddAdapter.data
 
         val updateOdd = odds.find {
             it.producerId == stopProducerId
         }
 
-        updateOdd?.status = BetStatus.DEACTIVATED.code
+        updateOdd?.status = BetStatus.LOCKED.code
 
         outrightOddAdapter.data = odds
     }
