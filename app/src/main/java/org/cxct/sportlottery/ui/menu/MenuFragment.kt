@@ -80,6 +80,10 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_game_result)
         }
 
+        menu_version_update.setOnClickListener {
+            //TODO 版本更新
+        }
+
         menu_sign_out.setOnClickListener {
             viewModel.logout()
             context?.run {

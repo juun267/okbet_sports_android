@@ -87,6 +87,12 @@
                 app:cvTitle="@string/game_settlement" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_version_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitle="@string/version_update" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_sign_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
