@@ -7,6 +7,7 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +42,11 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
     private fun updateItemDataFromSocket(betInfo: BetInfoListData, updatedBetInfoList: MutableList<Odd>) {
-        for (item in updatedBetInfoList) {
-            if (item.id == betInfo.matchOdd.oddsId) {
-                item.odds?.let { odds -> betInfo.matchOdd.odds = odds }
-                item.status = betInfo.matchOdd.status
-                item.oddState = getOddState(betInfo.matchOdd.odds, item)
+        for (newItem in updatedBetInfoList) {
+            if (newItem.id == betInfo.matchOdd.oddsId) {
+                newItem.odds?.let { odds -> betInfo.matchOdd.odds = odds }
+                newItem.status?.let { status -> betInfo.matchOdd.status = status }
+                betInfo.matchOdd.oddState = getOddState(betInfo.matchOdd.odds, newItem)
             }
         }
     }
@@ -73,8 +74,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(betInfoList[position], position)
         updateItemDataFromSocket(betInfoList[position], updatedBetInfoList)
+        holder.bind(betInfoList[position], position)
     }
 
 
@@ -164,8 +165,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 }
             }
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
-            binding.betInfoDetail.tvOdds.text =
-                    String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
+            binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
 
             binding.etBet.afterTextChanged {
                 check(it, matchOdd, parlayOdd)
@@ -186,7 +186,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
             binding.betInfoDetail.tvMatch.text = strMatch
 
-//            setChangeOdds()
+            setChangeOdds(binding.betInfoAction.tv_bet, binding.betInfoDetail.tvOdds, matchOdd)
 
             binding.executePendingBindings()
         }
@@ -214,10 +214,13 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         fun onAddMoreClick()
     }
 
-    private fun setChangeOdds(textView: TextView, status: Int) {
-        when (status) {
-            OddState.LARGER.state -> {}
-            OddState.SMALLER.state -> {}
+    private fun setChangeOdds(tv_bet: TextView, tv_Odds: TextView, matchOdd: MatchOdd) {
+        when (matchOdd.oddState) {
+            OddState.LARGER.state, OddState.SMALLER.state -> {
+                tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.red))
+                tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
+                tv_Odds.text = String.format(tv_Odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
+            }
         }
     }
 

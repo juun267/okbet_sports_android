@@ -104,15 +104,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
             for ((key, value) in it.odds) {
                 newList.addAll(value.odds)
             }
-
-            newList.forEach { odd ->
-                if (odd.name != null) {
-                    Log.e("[kevin]", odd.name)
-                }
-            }
-
             betInfoListAdapter.updatedBetInfoList = newList
-
         })
 
     }

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.bet.info
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.odds.list.OddState
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
@@ -41,5 +42,7 @@ data class MatchOdd(
     @Json(name = "startTime")
     val startTime: Long,
     @Json(name = "status")
-    val status: Int
-)
+    var status: Int
+){
+    var oddState: Int = OddState.SAME.state
+}
