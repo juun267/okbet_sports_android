@@ -206,15 +206,35 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun updateSocketGlobalStop() {
         viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
-            val stopProducerId = it?.producerId
+            if (it == null) return@Observer
 
-            stopProducerId?.let {
-                updateSocketGlobalStopOddList(stopProducerId)
+            when (val stopProducerId = it.producerId) {
+                null -> {
+                    updateAllOddDeActivated()
+                }
+                else -> {
+                    updateOddDeActivated(stopProducerId)
+                }
             }
         })
     }
 
-    private fun updateSocketGlobalStopOddList(stopProducerId: Int) {
+    private fun updateAllOddDeActivated() {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.values.forEach { odds ->
+                odds.forEach {
+
+                    it.status = BetStatus.DEACTIVATED.code
+                }
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateOddDeActivated(stopProducerId: Int) {
         val matchOdds = matchOddAdapter.data
 
         matchOdds.forEach { matchOdd ->
