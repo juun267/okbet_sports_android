@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -409,6 +410,13 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             it?.userNoticeList?.let { list ->
                 if (list.isNotEmpty())
                     UserNoticeDialog(this).setNoticeList(list).show()
+            }
+        })
+
+        viewModel.notice.observe(this, Observer {
+            hideLoading()
+            if (it != null) {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -930,15 +930,15 @@ class MainViewModel(
                             }
                         }
                         list.add(
-                                OddsDetailListData(
-                                        key,
-                                        TextUtil.split(value.typeCodes),
-                                        value.name,
-                                        value.odds,
-                                        false
-                                )
+                            OddsDetailListData(
+                                key,
+                                TextUtil.split(value.typeCodes),
+                                value.name,
+                                value.odds as MutableList<org.cxct.sportlottery.network.odds.detail.Odd>,
+                            )
                         )
                     }
+
                     _oddsDetailList.postValue(list)
                 }
             }

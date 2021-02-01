@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
 
 class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
@@ -25,6 +26,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         }
 
     var updatedOddsMap = mapOf<String, List<Odd>>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var updatedMatchStatus: MatchStatusCO? = MatchStatusCO()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -45,74 +52,105 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
         updateItemDataFromSocket(item)
+        updatedMatchStatusFromSocket(item)
         holder.bind(item, playType, matchOddListener)
     }
+
+    private fun updatedMatchStatusFromSocket(originItem: MatchOdd) {
+        val originMatchInfo = originItem.matchInfo
+
+        if (originMatchInfo?.id == updatedMatchStatus?.matchId) {
+            originItem.matchInfo?.apply {
+                awayScore = updatedMatchStatus?.awayScore
+                homeScore = updatedMatchStatus?.homeScore
+                statusName = updatedMatchStatus?.statusName //TODO Cheryl: 這值是放ＵＩ的哪？
+            }
+        }
+
+    }
+
+    private fun addDataIfNotEnough(originItem: MatchOdd, code: String) {
+        val oddList = originItem.odds[code]
+        if (oddList?.size?:0 < 2) {
+            for (i in 0 until (2 - (oddList?.size?:0))) {
+                originItem.odds[code]?.add(Odd())
+                if (updatedOddsMap[code]?.size?:0 > i ) {
+                    updatedOddsMap[code]?.get(i)?.let { originItem.odds[code]?.set(i, it) }
+                }
+            }
+        }
+    }
+
 
     private fun updateItemDataFromSocket(originItem: MatchOdd) {
         if (updatedOddsMap.isNullOrEmpty()) return
 
-        for ((key, value) in updatedOddsMap) {
-            when (key) {
-                PlayType.OU.code -> {
-                    value.forEach {
-                        val oddItem = originItem.odds[PlayType.OU.code]
+        addDataIfNotEnough(originItem, PlayType.OU.code)
+        addDataIfNotEnough(originItem, PlayType.HDP.code)
+        addDataIfNotEnough(originItem, PlayType.X12.code)
 
-                        when (it.id) {
-                            oddItem?.firstOrNull()?.id -> {
-                                val oddData = oddItem[0]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[0] = it
+            for ((key, value) in updatedOddsMap) {
+                when (key) {
+                    PlayType.OU.code -> {
+                        value.forEach {
+                            val oddItem = originItem.odds[PlayType.OU.code]
+                            when (it.id) {
+                                oddItem?.firstOrNull()?.id -> {
+                                    val oddData = oddItem[0]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[0] = it
+                                }
+                                oddItem?.get(1)?.id -> {
+                                    val oddData = oddItem[1]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[1] = it
+                                }
                             }
-                            oddItem?.get(1)?.id -> {
-                                val oddData = oddItem[1]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[1] = it
-                            }
-                        }
 
-                    }
-                }
-
-                PlayType.HDP.code -> {
-                    value.forEach {
-                        val oddItem = originItem.odds[PlayType.HDP.code]
-
-                        when (it.id) {
-                            oddItem?.firstOrNull()?.id -> {
-                                val oddData = oddItem[0]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[0] = it
-                            }
-                            oddItem?.get(1)?.id -> {
-                                val oddData = oddItem[1]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[1] = it
-                            }
                         }
                     }
-                }
 
-                PlayType.X12.code -> {
-                    value.forEach {
-                        val oddItem = originItem.odds[PlayType.X12.code]
-                        when (it.id) {
-                            oddItem?.firstOrNull()?.id -> {
-                                val oddData = oddItem[0]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[0] = it
-                            }
-                            oddItem?.get(1)?.id -> {
-                                val oddData = oddItem[1]
-                                oddData.oddState = getOddState(oddData, it)
-                                oddItem[1] = it
+                    PlayType.HDP.code -> {
+                        value.forEach {
+                            val oddItem = originItem.odds[PlayType.HDP.code]
+
+                            when (it.id) {
+                                oddItem?.firstOrNull()?.id -> {
+                                    val oddData = oddItem[0]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[0] = it
+                                }
+                                oddItem?.get(1)?.id -> {
+                                    val oddData = oddItem[1]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[1] = it
+                                }
                             }
                         }
                     }
-                }
 
-            }
+                    PlayType.X12.code -> {
+                        value.forEach {
+                            val oddItem = originItem.odds[PlayType.X12.code]
+                            when (it.id) {
+                                oddItem?.firstOrNull()?.id -> {
+                                    val oddData = oddItem[0]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[0] = it
+                                }
+                                oddItem?.get(1)?.id -> {
+                                    val oddData = oddItem[1]
+                                    oddData.oddState = getOddState(oddData, it)
+                                    oddItem[1] = it
+                                }
+                            }
+                        }
+                    }
+
+                }
         }
     }
+
 
     private fun getOddState(oldItem: Odd?, it: Odd): Int {
         val oldOdd = oldItem?.odds ?: 0.0
@@ -189,9 +227,10 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     bet_top_text.text = it.spread
                     bet_bottom_text.text = it.odds.toString()
                     setOnClickListener { _ ->
+//                        setHighlight(OddState.LARGER.state)
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -204,7 +243,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -217,7 +256,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -230,7 +269,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                 }
             }
@@ -238,6 +277,22 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             item.leagueTime?.let {
                 updateLeagueTime(itemView.ou_hdp_game_time, it.toLong())
             }
+
+            item.matchInfo?.apply {
+                awayScore?.let {
+                    itemView.ou_hdp_away_score.text = it.toString()
+                }
+
+                homeScore?.let {
+                    itemView.ou_hdp_home_score.text = it.toString()
+                }
+
+                statusName?.let {
+                    itemView.ou_hdp_game_state.text = it
+                }
+            }
+
+
         }
 
         private fun setupMatchOdd1x2(item: MatchOdd, matchOddListener: MatchOddListener?) {
@@ -258,6 +313,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.x12_bet_1.apply {
                     isSelected = it.isSelected
                     bet_bottom_text.text = it.odds.toString()
+                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
                     }
@@ -268,6 +325,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.x12_bet_x.apply {
                     isSelected = it.isSelected
                     bet_bottom_text.text = it.odds.toString()
+                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
                     }
@@ -278,6 +337,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.x12_bet_2.apply {
                     isSelected = it.isSelected
                     bet_bottom_text.text = it.odds.toString()
+                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
                     }
@@ -287,6 +348,21 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             item.leagueTime?.let {
                 updateLeagueTime(itemView.x12_game_time, it.toLong())
             }
+
+            item.matchInfo?.apply {
+                awayScore.let {
+                    itemView.ou_hdp_away_score.text = it.toString()
+                }
+
+                homeScore.let {
+                    itemView.ou_hdp_home_score.text = it.toString()
+                }
+
+                statusName.let {
+                    itemView.ou_hdp_game_state.text = it
+                }
+            }
+
         }
 
         private fun updateArrowExpand() {

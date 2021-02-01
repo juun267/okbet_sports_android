@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
@@ -21,9 +22,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
-    var oddsDetailListData: ArrayList<OddsDetailListData> = ArrayList()
+    var oddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
 
     var curMatchId: String? = null
+
+
+    var updatedOddsDetailDataList = ArrayList<OddsDetailListData>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     fun setBetInfoList(betInfoList: MutableList<BetInfoListData>) {
         this.betInfoList.clear()
@@ -66,7 +74,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     override fun getItemViewType(position: Int): Int {
 
-        val type = oddsDetailListData[position].gameType
+        val type = oddsDetailDataList[position].gameType
 
         when {
             checkKey(type, GameType.HDP.value) -> return GameType.HDP.type
@@ -156,14 +164,51 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     override fun getItemCount(): Int {
-        return oddsDetailListData.size
+        return oddsDetailDataList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsDetailListData[position], position)
+        updateItemDataFromSocket(oddsDetailDataList[position], updatedOddsDetailDataList)
+        holder.bindModel(oddsDetailDataList[position], position)
     }
 
+    private fun updateItemDataFromSocket(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>) {
+        val oldOddList = oddsDetail.oddArrayList
+        var newOddList = listOf<Odd>()
+
+        for (item in updatedOddsDetail) {
+            if (item.gameType == oddsDetail.gameType) {
+                newOddList = item.oddArrayList
+                return
+            }
+        }
+
+        oldOddList.forEach {  oldOddData ->
+            newOddList.forEach { newOddData ->
+                if (oldOddData.id == newOddData.id) {
+                    oldOddData.name = newOddData.name
+                    oldOddData.extInfo = newOddData.extInfo
+                    oldOddData.spread = newOddData.spread
+                    oldOddData.odds = newOddData.odds
+                    oldOddData.status = newOddData.status
+                    oldOddData.producerId = newOddData.producerId
+                    oldOddData.oddState = getOddState(oldOddData, newOddData)
+                }
+            }
+        }
+    }
+
+    private fun getOddState(oldItem: Odd, it: Odd): Int {
+        val oldOdd = oldItem.odds ?: 0.0
+        val newOdd = it.odds ?: 0.0
+        return when {
+            newOdd == oldOdd -> OddState.SAME.state
+            newOdd > oldOdd -> OddState.LARGER.state
+            newOdd < oldOdd -> OddState.SMALLER.state
+            else -> OddState.SAME.state
+        }
+    }
 
     fun notifyDataSetChangedByCode(code: String) {
         this.code = code
@@ -199,6 +244,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private val ivArrowUp = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
 
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
+
             tvName.text = oddsDetail.name
             llItem.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
@@ -263,6 +309,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet.apply {
                 adapter = TypeOneListAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
+
             }
         }
 
