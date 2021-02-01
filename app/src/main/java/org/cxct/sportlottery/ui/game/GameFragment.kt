@@ -154,25 +154,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
         })
 
-        viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
-            val stopProducerId = it?.producerId
-
-            val leagueOdds = leagueOddAdapter.data
-            leagueOdds.forEach { leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.odds.values.forEach { odds ->
-                        val updateOdd = odds.find { odd ->
-                            odd.producerId == stopProducerId
-                        }
-
-                        updateOdd?.status = BetStatus.LOCKED.code
-                    }
-                }
-            }
-
-            leagueOddAdapter.data = leagueOdds
-        })
-
+        updateSocketGlobalStop()
 
 //        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
 //            if (it == null) return@Observer
@@ -215,6 +197,29 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 //            }
 //            leagueOddAdapter.data = leagueOdds
 //        })
+    }
+
+    private fun updateSocketGlobalStop() {
+        viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
+            val stopProducerId = it?.producerId
+
+            stopProducerId?.let {
+                val leagueOdds = leagueOddAdapter.data
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { odds ->
+                            val updateOdd = odds.find { odd ->
+                                odd.producerId == stopProducerId
+                            }
+
+                            updateOdd?.status = BetStatus.LOCKED.code
+                        }
+                    }
+                }
+
+                leagueOddAdapter.data = leagueOdds
+            }
+        })
     }
 
     private fun setupSportTypeRow(view: View) {
