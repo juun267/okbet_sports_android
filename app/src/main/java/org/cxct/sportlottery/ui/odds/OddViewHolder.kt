@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.util.TextUtil
 
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -22,7 +23,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?) {
 
         tvName.text = odd.name
-        tvOdds.text = odd.odds.toString()
+        tvOdds.text = TextUtil.formatForOdd(odd.odds)
 
         when (odd.status) {
             PLAYING -> {

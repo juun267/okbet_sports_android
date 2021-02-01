@@ -22,7 +22,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
-    RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
+        RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
@@ -59,19 +59,19 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 when {
                     quota > parlayOdd.max -> {
                         binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
-                                parlayOdd.max.toString()
-                            )
+                                String.format(
+                                        binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
+                                        parlayOdd.max.toString()
+                                )
                         error = true
                     }
 
                     quota < parlayOdd.min -> {
                         binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit),
-                                parlayOdd.min.toString()
-                            )
+                                String.format(
+                                        binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit),
+                                        parlayOdd.min.toString()
+                                )
                         error = true
                     }
 
@@ -89,12 +89,12 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.tvErrorMessage.visibility = if (error) View.VISIBLE else View.GONE
 
             binding.rlInput.background =
-                if (error) ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_error)
-                else ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_focus)
+                    if (error) ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_error)
+                    else ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_focus)
 
             binding.etBet.setTextColor(
-                if (error) ContextCompat.getColor(binding.root.context, R.color.orangeRed)
-                else ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                    if (error) ContextCompat.getColor(binding.root.context, R.color.orangeRed)
+                    else ContextCompat.getColor(binding.root.context, R.color.main_dark)
             )
 
             binding.betInfoAction.tv_bet.apply {
@@ -115,7 +115,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.matchOdd = matchOdd
             binding.parlayOdd = parlayOdd
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
-            binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), matchOdd.odds.toString())
+            binding.betInfoDetail.tvOdds.text =
+                    String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
 
             binding.etBet.afterTextChanged {
                 check(it, matchOdd, parlayOdd)

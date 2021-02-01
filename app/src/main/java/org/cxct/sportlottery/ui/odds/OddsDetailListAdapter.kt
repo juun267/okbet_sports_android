@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TextUtil
 
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
@@ -291,7 +292,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                         odd.isSelect = select
                         val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
-                        tvOdds.text = odd.odds.toString()
+                        tvOdds.text = TextUtil.formatForOdd(odd.odds)
                         tvOdds.isSelected = odd.isSelect
 
                         tvOdds.setOnClickListener {

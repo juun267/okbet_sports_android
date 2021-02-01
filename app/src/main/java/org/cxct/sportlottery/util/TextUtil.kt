@@ -12,4 +12,9 @@ object TextUtil {
         return df.format(any)
     }
 
+    fun formatForOdd(any: Any):String{
+        val df = DecimalFormat("0.000")
+        return df.format(any)
+    }
+
 }

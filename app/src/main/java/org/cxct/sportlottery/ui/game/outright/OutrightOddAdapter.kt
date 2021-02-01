@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.util.TextUtil
 
 
 class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>() {
@@ -47,7 +48,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         if (updatedWinnerOddsList.isNullOrEmpty()) return
 
         updatedWinnerOddsList.forEach {
-            if (originItem.id == it.id ) {
+            if (originItem.id == it.id) {
                 //後端表示originItem.spread的值只用api回傳, socket不可覆蓋
                 originItem.odds = it.odds
                 originItem.status = it.status
@@ -56,6 +57,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         }
 
     }
+
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -63,7 +65,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         fun bind(item: Odd, outrightOddListener: OutrightOddListener?) {
             itemView.apply {
                 outright_name.text = item.spread
-                outright_bet.text = item.odds.toString()
+                item.odds?.let { odd -> outright_bet.text = TextUtil.formatForOdd(odd) }
                 isSelected = item.isSelected
                 outright_bet.setOnClickListener {
                     outrightOddListener?.onClick(item)
@@ -104,9 +106,9 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             }
 
             Handler().postDelayed(
-                {
-                    button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.light_gray))
-                }, CHANGING_COLOR_DURATION
+                    {
+                        button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.light_gray))
+                    }, CHANGING_COLOR_DURATION
             )
         }
 
@@ -115,7 +117,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd, parent, false)
+                        .inflate(R.layout.itemview_outright_odd, parent, false)
 
                 return ViewHolder(view)
             }
