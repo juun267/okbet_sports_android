@@ -2,11 +2,13 @@ package org.cxct.sportlottery.ui.game.outright
 
 import android.content.res.ColorStateList
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_outright_odd.view.*
@@ -69,13 +71,13 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
                 outright_bet.setOnClickListener {
                     outrightOddListener?.onClick(item)
                 }
-                setStatus(outright_bet, bet_lock_img, item.odds.toString().isEmpty(), item.status)
                 setHighlight(outright_bet, item.oddState)
+                setStatus(outright_bet, bet_lock_img, item.odds.toString().isEmpty(), item.status)
             }
         }
 
 
-        private fun setStatus(button: Button, lockImg: ImageView, isOddsNull: Boolean, status: Int) {
+        private fun setStatus(button: TextView, lockImg: ImageView, isOddsNull: Boolean, status: Int) {
             var itemState = status
             if (isOddsNull) itemState = 2
 
@@ -98,7 +100,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             }
         }
 
-        private fun setHighlight(button: Button, status: Int) {
+        private fun setHighlight(button: TextView, status: Int) {
             when (status) {
                 OddState.LARGER.state -> button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.green))
                 OddState.SMALLER.state -> button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.red))
@@ -106,7 +108,8 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
             Handler().postDelayed(
                 {
-                    button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.white))
+//                    button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.white))
+//                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg)
                 }, CHANGING_ITEM_BG_COLOR_DURATION
             )
         }

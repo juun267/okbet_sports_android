@@ -141,7 +141,6 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setSocketObserver() {
-        /*
         viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
             if (oddsChangeEvent == null) return@Observer
 
@@ -149,7 +148,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             outrightOddAdapter.updatedWinnerOddsList = oddsChangeEvent.odds[winnerItemKey] ?: listOf()
         })
-*/
+        /*
         viewModel.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let {
                 if (it.odds.isNullOrEmpty()) return@observe
@@ -157,10 +156,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 outrightOddAdapter.updatedWinnerOddsList = it.odds[winnerItemKey] ?: listOf()
             }
         })
-
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
-            Log.e(">>>", "hello world")
-        })
+*/
     }
 
     private fun updateMatchOdd(oddsChangeEvent: OddsChangeEvent) {
