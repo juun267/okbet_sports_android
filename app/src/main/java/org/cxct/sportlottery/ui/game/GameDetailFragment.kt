@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -161,6 +162,8 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
             Log.e(">>>", "hello world")
         })
+
+        updateSocketGlobalStop()
     }
 
     private fun updateMatchOdd(oddsChangeEvent: OddsChangeEvent) {
@@ -199,6 +202,28 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateSocketGlobalStop() {
+        viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
+            val stopProducerId = it?.producerId
+
+            stopProducerId?.let {
+                val matchOdds = matchOddAdapter.data
+
+                matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.values.forEach { odds ->
+                        val updateOdd = odds.find { odd ->
+                            odd.producerId == stopProducerId
+                        }
+
+                        updateOdd?.status = BetStatus.LOCKED.code
+                    }
+                }
+
+                matchOddAdapter.data = matchOdds
+            }
+        })
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
