@@ -124,7 +124,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             binding.betInfoAction.tv_bet.setOnClickListener {
                 if (!check(binding.etBet.text.toString(), matchOdd, parlayOdd)) {
-                    val stake = TextUtil.format(binding.etBet.text.toString().toDouble()).toDouble()
+                    val stake = binding.etBet.text.toString().toDouble()
                     onItemClickListener.onBetClick(betInfoList[position], stake)
                 }
             }
