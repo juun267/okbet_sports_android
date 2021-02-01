@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="tool_bar_height">50dp</dimen>
+    <dimen name="tool_bar_text_size">16sp</dimen>
 
-    <!--文字大小sp都改成dp-->
-    <dimen name="textSize10sp">10dp</dimen>
-    <dimen name="textSize11sp">11dp</dimen>
-    <dimen name="textSize12sp">12dp</dimen>
-    <dimen name="textSize13sp">13dp</dimen>
-    <dimen name="textSize14sp">14dp</dimen>
-    <dimen name="textSize15sp">15dp</dimen>
-    <dimen name="textSize16sp">16dp</dimen>
-    <dimen name="textSize17sp">17dp</dimen>
-    <dimen name="textSize18sp">18dp</dimen>
-    <dimen name="textSize20sp">20dp</dimen>
-    <dimen name="textSize21sp">21dp</dimen>
-    <dimen name="textSize22sp">22dp</dimen>
-    <dimen name="textSize24sp">24dp</dimen>
-    <dimen name="textSize34sp">34dp</dimen>
+    <dimen name="textSize8sp">8sp</dimen>
+    <dimen name="textSize10sp">10sp</dimen>
+    <dimen name="textSize11sp">11sp</dimen>
+    <dimen name="textSize12sp">12sp</dimen>
+    <dimen name="textSize13sp">13sp</dimen>
+    <dimen name="textSize14sp">14sp</dimen>
+    <dimen name="textSize15sp">15sp</dimen>
+    <dimen name="textSize16sp">16sp</dimen>
+    <dimen name="textSize17sp">17sp</dimen>
+    <dimen name="textSize18sp">18sp</dimen>
+    <dimen name="textSize20sp">20sp</dimen>
+    <dimen name="textSize21sp">21sp</dimen>
+    <dimen name="textSize22sp">22sp</dimen>
+    <dimen name="textSize24sp">24sp</dimen>
+    <dimen name="textSize30sp">30sp</dimen>
+    <dimen name="textSize34sp">34sp</dimen>
 
+    <dimen name="activity_horizontal_margin">15dp</dimen>
+    <dimen name="activity_vertical_margin">15dp</dimen>
+
+    <dimen name="recyclerview_item_dec_spec">5dp</dimen>
+    <dimen name="recyclerview_item_dec_spec_bet_info_list">6dp</dimen>
 </resources>

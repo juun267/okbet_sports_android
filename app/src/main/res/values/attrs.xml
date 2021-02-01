@@ -3,4 +3,57 @@
     <declare-styleable name="AutoScrollRecyclerView">
         <attr name="speed_dp_sec" format="dimension|reference" />
     </declare-styleable>
+
+    <declare-styleable name="CustomView">
+        <attr name="cvTitle" format="string" />
+        <attr name="cvCount" format="string" />
+        <attr name="cvIcon" format="reference" />
+        <attr name="cvHint" format="string" />
+        <attr name="cvText" format="string" />
+        <attr name="cvInputType">
+            <!-- Just plain old text.  Corresponds to
+            {@link android.text.InputType#TYPE_CLASS_TEXT} |
+            {@link android.text.InputType#TYPE_TEXT_VARIATION_NORMAL}. -->
+            <flag name="text" value="0x00000001" />
+            <!-- Text that is a password.  Corresponds to
+            {@link android.text.InputType#TYPE_CLASS_TEXT} |
+            {@link android.text.InputType#TYPE_TEXT_VARIATION_PASSWORD}. -->
+            <flag name="textPassword" value="0x00000081" />
+            <!-- A numeric only field.  Corresponds to
+            {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+            {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
+            <flag name="number" value="0x00000002" />
+        </attr>
+        <attr name="cvEnableVerificationCode" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ToolBarView">
+        <attr name="title" format="string" />
+        <attr name="fragmentNavGraph" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="OddsBetButton">
+        <attr name="status" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="lock" value="1" />
+            <enum name="invisible" value="2" />
+        </attr>
+        <attr name="ouType" format="enum">
+            <enum name="oType" value="0" />
+            <enum name="uType" value="1" />
+        </attr>
+        <attr name="topText" format="string" />
+        <attr name="bottomText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="MatchTypeRow">
+        <attr name="matchType" format="enum">
+            <enum name="in_play" value="0" />
+            <enum name="today" value="1" />
+            <enum name="early" value="2" />
+            <enum name="parlay" value="3" />
+            <enum name="outright" value="4" />
+            <enum name="at_start" value="5" />
+        </attr>
+    </declare-styleable>
 </resources>

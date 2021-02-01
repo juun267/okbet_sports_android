@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/writhdraw_navigation"
+    app:startDestination="@id/withdrawFragment">
+
+    <fragment
+        android:id="@+id/withdrawFragment"
+        android:name="org.cxct.sportlottery.ui.withdraw.WithdrawFragment"
+        android:label="WithdrawFragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/bankListFragment"
+        android:name="org.cxct.sportlottery.ui.withdraw.BankListFragment"
+        android:label="fragment_bank_list"
+        tools:layout="@layout/fragment_bank_list">
+        <argument
+            android:name="navigateFrom"
+            app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
+
+        <action
+            android:id="@+id/action_bankListFragment_to_withdrawFragment"
+            app:destination="@+id/withdrawFragment" />
+        <action
+            android:id="@+id/action_bankListFragment_to_bankCardFragment"
+            app:destination="@+id/bankCardFragment">
+            <argument
+                android:name="editBankCard"
+                android:defaultValue="@null"
+                app:argType="org.cxct.sportlottery.network.bank.my.BankCardList"
+                app:nullable="true" />
+            <argument
+                android:name="navigateFrom"
+                app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/bankCardFragment"
+        android:name="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
+        android:label="BankCardFragment">
+        <argument
+            android:name="editBankCard"
+            android:defaultValue="@null"
+            app:argType="org.cxct.sportlottery.network.bank.my.BankCardList"
+            app:nullable="true" />
+        <argument
+            android:name="navigateFrom"
+            app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
+        <action
+            android:id="@+id/action_bankCardFragment_to_withdrawFragment"
+            app:destination="@+id/withdrawFragment"
+            app:popUpTo="@+id/withdrawFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="navigateFrom"
+                app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
+        </action>
+    </fragment>
+
+</navigation>

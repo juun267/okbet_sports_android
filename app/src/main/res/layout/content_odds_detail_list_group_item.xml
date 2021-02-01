@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/content_odds_detail_list_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="1dp"/>
+
+</LinearLayout>
+

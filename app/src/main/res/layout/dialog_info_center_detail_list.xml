@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:content="org.cxct.sportlottery.ui.infoCenter.InfoCenterDetailDialog">
+
+    <data>
+        <variable
+            name="infoCenterViewModel"
+            type="org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel" />
+
+        <variable
+            name="infoCenterData"
+            type="org.cxct.sportlottery.network.infoCenter.InfoCenterData" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.bet_record.search.result.BetRecordDetailDialog">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            app:cardCornerRadius="8dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/txv_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        tools:text="工商银行停用通知"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textSize16sp" />
+
+                    <ImageView
+                        android:id="@+id/img_close"
+                        android:layout_width="15dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_close"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txv_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:textSize="@dimen/textSize12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="公告假文：人护是仍现升诗时坐价一！有孩维样的师中院？大倒发机，说广的西家时，种常的形小质到不功片统业，友年度器量居味静，告作头这城思没师王保，心有作况业后去，了选下步，到去般分想后史位当步那已；家前的…"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="row"
+            type="org.cxct.sportlottery.network.bet.list.Row" />
+
+        <variable
+            name="clickListener"
+            type="org.cxct.sportlottery.ui.bet.record.search.result.ItemClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="12dp"
+        android:gravity="center"
+        android:onClick="@{() -> clickListener.onClick(row)}"
+        android:layout_marginHorizontal="4dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_datetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="2020/12/12 19:58:22"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                android:maxLines="1"
+                android:textColor="@color/gray6"
+                app:dateTime="@{row.addTime}"/>
+
+            <TextView
+                android:id="@+id/tv_order_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginHorizontal="16dp"
+                android:textSize="@dimen/textSize12sp"
+                android:text="@{row.orderNo}"
+                android:textColor="@color/gray6"
+                android:maxEms="11"
+                tools:text="b0000036120 91822030128"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="4dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_play_cate_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                android:maxLines="1"
+                android:textColor="@color/gray6"
+                android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playCateName : null}"
+                tools:text="独赢"/>
+
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                android:maxLines="1"
+                tools:text="曼联"
+                android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playName : null}"
+                android:textColor="@color/gray6" />
+
+            <TextView
+                android:id="@+id/tv_odds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                android:maxLines="1"
+                tools:text="\u00404.3"
+                android:text="@{row.matchOdds.size() > 0 ? String.format(@string/at_symbol, row.matchOdds.get(0).odds) : null}"
+                android:textColor="@color/red2" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_bet_total_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_marginHorizontal="4dp"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="1,000.00"
+            android:text="@{String.valueOf(row.totalAmount)}"
+            android:textColor="@color/gray6" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_win_lose_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="+1,060.00"
+                android:text="@{(row.win == null) ? @string/nothing : row.win > 0 ? String.format(@string/plus_symbol, row.win.toString()): String.format(@string/minus_symbol, row.win.toString())}"
+                android:textColor="@{(row.win == null) ?  @color/gray6 : row.win > 0 ? @color/green : @color/red2}"
+                android:textSize="@dimen/textSize12sp"
+                tools:textColor="@color/green" />
+
+            <TextView
+                android:id="@+id/tv_bet_status2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="全赢"
+                android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/gray6"
+                app:status="@{row.status}"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

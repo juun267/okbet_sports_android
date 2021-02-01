@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="org.cxct.sportlottery.ui.menu.MenuFragment"
+        android:label="MenuFragment"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_betRecordActivity"
+            app:destination="@id/betRecordActivity" />
+        <action
+            android:id="@+id/action_menuFragment_to_gameSettleActivity"
+            app:destination="@id/gameSettleActivity" />
+        <action
+            android:id="@+id/action_menuFragment_to_msgCenterActivity"
+            app:destination="@id/msgCenterActivity" />
+        <action
+            android:id="@+id/action_menuFragment_to_helperActivity"
+            app:destination="@id/helperActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/betRecordActivity"
+        android:label="BetRecordActivity" />
+    <fragment
+        android:id="@+id/gameSettleActivity"
+        android:label="GameSettleActivity" />
+    <fragment
+        android:id="@+id/msgCenterActivity"
+        android:label="MsgCenterActivity" />
+    <fragment
+        android:id="@+id/helperActivity"
+        android:label="HelperActivity" />
+
+</navigation>

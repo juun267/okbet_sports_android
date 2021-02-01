@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bet_record_navigation"
+    app:startDestination="@id/betRecordSearchFragment">
+
+    <fragment
+        android:id="@+id/betRecordSearchFragment"
+        android:name="org.cxct.sportlottery.ui.bet.record.search.BetRecordSearchFragment"
+        android:label="fragment_bet_record_search"
+        tools:layout="@layout/fragment_bet_record_search" >
+        <action
+            android:id="@+id/action_betRecordSearchFragment_to_betRecordResultFragment"
+            app:destination="@id/betRecordResultFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/betRecordResultFragment"
+        android:name="org.cxct.sportlottery.ui.bet.record.search.result.BetRecordResultFragment"
+        android:label="fragment_bet_record_result"
+        tools:layout="@layout/fragment_bet_record_result" >
+    </fragment>
+
+</navigation>

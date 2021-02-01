@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F5"
+    tools:context=".ui.money.recharge.TransferPayFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#F3F4F5"
+        android:padding="20dp">
+
+
+        <!-- 充值金額 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_recharge_online_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cvHint="@string/edt_hint_deposit_money"
+            app:cvInputType="number"
+            app:cvTitle="@string/title_deposit_money" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="4"
+                    android:text="@string/title_pay_gap"
+                    android:textColor="@color/gray4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:textStyle="" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:textColor="@color/gray13" />
+
+
+                <Spinner
+                    android:id="@+id/sp_pay_gap"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_click_pay_gap"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_arrow_gray" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_pay_bank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="4"
+                    android:text="@string/title_pay_bank"
+                    android:textColor="@color/gray4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:textStyle="" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:textColor="@color/gray13" />
+
+
+                <Spinner
+                    android:id="@+id/sp_pay_bank"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_click_pay_bank"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_arrow_gray" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="5"
+                    android:text="@string/title_rebate_fee"
+                    android:textColor="@color/gray4"
+                    android:textSize="@dimen/textSize13sp" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/gray13" />
+
+
+                <TextView
+                    android:id="@+id/txv_rebate"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="start|center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/gray12"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/money_recharge_hint1"
+            android:textSize="@dimen/textSize12sp" />
+
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_5dp_radius_button_blue3"
+            android:gravity="center"
+            android:text="@string/btn_submit"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize16sp" />
+
+    </LinearLayout>
+
+</ScrollView>
