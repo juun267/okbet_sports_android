@@ -63,7 +63,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
             dismiss()
         }
 
-        betInfoListAdapter = BetInfoListAdapter(this@BetInfoListDialog)
+        betInfoListAdapter = BetInfoListAdapter(requireContext(),this@BetInfoListDialog)
 
         rv_bet_list.apply {
             adapter = betInfoListAdapter
@@ -80,7 +80,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
 
 
     private fun observeData() {
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
             } else {

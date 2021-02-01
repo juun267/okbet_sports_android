@@ -47,20 +47,20 @@ class MultiLanguagesApplication : Application() {
 
     private val viewModelModule = module {
         viewModel { SplashViewModel(get()) }
-        viewModel { MoneyRechViewModel(get(), get()) }
+        viewModel { MoneyRechViewModel(get(), get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
-        viewModel { SettlementViewModel(get(), get()) }
-        viewModel { BetRecordViewModel(get()) }
-        viewModel { InfoCenterViewModel(get(), get()) }
-        viewModel { HelpCenterViewModel(get()) }
-        viewModel { WithdrawViewModel(get(), get(), get()) }
-        viewModel { ProfileModel(get(), get()) }
-        viewModel { NicknameModel(get(), get()) }
-        viewModel { SettingPasswordViewModel(get(), get()) }
-        viewModel { FinanceViewModel(get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get()) }
+        viewModel { SettlementViewModel(get(), get(), get()) }
+        viewModel { BetRecordViewModel(get(), get()) }
+        viewModel { InfoCenterViewModel(get(), get(), get()) }
+        viewModel { HelpCenterViewModel(get(), get()) }
+        viewModel { WithdrawViewModel(get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get()) }
+        viewModel { NicknameModel(get(), get(), get()) }
+        viewModel { SettingPasswordViewModel(get(), get(), get()) }
+        viewModel { FinanceViewModel(get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
