@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.game.outright
 
-import android.content.res.ColorStateList
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -67,7 +64,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             itemView.apply {
                 outright_name.text = item.spread
                 outright_bet.text = item.odds.toString()
-                isSelected = item.isSelected
+                isSelected = item.isSelected ?: false
                 outright_bet.setOnClickListener {
                     outrightOddListener?.onClick(item)
                 }
@@ -100,7 +97,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             }
         }
 
-        private fun setHighlight(button: TextView, status: Int) {
+        private fun setHighlight(button: TextView, status: Int?= OddState.SAME.state) {
             when (status) {
                 OddState.LARGER.state ->
                     button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg_green)

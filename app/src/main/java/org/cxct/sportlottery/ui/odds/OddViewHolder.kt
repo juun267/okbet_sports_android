@@ -36,9 +36,9 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                 odd.isSelect = select
 
-                tvOdds.isSelected = odd.isSelect
+                tvOdds.isSelected = odd.isSelect ?: false
                 tvOdds.setOnClickListener {
-                    if (!odd.isSelect) {
+                    if (odd.isSelect != true) {
                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
                             return@setOnClickListener
                         }
@@ -65,7 +65,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         }
     }
 
-    private fun setHighlight(textView: TextView, status: Int) {
+    private fun setHighlight(textView: TextView, status: Int ?= OddState.SAME.state) {
         when (status) {
             OddState.LARGER.state ->
                 textView.background = ContextCompat.getDrawable(textView.context, R.drawable.select_button_radius_5_odds_green)

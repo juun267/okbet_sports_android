@@ -338,10 +338,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     odd.isSelect = select
                     val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
                     tvOdds.text = odd.odds.toString()
-                    tvOdds.isSelected = odd.isSelect
+                    tvOdds.isSelected = odd.isSelect ?: false
 
                     tvOdds.setOnClickListener {
-                        if (!odd.isSelect) {
+                        if (odd.isSelect != true) {
                             if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
                                 return@setOnClickListener
                             }
