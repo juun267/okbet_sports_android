@@ -23,7 +23,7 @@ class HelpCenterFragment : BaseFragment<HelpCenterViewModel>(HelpCenterViewModel
 
     private fun setupEvent() {
         linear_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(viewModel.token), getString(R.string.game_rule))
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
         }
     }
 }
