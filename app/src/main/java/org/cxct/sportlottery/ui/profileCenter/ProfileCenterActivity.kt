@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
+import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -145,7 +146,7 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
 
         //幫助中心
         btn_help_center.setOnClickListener {
-            //TODO 幫助中心
+            startActivity(Intent(this, HelpCenterActivity::class.java))
         }
 
         //在線客服
