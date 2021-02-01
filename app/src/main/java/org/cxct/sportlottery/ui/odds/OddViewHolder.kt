@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -66,13 +67,15 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private fun setHighlight(textView: TextView, status: Int) {
         when (status) {
-            OddState.LARGER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
-            OddState.SMALLER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
+            OddState.LARGER.state ->
+                textView.background = ContextCompat.getDrawable(textView.context, R.drawable.select_button_radius_5_odds_green)
+            OddState.SMALLER.state ->
+                textView.background = ContextCompat.getDrawable(textView.context, R.drawable.select_button_radius_5_odds_red)
         }
 
         Handler().postDelayed(
             {
-                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.light_gray))
+                textView.background = ContextCompat.getDrawable(textView.context, R.drawable.select_button_radius_5_odds)
             }, CHANGING_ITEM_BG_COLOR_DURATION
         )
     }

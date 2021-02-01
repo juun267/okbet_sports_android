@@ -102,8 +102,10 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
         private fun setHighlight(button: TextView, status: Int) {
             when (status) {
-                OddState.LARGER.state -> button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.green))
-                OddState.SMALLER.state -> button.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(button.context, R.color.red))
+                OddState.LARGER.state ->
+                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg_green)
+                OddState.SMALLER.state ->
+                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg_red)
             }
 
             Handler().postDelayed(
