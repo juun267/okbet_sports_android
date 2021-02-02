@@ -73,6 +73,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         btn_withdraw.setOnClickListener {
+            modifyFinish()
             withdrawBankCardData?.let { viewModel.addWithdraw(it.id.toLong(), et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
 
         }
@@ -110,6 +111,13 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         et_withdrawal_amount.setText("")
         et_withdrawal_password.setText("")
         bankCardAdapter.initSelectStatus()
+        viewModel.resetWithdrawPage()
+        modifyFinish()
+    }
+
+    private fun modifyFinish() {
+        hideKeyboard()
+        clearFocus()
     }
 
     private fun initObserve(view: View) {
@@ -161,6 +169,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //提款
         viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
+                clearEvent()
                 ToastUtil.showToastInCenter(context, getString(R.string.text_money_get_success))
             } else {
                 showPromptDialog(getString(R.string.title_withdraw_fail), it.msg) {}
