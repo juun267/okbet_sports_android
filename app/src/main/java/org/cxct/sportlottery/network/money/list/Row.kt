@@ -11,7 +11,7 @@ data class Row(
     @Json(name = "accountMoney")
     val accountMoney: Double,
     @Json(name = "actualMoney")
-    val actualMoney: Double,
+    val actualMoney: Double?,
     @Json(name = "channel")
     val channel: Double?,
     @Json(name = "fullName")
