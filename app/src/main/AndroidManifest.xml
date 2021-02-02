@@ -17,6 +17,7 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.feedback.FeedbackMainActivity"/>
         <!-- 後臺服務-長連線 -->
         <service android:name=".service.BackService" />
         <!--broadCast-->
