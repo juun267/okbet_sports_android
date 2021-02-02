@@ -83,7 +83,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         et_withdrawal_amount.getAllButton {
-            it.setText(ArithUtil.moneyToLong(tv_balance.text.toString()))
+            it.setText(viewModel.getWithdrawAmountLimit().max.toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
@@ -144,6 +144,12 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             } else {
                 viewModel.getWithdrawRate(et_withdrawal_amount.getText().toLong())
             }
+            viewModel.getWithdrawHint()
+        })
+
+        //提款金額提示訊息
+        viewModel.withdrawAmountHint.observe(this.viewLifecycleOwner, Observer {
+            et_withdrawal_amount.et_input.hint = it
         })
 
         //提款金額訊息

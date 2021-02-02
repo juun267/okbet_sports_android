@@ -99,6 +99,13 @@ class WithdrawViewModel(
         get() = _withdrawRateHint
     private var _withdrawRateHint = MutableLiveData<String>()
 
+    //提款金額提示
+    val withdrawAmountHint: LiveData<String>
+        get() = _withdrawAmountHint
+    private var _withdrawAmountHint = MutableLiveData<String>()
+
+    data class WithdrawAmountLimit(val min: Long, val max: Long)
+
     fun addWithdraw(bankCardId: Long, applyMoney: String, withdrawPwd: String) {
         checkWithdrawAmount(applyMoney)
         checkWithdrawPassword(withdrawPwd)
@@ -327,6 +334,21 @@ class WithdrawViewModel(
                 ""
             }
         }
+    }
+
+    fun getWithdrawHint() {
+        val limit = getWithdrawAmountLimit()
+        _withdrawAmountHint.value = String.format(
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount),
+            limit.min,
+            limit.max
+        )
+    }
+
+    fun getWithdrawAmountLimit(): WithdrawAmountLimit {
+        val minLimit = rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 0
+        val maxLimit = ArithUtil.div((userMoney.value ?: 0.0), ((rechargeConfigs.value?.withdrawCfg?.wdRate?.plus(1) ?: 1.0)), 3)
+        return WithdrawAmountLimit(minLimit, maxLimit.toLong())
     }
 
     fun getWithdrawRate(withdrawAmount: Long) {
