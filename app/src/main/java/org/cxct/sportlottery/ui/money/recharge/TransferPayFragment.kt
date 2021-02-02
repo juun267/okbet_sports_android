@@ -8,16 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
-import android.widget.EditText
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
-import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
@@ -225,7 +222,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         tv_account.text = selectRechCfgs?.payee
 
         //地址QR code
-        Glide.with(this).load(selectRechCfgs?.qrCode).into(iv_address)
+        if (selectRechCfgs?.qrCode.isNullOrEmpty()) {
+            ll_qr_code.visibility = View.GONE
+        } else {
+            Glide.with(this).load(selectRechCfgs?.qrCode).into(iv_address)
+        }
 
         //備註
         tv_remark.text = selectRechCfgs?.remark
