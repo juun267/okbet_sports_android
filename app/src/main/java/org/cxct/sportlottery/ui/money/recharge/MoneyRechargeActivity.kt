@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,8 +12,13 @@ import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.finance.FinanceActivity
 
 class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
+
+    companion object {
+        const val RechargeViewLog = "rechargeViewLog"
+    }
 
     enum class RechargeType { TRANSFER_PAY, ONLINE_PAY }
 
@@ -79,8 +85,8 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
             if (!apiResult.success) {
                 //顯示彈窗
-                val customAlertDialog= CustomAlertDialog(this@MoneyRechargeActivity)
-                with(customAlertDialog){
+                val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
+                with(customAlertDialog) {
                     setTitle("提示")
                     setMessage(apiResult.msg)
                 }.let {
@@ -90,7 +96,11 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                 //顯示成功彈窗
                 val moneySubmitDialog = MoneySubmitDialog(
                     payWay,
-                    (apiResult.result ?: 0).toString()
+                    (apiResult.result ?: 0).toString(),
+                    MoneySubmitDialog.MoneySubmitDialogListener({
+                        finish()
+                        startActivity(Intent(this, FinanceActivity::class.java).apply { putExtra(RechargeViewLog, getString(R.string.record_recharge)) })
+                    }, {})
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
             }
