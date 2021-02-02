@@ -115,11 +115,6 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         modifyFinish()
     }
 
-    private fun modifyFinish() {
-        hideKeyboard()
-        clearFocus()
-    }
-
     private fun initObserve(view: View) {
         viewModel.loading.observe(this.viewLifecycleOwner, Observer {
             if (it)
