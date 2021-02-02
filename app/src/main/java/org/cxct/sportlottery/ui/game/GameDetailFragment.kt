@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -166,6 +167,8 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
             Log.e(">>>", "hello world")
         })
+
+        updateSocketGlobalStop()
     }
 
     private fun updateMatchOdd(oddsChangeEvent: OddsChangeEvent) {
@@ -204,6 +207,76 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateSocketGlobalStop() {
+        viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+
+            when (val stopProducerId = it.producerId) {
+                null -> {
+                    updateAllOddLock()
+                    updateAllOutrightOddLock()
+                }
+                else -> {
+                    updateOddLock(stopProducerId)
+                    updateOutrightOddLock(stopProducerId)
+                }
+            }
+        })
+    }
+
+    private fun updateAllOddLock() {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.values.forEach { odds ->
+                odds.forEach {
+
+                    it.status = BetStatus.LOCKED.code
+                }
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateAllOutrightOddLock() {
+        val odds = outrightOddAdapter.data
+
+        odds.forEach {
+            it.status = BetStatus.LOCKED.code
+        }
+
+        outrightOddAdapter.data = odds
+    }
+
+    private fun updateOddLock(stopProducerId: Int) {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.values.forEach { odds ->
+                val updateOdd = odds.find { odd ->
+                    odd.producerId == stopProducerId
+                }
+
+                updateOdd?.status = BetStatus.LOCKED.code
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateOutrightOddLock(stopProducerId: Int) {
+        val odds = outrightOddAdapter.data
+
+        val updateOdd = odds.find {
+            it.producerId == stopProducerId
+        }
+
+        updateOdd?.status = BetStatus.LOCKED.code
+
+        outrightOddAdapter.data = odds
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
