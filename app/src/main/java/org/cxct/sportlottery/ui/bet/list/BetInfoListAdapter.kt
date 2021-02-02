@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.ui.login.afterTextChanged
@@ -33,13 +34,20 @@ import org.cxct.sportlottery.util.TextUtil
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
         RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
+
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
 
     var updatedBetInfoList: MutableList<Odd> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
 
     private fun updateItemDataFromSocket(betInfo: BetInfoListData, updatedBetInfoList: MutableList<Odd>) {
         for (newItem in updatedBetInfoList) {
@@ -51,6 +59,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
     }
 
+
     private fun getOddState(oldItemOdd: Double, it: Odd): Int {
         val newOdd = it.odds ?: 0.0
         return when {
@@ -60,6 +69,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             else -> OddState.SAME.state
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -186,7 +196,20 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
             binding.betInfoDetail.tvMatch.text = strMatch
 
-            setChangeOdds(binding.betInfoAction.tv_bet, binding.betInfoDetail.tvOdds, matchOdd)
+            setChangeOdds(binding.betInfoAction.tv_bet, binding.betInfoDetail.tvOdds, binding.tvCloseWarning, matchOdd)
+
+            if(matchOdd.status == BetStatus.LOCKED.code){
+                binding.llBet.visibility = View.GONE
+                binding.tvCloseWarning.apply {
+                    visibility = View.VISIBLE
+                    text = context.getString(R.string.bet_info_list_game_closed)
+                }
+                binding.betInfoAction.tv_bet.apply {
+                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_button_unselected)
+                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.bright_gray))
+                    isClickable = false
+                }
+            }
 
             binding.executePendingBindings()
         }
@@ -214,14 +237,20 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         fun onAddMoreClick()
     }
 
-    private fun setChangeOdds(tv_bet: TextView, tv_Odds: TextView, matchOdd: MatchOdd) {
+
+    private fun setChangeOdds(tv_bet: TextView, tv_Odds: TextView, tv_close_warning: TextView, matchOdd: MatchOdd) {
         when (matchOdd.oddState) {
             OddState.LARGER.state, OddState.SMALLER.state -> {
                 tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.red))
                 tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
                 tv_Odds.text = String.format(tv_Odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
+                tv_close_warning.apply {
+                    visibility = View.VISIBLE
+                    text = context.getString(R.string.bet_info_list_game_odds_changed)
+                }
             }
         }
     }
+
 
 }

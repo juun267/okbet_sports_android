@@ -14,6 +14,7 @@ import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -107,6 +108,17 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
             betInfoListAdapter.updatedBetInfoList = newList
         })
 
+        viewModel.globalStop.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "globalStop")
+            val list = betInfoListAdapter.betInfoList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
+                    listData.matchOdd.status = BetStatus.LOCKED.code
+                }
+            }
+            betInfoListAdapter.betInfoList = list
+        })
     }
 
 
@@ -132,4 +144,6 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
     override fun onAddMoreClick() {
         dismiss()
     }
+
+
 }

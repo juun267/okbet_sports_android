@@ -425,6 +425,7 @@
     <!--bet info list-->
     <string name="bet_info_list_title">投注单</string>
     <string name="bet_info_list_game_closed">盘口已关闭</string>
+    <string name="bet_info_list_game_odds_changed">赔率已变更</string>
     <string name="bet_info_list_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
     <string name="bet_info_list_rmb">RMB</string>
