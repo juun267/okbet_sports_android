@@ -171,6 +171,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (it.success) {
                 clearEvent()
                 ToastUtil.showToastInCenter(context, getString(R.string.text_money_get_success))
+                viewModel.getMoney()
             } else {
                 showPromptDialog(getString(R.string.title_withdraw_fail), it.msg) {}
             }
