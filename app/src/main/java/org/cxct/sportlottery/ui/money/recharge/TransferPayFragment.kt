@@ -83,7 +83,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 payerInfo = "",
                 depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
             )
-            viewModel.rechargeAdd(moneyAddRequest)
+            viewModel.rechargeSubmit(moneyAddRequest, mMoneyPayWay?.rechType)
         }
 
         //選取日曆

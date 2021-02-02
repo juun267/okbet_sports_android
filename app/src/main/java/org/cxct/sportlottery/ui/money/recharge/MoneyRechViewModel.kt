@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -124,8 +125,16 @@ class MoneyRechViewModel(
         }
     }
 
+    //充值頁面[轉帳充值]-[按鈕]提交申請
+    fun rechargeSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?) {
+        checkAll(moneyAddRequest, rechType)
+        if (checkTransferPayInput()) {
+            rechargeAdd(moneyAddRequest)
+        }
+    }
+
     //轉帳支付充值
-    fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
+    private fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
         if (checkTransferPayInput()) {
             viewModelScope.launch {
                 if (checkTransferPayInput()) {
@@ -156,6 +165,24 @@ class MoneyRechViewModel(
                 }
             }
         }
+    }
+
+    //送出前判斷全部
+    private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?) {
+        when (rechType) {
+            MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
+                checkUserName(moneyAddRequest.payerName)
+                checkBankID(moneyAddRequest.payer)
+            }
+            MoneyType.WX_TYPE.code -> {
+                checkWX(moneyAddRequest.payerName)
+            }
+            MoneyType.ALI_TYPE.code -> {
+                checkNickName(moneyAddRequest.payerName)
+                checkUserName(moneyAddRequest.payerInfo)
+            }
+        }
+        checkRechargeAmount(moneyAddRequest.depositMoney.toString())
     }
 
     //充值金額驗證
@@ -269,6 +296,7 @@ class MoneyRechViewModel(
             }
         )
     }
+
     //獲取使用者餘額
     fun getMoney() {
         viewModelScope.launch {
