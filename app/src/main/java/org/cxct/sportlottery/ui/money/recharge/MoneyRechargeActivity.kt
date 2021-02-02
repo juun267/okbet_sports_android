@@ -100,7 +100,9 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                     MoneySubmitDialog.MoneySubmitDialogListener({
                         finish()
                         startActivity(Intent(this, FinanceActivity::class.java).apply { putExtra(RechargeViewLog, getString(R.string.record_recharge)) })
-                    }, {})
+                    }, {
+                        showPromptDialog(getString(R.string.prompt), getString(R.string.content_coming_soon)) {}
+                    })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
             }

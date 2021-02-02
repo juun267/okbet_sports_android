@@ -36,6 +36,10 @@ class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogList
             dismiss()
         }
         tv_view_log.setOnClickListener { dialogListener.viewLog() }
+        tv_service.setOnClickListener {
+            dialogListener.contactService()
+            dismiss()
+        }
     }
 
     class MoneySubmitDialogListener(private val viewLogEvent: () -> Unit, private val contactServiceEvent: () -> Unit) {
