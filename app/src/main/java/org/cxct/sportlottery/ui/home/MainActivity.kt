@@ -30,7 +30,7 @@ import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.SERVICE_TOKEN
 import org.cxct.sportlottery.service.SERVICE_USER_ID
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
@@ -41,7 +41,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
 import timber.log.Timber
 
-class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效
