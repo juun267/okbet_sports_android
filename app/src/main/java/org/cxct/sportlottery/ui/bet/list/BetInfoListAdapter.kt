@@ -196,21 +196,37 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
             binding.betInfoDetail.tvMatch.text = strMatch
 
-            setChangeOdds(binding.betInfoAction.tv_bet, binding.betInfoDetail.tvOdds, binding.tvCloseWarning, matchOdd)
+            //TODO 確認後調整變動方式
+//            setChangeOdds(binding.betInfoAction.tv_bet, binding.betInfoDetail.tvOdds, binding.tvCloseWarning, matchOdd)
 
-            if(matchOdd.status == BetStatus.LOCKED.code){
-                binding.llBet.visibility = View.GONE
-                binding.tvCloseWarning.apply {
-                    visibility = View.VISIBLE
-                    text = context.getString(R.string.bet_info_list_game_closed)
+            when (matchOdd.status) {
+
+                BetStatus.LOCKED.code -> {
+                    binding.llBet.visibility = View.GONE
+                    binding.tvCloseWarning.apply {
+                        visibility = View.VISIBLE
+                        text = context.getString(R.string.bet_info_list_game_closed)
+                    }
+                    binding.betInfoAction.tv_bet.apply {
+                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_button_unselected)
+                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.bright_gray))
+                        isClickable = false
+                    }
                 }
-                binding.betInfoAction.tv_bet.apply {
-                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_button_unselected)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.bright_gray))
-                    isClickable = false
+
+                BetStatus.ACTIVATED.code -> {
+                    binding.llBet.visibility = View.VISIBLE
+                    binding.tvCloseWarning.apply {
+                        visibility = View.GONE
+                        text = context.getString(R.string.bet_info_list_bet)
+                    }
+                    binding.betInfoAction.tv_bet.apply {
+                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_button_pumkinorange)
+                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
+                        isClickable = true
+                    }
                 }
             }
-
             binding.executePendingBindings()
         }
     }
@@ -238,19 +254,20 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
     }
 
 
-    private fun setChangeOdds(tv_bet: TextView, tv_Odds: TextView, tv_close_warning: TextView, matchOdd: MatchOdd) {
-        when (matchOdd.oddState) {
-            OddState.LARGER.state, OddState.SMALLER.state -> {
-                tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.red))
-                tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
-                tv_Odds.text = String.format(tv_Odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
-                tv_close_warning.apply {
-                    visibility = View.VISIBLE
-                    text = context.getString(R.string.bet_info_list_game_odds_changed)
-                }
-            }
-        }
-    }
+    //TODO 確認後調整變動方式
+//    private fun setChangeOdds(tv_bet: TextView, tv_Odds: TextView, tv_close_warning: TextView, matchOdd: MatchOdd) {
+//        when (matchOdd.oddState) {
+//            OddState.LARGER.state, OddState.SMALLER.state -> {
+//                tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.red))
+//                tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
+//                tv_Odds.text = String.format(tv_Odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
+//                tv_close_warning.apply {
+//                    visibility = View.VISIBLE
+//                    text = context.getString(R.string.bet_info_list_game_odds_changed)
+//                }
+//            }
+//        }
+//    }
 
 
 }
