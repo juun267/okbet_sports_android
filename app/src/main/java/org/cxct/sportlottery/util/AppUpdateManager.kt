@@ -9,7 +9,6 @@ import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.FileProvider
-import org.cxct.sportlottery.network.Constants
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -28,8 +27,8 @@ object AppUpdateManager {
         fun onError()
     }
 
-    private fun createDownloadRequest(context: Context): DownloadManager.Request {
-        val request = DownloadManager.Request(Uri.parse(Constants.getAppDownloadUrl())) //下載請求
+    private fun createDownloadRequest(context: Context, downloadUrl: String): DownloadManager.Request {
+        val request = DownloadManager.Request(Uri.parse(downloadUrl)) //下載請求
         request.setMimeType("application/vnd.android.package-archive")
 
         context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) //创建下載目录
@@ -39,12 +38,12 @@ object AppUpdateManager {
         return request
     }
 
-    fun downloadApk(context: Context?, onDownloadListener: OnDownloadListener?) {
-        Timber.i("==> 下載 apk")
+    fun downloadApk(context: Context?, downloadUrl: String, onDownloadListener: OnDownloadListener?) {
+        Timber.i("==> 下載 apk: $downloadUrl")
         val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
         //下載請求
-        val downloadId = downloadManager.enqueue(createDownloadRequest(context))
+        val downloadId = downloadManager.enqueue(createDownloadRequest(context, downloadUrl))
 
         //下載監聽
         val query = DownloadManager.Query().setFilterById(downloadId)

@@ -58,7 +58,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettingPasswordViewModel(get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
-        viewModel { VersionUpdateViewModel(get()) }
+        viewModel { VersionUpdateViewModel() }
     }
 
     private val repoModule = module {

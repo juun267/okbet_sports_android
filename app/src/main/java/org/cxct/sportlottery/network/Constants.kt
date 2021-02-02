@@ -35,6 +35,8 @@ object Constants {
         }
     }
 
+    var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
+
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
         return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android.json"
@@ -42,9 +44,7 @@ object Constants {
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        //TODO 等待 getHost 配置好 review
-//        return "https://download." + mCurrentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk";
-        return "https://download.app66app.com/sportnative/platform/sp_plat1/cp.apk"
+        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk";
     }
 
     //bet

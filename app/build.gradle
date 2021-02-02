@@ -196,7 +196,10 @@ dependencies {
 
     //相片選擇、拍照、錄影、剪裁 https://github.com/LuckSiege/PictureSelector
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
-    
+
+    //動態權限請求 https://github.com/tbruyelle/RxPermissions
+    implementation 'com.github.tbruyelle:rxpermissions:0.11'
+
     //極光推送sdk
     implementation 'cn.jiguang.sdk:jpush:3.9.1'
     implementation 'cn.jiguang.sdk:jcore:2.6.0'
