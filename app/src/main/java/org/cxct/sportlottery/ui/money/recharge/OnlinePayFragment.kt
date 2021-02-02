@@ -67,6 +67,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
 
         setupTextChangeEvent()
+        setupFocusEvent()
     }
 
     private fun initButton() {
@@ -128,6 +129,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     mSelectRechCfgs = rechCfgsList[position]
                     refreshSelectRechCfgs(mSelectRechCfgs)
                     refreshPayBank(mSelectRechCfgs)
+                    clearFocus()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -164,6 +166,16 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             mSpannerList.add(data)
         }
         sp_pay_bank.adapter = CustomImageAdapter(context, mSpannerList)
+        sp_pay_bank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                //do nothing
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                clearFocus()
+            }
+
+        }
 
     }
 
@@ -171,6 +183,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.apply {
             //充值金額
             et_recharge_online_amount.afterTextChanged { checkRcgOnlineAmount(it) }
+        }
+    }
+
+    private fun setupFocusEvent() {
+        et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText())
         }
     }
 
