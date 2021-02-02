@@ -8,11 +8,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
+import android.widget.EditText
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import org.cxct.sportlottery.R
@@ -22,6 +25,7 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
+import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
@@ -122,6 +126,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private fun initView() {
         setupTextChangeEvent()
+        setupFocusEvent()
         calendarBottomSheet()
         getMoney()
         updateMoneyRange()
@@ -294,6 +299,28 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             et_bank_account.afterTextChanged { checkBankID(it) }
             //暱稱
             et_nickname.afterTextChanged { checkNickName(it) }
+        }
+    }
+
+    private fun setupFocusEvent() {
+        viewModel.apply {
+            //充值金額
+            setupEditTextFocusEvent(et_recharge_amount) { checkRechargeAmount(it) }
+            //微信
+            setupEditTextFocusEvent(et_wx_id) { checkWX(it) }
+            //認證姓名
+            setupEditTextFocusEvent(et_name) { checkUserName(it) }
+            //認證銀行卡號
+            setupEditTextFocusEvent(et_bank_account) { checkBankID(it) }
+            //暱稱
+            setupEditTextFocusEvent(et_nickname) { checkNickName(it) }
+        }
+    }
+
+    private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit) {
+        customEditText.setEditTextOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus)
+                event.invoke(customEditText.et_input.text.toString())
         }
     }
 
