@@ -332,7 +332,7 @@ class WithdrawViewModel(
     fun getWithdrawRate(withdrawAmount: Long) {
         _withdrawRateHint.value = String.format(
             androidContext.getString(R.string.withdraw_handling_fee_hint),
-            rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100),
+            ArithUtil.toMoneyFormat(rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100)),
             ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
         )
     }
