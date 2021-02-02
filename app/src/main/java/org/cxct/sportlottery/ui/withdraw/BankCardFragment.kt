@@ -175,6 +175,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         btn_submit.setOnClickListener {
+            modifyFinish()
             viewModel.addBankCard(
                 bankName = tv_bank_name.text.toString(),
                 subAddress = et_network_point.getText(),
@@ -192,6 +193,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         btn_delete_bank.setOnClickListener {
+            modifyFinish()
             if (args.editBankCard?.id != null) {
                 viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), et_withdrawal_password.getText())
             } else {
@@ -241,9 +243,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer { result ->
             if (result.success) {
-                ToastUtil.showToast(context, getString(R.string.text_bank_card_delete_success))
-                //刪除銀行卡成功後回至銀行卡列表bank card list
-                mNavController.popBackStack()
+                showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_delete_success)) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
                 showPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
             }
@@ -281,7 +281,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         et_bank_card_number.setText("")
         et_network_point.setText("")
         et_withdrawal_password.setText("")
-        this@BankCardFragment.activity?.currentFocus?.clearFocus()
+        modifyFinish()
     }
 
     companion object {
