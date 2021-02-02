@@ -172,6 +172,8 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         updateSocketGlobalStop()
 
+        updateSocketProducerUp()
+
 //        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
 //            if (it == null) return@Observer
 //            Log.e(">>>>>", "g matchStatusChange")
@@ -221,23 +223,38 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
             when (val stopProducerId = it.producerId) {
                 null -> {
-                    updateAllOddLock()
+                    updateAllOddStatus(BetStatus.LOCKED)
                 }
                 else -> {
-                    updateOddLock(stopProducerId)
+                    updateOddStatus(stopProducerId, BetStatus.LOCKED)
                 }
             }
         })
     }
 
-    private fun updateAllOddLock() {
+    private fun updateSocketProducerUp() {
+        viewModel.producerUp.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+
+            when (val upProducerId = it.producerId) {
+                null -> {
+                    updateAllOddStatus(BetStatus.ACTIVATED)
+                }
+                else -> {
+                    updateOddStatus(upProducerId, BetStatus.ACTIVATED)
+                }
+            }
+        })
+    }
+
+    private fun updateAllOddStatus(betStatus: BetStatus) {
         val leagueOdds = leagueOddAdapter.data
         leagueOdds.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 matchOdd.odds.values.forEach { odds ->
                     odds.forEach { odd ->
 
-                        odd.status = BetStatus.LOCKED.code
+                        odd.status = betStatus.code
                     }
                 }
             }
@@ -246,7 +263,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         leagueOddAdapter.data = leagueOdds
     }
 
-    private fun updateOddLock(stopProducerId: Int) {
+    private fun updateOddStatus(stopProducerId: Int, betStatus: BetStatus) {
         val leagueOdds = leagueOddAdapter.data
         leagueOdds.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
@@ -255,7 +272,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                         odd.producerId == stopProducerId
                     }
 
-                    updateOdd?.status = BetStatus.LOCKED.code
+                    updateOdd?.status = betStatus.code
                 }
             }
         }
