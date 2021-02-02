@@ -315,7 +315,9 @@ class WithdrawViewModel(
             !VerifyConstUtil.verifyWithdrawAmount(
                     withdrawAmount,
                     rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 100,
-                    rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney
+                    rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney,
+                _userMoney.value,
+                ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount.toLong())).toDouble()
             ) -> {// TODO Dean : 根據config獲取 但只有最小沒有最大
                 getWithdrawRate(withdrawAmount.toLong())
                 androidContext.getString(R.string.error_withdraw_amount)
@@ -325,7 +327,6 @@ class WithdrawViewModel(
                 ""
             }
         }
-//        getWithdrawRate(withdrawAmount.toLong())
     }
 
     fun getWithdrawRate(withdrawAmount: Long) {

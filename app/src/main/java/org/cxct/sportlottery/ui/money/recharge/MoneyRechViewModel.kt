@@ -164,7 +164,7 @@ class MoneyRechViewModel(
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
-            !VerifyConstUtil.verifyWithdrawAmount(
+            !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 0,
                 9999999
@@ -185,7 +185,7 @@ class MoneyRechViewModel(
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
-            !VerifyConstUtil.verifyWithdrawAmount(
+            !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 0,
                 9999999
