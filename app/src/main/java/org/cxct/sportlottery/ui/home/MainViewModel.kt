@@ -230,7 +230,7 @@ class MainViewModel(
     val producerUp: LiveData<ProducerUpEvent?>
         get() = BroadcastRepository().instance().producerUp
 
-    private val _userMoney = BroadcastRepository().instance().userMoney
+    private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
