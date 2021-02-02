@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -166,6 +167,10 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
             Log.e(">>>", "hello world")
         })
+
+        updateSocketGlobalStop()
+
+        updateSocketProducerUp()
     }
 
     private fun updateMatchOdd(oddsChangeEvent: OddsChangeEvent) {
@@ -204,6 +209,93 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateSocketGlobalStop() {
+        viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+
+            when (val stopProducerId = it.producerId) {
+                null -> {
+                    updateAllOddStatus(BetStatus.LOCKED)
+                    updateAllOutrightOddStatus(BetStatus.LOCKED)
+                }
+                else -> {
+                    updateOddStatus(stopProducerId, BetStatus.LOCKED)
+                    updateOutrightOddStatus(stopProducerId, BetStatus.LOCKED)
+                }
+            }
+        })
+    }
+
+    private fun updateSocketProducerUp() {
+        viewModel.producerUp.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+
+            when (val upProducerId = it.producerId) {
+                null -> {
+                    updateAllOddStatus(BetStatus.ACTIVATED)
+                    updateAllOutrightOddStatus(BetStatus.ACTIVATED)
+                }
+                else -> {
+                    updateOddStatus(upProducerId, BetStatus.ACTIVATED)
+                    updateOutrightOddStatus(upProducerId, BetStatus.ACTIVATED)
+                }
+            }
+        })
+    }
+
+    private fun updateAllOddStatus(betStatus: BetStatus) {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.values.forEach { odds ->
+                odds.forEach {
+
+                    it.status = betStatus.code
+                }
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateAllOutrightOddStatus(betStatus: BetStatus) {
+        val odds = outrightOddAdapter.data
+
+        odds.forEach {
+            it.status = betStatus.code
+        }
+
+        outrightOddAdapter.data = odds
+    }
+
+    private fun updateOddStatus(stopProducerId: Int, betStatus: BetStatus) {
+        val matchOdds = matchOddAdapter.data
+
+        matchOdds.forEach { matchOdd ->
+            matchOdd.odds.values.forEach { odds ->
+                val updateOdd = odds.find { odd ->
+                    odd.producerId == stopProducerId
+                }
+
+                updateOdd?.status = betStatus.code
+            }
+        }
+
+        matchOddAdapter.data = matchOdds
+    }
+
+    private fun updateOutrightOddStatus(stopProducerId: Int, betStatus: BetStatus) {
+        val odds = outrightOddAdapter.data
+
+        val updateOdd = odds.find {
+            it.producerId == stopProducerId
+        }
+
+        updateOdd?.status = BetStatus.LOCKED.code
+
+        outrightOddAdapter.data = odds
     }
 
     private fun setupOddsUpperBar(oddsListResult: OddsListResult) {
