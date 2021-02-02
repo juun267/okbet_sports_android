@@ -487,4 +487,25 @@
     <string name="finance_log_selector_until">到</string>
     <string name="finance_list_no_more">没有更多数据了</string>
     <string name="finance_list_no_record">暂无纪录</string>
+
+    <!--意見反饋-->
+    <string name="feedback_toolbar_title">建议反馈</string>
+    <string name="feedback_tabName_problem">问题与建议</string>
+    <string name="feedback_tabName_record">反馈纪录</string>
+    <string name="feedback_description">如果您对游戏或者平台有好的建议或者发现Bug可以进行提交，官方客服会在48小时内进行回复。我们会及时修正Bug或参考您的反馈不断优化我们的产品和服务。 (若同样建议或Bug有多人反馈,奖金将会发给最先反馈者,记得发现问题第一时间反馈喔)</string>
+    <string name="feedback_description_money">如果建议被采用或者Bug经核实，最高奖励人民币3000元(或其他的等值币种)。</string>
+    <string name="feedback_submit_enter">提交建议</string>
+    <string name="feedback_submit">确认送出</string>
+    <string name="feedback_hint">请输入反馈内容..</string>
+    <string name="all_type">全部类型</string>
+    <string name="all_status">全部状态</string>
+    <string name="type">类型</string>
+    <string name="feedback_last_reply_time">最后反馈时间</string>
+    <string name="feedback_content_description">内容描述</string>
+    <string name="feedback_user_reply">玩家回复</string>
+    <string name="feedback_replied">已反馈</string>
+    <string name="feedback_unreplied">未回复</string>
+    <string name="feedback_submit_time">提交时间:%1$s</string>
+    <string name="feedback_reply_time">反馈时间:%1$s</string>
+
 </resources>
