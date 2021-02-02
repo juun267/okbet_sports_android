@@ -74,25 +74,25 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         }
 
 
-        private fun setStatus(button: TextView, lockImg: ImageView, isOddsNull: Boolean, status: Int) {
+        private fun setStatus(textView: TextView, lockImg: ImageView, isOddsNull: Boolean, status: Int) {
             var itemState = status
             if (isOddsNull) itemState = 2
 
             when (itemState) {
                 BetStatus.ACTIVATED.code -> {
                     lockImg.visibility = View.GONE
-                    button.visibility = View.VISIBLE
-                    button.isEnabled = true
+                    textView.visibility = View.VISIBLE
+                    textView.isEnabled = true
                 }
                 BetStatus.LOCKED.code -> {
                     lockImg.visibility = View.VISIBLE
-                    button.visibility = View.VISIBLE
-                    button.isEnabled = false
+                    textView.visibility = View.VISIBLE
+                    textView.isEnabled = false
                 }
                 BetStatus.DEACTIVATED.code -> {
                     lockImg.visibility = View.GONE
-                    button.visibility = View.GONE
-                    button.isEnabled = false
+                    textView.visibility = View.GONE
+                    textView.isEnabled = false
                 }
             }
         }
