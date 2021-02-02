@@ -55,6 +55,13 @@ object ArithUtil {
         return round(value?:0.0, 2, RoundingMode.HALF_UP)
     }
 
+    /**
+     * 提款金額取整數
+     */
+    fun moneyToLong(value: String?): String{
+        return (value?.toDouble()?.toLong() ?: 0 ).toString()
+    }
+
 
     /**
      * 除法运算

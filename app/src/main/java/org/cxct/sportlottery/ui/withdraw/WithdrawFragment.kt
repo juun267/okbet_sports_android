@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
@@ -81,7 +82,8 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         et_withdrawal_amount.getAllButton {
-            it.setText(tv_balance.text)
+            it.setText(ArithUtil.moneyToLong(tv_balance.text.toString()))
+            et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
 
