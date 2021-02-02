@@ -405,7 +405,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             updateAvatar(it?.iconUrl)
         })
 
-        viewModel.userNotice.observe(this, Observer {
+        receiver.userNotice.observe(this, Observer {
             //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
             it?.userNoticeList?.let { list ->
                 if (list.isNotEmpty())
@@ -413,7 +413,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.notice.observe(this, Observer {
+        receiver.notice.observe(this, Observer {
             hideLoading()
             if (it != null) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
