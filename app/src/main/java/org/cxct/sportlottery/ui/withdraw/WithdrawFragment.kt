@@ -171,8 +171,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
                 clearEvent()
-                ToastUtil.showToastInCenter(context, getString(R.string.text_money_get_success))
-                viewModel.getMoney()
+                showPromptDialog(getString(R.string.prompt), getString(R.string.text_money_get_success)) { viewModel.getMoney() }
             } else {
                 showPromptDialog(getString(R.string.title_withdraw_fail), it.msg) {}
             }
