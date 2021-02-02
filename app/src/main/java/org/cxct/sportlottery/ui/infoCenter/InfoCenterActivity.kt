@@ -14,10 +14,15 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initView()
         initLiveData()
         initRecyclerView()
         initData()
         initButton()
+    }
+
+    private fun initView() {
+        isOpenMenu(false)
     }
 
     private fun initButton() {
