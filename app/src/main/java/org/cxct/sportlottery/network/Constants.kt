@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.network
 
 import android.content.Context
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
+    val SERVER_URL_LIST = listOf("app00app.com", "app66app.com", "app99app.vip", "app66app.vip", "app88app.vip")
     const val BASE_URL = "https://sports.cxct.org"
 
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
@@ -31,6 +33,18 @@ object Constants {
             e.printStackTrace()
             null
         }
+    }
+
+    //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
+    fun getCheckAppUpdateUrl(serverUrl: String?): String {
+        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android.json"
+    }
+
+    //.apk 下載 url
+    fun getAppDownloadUrl(): String {
+        //TODO 等待 getHost 配置好 review
+//        return "https://download." + mCurrentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk";
+        return "https://download.app66app.com/sportnative/platform/sp_plat1/cp.apk"
     }
 
     //bet

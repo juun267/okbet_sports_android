@@ -55,7 +55,7 @@ android {
 
     productFlavors {
         forqa {
-            buildConfigField "String", "CHANNEL_NAME", "\"test\""
+            buildConfigField "String", "CHANNEL_NAME", "\"sp_plat1\""
             applicationId "com.happysport.sl.test"
             manifestPlaceholders = [
                     app_name               : "1bo sports",
