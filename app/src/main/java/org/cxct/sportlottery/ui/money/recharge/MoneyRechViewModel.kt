@@ -172,14 +172,14 @@ class MoneyRechViewModel(
         when (rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 checkUserName(moneyAddRequest.payerName)
-                checkBankID(moneyAddRequest.payer)
+                checkBankID(moneyAddRequest.payer ?: "")
             }
             MoneyType.WX_TYPE.code -> {
                 checkWX(moneyAddRequest.payerName)
             }
             MoneyType.ALI_TYPE.code -> {
                 checkNickName(moneyAddRequest.payerName)
-                checkUserName(moneyAddRequest.payerInfo)
+                checkUserName(moneyAddRequest.payerInfo ?: "")
             }
         }
         checkRechargeAmount(moneyAddRequest.depositMoney.toString())

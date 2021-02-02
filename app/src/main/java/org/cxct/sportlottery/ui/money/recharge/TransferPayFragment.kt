@@ -73,21 +73,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun initButton() {
         //提交
         btn_submit.setOnClickListener {
-            val moneyAddRequest = MoneyAddRequest(
-                rechCfgId = mSelectRechCfgs?.id ?: 0,
-                bankCode = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
-                depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                    et_recharge_amount.getText().toInt()
-                } else {
-                    0
-                },
-                payer = et_bank_account.getText(),
-                payerName = et_name.getText(),
-                payerBankName = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
-                payerInfo = "",
-                depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
-            )
-            viewModel.rechargeSubmit(moneyAddRequest, mMoneyPayWay?.rechType)
+            createMoneyAddRequest()?.let { viewModel.rechargeSubmit(it, mMoneyPayWay?.rechType) }
         }
 
         //選取日曆
@@ -370,5 +356,62 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
             )
         )
+    }
+
+    //創建MoneyAddRequest
+    private fun createMoneyAddRequest(): MoneyAddRequest? {
+        var moneyAddRequest: MoneyAddRequest? = null
+        moneyAddRequest = when (mMoneyPayWay?.rechType) {
+            MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
+                MoneyAddRequest(
+                    rechCfgId = mSelectRechCfgs?.id ?: 0,
+                    bankCode = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
+                    depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
+                        et_recharge_amount.getText().toInt()
+                    } else {
+                        0
+                    },
+                    payer = et_bank_account.getText(),
+                    payerName = et_name.getText(),
+                    payerBankName = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
+                    payerInfo = "",
+                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
+                )
+            }
+            MoneyType.WX_TYPE.code -> {
+                MoneyAddRequest(
+                    rechCfgId = mSelectRechCfgs?.id ?: 0,
+                    bankCode = null,
+                    depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
+                        et_recharge_amount.getText().toInt()
+                    } else {
+                        0
+                    },
+                    payer = null,
+                    payerName = et_wx_id.getText(),
+                    payerBankName = null,
+                    payerInfo = null,
+                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
+                )
+            }
+            MoneyType.ALI_TYPE.code -> {
+                MoneyAddRequest(
+                    rechCfgId = mSelectRechCfgs?.id ?: 0,
+                    bankCode = null,
+                    depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
+                        et_recharge_amount.getText().toInt()
+                    } else {
+                        0
+                    },
+                    payer = null,
+                    payerName = et_nickname.getText(),
+                    payerBankName = null,
+                    payerInfo = et_name.getText(),
+                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
+                )
+            }
+            else -> null
+        }
+        return moneyAddRequest
     }
 }
