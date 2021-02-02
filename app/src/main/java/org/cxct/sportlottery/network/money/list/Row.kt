@@ -21,7 +21,7 @@ data class Row(
     @Json(name = "onlineType")
     val onlineType: Double?,
     @Json(name = "operatorTime")
-    val operatorTime: Long,
+    val operatorTime: Long?,
     @Json(name = "orderNo")
     val orderNo: String,
     @Json(name = "payee")
