@@ -27,6 +27,12 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             notifyDataSetChanged()
         }
 
+    var addSwitch = true
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             CardType.ADD.ordinal -> {
@@ -39,11 +45,15 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     override fun getItemCount(): Int {
-        return bankList.size + 1
+        return if (addSwitch) {
+            bankList.size + 1
+        } else {
+            bankList.size
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == bankList.size) {
+        return if (position == bankList.size && addSwitch) {
             CardType.ADD.ordinal
         } else {
             CardType.EDIT.ordinal
