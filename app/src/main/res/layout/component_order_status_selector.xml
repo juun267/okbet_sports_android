@@ -12,9 +12,10 @@
 
     <View
         android:id="@+id/ll_start_date"
-        android:layout_width="187dp"
+        android:layout_width="120dp"
         android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/order_selector_div"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,15 +48,17 @@
         android:layout_gravity="center_vertical"
         android:text="｜"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ll_end_date"
         app:layout_constraintStart_toEndOf="@id/ll_start_date"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <View
         android:id="@+id/ll_end_date"
-        android:layout_width="187dp"
+        android:layout_width="120dp"
         android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/order_selector_div"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -14,7 +14,7 @@
         android:layout_width="135dp"
         android:layout_height="32dp"
         android:background="@drawable/spinner_gray_5dp"
-        app:layout_constraintStart_toEndOf="@id/date_selector_until"
+        app:layout_constraintEnd_toStartOf="@id/date_selector_until"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
