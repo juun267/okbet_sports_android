@@ -15,11 +15,11 @@ import kotlinx.android.synthetic.main.fragment_game.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
@@ -38,7 +38,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
  * Use the [GameFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
 
     private val service by lazy { (activity as MainActivity).mService }
@@ -58,9 +58,17 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
-            matchOddListener = MatchOddListener ({
-                viewModel.getOddsDetail(it.matchInfo?.id)
-               }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
+            matchOddListener = MatchOddListener(
+                {
+                    viewModel.getOddsDetail(it.matchInfo?.id)
+                },
+                { matchOdd, oddString, odd ->
+                    viewModel.updateMatchBetList(
+                        matchOdd,
+                        oddString,
+                        odd
+                    )
+                })
 
             itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
                 if (isExpand) {
@@ -69,12 +77,10 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 } else {
                     service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
                 }
-
-
-
             }
+            betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
-     }
+    }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
@@ -96,7 +102,11 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         return inflater.inflate(R.layout.fragment_game, container, false).apply {
 
@@ -118,7 +128,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
 
-        viewModel.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
+        receiver.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
             if (matchClockEvent == null) return@Observer
 
             val leagueOdds = leagueOddAdapter.data
@@ -133,57 +143,140 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             leagueOddAdapter.data = leagueOdds
         })
 
-        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             leagueOddAdapter.updatedOddsMap = it.odds
         })
 
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+            leagueOddAdapter.betInfoListData = it
+        })
+
+
+//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
+//            if (it == null) return@Observer
+//            Log.e(">>>>>", "g matchStatusChange")
+//        })
+
+//        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
+//            if (it == null) return@observe
+//            Log.e(">>>>>", "g matchOddsChange")
+//            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
+//        })
+
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
         })
-/*
-        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer { oddsChangeEvent ->
-            if (oddsChangeEvent == null) return@Observer
 
-            val leagueOdds = leagueOddAdapter.data
+        updateSocketGlobalStop()
 
-            leagueOdds.forEach { leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.odds.forEach { oldOdds ->
-                        val newOdds = oddsChangeEvent.odds[oldOdds.key]
+        updateSocketProducerUp()
 
-                        oldOdds.value.forEach { oldOdd ->
-                            val updateOdd = newOdds?.find { newOdd ->
-                                newOdd.id == oldOdd.id
-                            }
+//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
+//            if (it == null) return@Observer
+//            Log.e(">>>>>", "g matchStatusChange")
 
-                            updateOdd?.odds?.let { nonNullUpdateOdd ->
-                                oldOdd.odds?.let { nonNullOldOdd ->
-                                    when {
-                                        (nonNullUpdateOdd > nonNullOldOdd) -> {
-                                            oldOdd.oddState = OddState.LARGER.state
-                                        }
+//            val leagueOdds = leagueOddAdapter.data
+//
+//            leagueOdds.forEach { leagueOdd ->
+//                leagueOdd.matchOdds.forEach { matchOdd ->
+//                    matchOdd.odds.forEach { oldOdds ->
+//                        val newOdds = oddsChangeEvent.odds[oldOdds.key]
+//
+//                        oldOdds.value.forEach { oldOdd ->
+//                            val updateOdd = newOdds?.find { newOdd ->
+//                                newOdd.id == oldOdd.id
+//                            }
+//
+//                            updateOdd?.odds?.let { nonNullUpdateOdd ->
+//                                oldOdd.odds?.let { nonNullOldOdd ->
+//                                    when {
+//                                        (nonNullUpdateOdd > nonNullOldOdd) -> {
+//                                            oldOdd.oddState = OddState.LARGER.state
+//                                        }
+//
+//                                        (nonNullUpdateOdd == nonNullOldOdd) -> {
+//                                            oldOdd.oddState = OddState.SAME.state
+//                                        }
+//
+//                                        (nonNullUpdateOdd < nonNullOldOdd) -> {
+//                                            oldOdd.oddState = OddState.SMALLER.state
+//                                        }
+//                                    }
+//
+//                                    oldOdd.odds = updateOdd.odds
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            leagueOddAdapter.data = leagueOdds
+//        })
+    }
 
-                                        (nonNullUpdateOdd == nonNullOldOdd) -> {
-                                            oldOdd.oddState = OddState.SAME.state
-                                        }
+    private fun updateSocketGlobalStop() {
+        receiver.globalStop.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
 
-                                        (nonNullUpdateOdd < nonNullOldOdd) -> {
-                                            oldOdd.oddState = OddState.SMALLER.state
-                                        }
-                                    }
+            when (val stopProducerId = it.producerId) {
+                null -> {
+                    updateAllOddStatus(BetStatus.LOCKED)
+                }
+                else -> {
+                    updateOddStatus(stopProducerId, BetStatus.LOCKED)
+                }
+            }
+        })
+    }
 
-                                    oldOdd.odds = updateOdd.odds
-                                }
-                            }
-                        }
+    private fun updateSocketProducerUp() {
+        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+
+            when (val upProducerId = it.producerId) {
+                null -> {
+                    updateAllOddStatus(BetStatus.ACTIVATED)
+                }
+                else -> {
+                    updateOddStatus(upProducerId, BetStatus.ACTIVATED)
+                }
+            }
+        })
+    }
+
+    private fun updateAllOddStatus(betStatus: BetStatus) {
+        val leagueOdds = leagueOddAdapter.data
+        leagueOdds.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.odds.values.forEach { odds ->
+                    odds.forEach { odd ->
+
+                        odd.status = betStatus.code
                     }
                 }
             }
-            leagueOddAdapter.data = leagueOdds
-        })
-        */
+        }
+
+        leagueOddAdapter.data = leagueOdds
+    }
+
+    private fun updateOddStatus(stopProducerId: Int, betStatus: BetStatus) {
+        val leagueOdds = leagueOddAdapter.data
+        leagueOdds.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.odds.values.forEach { odds ->
+                    val updateOdd = odds.find { odd ->
+                        odd.producerId == stopProducerId
+                    }
+
+                    updateOdd?.status = betStatus.code
+                }
+            }
+        }
+
+        leagueOddAdapter.data = leagueOdds
     }
 
     private fun setupSportTypeRow(view: View) {

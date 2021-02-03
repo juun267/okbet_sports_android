@@ -17,6 +17,8 @@ import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 /**
  * https://stackoverflow.com/questions/51490558/accessing-broadcastreceiver-in-viewmodel
  */
+
+@Deprecated("replace with broadcast receiver direct observer live data in view")
 class BroadcastRepository {
 
     companion object {

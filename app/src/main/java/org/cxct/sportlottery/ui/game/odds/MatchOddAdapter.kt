@@ -15,6 +15,8 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -28,6 +30,18 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     var updatedOddsMap = mapOf<String, List<Odd?>?>()
         set(value) {
             field = value
+            notifyDataSetChanged()
+        }
+    var betInfoListData: List<BetInfoListData>? = null
+        set(value) {
+            field = value
+            data.forEach { matchOdd ->
+                matchOdd.odds.forEach { map ->
+                    map.value.forEach { odd ->
+                        odd.isSelected = value?.any { it.matchOdd.oddsId == odd.id } ?: false
+                    }
+                }
+            }
             notifyDataSetChanged()
         }
 
@@ -230,7 +244,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.ou_hdp_home_ou.apply {
                     isSelected = it.isSelected
                     bet_top_text.text = it.spread
-                    bet_bottom_text.text = it.odds.toString()
+                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
 //                        setHighlight(OddState.LARGER.state)
                         matchOddListener?.onBet(item, ouOddString, it)
@@ -244,7 +258,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.ou_hdp_away_ou.apply {
                     isSelected = it.isSelected
                     bet_top_text.text = it.spread
-                    bet_bottom_text.text = it.odds.toString()
+                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
@@ -257,7 +271,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.ou_hdp_home_hdp.apply {
                     isSelected = it.isSelected
                     bet_top_text.text = it.spread
-                    bet_bottom_text.text = it.odds.toString()
+                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
@@ -270,7 +284,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.ou_hdp_away_hdp.apply {
                     isSelected = it.isSelected
                     bet_top_text.text = it.spread
-                    bet_bottom_text.text = it.odds.toString()
+                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, hdpOddString, it)
                     }
@@ -317,8 +331,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
                     isSelected = it.isSelected
-                    bet_bottom_text.text = it.odds.toString()
-                    setStatus(it.odds?.isNaN() ?: true, it.status)
+
+                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
+                    setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
@@ -329,8 +344,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             oddBetX?.let {
                 itemView.x12_bet_x.apply {
                     isSelected = it.isSelected
-                    bet_bottom_text.text = it.odds.toString()
-                    setStatus(it.odds?.isNaN() ?: true, it.status)
+
+                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
+                    setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
@@ -341,8 +357,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             oddBet2?.let {
                 itemView.x12_bet_2.apply {
                     isSelected = it.isSelected
-                    bet_bottom_text.text = it.odds.toString()
-                    setStatus(it.odds?.isNaN() ?: true, it.status)
+
+                    it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
+                    setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
@@ -383,8 +400,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             timer = object : CountDownTimer(upperBound, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val leagueTimeDisplay = TimeUtil.timeFormat(
-                        leagueTime * 1000 + (upperBound - millisUntilFinished),
-                        "mm:ss"
+                            leagueTime * 1000 + (upperBound - millisUntilFinished),
+                            "mm:ss"
                     )
                     textView.text = leagueTimeDisplay
                 }

@@ -56,18 +56,6 @@
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-        <ImageView
-            android:id="@+id/btn_close"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_close_gray_blue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -81,10 +69,16 @@
             android:orientation="vertical">
 
             <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_bet_history"
+                android:id="@+id/menu_profile_center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvTitle="@string/betting_record" />
+                app:cvTitle="@string/profile_center" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_member_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvTitle="@string/member_level" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_game_result"
@@ -93,22 +87,10 @@
                 app:cvTitle="@string/game_settlement" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_profile_center"
+                android:id="@+id/menu_version_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvTitle="@string/profile_center" />
-
-            <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_news"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cvTitle="@string/news_center" />
-
-            <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_help"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cvTitle="@string/help_center" />
+                app:cvTitle="@string/version_update" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_sign_out"

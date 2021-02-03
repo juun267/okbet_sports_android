@@ -13,7 +13,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
@@ -30,7 +30,8 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
 
-class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity :
+    BaseOddButtonActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
@@ -44,6 +45,7 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         setupMoreButtons()
         getUserInfo()
         initObserve()
+        initSocketObserver()
     }
 
     private fun setupBackButton() {
@@ -105,14 +107,9 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
-        //資金明細
-        btn_fund_detail.setOnClickListener {
-            startActivity(Intent(this, FinanceActivity::class.java))
-        }
-
-        //投注記錄
-        btn_bet_record.setOnClickListener {
-            startActivity(Intent(this, BetRecordActivity::class.java))
+        //額度轉換
+        btn_account_transfer.setOnClickListener {
+            //TODO 額度轉換
         }
 
         //提款設置
@@ -120,14 +117,22 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             viewModel.settingCheckPermissions()
         }
 
+        //投注記錄
+        btn_bet_record.setOnClickListener {
+            startActivity(Intent(this, BetRecordActivity::class.java))
+        }
+
+        //資金明細
+        btn_fund_detail.setOnClickListener {
+            startActivity(Intent(this, FinanceActivity::class.java))
+        }
+
         //消息中心
         btn_news_center.setOnClickListener {
             startActivity(Intent(this, InfoCenterActivity::class.java))
         }
-
-        //建議反饋
-        btn_feedback.setOnClickListener {
-            //TODO 建議反饋
+        btn_bell.setOnClickListener {
+            btn_news_center.performClick()
         }
 
         //優惠活動
@@ -149,9 +154,9 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             startActivity(Intent(this, HelpCenterActivity::class.java))
         }
 
-        //在線客服
-        btn_online_service.setOnClickListener {
-            JumpUtil.toOnlineService(this)
+        //建議反饋
+        btn_feedback.setOnClickListener {
+            //TODO 建議反饋
         }
     }
 
@@ -198,6 +203,12 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             } else if (it == false) {
                 startActivity(Intent(this, BankActivity::class.java))
             }
+        })
+    }
+
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(this, Observer {
+            tv_account_balance.text = ArithUtil.toMoneyFormat(it)
         })
     }
 
