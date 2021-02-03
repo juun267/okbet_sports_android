@@ -48,54 +48,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         onTokenStateChanged()
         onNetworkException()
-        subscribeBroadCastReceiver()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        removeBroadcast()
-    }
-
-    private fun subscribeBroadCastReceiver() {
-        val filter = IntentFilter().apply {
-            addAction(SERVICE_SEND_DATA)
-        }
-
-        val bcRepository = BroadcastRepository().instance()
-        bcRepository.addDataSources(
-                mReceiver.globalStop,
-                mReceiver.matchClock,
-                mReceiver.matchOddsChange,
-                mReceiver.matchStatusChange,
-                mReceiver.notice,
-                mReceiver.oddsChange,
-                mReceiver.orderSettlement,
-                mReceiver.pingPong,
-                mReceiver.producerUp,
-                mReceiver.userMoney,
-                mReceiver.userNotice
-        )
-        registerReceiver(mReceiver, filter)
-    }
-
-    private fun removeBroadcast() {
-
-        val bcRepository = BroadcastRepository().instance()
-        bcRepository.removeDataSource(
-                mReceiver.globalStop,
-                mReceiver.matchClock,
-                mReceiver.matchOddsChange,
-                mReceiver.matchStatusChange,
-                mReceiver.notice,
-                mReceiver.oddsChange,
-                mReceiver.orderSettlement,
-                mReceiver.pingPong,
-                mReceiver.producerUp,
-                mReceiver.userMoney,
-                mReceiver.userNotice
-        )
-
-        unregisterReceiver(mReceiver)
     }
 
     private fun onTokenStateChanged() {

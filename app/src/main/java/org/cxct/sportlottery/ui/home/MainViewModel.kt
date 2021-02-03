@@ -30,16 +30,6 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
-import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
-import org.cxct.sportlottery.network.service.notice.NoticeEvent
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
-import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
-import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -51,7 +41,6 @@ import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
-import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
@@ -201,41 +190,9 @@ class MainViewModel(
     val betAddResult: LiveData<Event<BetAddResult?>>
         get() = _betAddResult
 
-    //BroadCastReceiver
-
-    val globalStop: LiveData<GlobalStopEvent?>
-        get() = BroadcastRepository().instance().globalStop
-
-    val matchClock: LiveData<MatchClockEvent?>
-        get() = BroadcastRepository().instance().matchClock
-
-    val matchOddsChange: LiveData<MatchOddsChangeEvent?>
-        get() = BroadcastRepository().instance().matchOddsChange
-
-    val matchStatusChange: LiveData<MatchStatusChangeEvent?>
-        get() = BroadcastRepository().instance().matchStatusChange
-
-    val notice: LiveData<NoticeEvent?>
-        get() = BroadcastRepository().instance().notice
-
-    val oddsChange: LiveData<OddsChangeEvent?>
-        get() = BroadcastRepository().instance().oddsChange
-
-    val orderSettlement: LiveData<OrderSettlementEvent?>
-        get() = BroadcastRepository().instance().orderSettlement
-
-    val pingPong: LiveData<PingPongEvent?>
-        get() = BroadcastRepository().instance().pingPong
-
-    val producerUp: LiveData<ProducerUpEvent?>
-        get() = BroadcastRepository().instance().producerUp
-
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
-
-    val userNotice: LiveData<UserNoticeEvent?>
-        get() = BroadcastRepository().instance().userNotice
 
 
     fun isParlayPage(boolean: Boolean) {
