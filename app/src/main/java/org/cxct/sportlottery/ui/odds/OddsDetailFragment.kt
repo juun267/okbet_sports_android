@@ -113,15 +113,15 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
             val newList = arrayListOf<OddsDetailListData>()
 
-            for ( (key, value) in it.odds) {
-                newList.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        value.odds
-                    )
-                )
+            it.odds.forEach { map ->
+                val key = map.key
+                val value = map.value
+                val filteredOddList = mutableListOf<Odd>()
+                value.odds?.forEach { odd ->
+                    if (odd != null)
+                        filteredOddList.add(odd)
+                }
+                newList.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, filteredOddList))
             }
 
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
@@ -225,7 +225,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success != true) {
-                ToastUtil.showBetResultToast(requireActivity(), it?.msg?: getString(R.string.unknown_error), false)
+                ToastUtil.showBetResultToast(requireActivity(), it?.msg ?: getString(R.string.unknown_error), false)
             }
         })
 

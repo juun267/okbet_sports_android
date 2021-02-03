@@ -12,5 +12,5 @@ data class Odds(
     @Json(name = "name")
     val name: String,
     @Json(name = "odds")
-    val odds: MutableList<Odd>,
+    val odds: MutableList<Odd?>?,
 )

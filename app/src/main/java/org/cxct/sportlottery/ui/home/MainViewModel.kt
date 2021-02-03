@@ -772,7 +772,7 @@ class MainViewModel(
                             br.betInfoList.value?.let { list ->
                                 for (i in list.indices) {
                                     br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
-                                        odd = value.odds.find { v -> v.id == it }
+                                        odd = value.odds.find { v -> if (v == null) return@find false else v.id == it }
                                         odd?.isSelect = false
                                     }
                                 }
@@ -840,7 +840,7 @@ class MainViewModel(
                             br.betInfoList.value?.let { list ->
                                 for (i in list.indices) {
                                     br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
-                                        odd = value.odds.find { v -> v.id == it }
+                                        odd = value.odds.find { v -> if (v == null) return@find false else v.id == it }
                                         odd?.isSelect = false
                                     }
                                 }
@@ -884,7 +884,7 @@ class MainViewModel(
                                 //server目前可能會回傳null
                                 try {
                                     odd = value.odds.find { v ->
-                                        v.id.let { id -> id == betInfoRepository?.betInfoList?.value?.get(i)?.matchOdd?.oddsId }
+                                        v?.id?.let { id -> id == betInfoRepository?.betInfoList?.value?.get(i)?.matchOdd?.oddsId } ?: return@find false
                                     }
                                     odd?.isSelect = true
                                 } catch (e: Exception) {
@@ -894,12 +894,17 @@ class MainViewModel(
 
                             }
                         }
+                        val filteredOddList = mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd>()
+                        value.odds.forEach { detailOdd ->
+                            if (detailOdd != null)
+                                filteredOddList.add(detailOdd)
+                        }
                         list.add(
                             OddsDetailListData(
                                 key,
                                 TextUtil.split(value.typeCodes),
                                 value.name,
-                                value.odds as MutableList<org.cxct.sportlottery.network.odds.detail.Odd>,
+                                filteredOddList,
                             )
                         )
                     }

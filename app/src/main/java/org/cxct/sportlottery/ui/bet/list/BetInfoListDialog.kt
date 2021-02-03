@@ -72,10 +72,10 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
             adapter = betInfoListAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(
-                    SpaceItemDecoration(
-                            context,
-                            R.dimen.recyclerview_item_dec_spec_bet_info_list
-                    )
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_bet_info_list
+                )
             )
         }
 
@@ -104,8 +104,12 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
             Log.e(">>>>>", "matchOddsChange")
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
                 mutableListOf()
-            for ((key, value) in it.odds) {
-                newList.addAll(value.odds)
+            it.odds.forEach { map ->
+                val value = map.value
+                value.odds?.forEach { odd ->
+                    if (odd != null)
+                        newList.add(odd)
+                }
             }
             betInfoListAdapter.updatedBetInfoList = newList
         })
@@ -122,12 +126,12 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
 
     override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
         viewModel.addBet(
-                BetAddRequest(
-                        listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
-                        listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
-                        1,
-                        "EU"
-                ), betInfoListData.matchType
+            BetAddRequest(
+                listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
+                listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+                1,
+                "EU"
+            ), betInfoListData.matchType
         )
     }
 

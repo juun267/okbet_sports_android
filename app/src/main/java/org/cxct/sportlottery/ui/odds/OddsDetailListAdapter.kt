@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-        RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
@@ -328,7 +328,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             for (odd in oddsDetail.oddArrayList) {
 
-                if(odd.name!=null) {
+                if (odd.name != null) {
                     if (odd.name?.contains(" - ") == true) {
                         val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
                         if (stringArray[0].toInt() > stringArray[1].toInt()) {
@@ -427,9 +427,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         Handler().postDelayed(
-                {
-                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.light_gray))
-                }, CHANGING_ITEM_BG_COLOR_DURATION
+            {
+                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.light_gray))
+            }, CHANGING_ITEM_BG_COLOR_DURATION
         )
     }
 
