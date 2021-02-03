@@ -104,13 +104,22 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
     }
 
     fun setRecordTimeRange(start: Calendar, end: Calendar? = null) {
+
+        val startDateStr = TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd")
         val startDate =
-                RechargeTime(TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd"), start.timeInMillis)
+            RechargeTime(
+                startDateStr,
+                TimeUtil.getDayDateTimeRangeParams(startDateStr)
+            )
         _recordCalendarStartDate.postValue(startDate)
 
         end?.let {
+            val endDateStr = TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd")
             val endDate =
-                    RechargeTime(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"), end.timeInMillis)
+                RechargeTime(
+                    endDateStr,
+                    TimeUtil.getDayDateTimeRangeParams(endDateStr)
+                )
             _recordCalendarEndDate.postValue(endDate)
         }
     }
@@ -244,8 +253,8 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
             it.isSelected
         }?.code
 
-        val startTime = _recordCalendarStartDate.value?.date
-        val endTime = _recordCalendarEndDate.value?.date
+        val startTime = _recordCalendarStartDate.value?.timeRangeParams?.startTime
+        val endTime = _recordCalendarEndDate.value?.timeRangeParams?.endTime
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -370,8 +379,8 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
             it.isSelected
         }?.type
 
-        val startTime = _recordCalendarStartDate.value?.date
-        val endTime = _recordCalendarEndDate.value?.date
+        val startTime = _recordCalendarStartDate.value?.timeRangeParams?.startTime
+        val endTime = _recordCalendarEndDate.value?.timeRangeParams?.endTime
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
