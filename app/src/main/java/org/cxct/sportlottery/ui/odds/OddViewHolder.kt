@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.odds
 
 import android.content.res.ColorStateList
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -22,13 +23,12 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?) {
 
-        setHighlight(tvOdds, odd.oddState)
+        setHighlight(tvOdds, odd)
 
         tvName.text = odd.name
         odd.odds?.let { odds ->
             tvOdds.text = TextUtil.formatForOdd(odds)
         }
-
 
         when (odd.status) {
             BetStatus.ACTIVATED.code -> {
@@ -68,16 +68,31 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         }
     }
 
-    private fun setHighlight(textView: TextView, status: Int) {
-        when (status) {
-            OddState.LARGER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
-            OddState.SMALLER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
+    private fun setHighlight(textView: TextView, odd: Odd) {
+        when (odd.oddState) {
+            OddState.LARGER.state -> {
+                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
+                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
+            }
+            OddState.SMALLER.state -> {
+                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
+                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
+            }
         }
 
         Handler().postDelayed(
-            {
-                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.light_gray))
-            }, CHANGING_ITEM_BG_COLOR_DURATION
+                {
+                    when (odd.isSelect) {
+                        true -> {
+                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
+                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
+                        }
+                        false -> {
+                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
+                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
+                        }
+                    }
+                }, CHANGING_ITEM_BG_COLOR_DURATION
         )
     }
 
