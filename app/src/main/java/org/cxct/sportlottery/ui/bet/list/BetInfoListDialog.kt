@@ -22,7 +22,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
-    BetInfoListAdapter.OnItemClickListener {
+        BetInfoListAdapter.OnItemClickListener {
 
 
     companion object {
@@ -100,20 +100,20 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
         })
     }
 
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer {
+
     private fun initSocketObserver() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "matchOddsChange")
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                mutableListOf()
+                    mutableListOf()
             for ((key, value) in it.odds) {
                 newList.addAll(value.odds)
             }
             betInfoListAdapter.updatedBetInfoList = newList
         })
 
-        viewModel.globalStop.observe(viewLifecycleOwner, Observer {
+        receiver.globalStop.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "globalStop")
             val list = betInfoListAdapter.betInfoList
@@ -125,7 +125,7 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
             betInfoListAdapter.betInfoList = list
         })
 
-        viewModel.producerUp.observe(viewLifecycleOwner, Observer {
+        receiver.producerUp.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "globalStop")
             val list = betInfoListAdapter.betInfoList
