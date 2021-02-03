@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.base
 
 import kotlin.reflect.KClass
 
-class BaseSocketDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialog<T>(clazz) {
+abstract class BaseSocketDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialog<T>(clazz) {
 
     val receiver by lazy {
         (activity as BaseSocketActivity<*>).receiver
