@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
 
 
 abstract class BaseToolBarActivity<T : BaseViewModel>(claazz: KClass<T>) :
-    BaseSocketActivity<T>(claazz) {
+    BaseOddButtonActivity<T>(claazz) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

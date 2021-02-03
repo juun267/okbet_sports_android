@@ -5,9 +5,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.appbar_finance.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
-class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) {
+class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel::class) {
 
     private val navController by lazy {
         findNavController(R.id.financeFragment)

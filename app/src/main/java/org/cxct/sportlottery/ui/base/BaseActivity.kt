@@ -98,11 +98,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         unregisterReceiver(mReceiver)
     }
 
-    override fun onResume() {
-        super.onResume()
-        createOddButton()
-    }
-
     private fun onTokenStateChanged() {
         viewModel.errorResultToken.observe(this, Observer {
             showDialogLogout(it.msg)
