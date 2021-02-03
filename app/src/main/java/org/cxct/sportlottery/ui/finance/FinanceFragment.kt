@@ -11,12 +11,11 @@ import kotlinx.android.synthetic.main.fragment_finance.view.*
 import kotlinx.android.synthetic.main.view_account_balance.*
 import kotlinx.android.synthetic.main.view_account_balance.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.util.ArithUtil
-import timber.log.Timber
 
 
-class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::class) {
     private val recordAdapter by lazy {
         FinanceRecordAdapter().apply {
             financeRecordListener = FinanceRecordListener {
@@ -72,5 +71,13 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
 
         viewModel.getMoney()
         viewModel.getRecordList()
+
+        initSocketObserver()
+    }
+
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(this.viewLifecycleOwner, Observer {
+            tv_balance.text = ArithUtil.toMoneyFormat(it)
+        })
     }
 }

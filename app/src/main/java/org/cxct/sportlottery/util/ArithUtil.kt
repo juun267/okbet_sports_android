@@ -35,9 +35,10 @@ object ArithUtil {
 
     /**
      * 20201015金額全部統一，無條件捨去、保留小數點後兩位
+     * 20210112體育數值金額統一改成小數點後第三位
      */
     fun toMoneyFormat(value: Double?): String {
-        return round(value ?: 0.0, 2, RoundingMode.DOWN)
+        return round(value ?: 0.0, 3, RoundingMode.HALF_UP)
     }
 
     /**
@@ -53,6 +54,13 @@ object ArithUtil {
      * */
     fun toBonusMoneyFormat(value: Double?): String {
         return round(value?:0.0, 2, RoundingMode.HALF_UP)
+    }
+
+    /**
+     * 提款金額取整數
+     */
+    fun moneyToLong(value: String?): String{
+        return (value?.toDouble()?.toLong() ?: 0 ).toString()
     }
 
 

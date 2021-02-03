@@ -30,7 +30,7 @@ import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.SERVICE_TOKEN
 import org.cxct.sportlottery.service.SERVICE_USER_ID
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
@@ -41,7 +41,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
 import timber.log.Timber
 
-class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效
@@ -405,7 +405,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             updateAvatar(it?.iconUrl)
         })
 
-        viewModel.userNotice.observe(this, Observer {
+        receiver.userNotice.observe(this, Observer {
             //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
             it?.userNoticeList?.let { list ->
                 if (list.isNotEmpty())
@@ -413,7 +413,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.notice.observe(this, Observer {
+        receiver.notice.observe(this, Observer {
             hideLoading()
             if (it != null) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
