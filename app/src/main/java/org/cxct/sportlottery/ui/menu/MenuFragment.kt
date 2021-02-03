@@ -11,23 +11,18 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
-import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
-import org.cxct.sportlottery.ui.withdraw.BankActivity
-import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
  * 遊戲右側功能選單
  */
-class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
 
     override fun onCreateView(
@@ -42,6 +37,7 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         initObserve()
+        initSocketObserver()
         initEvent()
         setupSelectLanguage()
         setupVersion()
@@ -66,29 +62,16 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
     }
 
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(viewLifecycleOwner, Observer {
+            tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
+        })
+    }
+
     private fun initEvent() {
         btn_change_language.setOnClickListener {
             ChangeLanguageDialog().show(parentFragmentManager, null)
-        }
-
-        btn_close.setOnClickListener {
-            mDownMenuListener?.onClick(btn_close)
-        }
-
-        menu_game_result.setOnClickListener {
-            startActivity(Intent(activity, ResultsSettlementActivity::class.java))
-            mDownMenuListener?.onClick(menu_game_result)
-        }
-
-        menu_sign_out.setOnClickListener {
-            viewModel.logout()
-            context?.run {
-                MainActivity.reStart(this)
-            }
-        }
-
-        menu_bet_history.setOnClickListener {
-            startActivity(Intent(context, BetRecordActivity::class.java))
+            mDownMenuListener?.onClick(btn_change_language)
         }
 
         menu_profile_center.setOnClickListener {
@@ -96,15 +79,27 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_profile_center)
         }
 
-        menu_news.setOnClickListener {
-            startActivity(Intent(context, InfoCenterActivity::class.java))
-            mDownMenuListener?.onClick(menu_news)
+        menu_member_level.setOnClickListener {
+            //TODO 會員層級
         }
 
-        menu_help.setOnClickListener {
-            startActivity(Intent(context, HelpCenterActivity::class.java))
-            mDownMenuListener?.onClick(menu_help)
+        menu_game_result.setOnClickListener {
+            startActivity(Intent(activity, ResultsSettlementActivity::class.java))
+            mDownMenuListener?.onClick(menu_game_result)
         }
+
+        menu_version_update.setOnClickListener {
+            //TODO 版本更新
+        }
+
+        menu_sign_out.setOnClickListener {
+            viewModel.logout()
+            context?.run {
+                MainActivity.reStart(this)
+            }
+            mDownMenuListener?.onClick(menu_sign_out)
+        }
+
     }
 
     private fun setupSelectLanguage() {

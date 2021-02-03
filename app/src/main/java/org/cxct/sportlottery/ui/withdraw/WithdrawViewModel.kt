@@ -43,7 +43,7 @@ class WithdrawViewModel(
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
 
-    private val _userMoney = BroadcastRepository().instance().userMoney
+    private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 

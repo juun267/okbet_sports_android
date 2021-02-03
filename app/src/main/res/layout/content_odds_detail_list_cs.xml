@@ -111,15 +111,36 @@
                 android:textColor="@color/text_brownish_gray"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tv_odds"
-                android:layout_width="56dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:background="@drawable/select_button_radius_5_odds"
-                android:gravity="center"
-                android:textColor="@color/color_select_text_odds"
-                android:textSize="14sp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/tv_odds"
+                    android:layout_width="56dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/select_button_radius_5_odds"
+                    android:gravity="center"
+                    android:textColor="@color/color_select_text_odds"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_disable_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/tv_odds"
+                    android:layout_alignTop="@+id/tv_odds"
+                    android:layout_alignEnd="@+id/tv_odds"
+                    android:layout_alignBottom="@+id/tv_odds"
+                    android:background="@drawable/bg_radius_5_button_disable"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:src="@drawable/ic_lock_odd"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
 
         </LinearLayout>
 

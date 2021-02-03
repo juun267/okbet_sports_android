@@ -20,14 +20,14 @@ import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.ui.finance.df.UWType
-import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
 const val pageSize = 20
 
-class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfoRepository) : BaseViewModel() {
+class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfoRepository) :
+    BaseViewModel() {
 
     init {
         betInfoRepository = betInfoRepo
@@ -76,7 +76,7 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
         get() = _isFinalPage
 
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
-    private val _userMoney = BroadcastRepository().instance().userMoney
+    private val _userMoney = MutableLiveData<Double?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
     private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
 
