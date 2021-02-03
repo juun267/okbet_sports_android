@@ -168,11 +168,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:minHeight="40dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginStart="12dp"
                         android:ems="2"
                         android:text="@string/title_address"
@@ -182,24 +184,13 @@
                     <TextView
                         android:id="@+id/tv_address"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingTop="1dp"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:textColor="@color/black"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="上海市浦东大道2851号" />
-
-                    <Button
-                        android:id="@+id/btn_address_copy"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="45dp"
-                        android:layout_height="26dp"
-                        android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_3dp_radius_button"
-                        android:gravity="center"
-                        android:text="@string/btn_copy"
-                        android:textColor="@color/main_light"
-                        android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
 
