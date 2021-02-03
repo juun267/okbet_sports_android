@@ -72,6 +72,9 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
     val logDetail: LiveData<LogDetail>
         get() = _logDetail
 
+    val withdrawLogDetail: LiveData<org.cxct.sportlottery.network.withdraw.list.Row>
+        get() = _withdrawLogDetail
+
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
@@ -94,6 +97,8 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
     private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
 
     private val _logDetail = MutableLiveData<LogDetail>()
+    private val _withdrawLogDetail =
+        MutableLiveData<org.cxct.sportlottery.network.withdraw.list.Row>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
@@ -400,10 +405,20 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
                     else -> ""
                 }
 
-                it.withdrawDate = TimeUtil.timeFormat(it.applyTime, "yyyy-MM-dd")
-                it.withdrawTime = TimeUtil.timeFormat(it.applyTime, "HH:mm:ss")
+                it.applyTime?.let { nonNullApTime ->
+                    it.withdrawDateAndTime =
+                        TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd HH:mm:ss")
+                    it.withdrawDate = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd")
+                    it.withdrawTime = TimeUtil.timeFormat(nonNullApTime, "HH:mm:ss")
+                }
+
+                it.operatorTime?.let { nonNullOpTime ->
+                    it.operatorDateAndTime =
+                        TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
+                }
 
                 it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
+                it.displayFee = ArithUtil.toMoneyFormat(it.fee)
             }
 
             result?.total?.let {
@@ -426,16 +441,8 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
         _logDetail.postValue(logDetail)
     }
 
-    fun setLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
-        val logDetail = LogDetail(
-                row.orderNo,
-                TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
-                row.uwType,
-                row.displayMoney,
-                row.withdrawState
-        )
-
-        _logDetail.postValue(logDetail)
+    fun setWithdrawLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
+        _withdrawLogDetail.postValue(row)
     }
 
 }

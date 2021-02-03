@@ -481,8 +481,12 @@
     <string name="log_detail_type_sub">交易类型：</string>
     <string name="log_detail_amount_sub">交易金额：</string>
     <string name="log_detail_status_sub">交易状态：</string>
+    <string name="log_detail_handle_fee">手续费用：</string>
+    <string name="log_detail_review_time">审核时间：</string>
 
     <string name="finance_log_selector_until">到</string>
     <string name="finance_list_no_more">没有更多数据了</string>
     <string name="finance_list_no_record">暂无纪录</string>
+
+    <string name="finance_rmb">%s RMB</string>
 </resources>
