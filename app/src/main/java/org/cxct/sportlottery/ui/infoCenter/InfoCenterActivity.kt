@@ -14,10 +14,15 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initView()
         initLiveData()
         initRecyclerView()
         initData()
         initButton()
+    }
+
+    private fun initView() {
+        isOpenMenu(false)
     }
 
     private fun initButton() {
@@ -73,7 +78,7 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
         //未讀總筆數
         viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, {
             btn_unread_letters.text =
-                String.format(resources.getString(R.string.inbox), it)
+                String.format(resources.getString(R.string.unread_letters), it)
         })
         //Loading
         viewModel.isLoading.observe(this@InfoCenterActivity, {

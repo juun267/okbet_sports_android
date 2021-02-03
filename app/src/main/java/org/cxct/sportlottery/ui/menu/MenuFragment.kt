@@ -64,6 +64,7 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initEvent() {
         btn_change_language.setOnClickListener {
             ChangeLanguageDialog().show(parentFragmentManager, null)
+            mDownMenuListener?.onClick(btn_change_language)
         }
 
         menu_profile_center.setOnClickListener {
@@ -89,6 +90,7 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             context?.run {
                 MainActivity.reStart(this)
             }
+            mDownMenuListener?.onClick(menu_sign_out)
         }
 
     }
