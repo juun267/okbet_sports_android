@@ -269,6 +269,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             }
         }
 
+        if ((mSelectRechCfgs?.rebateFee ?: 0.0) != 0.0){
+            cv_rebate_fee.visibility = View.VISIBLE
+            tv_rebate_fee.text = "${ArithUtil.toOddFormat(mSelectRechCfgs?.rebateFee?.times(100))} %"
+        }else {
+            cv_rebate_fee.visibility = View.GONE
+        }
+
         //存款時間
         txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
 
