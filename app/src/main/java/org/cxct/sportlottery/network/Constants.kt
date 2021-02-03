@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = listOf("app00app.com", "app66app.com", "app99app.vip", "app66app.vip", "app88app.vip")
+    val SERVER_URL_LIST = listOf("app66app.com", "app99app.vip", "app66app.vip", "app88app.vip")
     const val BASE_URL = "https://sports.cxct.org"
 
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL

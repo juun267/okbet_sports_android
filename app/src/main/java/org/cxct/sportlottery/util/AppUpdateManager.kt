@@ -102,7 +102,7 @@ object AppUpdateManager {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) //4.0以上系统弹出安装成功打开界面
 
             //判断是否是Android N以及更高的版本(>=SDK 24) //SDK24以上要使用 FileProvider 提供 Uri 給外部 APP 使用
-            val fileUri =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val fileUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) //给目标应用一个临时授权
                 val file = File(path)
                 FileProvider.getUriForFile(context!!, "${context.packageName}.provider", file)

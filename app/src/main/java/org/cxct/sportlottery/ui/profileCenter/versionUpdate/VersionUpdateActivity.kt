@@ -126,7 +126,7 @@ class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdate
         viewModel.appVersionState.observe(this, Observer {
             hideLoading()
             if (it.isNewVersion) {
-                tv_version_content.text = "${getString(R.string.new_version)}(v${it.androidVersionCode}_${it.androidVersionName})${getString(R.string.updatable)}"
+                tv_version_content.text = "${getString(R.string.new_version)}(v${it.lastVersionCode}_${it.lastVersionName})${getString(R.string.updatable)}"
 
                 btn_external_download.visibility = View.VISIBLE
                 btn_internal_download.visibility = View.VISIBLE
