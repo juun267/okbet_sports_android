@@ -138,6 +138,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 //            "${selectRechCfgs?.minMoney}",
 //            "${selectRechCfgs?.maxMoney}"
 //        )
+        tv_hint.text = mSelectRechCfgs?.remark
     }
 
     private fun refreshPayBank(rechCfgsList: MoneyRechCfg.RechConfig?) {
