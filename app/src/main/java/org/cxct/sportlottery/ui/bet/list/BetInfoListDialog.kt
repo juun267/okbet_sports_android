@@ -99,15 +99,15 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
         })
 
         //TODO 確認後調整變動方式
-//        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            Log.e(">>>>>", "matchOddsChange")
-//            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
-//            for ((key, value) in it.odds) {
-//                newList.addAll(value.odds)
-//            }
-//            betInfoListAdapter.updatedBetInfoList = newList
-//        })
+        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "matchOddsChange")
+            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+            for ((key, value) in it.odds) {
+                newList.addAll(value.odds)
+            }
+            betInfoListAdapter.updatedBetInfoList = newList
+        })
 
         viewModel.globalStop.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
