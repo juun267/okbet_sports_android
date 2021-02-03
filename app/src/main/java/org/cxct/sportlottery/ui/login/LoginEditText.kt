@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
@@ -68,6 +69,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         setupClear()
         setupVerificationCode()
         setError(null)
+        setupKeyBoardPressDown()
     }
 
     private fun setupFocus() {
@@ -97,6 +99,15 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         iv_verification_code.setOnClickListener {
             iv_verification_code.visibility = View.GONE
             mVerificationCodeBtnOnClickListener?.onClick(it)
+        }
+    }
+
+    private fun setupKeyBoardPressDown() {
+        et_input.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                clearFocus()
+            }
+            return@setOnEditorActionListener false
         }
     }
 
