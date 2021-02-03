@@ -15,12 +15,14 @@ import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
+import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
-    BetInfoListAdapter.OnItemClickListener {
+        BetInfoListAdapter.OnItemClickListener {
 
 
     companion object {
@@ -98,16 +100,41 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
         })
     }
 
+
     private fun initSocketObserver() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "matchOddsChange")
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                mutableListOf()
+                    mutableListOf()
             for ((key, value) in it.odds) {
                 newList.addAll(value.odds)
             }
             betInfoListAdapter.updatedBetInfoList = newList
+        })
+
+        receiver.globalStop.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "globalStop")
+            val list = betInfoListAdapter.betInfoList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
+                    listData.matchOdd.status = BetStatus.LOCKED.code
+                }
+            }
+            betInfoListAdapter.betInfoList = list
+        })
+
+        receiver.producerUp.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "globalStop")
+            val list = betInfoListAdapter.betInfoList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
+                    listData.matchOdd.status = BetStatus.ACTIVATED.code
+                }
+            }
+            betInfoListAdapter.betInfoList = list
         })
 
     }
@@ -135,4 +162,6 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
     override fun onAddMoreClick() {
         dismiss()
     }
+
+
 }
