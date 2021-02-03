@@ -239,9 +239,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             tv_remark.text = selectRechCfgs?.remark
         }
         when (mMoneyPayWay?.rechType) {
-            MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
+            MoneyType.BANK_TYPE.code -> {
                 ll_qr.visibility = View.GONE
                 ll_address.visibility = View.VISIBLE
+                et_wx_id.visibility = View.GONE
+                et_nickname.visibility = View.GONE
+                et_bank_account.visibility = View.VISIBLE
+                et_name.visibility = View.VISIBLE
+            }
+            MoneyType.CTF_TYPE.code -> {
+                ll_qr.visibility = View.VISIBLE
+                ll_address.visibility = View.GONE
                 et_wx_id.visibility = View.GONE
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
