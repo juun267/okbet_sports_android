@@ -2,13 +2,10 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -17,12 +14,8 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_bet_info_list_float_button.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.service.SERVICE_SEND_DATA
-import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
-import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -117,62 +110,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun onNetworkUnavailable() {
         Toast.makeText(applicationContext, R.string.connect_first, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun createOddButton() {
-        if (floatButtonView != null) return
-        val contentView: ViewGroup = window.decorView.findViewById(android.R.id.content)
-        floatButtonView = LayoutInflater.from(this).inflate(R.layout.layout_bet_info_list_float_button, contentView, false)
-        contentView.addView(floatButtonView)
-
-        betFloatButtonVisible(false)//default
-
-        viewModel.betInfoRepository?.betInfoList?.observe(this, Observer {
-            if (it != null) {
-                viewModel.betInfoRepository?.isParlayPage?.value?.let { isParlay ->
-                    val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
-                    checkBetInfoList(size)
-                }
-            }
-        })
-
-        viewModel.betInfoRepository?.isParlayPage?.observe(this, Observer {
-            viewModel.betInfoRepository?.betInfoList?.value?.size?.let { size ->
-                if (it) {
-                    checkBetInfoList(if (size == 0) 0 else 1)
-                } else {
-                    checkBetInfoList(size)
-                }
-            }
-        })
-
-        rl_bet_float_button.setOnClickListener {
-            viewModel.betInfoRepository?.isParlayPage?.value?.let {
-                if (it) {
-                    BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
-                } else {
-                    BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
-                }
-            }
-        }
-        viewModel.betInfoRepository?.getCurrentBetInfoList()
-    }
-
-    private fun checkBetInfoList(count: Int) {
-        if (count > 0) {
-            betFloatButtonVisible(true)
-            setBetCount(count)
-        } else {
-            betFloatButtonVisible(false)
-        }
-    }
-
-    open fun betFloatButtonVisible(visible: Boolean) {
-        rl_bet_float_button.visibility = if (visible) View.VISIBLE else View.GONE
-    }
-
-    open fun setBetCount(count: Int) {
-        tv_bet_count.text = count.toString()
     }
 
     fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
