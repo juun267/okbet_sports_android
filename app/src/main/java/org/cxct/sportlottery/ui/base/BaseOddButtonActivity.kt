@@ -53,13 +53,13 @@ abstract class BaseOddButtonActivity<T : BaseViewModel>(clazz: KClass<T>) :
 
     private fun updateOddButton(visible: Boolean, count: Int?) {
         if (visible) {
-            rl_bet_float_button.visibility = View.VISIBLE
+            rl_bet_float_button?.visibility = View.VISIBLE
         } else {
-            rl_bet_float_button.visibility = View.GONE
+            rl_bet_float_button?.visibility = View.GONE
         }
 
         count?.let {
-            tv_bet_count.text = it.toString()
+            tv_bet_count?.text = it.toString()
         }
     }
 
@@ -73,6 +73,7 @@ abstract class BaseOddButtonActivity<T : BaseViewModel>(clazz: KClass<T>) :
 
     private fun setupOddButton() {
         if (floatButtonView != null) return
+
         val contentView: ViewGroup = window.decorView.findViewById(android.R.id.content)
         floatButtonView = LayoutInflater.from(this)
             .inflate(R.layout.layout_bet_info_list_float_button, contentView, false).apply {
