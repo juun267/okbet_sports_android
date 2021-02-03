@@ -199,7 +199,7 @@ class MoneyRechViewModel(
     fun checkRechargeAmount(rechargeAmount: String) {
         _rechargeAmountMsg.value = when {
             rechargeAmount.isEmpty() -> {
-                androidContext.getString(R.string.error_recharge_amount)
+                androidContext.getString(R.string.error_recharge_amount_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
