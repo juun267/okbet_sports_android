@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
+import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.home.MainActivity
@@ -155,6 +156,7 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         //建議反饋
         btn_feedback.setOnClickListener {
             //TODO 建議反饋
+            startActivity(Intent(this, FeedbackMainActivity::class.java))
         }
     }
 
