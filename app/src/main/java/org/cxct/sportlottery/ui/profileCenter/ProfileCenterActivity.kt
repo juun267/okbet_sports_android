@@ -45,6 +45,7 @@ class ProfileCenterActivity :
         setupMoreButtons()
         getUserInfo()
         initObserve()
+        initSocketObserver()
     }
 
     private fun setupBackButton() {
@@ -202,6 +203,12 @@ class ProfileCenterActivity :
             } else if (it == false) {
                 startActivity(Intent(this, BankActivity::class.java))
             }
+        })
+    }
+
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(this, Observer {
+            tv_account_balance.text = ArithUtil.toMoneyFormat(it)
         })
     }
 

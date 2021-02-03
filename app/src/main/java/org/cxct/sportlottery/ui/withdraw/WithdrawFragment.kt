@@ -16,13 +16,13 @@ import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
-import org.cxct.sportlottery.util.ToastUtil
 
-class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
+
+class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
@@ -42,6 +42,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initView()
         initEvent()
         initObserve(view)
+        initSocketObserver()
 
         setupData()
     }
@@ -178,8 +179,18 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
     }
 
-    private fun initSelectBankCardBottomSheet(view: View, bankCardList: MutableList<BankCardList>) { //TODO Dean : 重構BottomSheet
-        val bankCardBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(this.viewLifecycleOwner, Observer {
+            tv_balance.text = ArithUtil.toMoneyFormat(it)
+        })
+    }
+
+    private fun initSelectBankCardBottomSheet(
+        view: View,
+        bankCardList: MutableList<BankCardList>
+    ) { //TODO Dean : 重構BottomSheet
+        val bankCardBottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
         bankCardBottomSheet = BottomSheetDialog(requireContext())
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)
