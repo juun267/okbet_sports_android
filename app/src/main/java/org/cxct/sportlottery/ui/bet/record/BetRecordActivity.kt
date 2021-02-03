@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 
-class BetRecordActivity : BaseActivity<BetRecordViewModel>(BetRecordViewModel::class) {
+class BetRecordActivity : BaseSocketActivity<BetRecordViewModel>(BetRecordViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
