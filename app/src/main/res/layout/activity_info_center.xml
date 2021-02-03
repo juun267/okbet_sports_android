@@ -29,7 +29,7 @@
             android:ems="5"
             android:focusable="true"
             android:gravity="center"
-            android:text="@string/inbox"
+            tools:text="@string/inbox"
             android:textColor="@color/pumpkinOrange"
             android:textSize="@dimen/textSize14sp" />
 
@@ -43,7 +43,7 @@
             android:ems="5"
             android:focusable="true"
             android:gravity="center"
-            android:text="@string/unread_letters"
+            tools:text="@string/unread_letters"
             android:textColor="@color/pumpkinOrange"
             android:textSize="@dimen/textSize14sp" />
 

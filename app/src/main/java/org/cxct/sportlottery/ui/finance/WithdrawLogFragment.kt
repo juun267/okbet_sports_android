@@ -25,13 +25,13 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private lateinit var withdrawStateBottomSheet: BottomSheetDialog
     private lateinit var withdrawTypeBottomSheet: BottomSheetDialog
     private val logDetailDialog by lazy {
-        LogDetailDialog()
+        WithdrawLogDetailDialog()
     }
 
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter().apply {
             withdrawLogListener = WithdrawLogListener {
-                viewModel.setLogDetail(it)
+                viewModel.setWithdrawLogDetail(it)
             }
         }
     }
@@ -205,7 +205,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             hideLoading()
         })
 
-        viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner, Observer {
             if (logDetailDialog.dialog?.isShowing != true) {
 
                 logDetailDialog.show(
