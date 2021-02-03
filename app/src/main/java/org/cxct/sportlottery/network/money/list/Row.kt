@@ -65,8 +65,10 @@ data class Row(
     @Json(name = "userName")
     val userName: String
 ) {
+    var rechDateAndTime: String? = null
     var rechDateStr: String? = null
     var rechTimeStr: String? = null
     var rechState: String? = null
+    var rechTypeDisplay: String? = null
     var displayMoney: String? = null
 }

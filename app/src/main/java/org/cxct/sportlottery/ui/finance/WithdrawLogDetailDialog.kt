@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.dialog_log_detail.view.*
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.*
+import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 

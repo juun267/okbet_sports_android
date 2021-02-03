@@ -69,11 +69,11 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
     val withdrawTypeList: LiveData<List<WithdrawType>>
         get() = _withdrawTypeList
 
-    val logDetail: LiveData<LogDetail>
-        get() = _logDetail
-
     val withdrawLogDetail: LiveData<org.cxct.sportlottery.network.withdraw.list.Row>
         get() = _withdrawLogDetail
+
+    val rechargeLogDetail: LiveData<Row>
+        get() = _rechargeLogDetail
 
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
@@ -96,9 +96,10 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
     private val _withdrawStateList = MutableLiveData<List<WithdrawState>>()
     private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
 
-    private val _logDetail = MutableLiveData<LogDetail>()
     private val _withdrawLogDetail =
         MutableLiveData<org.cxct.sportlottery.network.withdraw.list.Row>()
+    private val _rechargeLogDetail =
+        MutableLiveData<Row>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
@@ -275,6 +276,17 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
                     else -> ""
                 }
 
+                it.rechTypeDisplay = when (it.rechType) {
+                    RechType.ONLINE_PAYMENT.type -> androidContext.getString(R.string.recharge_channel_online)
+                    RechType.ADMIN_ADD_MONEY.type -> androidContext.getString(R.string.recharge_channel_admin)
+                    RechType.CFT.type -> androidContext.getString(R.string.recharge_channel_cft)
+                    RechType.WEIXIN.type -> androidContext.getString(R.string.recharge_channel_weixin)
+                    RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
+                    RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
+                    else -> ""
+                }
+
+                it.rechDateAndTime = TimeUtil.timeFormat(it.rechTime, "yyyy-MM-dd HH:mm:ss")
                 it.rechDateStr = TimeUtil.timeFormat(it.rechTime, "yyyy-MM-dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.rechTime, "HH:mm:ss")
 
@@ -430,19 +442,10 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
     }
 
     fun setLogDetail(row: Row) {
-        val logDetail = LogDetail(
-                row.orderNo,
-                TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
-                row.rechName,
-                row.displayMoney,
-                row.rechState
-        )
-
-        _logDetail.postValue(logDetail)
+        _rechargeLogDetail.postValue(row)
     }
 
     fun setWithdrawLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
         _withdrawLogDetail.postValue(row)
     }
-
 }

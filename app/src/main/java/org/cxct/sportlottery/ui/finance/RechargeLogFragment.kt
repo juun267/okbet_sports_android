@@ -25,7 +25,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private lateinit var rechargeStateBottomSheet: BottomSheetDialog
     private lateinit var rechargeChannelBottomSheet: BottomSheetDialog
     private val logDetailDialog by lazy {
-        LogDetailDialog()
+        RechargeLogDetailDialog()
     }
 
     private val rechargeLogAdapter by lazy {
@@ -203,7 +203,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             hideLoading()
         })
 
-        viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
             if (logDetailDialog.dialog?.isShowing != true) {
 
                 logDetailDialog.show(
