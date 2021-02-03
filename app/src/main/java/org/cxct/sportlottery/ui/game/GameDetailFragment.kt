@@ -25,7 +25,7 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
@@ -36,7 +36,7 @@ import org.cxct.sportlottery.ui.home.MainViewModel
  * Use the [GameDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private val playType: PlayType by lazy { PlayType.OU_HDP }
 
@@ -156,7 +156,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             outrightOddAdapter.updatedWinnerOddsList = oddsChangeEvent.odds[winnerItemKey] ?: listOf()
         })
 */
-        viewModel.oddsChange.observe(this.viewLifecycleOwner, {
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let {
                 if (it.odds.isNullOrEmpty()) return@observe
                 matchOddAdapter.updatedOddsMap = it.odds
@@ -164,7 +164,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
             Log.e(">>>", "hello world")
         })
 
@@ -212,7 +212,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun updateSocketGlobalStop() {
-        viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
+        receiver.globalStop.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
 
             when (val stopProducerId = it.producerId) {
@@ -229,7 +229,7 @@ class GameDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun updateSocketProducerUp() {
-        viewModel.producerUp.observe(this.viewLifecycleOwner, Observer {
+        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
 
             when (val upProducerId = it.producerId) {

@@ -10,18 +10,19 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
-import org.cxct.sportlottery.util.ToastUtil
 
-class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
+
+class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
@@ -41,6 +42,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initView()
         initEvent()
         initObserve(view)
+        initSocketObserver()
 
         setupData()
     }
@@ -72,6 +74,7 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         btn_withdraw.setOnClickListener {
+            modifyFinish()
             withdrawBankCardData?.let { viewModel.addWithdraw(it.id.toLong(), et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
 
         }
@@ -81,7 +84,8 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         et_withdrawal_amount.getAllButton {
-            it.setText(tv_balance.text)
+            it.setText(viewModel.getWithdrawAmountLimit().max.toString())
+            et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
 
@@ -108,6 +112,8 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         et_withdrawal_amount.setText("")
         et_withdrawal_password.setText("")
         bankCardAdapter.initSelectStatus()
+        viewModel.resetWithdrawPage()
+        modifyFinish()
     }
 
     private fun initObserve(view: View) {
@@ -139,6 +145,12 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             } else {
                 viewModel.getWithdrawRate(et_withdrawal_amount.getText().toLong())
             }
+            viewModel.getWithdrawHint()
+        })
+
+        //提款金額提示訊息
+        viewModel.withdrawAmountHint.observe(this.viewLifecycleOwner, Observer {
+            et_withdrawal_amount.et_input.hint = it
         })
 
         //提款金額訊息
@@ -159,15 +171,26 @@ class WithdrawFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //提款
         viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
             if (it.success) {
-                ToastUtil.showToastInCenter(context, getString(R.string.text_money_get_success))
+                clearEvent()
+                showPromptDialog(getString(R.string.prompt), getString(R.string.text_money_get_success)) { viewModel.getMoney() }
             } else {
                 showPromptDialog(getString(R.string.title_withdraw_fail), it.msg) {}
             }
         })
     }
 
-    private fun initSelectBankCardBottomSheet(view: View, bankCardList: MutableList<BankCardList>) { //TODO Dean : 重構BottomSheet
-        val bankCardBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(this.viewLifecycleOwner, Observer {
+            tv_balance.text = ArithUtil.toMoneyFormat(it)
+        })
+    }
+
+    private fun initSelectBankCardBottomSheet(
+        view: View,
+        bankCardList: MutableList<BankCardList>
+    ) { //TODO Dean : 重構BottomSheet
+        val bankCardBottomSheetView =
+            layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
         bankCardBottomSheet = BottomSheetDialog(requireContext())
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)

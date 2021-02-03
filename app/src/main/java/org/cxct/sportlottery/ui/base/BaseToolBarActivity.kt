@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import kotlinx.android.synthetic.main.activity_base_tool_bar.*
-import kotlinx.android.synthetic.main.toast_top_bet_result.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
@@ -16,7 +15,8 @@ import kotlin.reflect.KClass
  */
 
 
-abstract class BaseToolBarActivity<T : BaseViewModel>(claazz: KClass<T>) : BaseActivity<T>(claazz) {
+abstract class BaseToolBarActivity<T : BaseViewModel>(claazz: KClass<T>) :
+    BaseOddButtonActivity<T>(claazz) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
