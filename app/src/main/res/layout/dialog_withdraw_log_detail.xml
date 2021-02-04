@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="40dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/wd_log_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:padding="9dp"
+            android:text="@string/log_detail_title"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_trans_num_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/log_detail_trans_num_sub"
+            android:textColor="@color/textGray"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_title" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_trans_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_trans_num_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_trans_num_subtitle"
+            tools:text="10201223151804075637" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_time_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_time_sub"
+            android:textColor="@color/textGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_time_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_time_subtitle"
+            tools:text="2020-12-12 19:58:22" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_amount_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_amount_sub"
+            android:textColor="@color/textGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_time_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_amount_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_amount_subtitle"
+            tools:text="1,000,000.00" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_handle_fee_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_handle_fee"
+            android:textColor="@color/textGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_amount_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_handle_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_handle_fee_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_handle_fee_subtitle"
+            tools:text="-50 RMB" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_status_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_status_sub"
+            android:textColor="@color/textGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_handle_fee_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_status_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_status_subtitle"
+            tools:text="处理中" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_review_time_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_review_time"
+            android:textColor="@color/textGray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_review_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_review_time_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_review_time_subtitle"
+            tools:text="2020-12-12 19:58:22" />
+
+        <View
+            android:id="@+id/log_detail_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="17dp"
+            android:background="@color/light_gray"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_review_time_subtitle" />
+
+        <Button
+            android:id="@+id/log_detail_confirm"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="@string/btn_confirm"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/log_detail_divider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

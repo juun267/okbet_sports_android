@@ -41,9 +41,12 @@ data class Row(
     @Json(name = "uwType")
     val uwType: String?
 ) {
+    var withdrawDateAndTime: String? = null
+    var operatorDateAndTime: String? = null
     var withdrawDate: String? = null
     var withdrawTime: String? = null
     var withdrawState: String? = null
     var withdrawType: String? = null
     var displayMoney: String? = null
+    var displayFee: String? = null
 }

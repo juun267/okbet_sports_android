@@ -32,6 +32,7 @@
     <string name="btn_determine">确定</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_retry">重试</string>
+    <string name="content_coming_soon">coming soon</string>
 
     <!-- Splash page -->
     <string name="loading_get_config">正在获取最快地址…</string>
@@ -340,6 +341,7 @@
     <string name="title_qr_pay">扫码支付：</string>
     <string name="title_hint_qr_pay">扫一扫快捷支付，如有疑问请及时联系客服！</string>
     <string name="title_remark">备注:</string>
+    <string name="title_tips">・温馨提示：</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">・请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">・每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
     <string name="title_pay_gap">支付渠道</string>
@@ -350,13 +352,14 @@
     <string name="title_pay_msg">支付信息</string>
     <string name="title_pay_way">支付方式：</string>
     <string name="title_pay_money">支付金额：</string>
-    <string name="hint_pay1">1. 成功付款后将会自动到帐，并弹出到帐提示。</string>
+    <string name="hint_pay1">1. 成功付款后将会自动到账，并弹出到账提示。</string>
     <string name="hint_pay2">2. 长时间无反应，请联系客服。</string>
     <string name="btn_look_for">查看交易</string>
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
     <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
+    <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
     <string name="error_wx">您输入的微信格式或数值错误</string>
     <string name="error_user_name">您输入的姓名格式或数值错误</string>
     <string name="error_bank_id">您输入的银行卡号格式或数值错误</string>
@@ -390,8 +393,8 @@
     <string name="withdraw_password">提款密码</string>
     <string name="withdraw_all">全部提取</string>
     <string name="withdraw_handling_fee_hint">・手续费率：%1$s%% 须支付手续费：%2$s元</string>
-    <string name="hint_please_enter_withdraw_amount">请输入提款金额</string>
-    <string name="hint_four_number_password">密碼為4個數字</string>
+    <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s RMB</string>
+    <string name="hint_four_number_password">密码为4个数字</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_credit_card">新增银行卡</string>
     <!--  BankCard  -->
@@ -413,7 +416,7 @@
     <string name="error_network_point_empty">开户网点为必填栏位</string>
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
-    <string name="text_bank_card_delete_success">删除银行卡成功</string>
+    <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_bank_card_add_success">新增银行卡成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_bank_card_delete_fail">删除银行卡失败</string>
@@ -425,6 +428,7 @@
     <!--bet info list-->
     <string name="bet_info_list_title">投注单</string>
     <string name="bet_info_list_game_closed">盘口已关闭</string>
+    <string name="bet_info_list_game_odds_changed">赔率已变更</string>
     <string name="bet_info_list_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
     <string name="bet_info_list_rmb">RMB</string>
@@ -468,10 +472,12 @@
     <string name="recharge_log_channel_type">渠道类型</string>
     <string name="recharge_log_order_state">订单状态</string>
 
+    <string name="withdraw_log_withdraw_amount">提款金额</string>
+
     <string name="withdraw_log_state_all">全部订单状态</string>
     <string name="withdraw_log_state_processing">处理中</string>
     <string name="withdraw_log_state_pass">通过</string>
-    <string name="withdraw_log_state_un_pass">不通过</string>
+    <string name="withdraw_log_state_un_pass">未通过</string>
 
     <string name="withdraw_log_type_all">全部渠道类型</string>
     <string name="withdraw_log_type_bank_trans">银行提款</string>
@@ -483,6 +489,8 @@
     <string name="log_detail_type_sub">交易类型：</string>
     <string name="log_detail_amount_sub">交易金额：</string>
     <string name="log_detail_status_sub">交易状态：</string>
+    <string name="log_detail_handle_fee">手续费用：</string>
+    <string name="log_detail_review_time">审核时间：</string>
 
     <string name="finance_log_selector_until">到</string>
     <string name="finance_list_no_more">没有更多数据了</string>
@@ -498,4 +506,5 @@
     <string name="plat_money">平台余额</string>
     <string name="money">金额</string>
     <string name="transfer_platform">转换平台</string>
+    <string name="finance_rmb">%s RMB</string>
 </resources>

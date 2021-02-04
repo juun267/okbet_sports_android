@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResp
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import java.util.*
@@ -21,8 +22,8 @@ class MoneyTransferViewModel(
         private val androidContext: Context,
         private val userInfoRepository: UserInfoRepository,
         private val loginRepository: LoginRepository,
-        betInfoRepo: BetInfoRepository,
-) : BaseViewModel() {
+        betInfoRepository: BetInfoRepository,
+) : BaseOddButtonViewModel(betInfoRepository) { //TODO Cheryl 為啥要觀察這個Ｒ
 
 
     val allBalanceResult: LiveData<GetAllBalanceResponse> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要

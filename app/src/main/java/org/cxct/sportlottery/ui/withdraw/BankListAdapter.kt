@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.*
 import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.TimeUtil.stampToDateHMS
 
@@ -27,6 +28,12 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             notifyDataSetChanged()
         }
 
+    var addSwitch = true
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             CardType.ADD.ordinal -> {
@@ -39,11 +46,15 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     override fun getItemCount(): Int {
-        return bankList.size + 1
+        return if (addSwitch) {
+            bankList.size + 1
+        } else {
+            bankList.size
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == bankList.size) {
+        return if (position == bankList.size && addSwitch) {
             CardType.ADD.ordinal
         } else {
             CardType.EDIT.ordinal
@@ -70,8 +81,15 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 tv_name.text = fullName
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.addTime.toLong())
-                img_edit_bank.setOnClickListener {
-                    mBankListClickListener.onEdit(data)
+                if (sConfigData?.enableModifyBank == "1") {
+                    img_edit_bank.apply {
+                        visibility = View.VISIBLE
+                        setOnClickListener {
+                            mBankListClickListener.onEdit(data)
+                        }
+                    }
+                } else {
+                    img_edit_bank.visibility = View.GONE
                 }
             }
         }

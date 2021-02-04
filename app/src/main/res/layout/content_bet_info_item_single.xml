@@ -28,6 +28,7 @@
             app:parlayOdd="@{parlayOdd}" />
 
         <LinearLayout
+            android:id="@+id/ll_bet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -82,7 +83,6 @@
             android:id="@+id/tv_close_warning"
             android:layout_width="match_parent"
             android:layout_height="28dp"
-            android:layout_marginTop="10dp"
             android:background="@color/bet_list_warning"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
