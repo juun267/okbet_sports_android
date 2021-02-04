@@ -100,6 +100,11 @@ class WithdrawViewModel(
         get() = _withdrawAmountHint
     private var _withdrawAmountHint = MutableLiveData<String>()
 
+    //銀行卡是否可以繼續增加
+    val addBankCardSwitch: LiveData<Boolean>
+        get() = _addBankCardSwitch
+    private var _addBankCardSwitch = MutableLiveData<Boolean>()
+
     data class WithdrawAmountLimit(val min: Long, val max: Long)
 
     fun addWithdraw(bankCardId: Long, applyMoney: String, withdrawPwd: String) {
@@ -353,6 +358,19 @@ class WithdrawViewModel(
             ArithUtil.toMoneyFormat(rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100)),
             ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
         )
+    }
+
+    /**
+     * 判斷當前銀行卡數量是否超出銀行卡綁定上限
+     */
+    fun checkBankCardCount() {
+        val bankCardCountLimit = rechargeConfigs.value?.withdrawCfg?.uwTypeCfg?.get(0)?.countLimit
+        val bankCardCount = bankCardList.value?.bankCardList?.size
+        _addBankCardSwitch.value = when {
+            bankCardCountLimit == null -> true
+            bankCardCount == null -> true
+            else -> bankCardCount < bankCardCountLimit
+        }
     }
 
     fun resetWithdrawPage() {
