@@ -60,6 +60,10 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 hideLoading()
         })
 
+        viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
+            viewModel.checkBankCardCount()
+        })
+
         viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
             mBankListAdapter.fullName = it?.fullName ?: ""
         })
@@ -70,7 +74,12 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 if (!data.isNullOrEmpty()) {
                     tv_no_bank_card.visibility = View.GONE
                 }
+                viewModel.checkBankCardCount()
             }
+        })
+
+        viewModel.addBankCardSwitch.observe(this.viewLifecycleOwner, Observer {
+            mBankListAdapter.addSwitch = it
         })
     }
 

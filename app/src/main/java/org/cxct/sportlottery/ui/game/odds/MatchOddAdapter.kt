@@ -27,6 +27,11 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var updatedOddsMap = mapOf<String, List<Odd?>?>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     var betInfoListData: List<BetInfoListData>? = null
         set(value) {
             field = value
@@ -37,12 +42,6 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     }
                 }
             }
-            notifyDataSetChanged()
-        }
-
-    var updatedOddsMap = mapOf<String, List<Odd>>()
-        set(value) {
-            field = value
             notifyDataSetChanged()
         }
 
@@ -86,10 +85,10 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     private fun addDataIfNotEnough(originItem: MatchOdd, code: String) {
         val oddList = originItem.odds[code]
-        if (oddList?.size?:0 < 2) {
-            for (i in 0 until (2 - (oddList?.size?:0))) {
+        if (oddList?.size ?: 0 < 2) {
+            for (i in 0 until (2 - (oddList?.size ?: 0))) {
                 originItem.odds[code]?.add(Odd())
-                if (updatedOddsMap[code]?.size?:0 > i ) {
+                if (updatedOddsMap[code]?.size ?: 0 > i) {
                     updatedOddsMap[code]?.get(i)?.let { originItem.odds[code]?.set(i, it) }
                 }
             }
@@ -104,65 +103,70 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         addDataIfNotEnough(originItem, PlayType.HDP.code)
         addDataIfNotEnough(originItem, PlayType.X12.code)
 
-            for ((key, value) in updatedOddsMap) {
-                when (key) {
-                    PlayType.OU.code -> {
-                        value.forEach {
-                            val oddItem = originItem.odds[PlayType.OU.code]
+        for ((key, value) in updatedOddsMap) {
+            when (key) {
+                PlayType.OU.code -> {
+                    value?.forEach { odd ->
+                        val oddItem = originItem.odds[PlayType.OU.code]
+                        odd?.let {
                             when (it.id) {
                                 oddItem?.firstOrNull()?.id -> {
-                                    val oddData = oddItem[0]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[0] = it
+                                    val oddData = oddItem?.get(0)
+                                    oddData?.oddState = getOddState(oddData, it)
+                                    oddItem?.set(0, it)
                                 }
                                 oddItem?.get(1)?.id -> {
-                                    val oddData = oddItem[1]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[1] = it
-                                }
-                            }
-
-                        }
-                    }
-
-                    PlayType.HDP.code -> {
-                        value.forEach {
-                            val oddItem = originItem.odds[PlayType.HDP.code]
-
-                            when (it.id) {
-                                oddItem?.firstOrNull()?.id -> {
-                                    val oddData = oddItem[0]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[0] = it
-                                }
-                                oddItem?.get(1)?.id -> {
-                                    val oddData = oddItem[1]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[1] = it
+                                    val oddData = oddItem?.get(1)
+                                    oddData?.oddState = getOddState(oddData, it)
+                                    oddItem?.set(1, it)
                                 }
                             }
                         }
                     }
-
-                    PlayType.X12.code -> {
-                        value.forEach {
-                            val oddItem = originItem.odds[PlayType.X12.code]
-                            when (it.id) {
-                                oddItem?.firstOrNull()?.id -> {
-                                    val oddData = oddItem[0]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[0] = it
-                                }
-                                oddItem?.get(1)?.id -> {
-                                    val oddData = oddItem[1]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[1] = it
-                                }
-                            }
-                        }
-                    }
-
                 }
+
+                PlayType.HDP.code -> {
+                    value?.forEach { odd ->
+                        val oddItem = originItem.odds[PlayType.HDP.code]
+                        odd?.let {
+                            when (it.id) {
+                                oddItem?.firstOrNull()?.id -> {
+                                    val oddData = oddItem?.get(0)
+                                    oddData?.oddState = getOddState(oddData, it)
+                                    oddItem?.set(0, it)
+                                }
+                                oddItem?.get(1)?.id -> {
+                                    val oddData = oddItem?.get(1)
+                                    oddData?.oddState = getOddState(oddData, it)
+                                    oddItem?.set(1, it)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                PlayType.X12.code -> {
+                    value?.forEach { odd ->
+                        val oddItem = originItem.odds[PlayType.X12.code]
+                        odd?.let {
+                            it.id?.let { oddId ->
+                                when (oddId) {
+                                    oddItem?.firstOrNull()?.id -> {
+                                        val oddData = oddItem[0]
+                                        oddData.oddState = getOddState(oddData, it)
+                                        oddItem.set(0, it)
+                                    }
+                                    oddItem?.get(1)?.id -> {
+                                        val oddData = oddItem[1]
+                                        oddData.oddState = getOddState(oddData, it)
+                                        oddItem.set(1, it)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -327,6 +331,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
                     isSelected = it.isSelected
+
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
@@ -339,6 +344,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             oddBetX?.let {
                 itemView.x12_bet_x.apply {
                     isSelected = it.isSelected
+
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
@@ -351,6 +357,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             oddBet2?.let {
                 itemView.x12_bet_2.apply {
                     isSelected = it.isSelected
+
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)

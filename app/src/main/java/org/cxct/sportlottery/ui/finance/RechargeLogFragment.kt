@@ -25,7 +25,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private lateinit var rechargeStateBottomSheet: BottomSheetDialog
     private lateinit var rechargeChannelBottomSheet: BottomSheetDialog
     private val logDetailDialog by lazy {
-        LogDetailDialog()
+        RechargeLogDetailDialog()
     }
 
     private val rechargeLogAdapter by lazy {
@@ -48,6 +48,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupDateRangeSelector(this)
             setupRechargeStateSelector(this)
             setupRechargeChannelSelector(this)
+            setupListColumn(this)
             setupRechargeLogList(this)
             setupSwipeRefreshLayout(this)
             setupSearch(this)
@@ -120,6 +121,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         view.order_status_selector.ll_end_date.setOnClickListener {
             rechargeChannelBottomSheet.show()
         }
+    }
+
+    private fun setupListColumn(view: View) {
+        view.rech_log_recharge_amount.text = getString(R.string.recharge_log_recharge_amount)
     }
 
     private fun setupRechargeLogList(view: View) {
@@ -203,7 +208,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             hideLoading()
         })
 
-        viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
             if (logDetailDialog.dialog?.isShowing != true) {
 
                 logDetailDialog.show(
