@@ -220,7 +220,12 @@ class ProfileCenterActivity :
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_user_nickname.text = userInfo?.userName
+        tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
+            userInfo?.userName
+        } else {
+            userInfo?.nickName
+        }
+
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
