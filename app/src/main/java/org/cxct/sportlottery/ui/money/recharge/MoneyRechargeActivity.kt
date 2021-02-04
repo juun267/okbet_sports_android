@@ -45,17 +45,34 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
     }
 
     private fun initData() {
+        getMoneyConfig()
+    }
+
+    private fun getMoneyConfig() {
+        loading()
+        block_tab.visibility = View.GONE
         viewModel.getRechCfg()
     }
 
     private fun initLiveData() {
 
         viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
+            hideLoading()
+            block_tab.visibility = View.VISIBLE //獲取資金資料完畢, 顯示充值分類
             transferPayList = it ?: return@Observer
-            if (currentTab == RechargeType.TRANSFER_PAY)
+            btn_transfer_pay.visibility = if (transferPayList.size > 0) {
+                View.VISIBLE
+            } else {
+                currentTab = RechargeType.ONLINE_PAY //TODO Dean : 此處邏輯不應該寫在這裡, 應抽離出去
+                View.GONE
+            }
+
+            //TODO Dean : 此處邏輯不應該寫在這裡, 應抽離出去
+            if (currentTab == RechargeType.TRANSFER_PAY){
                 bankTypeAdapter?.data = transferPayList
-
-
+            }else if(currentTab == RechargeType.ONLINE_PAY){
+                bankTypeAdapter?.data = onlinePayList
+            }
             when (currentTab) {
                 RechargeType.TRANSFER_PAY -> switchFragment(
                     getPayFragment(transferPayList[0]),
@@ -70,6 +87,12 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
             onlinePayList = it ?: return@Observer
+            btn_online_pay.visibility = if (onlinePayList.size > 0) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
             if (currentTab == RechargeType.ONLINE_PAY) {
                 bankTypeAdapter?.data = onlinePayList
             }
