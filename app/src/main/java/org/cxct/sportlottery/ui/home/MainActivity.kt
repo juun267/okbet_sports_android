@@ -106,7 +106,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         super.onResume()
 
         val isLogin = viewModel.isLogin.value ?: false
-        doBackService(isLogin)
+//        doBackService(isLogin)
 
         rv_marquee.startAuto()
     }
@@ -348,7 +348,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            doBackService(it)
+//            doBackService(it)
             queryData()
         })
 
