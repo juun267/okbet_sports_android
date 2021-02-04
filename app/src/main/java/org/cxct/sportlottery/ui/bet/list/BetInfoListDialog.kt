@@ -108,7 +108,7 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
                 dialog.setTitle(getString(R.string.prompt))
                 dialog.setMessage(m)
                 dialog.setNegativeButtonText(null)
-                dialog.setMessageTextColor(color)
+                dialog.setTextColor(color)
                 dialog.show()
             }
         })

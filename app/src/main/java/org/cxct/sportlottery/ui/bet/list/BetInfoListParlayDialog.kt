@@ -122,7 +122,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
                     dialog.setTitle(getString(R.string.prompt))
                     dialog.setMessage(result.msg)
                     dialog.setNegativeButtonText(null)
-                    dialog.setMessageTextColor(R.color.red2)
+                    dialog.setTextColor(R.color.red2)
                     dialog.show()
                 }
             }
@@ -161,7 +161,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
                 dialog.setTitle(getString(R.string.prompt))
                 dialog.setMessage(m)
                 dialog.setNegativeButtonText(null)
-                dialog.setMessageTextColor(color)
+                dialog.setTextColor(color)
                 dialog.show()
             }
         })
@@ -182,7 +182,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
                     mutableListOf()
             for ((key, value) in it.odds) {
-                newList.addAll(value.odds)
+                value.odds?.forEach { odd->
+                    odd?.let { o ->
+                        newList.add(o)
+                    }
+                }
             }
             viewModel.updateBetInfoList(newList)
         })
