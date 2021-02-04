@@ -14,14 +14,15 @@ import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.ui.base.BaseSocketDialog
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
-class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListAdapter.OnItemClickListener {
+class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
+        BetInfoListAdapter.OnItemClickListener {
 
 
     companion object {
@@ -58,6 +59,7 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
+        initSocketObserver()
     }
 
 
@@ -96,15 +98,43 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
                 ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
             }
         })
+    }
 
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer {
+
+    private fun initSocketObserver() {
+        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "matchOddsChange")
-            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
+                    mutableListOf()
             for ((key, value) in it.odds) {
                 newList.addAll(value.odds)
             }
             betInfoListAdapter.updatedBetInfoList = newList
+        })
+
+        receiver.globalStop.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "globalStop")
+            val list = betInfoListAdapter.betInfoList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
+                    listData.matchOdd.status = BetStatus.LOCKED.code
+                }
+            }
+            betInfoListAdapter.betInfoList = list
+        })
+
+        receiver.producerUp.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            Log.e(">>>>>", "globalStop")
+            val list = betInfoListAdapter.betInfoList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
+                    listData.matchOdd.status = BetStatus.ACTIVATED.code
+                }
+            }
+            betInfoListAdapter.betInfoList = list
         })
 
     }
@@ -132,4 +162,6 @@ class BetInfoListDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetIn
     override fun onAddMoreClick() {
         dismiss()
     }
+
+
 }

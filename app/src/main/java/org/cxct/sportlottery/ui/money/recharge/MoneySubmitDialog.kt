@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_money_submit.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.util.ArithUtil
 
-class MoneySubmitDialog(payWay: String, payMoney: String) : BaseDialog<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogListener: MoneySubmitDialogListener) : BaseDialog<MoneyRechViewModel>(MoneyRechViewModel::class) {
     val _payWay = payWay
     val _payMoney = payMoney
 
@@ -29,11 +29,27 @@ class MoneySubmitDialog(payWay: String, payMoney: String) : BaseDialog<MoneyRech
 
     private fun initView() {
         txv_pay_way.text = _payWay
-        txv_pay_money.text = _payMoney
+        txv_pay_money.text = "${ArithUtil.toMoneyFormat(_payMoney.toDouble())} ${getString(R.string.currency)}"
     }
-    fun initButton(){
+
+    fun initButton() {
         img_close.setOnClickListener {
             dismiss()
+        }
+        tv_view_log.setOnClickListener { dialogListener.viewLog() }
+        tv_service.setOnClickListener {
+            dialogListener.contactService()
+            dismiss()
+        }
+    }
+
+    class MoneySubmitDialogListener(private val viewLogEvent: () -> Unit, private val contactServiceEvent: () -> Unit) {
+        fun viewLog() {
+            viewLogEvent.invoke()
+        }
+
+        fun contactService() {
+            contactServiceEvent.invoke()
         }
     }
 }

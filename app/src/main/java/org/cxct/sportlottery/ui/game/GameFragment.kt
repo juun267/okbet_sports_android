@@ -19,7 +19,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
@@ -38,7 +38,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
  * Use the [GameFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
 
     private val service by lazy { (activity as MainActivity).mService }
@@ -128,7 +128,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
 
-        viewModel.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
+        receiver.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
             if (matchClockEvent == null) return@Observer
 
             val leagueOdds = leagueOddAdapter.data
@@ -143,7 +143,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             leagueOddAdapter.data = leagueOdds
         })
 
-        viewModel.oddsChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             leagueOddAdapter.updatedOddsMap = it.odds
         })
@@ -151,7 +151,6 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
             leagueOddAdapter.betInfoListData = it
         })
-
 
 
 //        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
@@ -165,7 +164,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 //            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
 //        })
 
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
         })
@@ -218,7 +217,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun updateSocketGlobalStop() {
-        viewModel.globalStop.observe(this.viewLifecycleOwner, Observer {
+        receiver.globalStop.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
 
             when (val stopProducerId = it.producerId) {
@@ -233,7 +232,7 @@ class GameFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun updateSocketProducerUp() {
-        viewModel.producerUp.observe(this.viewLifecycleOwner, Observer {
+        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
 
             when (val upProducerId = it.producerId) {

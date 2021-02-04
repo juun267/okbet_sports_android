@@ -22,13 +22,14 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 
-class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
+class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class),
+    Animation.AnimationListener, OnOddClickListener {
 
 
     companion object {
@@ -93,7 +94,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
 
     private fun observeSocketData() {
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
         })
@@ -104,7 +105,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         })
 */
 
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
+        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
 
