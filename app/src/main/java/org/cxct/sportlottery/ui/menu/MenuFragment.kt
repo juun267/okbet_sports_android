@@ -120,7 +120,11 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_name.text = nickName ?: userName
+        tv_name.text = if (nickName.isNullOrEmpty()) {
+            userName
+        } else {
+            nickName
+        }
     }
 
     /**
