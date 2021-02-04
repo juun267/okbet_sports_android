@@ -6,7 +6,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -210,14 +208,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 }
             }
         }
-
-
-        //default
-        viewModel.betInfoRepository?.let {
-            checkBetInfoList(it.betList.size)//test
-            it._betInfoList.postValue(it.betList)
-        }
-
+        viewModel.betInfoRepository?.getCurrentBetInfoList()
     }
 
     private fun checkBetInfoList(count: Int) {

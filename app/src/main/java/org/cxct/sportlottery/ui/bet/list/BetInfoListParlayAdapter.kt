@@ -113,7 +113,8 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.parlayOdd = parlayOdd
 
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
-            binding.tvParlayOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), parlayOdd.odds.toString())
+            binding.tvParlayOdds.text =
+                    String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(parlayOdd.odds))
 
             binding.etBet.afterTextChanged {
                 statusList[position] = check(it, parlayOdd, position)
