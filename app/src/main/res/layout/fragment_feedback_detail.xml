@@ -17,7 +17,7 @@
         tools:itemCount="5"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:orientation="vertical"
-        tools:listitem="@layout/content_feedback_record_list_rv"
+        tools:listitem="@layout/content_feedback_record_detail_rv_right"
         tools:visibility="visible"
         />
 
