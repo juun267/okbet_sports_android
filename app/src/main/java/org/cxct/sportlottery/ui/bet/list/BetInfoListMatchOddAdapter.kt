@@ -22,7 +22,10 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
 
     var matchOddList: MutableList<MatchOdd> = mutableListOf()
-
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     var updatedBetInfoList: MutableList<MatchOdd> = mutableListOf()
         set(value) {
@@ -90,17 +93,15 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
 
             when (matchOdd.status) {
-                BetStatus.LOCKED.code -> {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
                     binding.tvCloseWarning.apply {
                         visibility = View.VISIBLE
                         text = context.getString(R.string.bet_info_list_game_closed)
                     }
-                    //clickable false
                 }
 
                 BetStatus.ACTIVATED.code -> {
                     binding.tvCloseWarning.visibility = View.GONE
-                    //clickable true
                     setChangeOdds(
                             binding.betInfoDetail.tvOdds,
                             binding.tvCloseWarning,
@@ -113,15 +114,9 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
     }
 
 
-    fun modify(list: List<MatchOdd>) {
-        matchOddList.clear()
-        matchOddList.addAll(list)
-        notifyDataSetChanged()
-    }
-
-
     interface OnItemClickListener {
         fun onDeleteClick(position: Int)
+        fun onOddChange()
     }
 
 
@@ -134,6 +129,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
                     text = String.format(tv_odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
                 }
+                onItemClickListener.onOddChange()
             }
 
             OddState.SMALLER.state -> {
@@ -143,6 +139,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
                     text = String.format(tv_odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
                 }
+                onItemClickListener.onOddChange()
             }
         }
 

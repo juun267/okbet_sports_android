@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_bet_info_item_action.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
+import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
@@ -130,7 +133,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         })
 
         viewModel.matchOddList.observe(this.viewLifecycleOwner, Observer {
-            matchOddAdapter.modify(it)
+            matchOddAdapter.matchOddList = it
         })
 
         viewModel.parlayList.observe(this.viewLifecycleOwner, Observer {
@@ -145,12 +148,12 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { result ->
-                val m :String
+                val m: String
                 val color: Int
-                if(result.success){
+                if (result.success) {
                     m = resources.getString(R.string.bet_info_add_bet_success)
                     color = R.color.gray6
-                }else{
+                } else {
                     m = result.msg
                     color = R.color.red2
                 }
@@ -183,6 +186,28 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
             }
             viewModel.updateBetInfoList(newList)
         })
+
+        receiver.globalStop.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            val list = matchOddAdapter.matchOddList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.producerId == it.producerId) {
+                    listData.status = BetStatus.LOCKED.code
+                }
+            }
+            matchOddAdapter.matchOddList = list
+        })
+
+        receiver.producerUp.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            val list = matchOddAdapter.matchOddList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.producerId == it.producerId) {
+                    listData.status = BetStatus.ACTIVATED.code
+                }
+            }
+            matchOddAdapter.matchOddList = list
+        })
     }
 
 
@@ -214,6 +239,17 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
 
     override fun onDeleteClick(position: Int) {
         viewModel.removeBetInfoItemAndRefresh(matchOddAdapter.matchOddList[position].oddsId)
+    }
+
+
+    override fun onOddChange() {
+        if (tv_bet.isClickable) {
+            tv_bet.apply {
+                backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red2))
+                setTextColor(ContextCompat.getColor(tv_bet.context, R.color.white))
+                text = getString(R.string.bet_info_list_odds_change)
+            }
+        }
     }
 
 
