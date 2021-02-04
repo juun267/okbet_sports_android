@@ -3,9 +3,11 @@ package org.cxct.sportlottery.ui.common
 import android.content.Context
 import android.os.Bundle
 import android.text.Spanned
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
 
@@ -27,6 +29,7 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
+    private var mMessageColor: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +60,14 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
             btn_negative.visibility = View.GONE
         } else
             btn_negative.text = mNegativeText
+
+        if (mMessageColor == null) {
+            tv_message.setTextColor(ContextCompat.getColor(context, R.color.gray6))
+        } else {
+            mMessageColor?.let {
+                tv_message.setTextColor(ContextCompat.getColor(context, it))
+            }
+        }
 
         btn_positive.setOnClickListener(mPositiveClickListener)
         btn_negative.setOnClickListener(mNegativeClickListener)
@@ -103,5 +114,9 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
 
     fun setNegativeClickListener(negativeClickListener: View.OnClickListener) {
         mNegativeClickListener = negativeClickListener
+    }
+
+    fun setMessageTextColor(color: Int) {
+       mMessageColor = color
     }
 }

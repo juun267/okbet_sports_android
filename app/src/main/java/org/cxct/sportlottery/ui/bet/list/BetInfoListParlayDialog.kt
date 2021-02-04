@@ -17,14 +17,14 @@ import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseSocketDialog
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.ToastUtil
 
-class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
-    BetInfoListParlayAdapter.OnTotalQuotaListener {
+class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
+        BetInfoListParlayAdapter.OnTotalQuotaListener {
 
 
     companion object {
@@ -34,9 +34,6 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
 
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
     private lateinit var parlayAdapter: BetInfoListParlayAdapter
-
-
-    private var deletePosition: Int = -1
 
 
     init {
@@ -81,17 +78,17 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             }
         }
 
-        matchOddAdapter = BetInfoListMatchOddAdapter(requireContext(),this@BetInfoListParlayDialog)
+        matchOddAdapter = BetInfoListMatchOddAdapter(requireContext(), this@BetInfoListParlayDialog)
         parlayAdapter = BetInfoListParlayAdapter(this@BetInfoListParlayDialog)
 
         rv_match_odd_list.apply {
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = matchOddAdapter
             addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec_bet_info_list
-                )
+                    SpaceItemDecoration(
+                            context,
+                            R.dimen.recyclerview_item_dec_spec_bet_info_list
+                    )
             )
         }
 
@@ -99,10 +96,10 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = parlayAdapter
             addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec_bet_info_list
-                )
+                    SpaceItemDecoration(
+                            context,
+                            R.dimen.recyclerview_item_dec_spec_bet_info_list
+                    )
             )
         }
 
@@ -113,17 +110,27 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         }
     }
 
+
     private fun observeData() {
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
             result?.success?.let {
                 if (!it) {
-                    ToastUtil.showBetResultToast(requireActivity(), result.msg, false)
+                    val dialog = CustomAlertDialog(requireActivity())
+                    dialog.setTitle(getString(R.string.prompt))
+                    dialog.setMessage(result.msg)
+                    dialog.setNegativeButtonText(null)
+                    dialog.setMessageTextColor(R.color.red2)
+                    dialog.show()
                 }
             }
         })
 
+        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, Observer {
+            matchOddAdapter.updatedBetInfoList = it
+        })
+
         viewModel.matchOddList.observe(this.viewLifecycleOwner, Observer {
-            matchOddAdapter.modify(it, deletePosition)
+            matchOddAdapter.modify(it)
         })
 
         viewModel.parlayList.observe(this.viewLifecycleOwner, Observer {
@@ -138,13 +145,49 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { result ->
-                ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
+                val m :String
+                val color: Int
+                if(result.success){
+                    m = resources.getString(R.string.bet_info_add_bet_success)
+                    color = R.color.gray6
+                }else{
+                    m = result.msg
+                    color = R.color.red2
+                }
+                val dialog = CustomAlertDialog(requireActivity())
+                dialog.setTitle(getString(R.string.prompt))
+                dialog.setMessage(m)
+                dialog.setNegativeButtonText(null)
+                dialog.setMessageTextColor(color)
+                dialog.show()
             }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> =
+                    mutableListOf()
+            for ((key, value) in it.odds) {
+                newList.addAll(value)
+            }
+
+            viewModel.updateBetInfoListByOddChange(newList)
+        })
+
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
+                    mutableListOf()
+            for ((key, value) in it.odds) {
+                newList.addAll(value.odds)
+            }
+            viewModel.updateBetInfoList(newList)
         })
     }
 
+
     private fun getData() {
-        viewModel.getBetInfoListForParlay()
+        viewModel.getBetInfoListForParlay(false)
     }
 
 
@@ -159,12 +202,12 @@ class BetInfoListParlayDialog : BaseDialog<MainViewModel>(MainViewModel::class),
         }
 
         viewModel.addBet(
-            BetAddRequest(
-                matchList,
-                parlayList,
-                1,
-                "EU"
-            ), MatchType.PARLAY
+                BetAddRequest(
+                        matchList,
+                        parlayList,
+                        1,
+                        "EU"
+                ), MatchType.PARLAY
         )
     }
 

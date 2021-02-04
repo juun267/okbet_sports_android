@@ -170,6 +170,10 @@ class MainViewModel(
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = _matchOddList
 
+    private val _newMatchOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>()
+    val newMatchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
+        get() = _newMatchOddList
+
     private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
@@ -202,7 +206,7 @@ class MainViewModel(
             //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
             cleanOutrightBetOrder()
             //組成串關注單
-            getBetInfoListForParlay()
+            getBetInfoListForParlay(false)
         }
     }
 
@@ -757,6 +761,40 @@ class MainViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
+    fun updateBetInfoListByOddChange(newList: List<org.cxct.sportlottery.network.odds.list.Odd>) {
+
+        newList.forEach { newItem ->
+            betInfoRepository?.betList?.forEach {
+                try{
+                    if(newItem.id == it.matchOdd.oddsId){
+                        newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
+            }
+        }
+        getBetInfoListForParlay(true)
+
+    }
+
+    fun updateBetInfoList(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
+
+        newList.forEach { newItem ->
+            betInfoRepository?.betList?.forEach {
+                try{
+                    if(newItem.id == it.matchOdd.oddsId){
+                        newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
+            }
+        }
+        getBetInfoListForParlay(true)
+
+    }
+
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
             betInfoRepository?.let { br ->
@@ -785,7 +823,7 @@ class MainViewModel(
         }
     }
 
-    fun getBetInfoListForParlay() {
+    fun getBetInfoListForParlay(isUpdate: Boolean) {
         val sendList: MutableList<Odd> = mutableListOf()
         betInfoRepository?.betList.let { list ->
 
@@ -812,7 +850,11 @@ class MainViewModel(
                     if (success) {
 
                         //回傳成功 兩個list不一定數量相等 各別載入列表
-                        _matchOddList.postValue(br.matchOddList)
+                            if(isUpdate){
+                                _newMatchOddList.postValue(br.matchOddList)
+                            }else{
+                                _matchOddList.postValue(br.matchOddList)
+                            }
                         _parlayList.postValue(br.parlayOddList)
 
                         //載入串關注單後比對一般注單
@@ -854,7 +896,6 @@ class MainViewModel(
         }
     }
 
-
     fun removeBetInfoItem(oddId: String) {
         betInfoRepository?.removeItem(oddId)
         betInfoRepository?._betInfoList?.postValue(betInfoRepository?.betList)
@@ -863,7 +904,7 @@ class MainViewModel(
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
         if (betInfoRepository?.betList?.size != 0) {
-            getBetInfoListForParlay()
+            getBetInfoListForParlay(false)
         }
     }
 
@@ -895,12 +936,12 @@ class MainViewModel(
                             }
                         }
                         list.add(
-                            OddsDetailListData(
-                                key,
-                                TextUtil.split(value.typeCodes),
-                                value.name,
-                                value.odds as MutableList<org.cxct.sportlottery.network.odds.detail.Odd>,
-                            )
+                                OddsDetailListData(
+                                        key,
+                                        TextUtil.split(value.typeCodes),
+                                        value.name,
+                                        value.odds as MutableList<org.cxct.sportlottery.network.odds.detail.Odd>,
+                                )
                         )
                     }
 
