@@ -25,7 +25,7 @@ class BetRecordViewModel(private val androidContext: Context, betInfoRepo: BetIn
         betInfoRepository = betInfoRepo
     }
 
-    val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
+    private val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
         get() = _selectStatusList
 
     val selectedBetStatus: LiveData<String?>

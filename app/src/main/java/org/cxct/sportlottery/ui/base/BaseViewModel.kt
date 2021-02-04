@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.TokenError
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
 import java.net.SocketTimeoutException

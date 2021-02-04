@@ -12,6 +12,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
+import org.cxct.sportlottery.network.Constants.GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -193,6 +194,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(WITHDRAW_LIST) -> {
                     response = getMockJsonData(request, "user_withdraw_list.mock")
+                }
+                path.contains(GET_ALL_BALANCE) -> {
+                    response = getMockJsonData(request, "get_all_balance.mock")
                 }
             }
         }

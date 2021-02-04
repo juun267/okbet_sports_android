@@ -17,6 +17,7 @@
         android:background="@color/dark_blue2">
 
         <CheckBox
+            android:id="@+id/cb_change"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,6 +30,7 @@
             android:background="@drawable/selector_button_white_blue_left"/>
 
         <CheckBox
+            android:id="@+id/cb_record"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -37,7 +39,7 @@
             android:textColor="@color/selector_blue_white"
             android:paddingVertical="4dp"
             android:gravity="center"
-            android:background="@drawable/bg_square_shape_4dp_menu_blue_right"/>
+            android:background="@drawable/selector_button_white_blue_right"/>
 
     </LinearLayout>
 
