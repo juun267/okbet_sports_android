@@ -89,7 +89,7 @@ class OddsBetButton @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     //新值較大,亮綠色 ; 新值較小,亮紅色
-    fun setHighlight(status: Int?= OddState.SAME.state) {
+    fun setHighlight(status: Int) {
 
         when (status) {
             OddState.SAME.state -> return
