@@ -28,7 +28,7 @@ object VerifyConstUtil {
     }
 
     fun verifyPwd(pwd: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER$ENGLISH_WORD]{6,20}$", pwd)
+        return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
     }
 
     //真實姓名 //中文2-20,英文2-50 可空格 可點
