@@ -113,12 +113,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                                 oddItem?.firstOrNull()?.id -> {
                                     val oddData = oddItem?.get(0)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(0, it)
+                                    oddItem?.set(0, oddData ?: it)
                                 }
                                 oddItem?.get(1)?.id -> {
                                     val oddData = oddItem?.get(1)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(1, it)
+                                    oddItem?.set(1, oddData ?: it)
                                 }
                             }
                         }
@@ -133,12 +133,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                                 oddItem?.firstOrNull()?.id -> {
                                     val oddData = oddItem?.get(0)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(0, it)
+                                    oddItem?.set(0, oddData ?: it)
                                 }
                                 oddItem?.get(1)?.id -> {
                                     val oddData = oddItem?.get(1)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(1, it)
+                                    oddItem?.set(1, oddData ?: it)
                                 }
                             }
                         }
@@ -154,12 +154,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                                     oddItem?.firstOrNull()?.id -> {
                                         val oddData = oddItem[0]
                                         oddData.oddState = getOddState(oddData, it)
-                                        oddItem.set(0, it)
+                                        oddItem[0] = oddData
                                     }
                                     oddItem?.get(1)?.id -> {
                                         val oddData = oddItem[1]
                                         oddData.oddState = getOddState(oddData, it)
-                                        oddItem.set(1, it)
+                                        oddItem[1] = oddData
                                     }
                                 }
                             }
