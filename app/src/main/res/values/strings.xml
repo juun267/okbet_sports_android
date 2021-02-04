@@ -470,6 +470,8 @@
     <string name="recharge_log_channel_type">渠道类型</string>
     <string name="recharge_log_order_state">订单状态</string>
 
+    <string name="withdraw_log_withdraw_amount">提款金额</string>
+
     <string name="withdraw_log_state_all">全部订单状态</string>
     <string name="withdraw_log_state_processing">处理中</string>
     <string name="withdraw_log_state_pass">通过</string>

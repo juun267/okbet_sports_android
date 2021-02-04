@@ -48,6 +48,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupDateRangeSelector(this)
             setupWithdrawStateSelector(this)
             setupWithdrawTypeSelector(this)
+            setupListColumn(this)
             setupWithdrawLogList(this)
             setupSwipeRefreshLayout(this)
             setupSearch(this)
@@ -121,6 +122,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         view.order_status_selector.ll_end_date.setOnClickListener {
             withdrawTypeBottomSheet.show()
         }
+    }
+
+    private fun setupListColumn(view: View) {
+        view.rech_log_recharge_amount.text = getString(R.string.withdraw_log_withdraw_amount)
     }
 
     private fun setupWithdrawLogList(view: View) {
