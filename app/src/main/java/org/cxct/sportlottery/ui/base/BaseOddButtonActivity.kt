@@ -14,7 +14,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import kotlin.reflect.KClass
 
 
-abstract class BaseOddButtonActivity<T : BaseViewModel>(clazz: KClass<T>) :
+abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T>) :
     BaseSocketActivity<T>(clazz) {
 
     private var oddListDialog: DialogFragment? = null
@@ -23,7 +23,7 @@ abstract class BaseOddButtonActivity<T : BaseViewModel>(clazz: KClass<T>) :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.betInfoRepository?.isParlayPage?.observe(this, Observer {
+        viewModel.betInfoRepository.isParlayPage.observe(this, Observer {
             oddListDialog = when (it) {
                 true -> {
                     BetInfoListParlayDialog()
@@ -33,10 +33,10 @@ abstract class BaseOddButtonActivity<T : BaseViewModel>(clazz: KClass<T>) :
                 }
             }
 
-            viewModel.betInfoRepository?.getCurrentBetInfoList()
+            viewModel.betInfoRepository.getCurrentBetInfoList()
         })
 
-        viewModel.betInfoRepository?.betInfoList?.observe(this, Observer {
+        viewModel.betInfoRepository.betInfoList.observe(this, Observer {
             when {
                 it.isNullOrEmpty() -> {
                     updateOddButton(false, null)
@@ -68,7 +68,7 @@ abstract class BaseOddButtonActivity<T : BaseViewModel>(clazz: KClass<T>) :
 
         setupOddButton()
 
-        viewModel.betInfoRepository?.getCurrentBetInfoList()
+        viewModel.betInfoRepository.getCurrentBetInfoList()
     }
 
     private fun setupOddButton() {

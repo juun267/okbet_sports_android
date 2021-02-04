@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.finance.data.*
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
@@ -26,12 +26,8 @@ import java.util.*
 
 const val pageSize = 20
 
-class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfoRepository) :
-    BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+class FinanceViewModel(private val androidContext: Context, betInfoRepository: BetInfoRepository) :
+    BaseOddButtonViewModel(betInfoRepository) {
 
     val userMoney: LiveData<Double?>
         get() = _userMoney

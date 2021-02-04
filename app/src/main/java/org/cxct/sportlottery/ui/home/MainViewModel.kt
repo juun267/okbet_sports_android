@@ -38,7 +38,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
@@ -50,16 +50,12 @@ import timber.log.Timber
 
 
 class MainViewModel(
-        private val androidContext: Context,
-        private val userInfoRepository: UserInfoRepository,
-        private val loginRepository: LoginRepository,
-        private val sportMenuRepository: SportMenuRepository,
-        betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
+    private val loginRepository: LoginRepository,
+    private val sportMenuRepository: SportMenuRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(betInfoRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin.apply {
@@ -196,7 +192,7 @@ class MainViewModel(
 
 
     fun isParlayPage(boolean: Boolean) {
-        betInfoRepository?._isParlayPage?.postValue(boolean)
+        betInfoRepository._isParlayPage.postValue(boolean)
 
         if (boolean) {
             //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
@@ -208,7 +204,7 @@ class MainViewModel(
 
     private fun cleanOutrightBetOrder() {
         val listWithOutOutright = mutableListOf<String>()
-        betInfoRepository?.betList?.forEach {
+        betInfoRepository.betList.forEach {
             if (it.matchType == MatchType.OUTRIGHT) {
                 listWithOutOutright.add(it.matchOdd.oddsId)
             }
@@ -232,7 +228,7 @@ class MainViewModel(
                 loginRepository.logout()
             }.apply {
                 loginRepository.clear()
-                betInfoRepository?.clear()
+                betInfoRepository.clear()
                 //TODO change timber to actual logout ui to da
                 Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
@@ -509,7 +505,8 @@ class MainViewModel(
                         0
                 )?.odds?.values?.first() ?: listOf()
 
-        val isBet = betInfoRepository?.betInfoList?.value?.any { it.matchOdd.oddsId == winner.id } ?: false
+        val isBet =
+            betInfoRepository.betInfoList.value?.any { it.matchOdd.oddsId == winner.id } ?: false
         if (!isBet) {
             winnerList.first { it == winner }.isSelected = true
             getBetInfoList(listOf(Odd(winner.id, winner.odds).apply { matchType = this@MainViewModel.mathType }))
@@ -527,13 +524,18 @@ class MainViewModel(
         val isOutright = mathType == MatchType.OUTRIGHT
         val result = if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value
         val match =
-                result?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.matchOdds.contains(matchOdd) }?.matchOdds?.find {
-                    it.odds[oddString]?.contains(odd) ?: false
-                }?.odds?.get(oddString)
-                        ?.find { it == odd }
-        if (betInfoRepository?._isParlayPage?.value == true) {
-            val isBetMatchId = betInfoRepository?.betList?.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
-            val isBetOddId = betInfoRepository?.betList?.find { it.matchOdd.oddsId == odd.id }
+            result?.oddsListData?.leagueOdds?.find { leagueOdd ->
+                leagueOdd.matchOdds.contains(
+                    matchOdd
+                )
+            }?.matchOdds?.find {
+                it.odds[oddString]?.contains(odd) ?: false
+            }?.odds?.get(oddString)
+                ?.find { it == odd }
+        if (betInfoRepository._isParlayPage.value == true) {
+            val isBetMatchId =
+                betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
+            val isBetOddId = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
             when {
                 isBetMatchId == null -> {
                     match?.isSelected = true
@@ -548,7 +550,7 @@ class MainViewModel(
                 }
             }
         } else {
-            val betItem = betInfoRepository?.betList?.find { it.matchOdd.oddsId == odd.id }
+            val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
             if (betItem == null) {
                 match?.isSelected = true
                 getBetInfoList(listOf(Odd(odd.id, odd.odds ?: 0.0).apply { matchType = this@MainViewModel.mathType }))
@@ -759,19 +761,18 @@ class MainViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
         viewModelScope.launch {
-            betInfoRepository?.let { br ->
                 val result = doNetwork(androidContext) {
-                    br.getBetInfo(oddsList)
+                    betInfoRepository.getBetInfo(oddsList)
                 }
                 result?.success?.let {
                     if (it) {
-                        br._betInfoList.postValue(br.betList)
+                        betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
                     } else {
                         oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
                             var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                            br.betInfoList.value?.let { list ->
+                            betInfoRepository.betInfoList.value?.let { list ->
                                 for (i in list.indices) {
-                                    br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                    betInfoRepository.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
                                         odd = value.odds.find { v -> v.id == it }
                                         odd?.isSelect = false
                                     }
@@ -781,13 +782,12 @@ class MainViewModel(
                     }
                     _betInfoResult.postValue(result)
                 }
-            }
         }
     }
 
     fun getBetInfoListForParlay() {
         val sendList: MutableList<Odd> = mutableListOf()
-        betInfoRepository?.betList.let { list ->
+        betInfoRepository.betList.let { list ->
 
             //以matchId分組 key為matchOdd(object)
             val groupList = list?.groupBy { data ->
@@ -803,23 +803,22 @@ class MainViewModel(
         }
 
         viewModelScope.launch {
-            betInfoRepository?.let { br ->
                 val result = doNetwork(androidContext) {
-                    br.getBetInfoList(sendList)
+                    betInfoRepository.getBetInfoList(sendList)
                 }
                 result?.success?.let { success ->
 
                     if (success) {
 
                         //回傳成功 兩個list不一定數量相等 各別載入列表
-                        _matchOddList.postValue(br.matchOddList)
-                        _parlayList.postValue(br.parlayOddList)
+                        _matchOddList.postValue(betInfoRepository.matchOddList)
+                        _parlayList.postValue(betInfoRepository.parlayOddList)
 
                         //載入串關注單後比對一般注單
                         val newBetList: MutableList<BetInfoListData> = mutableListOf()
-                        br.matchOddList.let { mList ->
+                        betInfoRepository.matchOddList.let { mList ->
                             for (i in mList.indices) {
-                                br.betList.let { bList ->
+                                betInfoRepository.betList.let { bList ->
                                     val oid = mList[i].oddsId
                                     val item = bList.find {
                                         it.matchOdd.oddsId == oid
@@ -829,17 +828,17 @@ class MainViewModel(
                                     }
                                 }
                             }
-                            br.betList.clear()
-                            br.betList.addAll(newBetList)
+                            betInfoRepository.betList.clear()
+                            betInfoRepository.betList.addAll(newBetList)
                         }
-                        br._betInfoList.postValue(newBetList)
+                        betInfoRepository._betInfoList.postValue(newBetList)
 
                     } else {
                         oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
                             var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                            br.betInfoList.value?.let { list ->
+                            betInfoRepository.betInfoList.value?.let { list ->
                                 for (i in list.indices) {
-                                    br.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
+                                    betInfoRepository.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
                                         odd = value.odds.find { v -> v.id == it }
                                         odd?.isSelect = false
                                     }
@@ -849,20 +848,18 @@ class MainViewModel(
                     }
                 }
                 _betInfoResult.postValue(result)
-            }
-
         }
     }
 
 
     fun removeBetInfoItem(oddId: String) {
-        betInfoRepository?.removeItem(oddId)
-        betInfoRepository?._betInfoList?.postValue(betInfoRepository?.betList)
+        betInfoRepository.removeItem(oddId)
+        betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
     }
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
-        if (betInfoRepository?.betList?.size != 0) {
+        if (betInfoRepository.betList.size != 0) {
             getBetInfoListForParlay()
         }
     }
@@ -878,13 +875,13 @@ class MainViewModel(
                 if (it) {
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoRepository?.betInfoList?.value?.let { list ->
+                        betInfoRepository.betInfoList.value?.let { list ->
                             for (i in list.indices) {
 
                                 //server目前可能會回傳null
                                 try {
                                     odd = value.odds.find { v ->
-                                        v.id.let { id -> id == betInfoRepository?.betInfoList?.value?.get(i)?.matchOdd?.oddsId }
+                                        v.id.let { id -> id == betInfoRepository.betInfoList.value?.get(i)?.matchOdd?.oddsId }
                                     }
                                     odd?.isSelect = true
                                 } catch (e: Exception) {
@@ -953,8 +950,8 @@ class MainViewModel(
                 removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
             }
         } else {
-            betInfoRepository?.betList?.clear()
-            betInfoRepository?._betInfoList?.postValue(betInfoRepository?.betList)
+            betInfoRepository.betList.clear()
+            betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
         }
     }
 }

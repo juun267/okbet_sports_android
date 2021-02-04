@@ -12,19 +12,15 @@ import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.MoneyRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class MoneyRechViewModel(
     private val androidContext: Context,
     private val moneyRepository: MoneyRepository,
-    betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(betInfoRepository) {
 
     val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs
