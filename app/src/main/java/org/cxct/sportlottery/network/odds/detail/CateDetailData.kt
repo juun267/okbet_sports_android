@@ -10,7 +10,7 @@ data class CateDetailData(
     @Json(name = "name")
     val name: String,
     @Json(name = "odds")
-    val odds: List<Odd>,
+    val odds: List<Odd?>,
     @Json(name = "typeCodes")
     val typeCodes: String
 )

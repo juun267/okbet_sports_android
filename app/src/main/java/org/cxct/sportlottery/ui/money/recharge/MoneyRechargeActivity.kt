@@ -108,6 +108,24 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             }
         })
 
+        //在線支付提交申請
+        viewModel.onlinePaySubmit.observe(this@MoneyRechargeActivity, Observer {
+            val payWay = this.getString(R.string.txv_online_pay)
+
+            //顯示成功彈窗
+            val moneySubmitDialog = MoneySubmitDialog(
+                payWay,
+                it.toString(),
+                MoneySubmitDialog.MoneySubmitDialogListener({
+                    finish()
+                    startActivity(Intent(this, FinanceActivity::class.java).apply { putExtra(RechargeViewLog, getString(R.string.record_recharge)) })
+                }, {
+                    showPromptDialog(getString(R.string.prompt), getString(R.string.content_coming_soon)) {}
+                })
+            )
+            moneySubmitDialog.show(supportFragmentManager, "")
+        })
+
     }
 
     private fun initButton() {

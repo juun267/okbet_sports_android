@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.text.Spanned
 import android.view.Gravity
 import android.view.View
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
 
@@ -27,6 +29,7 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
+    private var mTextColor = R.color.gray6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,8 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
         } else
             btn_negative.text = mNegativeText
 
+        tv_message.setTextColor(ContextCompat.getColor(context, mTextColor))
+
         btn_positive.setOnClickListener(mPositiveClickListener)
         btn_negative.setOnClickListener(mNegativeClickListener)
     }
@@ -72,6 +77,10 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
 
     fun setMessage(message: String?) {
         mMessage = message
+    }
+
+    fun setTextColor(@ColorRes colorResource: Int) {
+        mTextColor = colorResource
     }
 
     //set .html 語法文字

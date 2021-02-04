@@ -341,6 +341,7 @@
     <string name="title_qr_pay">扫码支付：</string>
     <string name="title_hint_qr_pay">扫一扫快捷支付，如有疑问请及时联系客服！</string>
     <string name="title_remark">备注:</string>
+    <string name="title_tips">・温馨提示：</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">・请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">・每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
     <string name="title_pay_gap">支付渠道</string>
@@ -358,6 +359,7 @@
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
     <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
+    <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
     <string name="error_wx">您输入的微信格式或数值错误</string>
     <string name="error_user_name">您输入的姓名格式或数值错误</string>
     <string name="error_bank_id">您输入的银行卡号格式或数值错误</string>

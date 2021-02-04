@@ -18,7 +18,12 @@ class BankActivity : BaseActivity<WithdrawViewModel>(WithdrawViewModel::class) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bank)
 
+        setupBankSetting()
         setupBackButton()
+    }
+
+    private fun setupBankSetting() {
+        viewModel.getMoneyConfigs()
     }
 
     override fun onBackPressed() {
