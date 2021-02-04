@@ -34,6 +34,7 @@
 
     <color name="button_focus">#F98B00</color>
     <color name="button_unfocus">#F7F7F7</color>
+    <color name="button_enable">#F6F6F6</color>
     <color name="button_disable">#80000000</color>
     <color name="pumpkinOrange">#F98B00</color>
     <color name="orangeRed">#FF4B2C</color>
@@ -43,7 +44,6 @@
     <color name="bottom_sheet_top_bar_close_text">#999999</color>
 
     <color name="bet_list_warning">#DC474A</color>
-
 
 
     <!-- 线条颜色 -->
