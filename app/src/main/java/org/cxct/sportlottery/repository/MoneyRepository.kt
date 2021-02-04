@@ -28,8 +28,4 @@ class MoneyRepository(private val userInfoDao: UserInfoDao) {
         return OneBoSportApi.moneyService.rechargeAdd(moneyAddRequest)
     }
 
-    suspend fun rechargeOnlinePay(moneyAddRequest: MoneyAddRequest): Response<MoneyAddResult> {
-        return OneBoSportApi.moneyService.rechargeOnlinePay(moneyAddRequest)
-    }
-
 }

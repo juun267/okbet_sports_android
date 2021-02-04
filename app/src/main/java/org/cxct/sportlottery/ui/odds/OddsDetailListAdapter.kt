@@ -25,7 +25,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-        RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
@@ -440,18 +440,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         Handler().postDelayed(
-                {
-                    when (odd.isSelect) {
-                        true -> {
-                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
-                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-                        }
-                        false -> {
-                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
-                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
-                        }
+            {
+                when (odd.isSelect) {
+                    true -> {
+                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
+                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
                     }
-                }, CHANGING_ITEM_BG_COLOR_DURATION
+                    false -> {
+                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
+                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
+                    }
+                }
+            }, CHANGING_ITEM_BG_COLOR_DURATION
         )
     }
 

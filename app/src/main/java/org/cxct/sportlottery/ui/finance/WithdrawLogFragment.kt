@@ -25,13 +25,13 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private lateinit var withdrawStateBottomSheet: BottomSheetDialog
     private lateinit var withdrawTypeBottomSheet: BottomSheetDialog
     private val logDetailDialog by lazy {
-        LogDetailDialog()
+        WithdrawLogDetailDialog()
     }
 
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter().apply {
             withdrawLogListener = WithdrawLogListener {
-                viewModel.setLogDetail(it)
+                viewModel.setWithdrawLogDetail(it)
             }
         }
     }
@@ -48,6 +48,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupDateRangeSelector(this)
             setupWithdrawStateSelector(this)
             setupWithdrawTypeSelector(this)
+            setupListColumn(this)
             setupWithdrawLogList(this)
             setupSwipeRefreshLayout(this)
             setupSearch(this)
@@ -121,6 +122,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         view.order_status_selector.ll_end_date.setOnClickListener {
             withdrawTypeBottomSheet.show()
         }
+    }
+
+    private fun setupListColumn(view: View) {
+        view.rech_log_recharge_amount.text = getString(R.string.withdraw_log_withdraw_amount)
     }
 
     private fun setupWithdrawLogList(view: View) {
@@ -205,7 +210,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             hideLoading()
         })
 
-        viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner, Observer {
             if (logDetailDialog.dialog?.isShowing != true) {
 
                 logDetailDialog.show(
