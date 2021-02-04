@@ -71,7 +71,7 @@ object MoneyManager {
         }
     }
 
-    fun getBankAccountIcon(rechType:String):Int{
+    fun getBankAccountIcon(rechType: String): Int {
         return when (rechType) {
             MoneyType.ALI_TYPE.code -> R.drawable.ic_alipay_type
             MoneyType.WX_TYPE.code -> R.drawable.ic_wechat_pay_type

@@ -58,7 +58,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            updateUI(it?.iconUrl, it?.userName)
+            updateUI(it?.iconUrl, it?.userName, it?.nickName)
         })
     }
 
@@ -114,13 +114,13 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
-    private fun updateUI(iconUrl: String?, userName: String?) {
+    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?) {
         Glide.with(this)
             .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_name.text = userName
+        tv_name.text = nickName ?: userName
     }
 
     /**

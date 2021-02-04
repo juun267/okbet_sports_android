@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
  */
 
 
-abstract class BaseToolBarActivity<T : BaseViewModel>(claazz: KClass<T>) :
+abstract class BaseToolBarActivity<T : BaseOddButtonViewModel>(claazz: KClass<T>) :
     BaseOddButtonActivity<T>(claazz) {
 
     override fun onCreate(savedInstanceState: Bundle?) {

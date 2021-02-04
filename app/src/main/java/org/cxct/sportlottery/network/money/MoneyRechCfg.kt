@@ -64,5 +64,14 @@ class MoneyRechCfg {
         var wdRate: Double? = null//用户提现费率
         var withDrawBalanceLimit: Long? = null//每笔最小提现金额
         var maxWithdrawMoney: Long? = null//每笔最高提现金额
+        var uwTypeCfg: List<UwTypeCfg>? = null //提款方式配置参数
     }
+
+    data class UwTypeCfg (
+        val name: String?,
+        val type: String?,
+        val sort: Int?, //排序
+        val countLimit: Long?, //提款张数限制
+        val open: Int?, //是否启用 1是 0否
+    )
 }
