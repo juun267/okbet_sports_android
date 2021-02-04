@@ -473,7 +473,7 @@
     <string name="withdraw_log_state_all">全部订单状态</string>
     <string name="withdraw_log_state_processing">处理中</string>
     <string name="withdraw_log_state_pass">通过</string>
-    <string name="withdraw_log_state_un_pass">不通过</string>
+    <string name="withdraw_log_state_un_pass">未通过</string>
 
     <string name="withdraw_log_type_all">全部渠道类型</string>
     <string name="withdraw_log_type_bank_trans">银行提款</string>
