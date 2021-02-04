@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class ProfileCenterActivity :
@@ -168,7 +169,7 @@ class ProfileCenterActivity :
     private fun initObserve() {
         viewModel.userMoney.observe(this, Observer {
             refreshMoneyHideLoading()
-            tv_account_balance.text = ArithUtil.toMoneyFormat(it)
+            tv_account_balance.text = it ?: ""
         })
 
         viewModel.userInfo.observe(this, Observer {
@@ -208,7 +209,11 @@ class ProfileCenterActivity :
 
     private fun initSocketObserver() {
         receiver.userMoney.observe(this, Observer {
-            tv_account_balance.text = ArithUtil.toMoneyFormat(it)
+            val formatMoney = it?.let {
+                TextUtil.format(it)
+            }
+
+            tv_account_balance.text = formatMoney ?: ""
         })
     }
 
