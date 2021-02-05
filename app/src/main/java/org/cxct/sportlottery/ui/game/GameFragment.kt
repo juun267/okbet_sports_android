@@ -68,10 +68,15 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 })
 
             itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
+                val code = gameTypeAdapter.data.find {
+                    it.isSelected
+                }?.code
+                val eventId = leagueOdd.matchOdds[0].matchInfo?.id
+
                 if (isExpand) {
-                    service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                    service.subscribeHallChannel(code, eventId)
                 } else {
-                    service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+                    service.unSubscribeHallChannel(code, eventId)
                 }
             }
 
