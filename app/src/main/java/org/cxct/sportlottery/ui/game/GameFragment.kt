@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 
 
 /**
@@ -141,7 +143,50 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            leagueOddAdapter.updatedOddsMap = it.odds
+
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { odds ->
+                        val socketOdds = it.odds[odds.key]
+                        val originOdds = odds.value
+
+                        originOdds.forEach { originOdd ->
+                            val updateOdd = socketOdds?.find { socketOdd ->
+                                originOdd.id == socketOdd.id
+                            }
+
+                            val originOddValue = originOdd.odds
+                            val updateOddValue = updateOdd?.odds
+
+                            originOddValue?.let {
+                                updateOddValue?.let {
+                                    Timber.i("$originOddValue -> $updateOddValue")
+
+                                    //update Odd state
+                                    when {
+                                        originOddValue > updateOddValue -> {
+                                            originOdd.oddState = OddState.SMALLER.state
+                                        }
+                                        originOddValue < updateOddValue -> {
+                                            originOdd.oddState = OddState.LARGER.state
+                                        }
+                                        originOddValue == updateOddValue -> {
+                                            originOdd.oddState = OddState.SAME.state
+                                        }
+                                    }
+
+                                    //update Odd value
+                                    originOdd.odds = updateOdd.odds
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            leagueOddAdapter.data = leagueOdds
         })
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
