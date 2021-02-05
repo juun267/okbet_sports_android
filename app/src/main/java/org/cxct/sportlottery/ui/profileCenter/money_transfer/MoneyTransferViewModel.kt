@@ -14,11 +14,11 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class MoneyTransferViewModel(
-        private val androidContext: Context,
-        private val userInfoRepository: UserInfoRepository,
-        private val loginRepository: LoginRepository,
-        betInfoRepository: BetInfoRepository,
-) : BaseOddButtonViewModel(betInfoRepository) {
+    private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
 
     val allBalanceResult: LiveData<GetAllBalanceResult> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
