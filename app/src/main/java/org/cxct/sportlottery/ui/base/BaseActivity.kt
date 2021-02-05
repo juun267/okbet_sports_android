@@ -11,7 +11,6 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.layout_bet_info_list_float_button.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -98,10 +97,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     fun hideSoftKeyboard(activity: Activity) {
         try {
             val inputMethodManager = activity.getSystemService(
-                    Activity.INPUT_METHOD_SERVICE
+                Activity.INPUT_METHOD_SERVICE
             ) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                    activity.currentFocus?.windowToken, 0
+                activity.currentFocus?.windowToken, 0
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -113,10 +112,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
-        showPromptDialog(title, message, null, positiveClickListener)
+        showPromptDialog(title, message, null, positiveClickListener, false)
     }
 
-    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?) {
+    fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
+        showPromptDialog(title, message, null, positiveClickListener, true)
+    }
+
+    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?, isError: Boolean) {
         safelyUpdateLayout(Runnable {
             try {
                 //防止跳出多個 error dialog
@@ -124,9 +127,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     mPromptDialog?.dismiss()
 
                 mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                    if (isError) {
+                        setTextColor(R.color.orangeRed)
+                    }
                     setTitle(title)
                     setMessage(errorMessage)
-                    setPositiveButtonText(buttonText ?: getString(R.string.btn_confirm))
+                    setPositiveButtonText(buttonText ?: getString(R.string.btn_determine))
                     setNegativeButtonText(null)
                     setPositiveClickListener(View.OnClickListener {
                         positiveClickListener()

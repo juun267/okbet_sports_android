@@ -6,25 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants.BASE_URL
+import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class MoneyRechViewModel(
     private val androidContext: Context,
     private val moneyRepository: MoneyRepository,
-    betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    private val loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(betInfoRepository) {
 
     val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs
@@ -44,6 +46,11 @@ class MoneyRechViewModel(
     val apiResult: LiveData<MoneyAddResult>
         get() = _apiResult
     private var _apiResult = MutableLiveData<MoneyAddResult>()
+
+    //在線充值提交申請
+    val onlinePaySubmit: LiveData<Long>
+        get() = _onlinePaySubmit
+    private var _onlinePaySubmit = MutableLiveData<Long>()
 
     //充值金額錯誤訊息
     val rechargeAmountMsg: LiveData<String>
@@ -150,20 +157,19 @@ class MoneyRechViewModel(
     }
 
     //在線支付
-    fun rechargeOnlinePay(moneyAddRequest: MoneyAddRequest) {
+    fun rechargeOnlinePay(context: Context, id: Int, depositMoney: Int, bankCode: String?) {
         if (onlinePayInput()) {
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    moneyRepository.rechargeOnlinePay(moneyAddRequest)
-                }.let {
-                    doNetwork(androidContext) {
-                        moneyRepository.rechargeAdd(moneyAddRequest)
-                    }.let {
-                        it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
-                        _apiResult.value = it
-                    }
-                }
-            }
+            var url = BASE_URL + USER_RECHARGE_ONLINE_PAY
+            val queryMap = hashMapOf(
+                "x-session-token" to (loginRepository.token ?: ""),
+                "rechCfgId" to id.toString(),
+                "bankCode" to (bankCode ?: ""),
+                "depositMoney" to depositMoney.toString()
+            )
+            url += toUrlParamsFormat(queryMap)
+            toExternalWeb(context, url)
+
+            _onlinePaySubmit.value = depositMoney.toLong() //金額帶入result
         }
     }
 
@@ -189,7 +195,7 @@ class MoneyRechViewModel(
     fun checkRechargeAmount(rechargeAmount: String) {
         _rechargeAmountMsg.value = when {
             rechargeAmount.isEmpty() -> {
-                androidContext.getString(R.string.error_recharge_amount)
+                androidContext.getString(R.string.error_recharge_amount_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,

@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.dialog_log_detail.*
-import kotlinx.android.synthetic.main.dialog_log_detail.view.*
+import kotlinx.android.synthetic.main.dialog_log_recharge_detail.*
+import kotlinx.android.synthetic.main.dialog_log_recharge_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 
-class LogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
+class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
         setStyle(R.style.CustomDialogStyle)
     }
@@ -20,7 +20,7 @@ class LogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_log_detail, container, false).apply {
+        return inflater.inflate(R.layout.dialog_log_recharge_detail, container, false).apply {
             setupConfirmButton(this)
         }
     }
@@ -34,12 +34,12 @@ class LogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.logDetail.observe(this.viewLifecycleOwner, Observer {
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
             log_detail_trans_num.text = it.orderNo
-            log_detail_time.text = it.operatorTime
-            log_detail_type.text = it.type
-            log_detail_amount.text = it.amount
-            log_detail_status.text = it.status
+            log_detail_time.text = it.rechDateAndTime ?: ""
+            log_detail_type.text = it.rechTypeDisplay ?: ""
+            log_detail_status.text = it.rechState ?: ""
+            log_detail_amount.text = it.displayMoney ?: ""
         })
     }
 }

@@ -31,7 +31,6 @@ class TypeOneListAdapter(
     }
 
 
-
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(originOdd: Odd) {

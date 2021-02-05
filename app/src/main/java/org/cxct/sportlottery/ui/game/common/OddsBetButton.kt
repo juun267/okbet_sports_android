@@ -94,14 +94,15 @@ class OddsBetButton @JvmOverloads constructor(context: Context, attrs: Attribute
         when (status) {
             OddState.SAME.state -> return
 
-            OddState.LARGER.state -> bet_layout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green))
-
-            OddState.SMALLER.state -> bet_layout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red))
+            OddState.LARGER.state ->
+                bet_layout.background = ContextCompat.getDrawable(context, R.drawable.shape_play_category_bet_bg_green)
+            OddState.SMALLER.state ->
+                bet_layout.background = ContextCompat.getDrawable(context, R.drawable.shape_play_category_bet_bg_red)
         }
 
         Handler().postDelayed(
             {
-                bet_layout.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
+                bet_layout.background = ContextCompat.getDrawable(context, R.drawable.shape_play_category_bet_bg)
             },
             CHANGING_COLOR_DURATION
         )

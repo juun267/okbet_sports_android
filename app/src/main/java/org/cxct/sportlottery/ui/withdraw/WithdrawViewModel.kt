@@ -20,8 +20,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -30,12 +29,9 @@ class WithdrawViewModel(
     private val androidContext: Context,
     private val moneyRepository: MoneyRepository,
     private val userInfoRepository: UserInfoRepository,
-    betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(betInfoRepository) {
 
-    init {
-        betInfoRepository = betInfoRepo
-    }
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
@@ -103,6 +99,11 @@ class WithdrawViewModel(
     val withdrawAmountHint: LiveData<String>
         get() = _withdrawAmountHint
     private var _withdrawAmountHint = MutableLiveData<String>()
+
+    //銀行卡是否可以繼續增加
+    val addBankCardSwitch: LiveData<Boolean>
+        get() = _addBankCardSwitch
+    private var _addBankCardSwitch = MutableLiveData<Boolean>()
 
     data class WithdrawAmountLimit(val min: Long, val max: Long)
 
@@ -357,6 +358,19 @@ class WithdrawViewModel(
             ArithUtil.toMoneyFormat(rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100)),
             ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
         )
+    }
+
+    /**
+     * 判斷當前銀行卡數量是否超出銀行卡綁定上限
+     */
+    fun checkBankCardCount() {
+        val bankCardCountLimit = rechargeConfigs.value?.withdrawCfg?.uwTypeCfg?.get(0)?.countLimit
+        val bankCardCount = bankCardList.value?.bankCardList?.size
+        _addBankCardSwitch.value = when {
+            bankCardCountLimit == null -> true
+            bankCardCount == null -> true
+            else -> bankCardCount < bankCardCountLimit
+        }
     }
 
     fun resetWithdrawPage() {
