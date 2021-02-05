@@ -29,7 +29,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class),
-    Animation.AnimationListener, OnOddClickListener {
+        Animation.AnimationListener, OnOddClickListener {
 
 
     companion object {
@@ -39,14 +39,14 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         const val ODDS_TYPE = "oddsType"
 
         fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
-            OddsDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(GAME_TYPE, gameType)
-                    putString(TYPE_NAME, typeName)
-                    putString(MATCH_ID, matchId)
-                    putString(ODDS_TYPE, oddsType)
+                OddsDetailFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(GAME_TYPE, gameType)
+                        putString(TYPE_NAME, typeName)
+                        putString(MATCH_ID, matchId)
+                        putString(ODDS_TYPE, oddsType)
+                    }
                 }
-            }
     }
 
 
@@ -174,7 +174,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, { result ->
             result?.success?.let {
                 if (it) {
                     dataBinding.tabCat.removeAllTabs()
@@ -185,7 +185,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             }
         })
 
-        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
 
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
@@ -209,21 +209,30 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             }
         })
 
-        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.oddsDetailDataList?.clear()
             oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsDetailMoreList.observe(this.viewLifecycleOwner, {
+            //扣除當前的賽事
+            it?.size?.let { count ->
+                if (count - 1 == 0) {
+                    tv_more.visibility = View.GONE
+                }
+            }
+        })
+
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.betInfoRepository.isParlayPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.isParlayPage.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             if (it?.success != true) {
                 ToastUtil.showBetResultToast(requireActivity(), it?.msg ?: getString(R.string.unknown_error), false)
             }
