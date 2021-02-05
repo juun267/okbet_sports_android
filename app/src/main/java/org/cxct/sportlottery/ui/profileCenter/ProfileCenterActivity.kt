@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
@@ -110,6 +111,7 @@ class ProfileCenterActivity :
         //額度轉換
         btn_account_transfer.setOnClickListener {
             //TODO 額度轉換
+            startActivity(Intent(this, MoneyTransferActivity::class.java))
         }
 
         //提款設置

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/account_balance_view"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:background="@color/white"
+    android:gravity="center"
+
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/platform_account_money"
+        android:textColor="@color/colorDarkBlack"
+        android:textSize="@dimen/textSize12sp" />
+
+    <TextView
+        android:id="@+id/tv_account_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:textColor="@color/colorDarkBlack"
+        android:textSize="@dimen/textSize20sp"
+        tools:text="87,547,000.000"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bet_info_list_rmb"
+        android:textColor="@color/colorDarkBlack"
+        android:textSize="@dimen/textSize16sp" />
+
+    <ImageView
+        android:id="@+id/btn_refresh"
+        app:tint="@color/main_dark"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_profile_center_refresh"/>
+
+</LinearLayout>
+

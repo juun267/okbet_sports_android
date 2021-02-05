@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -90,6 +89,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.thirdGame.ThirdGameActivity" />
 
+        <activity android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"
+            android:screenOrientation="portrait" />
 
         <!-- Since JCore2.0.0 Required SDK核心功能-->
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
@@ -114,6 +115,7 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
                 <category android:name="${JPUSH_PKGNAME}" />
             </intent-filter>
         </receiver>

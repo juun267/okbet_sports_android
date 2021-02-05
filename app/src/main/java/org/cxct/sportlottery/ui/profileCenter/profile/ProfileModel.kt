@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
@@ -20,8 +21,9 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 class ProfileModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
+    loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     private val _editIconUrlResult = MutableLiveData<IconUrlResult?>()
 
