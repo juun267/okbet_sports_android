@@ -13,12 +13,19 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
 class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>() {
+    var data2 = listOf<MatchOdd>()
+        set(value) {
+            field = value
+            data = field[0].odds.values.first()
+        }
+
     var data = listOf<Odd>()
         set(value) {
             field = value
