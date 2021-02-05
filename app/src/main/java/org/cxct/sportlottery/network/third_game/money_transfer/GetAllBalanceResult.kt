@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
-data class GetAllBalanceResponse(
+data class GetAllBalanceResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")

@@ -507,4 +507,5 @@
     <string name="money">金额</string>
     <string name="transfer_platform">转换平台</string>
     <string name="finance_rmb">%s RMB</string>
+    <string name="recycle_success">回收成功</string>
 </resources>

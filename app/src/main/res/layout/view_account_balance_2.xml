@@ -37,10 +37,10 @@
     <ImageView
         android:id="@+id/btn_refresh"
         app:tint="@color/main_dark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
         android:src="@drawable/ic_profile_center_refresh"/>
 
 </LinearLayout>

@@ -10,11 +10,12 @@ import kotlinx.android.synthetic.main.fragment_money_transfer.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 
-class MoneyTransferFragment : BaseFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
     private val rvAdapter by lazy {
         MoneyTransferAdapter(ItemClickListener {
@@ -27,38 +28,60 @@ class MoneyTransferFragment : BaseFragment<MoneyTransferViewModel>(MoneyTransfer
             }
         })
     }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        viewModel.getMoney()
+        viewModel.getAllBalance()
+
         return inflater.inflate(R.layout.fragment_money_transfer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getAllBalance()
-
         initView()
         initOnclick()
         initObserver()
-    }
-
-    private fun initOnclick() {
-        btn_recycle.setOnClickListener {
-            //TODO Cheryl
-        }
     }
 
     private fun initView() {
         rv_plat.adapter = rvAdapter
     }
 
+    private fun initOnclick() {
+        btn_recycle.setOnClickListener {
+            viewModel.recycleAllMoney()
+        }
+
+        layout_balance.btn_refresh.setOnClickListener {
+            viewModel.getMoney()
+        }
+    }
+
+
     private fun initObserver() {
+        receiver.userMoney.observe(viewLifecycleOwner) {
+            it?.apply {
+                layout_balance.tv_account_balance.text = TextUtil.format(it)
+            }
+        }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.apply {
                 layout_balance.tv_account_balance.text = TextUtil.format(it)
+            }
+        }
+
+        viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) {
+            it?.apply {
+                val dialog = CustomAlertDialog(requireActivity()).apply {
+                    setTitle(getString(R.string.prompt))
+                    setMessage(it.msg)
+                    setNegativeButtonText(null)
+                    setTextColor(if (it.success) R.color.gray6 else R.color.red2)
+                }
+                dialog.show()
             }
         }
 
