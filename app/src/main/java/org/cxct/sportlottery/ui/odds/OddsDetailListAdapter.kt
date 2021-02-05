@@ -373,9 +373,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 itemView.visibility = View.VISIBLE
                                 vCover.visibility = View.GONE
                                 tvOdds.isEnabled = true
-                                tvOdds.isSelected = odd.isSelect
+                                tvOdds.isSelected = odd.isSelect ?: false
                                 tvOdds.setOnClickListener {
-                                    if (!odd.isSelect) {
+                                    if (odd.isSelect != true) {
                                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
                                             return@setOnClickListener
                                         }

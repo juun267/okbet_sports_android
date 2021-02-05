@@ -113,12 +113,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                                 oddItem?.firstOrNull()?.id -> {
                                     val oddData = oddItem?.get(0)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(0, it)
+                                    oddItem?.set(0, oddData ?: it)
                                 }
                                 oddItem?.get(1)?.id -> {
                                     val oddData = oddItem?.get(1)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(1, it)
+                                    oddItem?.set(1, oddData ?: it)
                                 }
                             }
                         }
@@ -133,12 +133,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                                 oddItem?.firstOrNull()?.id -> {
                                     val oddData = oddItem?.get(0)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(0, it)
+                                    oddItem?.set(0, oddData ?: it)
                                 }
                                 oddItem?.get(1)?.id -> {
                                     val oddData = oddItem?.get(1)
                                     oddData?.oddState = getOddState(oddData, it)
-                                    oddItem?.set(1, it)
+                                    oddItem?.set(1, oddData ?: it)
                                 }
                             }
                         }
@@ -154,12 +154,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                                     oddItem?.firstOrNull()?.id -> {
                                         val oddData = oddItem[0]
                                         oddData.oddState = getOddState(oddData, it)
-                                        oddItem.set(0, it)
+                                        oddItem[0] = oddData
                                     }
                                     oddItem?.get(1)?.id -> {
                                         val oddData = oddItem[1]
                                         oddData.oddState = getOddState(oddData, it)
-                                        oddItem.set(1, it)
+                                        oddItem[1] = oddData
                                     }
                                 }
                             }
@@ -242,7 +242,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddOUHome?.let {
                 itemView.ou_hdp_home_ou.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
@@ -256,7 +256,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddOUAway?.let {
                 itemView.ou_hdp_away_ou.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
@@ -269,7 +269,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddHDPHome?.let {
                 itemView.ou_hdp_home_hdp.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
@@ -282,7 +282,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddHDPAway?.let {
                 itemView.ou_hdp_away_hdp.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
@@ -330,8 +330,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
-                    isSelected = it.isSelected
-
+                    isSelected = it.isSelected ?: false
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
@@ -343,8 +342,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddBetX?.let {
                 itemView.x12_bet_x.apply {
-                    isSelected = it.isSelected
-
+                    isSelected = it.isSelected ?: false
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
@@ -356,8 +354,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddBet2?.let {
                 itemView.x12_bet_2.apply {
-                    isSelected = it.isSelected
-
+                    isSelected = it.isSelected ?: false
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setStatus(it.odds?.isNaN()?:true, it.status)
                     setHighlight(it.oddState)
