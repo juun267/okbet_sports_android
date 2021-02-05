@@ -50,12 +50,12 @@ import timber.log.Timber
 
 
 class MainViewModel(
-        private val androidContext: Context,
-        private val userInfoRepository: UserInfoRepository,
-        private val loginRepository: LoginRepository,
-        private val sportMenuRepository: SportMenuRepository,
-        betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+    private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
+    private val sportMenuRepository: SportMenuRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
 
     val isLogin: LiveData<Boolean> by lazy {

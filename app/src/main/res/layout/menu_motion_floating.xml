@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/line_detail_scene"
+    tools:context="org.cxct.sportlottery.ui.thirdGame.MotionFloatingMenu">
+
+    <View
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@color/transparent_black_50" />
+
+    <ImageView
+        android:id="@+id/motion_back_home"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="30dp"
+        android:contentDescription="@null"
+        android:src="@drawable/motion_back_home"
+        app:layout_constraintBottom_toTopOf="@id/motion_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/motion_cash_save"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="38.75dp"
+        android:contentDescription="@null"
+        android:src="@drawable/motion_cash_save"
+        app:layout_constraintStart_toEndOf="@id/motion_close"
+        app:layout_constraintTop_toTopOf="@id/motion_back_home" />
+
+    <ImageView
+        android:id="@+id/motion_cash_get"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@null"
+        android:src="@drawable/motion_cash_get"
+        app:layout_constraintStart_toStartOf="@id/motion_cash_save"
+        app:layout_constraintTop_toBottomOf="@id/motion_cash_save" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/motion_close"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:backgroundTint="#C69058"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_close"
+        app:fabCustomSize="65dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <org.cxct.sportlottery.ui.common.MovableLinearLayout
+        android:id="@+id/menu_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/motion_dragon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

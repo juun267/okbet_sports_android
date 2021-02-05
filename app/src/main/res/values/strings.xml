@@ -508,6 +508,17 @@
     <string name="finance_log_selector_until">到</string>
     <string name="finance_list_no_more">没有更多数据了</string>
     <string name="finance_list_no_record">暂无纪录</string>
-
+    <string name="one_key_recovery">一键回收</string>
+    <string name="platform_account_money">平台帐户余额</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">・一键回收将所有其他账户余额转入平台账户。</string>
+    <string name="out_account">转出账户</string>
+    <string name="in_account">转入账户</string>
+    <string name="transfer_money">转换金额</string>
+    <string name="please_input_money">请输入金额</string>
+    <string name="confirm_transform">确认转换</string>
+    <string name="plat_money">平台余额</string>
+    <string name="money">金额</string>
+    <string name="transfer_platform">转换平台</string>
     <string name="finance_rmb">%s RMB</string>
+    <string name="recycle_success">回收成功</string>
 </resources>

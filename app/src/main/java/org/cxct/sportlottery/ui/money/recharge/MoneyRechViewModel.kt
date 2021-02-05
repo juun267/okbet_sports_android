@@ -24,9 +24,9 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 class MoneyRechViewModel(
     private val androidContext: Context,
     private val moneyRepository: MoneyRepository,
-    private val loginRepository: LoginRepository,
+    loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs

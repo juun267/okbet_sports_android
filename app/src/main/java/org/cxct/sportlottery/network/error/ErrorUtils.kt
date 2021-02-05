@@ -5,6 +5,7 @@ import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
+import org.cxct.sportlottery.network.Constants.GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
@@ -47,6 +49,7 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -66,6 +69,8 @@ import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.third_game.AllTransferOutResult
+import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
@@ -262,6 +267,14 @@ object ErrorUtils {
                     (url.contains(WITHDRAW_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return WithdrawListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(GET_ALL_BALANCE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return GetAllBalanceResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(THIRD_ALL_TRANSFER_OUT)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return AllTransferOutResult(it.code, it.msg, it.success) as T
                     }
                 }
             }

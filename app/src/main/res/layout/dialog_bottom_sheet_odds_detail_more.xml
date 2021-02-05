@@ -37,7 +37,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_more"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/content_odds_detail_more"/>
 
 
     </LinearLayout>

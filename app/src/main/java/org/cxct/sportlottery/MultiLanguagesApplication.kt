@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
@@ -48,17 +49,18 @@ class MultiLanguagesApplication : Application() {
         viewModel { MainViewModel(get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
-        viewModel { SettlementViewModel(get(), get(), get()) }
-        viewModel { BetRecordViewModel(get(), get()) }
-        viewModel { InfoCenterViewModel(get(), get(), get()) }
+        viewModel { SettlementViewModel(get(), get(), get(), get()) }
+        viewModel { BetRecordViewModel(get(), get(), get()) }
+        viewModel { InfoCenterViewModel(get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get()) }
-        viewModel { WithdrawViewModel(get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get()) }
-        viewModel { NicknameModel(get(), get(), get()) }
-        viewModel { SettingPasswordViewModel(get(), get(), get()) }
-        viewModel { FinanceViewModel(get(), get()) }
+        viewModel { WithdrawViewModel(get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get()) }
+        viewModel { NicknameModel(get(), get(), get(), get()) }
+        viewModel { SettingPasswordViewModel(get(), get(), get(), get()) }
+        viewModel { FinanceViewModel(get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get()) }
+        viewModel { MoneyTransferViewModel(get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

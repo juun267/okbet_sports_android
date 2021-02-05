@@ -114,5 +114,9 @@
     <color name="blue5">#4d7fde</color>
 
     <color name="date_select_orange">#F98B00</color>
+    <color name="skin_rowBg1_light">#F1F1F1</color>
+    <color name="gray_blue">#f0f2f6</color>
+    <color name="dark_blue2">#2e3a49</color>
+
 
 </resources>

@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -21,8 +22,9 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 class NicknameModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
+    loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     private val _nicknameFormState = MutableLiveData<NicknameFormState>()
     private val _nicknameResult = MutableLiveData<NicknameResult?>()
