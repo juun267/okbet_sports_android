@@ -54,6 +54,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupValidCode()
         setupSmsValidCode()
         setupAgreementButton()
+        setupRegisterAgreementButton()
         setupRegisterButton()
         setupGoToLoginButton()
         initObserve()
@@ -241,6 +242,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupAgreementButton() {
+        cb_agreement.setOnClickListener {
+            checkInputData()
+        }
+    }
+
+    private fun setupRegisterAgreementButton() {
         btn_agreement.setOnClickListener {
             AgreementDialog().show(supportFragmentManager, null)
         }
@@ -382,6 +389,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         et_telegram.setError(state.telegramError)
         et_sms_valid_code.setError(state.securityCodeError)
         et_verification_code.setError(state.validCodeError)
+        btn_register.isEnabled = state.isDataValid
 
         if (state.checkAgreement) {
             cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.gray4))

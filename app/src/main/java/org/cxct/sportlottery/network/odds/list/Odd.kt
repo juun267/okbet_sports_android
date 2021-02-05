@@ -16,8 +16,8 @@ data class Odd(
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code
 ) {
+    var isSelected :Boolean? = false
     var oddState: Int = OddState.SAME.state
-    var isSelected = false
 }
 
 //socket進來的新賠率較大或較小

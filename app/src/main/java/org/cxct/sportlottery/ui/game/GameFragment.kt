@@ -41,8 +41,6 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
 
-    private val service by lazy { (activity as MainActivity).mService }
-
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
             Log.e(">>>", "onclick gameTypeAdapter")

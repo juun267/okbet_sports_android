@@ -5,9 +5,9 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class HelpCenterViewModel(
-    private val loginRepository: LoginRepository,
+    loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val token = loginRepository.token
 }
