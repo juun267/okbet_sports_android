@@ -73,7 +73,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
         dataBinding.apply {
             view = this@OddsDetailFragment
@@ -108,9 +108,6 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
-
-            Log.e(">>>>>", "matchOddsChange")
-
             val newList = arrayListOf<OddsDetailListData>()
 
             it.odds.forEach { map ->
@@ -150,7 +147,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
                             getData()
                         }
                     }).apply {
-                        show(it, "")
+                        show(it, "OddsDetailMoreFragment")
                     }
                 }
             }
@@ -205,6 +202,9 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
                     style.setSpan(ForegroundColorSpan(color), startPosition, endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     dataBinding.tvMatch.text = style
 
+                    oddsDetailListAdapter?.homeName = home
+                    oddsDetailListAdapter?.awayName = away
+
                 }
             }
         })
@@ -215,11 +215,11 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.betInfoRepository?.isParlayPage?.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.isParlayPage.observe(this.viewLifecycleOwner, Observer {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
