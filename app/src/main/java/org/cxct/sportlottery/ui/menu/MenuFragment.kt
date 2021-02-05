@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
@@ -90,7 +91,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_version_update.setOnClickListener {
-            //TODO 版本更新
+            startActivity(Intent(activity, VersionUpdateActivity::class.java))
+            mDownMenuListener?.onClick(menu_version_update)
         }
 
         menu_sign_out.setOnClickListener {
