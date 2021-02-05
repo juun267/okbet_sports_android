@@ -170,7 +170,6 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
         }
     }
 
-
     private fun getOddState(oldItem: Odd?, it: Odd): Int {
         val oldOdd = oldItem?.odds ?: 0.0
         val newOdd = it.odds ?: 0.0

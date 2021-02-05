@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,6 @@ import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
-import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -43,7 +41,6 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            Log.e(">>>", "onclick gameTypeAdapter")
             viewModel.getGameHallList(args.matchType, it)
         })
     }
@@ -70,19 +67,18 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
             itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
                 if (isExpand) {
-                    Log.e(">>>", "")
                     service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
                 } else {
                     service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
                 }
             }
-            betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
+
+            betInfoListData = viewModel.betInfoRepository.betInfoList.value
         }
     }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            Log.e(">>>", "onclick LeagueAdapter")
             viewModel.getLeagueOddsList(args.matchType, it)
         })
     }
@@ -90,14 +86,9 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
             seasonSubListener = SeasonSubAdapter.SeasonSubListener {
-                Log.e(">>>", "onclick outrightSeasonAdapter")
                 viewModel.getOutrightOddsList(it.id)
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -121,11 +112,18 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             setupOutrightSeasonList(this)
 
             initObserve()
+
+            initSocketObserver()
         }
     }
 
     private fun initObserve() {
+        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+            leagueOddAdapter.betInfoListData = it
+        })
+    }
 
+    private fun initSocketObserver() {
         receiver.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
             if (matchClockEvent == null) return@Observer
 
@@ -146,22 +144,6 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             leagueOddAdapter.updatedOddsMap = it.odds
         })
 
-        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
-            leagueOddAdapter.betInfoListData = it
-        })
-
-
-//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            Log.e(">>>>>", "g matchStatusChange")
-//        })
-
-//        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
-//            if (it == null) return@observe
-//            Log.e(">>>>>", "g matchOddsChange")
-//            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
-//        })
-
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
@@ -170,48 +152,6 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         updateSocketGlobalStop()
 
         updateSocketProducerUp()
-
-//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            Log.e(">>>>>", "g matchStatusChange")
-
-//            val leagueOdds = leagueOddAdapter.data
-//
-//            leagueOdds.forEach { leagueOdd ->
-//                leagueOdd.matchOdds.forEach { matchOdd ->
-//                    matchOdd.odds.forEach { oldOdds ->
-//                        val newOdds = oddsChangeEvent.odds[oldOdds.key]
-//
-//                        oldOdds.value.forEach { oldOdd ->
-//                            val updateOdd = newOdds?.find { newOdd ->
-//                                newOdd.id == oldOdd.id
-//                            }
-//
-//                            updateOdd?.odds?.let { nonNullUpdateOdd ->
-//                                oldOdd.odds?.let { nonNullOldOdd ->
-//                                    when {
-//                                        (nonNullUpdateOdd > nonNullOldOdd) -> {
-//                                            oldOdd.oddState = OddState.LARGER.state
-//                                        }
-//
-//                                        (nonNullUpdateOdd == nonNullOldOdd) -> {
-//                                            oldOdd.oddState = OddState.SAME.state
-//                                        }
-//
-//                                        (nonNullUpdateOdd < nonNullOldOdd) -> {
-//                                            oldOdd.oddState = OddState.SMALLER.state
-//                                        }
-//                                    }
-//
-//                                    oldOdd.odds = updateOdd.odds
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            leagueOddAdapter.data = leagueOdds
-//        })
     }
 
     private fun updateSocketGlobalStop() {
