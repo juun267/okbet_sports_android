@@ -121,6 +121,8 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.parlayOdd = parlayOdd
 
+            binding.tvParlayType.text = parlayOdd.parlayType.replace("C", "串")
+
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
             binding.tvParlayOdds.text =
                     String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(parlayOdd.odds))
