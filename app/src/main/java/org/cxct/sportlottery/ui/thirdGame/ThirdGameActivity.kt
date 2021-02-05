@@ -1,9 +1,10 @@
 package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
-import android.os.Bundle
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -13,12 +14,15 @@ import org.cxct.sportlottery.util.ToastUtil
 
 open class ThirdGameActivity : WebActivity() {
 
+    private var mUserInfo: UserInfo? = null
+
     override fun init() {
         setContentView(R.layout.activity_third_game)
         setCookie()
         setupWebView(web_view)
         loadUrl(web_view)
         setupMenu()
+        initObserve()
     }
 
     private fun setupMenu() {
@@ -45,7 +49,7 @@ open class ThirdGameActivity : WebActivity() {
 
 
     private fun checkLogin(): Boolean {
-        return when (viewModel.userInfo.value?.testFlag) {
+        return when (mUserInfo?.testFlag) {
             TestFlag.NORMAL.index -> true
             TestFlag.GUEST.index -> {
                 ToastUtil.showToastInCenter(this, resources.getString(R.string.message_guest_no_permission))
@@ -56,5 +60,11 @@ open class ThirdGameActivity : WebActivity() {
                 false
             }
         }
+    }
+
+    private fun initObserve() {
+        viewModel.userInfo.observe(this, Observer {
+            mUserInfo = it
+        })
     }
 }
