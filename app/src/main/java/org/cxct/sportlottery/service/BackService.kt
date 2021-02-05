@@ -273,6 +273,7 @@ class BackService : Service() {
     }
 
     fun unSubscribe(url: String) {
+        Timber.e(">>> unSubscribeEvent: $url")
         subscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
     }
 
