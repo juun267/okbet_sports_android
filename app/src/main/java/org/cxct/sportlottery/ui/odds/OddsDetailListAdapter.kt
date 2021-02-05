@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.odds
 
 import android.content.res.ColorStateList
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -273,7 +274,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
 
-            tvName.text = oddsDetail.name
+            val type = oddsDetailDataList[position].gameType
+
+            if(type.contains(":")){
+                tvName.text = oddsDetail.name.plus("  ").plus(type.split(":")[1])
+            }else{
+                tvName.text = oddsDetail.name
+            }
+
             llItem.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(position)
