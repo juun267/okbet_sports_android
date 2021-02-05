@@ -97,14 +97,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
 
-        //複製地址
-        btn_address_copy.setOnClickListener {
-            val clipboard =
-                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText(null, tv_address.text)
-            clipboard?.setPrimaryClip(clipData)
-            ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
-        }
     }
 
     private fun initView() {
@@ -228,24 +220,36 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             Glide.with(this).load(selectRechCfgs?.qrCode).into(iv_address)
         }
 
-        //備註
-        tv_remark.text = selectRechCfgs?.remark
 
         //銀行卡轉帳 UI 特別處理
         if (mMoneyPayWay?.rechType == "bankTransfer") {
+            ll_remark.visibility = View.GONE
             ll_qr.visibility = View.GONE
             ll_address.visibility = View.VISIBLE
             et_wx_id.visibility = View.GONE
 
+            //銀行備註放在地址
+            tv_address.text = selectRechCfgs?.remark
         } else {
+            ll_remark.visibility = View.VISIBLE
             ll_qr.visibility = View.VISIBLE
             ll_address.visibility = View.GONE
 
+            //備註
+            tv_remark.text = selectRechCfgs?.remark
         }
         when (mMoneyPayWay?.rechType) {
-            MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
+            MoneyType.BANK_TYPE.code -> {
                 ll_qr.visibility = View.GONE
                 ll_address.visibility = View.VISIBLE
+                et_wx_id.visibility = View.GONE
+                et_nickname.visibility = View.GONE
+                et_bank_account.visibility = View.VISIBLE
+                et_name.visibility = View.VISIBLE
+            }
+            MoneyType.CTF_TYPE.code -> {
+                ll_qr.visibility = View.VISIBLE
+                ll_address.visibility = View.GONE
                 et_wx_id.visibility = View.GONE
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
@@ -267,6 +271,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_bank_account.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
             }
+        }
+
+        if ((mSelectRechCfgs?.rebateFee ?: 0.0) != 0.0) {
+            cv_rebate_fee.visibility = View.VISIBLE
+            tv_rebate_fee.text = "${ArithUtil.toOddFormat(mSelectRechCfgs?.rebateFee?.times(100))} %"
+        } else {
+            cv_rebate_fee.visibility = View.GONE
         }
 
         //存款時間

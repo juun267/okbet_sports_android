@@ -2,11 +2,11 @@ package org.cxct.sportlottery.ui.odds
 
 import android.content.res.ColorStateList
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -39,9 +39,9 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
                 odd.isSelect = select
 
-                tvOdds.isSelected = odd.isSelect
+                tvOdds.isSelected = odd.isSelect ?: false
                 tvOdds.setOnClickListener {
-                    if (!odd.isSelect) {
+                    if (odd.isSelect != true) {
                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
                             return@setOnClickListener
                         }
@@ -60,8 +60,9 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
             BetStatus.DEACTIVATED.code -> {
-                itemView.visibility = View.GONE
-                vCover.visibility = View.GONE
+                //比照h5照樣顯示（文件為不顯示）
+                itemView.visibility = View.VISIBLE
+                vCover.visibility = View.VISIBLE
                 tvOdds.isEnabled = false
             }
 

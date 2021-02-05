@@ -11,21 +11,17 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import timber.log.Timber
 import java.util.*
 
 class ProfileCenterViewModel(
-        private val androidContext: Context,
-        private val userInfoRepository: UserInfoRepository,
-        private val loginRepository: LoginRepository,
-        betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
+    private val loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(betInfoRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
