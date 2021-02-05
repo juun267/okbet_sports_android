@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
@@ -133,8 +134,8 @@ class MoneyRechViewModel(
     }
 
     //充值頁面[轉帳充值]-[按鈕]提交申請
-    fun rechargeSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?) {
-        checkAll(moneyAddRequest, rechType)
+    fun rechargeSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
+        checkAll(moneyAddRequest, rechType, rechConfig)
         if (checkTransferPayInput()) {
             rechargeAdd(moneyAddRequest)
         }
@@ -174,7 +175,7 @@ class MoneyRechViewModel(
     }
 
     //送出前判斷全部
-    private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?) {
+    private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         when (rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 checkUserName(moneyAddRequest.payerName)
@@ -188,21 +189,21 @@ class MoneyRechViewModel(
                 checkUserName(moneyAddRequest.payerInfo ?: "")
             }
         }
-        checkRechargeAmount(moneyAddRequest.depositMoney.toString())
+        checkRechargeAmount(moneyAddRequest.depositMoney.toString(), rechConfig)
     }
 
     //充值金額驗證
-    fun checkRechargeAmount(rechargeAmount: String) {
+    fun checkRechargeAmount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+        val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
+        val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAmountMsg.value = when {
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_recharge_amount_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
-                0,
-                9999999
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.minMoney?.toLong()?:0,
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.maxMoney?.toLong()
+                channelMinMoney,
+                channelMaxMoney
             ) -> {// TODO Bill
                 androidContext.getString(R.string.error_recharge_amount)
             }
@@ -213,17 +214,17 @@ class MoneyRechViewModel(
     }
 
     //在線充值金額
-    fun checkRcgOnlineAmount(rechargeAmount: String) {
+    fun checkRcgOnlineAmount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+        val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
+        val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeOnlineAmountMsg.value = when {
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
-                0,
-                9999999
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.minMoney?.toLong()?:0,
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.maxMoney?.toLong()
+                channelMinMoney,
+                channelMaxMoney
             ) -> {// TODO Bill
                 androidContext.getString(R.string.error_recharge_amount)
             }

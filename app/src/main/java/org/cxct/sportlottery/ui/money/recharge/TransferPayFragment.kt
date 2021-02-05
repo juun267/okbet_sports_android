@@ -70,7 +70,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun initButton() {
         //提交
         btn_submit.setOnClickListener {
-            createMoneyAddRequest()?.let { viewModel.rechargeSubmit(it, mMoneyPayWay?.rechType) }
+            createMoneyAddRequest()?.let { viewModel.rechargeSubmit(it, mMoneyPayWay?.rechType, mSelectRechCfgs) }
         }
 
         //選取日曆
@@ -288,7 +288,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //充值金額
-            et_recharge_amount.afterTextChanged { checkRechargeAmount(it) }
+            et_recharge_amount.afterTextChanged { checkRechargeAmount(it, mSelectRechCfgs) }
             //微信
             et_wx_id.afterTextChanged { checkWX(it) }
             //認證姓名
@@ -303,7 +303,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun setupFocusEvent() {
         viewModel.apply {
             //充值金額
-            setupEditTextFocusEvent(et_recharge_amount) { checkRechargeAmount(it) }
+            setupEditTextFocusEvent(et_recharge_amount) { checkRechargeAmount(it, mSelectRechCfgs) }
             //微信
             setupEditTextFocusEvent(et_wx_id) { checkWX(it) }
             //認證姓名

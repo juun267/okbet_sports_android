@@ -168,14 +168,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //充值金額
-            et_recharge_online_amount.afterTextChanged { checkRcgOnlineAmount(it) }
+            et_recharge_online_amount.afterTextChanged { checkRcgOnlineAmount(it, mSelectRechCfgs) }
         }
     }
 
     private fun setupFocusEvent() {
         et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus)
-                viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText())
+                viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText(), mSelectRechCfgs)
         }
     }
 
