@@ -109,6 +109,12 @@ object Constants {
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
     const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
 
+    //feedback
+    const val FEEDBACK_QUERYLIST = "/api/front/feedback/querylist"
+    const val FEEDBACK_SAVE = "/api/front/feedback/save"
+    const val FEEDBACK_REPLY = "/api/front/feedback/reply"
+    const val FEEDBACK_QUERYDETAIL = "/api/front/feedback/querydetail/{id}"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000
