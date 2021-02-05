@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class ProfileCenterActivity :
@@ -170,7 +171,7 @@ class ProfileCenterActivity :
     private fun initObserve() {
         viewModel.userMoney.observe(this, Observer {
             refreshMoneyHideLoading()
-            tv_account_balance.text = ArithUtil.toMoneyFormat(it)
+            tv_account_balance.text = it ?: ""
         })
 
         viewModel.userInfo.observe(this, Observer {
@@ -210,7 +211,11 @@ class ProfileCenterActivity :
 
     private fun initSocketObserver() {
         receiver.userMoney.observe(this, Observer {
-            tv_account_balance.text = ArithUtil.toMoneyFormat(it)
+            val formatMoney = it?.let {
+                TextUtil.format(it)
+            }
+
+            tv_account_balance.text = formatMoney ?: ""
         })
     }
 
@@ -222,7 +227,12 @@ class ProfileCenterActivity :
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_user_nickname.text = userInfo?.userName
+        tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
+            userInfo?.userName
+        } else {
+            userInfo?.nickName
+        }
+
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()

@@ -8,18 +8,22 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoParlayItemBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import java.math.RoundingMode
 
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
-    RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
+        RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
 
 
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
+
 
     val winQuotaList: MutableList<Double> = mutableListOf()
     val betQuotaList: MutableList<Double> = mutableListOf()
@@ -60,19 +64,19 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 when {
                     quota > parlayOdd.max -> {
                         binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
-                                parlayOdd.max.toString()
-                            )
+                                String.format(
+                                        binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
+                                        parlayOdd.max.toString()
+                                )
                         error = true
                     }
 
                     quota < parlayOdd.min -> {
                         binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit),
-                                parlayOdd.min.toString()
-                            )
+                                String.format(
+                                        binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit),
+                                        parlayOdd.min.toString()
+                                )
                         error = true
                     }
 
@@ -84,7 +88,12 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 winQuotaList[position] = it.toDouble() * parlayOdd.odds
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
 
-                binding.tvParlayWinQuota.text = TextUtil.format(it.toDouble() * parlayOdd.odds)
+                binding.tvParlayWinQuota.text =
+                        ArithUtil.round(
+                                it.toDouble() * parlayOdd.odds,
+                                3,
+                                RoundingMode.HALF_UP)
+
             }
             onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())
 
@@ -93,12 +102,12 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.tvErrorMessage.visibility = if (error) View.VISIBLE else View.GONE
 
             binding.rlInput.background =
-                if (error) ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_error)
-                else ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_focus)
+                    if (error) ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_error)
+                    else ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_focus)
 
             binding.etBet.setTextColor(
-                if (error) ContextCompat.getColor(binding.root.context, R.color.orangeRed)
-                else ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                    if (error) ContextCompat.getColor(binding.root.context, R.color.orangeRed)
+                    else ContextCompat.getColor(binding.root.context, R.color.main_dark)
             )
             return error
         }

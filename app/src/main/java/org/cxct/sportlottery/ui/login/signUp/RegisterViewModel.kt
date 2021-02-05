@@ -116,7 +116,8 @@ class RegisterViewModel(
             telegramError = telegramError,
             securityCodeError = securityCodeError,
             validCodeError = validCodeError,
-            checkAgreement = checkAgreement
+            checkAgreement = checkAgreement,
+            isDataValid = isDataValid
         )
 
         return isDataValid

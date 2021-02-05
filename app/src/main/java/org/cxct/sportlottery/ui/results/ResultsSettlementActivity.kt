@@ -200,6 +200,7 @@ class ResultsSettlementActivity : BaseToolBarActivity<SettlementViewModel>(Settl
                             settlementViewModel.getOutrightResultList(gameType)
                         }
                     }
+                    settlementGameTypeBottomSheet.dismiss()
                 }
 
             })
