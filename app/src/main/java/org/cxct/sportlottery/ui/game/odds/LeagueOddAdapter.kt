@@ -81,10 +81,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
                 this.adapter = matchOddAdapter
             }
 
-            matchOddAdapter.data = item.matchOdds
-            matchOddAdapter.playType = playType
-            matchOddAdapter.matchOddListener = matchOddListener
-            matchOddAdapter.betInfoListData = betInfoListData
+            if (item.isExpand) {
+                matchOddAdapter.playType = playType
+                matchOddAdapter.matchOddListener = matchOddListener
+                matchOddAdapter.data = item.matchOdds
+                matchOddAdapter.betInfoListData = betInfoListData
+            }
         }
 
         private fun setupMatchOddExpand(
