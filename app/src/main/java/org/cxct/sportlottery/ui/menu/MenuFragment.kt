@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
@@ -23,7 +23,7 @@ import org.cxct.sportlottery.util.LanguageManager
 /**
  * 遊戲右側功能選單
  */
-class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
 
     override fun onCreateView(
@@ -38,6 +38,7 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         initObserve()
+        initSocketObserver()
         initEvent()
         setupSelectLanguage()
         setupVersion()
@@ -58,7 +59,13 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            updateUI(it?.iconUrl, it?.userName)
+            updateUI(it?.iconUrl, it?.userName, it?.nickName)
+        })
+    }
+
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(viewLifecycleOwner, Observer {
+            tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
         })
     }
 
@@ -109,13 +116,13 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
-    private fun updateUI(iconUrl: String?, userName: String?) {
+    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?) {
         Glide.with(this)
             .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_name.text = userName
+        tv_name.text = nickName ?: userName
     }
 
     /**

@@ -10,8 +10,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="#F3F4F5"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
         android:padding="20dp">
 
 
@@ -185,12 +188,26 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/money_recharge_hint1"
-            android:textSize="@dimen/textSize12sp" />
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_tips"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp"
+                />
+            <TextView
+                android:id="@+id/tv_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/money_recharge_hint1"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
 
 
         <Button

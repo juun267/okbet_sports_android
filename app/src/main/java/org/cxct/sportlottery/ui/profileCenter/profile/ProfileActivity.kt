@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
 import org.cxct.sportlottery.util.ToastUtil
@@ -20,7 +20,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class ProfileActivity : BaseActivity<ProfileModel>(ProfileModel::class) {
+class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class) {
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {

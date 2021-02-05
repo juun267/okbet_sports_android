@@ -133,7 +133,6 @@
                                 android:id="@+id/el_expandable_area"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/white"
                                 app:el_duration="500"
                                 app:el_expanded="true"
                                 app:el_parallax="0.5"

@@ -6,10 +6,10 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_change_nickname.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 
-class ChangeNicknameActivity : BaseActivity<NicknameModel>(NicknameModel::class) {
+class ChangeNicknameActivity : BaseOddButtonActivity<NicknameModel>(NicknameModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_nickname)
