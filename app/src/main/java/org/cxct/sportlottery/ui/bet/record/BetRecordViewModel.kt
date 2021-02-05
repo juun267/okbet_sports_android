@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.record.search.BetTypeItemData
 import org.cxct.sportlottery.util.TimeUtil
@@ -21,8 +22,9 @@ val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 t
 
 class BetRecordViewModel(
     private val androidContext: Context,
+    loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
         get() = _selectStatusList
