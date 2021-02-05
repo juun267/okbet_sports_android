@@ -191,6 +191,9 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
                             //update Odd value
                             originOdd.odds = updateOdd.odds
+
+                            //update Odd status
+                            originOdd.status = updateOdd.status
                         }
                     }
                 }
@@ -234,6 +237,9 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
                             //update Odd value
                             originOdd.odds = updateOdd.odds
+
+                            //update Odd status
+                            originOdd.status = updateOdd.status
                         }
                     }
                 }

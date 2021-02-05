@@ -184,6 +184,9 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
                                     //update Odd value
                                     originOdd.odds = updateOdd.odds
+
+                                    //update Odd status
+                                    originOdd.status = updateOdd.status
                                 }
                             }
                         }
