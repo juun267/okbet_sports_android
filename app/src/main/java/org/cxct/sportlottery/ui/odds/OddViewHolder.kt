@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.odds
 
 import android.content.res.ColorStateList
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -61,8 +60,9 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
             BetStatus.DEACTIVATED.code -> {
-                itemView.visibility = View.GONE
-                vCover.visibility = View.GONE
+                //比照h5照樣顯示（文件為不顯示）
+                itemView.visibility = View.VISIBLE
+                vCover.visibility = View.VISIBLE
                 tvOdds.isEnabled = false
             }
 

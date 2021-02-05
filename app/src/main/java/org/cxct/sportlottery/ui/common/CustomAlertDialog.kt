@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.common
 import android.content.Context
 import android.os.Bundle
 import android.text.Spanned
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import androidx.annotation.ColorRes
@@ -60,6 +61,7 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
             btn_negative.visibility = View.GONE
         } else
             btn_negative.text = mNegativeText
+
 
         tv_message.setTextColor(ContextCompat.getColor(context, mTextColor))
 

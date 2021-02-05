@@ -218,7 +218,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.betInfoDetail.tvMatch.text = strMatch
 
             when (matchOdd.status) {
-                BetStatus.LOCKED.code -> {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
                     componentStatusByOdds(
                             View.GONE,
                             View.VISIBLE,

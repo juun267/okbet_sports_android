@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +17,9 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.ToastUtil
 
 class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
         BetInfoListAdapter.OnItemClickListener {
@@ -80,7 +80,6 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
                 )
             )
         }
-
     }
 
 
@@ -95,7 +94,22 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { result ->
-                ToastUtil.showBetResultToast(requireActivity(), result.msg, result.success)
+                val m :String
+                val color: Int
+                if(result.success){
+                    m = resources.getString(R.string.bet_info_add_bet_success)
+                    color = R.color.gray6
+                }else{
+                    m = result.msg
+                    color = R.color.red2
+                }
+
+                val dialog = CustomAlertDialog(requireActivity())
+                dialog.setTitle(getString(R.string.prompt))
+                dialog.setMessage(m)
+                dialog.setNegativeButtonText(null)
+                dialog.setTextColor(color)
+                dialog.show()
             }
         })
     }
@@ -104,7 +118,6 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
     private fun initSocketObserver() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            Log.e(">>>>>", "matchOddsChange")
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
                 mutableListOf()
             it.odds.forEach { map ->
@@ -119,7 +132,6 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
 
         receiver.globalStop.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            Log.e(">>>>>", "globalStop")
             val list = betInfoListAdapter.betInfoList
             list.forEach { listData ->
                 if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
@@ -131,7 +143,6 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
 
         receiver.producerUp.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            Log.e(">>>>>", "globalStop")
             val list = betInfoListAdapter.betInfoList
             list.forEach { listData ->
                 if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
