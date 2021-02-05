@@ -191,7 +191,20 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
+
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    if (matchOdd.matchInfo?.id == it.matchStatusCO?.matchId) {
+                        matchOdd.matchInfo?.homeScore = it.matchStatusCO?.homeScore
+                        matchOdd.matchInfo?.awayScore = it.matchStatusCO?.awayScore
+                        matchOdd.matchInfo?.statusName = it.matchStatusCO?.statusName
+                    }
+                }
+            }
+
+            leagueOddAdapter.data = leagueOdds
         })
 
         updateSocketGlobalStop()
