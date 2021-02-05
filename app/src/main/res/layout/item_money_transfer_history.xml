@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="row"
+            type="org.cxct.sportlottery.network.bet.list.Row" />
+
+        <variable
+            name="clickListener"
+            type="org.cxct.sportlottery.ui.bet.record.search.result.ItemClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:onClick="@{() -> clickListener.onClick(row)}"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:id="@+id/tv_datetime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textColor="@color/gray6"
+                android:textSize="@dimen/textSize12sp"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:dateTime="@{row.addTime}"
+                tools:text="2020/12/12\n19:58:22" />
+
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="@{String.valueOf(row.totalAmount)}"
+                android:textColor="@color/gray6"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="9,999,999.000" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_out_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playCateName : null}"
+                    android:textColor="@color/gray6"
+                    android:textSize="@dimen/textSize12sp"
+                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                    app:autoSizeMinTextSize="@dimen/textSize8sp"
+                    tools:text="平台余额" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_icon_down_arrow" />
+
+
+                <TextView
+                    android:id="@+id/tv_in_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playCateName : null}"
+                    android:textColor="@color/gray6"
+                    android:textSize="@dimen/textSize12sp"
+                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                    app:autoSizeMinTextSize="@dimen/textSize8sp"
+                    tools:text="皇冠体育" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{(row.win == null) ? @string/nothing : row.win > 0 ? String.format(@string/plus_symbol, row.win.toString()): String.format(@string/minus_symbol, row.win.toString())}"
+                android:textColor="@{(row.win == null) ?  @color/gray6 : row.win > 0 ? @color/green : @color/red2}"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="成功"
+                tools:textColor="@color/green" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/gray10" />
+    </LinearLayout>
+</layout>

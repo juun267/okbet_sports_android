@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.sport.SportService
+import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
 import org.cxct.sportlottery.network.user.UserService
 import org.cxct.sportlottery.network.withdraw.WithdrawService
@@ -118,5 +119,11 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(WithdrawService::class.java)
+    }
+
+    val thirdGameService: ThirdGameService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(ThirdGameService::class.java)
     }
 }

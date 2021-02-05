@@ -24,7 +24,7 @@ class BetRecordViewModel(
     betInfoRepository: BetInfoRepository
 ) : BaseOddButtonViewModel(betInfoRepository) {
 
-    val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
+    private val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
         get() = _selectStatusList
 
     val selectedBetStatus: LiveData<String?>

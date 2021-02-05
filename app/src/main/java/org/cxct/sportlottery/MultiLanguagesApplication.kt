@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
@@ -61,6 +62,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettingPasswordViewModel(get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
+        viewModel { MoneyTransferViewModel(get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
