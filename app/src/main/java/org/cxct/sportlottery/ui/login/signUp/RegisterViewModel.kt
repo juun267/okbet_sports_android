@@ -110,6 +110,7 @@ class RegisterViewModel(
             qqError = qqError,
             phoneError = phoneError,
             emailError = emailError,
+            weChatError = weChatError,
             zaloError = zaloError,
             facebookError = facebookError,
             whatsAppError = whatsAppError,
@@ -213,8 +214,8 @@ class RegisterViewModel(
 
     private fun checkWeChat(context: Context, weChat: String?): String? {
         return when {
-            weChat.isNullOrBlank() -> context.getString(R.string.hint_we_chat_number)
-            !VerifyConstUtil.verifyWeChat(weChat) -> context.getString(R.string.error_input_format)
+            weChat.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyWeChat(weChat) -> context.getString(R.string.error_we_chat_number)
             else -> null
         }
     }
