@@ -87,6 +87,17 @@ class MoneyTransferViewModel(
         }
     }
 
+    fun addPlatMoneyItem() {
+
+        val platItem = GameData().apply {
+            code = "CG"
+            showName = androidContext.getString(R.string.plat_money)
+        }
+
+//        _allBalanceResultList.value?.add(0, platItem)
+//        _allBalanceResultList = _allBalanceResultList
+    }
+
     fun recycleAllMoney() {
         viewModelScope.launch {
             doNetwork(androidContext) {

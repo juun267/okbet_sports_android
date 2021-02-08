@@ -52,9 +52,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private fun initView() {
         out_account.setText(getString(R.string.plat_money))
         in_account.setText(gameNameArg)
-
-        out_account.setAdapter(rvOutAdapter)
-        in_account.setAdapter(rvInAdapter)
+//        out_account.setAdapter(rvOutAdapter)
+//        in_account.setAdapter(rvInAdapter)
 
     }
 
@@ -63,6 +62,13 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             viewModel.getMoney()
         }
 
+        out_account.setOnClickListener {
+            out_account.show(rvOutAdapter)
+        }
+
+        in_account.setOnClickListener {
+            in_account.show(rvInAdapter)
+        }
 
     }
 
@@ -83,22 +89,18 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
             if (it == null) return@observe
 
+            val outList = it.toMutableList()
 
-            val resultList = it.toMutableList()
-            resultList.add(0, GameData().apply {
+            outList.add(0, GameData().apply {
                 code = "CG"
                 showName = getString(R.string.plat_money)
             })
 
-            rvInAdapter.submitList(resultList)
-            rvOutAdapter.submitList(resultList)
+            val inList = it
 
-            /*
-            out_account.setSpinnerData(resultList)
-            val inList = resultList.toMutableList().apply { remove(SpinnerItem(code = "", showName = gameNameArg)) }
-            in_account.setSpinnerData(inList)
-            */
-//            rvAdapter.addFooterAndSubmitList(resultList)
+            rvOutAdapter.submitList(outList)
+            rvInAdapter.submitList(inList)
+
         }
 
     }

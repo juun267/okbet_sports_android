@@ -14,8 +14,6 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 
 class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : ListAdapter<GameData, RecyclerView.ViewHolder>(DiffCallback()) {
 
-//        var previousCheckedPosition: Int? = null
-
     private var mNowCheckedPos:Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

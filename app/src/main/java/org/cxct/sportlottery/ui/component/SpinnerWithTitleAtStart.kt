@@ -22,22 +22,34 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBottomSheetItemBinding
 import org.cxct.sportlottery.network.custom.SpinnerItem
+import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 
 class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
+
 
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.SpinnerWithTitleAtStartStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.SpinnerWithTitleAtStartStyle_spinnerLayout, R.layout.dialog_bottom_sheet_custom) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
+/*
 
     var isShowCloseButton
         get() = bottomSheetView.spinner_tv_close.visibility == View.VISIBLE
         set(value) {
             bottomSheetView.spinner_tv_close.visibility = if (value) View.VISIBLE else View.GONE
         }
+*/
+/*
 
-    fun <T> setAdapter (adapter: ListAdapter<T, RecyclerView.ViewHolder>) {
+    fun <T> show (adapter: ListAdapter<T, RecyclerView.ViewHolder>) {
         bottomSheetView.spinner_rv_more.adapter = adapter
+        bottomSheet.show()
+    }
+*/
+
+    fun show (adapter: ListAdapter<GameData, RecyclerView.ViewHolder>) {
+        bottomSheetView.spinner_rv_more.adapter = adapter
+        bottomSheet.show()
     }
 
     fun setText(testStr: String) {
@@ -58,10 +70,11 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
 
             view?.apply {
                 tv_title.text = typedArray.getString(R.styleable.SpinnerWithTitleAtStartStyle_titleText)
-
+/*
                 layout.setOnClickListener {
                     bottomSheet.show()
                 }
+                */
             }
 
         } catch (e: Exception) {
