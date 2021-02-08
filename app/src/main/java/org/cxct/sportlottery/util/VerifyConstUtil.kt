@@ -95,8 +95,8 @@ object VerifyConstUtil {
     }
 
     //qq //判断qq字數小於五
-    fun verifyQQ(text: CharSequence): Boolean {
-        return text.length >= 5
+    fun verifyQQ(qqAcount: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{5,11}", qqAcount)
     }
 
     //mail
