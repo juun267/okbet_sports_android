@@ -288,16 +288,23 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
 
         //反利、手續費
-        val rebateFee = mSelectRechCfgs?.rebateFee ?: 0.0
-        if (rebateFee < 0.0) {
-            title_fee_rate.text = getString(R.string.title_fee_rate)
-            title_fee_amount.text = getString(R.string.title_fee_amount)
+        val rebateFee = mSelectRechCfgs?.rebateFee
+        if (rebateFee == null || rebateFee == 0.0) {
+            ll_fee_rate.visibility = View.GONE
+            ll_fee_amount.visibility = View.GONE
         } else {
-            title_fee_rate.text = getString(R.string.title_rebate_rate)
-            title_fee_amount.text = getString(R.string.title_rebate_amount)
+            ll_fee_rate.visibility = View.VISIBLE
+            ll_fee_amount.visibility = View.VISIBLE
+            if (rebateFee < 0.0) {
+                title_fee_rate.text = getString(R.string.title_fee_rate)
+                title_fee_amount.text = getString(R.string.title_fee_amount)
+            } else {
+                title_fee_rate.text = getString(R.string.title_rebate_rate)
+                title_fee_amount.text = getString(R.string.title_rebate_amount)
+            }
+            tv_fee_rate.text = ArithUtil.toOddFormat(rebateFee.times(100))
+            tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
         }
-        tv_fee_rate.text = ArithUtil.toOddFormat(rebateFee.times(100))
-        tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
 
         //存款時間
         txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
