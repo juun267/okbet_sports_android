@@ -554,20 +554,28 @@ class MainViewModel(
     fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
         val result = _outrightOddsListResult.value
 
-        val winnerList =
-                result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
-                        0
-                )?.odds?.values?.first() ?: listOf()
+        val list =
+            result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
+                0
+            )?.displayList
 
         val isBet =
-                betInfoRepository.betInfoList.value?.any { it.matchOdd.oddsId == winner.id } ?: false
-        if (!isBet) {
-            winnerList.first { it == winner }.isSelected = true
-            getBetInfoList(listOf(Odd(winner.id ?: "", winner.odds).apply { matchType = this@MainViewModel.mathType }))
-        } else {
-            winnerList.first { it == winner }.isSelected = false
-            winner.id?.let { removeBetInfoItem(it) }
+            betInfoRepository.betInfoList.value?.any { it.matchOdd.oddsId == winner.id } ?: false
 
+        val odd = list?.find {
+            it is org.cxct.sportlottery.network.odds.list.Odd && it == winner
+        } as org.cxct.sportlottery.network.odds.list.Odd
+
+        if (!isBet) {
+            odd.isSelected = true
+
+            getBetInfoList(listOf(Odd(winner.id ?: "", winner.odds).apply {
+                matchType = this@MainViewModel.mathType
+            }))
+        } else {
+            odd.isSelected = false
+
+            winner.id?.let { removeBetInfoItem(it) }
         }
 
         _outrightOddsListResult.postValue(result)
