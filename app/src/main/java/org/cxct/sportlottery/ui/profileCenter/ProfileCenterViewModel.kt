@@ -13,7 +13,6 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.util.TextUtil
 import timber.log.Timber
 import java.util.*
 
