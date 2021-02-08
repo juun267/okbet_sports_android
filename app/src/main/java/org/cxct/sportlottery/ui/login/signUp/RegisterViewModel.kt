@@ -146,19 +146,20 @@ class RegisterViewModel(
 
     private fun checkMemberAccount(context: Context, account: String?, isExistAccount: Boolean): String? {
         return when {
-            account.isNullOrBlank() -> context.getString(R.string.error_account_empty)
+            account.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             isExistAccount -> context.getString(R.string.error_register_id_exist)
             account.length !in 4..16 -> context.getString(R.string.error_member_account)
-            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_character_not_match)
+            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_incompatible_format)
             else -> null
         }
     }
 
     private fun checkLoginPassword(context: Context, password: String?): String? {
         return when {
-            password.isNullOrBlank() -> context.getString(R.string.error_password_empty)
+            password.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwdFormat(password) -> context.getString(R.string.error_password_format)
             password.length !in 6..20 -> context.getString(R.string.error_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_character_not_match)
+            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_incompatible_format)
             else -> null
         }
     }
@@ -172,7 +173,7 @@ class RegisterViewModel(
 
     private fun checkFullName(context: Context, fullName: String?): String? {
         return when {
-            !VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_character_not_match)
+            !VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_incompatible_format)
             else -> null
         }
     }
@@ -187,7 +188,7 @@ class RegisterViewModel(
     private fun checkQQ(context: Context, qq: String?): String? {
         return when {
             qq.isNullOrBlank() -> context.getString(R.string.hint_qq_number)
-            !VerifyConstUtil.verifyQQ(qq) -> context.getString(R.string.error_input_format)
+            !VerifyConstUtil.verifyQQ(qq) -> context.getString(R.string.error_qq_number)
             else -> null
         }
     }
@@ -195,6 +196,7 @@ class RegisterViewModel(
     private fun checkPhone(context: Context, phone: String?): String? {
         return when {
             phone.isNullOrBlank() -> context.getString(R.string.hint_phone_number)
+            !VerifyConstUtil.verifyPhone(phone) -> context.getString(R.string.error_phone_number)
             else -> null
         }
     }

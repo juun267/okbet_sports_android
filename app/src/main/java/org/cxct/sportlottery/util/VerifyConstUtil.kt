@@ -27,6 +27,10 @@ object VerifyConstUtil {
         return Pattern.matches("[$NUMBER$ENGLISH_WORD]{4,16}$", account)
     }
 
+    fun verifyPwdFormat(pwd: CharSequence): Boolean {
+        return !(Pattern.matches("[$NUMBER]*", pwd) || Pattern.matches("[$ENGLISH_WORD]*", pwd))
+    }
+
     fun verifyPwd(pwd: CharSequence): Boolean {
         return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
     }
@@ -93,7 +97,11 @@ object VerifyConstUtil {
 
     //mail
     fun verifyMail(mail: CharSequence): Boolean {
-        return Pattern.matches("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", mail)
+        return Pattern.matches("[\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*]{0,50}", mail)
+    }
+
+    fun verifyPhone(phone: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{11}", phone)
     }
 
     //微信 //英文第一位大小寫 後面可以數字或英文6~20
