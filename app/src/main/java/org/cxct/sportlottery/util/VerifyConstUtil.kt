@@ -24,7 +24,11 @@ object VerifyConstUtil {
     }
 
     fun verifyAccount(account: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER$ENGLISH_WORD]{4,16}$", account)
+        return Pattern.matches("(?=.*[$NUMBER])(?=.*[$ENGLISH_WORD])([_$ENGLISH_WORD$NUMBER]+){4,16}$", account)
+    }
+
+    fun verifyCombinationAccount(account: CharSequence): Boolean {
+        return !(Pattern.matches("[$NUMBER]*", account) || Pattern.matches("[$ENGLISH_WORD]*", account) || !Pattern.matches(".{4,16}", account))
     }
 
     fun verifyPwdFormat(pwd: CharSequence): Boolean {
