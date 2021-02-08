@@ -243,8 +243,8 @@ class RegisterViewModel(
 
     private fun checkTelegram(context: Context, telegram: String?): String? {
         return when {
-            telegram.isNullOrBlank() -> context.getString(R.string.hint_telegram)
-            !VerifyConstUtil.verifyTelegram(telegram) -> context.getString(R.string.error_input_format)
+            telegram.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyTelegram(telegram) -> context.getString(R.string.error_telegram)
             else -> null
         }
     }

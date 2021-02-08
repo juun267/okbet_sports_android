@@ -94,6 +94,7 @@
     <string name="hint_whats_app">请输入WhatsApp</string>
     <string name="telegram">Telegram</string>
     <string name="hint_telegram">请输入Telegram</string>
+    <string name="error_telegram">Telegram帐号格式错误</string>
     <string name="real_name">真实姓名</string>
     <string name="hint_real_name">姓名必须与你用于提款的银行户口一致,否则无法提款</string>
     <string name="verification_code">验证码</string>

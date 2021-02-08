@@ -115,7 +115,7 @@ object VerifyConstUtil {
 
     //Telegram //可以數字、英文或底線, 5~32個char
     fun verifyTelegram(telegram: CharSequence): Boolean {
-        return Pattern.matches("^[-_$NUMBER$ENGLISH_WORD]{5,32}$", telegram)
+        return Pattern.matches("[$NUMBER]{0,11}", telegram)
     }
 
 }
