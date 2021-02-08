@@ -303,16 +303,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/orangeRed"
             android:text="@string/money_recharge_hint1"
+            android:textColor="@color/orangeRed"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
             android:id="@+id/tv_hint2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/orangeRed"
             android:text="@string/money_recharge_hint2"
+            android:textColor="@color/orangeRed"
             android:textSize="@dimen/textSize12sp" />
 
         <!-- 充值金額 -->
@@ -426,61 +426,6 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_rebate_fee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:autoSizeMaxTextSize="13dp"
-                    android:autoSizeMinTextSize="6dp"
-                    android:autoSizeTextType="uniform"
-                    android:ems="4"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@string/title_rebate_fee"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize13sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
-
-                <TextView
-                    android:id="@+id/tv_rebate_fee"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|center_vertical"
-                    android:singleLine="true"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="15,282.42 RMB" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -533,6 +478,65 @@
 
 
         </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/title_fee_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="@string/title_fee_rate" />
+
+            <TextView
+                android:id="@+id/tv_fee_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="0.500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/percent"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/title_fee_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="@string/title_fee_amount" />
+
+            <TextView
+                android:id="@+id/tv_fee_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="12.000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/currency"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_submit"

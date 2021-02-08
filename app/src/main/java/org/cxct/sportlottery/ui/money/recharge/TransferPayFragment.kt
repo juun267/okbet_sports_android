@@ -130,8 +130,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
         })
-        viewModel.userMoneyResult.observe(viewLifecycleOwner, {
-            txv_wallet_money.text = (it?.money ?: "").toString() + " RMB"
+        viewModel.userMoneyResult.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            txv_wallet_money.text = (ArithUtil.toMoneyFormat(it?.money)) + " RMB"
         })
 
     }
@@ -238,7 +238,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             //備註
             tv_remark.text = selectRechCfgs?.remark
         }
-        //TODO Dean : review 所有的充值提示訊息,目前只做微信 (tv_hint1)
         when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code -> {
                 ll_qr.visibility = View.GONE
@@ -288,12 +287,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             }
         }
 
-        if ((mSelectRechCfgs?.rebateFee ?: 0.0) != 0.0) {
-            cv_rebate_fee.visibility = View.VISIBLE
-            tv_rebate_fee.text = "${ArithUtil.toOddFormat(mSelectRechCfgs?.rebateFee?.times(100))} %"
+        //反利、手續費
+        val rebateFee = mSelectRechCfgs?.rebateFee ?: 0.0
+        if (rebateFee < 0.0) {
+            title_fee_rate.text = getString(R.string.title_fee_rate)
+            title_fee_amount.text = getString(R.string.title_fee_amount)
         } else {
-            cv_rebate_fee.visibility = View.GONE
+            title_fee_rate.text = getString(R.string.title_rebate_rate)
+            title_fee_amount.text = getString(R.string.title_rebate_amount)
         }
+        tv_fee_rate.text = ArithUtil.toOddFormat(rebateFee.times(100))
+        tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
 
         //存款時間
         txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
@@ -303,7 +307,14 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //充值金額
-            et_recharge_amount.afterTextChanged { checkRechargeAmount(it, mSelectRechCfgs) }
+            et_recharge_amount.afterTextChanged {
+                checkRechargeAmount(it, mSelectRechCfgs)
+                if (it.isEmpty() || it.isBlank()) {
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
+                } else {
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(it.toDouble().times(mSelectRechCfgs?.rebateFee ?: 0.0))
+                }
+            }
             //微信
             et_wx_id.afterTextChanged { checkWX(it) }
             //認證姓名
@@ -379,8 +390,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_deposit_money),
-                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
-                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
+                ArithUtil.toMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
+                ArithUtil.toMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
             )
         )
     }
