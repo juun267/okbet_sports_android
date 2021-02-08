@@ -44,12 +44,14 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
             viewModel.getGameHallList(args.matchType, it)
+            loading()
         })
     }
 
     private val gameDateAdapter by lazy {
         GameDateAdapter(GameDateListener {
             viewModel.getGameHallList(args.matchType, it)
+            loading()
         })
     }
 
@@ -396,18 +398,21 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 setupGameHallList(it)
             }
@@ -418,6 +423,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.getGameHallList(args.matchType, true)
+        loading()
     }
 
     private fun setupInPlayFilter(itemList: List<Item>) {
@@ -512,6 +518,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupNoHistory(isShow: Boolean) {
         if (isShow) {
+            hideLoading()
             hall_odds_list.visibility = View.GONE
             hall_outright_season_list.visibility = View.GONE
             hall_league_list.visibility = View.GONE
