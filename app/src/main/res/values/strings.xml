@@ -82,6 +82,7 @@
     <string name="error_qq_number">QQ帐号格式错误</string>
     <string name="e_mail">邮箱</string>
     <string name="hint_e_mail">请输入邮箱</string>
+    <string name="error_e_mail">邮箱格式错误</string>
     <string name="we_chat">微信</string>
     <string name="hint_we_chat_number">请输入微信号码</string>
     <string name="error_we_chat_number">微信ID格式错误</string>

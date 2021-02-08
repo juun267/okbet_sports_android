@@ -190,7 +190,7 @@ class RegisterViewModel(
 
     private fun checkQQ(context: Context, qq: String?): String? {
         return when {
-            qq.isNullOrBlank() -> context.getString(R.string.hint_qq_number)
+            qq.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyQQ(qq) -> context.getString(R.string.error_qq_number)
             else -> null
         }
@@ -198,7 +198,7 @@ class RegisterViewModel(
 
     private fun checkPhone(context: Context, phone: String?): String? {
         return when {
-            phone.isNullOrBlank() -> context.getString(R.string.hint_phone_number)
+            phone.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phone) -> context.getString(R.string.error_phone_number)
             else -> null
         }
@@ -206,8 +206,8 @@ class RegisterViewModel(
 
     private fun checkEmail(context: Context, email: String?): String? {
         return when {
-            email.isNullOrBlank() -> context.getString(R.string.hint_e_mail)
-            !VerifyConstUtil.verifyMail(email) -> context.getString(R.string.error_input_format)
+            email.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyMail(email) -> context.getString(R.string.error_e_mail)
             else -> null
         }
     }
