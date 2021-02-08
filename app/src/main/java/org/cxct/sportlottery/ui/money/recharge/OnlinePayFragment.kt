@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -52,6 +53,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.rechargeOnlineAmountMsg.observe(viewLifecycleOwner, {
             et_recharge_online_amount.setError(it)
         })
+
+        //在線充值成功
+        viewModel.onlinePaySubmit.observe(this.viewLifecycleOwner, Observer {
+            et_recharge_online_amount.setText("")
+        })
     }
 
     private fun initView() {
@@ -73,7 +79,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             } else {
                 0
             }
-            viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs?.id ?: 0, depositMoney, bankCode)
+            viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode)
         }
     }
 

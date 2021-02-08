@@ -158,12 +158,13 @@ class MoneyRechViewModel(
     }
 
     //在線支付
-    fun rechargeOnlinePay(context: Context, id: Int, depositMoney: Int, bankCode: String?) {
+    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, bankCode: String?) {
+        checkRcgOnlineAmount(depositMoney.toString(), mSelectRechCfgs)
         if (onlinePayInput()) {
             var url = BASE_URL + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
-                "rechCfgId" to id.toString(),
+                "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney.toString()
             )
@@ -174,7 +175,7 @@ class MoneyRechViewModel(
         }
     }
 
-    //送出前判斷全部
+    //轉帳支付 - 送出前判斷全部
     private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         when (rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
