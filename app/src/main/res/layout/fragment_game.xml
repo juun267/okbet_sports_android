@@ -100,6 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/no_history_content"
+                android:textColor="@color/gray3"
+                android:textSize="@dimen/textSize14sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/hall_no_history_img"
                 app:layout_constraintStart_toStartOf="@id/hall_no_history_img"

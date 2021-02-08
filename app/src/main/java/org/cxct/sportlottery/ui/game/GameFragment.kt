@@ -413,6 +413,10 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             }
         })
 
+        viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+            setupNoHistory(it)
+        })
+
         viewModel.getGameHallList(args.matchType, true)
     }
 
@@ -504,6 +508,22 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         hall_outright_season_list.visibility = View.VISIBLE
 
         outrightSeasonAdapter.data = outrightSeasonListResult.rows ?: listOf()
+    }
+
+    private fun setupNoHistory(isShow: Boolean) {
+        if (isShow) {
+            hall_odds_list.visibility = View.GONE
+            hall_outright_season_list.visibility = View.GONE
+            hall_league_list.visibility = View.GONE
+
+            hall_no_history_img.visibility = View.VISIBLE
+            hall_no_history_title.visibility = View.VISIBLE
+            hall_no_history_content.visibility = View.VISIBLE
+        } else {
+            hall_no_history_img.visibility = View.GONE
+            hall_no_history_title.visibility = View.GONE
+            hall_no_history_content.visibility = View.GONE
+        }
     }
 
     companion object {
