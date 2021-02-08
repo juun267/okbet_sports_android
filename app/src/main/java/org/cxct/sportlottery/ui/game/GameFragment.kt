@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -40,6 +43,7 @@ import timber.log.Timber
  */
 class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
@@ -69,16 +73,18 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     )
                 })
 
-            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
-                val code = gameTypeAdapter.data.find {
-                    it.isSelected
-                }?.code
-                val eventId = leagueOdd.matchOdds[0].matchInfo?.id
+            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, _ ->
+                scope.launch {
+                    val code = gameTypeAdapter.data.find {
+                        it.isSelected
+                    }?.code
+                    val eventId = leagueOdd.matchOdds[0].matchInfo?.id
 
-                if (isExpand) {
-                    service.subscribeHallChannel(code, eventId)
-                } else {
-                    service.unSubscribeHallChannel(code, eventId)
+                    if (isExpand) {
+                        service.subscribeHallChannel(code, eventId)
+                    } else {
+                        service.unSubscribeHallChannel(code, eventId)
+                    }
                 }
             }
 
