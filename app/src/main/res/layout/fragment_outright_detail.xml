@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".ui.game.outright.OutrightDetailFragment">
 
     <View
@@ -62,6 +65,7 @@
         tools:text="23:00" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/outright_detail_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/outright_detail_upper_bar"
