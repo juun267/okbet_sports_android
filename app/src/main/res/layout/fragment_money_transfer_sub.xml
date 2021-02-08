@@ -12,15 +12,12 @@
         android:id="@+id/layout_balance"
         layout="@layout/view_account_balance_2"/>
 
-    <org.cxct.sportlottery.ui.component.SpinnerWithTitleAtStart
+    <include
         android:id="@+id/out_account"
-        android:layout_margin="15dp"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        app:titleText="@string/out_account"
-        app:spinnerTitle="@string/out_account"
-        app:spinnerStyle="@layout/dialog_bottom_sheet_bank_card"
-        />
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        layout="@layout/custom_spinner"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -29,14 +26,21 @@
         android:src="@drawable/ic_icon_transfer"
         />
 
-    <org.cxct.sportlottery.ui.component.SpinnerWithTitleAtStart
+    <include
         android:id="@+id/in_account"
-        android:layout_margin="15dp"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        app:spinnerTitle="@string/in_account"
-        app:titleText="@string/in_account"
-        />
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        layout="@layout/custom_spinner"/>
+
+    <!--    <org.cxct.sportlottery.ui.component.SpinnerWithTitleAtStart-->
+    <!--        android:id="@+id/in_account"-->
+    <!--        android:layout_margin="15dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        app:spinnerTitle="@string/in_account"-->
+    <!--        app:titleText="@string/in_account"-->
+    <!--        />-->
 
     <org.cxct.sportlottery.ui.login.LoginEditText
         android:id="@+id/et_transfer_money"
@@ -49,7 +53,7 @@
 
 
     <Button
-        android:id="@+id/btn_recycle"
+        android:id="@+id/btn_transfer"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"

@@ -24,8 +24,13 @@
         android:label="MoneyTransferFragment"
         tools:layout="@layout/fragment_money_transfer_sub">
         <argument
-            android:name="gameName"
-            app:argType="string" />
+            android:name="gameData"
+            app:argType="org.cxct.sportlottery.network.third_game.money_transfer.GameData" />
+        <action
+            android:id="@+id/action_moneyTransferSubFragment_to_moneyTransferFragment"
+            app:destination="@id/moneyTransferFragment"
+            app:popUpTo="@id/moneyTransferFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

@@ -18,7 +18,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
     private val rvAdapter by lazy {
         MoneyTransferAdapter(ItemClickListener {
             it.let { data ->
-                view?.findNavController()?.navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferSubFragment(data.showName))
+                view?.findNavController()?.navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferSubFragment(data))
             }
         })
     }

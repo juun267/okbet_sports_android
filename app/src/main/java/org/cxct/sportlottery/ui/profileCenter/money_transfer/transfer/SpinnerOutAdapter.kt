@@ -12,9 +12,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBottomSheetItemBinding
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 
-class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : ListAdapter<GameData, RecyclerView.ViewHolder>(DiffCallback()) {
+class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mNowCheckedPos:Int? = null
+    var dataList = mutableListOf<GameData>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ItemViewHolder.from(parent)
@@ -24,7 +29,7 @@ class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : Lis
 
         when (holder) {
             is ItemViewHolder -> {
-                val data = getItem(position)
+                val data = dataList[position]
 
                 setSingleChecked(holder.binding.checkbox, position, data)
 
@@ -38,22 +43,23 @@ class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : Lis
             val previousPosition = mNowCheckedPos
 
             if (previousPosition != null) {
-//                    checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.white))
-                getItem(previousPosition).isChecked = false
+                dataList[previousPosition].isChecked = false
                 notifyItemChanged(previousPosition)
             }
 
             mNowCheckedPos = position
-//                checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.blue2))
             checkbox.isChecked = true
-            notifyItemChanged(position)
+            data.isChecked = true
             checkedListener.onChecked(checkbox.isChecked, data)
+
+            notifyItemChanged(position)
         }
     }
 
     class ItemViewHolder private constructor(val binding: ContentBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: GameData) {
+
             itemView.apply {
                 if (data.isChecked) {
                     checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.blue2))
@@ -91,15 +97,9 @@ class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : Lis
         fun onChecked(isChecked: Boolean, data: GameData) = checkedListener(isChecked, data)
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<GameData>() {
-        override fun areItemsTheSame(oldItem: GameData, newItem: GameData): Boolean {
-            return oldItem.showName == newItem.showName
-        }
 
-        override fun areContentsTheSame(oldItem: GameData, newItem: GameData): Boolean {
-            return oldItem == newItem
-        }
-
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
 }

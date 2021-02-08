@@ -31,6 +31,7 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.SpinnerWithTitleAtStartStyle_spinnerLayout, R.layout.dialog_bottom_sheet_custom) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
+
 /*
 
     var isShowCloseButton

@@ -14,5 +14,5 @@ data class ThirdGamesResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val t: ThirdGameData
+    val t: ThirdGameData?
 ): BaseResult()

@@ -113,6 +113,7 @@ object Constants {
     const val THIRD_GAMES = "/api/front/index/thirdgames"
     const val GET_ALL_BALANCE = "/api/front/thirdapi/getAllBalance"
     const val THIRD_ALL_TRANSFER_OUT = "/api/front/thirdapi/allTransferOut"
+    const val TRANSFER = "/api/front/thirdapi/{outPlat}/{inPlat}/transfer?={amount}"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
