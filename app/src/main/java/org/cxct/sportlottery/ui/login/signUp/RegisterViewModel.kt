@@ -140,8 +140,13 @@ class RegisterViewModel(
 
     private fun checkInviteCode(context: Context, inviteCode: String?): String? {
         return when {
-            sConfigData?.enableInviteCode != FLAG_OPEN -> null
-            inviteCode.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            inviteCode.isNullOrBlank() -> {
+                if (sConfigData?.enableInviteCode != FLAG_OPEN)
+                    null
+                else
+                    context.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> context.getString(R.string.error_recommend_code)
             else -> null
         }
     }

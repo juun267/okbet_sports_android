@@ -19,6 +19,10 @@ object VerifyConstUtil {
         return Pattern.matches("[$CHINESE_WORD]", inputStr)
     }
 
+    fun verifyInviteCode(inviteCode: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{8}", inviteCode)
+    }
+
     fun verifyPayPwd(pwd: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", pwd)
     }
