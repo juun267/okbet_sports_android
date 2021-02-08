@@ -26,7 +26,9 @@
                 android:paddingTop="5dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="5dp"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/itemview_game_type" />
 
             <org.cxct.sportlottery.ui.game.common.MatchTypeRow
                 android:id="@+id/hall_match_type_row"
@@ -40,14 +42,18 @@
                 android:layout_height="54dp"
                 android:background="@android:color/white"
                 android:padding="8dp"
-                app:layout_constraintTop_toBottomOf="@id/hall_match_type_row" />
+                app:layout_constraintTop_toBottomOf="@id/hall_match_type_row"
+                tools:itemCount="1"
+                tools:listitem="@layout/itemview_game_date" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hall_odds_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
+                app:layout_constraintTop_toBottomOf="@id/hall_date_list"
+                tools:itemCount="2"
+                tools:listitem="@layout/itemview_league_odd" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hall_league_list"
