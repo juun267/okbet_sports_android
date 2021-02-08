@@ -44,6 +44,7 @@ import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
@@ -115,6 +116,9 @@ class MainViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
+    val isOpenOutrightDetail: LiveData<Boolean>
+        get() = _isOpenOutrightDetail
+
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
@@ -135,6 +139,7 @@ class MainViewModel(
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isOpenMatchOdds = MutableLiveData<Boolean>()
     private val _isNoHistory = MutableLiveData<Boolean>()
+    private val _isOpenOutrightDetail = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -505,17 +510,45 @@ class MainViewModel(
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
-                            OutrightOddsListRequest(
-                                    gameType,
-                                    leagueIdList = listOf(leagueId)
-                            )
+                        OutrightOddsListRequest(
+                            gameType,
+                            leagueIdList = listOf(leagueId)
+                        )
                     )
                 }
+
+                val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
+                matchOdd?.let {
+                    it.odds.forEach { mapSubTitleOdd ->
+
+                        //add subtitle
+                        if (!matchOdd.displayList.contains(mapSubTitleOdd.key)) {
+                            val dynamicMarket = matchOdd.dynamicMarkets[mapSubTitleOdd.key]
+
+                            dynamicMarket?.let {
+                                when (LanguageManager.getSelectLanguage(androidContext)) {
+                                    LanguageManager.Language.ZH -> {
+                                        matchOdd.displayList.add(dynamicMarket.zh)
+                                    }
+                                    else -> {
+                                        matchOdd.displayList.add(dynamicMarket.en)
+                                    }
+                                }
+                            }
+                        }
+
+                        //add odd
+                        mapSubTitleOdd.value.forEach { odd ->
+                            matchOdd.displayList.add(odd)
+                        }
+                    }
+                }
+
                 _outrightOddsListResult.postValue(result)
             }
         }
 
-        _isOpenMatchOdds.postValue(true)
+        _isOpenOutrightDetail.postValue(true)
     }
 
     fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {

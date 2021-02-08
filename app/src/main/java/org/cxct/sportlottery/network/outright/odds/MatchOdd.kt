@@ -13,4 +13,6 @@ data class MatchOdd(
     val odds: Map<String, List<Odd>>,
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: Map<String, DynamicMarket>
-)
+) {
+    var displayList: MutableList<Any> = mutableListOf()
+}

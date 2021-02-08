@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
+import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -51,7 +52,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     private val mMarqueeAdapter = MarqueeAdapter()
 
     enum class Page {
-        ODDS_DETAIL, ODDS
+        ODDS_DETAIL, ODDS, OUTRIGHT
     }
 
     private val navController by lazy {
@@ -307,6 +308,11 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             getAppBarLayout().setExpanded(true, true)
             subscribeHallChannel()
             addFragment(GameDetailFragment(), Page.ODDS)
+        })
+
+        viewModel.isOpenOutrightDetail.observe(this, Observer {
+            getAppBarLayout().setExpanded(true, true)
+            addFragment(OutrightDetailFragment(), Page.OUTRIGHT)
         })
 
         viewModel.errorResultToken.observe(this, Observer {
