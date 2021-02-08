@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feedback_navigation"
+    app:startDestination="@id/feedbackSuggestFragment">
+    <fragment
+        android:id="@+id/feedbackDetailFragment"
+        android:name="org.cxct.sportlottery.ui.feedback.FeedbackDetailFragment"
+        android:label="fragment_feedback_detail"
+        tools:layout="@layout/fragment_feedback_detail" >
+        <action
+            android:id="@+id/action_feedbackDetailFragment_to_feedbackRecordListFragment"
+            app:destination="@id/feedbackRecordListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedbackSuggestFragment"
+        android:name="org.cxct.sportlottery.ui.feedback.FeedbackSuggestFragment"
+        android:label="fragment_feedback_suggest"
+        tools:layout="@layout/fragment_feedback_suggest" >
+        <action
+            android:id="@+id/action_feedbackSuggestFragment_to_feedbackSubmitFragment"
+            app:destination="@id/feedbackSubmitFragment"
+            app:popUpTo="@id/feedbackSuggestFragment"/>
+        <action
+            android:id="@+id/action_feedbackSuggestFragment_to_feedbackRecordListFragment"
+            app:destination="@id/feedbackRecordListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedbackSubmitFragment"
+        android:name="org.cxct.sportlottery.ui.feedback.FeedbackSubmitFragment"
+        android:label="fragment_feedback_submit"
+        tools:layout="@layout/fragment_feedback_submit" >
+        <action
+            android:id="@+id/action_feedbackSubmitFragment_to_feedbackRecordListFragment"
+            app:destination="@id/feedbackRecordListFragment" />
+        <action
+            android:id="@+id/action_feedbackSubmitFragment_to_feedbackSuggestFragment"
+            app:destination="@id/feedbackSuggestFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feedbackRecordListFragment"
+        android:name="org.cxct.sportlottery.ui.feedback.FeedbackRecordListFragment"
+        android:label="fragment_feedback_record_list"
+        tools:layout="@layout/fragment_feedback_record_list" >
+        <action
+            android:id="@+id/action_feedbackRecordListFragment_to_feedbackDetailFragment"
+            app:destination="@id/feedbackDetailFragment"
+            app:popUpTo="@id/feedbackRecordListFragment"/>
+        <action
+            android:id="@+id/action_feedbackRecordListFragment_to_feedbackSuggestFragment"
+            app:destination="@id/feedbackSuggestFragment"
+            app:popUpTo="@id/feedbackRecordListFragment"/>
+    </fragment>
+
+</navigation>
