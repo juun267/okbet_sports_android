@@ -56,14 +56,19 @@ class OutrightDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::
                 setupOutrightOddList(it)
             }
         })
+
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            outrightOddAdapter.betInfoListData = it
+        })
     }
 
     private fun setupOutrightOddList(outrightOddsListResult: OutrightOddsListResult) {
-        val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
+        val matchOdd =
+            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
         outright_detail_title.text =
             outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
 
-        outrightOddAdapter.data =matchOdd?.displayList?: listOf()
+        outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
     }
 }

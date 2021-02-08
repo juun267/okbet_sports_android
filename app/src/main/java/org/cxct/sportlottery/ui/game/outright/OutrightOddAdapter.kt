@@ -33,16 +33,19 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var outrightOddListener: OutrightOddListener? = null
 
     var betInfoListData: List<BetInfoListData>? = null
-//        set(value) {
-//            field = value
-//            //TODO : review why not work first time
-//            data.forEach { odd ->
-//                odd.isSelected = value?.any {
-//                    it.matchOdd.oddsId == odd.id
-//                } ?: false
-//            }
-//            notifyDataSetChanged()
-//        }
+        set(value) {
+            field = value
+            data.forEach { item ->
+                when (item) {
+                    is Odd -> {
+                        item.isSelected = value?.any {
+                            it.matchOdd.oddsId == item.id
+                        } ?: false
+                    }
+                }
+            }
+            notifyDataSetChanged()
+        }
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position]) {
