@@ -26,6 +26,8 @@
     <string name="verse_">&#160;&#160;VS&#160;&#160;</string>
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
+    <string name="error_input_empty">此栏位为必填栏位</string>
+    <string name="error_incompatible_format">您输入的字元不符</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -330,11 +332,12 @@
     <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">昵称</string>
-    <string name="edt_hint_real_name">中文长度2-20,英文长度2-50字</string>
+    <string name="edt_hint_real_name">中文长度2-20字</string>
+    <string name="edt_hint_nick_name">中英文长度2-6字</string>
     <string name="title_wx_id">微信号</string>
     <string name="edt_hint_wx_id">请输入微信ID</string>\
     <string name="title_bank_account">银行卡号</string>
-    <string name="edt_hint_bank_account">请输入12-19位数内的银行卡号</string>
+    <string name="edt_hint_bank_account">12-19位数内的银行卡号</string>
     <string name="title_recharge_time">充值时间</string>
     <string name="title_current_money">当前余额</string>
     <string name="btn_submit">提交申请</string>
@@ -366,11 +369,10 @@
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
-    <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
+    <string name="error_recharge_amount">充值金额格式或数值错误</string>
     <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
     <string name="error_wx">您输入的微信格式或数值错误</string>
-    <string name="error_user_name">您输入的姓名格式或数值错误</string>
-    <string name="error_bank_id">您输入的银行卡号格式或数值错误</string>
+    <string name="error_bank_id">银行卡号格式有错误</string>
     <string name="text_money_copy_success">复制成功</string>
 
 

@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
@@ -198,8 +197,8 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAmountMsg.value = when {
-            rechargeAmount.isEmpty() -> {
-                androidContext.getString(R.string.error_recharge_amount_empty)
+            rechargeAmount.isEmpty() || rechargeAmount == "0" -> {
+                androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
@@ -219,8 +218,8 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeOnlineAmountMsg.value = when {
-            rechargeAmount.isEmpty() -> {
-                androidContext.getString(R.string.error_recharge_amount)
+            rechargeAmount.isEmpty() || rechargeAmount == "0"-> {
+                androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
@@ -256,12 +255,12 @@ class MoneyRechViewModel(
     fun checkUserName(userName: String) {
         _nameErrorMsg.value = when {
             userName.isEmpty() -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyNickname(
+            !VerifyConstUtil.verifyFullName(
                 userName
             ) -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_incompatible_format)
             }
             else -> {
                 ""
@@ -273,12 +272,12 @@ class MoneyRechViewModel(
     fun checkNickName(userName: String) {
         _nickNameErrorMsg.value = when {
             userName.isEmpty() -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyNickname(
                 userName
             ) -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_incompatible_format)
             }
             else -> {
                 ""
@@ -291,7 +290,7 @@ class MoneyRechViewModel(
         _bankIDErrorMsg.postValue(
             when {
                 bankId.isEmpty() -> {
-                    androidContext.getString(R.string.error_bank_id)
+                    androidContext.getString(R.string.error_input_empty)
                 }
                 !VerifyConstUtil.verifyBankCardNumber(
                     bankId

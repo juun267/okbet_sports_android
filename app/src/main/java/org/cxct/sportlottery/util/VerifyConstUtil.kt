@@ -83,7 +83,7 @@ object VerifyConstUtil {
 
     //暱稱 //中英文組合長度2–50字
     fun verifyNickname(nickname: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD]{2,50}", nickname)
+        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD]{2,6}", nickname)
     }
 
     //qq //判断qq字數小於五
@@ -98,7 +98,7 @@ object VerifyConstUtil {
 
     //微信 //英文第一位大小寫 後面可以數字或英文6~20
     fun verifyWeChat(weChat: CharSequence): Boolean {
-        return Pattern.matches("^[$ENGLISH_WORD][-_$NUMBER$ENGLISH_WORD]{5,20}$", weChat)
+        return Pattern.matches("^[$ENGLISH_WORD][-_$NUMBER$ENGLISH_WORD]{5,19}$", weChat)
     }
 
     //Telegram //可以數字、英文或底線, 5~32個char

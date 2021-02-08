@@ -356,7 +356,7 @@
             android:id="@+id/et_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/edt_hint_real_name"
+            app:cvHint="@string/edt_hint_nick_name"
             app:cvInputType="text"
             app:cvTitle="@string/title_nick_name" />
 
