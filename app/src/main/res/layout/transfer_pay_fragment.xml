@@ -185,9 +185,9 @@
                         android:id="@+id/tv_address"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:paddingTop="1dp"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
+                        android:paddingTop="1dp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="上海市浦东大道2851号" />
@@ -299,15 +299,19 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:id="@+id/tv_hint1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textColor="@color/orangeRed"
             android:text="@string/money_recharge_hint1"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
+            android:id="@+id/tv_hint2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/orangeRed"
             android:text="@string/money_recharge_hint2"
             android:textSize="@dimen/textSize12sp" />
 
