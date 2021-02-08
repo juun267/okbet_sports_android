@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.game.outright.OutrightDetailFragment">
+
+    <View
+        android:id="@+id/outright_detail_upper_bar"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/outright_detail_back"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_arrow_back_white"
+        app:layout_constraintBottom_toBottomOf="@id/outright_detail_upper_bar"
+        app:layout_constraintStart_toStartOf="@id/outright_detail_upper_bar"
+        app:layout_constraintTop_toTopOf="@id/outright_detail_upper_bar" />
+
+    <TextView
+        android:id="@+id/outright_detail_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toTopOf="@id/outright_detail_date"
+        app:layout_constraintStart_toEndOf="@id/outright_detail_back"
+        app:layout_constraintTop_toTopOf="@id/outright_detail_upper_bar"
+        tools:text="英格兰超级联赛 2020~2021" />
+
+    <TextView
+        android:id="@+id/outright_detail_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/outright_detail_upper_bar"
+        app:layout_constraintStart_toEndOf="@id/outright_detail_back"
+        app:layout_constraintTop_toBottomOf="@id/outright_detail_title"
+        tools:text="2021-05-23" />
+
+    <TextView
+        android:id="@+id/outright_detail_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/pumpkinOrange"
+        app:layout_constraintBaseline_toBaselineOf="@id/outright_detail_date"
+        app:layout_constraintStart_toEndOf="@id/outright_detail_date"
+        tools:text="23:00" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/outright_detail_upper_bar"
+        tools:listitem="@layout/itemview_outright_odd" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
