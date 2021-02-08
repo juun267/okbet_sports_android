@@ -388,6 +388,7 @@
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount_empty">提款金额为必填栏位</string>
     <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
+    <string name="error_withdraw_amount_bigger_than_balance">提款金额大于帐号余额</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_setting_bank_card">请设置银行卡</string>
     <!--  prompt message  -->

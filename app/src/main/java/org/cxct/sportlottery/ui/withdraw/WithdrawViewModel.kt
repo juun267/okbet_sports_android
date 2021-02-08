@@ -108,7 +108,7 @@ class WithdrawViewModel(
         get() = _addBankCardSwitch
     private var _addBankCardSwitch = MutableLiveData<Boolean>()
 
-    data class WithdrawAmountLimit(val min: Long, val max: Long)
+    data class WithdrawAmountLimit(val min: Long, val max: Long, val isBalanceMax: Boolean)
 
     fun addWithdraw(bankCardId: Long, applyMoney: String, withdrawPwd: String) {
         checkWithdrawAmount(applyMoney)
@@ -319,9 +319,13 @@ class WithdrawViewModel(
     }
 
     fun checkWithdrawAmount(withdrawAmount: String) {
+        val needShowBalanceMax = getWithdrawAmountLimit().isBalanceMax
         _withdrawAmountMsg.value = when {
             withdrawAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_withdraw_amount_empty)
+            }
+            needShowBalanceMax && withdrawAmount.toDouble() > getWithdrawAmountLimit().max -> {
+                androidContext.getString(R.string.error_withdraw_amount_bigger_than_balance)
             }
             !VerifyConstUtil.verifyWithdrawAmount(
                 withdrawAmount,
@@ -353,11 +357,15 @@ class WithdrawViewModel(
         //用戶可提取最小金額
         val minLimit = rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 0
         //提取金額不得超過 餘額-手續費
-        val balanceMaxLimit = ArithUtil.div((userMoney.value ?: 0.0), ((rechargeConfigs.value?.withdrawCfg?.wdRate?.plus(1) ?: 1.0)), 3)
+        val balanceMaxLimit = getBalanceMaxLimit()
         //用戶可提取最大金額
         val configMaxLimit = rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney?.toDouble()
         val maxLimit = if (configMaxLimit == null) balanceMaxLimit else min(balanceMaxLimit, configMaxLimit)
-        return WithdrawAmountLimit(minLimit, maxLimit.toLong())
+        return WithdrawAmountLimit(minLimit, maxLimit.toLong(), balanceMaxLimit > (configMaxLimit ?: 0.0))
+    }
+
+    fun getBalanceMaxLimit(): Double {
+        return ArithUtil.div((userMoney.value ?: 0.0), ((rechargeConfigs.value?.withdrawCfg?.wdRate?.plus(1) ?: 1.0)), 3)
     }
 
     fun getWithdrawRate(withdrawAmount: Long) {
