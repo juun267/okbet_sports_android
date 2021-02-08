@@ -32,9 +32,10 @@ object VerifyConstUtil {
     }
 
     //真實姓名 //中文2-20,英文2-50 可空格 可點
+    //20210205判斷文件只容許中文2-20
     fun verifyFullName(fullName: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD]{2,20}", fullName) ||
-                Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
+        return Pattern.matches("[$CHINESE_WORD]{2,20}", fullName)
+//                || Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
     }
 
     //持卡人姓名 //中文2-20
