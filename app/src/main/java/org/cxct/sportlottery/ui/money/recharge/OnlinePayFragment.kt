@@ -9,12 +9,22 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.online_pay_fragment.*
+import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
+import kotlinx.android.synthetic.main.online_pay_fragment.ll_fee_amount
+import kotlinx.android.synthetic.main.online_pay_fragment.ll_fee_rate
+import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_amount
+import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_rate
+import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_amount
+import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_rate
+import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -66,6 +76,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         } else {
             cv_pay_bank.visibility = View.VISIBLE
         }
+
+        et_recharge_online_amount.setHint(getAmountLimitHint())
 
         setupTextChangeEvent()
         setupFocusEvent()
@@ -137,14 +149,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     //依據選擇的支付渠道，刷新UI
     @SuppressLint("SetTextI18n")
     private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
-        //手續費率/贈送費率 <0是手續費 >0是贈送費率 PM還在討論
-        txv_rebate.text = "${selectRechCfgs?.rebateFee.toString()}%"
-//        et_recharge_online_amount.hint = String.format(
-//            getString(R.string.edt_hint_online_pay_money),
-//            "${selectRechCfgs?.minMoney}",
-//            "${selectRechCfgs?.maxMoney}"
-//        )
         tv_hint.text = mSelectRechCfgs?.remark
+        et_recharge_online_amount.setHint(getAmountLimitHint())
+
+        //反利、手續費
+        setupRebateFee()
     }
 
     private fun refreshPayBank(rechCfgsList: MoneyRechCfg.RechConfig?) {
@@ -174,7 +183,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //充值金額
-            et_recharge_online_amount.afterTextChanged { checkRcgOnlineAmount(it, mSelectRechCfgs) }
+            et_recharge_online_amount.afterTextChanged {
+                checkRcgOnlineAmount(it, mSelectRechCfgs)
+                if (it.isEmpty() || it.isBlank()) {
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
+                } else {
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0)))
+                }
+            }
         }
     }
 
@@ -186,4 +202,27 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
 
+    private fun getAmountLimitHint(): String {
+        return String.format(getString(R.string.edt_hint_deposit_money), ArithUtil.toMoneyFormat(mSelectRechCfgs?.minMoney), ArithUtil.toMoneyFormat(mSelectRechCfgs?.maxMoney))
+    }
+
+    private fun setupRebateFee() {
+        val rebateFee = mSelectRechCfgs?.rebateFee
+        if (rebateFee == null || rebateFee == 0.0) {
+            ll_fee_rate.visibility = View.GONE
+            ll_fee_amount.visibility = View.GONE
+        } else {
+            ll_fee_rate.visibility = View.VISIBLE
+            ll_fee_amount.visibility = View.VISIBLE
+            if (rebateFee < 0.0) {
+                title_fee_rate.text = getString(R.string.title_fee_rate)
+                title_fee_amount.text = getString(R.string.title_fee_amount)
+            } else {
+                title_fee_rate.text = getString(R.string.title_rebate_rate)
+                title_fee_amount.text = getString(R.string.title_rebate_amount)
+            }
+            tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
+            tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
+        }
+    }
 }

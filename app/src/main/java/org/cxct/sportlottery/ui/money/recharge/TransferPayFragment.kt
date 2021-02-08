@@ -30,6 +30,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -302,7 +303,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 title_fee_rate.text = getString(R.string.title_rebate_rate)
                 title_fee_amount.text = getString(R.string.title_rebate_amount)
             }
-            tv_fee_rate.text = ArithUtil.toOddFormat(rebateFee.times(100))
+            tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
             tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
         }
 
@@ -319,7 +320,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(it.toDouble().times(mSelectRechCfgs?.rebateFee ?: 0.0))
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0)))
                 }
             }
             //微信
