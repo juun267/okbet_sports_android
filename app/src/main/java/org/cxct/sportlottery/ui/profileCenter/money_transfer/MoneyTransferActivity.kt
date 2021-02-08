@@ -12,6 +12,13 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTrans
 class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        viewModel.getMoney()
+        viewModel.getAllBalance()
+//        viewModel.getThirdGames() //TODO Cheryl: 平台名稱不太會換，跟ios先寫死，後續有更動再調整
+
+
         changePage()
     }
 

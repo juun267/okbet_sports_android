@@ -13,5 +13,7 @@ data class GameData(
     @Json(name = "transRemaining")
     val transRemaining: String ?= null
 ) {
-    var name: String = ""
+    var showName: String = ""
+    var code: String ?= null
+    var isChecked: Boolean = false
 }

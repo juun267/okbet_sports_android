@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_money_transfer.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
@@ -20,19 +18,12 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
     private val rvAdapter by lazy {
         MoneyTransferAdapter(ItemClickListener {
             it.let { data ->
-                Log.e(">>>", "data name = ${data.name}")
-                view?.findNavController()?.navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferSubFragment(data.name))
-                //TODO Cheryl: change to next page
-//                val detailDialog = BetRecordDetailDialog(data)
-//                detailDialog.show(parentFragmentManager, "BetRecordDetailDialog")
+                view?.findNavController()?.navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferSubFragment(data.showName))
             }
         })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        viewModel.getMoney()
-        viewModel.getAllBalance()
 
         return inflater.inflate(R.layout.fragment_money_transfer, container, false)
     }
@@ -85,17 +76,10 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
             }
         }
 
-        viewModel.allBalanceResult.observe(viewLifecycleOwner) {
+        viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
             if (it == null) return@observe
-
-            val resultList = mutableListOf<GameData>()
-            for ((key, value) in it.resultMap ?: mapOf()) {
-                value?.apply {
-                    val gameData = GameData(money, remark, transRemaining)
-                    resultList.add(gameData.apply { name = key })
-                }
-            }
-            rvAdapter.addFooterAndSubmitList(resultList)
+            rvAdapter.addFooterAndSubmitList(it)
         }
+
     }
 }

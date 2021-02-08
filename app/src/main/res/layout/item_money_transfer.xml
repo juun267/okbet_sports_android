@@ -33,7 +33,7 @@
             android:textColor="@color/colorDarkBlack"
             android:textSize="14sp"
             tools:text="AG平台余额"
-            android:text="@{data.name}"
+            android:text="@{data.showName}"
             android:layout_marginStart="16dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

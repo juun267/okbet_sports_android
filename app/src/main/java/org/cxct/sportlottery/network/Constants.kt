@@ -110,6 +110,7 @@ object Constants {
     const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
 
     //third game
+    const val THIRD_GAMES = "/api/front/index/thirdgames"
     const val GET_ALL_BALANCE = "/api/front/thirdapi/getAllBalance"
     const val THIRD_ALL_TRANSFER_OUT = "/api/front/thirdapi/allTransferOut"
 

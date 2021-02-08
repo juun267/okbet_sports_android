@@ -13,7 +13,6 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemMoneyTransferBinding
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
-import org.cxct.sportlottery.ui.bet.record.search.result.BetDetailAdapter
 
 class MoneyTransferAdapter (private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -130,7 +129,7 @@ sealed class DataItem {
     abstract val name: String
 
     data class Item(val gameData: GameData) : DataItem() {
-        override val name = gameData.name
+        override val name = gameData.showName
     }
 /*
     object Footer : DataItem() {

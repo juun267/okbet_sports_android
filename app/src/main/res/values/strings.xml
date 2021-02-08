@@ -508,4 +508,13 @@
     <string name="transfer_platform">转换平台</string>
     <string name="finance_rmb">%s RMB</string>
     <string name="recycle_success">回收成功</string>
+
+    <string name="third_game_df">德丰捕鱼</string>
+    <string name="third_game_sbty">沙巴体育</string>
+    <string name="third_game_ag">AG平台</string>
+    <string name="third_game_ibo">IBO真人</string>
+    <string name="third_game_cq9">CQ9电子</string>
+    <string name="third_game_cgcp">创信彩票</string>
+    <string name="third_game_ogplus">OG+真人</string>
+    <string name="third_game_cr">皇冠体育</string>
 </resources>

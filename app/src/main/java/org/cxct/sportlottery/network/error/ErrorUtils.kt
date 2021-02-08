@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
+import org.cxct.sportlottery.network.Constants.THIRD_GAMES
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
@@ -273,6 +275,10 @@ object ErrorUtils {
                         return GetAllBalanceResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(THIRD_ALL_TRANSFER_OUT)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return AllTransferOutResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(THIRD_GAMES)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return AllTransferOutResult(it.code, it.msg, it.success) as T
                     }
