@@ -58,6 +58,7 @@
     </RelativeLayout>
 
     <EditText
+        android:id="@+id/et_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_feedback_input"
