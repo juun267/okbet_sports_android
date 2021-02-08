@@ -71,6 +71,40 @@
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
 
+            <ImageView
+                android:id="@+id/hall_no_history_img"
+                android:layout_width="317dp"
+                android:layout_height="239dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/ic_imgnohistory"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
+
+            <TextView
+                android:id="@+id/hall_no_history_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_history"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textSize14sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/hall_no_history_img"
+                app:layout_constraintStart_toStartOf="@id/hall_no_history_img"
+                app:layout_constraintTop_toBottomOf="@id/hall_no_history_img" />
+
+            <TextView
+                android:id="@+id/hall_no_history_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/no_history_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/hall_no_history_img"
+                app:layout_constraintStart_toStartOf="@id/hall_no_history_img"
+                app:layout_constraintTop_toBottomOf="@id/hall_no_history_title" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
