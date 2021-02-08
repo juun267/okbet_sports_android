@@ -30,19 +30,6 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-/*
-
-    private val spinnerAdapter by lazy {
-        SpinnerRvAdapter(SpinnerRvAdapter.ItemCheckedListener { isChecked, data ->
-            if (isChecked) {
-                data.isChecked = true
-                tv_selected.text = data.showName
-                bottomSheet.dismiss()
-            }
-        })
-    }
-*/
-
     var isShowCloseButton
         get() = bottomSheetView.spinner_tv_close.visibility == View.VISIBLE
         set(value) {
@@ -60,19 +47,13 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
     fun dismiss() {
         bottomSheet.dismiss()
     }
-    /*
-    fun setSpinnerData(dataList: List<SpinnerItem>) {
-        spinnerAdapter.submitList(dataList)
-    }
-*/
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.custom_spinner, this, false)
         addView(view)
 
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.SpinnerWithTitleAtStartStyle, 0, 0)
-//        try {
-
+        try {
             setButtonSheet(typedArray)
 
             view?.apply {
@@ -82,14 +63,12 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
                     bottomSheet.show()
                 }
             }
-/*
 
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             typedArray.recycle()
         }
-*/
 
     }
 
@@ -110,104 +89,7 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
             bottomSheetView.spinner_tv_title.text = typedArray.getText(R.styleable.SpinnerWithTitleAtStartStyle_spinnerTitle)
             val isShowCloseButton = typedArray.getBoolean(R.styleable.SpinnerWithTitleAtStartStyle_spinnerIsShowCloseButton, true)
             spinner_tv_close.visibility = if (isShowCloseButton) View.VISIBLE else View.GONE
-//            bottomSheetView.spinner_rv_more.adapter = spinnerAdapter
         }
 
     }
-/*
-    class SpinnerRvAdapter(private val clickListener: ItemCheckedListener) : ListAdapter<SpinnerItem, RecyclerView.ViewHolder>(DiffCallback()) {
-
-//        var previousCheckedPosition: Int? = null
-
-        private var mNowCheckedPos:Int? = null
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return ItemViewHolder.from(parent)
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-            when (holder) {
-                is ItemViewHolder -> {
-                    val data = getItem(position)
-
-                    setSingleChecked(holder.binding.checkbox, position, data)
-
-                    holder.bind(data)
-                }
-            }
-        }
-
-        private fun setSingleChecked(checkbox: CheckBox, position: Int, data: SpinnerItem) {
-            checkbox.setOnClickListener {
-                val previousPosition = mNowCheckedPos
-
-                if (previousPosition != null) {
-//                    checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.white))
-                    getItem(previousPosition).isChecked = false
-                    notifyItemChanged(previousPosition)
-                }
-
-                mNowCheckedPos = position
-//                checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.blue2))
-                checkbox.isChecked = true
-                notifyItemChanged(position)
-                clickListener.checkedListener(checkbox.isChecked, data)
-            }
-        }
-
-        class ItemViewHolder private constructor(val binding: ContentBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
-            fun bind(data: SpinnerItem) {
-                itemView.apply {
-                    if (data.isChecked) {
-                        checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.blue2))
-                    } else {
-                        checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.white))
-                    }
-                }
-//                binding.item = data
-*//*
-
-                itemView.apply {
-                    checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                        if (isChecked) {
-                            previousCheckedBtn = buttonView
-                            data.isChecked = true
-                        }
-                    }
-                }
-*//*
-
-                binding.executePendingBindings()
-            }
-
-            companion object {
-                fun from(parent: ViewGroup): RecyclerView.ViewHolder {
-                    val layoutInflater = LayoutInflater.from(parent.context)
-                    val binding = ContentBottomSheetItemBinding.inflate(layoutInflater, parent, false)
-                    return ItemViewHolder(binding)
-                }
-            }
-
-        }
-
-        class ItemCheckedListener(val checkedListener: (isChecked: Boolean, data: SpinnerItem) -> Unit) {
-            fun onChecked(isChecked: Boolean, data: SpinnerItem) = checkedListener(isChecked, data)
-        }
-
-    }
-
-
-    class DiffCallback : DiffUtil.ItemCallback<SpinnerItem>() {
-        override fun areItemsTheSame(oldItem: SpinnerItem, newItem: SpinnerItem): Boolean {
-            return oldItem.showName == newItem.showName
-        }
-
-        override fun areContentsTheSame(oldItem: SpinnerItem, newItem: SpinnerItem): Boolean {
-            return oldItem == newItem
-        }
-
-    }
-    */
 }
