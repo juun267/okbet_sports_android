@@ -23,7 +23,11 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
     var data2 = listOf<MatchOdd>()
         set(value) {
             field = value
-            data = field[0].odds.values.first()
+            data = if (field.isNotEmpty()) {
+                field[0].odds.values.first()
+            } else {
+                listOf()
+            }
         }
 
     var data = listOf<Odd>()
