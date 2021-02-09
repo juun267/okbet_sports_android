@@ -185,12 +185,12 @@ object TimeUtil {
         }
     }
 
-    fun getOneWeekDate(): List<String> {
+    fun getFutureDate(day: Int): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
         val format = "yyyy-MM-dd"
 
-        repeat(7) {
+        repeat(day) {
             calendar.add(Calendar.DATE, 1)
             weekDateList.add(timeFormat(calendar.time.time, format))
         }

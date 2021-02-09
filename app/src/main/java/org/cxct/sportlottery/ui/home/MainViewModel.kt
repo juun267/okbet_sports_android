@@ -694,7 +694,7 @@ class MainViewModel(
                 dateRow.add(Date("", TimeUtil.getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
-                TimeUtil.getOneWeekDate().forEach {
+                TimeUtil.getFutureDate(7).forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
                 }
                 dateRow.add(
@@ -718,7 +718,7 @@ class MainViewModel(
 
                         )
                 )
-                TimeUtil.getOneWeekDate().forEach {
+                TimeUtil.getFutureDate(6).forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
                 }
 
