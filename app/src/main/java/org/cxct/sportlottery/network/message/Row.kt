@@ -8,8 +8,8 @@ import com.squareup.moshi.JsonClass
 data class Row(
     @Json(name = "addTime")
     val addTime: String,
-    @Json(name = "content")
-    val content: String,
+    @Json(name = "message")
+    val message: String,
     @Json(name = "endTime")
     val endTime: String,
     @Json(name = "id")
