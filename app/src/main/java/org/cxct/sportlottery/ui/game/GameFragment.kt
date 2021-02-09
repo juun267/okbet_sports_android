@@ -550,6 +550,26 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val code = gameTypeAdapter.data.find {
+            it.isSelected
+        }?.code
+
+        leagueOddAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        code,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
+        }
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() {
