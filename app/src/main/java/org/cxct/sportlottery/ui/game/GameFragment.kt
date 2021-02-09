@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
@@ -28,9 +31,9 @@ import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
-import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 
 
 /**
@@ -40,17 +43,19 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
  */
 class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter(GameTypeListener {
-            Log.e(">>>", "onclick gameTypeAdapter")
             viewModel.getGameHallList(args.matchType, it)
+            loading()
         })
     }
 
     private val gameDateAdapter by lazy {
         GameDateAdapter(GameDateListener {
             viewModel.getGameHallList(args.matchType, it)
+            loading()
         })
     }
 
@@ -68,21 +73,27 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     )
                 })
 
-            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
-                if (isExpand) {
-                    Log.e(">>>", "")
-                    service.subscribeChannel(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
-                } else {
-                    service.unSubscribe(viewModel.getHallUrl(eventId = leagueOdd.matchOdds[0].matchInfo?.id))
+            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, _ ->
+                scope.launch {
+                    val code = gameTypeAdapter.data.find {
+                        it.isSelected
+                    }?.code
+                    val eventId = leagueOdd.matchOdds[0].matchInfo?.id
+
+                    if (isExpand) {
+                        service.subscribeHallChannel(code, eventId)
+                    } else {
+                        service.unSubscribeHallChannel(code, eventId)
+                    }
                 }
             }
-            betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
+
+            betInfoListData = viewModel.betInfoRepository.betInfoList.value
         }
     }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener {
-            Log.e(">>>", "onclick LeagueAdapter")
             viewModel.getLeagueOddsList(args.matchType, it)
         })
     }
@@ -90,14 +101,9 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
             seasonSubListener = SeasonSubAdapter.SeasonSubListener {
-                Log.e(">>>", "onclick outrightSeasonAdapter")
                 viewModel.getOutrightOddsList(it.id)
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -121,11 +127,18 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             setupOutrightSeasonList(this)
 
             initObserve()
+
+            initSocketObserver()
         }
     }
 
     private fun initObserve() {
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            leagueOddAdapter.betInfoListData = it
+        })
+    }
 
+    private fun initSocketObserver() {
         receiver.matchClock.observe(this.viewLifecycleOwner, Observer { matchClockEvent ->
             if (matchClockEvent == null) return@Observer
 
@@ -143,75 +156,76 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            leagueOddAdapter.updatedOddsMap = it.odds
+
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { odds ->
+                        val socketOdds = it.odds[odds.key]
+                        val originOdds = odds.value
+
+                        originOdds.forEach { originOdd ->
+                            val updateOdd = socketOdds?.find { socketOdd ->
+                                originOdd.id == socketOdd.id
+                            }
+
+                            val originOddValue = originOdd.odds
+                            val updateOddValue = updateOdd?.odds
+
+                            originOddValue?.let {
+                                updateOddValue?.let {
+                                    Timber.i("$originOddValue -> $updateOddValue")
+
+                                    //update Odd state
+                                    when {
+                                        originOddValue > updateOddValue -> {
+                                            originOdd.oddState = OddState.SMALLER.state
+                                        }
+                                        originOddValue < updateOddValue -> {
+                                            originOdd.oddState = OddState.LARGER.state
+                                        }
+                                        originOddValue == updateOddValue -> {
+                                            originOdd.oddState = OddState.SAME.state
+                                        }
+                                    }
+
+                                    //update Odd value
+                                    originOdd.odds = updateOdd.odds
+
+                                    //update Odd status
+                                    originOdd.status = updateOdd.status
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            leagueOddAdapter.data = leagueOdds
         })
-
-        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
-            leagueOddAdapter.betInfoListData = it
-        })
-
-
-//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            Log.e(">>>>>", "g matchStatusChange")
-//        })
-
-//        viewModel.matchOddsChange.observe(this.viewLifecycleOwner, {
-//            if (it == null) return@observe
-//            Log.e(">>>>>", "g matchOddsChange")
-//            leagueOddAdapter.updatedOddsMap = transformData(it.odds)
-//        })
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            leagueOddAdapter.updatedMatchStatus = it.matchStatusCO
+
+            val leagueOdds = leagueOddAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    if (matchOdd.matchInfo?.id == it.matchStatusCO?.matchId) {
+                        matchOdd.matchInfo?.homeScore = it.matchStatusCO?.homeScore
+                        matchOdd.matchInfo?.awayScore = it.matchStatusCO?.awayScore
+                        matchOdd.matchInfo?.statusName = it.matchStatusCO?.statusName
+                    }
+                }
+            }
+
+            leagueOddAdapter.data = leagueOdds
         })
 
         updateSocketGlobalStop()
 
         updateSocketProducerUp()
-
-//        viewModel.matchStatusChange.observe(viewLifecycleOwner, Observer {
-//            if (it == null) return@Observer
-//            Log.e(">>>>>", "g matchStatusChange")
-
-//            val leagueOdds = leagueOddAdapter.data
-//
-//            leagueOdds.forEach { leagueOdd ->
-//                leagueOdd.matchOdds.forEach { matchOdd ->
-//                    matchOdd.odds.forEach { oldOdds ->
-//                        val newOdds = oddsChangeEvent.odds[oldOdds.key]
-//
-//                        oldOdds.value.forEach { oldOdd ->
-//                            val updateOdd = newOdds?.find { newOdd ->
-//                                newOdd.id == oldOdd.id
-//                            }
-//
-//                            updateOdd?.odds?.let { nonNullUpdateOdd ->
-//                                oldOdd.odds?.let { nonNullOldOdd ->
-//                                    when {
-//                                        (nonNullUpdateOdd > nonNullOldOdd) -> {
-//                                            oldOdd.oddState = OddState.LARGER.state
-//                                        }
-//
-//                                        (nonNullUpdateOdd == nonNullOldOdd) -> {
-//                                            oldOdd.oddState = OddState.SAME.state
-//                                        }
-//
-//                                        (nonNullUpdateOdd < nonNullOldOdd) -> {
-//                                            oldOdd.oddState = OddState.SMALLER.state
-//                                        }
-//                                    }
-//
-//                                    oldOdd.odds = updateOdd.odds
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            leagueOddAdapter.data = leagueOdds
-//        })
     }
 
     private fun updateSocketGlobalStop() {
@@ -390,24 +404,32 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 setupGameHallList(it)
             }
         })
 
+        viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+            setupNoHistory(it)
+        })
+
         viewModel.getGameHallList(args.matchType, true)
+        loading()
     }
 
     private fun setupInPlayFilter(itemList: List<Item>) {
@@ -498,6 +520,23 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         hall_outright_season_list.visibility = View.VISIBLE
 
         outrightSeasonAdapter.data = outrightSeasonListResult.rows ?: listOf()
+    }
+
+    private fun setupNoHistory(isShow: Boolean) {
+        if (isShow) {
+            hideLoading()
+            hall_odds_list.visibility = View.GONE
+            hall_outright_season_list.visibility = View.GONE
+            hall_league_list.visibility = View.GONE
+
+            hall_no_history_img.visibility = View.VISIBLE
+            hall_no_history_title.visibility = View.VISIBLE
+            hall_no_history_content.visibility = View.VISIBLE
+        } else {
+            hall_no_history_img.visibility = View.GONE
+            hall_no_history_title.visibility = View.GONE
+            hall_no_history_content.visibility = View.GONE
+        }
     }
 
     companion object {
