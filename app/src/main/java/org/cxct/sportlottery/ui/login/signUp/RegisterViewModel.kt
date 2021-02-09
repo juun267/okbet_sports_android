@@ -244,6 +244,7 @@ class RegisterViewModel(
     private fun checkWhatsApp(context: Context, whatsApp: String?): String? {
         return when {
             whatsApp.isNullOrBlank() -> context.getString(R.string.hint_whats_app)
+            !VerifyConstUtil.verifyWhatsApp(whatsApp) -> context.getString(R.string.error_whats_app)
             else -> null
         }
     }

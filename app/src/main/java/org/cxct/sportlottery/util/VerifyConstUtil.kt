@@ -124,6 +124,11 @@ object VerifyConstUtil {
         return Pattern.matches("$EMAIL_REGEX{0,50}", facebook)
     }
 
+    //WhatsApp //25個內英數組合電子郵件格式(含特殊字元)
+    fun verifyWhatsApp(whatsApp: CharSequence): Boolean {
+        return Pattern.matches("$EMAIL_REGEX{0,25}", whatsApp)
+    }
+
     //Telegram //可以數字、英文或底線, 5~32個char
     fun verifyTelegram(telegram: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{0,11}", telegram)

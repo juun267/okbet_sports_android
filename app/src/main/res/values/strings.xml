@@ -94,6 +94,7 @@
     <string name="error_facebook">Facebook帐号格式错误</string>
     <string name="whats_app">WhatsApp</string>
     <string name="hint_whats_app">请输入WhatsApp</string>
+    <string name="error_whats_app">Whatsapp帐号格式错误</string>
     <string name="telegram">Telegram</string>
     <string name="hint_telegram">请输入Telegram</string>
     <string name="error_telegram">Telegram帐号格式错误</string>
