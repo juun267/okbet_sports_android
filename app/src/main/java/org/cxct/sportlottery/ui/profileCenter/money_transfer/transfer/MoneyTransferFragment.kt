@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_money_transfer.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
@@ -65,6 +66,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         }
 
         viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) {
+            viewModel.getAllBalance()
             it?.apply {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     setTitle(getString(R.string.prompt))

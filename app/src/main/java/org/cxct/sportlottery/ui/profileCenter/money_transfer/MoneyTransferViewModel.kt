@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
+import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -22,6 +23,10 @@ class MoneyTransferViewModel(
         private val loginRepository: LoginRepository,
         betInfoRepository: BetInfoRepository,
 ) : BaseOddButtonViewModel(betInfoRepository) {
+
+    companion object {
+        private const val PAGE_SIZE = 20
+    }
 
     val gameNameMap: Map<String?, String> = mapOf(
         "CG" to androidContext.getString(R.string.plat_money),
@@ -48,6 +53,9 @@ class MoneyTransferViewModel(
     val transferResult: LiveData<BlankResult>
         get() = _transferResult
 
+    val queryTransfersResult: LiveData<QueryTransfersResult>
+        get() = _queryTransfersResult
+
     val userMoney: LiveData<Double?>
         get() = _userMoney
 
@@ -57,6 +65,7 @@ class MoneyTransferViewModel(
     private var _thirdGamesResult = MutableLiveData<ThirdGamesResult>()
     private var _recycleAllMoneyResult = MutableLiveData<BlankResult>()
     private var _transferResult = MutableLiveData<BlankResult>()
+    private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
 
 
     fun getMoney() {
@@ -109,7 +118,6 @@ class MoneyTransferViewModel(
         }
     }
 
-
     fun transfer(outPlat: String, inPlat: String, amount: Long?) {
         if (amount == null) return
         viewModelScope.launch {
@@ -117,6 +125,16 @@ class MoneyTransferViewModel(
                 OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
             }?.let { result ->
                 _transferResult.value = result
+            }
+        }
+    }
+
+    fun queryTransfers(page: Int) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.queryTransfers(page, PAGE_SIZE)
+            }?.let { result ->
+                _queryTransfersResult.value = result
             }
         }
     }

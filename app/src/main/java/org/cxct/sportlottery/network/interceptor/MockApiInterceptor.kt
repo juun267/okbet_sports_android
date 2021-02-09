@@ -37,6 +37,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
+import org.cxct.sportlottery.network.Constants.QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
@@ -209,6 +210,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(TRANSFER) -> {
                     response = getMockJsonData(request, "transfer.mock")
+                }
+                path.contains(QUERY_TRANSFERS) -> {
+                    response = getMockJsonData(request, "query_transfers.mock")
                 }
 
             }

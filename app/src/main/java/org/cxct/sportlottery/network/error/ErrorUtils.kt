@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
@@ -27,6 +28,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
@@ -72,6 +74,7 @@ import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
+import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -285,6 +288,10 @@ object ErrorUtils {
                     (url.contains(TRANSFER)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BlankResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(QUERY_TRANSFERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
                     }
                 }
             }

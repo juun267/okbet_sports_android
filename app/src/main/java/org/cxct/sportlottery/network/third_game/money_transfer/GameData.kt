@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @JsonClass(generateAdapter = true)
 data class GameData(
     @Json(name = "money")
-    val money: Int ?= null,
+    val money: Long ?= null,
     @Json(name = "remark")
     val remark: String ?= null,
     @Json(name = "transRemaining")
