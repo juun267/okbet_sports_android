@@ -124,6 +124,12 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         return Pair(minusDaysCalendar, todayCalendar)
     }
 
+    private fun getYesterdayDateInCalendar(): Pair<Calendar, Calendar> {
+        val yesterdayStartCalendar = TimeUtil.getTodayStartTimeCalendar().apply { add(Calendar.DATE, -1) }
+        val yesterdayEndCalendar = TimeUtil.getTodayEndTimeCalendar().apply { add(Calendar.DATE, -1) }
+        return Pair(yesterdayStartCalendar, yesterdayEndCalendar)
+    }
+
     private fun initListView() {
         betStatusList = statusNameMap.map {
             BetTypeItemData(it.key, it.value, false)
@@ -200,7 +206,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         btn_yesterday.setOnClickListener {
-            setCalendarDate(getDateInCalendar(1))
+            setCalendarDate(getYesterdayDateInCalendar())
         }
 
         btn_past30days.setOnClickListener {
@@ -209,7 +215,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
         btn_search.setOnClickListener {
 
-            val statusList = betStatusList.filter { it.isSelected && (it.code!=null) }.map {it.code!!}
+            val statusList = betStatusList.filter { it.isSelected && (it.code != null) }.map { it.code!! }
 
             viewModel.checkRequestState(tv_start_date.text.toString(), tv_end_date.text.toString())
 
