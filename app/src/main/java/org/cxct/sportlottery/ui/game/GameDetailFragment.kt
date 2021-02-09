@@ -73,7 +73,7 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
     private fun setupMatchOddList(view: View) {
         view.league_odd_sub_list.apply {
             this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = matchOddAdapter.apply {
                 this.playType = this@GameDetailFragment.playType
             }
@@ -83,7 +83,7 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
     private fun setupOutrightOddList(view: View) {
         view.outright_odd_sub_list.apply {
             this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = outrightOddAdapter
             addItemDecoration(
                 DividerItemDecoration(

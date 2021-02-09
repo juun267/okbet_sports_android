@@ -331,7 +331,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun setupOddsList(view: View) {
         view.hall_odds_list.apply {
             this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueOddAdapter
             this.addItemDecoration(
                 DividerItemDecoration(
@@ -345,7 +345,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun setupLeagueList(view: View) {
         view.hall_league_list.apply {
             this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             this.addItemDecoration(
                 DividerItemDecoration(
@@ -359,7 +359,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun setupOutrightSeasonList(view: View) {
         view.hall_outright_season_list.apply {
             this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = outrightSeasonAdapter
             this.addItemDecoration(
                 DividerItemDecoration(

@@ -136,7 +136,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
-            layoutManager = SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         tv_more.setOnClickListener {
