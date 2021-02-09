@@ -6,26 +6,24 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Row(
-    @Json(name = "addTime")
-    val addTime: String,
-    @Json(name = "message")
-    val message: String,
-    @Json(name = "endTime")
-    val endTime: String,
     @Json(name = "id")
     val id: Int,
-    @Json(name = "matchId")
-    val matchId: String?,
-    @Json(name = "messageType")
+    @Json(name = "message")
+    val message: String,
+    @Json(name = "type")
+    val type: Long,
+    @Json(name = "msgType")
     val messageType: Int,
-    @Json(name = "platformId")
-    val platformId: Int,
-    @Json(name = "startTime")
-    val startTime: String,
+    @Json(name = "addTime")
+    val addTime: String,
     @Json(name = "title")
     val title: String,
     @Json(name = "updateTime")
     val updateTime: String,
-    @Json(name = "url")
-    val url: Int?
+    @Json(name = "rechLevels")
+    val rechLevels: String,
+    @Json(name = "sort")
+    val sort: Long,
+    @Json(name = "platformId")
+    val platformId: Long,
 )
