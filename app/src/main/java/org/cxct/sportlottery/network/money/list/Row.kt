@@ -51,7 +51,7 @@ data class Row(
     @Json(name = "rechType")
     val rechType: String,
     @Json(name = "remark")
-    val remark: String,
+    val remark: String?,
     @Json(name = "statDate")
     val statDate: Long,
     @Json(name = "status")

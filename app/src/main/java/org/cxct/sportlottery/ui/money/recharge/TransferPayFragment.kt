@@ -30,6 +30,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -70,7 +71,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun initButton() {
         //提交
         btn_submit.setOnClickListener {
-            createMoneyAddRequest()?.let { viewModel.rechargeSubmit(it, mMoneyPayWay?.rechType) }
+            createMoneyAddRequest()?.let { viewModel.rechargeSubmit(it, mMoneyPayWay?.rechType, mSelectRechCfgs) }
         }
 
         //選取日曆
@@ -130,8 +131,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
         })
-        viewModel.userMoneyResult.observe(viewLifecycleOwner, {
-            txv_wallet_money.text = (it?.money ?: "").toString() + " RMB"
+        viewModel.userMoneyResult.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            txv_wallet_money.text = (ArithUtil.toMoneyFormat(it?.money)) + " RMB"
         })
 
     }
@@ -246,6 +247,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
+                tv_hint2.visibility = View.VISIBLE
+
+                tv_hint1.text = getString(R.string.money_recharge_hint1)
+                tv_hint2.text = getString(R.string.money_recharge_hint2)
             }
             MoneyType.CTF_TYPE.code -> {
                 ll_qr.visibility = View.VISIBLE
@@ -254,6 +259,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
+                tv_hint2.visibility = View.GONE
+
+                tv_hint1.text = getString(R.string.cft_recharge_hint)
             }
             MoneyType.WX_TYPE.code -> {
                 ll_qr.visibility = View.VISIBLE
@@ -262,6 +270,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.GONE
                 et_name.visibility = View.GONE
+                tv_hint2.visibility = View.GONE
+
+                tv_hint1.text = getString(R.string.wx_recharge_hint)
+
             }
             MoneyType.ALI_TYPE.code -> {
                 ll_qr.visibility = View.VISIBLE
@@ -270,14 +282,29 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.VISIBLE
                 et_bank_account.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
+                tv_hint2.visibility = View.GONE
+
+                tv_hint1.text = getString(R.string.ali_recharge_hint)
             }
         }
 
-        if ((mSelectRechCfgs?.rebateFee ?: 0.0) != 0.0) {
-            cv_rebate_fee.visibility = View.VISIBLE
-            tv_rebate_fee.text = "${ArithUtil.toOddFormat(mSelectRechCfgs?.rebateFee?.times(100))} %"
+        //反利、手續費
+        val rebateFee = mSelectRechCfgs?.rebateFee
+        if (rebateFee == null || rebateFee == 0.0) {
+            ll_fee_rate.visibility = View.GONE
+            ll_fee_amount.visibility = View.GONE
         } else {
-            cv_rebate_fee.visibility = View.GONE
+            ll_fee_rate.visibility = View.VISIBLE
+            ll_fee_amount.visibility = View.VISIBLE
+            if (rebateFee < 0.0) {
+                title_fee_rate.text = getString(R.string.title_fee_rate)
+                title_fee_amount.text = getString(R.string.title_fee_amount)
+            } else {
+                title_fee_rate.text = getString(R.string.title_rebate_rate)
+                title_fee_amount.text = getString(R.string.title_rebate_amount)
+            }
+            tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
+            tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
         }
 
         //存款時間
@@ -288,7 +315,14 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //充值金額
-            et_recharge_amount.afterTextChanged { checkRechargeAmount(it) }
+            et_recharge_amount.afterTextChanged {
+                checkRechargeAmount(it, mSelectRechCfgs)
+                if (it.isEmpty() || it.isBlank()) {
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
+                } else {
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0)))
+                }
+            }
             //微信
             et_wx_id.afterTextChanged { checkWX(it) }
             //認證姓名
@@ -303,7 +337,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun setupFocusEvent() {
         viewModel.apply {
             //充值金額
-            setupEditTextFocusEvent(et_recharge_amount) { checkRechargeAmount(it) }
+            setupEditTextFocusEvent(et_recharge_amount) { checkRechargeAmount(it, mSelectRechCfgs) }
             //微信
             setupEditTextFocusEvent(et_wx_id) { checkWX(it) }
             //認證姓名
@@ -364,8 +398,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_deposit_money),
-                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
-                ArithUtil.toBonusMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
+                ArithUtil.toMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
+                ArithUtil.toMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
             )
         )
     }

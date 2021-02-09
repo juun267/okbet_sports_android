@@ -193,12 +193,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         btn_delete_bank.setOnClickListener {
             modifyFinish()
-            if (args.editBankCard?.id != null) {
-                viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), et_withdrawal_password.getText())
-            } else {
-                showPromptDialog(getString(R.string.error), getString(R.string.unknown_bank_card)) {}
+            val passwordDialog = WithdrawPassWordDialog(requireContext(), WithdrawPasswordDialogListener {
+                viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), it)
+            })
+            passwordDialog.apply {
+                show()
             }
-
         }
     }
 
