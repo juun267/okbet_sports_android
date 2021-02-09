@@ -236,6 +236,7 @@ class RegisterViewModel(
     private fun checkFacebook(context: Context, facebook: String?): String? {
         return when {
             facebook.isNullOrBlank() -> context.getString(R.string.hint_facebook)
+            !VerifyConstUtil.verifyFacebook(facebook) -> context.getString(R.string.error_facebook)
             else -> null
         }
     }
@@ -243,6 +244,7 @@ class RegisterViewModel(
     private fun checkWhatsApp(context: Context, whatsApp: String?): String? {
         return when {
             whatsApp.isNullOrBlank() -> context.getString(R.string.hint_whats_app)
+            !VerifyConstUtil.verifyWhatsApp(whatsApp) -> context.getString(R.string.error_whats_app)
             else -> null
         }
     }
@@ -257,14 +259,16 @@ class RegisterViewModel(
 
     private fun checkSecurityCode(context: Context, securityCode: String?): String? {
         return when {
-            securityCode.isNullOrBlank() -> context.getString(R.string.hint_verification_code_by_sms)
+            securityCode.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifySecurityCode(securityCode) -> context.getString(R.string.error_verification_code_by_sms)
             else -> null
         }
     }
 
     private fun checkValidCode(context: Context, validCode: String?): String? {
         return when {
-            validCode.isNullOrBlank() -> context.getString(R.string.hint_verification_code)
+            validCode.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> context.getString(R.string.error_verification_code)
             else -> null
         }
     }

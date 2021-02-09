@@ -58,8 +58,6 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             } else {
                 adapter?.data = userMsgList//重新載入
             }
-            btn_readed_letters.text =
-                String.format(resources.getString(R.string.inbox), userMsgList.size)
         })
         //已讀總筆數
         viewModel.totalReadedMsgCount.observe(this@InfoCenterActivity, {
