@@ -284,8 +284,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                 OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
                 Page.ODDS_DETAIL
             )
-
-            backService.subscribeEventChannel(matchId)
         })
 
         viewModel.matchTypeCardForParlay.observe(this, Observer {
