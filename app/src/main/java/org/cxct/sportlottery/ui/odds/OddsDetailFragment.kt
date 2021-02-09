@@ -318,4 +318,9 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+
+        service.unSubscribeEventChannel(matchId)
+    }
 }
