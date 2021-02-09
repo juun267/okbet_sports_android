@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,8 +36,34 @@ class OutrightDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_outright_detail, container, false).apply {
+            setupBack(this)
             setupOutrightOddList(this)
         }
+    }
+
+    private fun setupBack(view: View) {
+        view.outright_detail_back.setOnClickListener {
+            backEvent()
+        }
+    }
+
+    private fun backEvent() {
+        //比照h5特別處理退出動畫
+        val animation: Animation =
+            AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
+        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                parentFragmentManager.popBackStack()
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+        })
+        this.view?.startAnimation(animation)
     }
 
     private fun setupOutrightOddList(view: View) {
