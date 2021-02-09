@@ -93,14 +93,10 @@ class MoneyTransferViewModel(
     }
 
     fun addPlatMoneyItem() {
-
         val platItem = GameData().apply {
             code = "CG"
             showName = androidContext.getString(R.string.plat_money)
         }
-
-//        _allBalanceResultList.value?.add(0, platItem)
-//        _allBalanceResultList = _allBalanceResultList
     }
 
     fun recycleAllMoney() {
@@ -115,17 +111,16 @@ class MoneyTransferViewModel(
 
 
     fun transfer(outPlat: String, inPlat: String, amount: Long?) {
-        Log.e(">>>", "outPlat, inPlat, amount = $outPlat, $inPlat, $amount")
         if (amount == null) return
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
             }?.let { result ->
-                Log.e(">>>", "result = $result")
                 _transferResult.value = result
             }
         }
     }
+
     fun getThirdGames() {
         viewModelScope.launch {
             doNetwork(androidContext) {
