@@ -29,6 +29,9 @@ import org.cxct.sportlottery.util.TextUtil
 import java.lang.Exception
 import java.math.RoundingMode
 
+const val NOT_INPLAY: Int = 0
+const val INPLAY: Int = 1
+
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
         RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
@@ -246,6 +249,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
             binding.betInfoDetail.tvMatch.text = strMatch
 
+            binding.betInfoDetail.tvName.text = if (matchOdd.inplay == INPLAY) context.getString(R.string.bet_info_in_play) + matchOdd.playCateName else matchOdd.playCateName
+
             when (matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
                     componentStatusByOdds(
@@ -361,6 +366,5 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             text = context.getString(R.string.bet_info_list_game_odds_changed)
         }
     }
-
 
 }
