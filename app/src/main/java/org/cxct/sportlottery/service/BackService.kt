@@ -83,18 +83,18 @@ class BackService : Service() {
         unSubscribe(url)
     }
 
-    fun subscribeHallChannel(gameType: String?, eventId: String?) {
+    fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL${gameType}/${CateMenuCode.HDP_AND_OU.code}/$eventId"
+        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
 
         subscribeChannel(url)
     }
 
-    fun unSubscribeHallChannel(gameType: String?, eventId: String?) {
+    fun unSubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL${gameType}/${CateMenuCode.HDP_AND_OU.code}/$eventId"
+        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
 
         unSubscribe(url)
     }

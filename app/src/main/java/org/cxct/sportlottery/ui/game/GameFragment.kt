@@ -78,12 +78,23 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     val code = gameTypeAdapter.data.find {
                         it.isSelected
                     }?.code
-                    val eventId = leagueOdd.matchOdds[0].matchInfo?.id
 
-                    if (isExpand) {
-                        service.subscribeHallChannel(code, eventId)
-                    } else {
-                        service.unSubscribeHallChannel(code, eventId)
+                    leagueOdd.matchOdds.forEach {
+                        val eventId = it.matchInfo?.id
+
+                        if (isExpand) {
+                            service.subscribeHallChannel(
+                                code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                eventId
+                            )
+                        } else {
+                            service.unSubscribeHallChannel(
+                                code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                eventId
+                            )
+                        }
                     }
                 }
             }
@@ -93,15 +104,31 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it)
+        LeagueAdapter(LeagueListener { leagueId ->
+            scope.launch {
+                val code = gameTypeAdapter.data.find {
+                    it.isSelected
+                }?.code
+
+                service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, leagueId)
+            }
+
+            viewModel.getLeagueOddsList(args.matchType, leagueId)
         })
     }
 
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
-            seasonSubListener = SeasonSubAdapter.SeasonSubListener {
-                viewModel.getOutrightOddsList(it.id)
+            seasonSubListener = SeasonSubAdapter.SeasonSubListener { season ->
+                scope.launch {
+                    val code = gameTypeAdapter.data.find {
+                        it.isSelected
+                    }?.code
+
+                    service.subscribeHallChannel(code, CateMenuCode.OUTRIGHT.code, season.id)
+                }
+
+                viewModel.getOutrightOddsList(season.id)
             }
         }
     }

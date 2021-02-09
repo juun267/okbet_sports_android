@@ -304,15 +304,12 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         })
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
-            Log.e(">>>", "isOpenMatchOdds = $it")
             getAppBarLayout().setExpanded(true, true)
-            subscribeHallChannel()
             addFragment(GameDetailFragment(), Page.ODDS)
         })
 
         viewModel.isOpenOutrightDetail.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
-            subscribeHallChannel()
             addFragment(OutrightDetailFragment(), Page.OUTRIGHT)
         })
 
