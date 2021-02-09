@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
@@ -24,7 +25,16 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         SUB_TITLE, ODD
     }
 
-    var data = listOf<Any>()
+    var matchOdd: MatchOdd? = null
+        set(value) {
+            field = value
+
+            value?.let {
+                data = it.displayList
+            }
+        }
+
+    private var data = listOf<Any>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -168,7 +178,6 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
-
 
     class SubTitleViewHolder private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {

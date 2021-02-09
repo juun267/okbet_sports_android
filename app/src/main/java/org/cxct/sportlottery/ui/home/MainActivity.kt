@@ -312,6 +312,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
         viewModel.isOpenOutrightDetail.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
+            subscribeHallChannel()
             addFragment(OutrightDetailFragment(), Page.OUTRIGHT)
         })
 
