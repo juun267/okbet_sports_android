@@ -8,6 +8,7 @@ object VerifyConstUtil {
     private const val CHINESE_WORD = "\u4e00-\u9fa5"
     private const val VIETNAM_WORD = "àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ"
     private const val ENGLISH_WORD = "a-zA-Z"
+    private const val EMAIL_REGEX = "(?=[$NUMBER$ENGLISH_WORD[-+_]]+@[$NUMBER$ENGLISH_WORD]+[.][$NUMBER$ENGLISH_WORD]+)[$NUMBER$ENGLISH_WORD[-+_@.]]"
 
     //是否為越南文文字
     private fun isValidVietnamWord(inputStr: CharSequence): Boolean {
@@ -105,7 +106,7 @@ object VerifyConstUtil {
 
     //mail
     fun verifyMail(mail: CharSequence): Boolean {
-        return Pattern.matches("[\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*]{0,50}", mail)
+        return Pattern.matches("$EMAIL_REGEX{0,50}", mail)
     }
 
     fun verifyPhone(phone: CharSequence): Boolean {
