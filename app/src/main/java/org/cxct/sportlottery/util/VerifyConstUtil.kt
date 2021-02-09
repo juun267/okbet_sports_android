@@ -123,4 +123,7 @@ object VerifyConstUtil {
         return Pattern.matches("[$NUMBER]{0,11}", telegram)
     }
 
+    fun verifyValidCode(validCode: CharSequence): Boolean{
+        return Pattern.matches("[$NUMBER]{4}", validCode)
+    }
 }

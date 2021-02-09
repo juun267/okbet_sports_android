@@ -265,6 +265,7 @@ class RegisterViewModel(
     private fun checkValidCode(context: Context, validCode: String?): String? {
         return when {
             validCode.isNullOrBlank() -> context.getString(R.string.hint_verification_code)
+            !VerifyConstUtil.verifyValidCode(validCode) -> context.getString(R.string.error_verification_code)
             else -> null
         }
     }
