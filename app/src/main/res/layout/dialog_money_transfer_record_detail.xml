@@ -175,8 +175,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/log_detail_status_subtitle3"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="请求第三方接口失败
-asdfasdfasdfasdfasdfasdfasdfasdfasdf" />
+            tools:text="请求第三方接口失败" />
 
         <View
             android:id="@+id/log_detail_divider"
