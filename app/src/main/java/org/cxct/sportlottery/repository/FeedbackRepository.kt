@@ -18,7 +18,7 @@ class FeedbackRepository {
         return OneBoSportApi.feedbackService.fbReply(feedbackReplyRequest)
     }
 
-    suspend fun fbQueryDetail(id: String): Response<FeedBackBaseResult> {
+    suspend fun fbQueryDetail(id: String): Response<FeedbackListResult> {
         return OneBoSportApi.feedbackService.fbQueryDetail(id)
     }
 }

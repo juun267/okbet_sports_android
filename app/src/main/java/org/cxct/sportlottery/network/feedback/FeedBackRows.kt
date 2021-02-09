@@ -24,5 +24,8 @@ data class FeedBackRows(
     @Json(name = "track")
     val track: Int?,
     @Json(name = "lastFeedbackTime")
-    val lastFeedbackTime: Long?
+    val lastFeedbackTime: Long?,
+    @Json(name = "feedbackCode")
+    val feedbackCode: String?
+
 )

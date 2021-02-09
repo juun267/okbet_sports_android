@@ -40,7 +40,6 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         private val llContent: LinearLayout = itemView.findViewById(R.id.ll_content)
 
         fun bind(item: FeedBackRows, clickListener: ItemClickListener) {
-
             tvTime.text = item.lastFeedbackTime?.toString()
             tvDescription.text = item.content
             llContent.setOnClickListener {

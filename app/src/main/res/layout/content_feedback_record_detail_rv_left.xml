@@ -19,6 +19,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/img_pic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/bg_feedback_dialog_left"
@@ -27,7 +28,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <TextView
+            android:id="@+id/txv_reply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
@@ -42,6 +44,7 @@
             tools:text="您好，您有任何疑问，可点击我司在线客服人员咨询详情哦！谢谢" />
 
         <TextView
+            android:id="@+id/txv_reply_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

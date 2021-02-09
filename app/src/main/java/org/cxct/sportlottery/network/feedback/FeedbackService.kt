@@ -34,6 +34,6 @@ interface FeedbackService {
     @GET(FEEDBACK_QUERYDETAIL)
     suspend fun fbQueryDetail(
         @Query("id") id: String
-    ): Response<FeedBackBaseResult>
+    ): Response<FeedbackListResult>
 
 }

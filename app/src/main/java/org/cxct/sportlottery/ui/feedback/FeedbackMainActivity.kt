@@ -9,6 +9,7 @@ class FeedbackMainActivity : BaseToolBarActivity<FeedbackViewModel>(FeedbackView
         super.onCreate(savedInstanceState)
         isOpenMenu(false) //關掉menu
         initLiveData()
+        initData()
     }
 
     override fun setContentView(): Int {
@@ -26,5 +27,8 @@ class FeedbackMainActivity : BaseToolBarActivity<FeedbackViewModel>(FeedbackView
             else
                 hideLoading()
         })
+    }
+    fun initData(){
+        viewModel.getUserInfo()
     }
 }

@@ -21,8 +21,10 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
 
     val adapter by lazy {
         context?.let {
-            FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener {
+            FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener { data ->
                 navController?.navigate(R.id.action_feedbackRecordListFragment_to_feedbackDetailFragment)
+                viewModel.dataID = data.id?.toLong()
+                viewModel.feedbackCode =data.feedbackCode?.toInt()
             })
         }
     }
@@ -48,10 +50,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     }
 
     private fun initRecyclerView() {
-//        adapter = FeedbackListAdapter(rv_pay_type.context, FeedbackListAdapter.ItemClickListener {
-//            navController?.navigate(R.id.action_feedbackRecordListFragment_to_feedbackDetailFragment)
-//        })
-
         rv_pay_type.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rv_pay_type.adapter = adapter
