@@ -143,4 +143,7 @@ class SplashViewModel(
         RequestManager.instance.retrofit = retrofit
     }
 
+    fun isNeedGetHost(): Boolean {
+        return hostRepository.isNeedGetHost
+    }
 }

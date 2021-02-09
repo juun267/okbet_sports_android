@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.home
 
-import android.content.*
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,7 +34,9 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) {
 
@@ -45,6 +48,8 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             context.startActivity(intent)
         }
     }
+
+    private val mSplashViewModel: SplashViewModel by viewModel()
 
     private lateinit var mainBinding: ActivityMainBinding
 
@@ -72,6 +77,10 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         initRvMarquee()
         refreshTabLayout(null)
         initObserve()
+
+        //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
+        if (mSplashViewModel.isNeedGetHost())
+            mSplashViewModel.getHost()
     }
 
     override fun onResume() {

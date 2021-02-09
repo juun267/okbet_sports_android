@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
-    private val versionUpdateViewModel: VersionUpdateViewModel by viewModel()
+    private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +66,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     //檢查版本: 當前版號小於最小更新版號 => 強制更新
     private fun checkAppMinVersion() {
-        versionUpdateViewModel.checkAppMinVersion()
+        mVersionUpdateViewModel.checkAppMinVersion()
     }
 
     private fun initObserve() {
@@ -83,7 +83,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             }
         })
 
-        versionUpdateViewModel.appMinVersionState.observe(this, Observer {
+        mVersionUpdateViewModel.appMinVersionState.observe(this, Observer {
             if (it.isForceUpdate || it.isShowUpdateDialog)
                 showAppUpdateDialog(it.isForceUpdate, it.version)
             else
@@ -102,7 +102,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             dialog.setNegativeButtonText(null)
         dialog.setNegativeClickListener(View.OnClickListener {
             goHomePage()
-            versionUpdateViewModel.lastShowUpdateTime = System.currentTimeMillis() //點擊取消 => 記錄此次提醒時間
+            mVersionUpdateViewModel.lastShowUpdateTime = System.currentTimeMillis() //點擊取消 => 記錄此次提醒時間
             dialog.dismiss()
         })
         dialog.setPositiveButtonText(getString(R.string.update_new))
