@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.OutrightOddAdapter
@@ -72,7 +73,7 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
     private fun setupMatchOddList(view: View) {
         view.league_odd_sub_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
             this.adapter = matchOddAdapter.apply {
                 this.playType = this@GameDetailFragment.playType
             }
@@ -82,7 +83,7 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
     private fun setupOutrightOddList(view: View) {
         view.outright_odd_sub_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
             this.adapter = outrightOddAdapter
             addItemDecoration(
                 DividerItemDecoration(
