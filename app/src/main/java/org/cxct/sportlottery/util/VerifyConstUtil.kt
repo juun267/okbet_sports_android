@@ -123,7 +123,13 @@ object VerifyConstUtil {
         return Pattern.matches("[$NUMBER]{0,11}", telegram)
     }
 
-    fun verifyValidCode(validCode: CharSequence): Boolean{
+    //驗證碼 //數字 4位
+    fun verifyValidCode(validCode: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", validCode)
+    }
+
+    //簡訊驗證碼 //數字 4位
+    fun verifySecurityCode(securityCode: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{4}", securityCode)
     }
 }
