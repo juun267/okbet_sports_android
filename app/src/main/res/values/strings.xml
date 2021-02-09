@@ -91,6 +91,7 @@
     <string name="hint_zalo">请输入Zalo</string>
     <string name="facebook">Facebook</string>
     <string name="hint_facebook">请输入Facebook</string>
+    <string name="error_facebook">Facebook帐号格式错误</string>
     <string name="whats_app">WhatsApp</string>
     <string name="hint_whats_app">请输入WhatsApp</string>
     <string name="telegram">Telegram</string>

@@ -236,6 +236,7 @@ class RegisterViewModel(
     private fun checkFacebook(context: Context, facebook: String?): String? {
         return when {
             facebook.isNullOrBlank() -> context.getString(R.string.hint_facebook)
+            !VerifyConstUtil.verifyFacebook(facebook) -> context.getString(R.string.error_facebook)
             else -> null
         }
     }
