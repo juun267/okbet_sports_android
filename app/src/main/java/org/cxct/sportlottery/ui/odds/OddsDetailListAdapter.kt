@@ -375,9 +375,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         }
                     } else {
 
-                        val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
-                        odd.isSelect = select
-
                         val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
                         val vCover = itemView.findViewById<ImageView>(R.id.iv_disable_cover)
 
@@ -390,6 +387,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 itemView.visibility = View.VISIBLE
                                 vCover.visibility = View.GONE
                                 tvOdds.isEnabled = true
+
+                                val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
+                                odd.isSelect = select
+
                                 tvOdds.isSelected = odd.isSelect ?: false
                                 tvOdds.setOnClickListener {
                                     if (odd.isSelect != true) {
