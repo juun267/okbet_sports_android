@@ -146,9 +146,10 @@ class ProfileCenterActivity :
         }
 
         //代理加盟
-        btn_agent.setOnClickListener {
+        //7610 確認移除代理加盟
+        /*btn_agent.setOnClickListener {
             //TODO 代理加盟
-        }
+        }*/
 
         //幫助中心
         btn_help_center.setOnClickListener {

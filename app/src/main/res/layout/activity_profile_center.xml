@@ -547,7 +547,8 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <!--7610 確認移除代理加盟-->
+                    <!--<LinearLayout
                         android:id="@+id/btn_agent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -580,7 +581,7 @@
                             android:contentDescription="@null"
                             android:src="@drawable/ic_arrow_right_gray" />
 
-                    </LinearLayout>
+                    </LinearLayout>-->
 
                     <View
                         android:layout_width="match_parent"

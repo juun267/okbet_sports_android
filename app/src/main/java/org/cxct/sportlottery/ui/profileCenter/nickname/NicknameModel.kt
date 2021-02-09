@@ -62,7 +62,7 @@ class NicknameModel(
     private fun checkNickname(context: Context, nickname: String): String? {
         return when {
             nickname.isBlank() -> context.getString(R.string.error_nickname_empty)
-            !VerifyConstUtil.verifyNickname(nickname) -> context.getString(R.string.error_character_not_match)
+            !VerifyConstUtil.verifyNickname(nickname) -> context.getString(R.string.error_incompatible_format)
             else -> null
         }
     }
