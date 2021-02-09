@@ -507,5 +507,18 @@
     <string name="feedback_unreplied">未回复</string>
     <string name="feedback_submit_time">提交时间:%1$s</string>
     <string name="feedback_reply_time">反馈时间:%1$s</string>
+    <string name="feedback_type_recharge_problem">充值问题</string>
+    <string name="feedback_type_withdraw_problem">提款问题</string>
+    <string name="feedback_type_other_problem">其他问题</string>
+    <string name="feedback_type_complaint">我要投诉</string>
+    <string name="feedback_type_service_reply">客服反馈</string>
+    <string name="feedback_type_user_reply">玩家回复</string>
+    <string name="feedback_type_draw_suggestion">开奖网信息反馈</string>
+
+
+
+
+
+
 
 </resources>

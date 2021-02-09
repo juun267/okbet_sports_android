@@ -39,7 +39,7 @@ class InfoCenterAdapter(private val clickListener: ItemClickListener) : Recycler
         fun bind(item: InfoCenterData, clickListener: ItemClickListener) {
             txvIndex.text = (adapterPosition + 1).toString()
             txvTitle.text = item.title
-            txvTime.text = TimeUtil.stampToDate(item.addDate.toLong())
+            txvTime.text = item.addDate?.toLong()?.let { TimeUtil.stampToDate(it) }
             llTitle.setOnClickListener {
                 clickListener.onClick(item)
             }

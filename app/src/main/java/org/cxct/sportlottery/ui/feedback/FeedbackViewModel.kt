@@ -34,9 +34,9 @@ class FeedbackViewModel(
     private var _isLoading = MutableLiveData<Boolean>()
 
     //意見反饋清單
-    val feedbackList: LiveData<FeedbackListResult?>
+    val feedbackList: LiveData<MutableList<FeedBackRows>?>
         get() = _feedbackList
-    private var _feedbackList = MutableLiveData<FeedbackListResult?>()
+    private var _feedbackList = MutableLiveData<MutableList<FeedBackRows>?>()
 
 
     //API
@@ -47,7 +47,8 @@ class FeedbackViewModel(
                 feedbackRepository.getFbQueryList(FeedbackListRequest())
             }
             Timber.e(">>>input = ${FeedbackListRequest()}, result = ${result}, url = ${Constants.FEEDBACK_QUERYLIST}")
-            _feedbackList.value = result
+            if (result?.rows?.size?:0 > 0)
+                _feedbackList.value = result?.rows
         }
         _isLoading.value = false
     }
