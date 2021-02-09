@@ -132,12 +132,14 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     }
                 }
 
+                val win = ArithUtil.round(
+                        it.toDouble() * matchOdd.odds,
+                        3,
+                        RoundingMode.HALF_UP).toDouble()
+
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)
-                binding.betInfoAction.tv_win_quota.text =
-                        ArithUtil.round(
-                                it.toDouble() * matchOdd.odds,
-                                3,
-                                RoundingMode.HALF_UP)
+                binding.betInfoAction.tv_win_quota.text = TextUtil.format(win)
+
             }
 
             (binding.rlInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (inputError) 0.dp else 10.dp
@@ -205,7 +207,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     }
                 }
             }
-            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
+
+            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.format(parlayOdd.max))
             binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
 
             if (!TextUtils.isEmpty(binding.etBet.text.toString())) {
