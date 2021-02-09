@@ -311,6 +311,8 @@
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
     <string name="detail_outright_upper_bar_title">冠军</string>
+    <string name="no_history">暂无任何内容</string>
+    <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
 
     <string name="total_bet_amount">总共有 投注额</string>
     <string name="win_lose">赢 / 输</string>

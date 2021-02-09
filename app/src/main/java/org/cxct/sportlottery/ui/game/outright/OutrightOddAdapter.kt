@@ -13,19 +13,24 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
 class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>() {
-    var data = listOf<Odd>()
+    var data2 = listOf<MatchOdd>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            data = if (field.isNotEmpty()) {
+                field[0].odds.values.first()
+            } else {
+                listOf()
+            }
         }
 
-    var updatedWinnerOddsList = listOf<Odd>()
+    var data = listOf<Odd>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -51,30 +56,19 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        updateItemDataFromSocket(item)
 
         holder.bind(item, outrightOddListener, betInfoListData)
-    }
-
-    private fun updateItemDataFromSocket(originItem: Odd) {
-        if (updatedWinnerOddsList.isNullOrEmpty()) return
-
-        updatedWinnerOddsList.forEach {
-            if (originItem.id == it.id) {
-                //後端表示originItem.spread的值只用api回傳, socket不可覆蓋
-                originItem.odds = it.odds
-                originItem.status = it.status
-                originItem.producerId = it.producerId
-            }
-        }
-
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Odd, outrightOddListener: OutrightOddListener?, betInfoListData: List<BetInfoListData>?) {
+        fun bind(
+            item: Odd,
+            outrightOddListener: OutrightOddListener?,
+            betInfoListData: List<BetInfoListData>?
+        ) {
             itemView.apply {
                 kotlin.run status@{
                     betInfoListData?.forEach {
@@ -98,7 +92,12 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
         }
 
 
-        private fun setStatus(textView: TextView, lockImg: ImageView, isOddsNull: Boolean, status: Int) {
+        private fun setStatus(
+            textView: TextView,
+            lockImg: ImageView,
+            isOddsNull: Boolean,
+            status: Int
+        ) {
             var itemState = status
             if (isOddsNull) itemState = 2
 
@@ -121,17 +120,26 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             }
         }
 
-        private fun setHighlight(button: TextView, status: Int?= OddState.SAME.state) {
+        private fun setHighlight(button: TextView, status: Int? = OddState.SAME.state) {
             when (status) {
                 OddState.LARGER.state ->
-                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg_green)
+                    button.background = ContextCompat.getDrawable(
+                        button.context,
+                        R.drawable.shape_play_category_bet_bg_green
+                    )
                 OddState.SMALLER.state ->
-                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg_red)
+                    button.background = ContextCompat.getDrawable(
+                        button.context,
+                        R.drawable.shape_play_category_bet_bg_red
+                    )
             }
 
             Handler().postDelayed(
                 {
-                    button.background = ContextCompat.getDrawable(button.context, R.drawable.shape_play_category_bet_bg)
+                    button.background = ContextCompat.getDrawable(
+                        button.context,
+                        R.drawable.shape_play_category_bet_bg
+                    )
                 }, CHANGING_ITEM_BG_COLOR_DURATION
             )
         }
@@ -140,7 +148,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                        .inflate(R.layout.itemview_outright_odd, parent, false)
+                    .inflate(R.layout.itemview_outright_odd, parent, false)
 
                 return ViewHolder(view)
             }
