@@ -11,5 +11,5 @@ data class ThirdGameData(
     @Json(name = "gameFirmMap")
     val gameFirmMap: Map<String, GameFirmValues>?= mapOf(),
     @Json(name = "thirdDictMap")
-    val thirdDictMap: Map<String, List<ThirdDictValues?>?> ?= mapOf()
+    val thirdDictMap: Map<String, List<ThirdDictValues?>?>?= mapOf()
 )

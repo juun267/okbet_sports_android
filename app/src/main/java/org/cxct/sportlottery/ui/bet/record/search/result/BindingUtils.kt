@@ -59,34 +59,34 @@ fun TextView.setRecordStatusColor(status: Int?) {
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Double?) {
     money?.let {
-        TextUtil.format(it)
+        text = TextUtil.format(it)
     }
 }
 
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Long?) {
     money?.let {
-        TextUtil.format(it)
+        text = TextUtil.format(it)
     }
 }
+
+val gameNameMap: Map<String?, Int> = mapOf(
+    "CG" to R.string.plat_money,
+    "DF" to R.string.third_game_df,
+    "SBTY" to R.string.third_game_sbty,
+    "AG" to R.string.third_game_ag,
+    "IBO" to R.string.third_game_ibo,
+    "CQ9" to R.string.third_game_cq9,
+    "CGCP" to R.string.third_game_cgcp,
+    "OGPLUS" to R.string.third_game_ogplus,
+    "CR" to R.string.third_game_cr,
+)
 
 @BindingAdapter("platName")
 fun TextView.setPlatName(platCode: String?) {
 
-    val gameNameMap: Map<String?, String> = mapOf(
-        "CG" to context.getString(R.string.plat_money),
-        "DF" to context.getString(R.string.third_game_df),
-        "SBTY" to context.getString(R.string.third_game_sbty),
-        "AG" to context.getString(R.string.third_game_ag),
-        "IBO" to context.getString(R.string.third_game_ibo),
-        "CQ9" to context.getString(R.string.third_game_cq9),
-        "CGCP" to context.getString(R.string.third_game_cgcp),
-        "OGPLUS" to context.getString(R.string.third_game_ogplus),
-        "CR" to context.getString(R.string.third_game_cr),
-    )
-
     platCode?.let {
-        gameNameMap[it]
+        text = gameNameMap[it]?.let { stringId -> context.getString(stringId) }
     }
 }
 

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.content.Context
+import android.nfc.tech.MifareUltralight
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +11,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
+import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
+import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -25,7 +28,7 @@ class MoneyTransferViewModel(
 ) : BaseOddButtonViewModel(betInfoRepository) {
 
     companion object {
-        private const val PAGE_SIZE = 20
+        private const val PAGE_SIZE = 2
     }
 
     val gameNameMap: Map<String?, String> = mapOf(
@@ -39,7 +42,6 @@ class MoneyTransferViewModel(
         "OGPLUS" to androidContext.getString(R.string.third_game_ogplus),
         "CR" to androidContext.getString(R.string.third_game_cr),
     )
-
 
     val allBalanceResultList: LiveData<List<GameData>>
         get() = _allBalanceResultList
@@ -129,11 +131,33 @@ class MoneyTransferViewModel(
         }
     }
 
+    var isLastPage = false
+    var isLoading = false
+
+    var nowPage = 1
+
+    fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
+        Log.e(">>>", "isLoading = $isLoading, isLastPage = $isLastPage")
+        if (!isLoading && !isLastPage) {
+            Log.e(">>>", "1: ${visibleItemCount + firstVisibleItemPosition >= totalItemCount}, " +
+                    "2: ${firstVisibleItemPosition >= 0 }," +
+                    "3: ${totalItemCount >= MifareUltralight.PAGE_SIZE}")
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                && firstVisibleItemPosition >= 0
+                && totalItemCount >= PAGE_SIZE) {
+                Log.e(">>>", "getNextPage")
+                isLoading = true
+                queryTransfers(++nowPage)
+            }
+        }
+    }
+
     fun queryTransfers(page: Int) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryTransfers(page, PAGE_SIZE)
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE))
             }?.let { result ->
+                isLoading = false
                 _queryTransfersResult.value = result
             }
         }

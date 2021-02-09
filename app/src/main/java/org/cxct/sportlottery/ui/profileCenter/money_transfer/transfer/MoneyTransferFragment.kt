@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 
@@ -38,6 +39,8 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
     }
 
     private fun initView() {
+        context?.getString(R.string.account_transfer)?.let { (activity as MoneyTransferActivity).setToolBarName(it) }
+
         rv_plat.adapter = rvAdapter
     }
 
@@ -50,6 +53,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
             viewModel.getMoney()
         }
     }
+
 
 
     private fun initObserver() {

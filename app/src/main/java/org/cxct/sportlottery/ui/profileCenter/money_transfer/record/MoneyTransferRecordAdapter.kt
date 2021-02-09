@@ -30,7 +30,7 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
                     if (list.isEmpty())
                         listOf(DataItem.NoData)
                     else
-                        list.map { DataItem.Item(it) }
+                        list.map { DataItem.Item(it) }/* + listOf(DataItem.Footer)*/
                 }
             }
             withContext(Dispatchers.Main) { //update in main ui thread
@@ -52,18 +52,12 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
                 holder.bind(data.row, clickListener)
-                showDivider(position, holder)
             }
 
-//            is FooterViewHolder -> {}
+            is FooterViewHolder -> {}
 
             is NoDataViewHolder -> {}
         }
-    }
-
-    private fun showDivider(position: Int, holder: ItemViewHolder) {
-        if (position == itemCount - 1) holder.binding.divider.visibility = View.GONE
-        else holder.binding.divider.visibility = View.VISIBLE
     }
 
     override fun getItemViewType(position: Int): Int {

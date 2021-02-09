@@ -18,6 +18,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 
@@ -84,6 +85,9 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
     private fun initView() {
+
+        context?.getString(R.string.transfer_info)?.let { (activity as MoneyTransferActivity).setToolBarName(it) }
+
         out_account.tv_selected.text = getString(R.string.plat_money)
         in_account.tv_selected.text = gameDataArg.gameData.showName
 

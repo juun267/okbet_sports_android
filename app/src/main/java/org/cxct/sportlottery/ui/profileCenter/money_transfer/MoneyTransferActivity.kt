@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.os.Bundle
+import android.view.View
 import android.widget.CheckBox
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_money_transfer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
-import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
 
 class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
@@ -24,10 +24,13 @@ class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyT
 
     private fun changePage() {
         cb_change.setCheckedChange(cb_record) {
-            my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
+            layout_record.visibility = View.GONE
+            layout_transfer.visibility = View.VISIBLE
         }
         cb_record.setCheckedChange(cb_change) {
-            my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
+            setToolBarName(getString(R.string.record_conversion))
+            layout_record.visibility = View.VISIBLE
+            layout_transfer.visibility = View.GONE
         }
     }
 

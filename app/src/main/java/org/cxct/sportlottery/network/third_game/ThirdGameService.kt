@@ -6,13 +6,11 @@ import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
 import org.cxct.sportlottery.network.Constants.TRANSFER
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
+import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ThirdGameService {
     @GET(GET_ALL_BALANCE)
@@ -36,8 +34,7 @@ interface ThirdGameService {
 
     @POST(QUERY_TRANSFERS)
     suspend fun queryTransfers(
-        @Path("page") page: Int,
-        @Path("pageSize") pageSize: Int,
+        @Body queryTransfersRequest: QueryTransfersRequest
     ): Response<QueryTransfersResult>
 
 }
