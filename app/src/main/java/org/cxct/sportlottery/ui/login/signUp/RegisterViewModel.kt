@@ -228,7 +228,8 @@ class RegisterViewModel(
 
     private fun checkZalo(context: Context, zalo: String?): String? {
         return when {
-            zalo.isNullOrBlank() -> context.getString(R.string.hint_zalo)
+            zalo.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyZalo(zalo) -> context.getString(R.string.error_zalo)
             else -> null
         }
     }

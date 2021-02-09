@@ -89,6 +89,7 @@
     <string name="error_we_chat_number">微信ID格式错误</string>
     <string name="zalo">Zalo</string>
     <string name="hint_zalo">请输入Zalo</string>
+    <string name="error_zalo">Zalo帐号格式错误</string>
     <string name="facebook">Facebook</string>
     <string name="hint_facebook">请输入Facebook</string>
     <string name="error_facebook">Facebook帐号格式错误</string>

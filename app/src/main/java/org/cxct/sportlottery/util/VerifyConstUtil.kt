@@ -129,6 +129,11 @@ object VerifyConstUtil {
         return Pattern.matches("$EMAIL_REGEX{0,25}", whatsApp)
     }
 
+    //Zalo //11個內全數字組合(通常是由中國或越南手機註冊認證)
+    fun verifyZalo(zalo: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{0,11}", zalo)
+    }
+
     //Telegram //可以數字、英文或底線, 5~32個char
     fun verifyTelegram(telegram: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{0,11}", telegram)
