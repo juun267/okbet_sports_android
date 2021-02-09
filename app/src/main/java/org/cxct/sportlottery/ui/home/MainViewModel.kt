@@ -800,6 +800,11 @@ class MainViewModel(
     }
 
     fun getBetInfoList(oddsList: List<Odd>) {
+
+        if (betInfoRepository.betList.size >= 10) {
+            return
+        }
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 betInfoRepository.getBetInfo(oddsList)
