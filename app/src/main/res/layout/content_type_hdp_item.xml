@@ -23,15 +23,12 @@
 
         <TextView
             android:id="@+id/tv_odds"
+            style="@style/OddsButton"
             android:layout_width="64dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:background="@drawable/select_button_radius_5_odds"
-            android:gravity="center"
-            android:textColor="@color/color_select_text_odds"
-            android:textSize="14sp" />
+            android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
         <ImageView
             android:id="@+id/iv_disable_cover"

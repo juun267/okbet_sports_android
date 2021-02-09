@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
@@ -67,6 +69,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         tv_add_more.setOnClickListener { dismiss() }
         tv_bet.setOnClickListener {
             addBet()
+        }
+
+        tv_to_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
         }
 
         rl_expandable.setOnClickListener {

@@ -45,7 +45,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@+id/iv_delete"
                 android:layout_toEndOf="@+id/iv_bet_type"
-                android:text="@{matchOdd.playCateName}"
                 android:textColor="@color/textGray"
                 android:textSize="14sp"
                 tools:text="让球" />

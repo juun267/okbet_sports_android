@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.odds
 
 import android.content.res.ColorStateList
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -273,7 +274,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
 
-            tvName.text = oddsDetail.name
+            val type = oddsDetailDataList[position].gameType
+
+            if(type.contains(":")){
+                tvName.text = oddsDetail.name.plus("  ").plus(type.split(":")[1])
+            }else{
+                tvName.text = oddsDetail.name
+            }
+
             llItem.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(position)
@@ -367,9 +375,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         }
                     } else {
 
-                        val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
-                        odd.isSelect = select
-
                         val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
                         val vCover = itemView.findViewById<ImageView>(R.id.iv_disable_cover)
 
@@ -382,6 +387,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 itemView.visibility = View.VISIBLE
                                 vCover.visibility = View.GONE
                                 tvOdds.isEnabled = true
+
+                                val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
+                                odd.isSelect = select
+
                                 tvOdds.isSelected = odd.isSelect ?: false
                                 tvOdds.setOnClickListener {
                                     if (odd.isSelect != true) {
