@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.record
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 
 
@@ -39,7 +37,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-        initOnclick()
         initObserver()
     }
 
@@ -47,10 +44,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private fun initView() {
         rv_record.adapter = rvAdapter
         rv_record.addOnScrollListener(recyclerViewOnScrollListener)
-    }
-
-    private fun initOnclick() {
-
     }
 
     private fun initObserver() {

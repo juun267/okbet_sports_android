@@ -49,17 +49,4 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransfer
         }
     }
 
-/*
-    fun setData(data: Row) {
-        data.apply {
-            tv_order_number.text = orderNo
-            tv_datetime.setDateTime(addTime)
-            tv_out_account.text = firmTypeOut
-            tv_in_account.text = firmTypeIn
-            tv_money.setMoneyFormat(money)
-            tv_state.setRecordStatus(status)
-            tv_remark.text = remark
-        }
-    }
-    */
 }

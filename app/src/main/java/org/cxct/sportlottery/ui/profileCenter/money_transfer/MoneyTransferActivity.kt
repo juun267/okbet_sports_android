@@ -3,11 +3,9 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
-import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_money_transfer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
-import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
 
 class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,11 +16,10 @@ class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyT
         viewModel.getAllBalance()
 //        viewModel.getThirdGames() //TODO Cheryl: 平台名稱不太會換，跟ios先寫死，後續有更動再調整
 
-
-        changePage()
+        initOnClick()
     }
 
-    private fun changePage() {
+    private fun initOnClick() {
         cb_change.setCheckedChange(cb_record) {
             layout_record.visibility = View.GONE
             layout_transfer.visibility = View.VISIBLE

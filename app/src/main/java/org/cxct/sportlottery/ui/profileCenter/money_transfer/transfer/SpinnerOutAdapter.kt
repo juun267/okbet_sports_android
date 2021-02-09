@@ -68,18 +68,6 @@ class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : Rec
                 }
             }
             binding.item = data
-/*
-
-                itemView.apply {
-                    checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                        if (isChecked) {
-                            previousCheckedBtn = buttonView
-                            data.isChecked = true
-                        }
-                    }
-                }
-*/
-
             binding.executePendingBindings()
         }
 

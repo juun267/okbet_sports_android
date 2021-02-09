@@ -55,8 +55,6 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
                 showDivider(position, holder)
             }
 
-//            is FooterViewHolder -> {}
-
             is NoDataViewHolder -> {}
         }
     }
@@ -90,15 +88,6 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
         }
 
     }
-/*
-
-    class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        companion object {
-            fun from(parent: ViewGroup) =
-                FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
-        }
-    }
-*/
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
@@ -131,11 +120,6 @@ sealed class DataItem {
     data class Item(val gameData: GameData) : DataItem() {
         override val name = gameData.showName
     }
-/*
-    object Footer : DataItem() {
-        override val name: String = ""
-    }
-*/
 
     object NoData : DataItem() {
         override val name: String = ""
