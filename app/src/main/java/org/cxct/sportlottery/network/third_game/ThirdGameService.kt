@@ -10,6 +10,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ThirdGameService {
     @GET(GET_ALL_BALANCE)
@@ -24,11 +25,11 @@ interface ThirdGameService {
     suspend fun getThirdGames(
     ): Response<ThirdGamesResult>
 
-    @POST(TRANSFER)
+    @GET(TRANSFER)
     suspend fun transfer(
         @Path("outPlat") outPlat: String,
         @Path("inPlat") inPlat: String,
-        @Path("amount") amount: Long
+        @Query("amount") amount: Long
     ): Response<BlankResult>
 
 }
