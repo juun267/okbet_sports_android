@@ -430,16 +430,6 @@ class MainViewModel(
         }
     }
 
-    fun getHallUrl(cateMenuCode: String? = CateMenuCode.HDP_AND_OU.code, eventId: String?): String {
-        return "${BackService.URL_HALL}$nowGameType/$cateMenuCode/$eventId"
-    }
-
-    fun getEventUrl(eventId: String?): String {
-        return "${BackService.URL_EVENT}${eventId}"
-    }
-
-    var nowGameType: String? = SportType.FOOTBALL.code
-
     fun getLeagueOddsList(matchType: MatchType, leagueId: String) {
         val leagueIdList by lazy {
             listOf(leagueId)
@@ -449,7 +439,6 @@ class MainViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
                     it.isSelected
                 }?.code
-                nowGameType = gameType
 
                 gameType?.let {
                     getOddsList(
@@ -465,8 +454,6 @@ class MainViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
                     it.isSelected
                 }?.code
-                nowGameType = gameType
-
 
                 gameType?.let {
                     getOddsList(
@@ -482,8 +469,6 @@ class MainViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
-                nowGameType = gameType
-
 
                 gameType?.let {
                     getOddsList(

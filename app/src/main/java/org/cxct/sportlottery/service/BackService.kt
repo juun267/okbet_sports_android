@@ -285,7 +285,7 @@ class BackService : Service() {
 
     private val subscribedMap = mutableMapOf<String, Disposable?>()
 
-    fun subscribeChannel(url: String) {
+    private fun subscribeChannel(url: String) {
         Timber.e(">>> subscribeEvent: $url")
         val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
             Timber.e(">>> returned msg: ${topicMessage.payload}")
@@ -304,7 +304,7 @@ class BackService : Service() {
         subscribedMap[url] = newDisposable
     }
 
-    fun unSubscribe(url: String) {
+    private fun unSubscribe(url: String) {
         Timber.e(">>> unSubscribeEvent: $url")
         subscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
     }

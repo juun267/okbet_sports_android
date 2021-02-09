@@ -261,7 +261,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-//            doBackService(it)
             queryData()
         })
 
@@ -283,11 +282,12 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
             getAppBarLayout().setExpanded(true, true)
 
-            subscribeEventChannel(matchId)
             addFragment(
                 OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
                 Page.ODDS_DETAIL
             )
+
+            backService.subscribeEventChannel(matchId)
         })
 
         viewModel.matchTypeCardForParlay.observe(this, Observer {
@@ -335,38 +335,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun subscribeEventChannel(eventId: String?) {
-        if (eventId.isNullOrEmpty()) return
-        backService.subscribeChannel(viewModel.getEventUrl(eventId))
-    }
-
-    private fun subscribeHallChannel() {
-
-        //一般遊戲
-        viewModel.oddsListResult.observe(this, Observer {
-            if (it != null && it.success) {
-                val eventId = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
-                if (!eventId.isNullOrEmpty())
-                    backService.subscribeChannel(viewModel.getHallUrl(eventId = eventId))
-            }
-        })
-
-        //冠軍玩法
-        viewModel.outrightOddsListResult.observe(this, Observer {
-            if (it != null && it.success) {
-                val eventId = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
-                if (!eventId.isNullOrEmpty())
-                    backService.subscribeChannel(
-                        viewModel.getHallUrl(
-                            cateMenuCode = CateMenuCode.OUTRIGHT.code,
-                            eventId = eventId
-                        )
-                    )
-            }
-        })
-
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
