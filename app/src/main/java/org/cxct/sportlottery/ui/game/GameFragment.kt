@@ -105,14 +105,6 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(LeagueListener { leagueId ->
-            scope.launch {
-                val code = gameTypeAdapter.data.find {
-                    it.isSelected
-                }?.code
-
-                service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, leagueId)
-            }
-
             viewModel.getLeagueOddsList(args.matchType, leagueId)
         })
     }

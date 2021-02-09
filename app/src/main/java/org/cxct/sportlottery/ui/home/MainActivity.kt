@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.home
 
 import android.content.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -20,7 +19,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -303,9 +301,10 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             }
         })
 
-        viewModel.isOpenMatchOdds.observe(this, Observer {
+        viewModel.openGameDetail.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
-            addFragment(GameDetailFragment(), Page.ODDS)
+            addFragment(GameDetailFragment.newInstance(it.second, it.first), Page.ODDS)
+
         })
 
         viewModel.isOpenOutrightDetail.observe(this, Observer {

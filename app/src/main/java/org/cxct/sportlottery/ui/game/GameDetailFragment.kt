@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_game_detail.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_arrow
 import kotlinx.android.synthetic.main.itemview_league_odd.view.league_odd_sub_list
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -32,7 +33,24 @@ import timber.log.Timber
  * Use the [GameDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+private const val ARG_EVENT_ID = "eventId"
+private const val ARG_GAME_TYPE = "gameType"
+
 class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
+    //just for service subscribe use
+    private var eventId: String? = null
+    private var gameType: String? = null
+
+    companion object {
+        fun newInstance(eventId: String, gameType: String) =
+            GameDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_EVENT_ID, eventId)
+                    putString(ARG_GAME_TYPE, gameType)
+                }
+            }
+    }
 
     private val playType: PlayType by lazy { PlayType.OU_HDP }
 
@@ -50,6 +68,17 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
                     )
                 })
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            eventId = it.getString(ARG_EVENT_ID)
+            gameType = it.getString(ARG_GAME_TYPE)
+        }
+
+        service.subscribeHallChannel(gameType, CateMenuCode.HDP_AND_OU.code, eventId)
     }
 
     override fun onCreateView(
@@ -272,5 +301,11 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             }
             false
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        service.unSubscribeHallChannel(gameType, CateMenuCode.HDP_AND_OU.code, eventId)
     }
 }

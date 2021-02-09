@@ -37,7 +37,6 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SportMenuRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
@@ -110,11 +109,11 @@ class MainViewModel(
     val matchTypeCardForParlay: LiveData<MatchType>
         get() = _matchTypeCardForParlay
 
-    val isOpenMatchOdds: LiveData<Boolean>
-        get() = _isOpenMatchOdds
-
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
+
+    val openGameDetail: LiveData<Pair<String, String>>
+        get() = _openGameDetail
 
     val isOpenOutrightDetail: LiveData<Boolean>
         get() = _isOpenOutrightDetail
@@ -137,8 +136,9 @@ class MainViewModel(
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
-    private val _isOpenMatchOdds = MutableLiveData<Boolean>()
     private val _isNoHistory = MutableLiveData<Boolean>()
+    
+    private val _openGameDetail = MutableLiveData<Pair<String, String>>()
     private val _isOpenOutrightDetail = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -447,6 +447,9 @@ class MainViewModel(
                             getCurrentTimeRangeParams(),
                             leagueIdList
                     )
+
+
+                    _openGameDetail.postValue(it to leagueId)
                 }
             }
 
@@ -462,6 +465,8 @@ class MainViewModel(
                             getCurrentTimeRangeParams(),
                             leagueIdList
                     )
+
+                    _openGameDetail.postValue(it to leagueId)
                 }
             }
 
@@ -477,13 +482,13 @@ class MainViewModel(
                             getCurrentTimeRangeParams(),
                             leagueIdList
                     )
+
+                    _openGameDetail.postValue(it to leagueId)
                 }
             }
             else -> {
             }
         }
-
-        _isOpenMatchOdds.postValue(true)
     }
 
     fun getOutrightOddsList(leagueId: String) {
