@@ -112,14 +112,6 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
             seasonSubListener = SeasonSubAdapter.SeasonSubListener { season ->
-                scope.launch {
-                    val code = gameTypeAdapter.data.find {
-                        it.isSelected
-                    }?.code
-
-                    service.subscribeHallChannel(code, CateMenuCode.OUTRIGHT.code, season.id)
-                }
-
                 viewModel.getOutrightOddsList(season.id)
             }
         }

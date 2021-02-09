@@ -115,8 +115,8 @@ class MainViewModel(
     val openGameDetail: LiveData<Pair<String, String>>
         get() = _openGameDetail
 
-    val isOpenOutrightDetail: LiveData<Boolean>
-        get() = _isOpenOutrightDetail
+    val openOutrightDetail: LiveData<Pair<String, String>>
+        get() = _openOutrightDetail
 
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
@@ -137,9 +137,9 @@ class MainViewModel(
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
-    
+
     private val _openGameDetail = MutableLiveData<Pair<String, String>>()
-    private val _isOpenOutrightDetail = MutableLiveData<Boolean>()
+    private val _openOutrightDetail = MutableLiveData<Pair<String, String>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -539,9 +539,9 @@ class MainViewModel(
 
                 _outrightOddsListResult.postValue(result)
             }
-        }
 
-        _isOpenOutrightDetail.postValue(true)
+            _openOutrightDetail.postValue(it to leagueId)
+        }
     }
 
     fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {

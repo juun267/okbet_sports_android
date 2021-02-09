@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_outright_detail.*
 import kotlinx.android.synthetic.main.fragment_outright_detail.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -20,7 +21,24 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import timber.log.Timber
 
+
+private const val ARG_EVENT_ID = "eventId"
+private const val ARG_GAME_TYPE = "gameType"
+
 class OutrightDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
+    //just for service subscribe use
+    private var eventId: String? = null
+    private var gameType: String? = null
+
+    companion object {
+        fun newInstance(eventId: String, gameType: String) =
+            OutrightDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_EVENT_ID, eventId)
+                    putString(ARG_GAME_TYPE, gameType)
+                }
+            }
+    }
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
@@ -28,6 +46,17 @@ class OutrightDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::
                 viewModel.updateOutrightOddsSelectedState(it)
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            eventId = it.getString(ARG_EVENT_ID)
+            gameType = it.getString(ARG_GAME_TYPE)
+        }
+
+        service.subscribeHallChannel(gameType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 
     override fun onCreateView(
@@ -216,5 +245,11 @@ class OutrightDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::
         outright_detail_time.text = matchOdd?.startTime ?: ""
 
         outrightOddAdapter.matchOdd = matchOdd
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        service.unSubscribeHallChannel(gameType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 }

@@ -307,9 +307,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
         })
 
-        viewModel.isOpenOutrightDetail.observe(this, Observer {
+        viewModel.openOutrightDetail.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
-            addFragment(OutrightDetailFragment(), Page.OUTRIGHT)
+            addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
         })
 
         viewModel.errorResultToken.observe(this, Observer {
