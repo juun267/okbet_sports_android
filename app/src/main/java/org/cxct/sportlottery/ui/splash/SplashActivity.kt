@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
@@ -28,10 +27,8 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         setupVersion()
         initObserve()
 
-        //TODO simon test review 之後流程會是 getHost() checkAppUpdate() getConfig()
-        Handler().postDelayed({
-            getAppConfig()
-        }, 4000)
+        //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
+        checkLocalHost()
 
         //TODO simon test 之後放正式圖片就可以刪掉了
         iv_bg.scaleType = ImageView.ScaleType.FIT_CENTER
@@ -43,8 +40,8 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         tv_version_info.text = version
     }
 
-    private fun getAppConfig() {
-        viewModel.getConfig()
+    private fun checkLocalHost() {
+        viewModel.checkLocalHost()
     }
 
     private fun goHomePage() {
@@ -61,7 +58,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         dialog.setNegativeButtonText(null)
         dialog.setPositiveButtonText(getString(R.string.btn_retry))
         dialog.setPositiveClickListener(View.OnClickListener {
-            getAppConfig() //TODO simon test review getHost 流程
+            viewModel.getHost()
             dialog.dismiss()
         })
         dialog.show()
