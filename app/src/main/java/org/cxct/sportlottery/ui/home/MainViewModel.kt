@@ -542,6 +542,9 @@ class MainViewModel(
                             matchOdd.displayList.add(odd)
                         }
                     }
+
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "yyyy-MM-dd")
+                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
                 }
 
                 _outrightOddsListResult.postValue(result)

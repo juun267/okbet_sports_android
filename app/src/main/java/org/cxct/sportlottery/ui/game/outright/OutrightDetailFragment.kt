@@ -182,7 +182,10 @@ class OutrightDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::
             outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
         outright_detail_title.text =
-            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
+            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name ?: ""
+
+        outright_detail_date.text = matchOdd?.startDate ?: ""
+        outright_detail_time.text = matchOdd?.startTime ?: ""
 
         outrightOddAdapter.matchOdd = matchOdd
     }
