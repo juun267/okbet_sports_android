@@ -907,7 +907,7 @@ class MainViewModel(
         }
     }
 
-    fun removeBetInfoItem(oddId: String) {
+    fun removeBetInfoItem(oddId: String?) {
         betInfoRepository.removeItem(oddId)
         betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
     }
