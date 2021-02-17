@@ -14,5 +14,5 @@ interface CalendarListener {
      * @param startDate First date.
      * @param endDate Last date.
      */
-    fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar?, endDate: Calendar)
+    fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar)
 }

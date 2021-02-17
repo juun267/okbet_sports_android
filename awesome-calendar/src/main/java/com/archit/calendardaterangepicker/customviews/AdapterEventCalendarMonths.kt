@@ -67,7 +67,7 @@ internal class AdapterEventCalendarMonths(
             }
         }
 
-        override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar?, endDate: Calendar) {
+        override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
             mHandler.postDelayed({ notifyDataSetChanged() }, 50)
             if (mCalendarListener != null) {
                 mCalendarListener!!.onDateRangeSelected(dateSelectedType, startDate, endDate)

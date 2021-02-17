@@ -66,13 +66,13 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
                 calendarBottomSheet.dismiss()
 
-                viewModel.setRecordTimeRange(startDate)
+                viewModel.setRecordTimeRange(dateSelectedType, startDate)
             }
 
             override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
                 calendarBottomSheet.dismiss()
 
-                viewModel.setRecordTimeRange(startDate, endDate)
+                viewModel.setRecordTimeRange(null, startDate, endDate)
             }
         })
     }
@@ -105,10 +105,16 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupDateRangeSelector(view: View) {
         view.date_range_selector.ll_start_date.setOnClickListener {
-            calendarBottomSheet.show()
+            calendarBottomSheet.apply {
+                calendar.setDateSelectedType(DateSelectedType.START)
+                show()
+            }
         }
         view.date_range_selector.ll_end_date.setOnClickListener {
-            calendarBottomSheet.show()
+            calendarBottomSheet.apply {
+                calendar.setDateSelectedType(DateSelectedType.END)
+                show()
+            }
         }
     }
 
