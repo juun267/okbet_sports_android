@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
@@ -163,7 +164,7 @@ class SettingPasswordActivity :
     }
 
     private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage, updatePayPw: Int?) {
-        if (pwdPage == PwdPage.BANK_PWD && updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
+        if (pwdPage == PwdPage.LOGIN_PWD || updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
             et_current_password.setHint(getString(R.string.hint_current_login_password))
         else
             et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
