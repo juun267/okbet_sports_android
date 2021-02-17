@@ -155,7 +155,7 @@ class SettingPasswordActivity :
     private fun updateUiWithResult(updateFundPwdResult: UpdateFundPwdResult?) {
         hideLoading()
         if (updateFundPwdResult?.success == true) {
-            showPromptDialog(getString(R.string.setting_password), getString(R.string.update_withdrawal_pwd)) { finish() }
+            showPromptDialog(getString(R.string.prompt), getString(R.string.update_withdrawal_pwd)) { finish() }
         } else {
             val errorMsg = updateFundPwdResult?.msg ?: getString(R.string.unknown_error)
             showErrorDialog(errorMsg)

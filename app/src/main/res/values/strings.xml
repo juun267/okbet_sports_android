@@ -249,7 +249,7 @@
     <string name="missing_required_fields">未填写必要的字段</string>
     <string name="error_password_cannot_be_same">新密码与旧密码不能相同</string>
     <string name="update_login_pwd">修改登录密码成功，下次请使用新密码登录!</string>
-    <string name="update_withdrawal_pwd">修改提现密码成功，下次请使用新密码提现!</string>
+    <string name="update_withdrawal_pwd">提款密码修改成功</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
