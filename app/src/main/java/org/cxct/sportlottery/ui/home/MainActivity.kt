@@ -208,6 +208,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
+                popAllFragment()
             }
         })
     }
