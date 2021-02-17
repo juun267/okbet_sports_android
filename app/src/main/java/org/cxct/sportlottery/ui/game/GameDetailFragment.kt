@@ -43,6 +43,7 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         MatchOddAdapter().apply {
             matchOddListener = MatchOddListener({
                 viewModel.getOddsDetail(it.matchInfo?.id)
+                viewModel.setOddsDetailMoreList(this.data)
             }, { matchOdd, oddString, odd -> viewModel.updateMatchBetList(matchOdd, oddString, odd) })
         }
     }

@@ -29,24 +29,24 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class),
-        Animation.AnimationListener, OnOddClickListener {
+    Animation.AnimationListener, OnOddClickListener {
 
 
     companion object {
         const val GAME_TYPE = "gameType"
-        const val TYPE_NAME = "typeName"
+        const val TYPE_NAME = "typeName"//leagueName
         const val MATCH_ID = "matchId"
         const val ODDS_TYPE = "oddsType"
 
         fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
-                OddsDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(GAME_TYPE, gameType)
-                        putString(TYPE_NAME, typeName)
-                        putString(MATCH_ID, matchId)
-                        putString(ODDS_TYPE, oddsType)
-                    }
+            OddsDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString(GAME_TYPE, gameType)
+                    putString(TYPE_NAME, typeName)
+                    putString(MATCH_ID, matchId)
+                    putString(ODDS_TYPE, oddsType)
                 }
+            }
     }
 
 
@@ -73,8 +73,13 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
         dataBinding.apply {
             view = this@OddsDetailFragment
             oddsDetailViewModel = this@OddsDetailFragment.viewModel
@@ -118,7 +123,14 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
                     if (odd != null)
                         filteredOddList.add(odd)
                 }
-                newList.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, filteredOddList))
+                newList.add(
+                    OddsDetailListData(
+                        key,
+                        TextUtil.split(value.typeCodes),
+                        value.name,
+                        filteredOddList
+                    )
+                )
             }
 
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
@@ -127,6 +139,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
 
     private fun initUI() {
+
         tv_type_name.text = typeName
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -141,12 +154,14 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         tv_more.setOnClickListener {
             parentFragmentManager.let {
                 matchId?.let { id ->
-                    OddsDetailMoreFragment.newInstance(id, object : OddsDetailMoreFragment.ChangeGameListener {
-                        override fun refreshData(matchId: String) {
-                            this@OddsDetailFragment.matchId = matchId
-                            getData()
-                        }
-                    }).apply {
+                    OddsDetailMoreFragment.newInstance(
+                        id,
+                        object : OddsDetailMoreFragment.ChangeGameListener {
+                            override fun refreshData(matchId: String) {
+                                this@OddsDetailFragment.matchId = matchId
+                                getData()
+                            }
+                        }).apply {
                         show(it, "OddsDetailMoreFragment")
                     }
                 }
@@ -163,7 +178,9 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
                     viewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
-                        (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
+                        (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(
+                            it
+                        )
                     }
                 }
             }
@@ -179,7 +196,10 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
                 if (it) {
                     dataBinding.tabCat.removeAllTabs()
                     for (row in result.rows) {
-                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(row.name), false)
+                        dataBinding.tabCat.addTab(
+                            dataBinding.tabCat.newTab().setText(row.name),
+                            false
+                        )
                     }
                 }
             }
@@ -199,7 +219,12 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
                     val startPosition = strMatch.indexOf(strVerse)
                     val endPosition = startPosition + strVerse.length
                     val style = SpannableStringBuilder(strMatch)
-                    style.setSpan(ForegroundColorSpan(color), startPosition, endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    style.setSpan(
+                        ForegroundColorSpan(color),
+                        startPosition,
+                        endPosition,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
                     dataBinding.tvMatch.text = style
 
                     oddsDetailListAdapter?.homeName = home
@@ -234,11 +259,16 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             if (it?.success != true) {
-                ToastUtil.showBetResultToast(requireActivity(), it?.msg ?: getString(R.string.unknown_error), false)
+                ToastUtil.showBetResultToast(
+                    requireActivity(),
+                    it?.msg ?: getString(R.string.unknown_error),
+                    false
+                )
             }
         })
 
     }
+
 
     private fun getData() {
         gameType?.let { gameType ->
@@ -250,6 +280,14 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
                 viewModel.getOddsDetail(matchId, oddsType)
             }
         }
+    }
+
+
+    fun refreshData(gameType: String?, matchId: String?, typeName: String?) {
+        this.gameType = gameType
+        this.matchId = matchId
+        tv_type_name.text = typeName
+        getData()
     }
 
 
@@ -265,7 +303,8 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
     fun back() {
         //比照h5特別處理退出動畫
-        val animation: Animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
+        val animation: Animation =
+            AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
         animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
         animation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(animation: Animation?) {

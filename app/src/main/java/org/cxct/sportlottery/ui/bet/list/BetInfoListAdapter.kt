@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Handler
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -241,7 +240,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     onItemClickListener.onBetClick(betInfoList[position], stake)
                 }
             }
-            binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick() }
+            binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(mBetInfoList) }
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
             val strVerse = context.getString(R.string.verse_)
@@ -304,7 +303,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
     interface OnItemClickListener {
         fun onDeleteClick(position: Int)
         fun onBetClick(betInfoListData: BetInfoListData, stake: Double)
-        fun onAddMoreClick()
+        fun onAddMoreClick(betInfoList: BetInfoListData)
     }
 
 

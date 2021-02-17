@@ -777,6 +777,10 @@ class MainViewModel(
         _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
+    fun getOddsDetail(gameType: String?, typeName: String?, matchId: String?) {
+        _curOddsDetailParams.postValue(listOf(gameType, typeName, matchId))
+    }
+
     fun setOddsDetailMoreList(list: List<*>) {
         _oddsDetailMoreList.postValue(list)
     }
@@ -784,7 +788,7 @@ class MainViewModel(
     fun updateBetInfoListByOddChange(newList: List<org.cxct.sportlottery.network.odds.list.Odd>) {
 
         newList.forEach { newItem ->
-            betInfoRepository?.betList?.forEach {
+            betInfoRepository.betList.forEach {
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
@@ -801,7 +805,7 @@ class MainViewModel(
     fun updateBetInfoList(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
 
         newList.forEach { newItem ->
-            betInfoRepository?.betList?.forEach {
+            betInfoRepository.betList.forEach {
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
