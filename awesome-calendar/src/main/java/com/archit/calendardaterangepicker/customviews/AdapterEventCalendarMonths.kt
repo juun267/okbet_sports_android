@@ -11,9 +11,11 @@ import com.archit.calendardaterangepicker.R.layout
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes
 import java.util.Calendar
 
-internal class AdapterEventCalendarMonths(private val mContext: Context,
-                                          calendarDateRangeManager: CalendarDateRangeManagerImpl,
-                                          calendarStyleAttr: CalendarStyleAttributes) : PagerAdapter() {
+internal class AdapterEventCalendarMonths(
+    private val mContext: Context,
+    calendarDateRangeManager: CalendarDateRangeManagerImpl,
+    calendarStyleAttr: CalendarStyleAttributes
+) : PagerAdapter() {
     private val mCalendarStyleAttr: CalendarStyleAttributes
     private var mCalendarListener: CalendarListener? = null
     private val mDateRangeCalendarManager: CalendarDateRangeManager
@@ -58,17 +60,17 @@ internal class AdapterEventCalendarMonths(private val mContext: Context,
     }
 
     private val calendarAdapterListener: CalendarListener = object : CalendarListener {
-        override fun onFirstDateSelected(startDate: Calendar) {
+        override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
             mHandler.postDelayed({ notifyDataSetChanged() }, 50)
             if (mCalendarListener != null) {
-                mCalendarListener!!.onFirstDateSelected(startDate)
+                mCalendarListener!!.onFirstDateSelected(dateSelectedType, startDate)
             }
         }
 
-        override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+        override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar?, endDate: Calendar) {
             mHandler.postDelayed({ notifyDataSetChanged() }, 50)
             if (mCalendarListener != null) {
-                mCalendarListener!!.onDateRangeSelected(startDate, endDate)
+                mCalendarListener!!.onDateRangeSelected(dateSelectedType, startDate, endDate)
             }
         }
     }

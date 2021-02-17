@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
@@ -62,13 +63,13 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
         calendarBottomSheet.setContentView(bottomSheetView)
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(startDate: Calendar) {
+            override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
                 calendarBottomSheet.dismiss()
 
                 viewModel.setRecordTimeRange(startDate)
             }
 
-            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+            override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
                 calendarBottomSheet.dismiss()
 
                 viewModel.setRecordTimeRange(startDate, endDate)

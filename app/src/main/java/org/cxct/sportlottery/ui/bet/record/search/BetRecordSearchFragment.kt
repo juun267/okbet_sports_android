@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -132,13 +133,13 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             calendar.setSelectableDateRange(getDateInCalendar(30).first, getDateInCalendar(30).second)
             calendar.setCurrentMonth(monthRange.second)
             calendar.setCalendarListener(object : CalendarListener {
-                override fun onFirstDateSelected(startDate: Calendar) {
-                    setStartEndDateText(simpleDateFormat.format(startDate.time), "")
+                override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
+                    setStartEndDateText(dateSelectedType, simpleDateFormat.format(startDate.time), null)
                     dismiss()
                 }
 
-                override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                    setStartEndDateText(simpleDateFormat.format(startDate.time), simpleDateFormat.format(endDate.time))
+                override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
+                    setStartEndDateText(dateSelectedType, simpleDateFormat.format(startDate.time), simpleDateFormat.format(endDate.time))
                     dismiss()
                 }
 
@@ -147,9 +148,17 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     }
 
-    private fun setStartEndDateText(startDate: String, endDate: String) {
-        tv_start_date.text = startDate
-        tv_end_date.text = endDate
+    private fun setStartEndDateText(dateSelectedType: DateSelectedType?, startDate: String?, endDate: String?) {
+        if (startDate != null && endDate != null) {
+            tv_start_date.text = startDate
+            tv_end_date.text = endDate
+        } else {
+            //若只有其中一個日期, 則根據當前點選的是開始或結束日期去做更新文字
+            when (dateSelectedType) {
+                DateSelectedType.START -> tv_start_date.text = startDate
+                DateSelectedType.END -> tv_end_date.text = startDate
+            }
+        }
     }
 
     private fun getMonthRangeCalendar(): Pair<Calendar, Calendar> {
@@ -235,11 +244,13 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
         ll_start_date.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
+            calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.START)
             calendarBottomSheet.show()
         }
 
         ll_end_date.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.end_date)
+            calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.END)
             calendarBottomSheet.show()
         }
 
@@ -268,7 +279,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         val startDateStr = simpleDateFormat.format(startDate.time)
         val endDateStr = simpleDateFormat.format(endDate.time)
 
-        setStartEndDateText(startDateStr, endDateStr)
+        setStartEndDateText(null, startDateStr, endDateStr)
     }
 
 }
