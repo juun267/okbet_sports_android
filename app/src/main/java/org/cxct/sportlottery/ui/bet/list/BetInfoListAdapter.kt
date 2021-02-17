@@ -29,6 +29,9 @@ import org.cxct.sportlottery.util.TextUtil
 import java.lang.Exception
 import java.math.RoundingMode
 
+const val NOT_INPLAY: Int = 0
+const val INPLAY: Int = 1
+
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
         RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
@@ -132,12 +135,14 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     }
                 }
 
+                val win = ArithUtil.round(
+                        it.toDouble() * matchOdd.odds,
+                        3,
+                        RoundingMode.HALF_UP).toDouble()
+
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)
-                binding.betInfoAction.tv_win_quota.text =
-                        ArithUtil.round(
-                                it.toDouble() * matchOdd.odds,
-                                3,
-                                RoundingMode.HALF_UP)
+                binding.betInfoAction.tv_win_quota.text = TextUtil.format(win)
+
             }
 
             (binding.rlInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (inputError) 0.dp else 10.dp
@@ -205,7 +210,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     }
                 }
             }
-            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
+
+            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.format(parlayOdd.max))
             binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
 
             if (!TextUtils.isEmpty(binding.etBet.text.toString())) {
@@ -242,6 +248,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
 
             binding.betInfoDetail.tvMatch.text = strMatch
+
+            binding.betInfoDetail.tvName.text = if (matchOdd.inplay == INPLAY) context.getString(R.string.bet_info_in_play) + matchOdd.playCateName else matchOdd.playCateName
 
             when (matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
@@ -358,6 +366,5 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             text = context.getString(R.string.bet_info_list_game_odds_changed)
         }
     }
-
 
 }
