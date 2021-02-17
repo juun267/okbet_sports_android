@@ -64,6 +64,10 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
         tv_selected.text = testStr
     }
 
+    fun getText(): String {
+        return tv_selected.text.toString()
+    }
+
     fun dismiss() {
         bottomSheet.dismiss()
     }

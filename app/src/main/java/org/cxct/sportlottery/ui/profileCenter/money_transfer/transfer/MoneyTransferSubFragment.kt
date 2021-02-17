@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.layout_balance
@@ -72,6 +74,23 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         out_account.setOnItemClickListener(rvOutAdapter)
 
         in_account.setOnItemClickListener(rvInAdapter)
+
+        val rotateAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate)
+
+        iv_spin.setOnClickListener {
+            iv_spin.startAnimation(rotateAnimation)
+
+            val outAccountText = out_account.getText()
+            val inAccountText = in_account.getText()
+            out_account.setText(inAccountText)
+            in_account.setText(outAccountText)
+
+            val outTag = out_account.tag
+            val inTag = in_account.tag
+            out_account.tag = inTag
+            in_account.tag = outTag
+
+        }
 
         layout_balance.btn_refresh.setOnClickListener {
             viewModel.getMoney()
