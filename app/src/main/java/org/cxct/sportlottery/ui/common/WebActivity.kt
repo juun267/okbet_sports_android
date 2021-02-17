@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
-import android.os.Handler
 import android.os.Message
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,7 +19,7 @@ import java.net.URLEncoder
 /**
  * Create by Simon Chang
  */
-class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     companion object {
         const val KEY_URL = "key-url"
         const val KEY_TITLE = "key-title"
@@ -33,12 +32,15 @@ class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web)
+        init()
+    }
 
+    open fun init() {
+        setContentView(R.layout.activity_web)
         initToolBar()
-        setupWebView()
         setCookie()
-        loadUrl()
+        setupWebView(web_view)
+        loadUrl(web_view)
     }
 
     private fun initToolBar() {
@@ -46,7 +48,25 @@ class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         tool_bar_title.text = mTitle
     }
 
-    private fun setupWebView() {
+    fun setCookie() {
+        try {
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.setAcceptCookie(true)
+
+            val oldCookie = cookieManager.getCookie(mUrl)
+            Timber.i("Cookie:oldCookie:$oldCookie")
+
+            cookieManager.setCookie(mUrl, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")) //cookies是在HttpClient中获得的cookie
+            cookieManager.flush()
+
+            val newCookie = cookieManager.getCookie(mUrl)
+            Timber.i("Cookie:newCookie:$newCookie")
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun setupWebView(webView: WebView) {
         if (BuildConfig.DEBUG)
             WebView.setWebContentsDebuggingEnabled(true)
 
@@ -63,8 +83,6 @@ class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.databaseEnabled = false
         settings.setAppCacheEnabled(false)
         settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-
-        webView.addJavascriptInterface(JavaScriptInterface(), "XXX_WEB")
 
         webView.webChromeClient = object : WebChromeClient() {
             override fun onCreateWindow(view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message): Boolean {
@@ -129,26 +147,8 @@ class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun loadUrl() {
+    fun loadUrl(webView: WebView) {
         webView.loadUrl(mUrl)
-    }
-
-    private fun setCookie() {
-        try {
-            val cookieManager = CookieManager.getInstance()
-            cookieManager.setAcceptCookie(true)
-
-            val oldCookie = cookieManager.getCookie(mUrl)
-            Timber.i("Cookie:oldCookie:$oldCookie")
-
-            cookieManager.setCookie(mUrl, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")) //cookies是在HttpClient中获得的cookie
-            cookieManager.flush()
-
-            val newCookie = cookieManager.getCookie(mUrl)
-            Timber.i("Cookie:newCookie:$newCookie")
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
     }
 
     private fun openImageChooserActivity() {
@@ -161,15 +161,6 @@ class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 mUploadMessage = null
             }
         }.launch(arrayOf("image/*"))
-    }
-
-
-    internal inner class JavaScriptInterface {
-        //返回
-        @JavascriptInterface
-        fun wv_goback() {
-            Handler().post { finish() }
-        }
     }
 
 }

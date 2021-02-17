@@ -50,12 +50,12 @@ import timber.log.Timber
 
 
 class MainViewModel(
-        private val androidContext: Context,
-        private val userInfoRepository: UserInfoRepository,
-        private val loginRepository: LoginRepository,
-        private val sportMenuRepository: SportMenuRepository,
-        betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+    private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
+    private val sportMenuRepository: SportMenuRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -112,6 +112,9 @@ class MainViewModel(
     val isOpenMatchOdds: LiveData<Boolean>
         get() = _isOpenMatchOdds
 
+    val isNoHistory: LiveData<Boolean>
+        get() = _isNoHistory
+
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
@@ -131,6 +134,7 @@ class MainViewModel(
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isOpenMatchOdds = MutableLiveData<Boolean>()
+    private val _isNoHistory = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -360,6 +364,8 @@ class MainViewModel(
                 gameType?.let {
                     getOddsList(gameType, matchType.postValue)
                 }
+
+                _isNoHistory.postValue(gameType == null)
             }
             MatchType.TODAY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
@@ -369,6 +375,8 @@ class MainViewModel(
                 gameType?.let {
                     getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
                 }
+
+                _isNoHistory.postValue(gameType == null)
             }
             MatchType.EARLY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
@@ -378,6 +386,8 @@ class MainViewModel(
                 gameType?.let {
                     getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
                 }
+
+                _isNoHistory.postValue(gameType == null)
             }
             MatchType.PARLAY -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
@@ -387,6 +397,8 @@ class MainViewModel(
                 gameType?.let {
                     getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
                 }
+
+                _isNoHistory.postValue(gameType == null)
             }
             MatchType.OUTRIGHT -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
@@ -396,6 +408,8 @@ class MainViewModel(
                 gameType?.let {
                     getOutrightSeasonList(it)
                 }
+
+                _isNoHistory.postValue(gameType == null)
             }
             MatchType.AT_START -> {
                 val gameType = _sportMenuResult.value?.sportMenuData?.atStart?.items?.find {
@@ -405,6 +419,8 @@ class MainViewModel(
                 gameType?.let {
                     getOddsList(gameType, matchType.postValue, getCurrentTimeRangeParams())
                 }
+
+                _isNoHistory.postValue(gameType == null)
             }
         }
     }

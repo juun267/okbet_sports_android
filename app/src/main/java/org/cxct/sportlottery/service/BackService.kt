@@ -12,6 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
@@ -66,6 +67,37 @@ class BackService : Service() {
 //    private var mDefaultEventDisposable: Disposable? = null
     private val mPingDisposable: Disposable? = null //TODO Cheryl
 
+
+    fun subscribeEventChannel(eventId: String?) {
+        if (eventId == null) return
+
+        val url = "$URL_EVENT$eventId"
+
+        subscribeChannel(url)
+    }
+
+    fun unSubscribeEventChannel(eventId: String?) {
+        if (eventId == null) return
+
+        val url = "$URL_EVENT$eventId"
+        unSubscribe(url)
+    }
+
+    fun subscribeHallChannel(gameType: String?, eventId: String?) {
+        if (gameType == null || eventId == null) return
+
+        val url = "$URL_HALL${gameType}/${CateMenuCode.HDP_AND_OU.code}/$eventId"
+
+        subscribeChannel(url)
+    }
+
+    fun unSubscribeHallChannel(gameType: String?, eventId: String?) {
+        if (gameType == null || eventId == null) return
+
+        val url = "$URL_HALL${gameType}/${CateMenuCode.HDP_AND_OU.code}/$eventId"
+
+        unSubscribe(url)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -273,6 +305,7 @@ class BackService : Service() {
     }
 
     fun unSubscribe(url: String) {
+        Timber.e(">>> unSubscribeEvent: $url")
         subscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
     }
 

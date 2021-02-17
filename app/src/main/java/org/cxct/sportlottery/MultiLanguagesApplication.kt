@@ -8,14 +8,10 @@ import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.db.SportRoomDatabase
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.SettlementRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
-import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
+import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
@@ -26,6 +22,7 @@ import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordView
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
@@ -52,16 +49,17 @@ class MultiLanguagesApplication : Application() {
         viewModel { MainViewModel(get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
-        viewModel { SettlementViewModel(get(), get(), get()) }
-        viewModel { BetRecordViewModel(get(), get()) }
-        viewModel { InfoCenterViewModel(get(), get(), get()) }
+        viewModel { SettlementViewModel(get(), get(), get(), get()) }
+        viewModel { BetRecordViewModel(get(), get(), get()) }
+        viewModel { InfoCenterViewModel(get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get()) }
-        viewModel { WithdrawViewModel(get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get()) }
-        viewModel { NicknameModel(get(), get(), get()) }
-        viewModel { SettingPasswordViewModel(get(), get(), get()) }
-        viewModel { FinanceViewModel(get(), get()) }
+        viewModel { WithdrawViewModel(get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get()) }
+        viewModel { NicknameModel(get(), get(), get(), get()) }
+        viewModel { SettingPasswordViewModel(get(), get(), get(), get()) }
+        viewModel { FinanceViewModel(get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
+        viewModel { VersionUpdateViewModel(get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get()) }
     }
 

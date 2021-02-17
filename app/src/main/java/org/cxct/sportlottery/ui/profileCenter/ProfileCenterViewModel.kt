@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import timber.log.Timber
 import java.util.*
@@ -18,15 +19,15 @@ import java.util.*
 class ProfileCenterViewModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
-    private val loginRepository: LoginRepository,
+    loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
 
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
+    private val _userMoney = MutableLiveData<String?>()
+    val userMoney: LiveData<String?>
         get() = _userMoney
 
     private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>()
@@ -46,7 +47,12 @@ class ProfileCenterViewModel(
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
-            _userMoney.postValue(userMoneyResult?.money)
+
+            val formatMoney = userMoneyResult?.money?.let {
+                TextUtil.format(it)
+            }
+
+            _userMoney.postValue(formatMoney)
         }
     }
 

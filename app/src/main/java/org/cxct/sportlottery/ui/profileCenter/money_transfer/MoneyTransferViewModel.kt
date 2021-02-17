@@ -21,17 +21,17 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class MoneyTransferViewModel(
-        private val androidContext: Context,
-        private val userInfoRepository: UserInfoRepository,
-        private val loginRepository: LoginRepository,
-        betInfoRepository: BetInfoRepository,
-) : BaseOddButtonViewModel(betInfoRepository) {
+    private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     companion object {
         private const val PAGE_SIZE = 2
     }
 
-    val gameNameMap: Map<String?, String> = mapOf(
+    private val gameNameMap: Map<String?, String> = mapOf(
         "CG" to androidContext.getString(R.string.plat_money),
         "DF" to androidContext.getString(R.string.third_game_df),
         "SBTY" to androidContext.getString(R.string.third_game_sbty),
@@ -126,7 +126,8 @@ class MoneyTransferViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
             }?.let { result ->
-                _transferResult.value = result
+                Log.e(">>>", "result = $result")
+                _transferResult.postValue(result)
             }
         }
     }

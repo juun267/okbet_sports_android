@@ -15,8 +15,10 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 
 /**
@@ -89,7 +91,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_version_update.setOnClickListener {
-            //TODO 版本更新
+            startActivity(Intent(activity, VersionUpdateActivity::class.java))
+            mDownMenuListener?.onClick(menu_version_update)
         }
 
         menu_sign_out.setOnClickListener {
@@ -100,6 +103,14 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_sign_out)
         }
 
+        menu_third_game_test.setOnClickListener {
+            //TODO 第三方遊戲跳轉測試
+            val url = "https://fishxy.sdbaifuquan.com/index.html?lang=zh-CN&io=1"
+            context?.run {
+                JumpUtil.toThirdGameWeb(this, url)
+            }
+            mDownMenuListener?.onClick(menu_third_game_test)
+        }
     }
 
     private fun setupSelectLanguage() {
@@ -120,7 +131,11 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_name.text = nickName ?: userName
+        tv_name.text = if (nickName.isNullOrEmpty()) {
+            userName
+        } else {
+            nickName
+        }
     }
 
     /**

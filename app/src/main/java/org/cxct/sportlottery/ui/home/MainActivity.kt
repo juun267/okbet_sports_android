@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.ui.home
 
-import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -26,9 +24,6 @@ import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.SERVICE_TOKEN
-import org.cxct.sportlottery.service.SERVICE_USER_ID
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
@@ -39,7 +34,6 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.MetricsUtil
-import timber.log.Timber
 
 class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) {
 
@@ -49,26 +43,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
-        }
-    }
-
-    lateinit var mService: BackService
-
-    private var mIsBound: Boolean = false
-
-    private val mServiceConnection = object : ServiceConnection {
-
-        override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Timber.e(">>> onServiceConnected")
-            val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
-            mService = binder.service
-            mIsBound = true
-        }
-
-        override fun onServiceDisconnected(name: ComponentName) {
-            Timber.e(">>> onServiceDisconnected")
-            mIsBound = false
-            //service 物件設為null
         }
     }
 
@@ -98,73 +72,16 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         initRvMarquee()
         refreshTabLayout(null)
         initObserve()
-
-        testSubscribe() //testing
     }
 
     override fun onResume() {
         super.onResume()
-
-        val isLogin = viewModel.isLogin.value ?: false
-        doBackService(isLogin)
-
         rv_marquee.startAuto()
     }
 
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        doUnBindService()
-    }
-
-    private fun testSubscribe() {
-        iv_logo.setOnClickListener {
-            val matchUrl = "/ws/notify/event/sr:match:25367352"
-            mService.subscribeChannel(matchUrl)
-        }
-    }
-
-    fun subscribeMatch(eventId: String) {
-        val matchUrl = "/ws/notify/event/${eventId}"
-        mService.subscribeChannel(matchUrl)
-    }
-
-    private fun doBindService() {
-        if (mIsBound) return
-
-        Timber.i("bind service")
-        if (!checkServiceRunning()) { //如果service斷掉則重啟
-            val serviceIntent = Intent(this, BackService::class.java)
-            serviceIntent.putExtra(SERVICE_TOKEN, viewModel.token)
-            serviceIntent.putExtra(SERVICE_USER_ID, viewModel.userId)
-            bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
-            mIsBound = true
-//            initBroadcast()
-        }
-    }
-
-    private fun doUnBindService() {
-        if (!mIsBound) return
-
-        Timber.i("unbind service")
-        unbindService(mServiceConnection)
-//        removeBroadcast()
-
-        mIsBound = false
-    }
-
-    private fun checkServiceRunning(): Boolean {
-        val manager: ActivityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (BackService::class.java.name == service.service.className) {
-                return true
-            }
-        }
-        return false
     }
 
     private fun initToolBar() {
@@ -341,14 +258,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         super.onBackPressed()
     }
 
-    private fun doBackService(isLogin: Boolean) {
-        if (isLogin) doBindService()
-        else doUnBindService()
-    }
-
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            doBackService(it)
+//            doBackService(it)
             queryData()
         })
 
@@ -423,7 +335,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun subscribeEventChannel(eventId: String?) {
         if (eventId.isNullOrEmpty()) return
-        mService.subscribeChannel(viewModel.getEventUrl(eventId))
+        backService.subscribeChannel(viewModel.getEventUrl(eventId))
     }
 
     private fun subscribeHallChannel() {
@@ -433,7 +345,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             if (it != null && it.success) {
                 val eventId = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
                 if (!eventId.isNullOrEmpty())
-                    mService.subscribeChannel(viewModel.getHallUrl(eventId = eventId))
+                    backService.subscribeChannel(viewModel.getHallUrl(eventId = eventId))
             }
         })
 
@@ -442,7 +354,12 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             if (it != null && it.success) {
                 val eventId = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
                 if (!eventId.isNullOrEmpty())
-                    mService.subscribeChannel(viewModel.getHallUrl(cateMenuCode = CateMenuCode.OUTRIGHT.code, eventId = eventId))
+                    backService.subscribeChannel(
+                        viewModel.getHallUrl(
+                            cateMenuCode = CateMenuCode.OUTRIGHT.code,
+                            eventId = eventId
+                        )
+                    )
             }
         })
 

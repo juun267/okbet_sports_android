@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) {
             viewModel.getAllBalance()
             it?.apply {
+                Log.e(">>>", "show dialog")
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     setTitle(getString(R.string.prompt))
                     setMessage(it.msg)
