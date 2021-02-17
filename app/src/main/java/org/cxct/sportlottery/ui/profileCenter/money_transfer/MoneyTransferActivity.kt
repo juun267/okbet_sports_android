@@ -24,17 +24,6 @@ class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyT
     }
 
 
-    private fun initOnClick() {
-        cb_change.setCheckedChange(cb_record) {
-            setToolBarName(getString(R.string.account_transfer))
-            my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
-        }
-        cb_record.setCheckedChange(cb_change) {
-            viewModel.queryTransfers()
-            setToolBarName(getString(R.string.record_conversion))
-            my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
-        }
-    }
 
     override fun setContentView(): Int {
         return R.layout.activity_money_transfer
@@ -55,6 +44,10 @@ class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyT
         viewModel.isShowTitleBar.observe(this, {
             ll_title_bar.visibility = if (it == true) View.VISIBLE else View.GONE
         })
+
+        viewModel.toolbarName.observe(this, {
+            setToolBarName(it)
+        })
     }
 
     private fun CheckBox.setCheckedChange (unCheckedItem: CheckBox, checked: (Unit) -> Unit) {
@@ -67,4 +60,13 @@ class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyT
         }
     }
 
+    private fun initOnClick() {
+        cb_change.setCheckedChange(cb_record) {
+            my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
+        }
+        cb_record.setCheckedChange(cb_change) {
+            viewModel.queryTransfers()
+            my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
+        }
+    }
 }

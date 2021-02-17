@@ -54,7 +54,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
 
         return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
@@ -85,8 +85,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
     private fun initView() {
-        context?.getString(R.string.transfer_info)?.let { (activity as MoneyTransferActivity).setToolBarName(it) }
-
         out_account.tv_selected.text = getString(R.string.plat_money)
         in_account.tv_selected.text = gameDataArg.gameData.showName
 
@@ -163,7 +161,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                     dialog.show()
 
                 if (it.success) {
-                    viewModel.clearTransferResult()
                     view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                 }
             }

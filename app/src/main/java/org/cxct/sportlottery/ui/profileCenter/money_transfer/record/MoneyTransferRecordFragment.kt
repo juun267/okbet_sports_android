@@ -25,6 +25,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewModel.setToolbarName(getString(R.string.record_conversion))
         return inflater.inflate(R.layout.fragment_money_transfer_record, container, false)
     }
 
@@ -44,7 +45,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
             viewModel.isLastPage = (rvAdapter.itemCount >= (it.total ?:0))
-            rvAdapter.addFooterAndSubmitList(viewModel.recordDataList)
+            rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
         }
     }
 

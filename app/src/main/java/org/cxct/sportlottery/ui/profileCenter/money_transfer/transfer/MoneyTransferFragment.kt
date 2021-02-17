@@ -24,6 +24,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewModel.setToolbarName(getString(R.string.account_transfer))
         viewModel.showTitleBar(true)
         return inflater.inflate(R.layout.fragment_money_transfer, container, false)
     }
@@ -66,7 +67,6 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         }
 
         viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) {
-            viewModel.getAllBalance()
             it?.apply {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     setTitle(getString(R.string.prompt))

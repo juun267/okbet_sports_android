@@ -49,7 +49,7 @@ class MoneyTransferViewModel(
     val thirdGamesResult: LiveData<ThirdGamesResult>
         get() = _thirdGamesResult
 
-    val recycleAllMoneyResult: LiveData<BlankResult>
+    val recycleAllMoneyResult: LiveData<BlankResult?>
         get() = _recycleAllMoneyResult
 
     val transferResult: LiveData<BlankResult?>
@@ -67,13 +67,17 @@ class MoneyTransferViewModel(
     val loading: LiveData<Boolean> //使用者餘額
         get() = _loading
 
+    val toolbarName: LiveData<String>
+        get() = _toolbarName
+
 
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
     private val _loading = MutableLiveData<Boolean>()
+    private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
     private var _allBalanceResultList = MutableLiveData<List<GameData>>()
     private var _thirdGamesResult = MutableLiveData<ThirdGamesResult>()
-    private var _recycleAllMoneyResult = MutableLiveData<BlankResult>()
+    private var _recycleAllMoneyResult = MutableLiveData<BlankResult?>()
     private var _transferResult = MutableLiveData<BlankResult?>()
     private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
 
@@ -91,6 +95,10 @@ class MoneyTransferViewModel(
                 _userMoney.postValue(it.money)
             }
         }
+    }
+
+    fun setToolbarName(name: String) {
+        _toolbarName.value = name
     }
 
     fun getAllBalance() {
@@ -132,6 +140,10 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
                 _recycleAllMoneyResult.value = result
+
+                getAllBalance()
+                getMoney()
+                clearRecycleAllMoneyResult()
             }
         }
     }
@@ -145,15 +157,17 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
                 _transferResult.value = result
+
+                getAllBalance()
+                getMoney()
+                clearTransferResult()
             }
         }
     }
 
     var isLastPage = false
-    var isLoading = false
-
-    var nowPage = 1
-
+    private var isLoading = false
+    private var nowPage = 1
     val recordDataList = mutableListOf<Row>()
 
     fun queryTransfers(page: Int?=1) {
@@ -177,7 +191,6 @@ class MoneyTransferViewModel(
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (!isLoading && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
-                Log.e(">>>", "getNextPage")
                 isLoading = true
                 queryTransfers(++nowPage)
             }
@@ -199,6 +212,10 @@ class MoneyTransferViewModel(
 
     fun clearTransferResult() {
         _transferResult.postValue(null)
+    }
+
+    fun clearRecycleAllMoneyResult() {
+        _recycleAllMoneyResult.postValue(null)
     }
 
     private fun loading() {
