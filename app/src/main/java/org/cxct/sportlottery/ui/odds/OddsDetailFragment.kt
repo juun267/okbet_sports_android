@@ -70,6 +70,8 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             matchId = it.getString(MATCH_ID)
             oddsType = it.getString(ODDS_TYPE)
         }
+
+        service.subscribeEventChannel(matchId)
     }
 
 
@@ -318,4 +320,9 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        service.unSubscribeEventChannel(matchId)
+    }
 }

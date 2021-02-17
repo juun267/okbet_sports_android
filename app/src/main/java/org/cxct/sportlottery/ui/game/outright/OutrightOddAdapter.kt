@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_outright_odd.view.*
+import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -19,18 +20,21 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
-class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>() {
-    var data2 = listOf<MatchOdd>()
+class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    enum class ItemType {
+        SUB_TITLE, ODD
+    }
+
+    var matchOdd: MatchOdd? = null
         set(value) {
             field = value
-            data = if (field.isNotEmpty()) {
-                field[0].odds.values.first()
-            } else {
-                listOf()
+
+            value?.let {
+                data = it.displayList
             }
         }
 
-    var data = listOf<Odd>()
+    private var data = listOf<Any>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -41,23 +45,43 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
     var betInfoListData: List<BetInfoListData>? = null
         set(value) {
             field = value
-            //TODO : review why not work first time
-            data.forEach { odd ->
-                odd.isSelected = value?.any {
-                    it.matchOdd.oddsId == odd.id
-                } ?: false
+            data.forEach { item ->
+                when (item) {
+                    is Odd -> {
+                        item.isSelected = value?.any {
+                            it.matchOdd.oddsId == item.id
+                        } ?: false
+                    }
+                }
             }
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+    override fun getItemViewType(position: Int): Int {
+        return when (data[position]) {
+            is Odd -> ItemType.ODD.ordinal
+            else -> ItemType.SUB_TITLE.ordinal
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ItemType.SUB_TITLE.ordinal -> SubTitleViewHolder.from(parent)
+            else -> ViewHolder.from(parent)
+        }
+    }
 
-        holder.bind(item, outrightOddListener, betInfoListData)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is SubTitleViewHolder -> {
+                val item = data[position] as String
+                holder.bind(item)
+            }
+            is ViewHolder -> {
+                val item = data[position] as Odd
+                holder.bind(item, outrightOddListener, betInfoListData)
+            }
+        }
     }
 
     override fun getItemCount(): Int = data.size
@@ -151,6 +175,24 @@ class OutrightOddAdapter : RecyclerView.Adapter<OutrightOddAdapter.ViewHolder>()
                     .inflate(R.layout.itemview_outright_odd, parent, false)
 
                 return ViewHolder(view)
+            }
+        }
+    }
+
+    class SubTitleViewHolder private constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+
+        fun bind(item: String) {
+            itemView.outright_detail_list_subtitle.text = item
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): SubTitleViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_outright_odd_subtitle, parent, false)
+
+                return SubTitleViewHolder(view)
             }
         }
     }

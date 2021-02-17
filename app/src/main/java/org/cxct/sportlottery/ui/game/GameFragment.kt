@@ -78,12 +78,23 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     val code = gameTypeAdapter.data.find {
                         it.isSelected
                     }?.code
-                    val eventId = leagueOdd.matchOdds[0].matchInfo?.id
 
-                    if (isExpand) {
-                        service.subscribeHallChannel(code, eventId)
-                    } else {
-                        service.unSubscribeHallChannel(code, eventId)
+                    leagueOdd.matchOdds.forEach {
+                        val eventId = it.matchInfo?.id
+
+                        if (isExpand) {
+                            service.subscribeHallChannel(
+                                code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                eventId
+                            )
+                        } else {
+                            service.unSubscribeHallChannel(
+                                code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                eventId
+                            )
+                        }
                     }
                 }
             }
@@ -93,15 +104,15 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it)
+        LeagueAdapter(LeagueListener { leagueId ->
+            viewModel.getLeagueOddsList(args.matchType, leagueId)
         })
     }
 
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
-            seasonSubListener = SeasonSubAdapter.SeasonSubListener {
-                viewModel.getOutrightOddsList(it.id)
+            seasonSubListener = SeasonSubAdapter.SeasonSubListener { season ->
+                viewModel.getOutrightOddsList(season.id)
             }
         }
     }
@@ -536,6 +547,26 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             hall_no_history_img.visibility = View.GONE
             hall_no_history_title.visibility = View.GONE
             hall_no_history_content.visibility = View.GONE
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val code = gameTypeAdapter.data.find {
+            it.isSelected
+        }?.code
+
+        leagueOddAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        code,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
         }
     }
 
