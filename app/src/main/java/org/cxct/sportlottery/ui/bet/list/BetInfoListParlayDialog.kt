@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
-import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
+@Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
         BetInfoListParlayAdapter.OnTotalQuotaListener {
 
@@ -111,12 +113,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
                     )
             )
         }
-
-        tv_bet.apply {
-            isClickable = false
-            background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected)
-            setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
-        }
     }
 
 
@@ -146,7 +142,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
             parlayAdapter.modify(it)
         })
 
-        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
             }
@@ -233,7 +229,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         }
         val parlayList: MutableList<Stake> = mutableListOf()
         for (i in parlayAdapter.parlayOddList.indices) {
-            parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.betQuotaList[i]))
+            if(parlayAdapter.betQuotaList[i]>0){
+                parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.betQuotaList[i]))
+            }
         }
 
         viewModel.addBet(
@@ -255,7 +253,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
     override fun onOddChange() {
         if (tv_bet.isClickable) {
             tv_bet.apply {
-                backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red2))
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected_red)
                 setTextColor(ContextCompat.getColor(tv_bet.context, R.color.white))
                 text = getString(R.string.bet_info_list_odds_change)
             }
@@ -269,9 +267,14 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
     }
 
 
-    override fun status(statusList: MutableList<Boolean>) {
+    override fun sendOutStatus(parlayOddList: MutableList<ParlayOdd>) {
+
+        val parlayOdd = parlayOddList.find {
+            !it.sendOutStatus
+        }
+
         tv_bet.apply {
-            isClickable = if (statusList.contains(true)) {
+            isClickable = if (parlayOdd?.sendOutStatus == false) {
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
                 false
