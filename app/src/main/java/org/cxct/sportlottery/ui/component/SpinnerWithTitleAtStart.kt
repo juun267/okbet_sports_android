@@ -32,22 +32,6 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-/*
-
-    var isShowCloseButton
-        get() = bottomSheetView.spinner_tv_close.visibility == View.VISIBLE
-        set(value) {
-            bottomSheetView.spinner_tv_close.visibility = if (value) View.VISIBLE else View.GONE
-        }
-*/
-/*
-
-    fun <T> show (adapter: ListAdapter<T, RecyclerView.ViewHolder>) {
-        bottomSheetView.spinner_rv_more.adapter = adapter
-        bottomSheet.show()
-    }
-*/
-
     fun show (adapter: ListAdapter<GameData, RecyclerView.ViewHolder>) {
         bottomSheetView.spinner_rv_more.adapter = adapter
         bottomSheet.show()
