@@ -26,7 +26,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 out_account.setText(data.showName)
                 out_account.tag = data.code
                 out_account.dismiss()
-                data.code?.let { viewModel.removeSelectedOutPlat(it) }
             }
         })
     }
@@ -37,7 +36,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 in_account.setText(data.showName)
                 in_account.tag = data.code
                 in_account.dismiss()
-                data.code?.let { viewModel.deleteSelectedInPlat(it) }
             }
         })
     }
@@ -99,10 +97,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
             if (it == null) return@observe
-
-            viewModel.removeSelectedOutPlat(viewModel.defaultOutPlat)
-            viewModel.defaultInPlat?.let { inPlat -> viewModel.deleteSelectedInPlat(inPlat) }
-
             rvOutAdapter.dataList = viewModel.outPlatDataList
             rvInAdapter.dataList = viewModel.inPlatDataList
         }

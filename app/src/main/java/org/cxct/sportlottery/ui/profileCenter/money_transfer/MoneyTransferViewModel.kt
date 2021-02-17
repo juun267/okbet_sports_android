@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -84,6 +85,7 @@ class MoneyTransferViewModel(
         _isShowTitleBar.value = visible
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun getMoney() {
         loading()
         viewModelScope.launch {
@@ -136,48 +138,10 @@ class MoneyTransferViewModel(
     var defaultOutPlat = "CG"
     var defaultInPlat : String? = null
 
-    fun removeSelectedOutPlat(code: String) {
-/*
-
-        gameData.let {
-            val inPlatData = GameDataInPlat(it.money, it.remark, it.transRemaining).apply {
-                isChecked = false
-                code = it.code
-                showName = it.showName
-            }
-
-            inPlatDataList.remove(inPlatData)
-        }
-*/
-
-        inPlatDataList = inPlatDataList.filter { data ->
-            data.code != code
-        }.toMutableList()
-
-    }
-
-    fun deleteSelectedInPlat(code: String) {
-        /*
-        gameData.let {
-            val outPlatData = GameData(it.money, it.remark, it.transRemaining).apply {
-                isChecked = false
-                code = it.code
-                showName = it.showName
-            }
-
-            outPlatDataList.remove(outPlatData)
-        }
-        */
-        outPlatDataList = outPlatDataList.filter { data ->
-            data.code != code
-        }.toMutableList()
-    }
-
     fun setPlatDataList() {
         outPlatDataList.clear()
         inPlatDataList.clear()
 
-        outPlatDataList.addAll(resultList)
         resultList.forEach { gameData ->
             val inPlatData = GameDataInPlat(gameData.money, gameData.remark, gameData.transRemaining).apply {
                 isChecked = false
@@ -187,11 +151,11 @@ class MoneyTransferViewModel(
             inPlatDataList.add(inPlatData)
         }
 
-        outPlatDataList.add(0, GameData().apply {
-            isChecked = false
-            code = "CG"
-            showName = androidContext.getString(R.string.plat_money)
-        })
+
+        resultList.forEach { gameData ->
+            val inPlatData = gameData.apply { gameData.isChecked = false }
+            outPlatDataList.add(inPlatData)
+        }
 
         inPlatDataList.add(0, GameDataInPlat().apply {
             isChecked = false
@@ -199,13 +163,12 @@ class MoneyTransferViewModel(
             showName = androidContext.getString(R.string.plat_money)
         })
 
-    }
-
-    fun addPlatMoneyItem() {
-        val platItem = GameData().apply {
+        outPlatDataList.add(0, GameData().apply {
+            isChecked = false
             code = "CG"
             showName = androidContext.getString(R.string.plat_money)
-        }
+        })
+
     }
 
     fun recycleAllMoney() {
@@ -286,10 +249,12 @@ class MoneyTransferViewModel(
         }
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun clearTransferResult() {
         _transferResult.postValue(null)
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun clearRecycleAllMoneyResult() {
         _recycleAllMoneyResult.postValue(null)
     }
