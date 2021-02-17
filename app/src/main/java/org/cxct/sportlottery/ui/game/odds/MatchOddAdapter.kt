@@ -80,6 +80,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 itemView.match_odd_expand.setExpanded(item.isExpand, true)
                 updateArrowExpand()
             }
+            updateArrowExpand()
         }
 
         private fun setupMatchOddDetail(
