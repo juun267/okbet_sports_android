@@ -4,18 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBottomSheetItemBinding
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 
-class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SpinnerOutAdapter (private val defaultCheckedCode: String?, private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mNowCheckedPos:Int? = null
-    var dataList = mutableListOf<GameData>()
+    var dataList = listOf<GameData>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -31,14 +29,21 @@ class SpinnerOutAdapter (private val checkedListener: ItemCheckedListener) : Rec
             is ItemViewHolder -> {
                 val data = dataList[position]
 
-                setSingleChecked(holder.binding.checkbox, position, data)
+                setSingleChecked(holder.binding.checkbox, position)
 
                 holder.bind(data)
             }
         }
     }
 
-    private fun setSingleChecked(checkbox: CheckBox, position: Int, data: GameData) {
+    private fun setSingleChecked(checkbox: CheckBox, position: Int) {
+        val data = dataList[position]
+
+        if (data.code == defaultCheckedCode && mNowCheckedPos == null) {
+            data.isChecked = true
+            mNowCheckedPos = position
+        }
+
         checkbox.setOnClickListener {
             val previousPosition = mNowCheckedPos
 

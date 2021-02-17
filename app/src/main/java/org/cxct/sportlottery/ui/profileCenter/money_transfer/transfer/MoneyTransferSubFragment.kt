@@ -1,61 +1,55 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.custom_spinner.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.layout_balance
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 
 class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
-    private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(R.layout.dialog_bottom_sheet_custom, null) }
-    private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(requireContext()) }
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
 
-    var inDataList = mutableListOf<GameData>()
-    var outDataList = mutableListOf<GameData>()
-
     private val rvOutAdapter by lazy {
-        SpinnerOutAdapter(SpinnerOutAdapter.ItemCheckedListener { isChecked, data ->
+        SpinnerOutAdapter(viewModel.defaultOutPlat, SpinnerOutAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
-                out_account.tv_selected.text = data.showName
-                out_account.tv_selected.tag = data.code
-                bottomSheet.dismiss()
+                out_account.setText(data.showName)
+                out_account.tag = data.code
+                out_account.dismiss()
+                data.code?.let { viewModel.removeSelectedOutPlat(it) }
             }
         })
     }
 
     private val rvInAdapter by lazy {
-        SpinnerOutAdapter(SpinnerOutAdapter.ItemCheckedListener { isChecked, data ->
+        SpinnerInAdapter(viewModel.defaultInPlat, SpinnerInAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
-                in_account.tv_selected.text = data.showName
-                in_account.tv_selected.tag = data.code
-                bottomSheet.dismiss()
+                in_account.setText(data.showName)
+                in_account.tag = data.code
+                in_account.dismiss()
+                data.code?.let { viewModel.deleteSelectedInPlat(it) }
             }
         })
     }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
+        viewModel.defaultInPlat = gameDataArg.gameData.code
+        viewModel.defaultOutPlat = "CG"
+        viewModel.setPlatDataList()
 
         return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
     }
@@ -63,54 +57,29 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setButtonSheet()
         initView()
         initOnclick()
         initObserver()
     }
 
-    private fun setButtonSheet() {
-        bottomSheet.setContentView(bottomSheetView)
-        //避免bottomSheet與listView的滑動發生衝突
-        bottomSheet.behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(@NonNull view: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                    bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                }
-            }
-
-            override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {}
-        })
-
-    }
-
     private fun initView() {
-        out_account.tv_selected.text = getString(R.string.plat_money)
-        in_account.tv_selected.text = gameDataArg.gameData.showName
+        out_account.setText(getString(R.string.plat_money))
+        in_account.setText(gameDataArg.gameData.showName)
 
-        out_account.tv_selected.tag = "CG"
-        in_account.tv_selected.tag = gameDataArg.gameData.code
+        out_account.tag = "CG"
+        in_account.tag = gameDataArg.gameData.code
     }
 
     private fun initOnclick() {
+        out_account.setOnItemClickListener(rvOutAdapter)
+
+        in_account.setOnItemClickListener(rvInAdapter)
+
         layout_balance.btn_refresh.setOnClickListener {
             viewModel.getMoney()
         }
-
-        out_account.setOnClickListener {
-//            rvOutAdapter.dataList = outDataList
-            bottomSheetView.spinner_rv_more.adapter = rvOutAdapter
-            bottomSheet.show()
-        }
-
-        in_account.setOnClickListener {
-//            rvInAdapter.dataList = inDataList
-            bottomSheetView.spinner_rv_more.adapter = rvInAdapter
-            bottomSheet.show()
-        }
-
         btn_transfer.setOnClickListener {
-            viewModel.transfer(out_account.tv_selected.tag.toString(), in_account.tv_selected.tag.toString(), et_transfer_money.getText().toLongOrNull())
+            viewModel.transfer(out_account.tag.toString(), in_account.tag.toString(), et_transfer_money.getText().toLongOrNull())
         }
 
     }
@@ -129,25 +98,13 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
 
         viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
-
             if (it == null) return@observe
 
-            val list = mutableListOf<GameData>()
-            it.forEach { gameData ->
-                list.add(gameData)
-            }
+            viewModel.removeSelectedOutPlat(viewModel.defaultOutPlat)
+            viewModel.defaultInPlat?.let { inPlat -> viewModel.deleteSelectedInPlat(inPlat) }
 
-            list.add(0, GameData().apply {
-                code = "CG"
-                showName = getString(R.string.plat_money)
-            })
-
-            inDataList = list
-            outDataList = list
-
-            rvInAdapter.dataList = list
-            rvOutAdapter.dataList = list
-
+            rvOutAdapter.dataList = viewModel.outPlatDataList
+            rvInAdapter.dataList = viewModel.inPlatDataList
         }
 
         viewModel.transferResult.observe(viewLifecycleOwner) {

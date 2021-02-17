@@ -40,8 +40,6 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
                 }
             }
 
-//            if (isLastPage) items += listOf(DataItem.Footer)
-
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
             }

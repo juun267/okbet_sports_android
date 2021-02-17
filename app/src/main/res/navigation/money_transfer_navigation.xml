@@ -32,6 +32,7 @@
         <action
             android:id="@+id/action_moneyTransferSubFragment_to_moneyTransferFragment"
             app:destination="@id/moneyTransferFragment"
+            app:launchSingleTop="true"
             app:popUpTo="@id/moneyTransferFragment"
             app:popUpToInclusive="true" />
     </fragment>
