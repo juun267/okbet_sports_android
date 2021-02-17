@@ -11,46 +11,66 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/dark_blue2"
         android:orientation="horizontal"
         android:paddingHorizontal="15dp"
-        android:paddingVertical="8dp"
-        android:background="@color/dark_blue2">
+        android:paddingVertical="8dp">
 
         <CheckBox
             android:id="@+id/cb_change"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/account_transfer"
-            android:textColor="@color/selector_blue_white"
-            android:paddingVertical="4dp"
-            android:gravity="center"
+            android:background="@drawable/selector_button_white_blue_left"
             android:button="@null"
             android:checked="true"
-            android:background="@drawable/selector_button_white_blue_left"/>
+            android:gravity="center"
+            android:paddingVertical="4dp"
+            android:text="@string/account_transfer"
+            android:textColor="@color/selector_blue_white" />
 
         <CheckBox
             android:id="@+id/cb_record"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/record_conversion"
+            android:background="@drawable/selector_button_white_blue_right"
             android:button="@null"
-            android:textColor="@color/selector_blue_white"
-            android:paddingVertical="4dp"
             android:gravity="center"
-            android:background="@drawable/selector_button_white_blue_right"/>
+            android:paddingVertical="4dp"
+            android:text="@string/record_conversion"
+            android:textColor="@color/selector_blue_white" />
 
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/my_nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <FrameLayout
+        android:id="@+id/layout_transfer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/my_nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/money_transfer_navigation" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_record"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/money_transfer_navigation" />
+        android:visibility="gone">
 
+        <fragment
+            android:id="@+id/recordFragment"
+            android:name="org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_money_transfer_record" />
+    </FrameLayout>
 
 </LinearLayout>
 

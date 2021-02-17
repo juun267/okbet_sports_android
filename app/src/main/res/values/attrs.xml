@@ -27,6 +27,14 @@
         <attr name="cvEnableVerificationCode" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="SpinnerWithTitleAtStartStyle">
+        <attr name="titleText" format="string" />
+        <attr name="spinnerLayout" format="reference" />
+        <attr name="spinnerTitle" format="string" />
+        <attr name="spinnerIsShowCloseButton" format="boolean"/>
+        <attr name="spinnerList" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="ToolBarView">
         <attr name="title" format="string" />
         <attr name="fragmentNavGraph" format="reference" />

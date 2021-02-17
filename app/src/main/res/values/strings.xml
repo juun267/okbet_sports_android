@@ -290,7 +290,7 @@
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="cancel_select">取消选择</string>
-    <string name="no_data">沒有資料了</string>
+    <string name="no_data">没有更多数据了</string>
     <string name="at_symbol">\u0040%s</string>
     <string name="plus_symbol">+%s</string>
     <string name="minus_symbol">-%s</string>
@@ -523,4 +523,19 @@
     <string name="transfer_platform">转换平台</string>
     <string name="finance_rmb">%s RMB</string>
     <string name="recycle_success">回收成功</string>
+
+    <string name="third_game_df">德丰捕鱼</string>
+    <string name="third_game_sbty">沙巴体育</string>
+    <string name="third_game_ag">AG平台</string>
+    <string name="third_game_ibo">IBO真人</string>
+    <string name="third_game_cq9">CQ9电子</string>
+    <string name="third_game_cgcp">创信彩票</string>
+    <string name="third_game_ogplus">OG+真人</string>
+    <string name="third_game_cr">皇冠体育</string>
+    <string name="out_account_">转出账户：</string>
+    <string name="in_account_">转入账户：</string>
+    <string name="transfer_amount">转换金额：</string>
+    <string name="transfer_state">转换状态：</string>
+    <string name="remark">备注：</string>
+    <string name="transfer_info">转换信息</string>
 </resources>

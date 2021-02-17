@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
+package org.cxct.sportlottery.ui.profileCenter.money_transfer.record
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,18 +11,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemMoneyTransferBinding
-import org.cxct.sportlottery.network.third_game.money_transfer.GameData
+import org.cxct.sportlottery.databinding.ItemMoneyTransferHistoryBinding
+import org.cxct.sportlottery.network.third_game.query_transfers.Row
 
-class MoneyTransferAdapter (private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        ITEM, NO_DATA
+        ITEM, NO_DATA, FOOTER
     }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addFooterAndSubmitList(list: List<GameData>?) {
+    fun addFooterAndSubmitList(list: List<Row>?) {
         adapterScope.launch {
             val items = when (list) {
                 null -> listOf(DataItem.NoData)
@@ -30,7 +30,7 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
                     if (list.isEmpty())
                         listOf(DataItem.NoData)
                     else
-                        list.map { DataItem.Item(it) }
+                        list.map { DataItem.Item(it) }/* + listOf(DataItem.Footer)*/
                 }
             }
             withContext(Dispatchers.Main) { //update in main ui thread
@@ -42,8 +42,8 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            ItemType.NO_DATA.ordinal -> NoDataViewHolder.from(parent)
-            else -> ItemViewHolder.from(parent)
+            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
+            else -> NoDataViewHolder.from(parent)
         }
     }
 
@@ -51,30 +51,26 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
         when (holder) {
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.gameData, clickListener)
-                showDivider(position, holder)
+                holder.bind(data.row, clickListener)
             }
+
+            is FooterViewHolder -> {}
 
             is NoDataViewHolder -> {}
         }
     }
 
-    private fun showDivider(position: Int, holder: ItemViewHolder) {
-        if (position == itemCount - 1) holder.binding.divider.visibility = View.GONE
-        else holder.binding.divider.visibility = View.VISIBLE
-    }
-
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DataItem.Item -> ItemType.ITEM.ordinal
-            is DataItem.NoData -> ItemType.NO_DATA.ordinal
-            else -> ItemType.ITEM.ordinal
+            is DataItem.Footer -> ItemType.FOOTER.ordinal
+            else -> ItemType.NO_DATA.ordinal
         }
     }
 
-    class ItemViewHolder private constructor(val binding: ItemMoneyTransferBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: GameData, clickListener: ItemClickListener) {
-            binding.data = data
+    class ItemViewHolder private constructor(val binding: ItemMoneyTransferHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: Row, clickListener: ItemClickListener) {
+            binding.row = data
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -82,11 +78,18 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemMoneyTransferBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemMoneyTransferHistoryBinding.inflate(layoutInflater, parent, false)
                 return ItemViewHolder(binding)
             }
         }
 
+    }
+
+    class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup) =
+                FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
+        }
     }
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -99,7 +102,7 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
 
     class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
         override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.orderNo == newItem.orderNo
         }
 
         override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
@@ -109,19 +112,22 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
     }
 }
 
-class ItemClickListener(val clickListener: (data: GameData) -> Unit) {
-    fun onClick(data: GameData) = clickListener(data)
+class ItemClickListener(val clickListener: (data: Row) -> Unit) {
+    fun onClick(data: Row) = clickListener(data)
 }
 
 sealed class DataItem {
 
-    abstract val name: String
+    abstract val orderNo: String?
 
-    data class Item(val gameData: GameData) : DataItem() {
-        override val name = gameData.showName
+    data class Item(val row: Row) : DataItem() {
+        override val orderNo: String? = row.orderNo
+    }
+    object Footer : DataItem() {
+        override val orderNo: String = ""
     }
 
     object NoData : DataItem() {
-        override val name: String = ""
+        override val orderNo: String? = null
     }
 }

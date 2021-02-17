@@ -142,7 +142,7 @@
                 tools:text="全赢"
                 android:textSize="@dimen/textSize12sp"
                 android:textColor="@color/gray6"
-                app:status="@{row.status}"/>
+                app:gameStatus="@{row.status}"/>
 
         </LinearLayout>
     </LinearLayout>

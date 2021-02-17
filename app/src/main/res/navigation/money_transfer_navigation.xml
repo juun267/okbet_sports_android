@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_moneyTransferFragment_to_moneyTransferSubFragment"
             app:destination="@id/moneyTransferSubFragment" />
-        <action
-            android:id="@+id/action_moneyTransferFragment_to_moneyTransferRecordFragment"
-            app:destination="@id/moneyTransferRecordFragment" />
     </fragment>
 
     <fragment
@@ -24,17 +21,13 @@
         android:label="MoneyTransferFragment"
         tools:layout="@layout/fragment_money_transfer_sub">
         <argument
-            android:name="gameName"
-            app:argType="string" />
+            android:name="gameData"
+            app:argType="org.cxct.sportlottery.network.third_game.money_transfer.GameData" />
+        <action
+            android:id="@+id/action_moneyTransferSubFragment_to_moneyTransferFragment"
+            app:destination="@id/moneyTransferFragment"
+            app:popUpTo="@id/moneyTransferFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
-    <fragment
-        android:id="@+id/moneyTransferRecordFragment"
-        android:name="org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragment"
-        android:label="MoneyTransferRecordFragment"
-        tools:layout="@layout/fragment_money_transfer_record" >
-        <action
-            android:id="@+id/action_moneyTransferRecordFragment_to_moneyTransferFragment"
-            app:destination="@id/moneyTransferFragment" />
-    </fragment>
 </navigation>

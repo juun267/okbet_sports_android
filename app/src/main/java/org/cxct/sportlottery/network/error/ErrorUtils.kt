@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
@@ -27,9 +28,12 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
+import org.cxct.sportlottery.network.Constants.THIRD_GAMES
+import org.cxct.sportlottery.network.Constants.TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
@@ -49,7 +53,6 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
-import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -69,8 +72,10 @@ import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.network.third_game.AllTransferOutResult
+import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
+import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
+import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
@@ -274,7 +279,20 @@ object ErrorUtils {
                     }
                     (url.contains(THIRD_ALL_TRANSFER_OUT)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return AllTransferOutResult(it.code, it.msg, it.success) as T
+                        return BlankResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(THIRD_GAMES)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ThirdGamesResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(TRANSFER.replace("{outPlat}/{inPlat}/transfer?=amount", ""))
+                            && url.contains("transfer?=")) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BlankResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(QUERY_TRANSFERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
                     }
                 }
             }
