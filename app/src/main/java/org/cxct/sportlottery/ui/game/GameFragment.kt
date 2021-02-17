@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -412,6 +414,16 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
             gameDateAdapter.data = it
+        })
+
+        viewModel.curDatePosition.observe(this.viewLifecycleOwner, Observer {
+            val centerOfOffset =
+                hall_date_list.width / 2 - resources.getDimensionPixelOffset(R.dimen.recyclerview_item_date_row_item_width) / 2
+
+            (hall_date_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                it,
+                centerOfOffset
+            )
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {

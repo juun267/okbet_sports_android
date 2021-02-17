@@ -104,6 +104,9 @@ class MainViewModel(
     val curDate: LiveData<List<Date>>
         get() = _curDate
 
+    val curDatePosition: LiveData<Int>
+        get() = _curDatePosition
+
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
@@ -134,6 +137,7 @@ class MainViewModel(
         value = PlayType.OU_HDP
     }
     private val _curDate = MutableLiveData<List<Date>>()
+    private val _curDatePosition = MutableLiveData<Int>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
@@ -353,12 +357,16 @@ class MainViewModel(
     fun getGameHallList(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
         getGameHallList(matchType, false)
+
+        _curDatePosition.postValue(_curDate.value?.indexOf(date))
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean) {
         mathType = matchType
         if (isReloadDate) {
             getDateRow(matchType)
+
+            _curDatePosition.postValue(0)
         }
 
         when (matchType) {
