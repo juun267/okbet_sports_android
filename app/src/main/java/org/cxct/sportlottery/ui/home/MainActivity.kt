@@ -85,6 +85,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
+        iv_logo.setOnClickListener {
+            tabLayout.getTabAt(0)?.select()
+        }
 
         //頭像 當 側邊欄 開/關
         iv_head.setOnClickListener {
