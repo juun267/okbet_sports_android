@@ -9,8 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -66,6 +64,8 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             matchOddListener = MatchOddListener(
                 {
                     viewModel.getOddsDetail(it.matchInfo?.id)
+                }, {
+                    viewModel.updateMatchOddExpandInPlay(it)
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(

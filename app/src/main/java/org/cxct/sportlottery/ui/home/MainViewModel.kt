@@ -670,6 +670,31 @@ class MainViewModel(
         _sportMenuResult.postValue(result)
     }
 
+    fun updateMatchOddExpandDetail(matchOdd: MatchOdd) {
+        val result = _oddsListResult.value
+
+        result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach {
+                it.isExpand = it == matchOdd && !matchOdd.isExpand
+            }
+        }
+
+        _oddsListResult.postValue(result)
+    }
+
+
+    fun updateMatchOddExpandInPlay(matchOdd: MatchOdd) {
+        val result = _oddsListGameHallResult.value
+
+        result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach {
+                it.isExpand = it == matchOdd && !matchOdd.isExpand
+            }
+        }
+
+        _oddsListGameHallResult.postValue(result)
+    }
+
     private fun getOddsList(
             gameType: String,
             matchType: String,

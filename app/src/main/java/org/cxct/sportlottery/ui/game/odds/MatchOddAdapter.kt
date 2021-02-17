@@ -70,15 +70,13 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             }
 
             setupMatchOddDetail(item, playType, matchOddListener)
-            setupMatchOddDetailExpand(item)
+            setupMatchOddDetailExpand(item, matchOddListener)
         }
 
-        private fun setupMatchOddDetailExpand(item: MatchOdd) {
+        private fun setupMatchOddDetailExpand(item: MatchOdd, matchOddListener: MatchOddListener?) {
             itemView.match_odd_expand.setExpanded(item.isExpand, false)
             itemView.match_odd_arrow.setOnClickListener {
-                item.isExpand = !item.isExpand
-                itemView.match_odd_expand.setExpanded(item.isExpand, true)
-                updateArrowExpand()
+                matchOddListener?.onItemExpand(item)
             }
             updateArrowExpand()
         }
@@ -320,9 +318,11 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
 class MatchOddListener(
     val clickListener: (matchOdd: MatchOdd) -> Unit,
+    val expandListener: (matchOdd: MatchOdd) -> Unit,
     val betClickListener: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
     fun onItemClick(matchOdd: MatchOdd) = clickListener(matchOdd)
+    fun onItemExpand(matchOdd: MatchOdd) = expandListener(matchOdd)
     fun onBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         betClickListener(matchOdd, oddString, odd)
 }
