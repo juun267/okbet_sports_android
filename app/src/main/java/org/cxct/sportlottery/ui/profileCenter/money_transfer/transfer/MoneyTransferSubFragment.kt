@@ -115,7 +115,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         btn_transfer.setOnClickListener {
             viewModel.transfer(out_account.tv_selected.tag.toString(), in_account.tv_selected.tag.toString(), et_transfer_money.getText().toLongOrNull())
-//            viewModel.queryTransfers(viewModel.nowPage)
         }
 
     }
@@ -157,7 +156,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.transferResult.observe(viewLifecycleOwner) {
             it?.apply {
-                Log.e(">>>", "transfer dialog")
                     val dialog = CustomAlertDialog(requireActivity()).apply {
                         setTitle(getString(R.string.prompt))
                         setMessage(it.msg)
@@ -165,7 +163,11 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                         setTextColor(if (it.success) R.color.gray6 else R.color.red2)
                     }
                     dialog.show()
-                view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+
+                if (it.success) {
+                    viewModel.clearTransferResult()
+                    view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                }
             }
         }
 

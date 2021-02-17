@@ -285,7 +285,8 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return ThirdGamesResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.contains(TRANSFER)) -> {
+                    (url.contains(TRANSFER.replace("{outPlat}/{inPlat}/transfer?=amount", ""))
+                            && url.contains("transfer?=")) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BlankResult(it.code, it.msg, it.success) as T
                     }
