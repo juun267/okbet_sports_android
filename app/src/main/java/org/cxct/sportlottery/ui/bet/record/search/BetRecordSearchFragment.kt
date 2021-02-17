@@ -125,25 +125,38 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     private fun calendarBottomSheet() {
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar, null)
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
-        calendarBottomSheet.setContentView(bottomSheetView)
-        calendarBottomSheet.calendar.setSelectableDateRange(getDateInCalendar(30).first, getDateInCalendar(30).second)
-        calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(startDate: Calendar) {
-                setStartEndDateText(simpleDateFormat.format(startDate.time), "")
-                calendarBottomSheet.dismiss()
-            }
+        calendarBottomSheet.apply {
+            setContentView(bottomSheetView)
+            val monthRange = getMonthRangeCalendar()
+            calendar.setVisibleMonthRange(monthRange.first, monthRange.second)
+            calendar.setSelectableDateRange(getDateInCalendar(30).first, getDateInCalendar(30).second)
+            calendar.setCurrentMonth(monthRange.second)
+            calendar.setCalendarListener(object : CalendarListener {
+                override fun onFirstDateSelected(startDate: Calendar) {
+                    setStartEndDateText(simpleDateFormat.format(startDate.time), "")
+                    dismiss()
+                }
 
-            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                setStartEndDateText(simpleDateFormat.format(startDate.time), simpleDateFormat.format(endDate.time))
-                calendarBottomSheet.dismiss()
-            }
+                override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                    setStartEndDateText(simpleDateFormat.format(startDate.time), simpleDateFormat.format(endDate.time))
+                    dismiss()
+                }
 
-        })
+            })
+        }
+
     }
 
     private fun setStartEndDateText(startDate: String, endDate: String) {
         tv_start_date.text = startDate
         tv_end_date.text = endDate
+    }
+
+    private fun getMonthRangeCalendar(): Pair<Calendar, Calendar> {
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val lastCalendar = TimeUtil.getTodayStartTimeCalendar()
+        lastCalendar.add(Calendar.MONTH, -1)
+        return Pair(lastCalendar, todayCalendar)
     }
 
     private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
