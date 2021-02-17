@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -25,9 +25,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 import org.cxct.sportlottery.ui.bet.record.statusNameMap
+import org.cxct.sportlottery.util.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,9 +66,38 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun setObserver() {
-        viewModel.selectedBetStatus.observe(viewLifecycleOwner, {
+        viewModel.waitingResult.observe(viewLifecycleOwner, Observer {
+            showLoadingView(it)
+        })
+
+        viewModel.selectedBetStatus.observe(viewLifecycleOwner, Observer {
             tv_bet_status.text = it
         })
+
+        viewModel.betListRequestState.observe(viewLifecycleOwner, Observer {
+            if (!it.hasStatus) tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+            if (!it.hasStartDate) tv_start_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+            if (!it.hasEndDate) tv_end_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+
+        })
+
+        viewModel.betRecordResult.observe(viewLifecycleOwner, Observer {
+            val eventResult = it.getContentIfNotHandled()
+            eventResult?.let { result ->
+                if (result.success) {
+                    view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment())
+                } else {
+                    Toast.makeText(context, result.msg, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun showLoadingView(show: Boolean) {
+        if (show)
+            loading()
+        else
+            hideLoading()
     }
 
     private fun initBottomSheetDialog() {
@@ -214,31 +243,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         btn_search.setOnClickListener {
-
-            val statusList = betStatusList.filter { it.isSelected && (it.code != null) }.map { it.code!! }
-
-            viewModel.checkRequestState(tv_start_date.text.toString(), tv_end_date.text.toString())
-
-            viewModel.betListRequestState.observe(viewLifecycleOwner, {
-                if (!it.hasStatus) tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
-                if (!it.hasStartDate) tv_start_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
-                if (!it.hasEndDate) tv_end_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
-
-                if (it.hasStatus && it.hasStartDate && it.hasEndDate) {
-                    loading()
-                    viewModel.getBetList(btn_champion.isChecked, statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
-                }
-            })
-
-            viewModel.betRecordResult.observe(viewLifecycleOwner, {
-                hideLoading()
-                if (it.success) {
-                    view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment())
-                } else {
-                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                }
-            })
-
+            viewModel.confirmSearch(betStatusList, btn_champion.isChecked, tv_start_date.text.toString(), tv_end_date.text.toString())
         }
     }
 
@@ -255,7 +260,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
 }
 
-data class BetTypeItemData(val code: Int? = null, val name: String = "", var isSelected: Boolean = false)
+data class BetTypeItemData(val code: Int, val name: String = "", var isSelected: Boolean = false)
 
 class BetStatusLvAdapter(private val context: Context, private val dataList: List<BetTypeItemData>) : BaseAdapter() {
 
