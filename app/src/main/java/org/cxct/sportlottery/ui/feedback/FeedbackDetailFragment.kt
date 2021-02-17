@@ -8,8 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_feedback_detail.*
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.btn_submit
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 
@@ -22,10 +20,6 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
 
     val adapter by lazy {
         viewModel.userID?.let { FeedbackListDetailAdapter(it) }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -45,8 +39,10 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            if (!et_content.text.isNullOrEmpty())
+            if (!et_content.text.isNullOrEmpty()){
                 viewModel.fbReply(et_content.text.toString())
+                navController?.navigate(R.id.action_feedbackDetailFragment_to_feedbackRecordListFragment)
+            }
         }
     }
 

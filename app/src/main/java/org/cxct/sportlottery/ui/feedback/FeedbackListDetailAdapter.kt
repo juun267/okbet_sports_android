@@ -54,7 +54,7 @@ class FeedbackListDetailAdapter(var userId: Long) :
 
     class MineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val imgPic: ImageView = itemView.findViewById(R.id.img_pic)
+        private val imgPic: View = itemView.findViewById(R.id.img_pic)
         private val txvReply: TextView = itemView.findViewById(R.id.txv_reply)
         private val txvReplyTime: TextView = itemView.findViewById(R.id.txv_reply_time)
 
@@ -64,18 +64,18 @@ class FeedbackListDetailAdapter(var userId: Long) :
         }
 
         companion object {
-            fun from(parent: ViewGroup): FeedbackListAdapter.ViewHolder {
+            fun from(parent: ViewGroup): MineViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.content_feedback_record_detail_rv_right, parent, false)
-                return FeedbackListAdapter.ViewHolder(view)
+                return MineViewHolder(view)
             }
         }
     }
 
     class ServiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val imgPic: ImageView = itemView.findViewById(R.id.img_pic)
+        private val imgPic: View = itemView.findViewById(R.id.img_pic)
         private val txvReply: TextView = itemView.findViewById(R.id.txv_reply)
         private val txvReplyTime: TextView = itemView.findViewById(R.id.txv_reply_time)
 
@@ -85,11 +85,11 @@ class FeedbackListDetailAdapter(var userId: Long) :
         }
 
         companion object {
-            fun from(parent: ViewGroup): FeedbackListAdapter.ViewHolder {
+            fun from(parent: ViewGroup): ServiceViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.content_feedback_record_detail_rv_left, parent, false)
-                return FeedbackListAdapter.ViewHolder(view)
+                return ServiceViewHolder(view)
             }
         }
     }

@@ -5,10 +5,7 @@ import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
 import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
 import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface FeedbackService {
 
@@ -33,7 +30,7 @@ interface FeedbackService {
     //回复反馈信息
     @GET(FEEDBACK_QUERYDETAIL)
     suspend fun fbQueryDetail(
-        @Query("id") id: String
+        @Path("id") id: String
     ): Response<FeedbackListResult>
 
 }

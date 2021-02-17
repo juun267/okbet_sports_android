@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.feedback
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter
 
 class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
@@ -24,7 +22,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
             FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener { data ->
                 navController?.navigate(R.id.action_feedbackRecordListFragment_to_feedbackDetailFragment)
                 viewModel.dataID = data.id?.toLong()
-                viewModel.feedbackCode =data.feedbackCode?.toInt()
+                viewModel.feedbackCode =data.feedbackCode
             })
         }
     }
@@ -65,7 +63,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     private fun initView() {
         btn_sugession.isSelected = false
         btn_record.isSelected = true
-
     }
 
     private fun initButton() {

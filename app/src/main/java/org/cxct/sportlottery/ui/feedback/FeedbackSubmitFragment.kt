@@ -46,8 +46,10 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            if (!et_content.text.isNullOrEmpty())
+            if (!et_content.text.isNullOrEmpty()){
                 viewModel.fbSave(et_content.text.toString())
+                navController?.navigate(R.id.action_feedbackSubmitFragment_to_feedbackSuggestFragment)
+            }
         }
         btn_record.setOnClickListener {
             navController?.navigate(R.id.action_feedbackSubmitFragment_to_feedbackRecordListFragment)

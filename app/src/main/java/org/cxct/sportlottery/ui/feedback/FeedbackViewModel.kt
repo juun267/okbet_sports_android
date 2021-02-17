@@ -10,7 +10,6 @@ import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.FeedbackRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import timber.log.Timber
 
@@ -52,7 +51,7 @@ class FeedbackViewModel(
     var dataID: Long? = null
 
     //feedbackCode
-    var feedbackCode: Int? = null
+    var feedbackCode: String? = null
 
     //API
     fun getFbQueryList() {
@@ -104,7 +103,7 @@ class FeedbackViewModel(
             if (result?.rows?.size ?: 0 > 0)
                 _feedbackDetail.value = result?.rows
 
-            Timber.e(">>>input = ${dataID}, result = ${result}, url = ${Constants.FEEDBACK_REPLY}")
+            Timber.i(">>>input = ${dataID}, result = ${result}, url = ${Constants.FEEDBACK_QUERYDETAIL}")
             _isLoading.value = false
         }
     }
