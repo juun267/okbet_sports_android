@@ -27,9 +27,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(R.layout.dialog_bottom_sheet_custom, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(requireContext()) }
-
-//    private val gameDataArg by lazy { MoneyTransferSubFragmentArgs.fromBundle(requireArguments()).gameData }
-
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
 
     var inDataList = mutableListOf<GameData>()
@@ -57,12 +54,14 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        viewModel.showTitleBar(false)
+
         return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         setButtonSheet()
         initView()
@@ -86,7 +85,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
     private fun initView() {
-
         context?.getString(R.string.transfer_info)?.let { (activity as MoneyTransferActivity).setToolBarName(it) }
 
         out_account.tv_selected.text = getString(R.string.plat_money)

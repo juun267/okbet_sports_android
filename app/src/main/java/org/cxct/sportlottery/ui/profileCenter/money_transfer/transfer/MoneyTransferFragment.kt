@@ -1,18 +1,15 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_money_transfer.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 
@@ -27,7 +24,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        viewModel.showTitleBar(true)
         return inflater.inflate(R.layout.fragment_money_transfer, container, false)
     }
 
@@ -40,8 +37,6 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
     }
 
     private fun initView() {
-        context?.getString(R.string.account_transfer)?.let { (activity as MoneyTransferActivity).setToolBarName(it) }
-
         rv_plat.adapter = rvAdapter
     }
 
@@ -73,7 +68,6 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) {
             viewModel.getAllBalance()
             it?.apply {
-                Log.e(">>>", "show dialog")
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     setTitle(getString(R.string.prompt))
                     setMessage(it.msg)

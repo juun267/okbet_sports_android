@@ -61,7 +61,15 @@ class MoneyTransferViewModel(
     val userMoney: LiveData<Double?>
         get() = _userMoney
 
+    val isShowTitleBar: LiveData<Boolean>
+        get() = _isShowTitleBar
 
+    val loading: LiveData<Boolean> //使用者餘額
+        get() = _loading
+
+
+    private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
+    private val _loading = MutableLiveData<Boolean>()
     private val _userMoney = MutableLiveData<Double?>()
     private var _allBalanceResultList = MutableLiveData<List<GameData>>()
     private var _thirdGamesResult = MutableLiveData<ThirdGamesResult>()
@@ -69,23 +77,29 @@ class MoneyTransferViewModel(
     private var _transferResult = MutableLiveData<BlankResult?>()
     private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
 
+    fun showTitleBar(visible: Boolean) {
+        _isShowTitleBar.value = visible
+    }
 
     fun getMoney() {
+        loading()
         viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
+            }?.let {
+                hideLoading()
+                _userMoney.postValue(it.money)
             }
-
-            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 
     fun getAllBalance() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getAllBalance()
             }?.let { result ->
-
+                hideLoading()
                 val resultList = mutableListOf<GameData>()
                 for ((key, value) in result.resultMap ?: mapOf()) {
                     value?.apply {
@@ -111,10 +125,12 @@ class MoneyTransferViewModel(
     }
 
     fun recycleAllMoney() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.allTransferOut()
             }?.let { result ->
+                hideLoading()
                 _recycleAllMoneyResult.value = result
             }
         }
@@ -122,10 +138,12 @@ class MoneyTransferViewModel(
 
     fun transfer(outPlat: String, inPlat: String, amount: Long?) {
         if (amount == null) return
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
             }?.let { result ->
+                hideLoading()
                 _transferResult.value = result
             }
         }
@@ -136,10 +154,28 @@ class MoneyTransferViewModel(
 
     var nowPage = 1
 
+    val recordDataList = mutableListOf<Row>()
+
+    fun queryTransfers(page: Int?=1) {
+        loading()
+        if (page == 1) {
+            nowPage = 1
+            recordDataList.clear()
+        }
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE))
+            }?.let { result ->
+                hideLoading()
+                isLoading = false
+                _queryTransfersResult.value = result
+                recordDataList.addAll(result.rows as List<Row>)
+            }
+        }
+    }
+
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
-        Log.e(">>>", "isLoading = $isLoading, isLastPage = $isLastPage")
         if (!isLoading && !isLastPage) {
-            Log.e(">>>", "1: ${visibleItemCount + firstVisibleItemPosition >= totalItemCount}, " + "2: ${firstVisibleItemPosition >= 0}," + "3: ${totalItemCount >= MifareUltralight.PAGE_SIZE}")
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 Log.e(">>>", "getNextPage")
                 isLoading = true
@@ -148,22 +184,14 @@ class MoneyTransferViewModel(
         }
     }
 
-    fun queryTransfers(page: Int? = 1) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE))
-            }?.let { result ->
-                isLoading = false
-                _queryTransfersResult.value = result
-            }
-        }
-    }
 
     fun getThirdGames() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getThirdGames()
             }?.let { result ->
+                hideLoading()
                 _thirdGamesResult.value = result
             }
         }
@@ -173,5 +201,12 @@ class MoneyTransferViewModel(
         _transferResult.postValue(null)
     }
 
+    private fun loading() {
+        _loading.postValue(true)
+    }
+
+    private fun hideLoading() {
+        _loading.postValue(false)
+    }
 
 }
