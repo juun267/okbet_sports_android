@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants.BASE_URL
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
@@ -159,7 +159,7 @@ class MoneyRechViewModel(
     //在線支付
     fun rechargeOnlinePay(context: Context, id: Int, depositMoney: Int, bankCode: String?) {
         if (onlinePayInput()) {
-            var url = BASE_URL + USER_RECHARGE_ONLINE_PAY
+            var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
                 "rechCfgId" to id.toString(),
