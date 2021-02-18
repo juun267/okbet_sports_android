@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,17 +23,23 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addFooterAndSubmitList(list: List<Row>?) {
+    fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
         adapterScope.launch {
             val items = when (list) {
                 null -> listOf(DataItem.NoData)
                 else -> {
-                    if (list.isEmpty())
-                        listOf(DataItem.NoData)
-                    else
-                        list.map { DataItem.Item(it) }/* + listOf(DataItem.Footer)*/
+                    when {
+                        list.isEmpty() -> listOf(DataItem.NoData)
+                        isLastPage -> {
+                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                        }
+                        else -> {
+                            list.map { DataItem.Item(it) }
+                        }
+                    }
                 }
             }
+
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
             }
@@ -95,7 +102,7 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_third_game, parent, false)) //TODO Cheryl: UI??
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false)) //TODO Cheryl: UI??
         }
     }
 

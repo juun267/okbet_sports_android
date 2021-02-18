@@ -92,7 +92,7 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_third_game, parent, false)) //TODO Cheryl: UI??
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
         }
     }
 

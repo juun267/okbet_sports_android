@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.bet.record.search.result
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +95,7 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_bet_record, parent, false))
         }
     }
 

@@ -32,19 +32,6 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    fun show (adapter: ListAdapter<GameData, RecyclerView.ViewHolder>) {
-        bottomSheetView.spinner_rv_more.adapter = adapter
-        bottomSheet.show()
-    }
-
-    fun setText(testStr: String) {
-        tv_selected.text = testStr
-    }
-
-    fun dismiss() {
-        bottomSheet.dismiss()
-    }
-
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.custom_spinner, this, false)
         addView(view)
@@ -55,11 +42,6 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
 
             view?.apply {
                 tv_title.text = typedArray.getString(R.styleable.SpinnerWithTitleAtStartStyle_titleText)
-/*
-                layout.setOnClickListener {
-                    bottomSheet.show()
-                }
-                */
             }
 
         } catch (e: Exception) {
@@ -68,6 +50,26 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
             typedArray.recycle()
         }
 
+    }
+
+
+    fun setOnItemClickListener (adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
+        this.setOnClickListener {
+            bottomSheetView.spinner_rv_more.adapter = adapter
+            bottomSheet.show()
+        }
+    }
+
+    fun setText(testStr: String) {
+        tv_selected.text = testStr
+    }
+
+    fun getText(): String {
+        return tv_selected.text.toString()
+    }
+
+    fun dismiss() {
+        bottomSheet.dismiss()
     }
 
     private fun setButtonSheet(typedArray: TypedArray) {
@@ -87,6 +89,9 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
             bottomSheetView.spinner_tv_title.text = typedArray.getText(R.styleable.SpinnerWithTitleAtStartStyle_spinnerTitle)
             val isShowCloseButton = typedArray.getBoolean(R.styleable.SpinnerWithTitleAtStartStyle_spinnerIsShowCloseButton, true)
             spinner_tv_close.visibility = if (isShowCloseButton) View.VISIBLE else View.GONE
+            spinner_tv_close.setOnClickListener {
+                bottomSheet.dismiss()
+            }
         }
 
     }
