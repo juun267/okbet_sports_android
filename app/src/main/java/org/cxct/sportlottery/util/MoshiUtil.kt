@@ -2,6 +2,7 @@ package org.cxct.sportlottery.util
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.lang.reflect.ParameterizedType
 
@@ -19,4 +20,12 @@ object MoshiUtil {
         return adapter.fromJson(json)
     }
 
+    fun <T:Any>toJson(jsonObject: T,clazz: Class<T>):String{
+
+        val userRebatesType =
+            Types.newParameterizedType(List::class.java, clazz)
+        val moshi: Moshi = Moshi.Builder().build()
+        val adapter: JsonAdapter<T> = moshi.adapter(userRebatesType)
+        return adapter.toJson(jsonObject)
+    }
 }

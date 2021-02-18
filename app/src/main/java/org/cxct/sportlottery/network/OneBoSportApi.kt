@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import org.cxct.sportlottery.network.appUpdate.AppUpdateService
 import org.cxct.sportlottery.network.bank.BankService
 import org.cxct.sportlottery.network.bet.BetService
+import org.cxct.sportlottery.network.feedback.FeedbackService
 import org.cxct.sportlottery.network.host.HostService
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.infoCenter.InfoCenterService
@@ -121,6 +122,12 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(WithdrawService::class.java)
+    }
+
+    val feedbackService: FeedbackService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(FeedbackService::class.java)
     }
 
     val appUpdateService: AppUpdateService by lazy {

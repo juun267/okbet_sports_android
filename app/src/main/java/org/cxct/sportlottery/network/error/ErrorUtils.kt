@@ -6,6 +6,10 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
+import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
+import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
+import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
+import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
 import org.cxct.sportlottery.network.Constants.GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
@@ -53,6 +57,8 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
+import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -272,6 +278,22 @@ object ErrorUtils {
                     (url.contains(WITHDRAW_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return WithdrawListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(FEEDBACK_QUERYLIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedbackListResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(FEEDBACK_SAVE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedBackBaseResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(FEEDBACK_REPLY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedBackBaseResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(FEEDBACK_QUERYDETAIL)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedBackBaseResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(GET_ALL_BALANCE)) -> {
                         @Suppress("UNCHECKED_CAST")

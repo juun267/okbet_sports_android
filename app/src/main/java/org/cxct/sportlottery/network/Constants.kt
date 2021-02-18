@@ -140,6 +140,12 @@ object Constants {
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
     const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
 
+    //feedback
+    const val FEEDBACK_QUERYLIST = "/api/front/feedback/querylist"
+    const val FEEDBACK_SAVE = "/api/front/feedback/save"
+    const val FEEDBACK_REPLY = "/api/front/feedback/reply"
+    const val FEEDBACK_QUERYDETAIL = "/api/front/feedback/querydetail/{id}"
+
     //third game
     const val THIRD_GAMES = "/api/front/index/thirdgames"
     const val GET_ALL_BALANCE = "/api/front/thirdapi/getAllBalance"

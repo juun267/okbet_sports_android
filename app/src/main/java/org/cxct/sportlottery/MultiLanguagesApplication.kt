@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
@@ -60,6 +61,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettingPasswordViewModel(get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
+        viewModel { FeedbackViewModel(get(), get(), get(), get(),get()) }
         viewModel { VersionUpdateViewModel(get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get()) }
     }
@@ -72,6 +74,7 @@ class MultiLanguagesApplication : Application() {
         single { InfoCenterRepository() }
         single { MoneyRepository(get()) }
         single { BetInfoRepository() }
+        single { FeedbackRepository() }
         single { HostRepository(get()) }
     }
 
