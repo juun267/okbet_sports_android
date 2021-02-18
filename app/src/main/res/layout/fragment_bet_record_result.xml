@@ -39,6 +39,7 @@
             android:paddingVertical="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rv_bet_record"
             app:layout_constraintTop_toBottomOf="@id/tv_bet_status">
 
             <TextView
@@ -86,14 +87,16 @@
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_bet_record"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/linear_layout2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-            tools:listitem="@layout/item_bet_record_result" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bet_record"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/linear_layout2"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+                tools:listitem="@layout/item_bet_record_result" />
+
 
         <LinearLayout
             android:id="@+id/linear_layout2"
@@ -103,6 +106,7 @@
             android:gravity="end"
             android:orientation="vertical"
             android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/rv_bet_record"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
