@@ -38,7 +38,7 @@ class InfoCenterDetailDialog(val data: InfoCenterData) :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        img_close.setOnClickListener {
+        info_center_detail_confirm.setOnClickListener {
             dismiss()
         }
         txv_title.text = data.title
