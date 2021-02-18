@@ -104,6 +104,9 @@ class MainViewModel(
     val curDate: LiveData<List<Date>>
         get() = _curDate
 
+    val curDatePosition: LiveData<Int>
+        get() = _curDatePosition
+
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
@@ -134,6 +137,7 @@ class MainViewModel(
         value = PlayType.OU_HDP
     }
     private val _curDate = MutableLiveData<List<Date>>()
+    private val _curDatePosition = MutableLiveData<Int>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
@@ -353,12 +357,16 @@ class MainViewModel(
     fun getGameHallList(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
         getGameHallList(matchType, false)
+
+        _curDatePosition.postValue(_curDate.value?.indexOf(date))
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean) {
         mathType = matchType
         if (isReloadDate) {
             getDateRow(matchType)
+
+            _curDatePosition.postValue(0)
         }
 
         when (matchType) {
@@ -662,6 +670,31 @@ class MainViewModel(
         _sportMenuResult.postValue(result)
     }
 
+    fun updateMatchOddExpandDetail(matchOdd: MatchOdd) {
+        val result = _oddsListResult.value
+
+        result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach {
+                it.isExpand = it == matchOdd && !matchOdd.isExpand
+            }
+        }
+
+        _oddsListResult.postValue(result)
+    }
+
+
+    fun updateMatchOddExpandInPlay(matchOdd: MatchOdd) {
+        val result = _oddsListGameHallResult.value
+
+        result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach {
+                it.isExpand = it == matchOdd && !matchOdd.isExpand
+            }
+        }
+
+        _oddsListGameHallResult.postValue(result)
+    }
+
     private fun getOddsList(
             gameType: String,
             matchType: String,
@@ -682,6 +715,7 @@ class MainViewModel(
             }
 
             if (leagueIdList != null) {
+                result?.oddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.isExpand = true
                 _oddsListResult.postValue(result)
             } else {
                 _oddsListGameHallResult.postValue(result)

@@ -65,6 +65,8 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             matchOddListener = MatchOddListener(
                 {
                     viewModel.getOddsDetail(it.matchInfo?.id)
+                }, {
+                    viewModel.updateMatchOddExpandInPlay(it)
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(
@@ -413,6 +415,16 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
             gameDateAdapter.data = it
+        })
+
+        viewModel.curDatePosition.observe(this.viewLifecycleOwner, Observer {
+            val centerOfOffset =
+                hall_date_list.width / 2 - resources.getDimensionPixelOffset(R.dimen.recyclerview_item_date_row_item_width) / 2
+
+            (hall_date_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                it,
+                centerOfOffset
+            )
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {

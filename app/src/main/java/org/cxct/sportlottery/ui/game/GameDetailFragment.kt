@@ -60,6 +60,8 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             matchOddListener = MatchOddListener(
                 {
                     viewModel.getOddsDetail(it.matchInfo?.id)
+                }, {
+                    viewModel.updateMatchOddExpandDetail(it)
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(
@@ -286,7 +288,7 @@ class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         val oddsFirst = oddsListResult.oddsListData?.leagueOdds?.get(0)
 
         oddsFirst?.let {
-            matchOddAdapter.data = it.matchOdds.apply { this[0].isExpand = true }
+            matchOddAdapter.data = it.matchOdds
             matchOddAdapter.betInfoListData = viewModel.betInfoRepository?.betInfoList?.value
         }
     }
