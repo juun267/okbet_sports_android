@@ -22,13 +22,14 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 
-class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
+class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class),
+        Animation.AnimationListener, OnOddClickListener {
 
 
     companion object {
@@ -38,14 +39,14 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         const val ODDS_TYPE = "oddsType"
 
         fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
-            OddsDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(GAME_TYPE, gameType)
-                    putString(TYPE_NAME, typeName)
-                    putString(MATCH_ID, matchId)
-                    putString(ODDS_TYPE, oddsType)
+                OddsDetailFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(GAME_TYPE, gameType)
+                        putString(TYPE_NAME, typeName)
+                        putString(MATCH_ID, matchId)
+                        putString(ODDS_TYPE, oddsType)
+                    }
                 }
-            }
     }
 
 
@@ -72,7 +73,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
         dataBinding.apply {
             view = this@OddsDetailFragment
@@ -93,7 +94,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
 
     private fun observeSocketData() {
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
         })
@@ -104,23 +105,20 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
         })
 */
 
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
+        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
-
-            Log.e(">>>>>", "matchOddsChange")
-
             val newList = arrayListOf<OddsDetailListData>()
 
-            for ( (key, value) in it.odds) {
-                newList.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        value.odds
-                    )
-                )
+            it.odds.forEach { map ->
+                val key = map.key
+                val value = map.value
+                val filteredOddList = mutableListOf<Odd>()
+                value.odds?.forEach { odd ->
+                    if (odd != null)
+                        filteredOddList.add(odd)
+                }
+                newList.add(OddsDetailListData(key, TextUtil.split(value.typeCodes), value.name, filteredOddList))
             }
 
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
@@ -149,7 +147,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
                             getData()
                         }
                     }).apply {
-                        show(it, "")
+                        show(it, "OddsDetailMoreFragment")
                     }
                 }
             }
@@ -176,7 +174,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, { result ->
             result?.success?.let {
                 if (it) {
                     dataBinding.tabCat.removeAllTabs()
@@ -187,7 +185,7 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
             }
         })
 
-        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
 
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
@@ -204,27 +202,39 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
                     style.setSpan(ForegroundColorSpan(color), startPosition, endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     dataBinding.tvMatch.text = style
 
+                    oddsDetailListAdapter?.homeName = home
+                    oddsDetailListAdapter?.awayName = away
+
                 }
             }
         })
 
-        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.oddsDetailDataList?.clear()
             oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
             dataBinding.tabCat.getTabAt(0)?.select()
         })
 
-        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsDetailMoreList.observe(this.viewLifecycleOwner, {
+            //扣除當前的賽事
+            it?.size?.let { count ->
+                if (count - 1 == 0) {
+                    tv_more.visibility = View.GONE
+                }
+            }
+        })
+
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.betInfoRepository?.isParlayPage?.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.isParlayPage.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             if (it?.success != true) {
-                ToastUtil.showBetResultToast(requireActivity(), it?.msg?: getString(R.string.unknown_error), false)
+                ToastUtil.showBetResultToast(requireActivity(), it?.msg ?: getString(R.string.unknown_error), false)
             }
         })
 

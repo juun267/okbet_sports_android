@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,8 +12,13 @@ import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.finance.FinanceActivity
 
 class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
+
+    companion object {
+        const val RechargeViewLog = "rechargeViewLog"
+    }
 
     enum class RechargeType { TRANSFER_PAY, ONLINE_PAY }
 
@@ -39,17 +45,34 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
     }
 
     private fun initData() {
+        getMoneyConfig()
+    }
+
+    private fun getMoneyConfig() {
+        loading()
+        block_tab.visibility = View.GONE
         viewModel.getRechCfg()
     }
 
     private fun initLiveData() {
 
         viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
+            hideLoading()
+            block_tab.visibility = View.VISIBLE //獲取資金資料完畢, 顯示充值分類
             transferPayList = it ?: return@Observer
-            if (currentTab == RechargeType.TRANSFER_PAY)
+            btn_transfer_pay.visibility = if (transferPayList.size > 0) {
+                View.VISIBLE
+            } else {
+                currentTab = RechargeType.ONLINE_PAY //TODO Dean : 此處邏輯不應該寫在這裡, 應抽離出去
+                View.GONE
+            }
+
+            //TODO Dean : 此處邏輯不應該寫在這裡, 應抽離出去
+            if (currentTab == RechargeType.TRANSFER_PAY){
                 bankTypeAdapter?.data = transferPayList
-
-
+            }else if(currentTab == RechargeType.ONLINE_PAY){
+                bankTypeAdapter?.data = onlinePayList
+            }
             when (currentTab) {
                 RechargeType.TRANSFER_PAY -> switchFragment(
                     getPayFragment(transferPayList[0]),
@@ -64,6 +87,12 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
             onlinePayList = it ?: return@Observer
+            btn_online_pay.visibility = if (onlinePayList.size > 0) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
             if (currentTab == RechargeType.ONLINE_PAY) {
                 bankTypeAdapter?.data = onlinePayList
             }
@@ -79,8 +108,8 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
             if (!apiResult.success) {
                 //顯示彈窗
-                val customAlertDialog= CustomAlertDialog(this@MoneyRechargeActivity)
-                with(customAlertDialog){
+                val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
+                with(customAlertDialog) {
                     setTitle("提示")
                     setMessage(apiResult.msg)
                 }.let {
@@ -90,10 +119,34 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                 //顯示成功彈窗
                 val moneySubmitDialog = MoneySubmitDialog(
                     payWay,
-                    (apiResult.result ?: 0).toString()
+                    (apiResult.result ?: 0).toString(),
+                    MoneySubmitDialog.MoneySubmitDialogListener({
+                        finish()
+                        startActivity(Intent(this, FinanceActivity::class.java).apply { putExtra(RechargeViewLog, getString(R.string.record_recharge)) })
+                    }, {
+                        showPromptDialog(getString(R.string.prompt), getString(R.string.content_coming_soon)) {}
+                    })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
             }
+        })
+
+        //在線支付提交申請
+        viewModel.onlinePaySubmit.observe(this@MoneyRechargeActivity, Observer {
+            val payWay = this.getString(R.string.txv_online_pay)
+
+            //顯示成功彈窗
+            val moneySubmitDialog = MoneySubmitDialog(
+                payWay,
+                it.toString(),
+                MoneySubmitDialog.MoneySubmitDialogListener({
+                    finish()
+                    startActivity(Intent(this, FinanceActivity::class.java).apply { putExtra(RechargeViewLog, getString(R.string.record_recharge)) })
+                }, {
+                    showPromptDialog(getString(R.string.prompt), getString(R.string.content_coming_soon)) {}
+                })
+            )
+            moneySubmitDialog.show(supportFragmentManager, "")
         })
 
     }
@@ -103,6 +156,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             currentTab = RechargeType.TRANSFER_PAY
             btn_transfer_pay.isSelected = true
             btn_online_pay.isSelected = false
+            initRecyclerView()
             bankTypeAdapter?.data = transferPayList
             switchFragment(
                 getPayFragment(transferPayList[0]),
@@ -114,6 +168,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             currentTab = RechargeType.ONLINE_PAY
             btn_transfer_pay.isSelected = false
             btn_online_pay.isSelected = true
+            initRecyclerView()
             bankTypeAdapter?.data = onlinePayList
             switchFragment(
                 getPayFragment(onlinePayList[0]),

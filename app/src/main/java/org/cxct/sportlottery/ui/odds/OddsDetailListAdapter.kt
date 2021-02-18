@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.odds
 
 import android.content.res.ColorStateList
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,8 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
@@ -28,9 +29,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
+
     var oddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
 
+
     var curMatchId: String? = null
+
+
+    var homeName: String? = null
+
+
+    var awayName: String? = null
 
 
     var updatedOddsDetailDataList = ArrayList<OddsDetailListData>()
@@ -39,17 +48,21 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             notifyDataSetChanged()
         }
 
+
     fun setBetInfoList(betInfoList: MutableList<BetInfoListData>) {
         this.betInfoList.clear()
         this.betInfoList.addAll(betInfoList)
         notifyDataSetChanged()
     }
 
+
     fun setCurrentMatchId(mid: String?) {
         curMatchId = mid
     }
 
+
     private lateinit var code: String
+
 
     enum class GameType(val value: String, val layout: Int, val type: Int) {
         HDP("HDP", R.layout.content_odds_detail_list_group_item, 0),//让球
@@ -179,6 +192,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         holder.bindModel(oddsDetailDataList[position], position)
     }
 
+
     private fun updateItemDataFromSocket(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>) {
         val oldOddList = oddsDetail.oddArrayList
         var newOddList = listOf<Odd>()
@@ -186,7 +200,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         for (item in updatedOddsDetail) {
             if (item.gameType == oddsDetail.gameType) {
                 newOddList = item.oddArrayList
-                return
+                break
             }
         }
 
@@ -196,14 +210,21 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     oldOddData.name = newOddData.name
                     oldOddData.extInfo = newOddData.extInfo
                     oldOddData.spread = newOddData.spread
+
+                    //先判斷大小
+                    oldOddData.oddState = getOddState(oldOddData, newOddData)
+
+                    //再帶入新的賠率
                     oldOddData.odds = newOddData.odds
+
                     oldOddData.status = newOddData.status
                     oldOddData.producerId = newOddData.producerId
-                    oldOddData.oddState = getOddState(oldOddData, newOddData)
+
                 }
             }
         }
     }
+
 
     private fun getOddState(oldItem: Odd, it: Odd): Int {
         val oldOdd = oldItem.odds ?: 0.0
@@ -215,6 +236,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             else -> OddState.SAME.state
         }
     }
+
 
     fun notifyDataSetChangedByCode(code: String) {
         this.code = code
@@ -322,13 +344,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun cs(oddsDetail: OddsDetailListData) {
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            val homeList = ArrayList<Odd>()
+            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
+            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
+
+            val homeList: MutableList<Odd> = mutableListOf()
             val drawList = ArrayList<Odd>()
             val awayList = ArrayList<Odd>()
 
             for (odd in oddsDetail.oddArrayList) {
 
-                if(odd.name!=null) {
+                if (odd.name != null) {
                     if (odd.name?.contains(" - ") == true) {
                         val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
                         if (stringArray[0].toInt() > stringArray[1].toInt()) {
@@ -350,16 +375,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                         odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
 
-                        setHighlight(tvOdds, odd.oddState)
+                        setHighlight(tvOdds, odd)
 
                         when (odd.status) {
                             BetStatus.ACTIVATED.code -> {
                                 itemView.visibility = View.VISIBLE
                                 vCover.visibility = View.GONE
                                 tvOdds.isEnabled = true
-                                tvOdds.isSelected = odd.isSelect
+                                tvOdds.isSelected = odd.isSelect ?: false
                                 tvOdds.setOnClickListener {
-                                    if (!odd.isSelect) {
+                                    if (odd.isSelect != true) {
                                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
                                             return@setOnClickListener
                                         }
@@ -375,13 +400,22 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 tvOdds.isEnabled = false
                             }
                             BetStatus.DEACTIVATED.code -> {
-                                itemView.visibility = View.GONE
-                                vCover.visibility = View.GONE
+                                //比照h5照樣顯示（文件為不顯示）
+                                itemView.visibility = View.VISIBLE
+                                vCover.visibility = View.VISIBLE
                                 tvOdds.isEnabled = false
                             }
                         }
                     }
                 }
+            }
+
+            homeList.sortBy {
+                it.name?.split(" - ")?.get(0)?.toInt()
+            }
+
+            awayList.sortBy {
+                it.name?.split(" - ")?.get(1)?.toInt()
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
@@ -420,15 +454,31 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     }
 
-    private fun setHighlight(textView: TextView, status: Int) {
-        when (status) {
-            OddState.LARGER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
-            OddState.SMALLER.state -> textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
+
+    private fun setHighlight(textView: TextView, odd: Odd) {
+        when (odd.oddState) {
+            OddState.LARGER.state -> {
+                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
+                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
+            }
+            OddState.SMALLER.state -> {
+                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
+                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
+            }
         }
 
         Handler().postDelayed(
                 {
-                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.light_gray))
+                    when (odd.isSelect) {
+                        true -> {
+                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
+                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
+                        }
+                        false -> {
+                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
+                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
+                        }
+                    }
                 }, CHANGING_ITEM_BG_COLOR_DURATION
         )
     }

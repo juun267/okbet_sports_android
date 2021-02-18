@@ -14,19 +14,17 @@ import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class SettingPasswordViewModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
-    betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     private val _passwordFormState = MutableLiveData<PasswordFormState>()
     private val _updatePwdResult = MutableLiveData<UpdatePwdResult?>()

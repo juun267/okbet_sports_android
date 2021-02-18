@@ -13,7 +13,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -23,15 +23,18 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
-class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity :
+    BaseOddButtonActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
@@ -45,6 +48,7 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         setupMoreButtons()
         getUserInfo()
         initObserve()
+        initSocketObserver()
     }
 
     private fun setupBackButton() {
@@ -109,6 +113,7 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         //額度轉換
         btn_account_transfer.setOnClickListener {
             //TODO 額度轉換
+            startActivity(Intent(this, MoneyTransferActivity::class.java))
         }
 
         //提款設置
@@ -168,7 +173,7 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
     private fun initObserve() {
         viewModel.userMoney.observe(this, Observer {
             refreshMoneyHideLoading()
-            tv_account_balance.text = ArithUtil.toMoneyFormat(it)
+            tv_account_balance.text = it ?: ""
         })
 
         viewModel.userInfo.observe(this, Observer {
@@ -206,6 +211,16 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
         })
     }
 
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(this, Observer {
+            val formatMoney = it?.let {
+                TextUtil.format(it)
+            }
+
+            tv_account_balance.text = formatMoney ?: ""
+        })
+    }
+
     @SuppressLint("SetTextI18n")
     private fun updateUI(userInfo: UserInfo?) {
 
@@ -214,7 +229,12 @@ class ProfileCenterActivity : BaseActivity<ProfileCenterViewModel>(ProfileCenter
             .apply(RequestOptions().placeholder(R.drawable.ic_head))
             .into(iv_head) //載入頭像
 
-        tv_user_nickname.text = userInfo?.userName
+        tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
+            userInfo?.userName
+        } else {
+            userInfo?.nickName
+        }
+
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()

@@ -14,10 +14,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
 
 class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
@@ -40,18 +38,6 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    var updatedOddsMap = mapOf<String, List<Odd>>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    var updatedMatchStatus: MatchStatusCO? = MatchStatusCO()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     var playType: PlayType = PlayType.OU_HDP
         set(value) {
             field = value
@@ -66,116 +52,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        updateItemDataFromSocket(item)
-        updatedMatchStatusFromSocket(item)
         holder.bind(item, playType, matchOddListener)
-    }
-
-    private fun updatedMatchStatusFromSocket(originItem: MatchOdd) {
-        val originMatchInfo = originItem.matchInfo
-
-        if (originMatchInfo?.id == updatedMatchStatus?.matchId) {
-            originItem.matchInfo?.apply {
-                awayScore = updatedMatchStatus?.awayScore
-                homeScore = updatedMatchStatus?.homeScore
-                statusName = updatedMatchStatus?.statusName //TODO Cheryl: 這值是放ＵＩ的哪？
-            }
-        }
-
-    }
-
-    private fun addDataIfNotEnough(originItem: MatchOdd, code: String) {
-        val oddList = originItem.odds[code]
-        if (oddList?.size?:0 < 2) {
-            for (i in 0 until (2 - (oddList?.size?:0))) {
-                originItem.odds[code]?.add(Odd())
-                if (updatedOddsMap[code]?.size?:0 > i ) {
-                    updatedOddsMap[code]?.get(i)?.let { originItem.odds[code]?.set(i, it) }
-                }
-            }
-        }
-    }
-
-
-    private fun updateItemDataFromSocket(originItem: MatchOdd) {
-        if (updatedOddsMap.isNullOrEmpty()) return
-
-        addDataIfNotEnough(originItem, PlayType.OU.code)
-        addDataIfNotEnough(originItem, PlayType.HDP.code)
-        addDataIfNotEnough(originItem, PlayType.X12.code)
-
-            for ((key, value) in updatedOddsMap) {
-                when (key) {
-                    PlayType.OU.code -> {
-                        value.forEach {
-                            val oddItem = originItem.odds[PlayType.OU.code]
-                            when (it.id) {
-                                oddItem?.firstOrNull()?.id -> {
-                                    val oddData = oddItem[0]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[0] = it
-                                }
-                                oddItem?.get(1)?.id -> {
-                                    val oddData = oddItem[1]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[1] = it
-                                }
-                            }
-
-                        }
-                    }
-
-                    PlayType.HDP.code -> {
-                        value.forEach {
-                            val oddItem = originItem.odds[PlayType.HDP.code]
-
-                            when (it.id) {
-                                oddItem?.firstOrNull()?.id -> {
-                                    val oddData = oddItem[0]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[0] = it
-                                }
-                                oddItem?.get(1)?.id -> {
-                                    val oddData = oddItem[1]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[1] = it
-                                }
-                            }
-                        }
-                    }
-
-                    PlayType.X12.code -> {
-                        value.forEach {
-                            val oddItem = originItem.odds[PlayType.X12.code]
-                            when (it.id) {
-                                oddItem?.firstOrNull()?.id -> {
-                                    val oddData = oddItem[0]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[0] = it
-                                }
-                                oddItem?.get(1)?.id -> {
-                                    val oddData = oddItem[1]
-                                    oddData.oddState = getOddState(oddData, it)
-                                    oddItem[1] = it
-                                }
-                            }
-                        }
-                    }
-
-                }
-        }
-    }
-
-
-    private fun getOddState(oldItem: Odd?, it: Odd): Int {
-        val oldOdd = oldItem?.odds ?: 0.0
-        val newOdd = it.odds ?: 0.0
-        return when {
-            newOdd == oldOdd -> OddState.SAME.state
-            newOdd > oldOdd -> OddState.LARGER.state
-            newOdd < oldOdd -> OddState.SMALLER.state
-            else -> OddState.SAME.state
-        }
     }
 
     override fun getItemCount(): Int = data.size
@@ -205,7 +82,11 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             }
         }
 
-        private fun setupMatchOddDetail(item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
+        private fun setupMatchOddDetail(
+            item: MatchOdd,
+            playType: PlayType,
+            matchOddListener: MatchOddListener?
+        ) {
             when (playType) {
                 PlayType.OU_HDP -> {
                     setupMatchOddOuHdp(item, matchOddListener)
@@ -238,11 +119,10 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddOUHome?.let {
                 itemView.ou_hdp_home_ou.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
-//                        setHighlight(OddState.LARGER.state)
                         matchOddListener?.onBet(item, ouOddString, it)
                     }
                     setStatus(it.odds?.isNaN() ?: true, it.status)
@@ -252,7 +132,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddOUAway?.let {
                 itemView.ou_hdp_away_ou.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
@@ -265,7 +145,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddHDPHome?.let {
                 itemView.ou_hdp_home_hdp.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
@@ -278,7 +158,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddHDPAway?.let {
                 itemView.ou_hdp_away_hdp.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
@@ -326,9 +206,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
@@ -338,9 +218,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddBetX?.let {
                 itemView.x12_bet_x.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
@@ -350,9 +230,9 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
             oddBet2?.let {
                 itemView.x12_bet_2.apply {
-                    isSelected = it.isSelected
+                    isSelected = it.isSelected ?: false
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
-                    setStatus(it.odds?.isNaN()?:true, it.status)
+                    setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
                         matchOddListener?.onBet(item, odd1X2String, it)
@@ -393,8 +273,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             timer = object : CountDownTimer(upperBound, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val leagueTimeDisplay = TimeUtil.timeFormat(
-                            leagueTime * 1000 + (upperBound - millisUntilFinished),
-                            "mm:ss"
+                        leagueTime * 1000 + (upperBound - millisUntilFinished),
+                        "mm:ss"
                     )
                     textView.text = leagueTimeDisplay
                 }
@@ -415,7 +295,11 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
     }
 }
 
-class MatchOddListener(val clickListener: (matchOdd: MatchOdd) -> Unit, val betClickListener: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit) {
+class MatchOddListener(
+    val clickListener: (matchOdd: MatchOdd) -> Unit,
+    val betClickListener: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
+) {
     fun onItemClick(matchOdd: MatchOdd) = clickListener(matchOdd)
-    fun onBet(matchOdd: MatchOdd, oddString: String, odd: Odd) = betClickListener(matchOdd, oddString, odd)
+    fun onBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
+        betClickListener(matchOdd, oddString, odd)
 }

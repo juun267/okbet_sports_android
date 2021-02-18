@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import java.util.regex.Pattern
+import kotlin.math.min
 
 object VerifyConstUtil {
     private const val NUMBER = "0-9"
@@ -27,7 +28,7 @@ object VerifyConstUtil {
     }
 
     fun verifyPwd(pwd: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER$ENGLISH_WORD]{6,20}$", pwd)
+        return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
     }
 
     //真實姓名 //中文2-20,英文2-50 可空格 可點
@@ -56,9 +57,27 @@ object VerifyConstUtil {
         return Pattern.matches("[$NUMBER]{4}", networkPoint)
     }
 
-    //提款金額 //最低與最高同步後台設定值
-    fun verifyWithdrawAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
-        return (withdrawAmount.toString().toLong().let { it in (minAmount + 1) until (maxAmount ?: it + 1)})
+    //提款金額 //最低與最高同步後台設定值, 最高限制:餘額最大金額,限制提款最大金額 取小者
+    fun verifyWithdrawAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?, userMoney: Double?, fee: Double): Boolean {
+        val balanceMax = userMoney?.minus(fee) //餘額的最大金額 = 餘額 - 手續費
+        //餘額最大金額,限制提款最大金額 取小者
+        val maxLimit = when {
+            maxAmount == null -> {
+                balanceMax?.toLong()
+            }
+            balanceMax == null -> {
+                maxAmount
+            }
+            else -> {
+                min(maxAmount, balanceMax.toLong())
+            }
+        }
+        return (withdrawAmount.toString().toLong().let { it in minAmount until ((maxLimit ?: it) + 1) })
+    }
+
+    //充值金額
+    fun verifyRechargeAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
+        return (withdrawAmount.toString().toLong().let { it in (minAmount + 1) until (maxAmount ?: it + 1) })
     }
 
     //暱稱 //中英文組合長度2–50字

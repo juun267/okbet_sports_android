@@ -2,23 +2,18 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.online_pay_fragment.*
-import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
-import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.util.MoneyManager
-import java.util.*
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -67,28 +62,19 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
 
         setupTextChangeEvent()
+        setupFocusEvent()
     }
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            val moneyAddRequest = MoneyAddRequest(
-                rechCfgId = mSelectRechCfgs?.id ?: 0,
-                depositMoney = if (et_recharge_online_amount.getText().isNotEmpty()) {
-                    et_recharge_online_amount.getText().toInt()
-                } else {
-                    0
-                },
-                bankCode = mSpannerList[sp_pay_bank?.selectedItemPosition ?: 0].bankName.toString(),
-                payer = "",
-                payerBankName = mSpannerList[sp_pay_bank?.selectedItemPosition ?: 0].bankName.toString(),
-                payerInfo = "",
-                payerName = "",
-                depositDate = 0
-            )
-            viewModel.rechargeOnlinePay(moneyAddRequest)
+            val bankCode = mSelectRechCfgs?.banks?.get(sp_pay_bank?.selectedItemPosition ?: 0)?.value
+            val depositMoney = if (et_recharge_online_amount.getText().isNotEmpty()) {
+                et_recharge_online_amount.getText().toInt()
+            } else {
+                0
+            }
+            viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs?.id ?: 0, depositMoney, bankCode)
         }
-
-
     }
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
@@ -128,6 +114,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     mSelectRechCfgs = rechCfgsList[position]
                     refreshSelectRechCfgs(mSelectRechCfgs)
                     refreshPayBank(mSelectRechCfgs)
+                    clearFocus()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -151,6 +138,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 //            "${selectRechCfgs?.minMoney}",
 //            "${selectRechCfgs?.maxMoney}"
 //        )
+        tv_hint.text = mSelectRechCfgs?.remark
     }
 
     private fun refreshPayBank(rechCfgsList: MoneyRechCfg.RechConfig?) {
@@ -164,6 +152,16 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             mSpannerList.add(data)
         }
         sp_pay_bank.adapter = CustomImageAdapter(context, mSpannerList)
+        sp_pay_bank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                //do nothing
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                clearFocus()
+            }
+
+        }
 
     }
 
@@ -171,6 +169,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.apply {
             //充值金額
             et_recharge_online_amount.afterTextChanged { checkRcgOnlineAmount(it) }
+        }
+    }
+
+    private fun setupFocusEvent() {
+        et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText())
         }
     }
 

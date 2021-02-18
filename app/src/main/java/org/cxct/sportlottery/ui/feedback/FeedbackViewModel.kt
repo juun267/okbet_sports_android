@@ -1,28 +1,26 @@
 package org.cxct.sportlottery.ui.feedback
 
 import android.content.Context
+import android.provider.SyncStateContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.FeedbackRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import timber.log.Timber
 
 class FeedbackViewModel(
     private val androidContext: Context,
     private val feedbackRepository: FeedbackRepository,
     private val userInfoRepository: UserInfoRepository,
-    betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     //API回傳成功
     val viewStatus: LiveData<FeedBackBaseResult>
@@ -60,7 +58,6 @@ class FeedbackViewModel(
             val result = doNetwork(androidContext) {
                 feedbackRepository.getFbQueryList(FeedbackListRequest())
             }
-            Timber.e(">>>input = ${FeedbackListRequest()}, result = ${result}, url = ${Constants.FEEDBACK_QUERYLIST}")
             if (result?.rows?.size ?: 0 > 0)
                 _feedbackList.value = result?.rows
 
@@ -76,7 +73,6 @@ class FeedbackViewModel(
             val result = doNetwork(androidContext) {
                 feedbackRepository.fbSave(feedbackSaveRequest)
             }
-            Timber.e(">>>input = ${feedbackSaveRequest}, result = ${result}, url = ${Constants.FEEDBACK_SAVE}")
             _isLoading.value = false
         }
     }
@@ -88,7 +84,6 @@ class FeedbackViewModel(
             val result = doNetwork(androidContext) {
                 feedbackRepository.fbReply(feedbackReplyRequest)
             }
-            Timber.e(">>>input = ${feedbackReplyRequest}, result = ${result}, url = ${Constants.FEEDBACK_REPLY}")
             _isLoading.value = false
         }
     }
@@ -103,7 +98,6 @@ class FeedbackViewModel(
             if (result?.rows?.size ?: 0 > 0)
                 _feedbackDetail.value = result?.rows
 
-            Timber.i(">>>input = ${dataID}, result = ${result}, url = ${Constants.FEEDBACK_QUERYDETAIL}")
             _isLoading.value = false
         }
     }

@@ -9,17 +9,15 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class InfoCenterViewModel(
     private val androidContext: Context,
     private val infoCenterRepository: InfoCenterRepository,
-    betInfoRepo: BetInfoRepository
-) : BaseViewModel() {
-
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     enum class DataType { UNREAD, READED }//未讀,已讀
 

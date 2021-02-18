@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network
 
+import org.cxct.sportlottery.network.appUpdate.AppUpdateService
 import org.cxct.sportlottery.network.bank.BankService
 import org.cxct.sportlottery.network.bet.BetService
 import org.cxct.sportlottery.network.feedback.FeedbackService
+import org.cxct.sportlottery.network.host.HostService
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.infoCenter.InfoCenterService
 import org.cxct.sportlottery.network.league.LeagueService
@@ -15,6 +17,7 @@ import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.sport.SportService
+import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
 import org.cxct.sportlottery.network.user.UserService
 import org.cxct.sportlottery.network.withdraw.WithdrawService
@@ -125,5 +128,23 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(FeedbackService::class.java)
+    }
+
+    val appUpdateService: AppUpdateService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(AppUpdateService::class.java)
+    }
+
+    val thirdGameService: ThirdGameService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(ThirdGameService::class.java)
+    }
+
+    val hostService: HostService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(HostService::class.java)
     }
 }
