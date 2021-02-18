@@ -195,11 +195,15 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             result?.success?.let {
                 if (it) {
                     dataBinding.tabCat.removeAllTabs()
-                    for (row in result.rows) {
-                        dataBinding.tabCat.addTab(
-                            dataBinding.tabCat.newTab().setText(row.name),
-                            false
-                        )
+                    if (result.rows.isNotEmpty()) {
+                        for (row in result.rows) {
+                            dataBinding.tabCat.addTab(
+                                dataBinding.tabCat.newTab().setText(row.name),
+                                false
+                            )
+                        }
+                    } else {
+                        dataBinding.tabCat.visibility = View.GONE
                     }
                 }
             }
