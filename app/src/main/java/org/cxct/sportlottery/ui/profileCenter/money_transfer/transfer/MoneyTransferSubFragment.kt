@@ -25,9 +25,15 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private val rvOutAdapter by lazy {
         SpinnerOutAdapter(viewModel.defaultOutPlat, SpinnerOutAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
-                out_account.setText(data.showName)
-                out_account.tag = data.code
-                out_account.dismiss()
+                if (!isPlatSwitched) {
+                    out_account.setText(data.showName)
+                    viewModel.defaultOutPlat = data.code ?: ""
+                    out_account.dismiss()
+                } else {
+                    in_account.setText(data.showName)
+                    viewModel.defaultInPlat = data.code
+                    in_account.dismiss()
+                }
             }
         })
     }
@@ -35,9 +41,15 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private val rvInAdapter by lazy {
         SpinnerInAdapter(viewModel.defaultInPlat, SpinnerInAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
-                in_account.setText(data.showName)
-                in_account.tag = data.code
-                in_account.dismiss()
+                if (!isPlatSwitched) {
+                    in_account.setText(data.showName)
+                    viewModel.defaultInPlat = data.code
+                    in_account.dismiss()
+                } else {
+                    out_account.setText(data.showName)
+                    viewModel.defaultOutPlat = data.code ?: ""
+                    out_account.dismiss()
+                }
             }
         })
     }
@@ -70,15 +82,19 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         in_account.tag = gameDataArg.gameData.code
     }
 
+
+    private var isPlatSwitched = false
+
     private fun initOnclick() {
         out_account.setOnItemClickListener(rvOutAdapter)
-
         in_account.setOnItemClickListener(rvInAdapter)
 
         val rotateAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate)
 
         iv_spin.setOnClickListener {
+
             iv_spin.startAnimation(rotateAnimation)
+            isPlatSwitched = !isPlatSwitched
 
             val outAccountText = out_account.getText()
             val inAccountText = in_account.getText()
@@ -90,6 +106,17 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             out_account.tag = inTag
             in_account.tag = outTag
 
+            viewModel.defaultOutPlat = inTag.toString()
+            viewModel.defaultInPlat = outTag.toString()
+
+            if (isPlatSwitched) {
+                out_account.setOnItemClickListener(rvInAdapter)
+                in_account.setOnItemClickListener(rvOutAdapter)
+            } else {
+                out_account.setOnItemClickListener(rvOutAdapter)
+                in_account.setOnItemClickListener(rvInAdapter)
+
+            }
         }
 
         layout_balance.btn_refresh.setOnClickListener {
