@@ -85,6 +85,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
+        iv_logo.setOnClickListener {
+            tabLayout.getTabAt(0)?.select()
+        }
 
         //頭像 當 側邊欄 開/關
         iv_head.setOnClickListener {
@@ -141,8 +144,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tab_all)
-            tabAll?.tv_number?.text =
-                (countInPlay + countToday + countEarly + countParlay + countAsStart).toString()
+            tabAll?.tv_number?.text = countParlay.toString() //等於串關數量
 
             val tabInPlay = tabLayout.getTabAt(1)?.customView
             tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)

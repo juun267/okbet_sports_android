@@ -2,7 +2,9 @@
 <resources>
     <string name="language_setting">语系设定</string>
     <string name="language_cn">简体中文</string>
+    <string name="language_zht">繁體中文</string>
     <string name="language_en">English</string>
+    <string name="language_vi">Tiếng Việt</string>
 
     <!-- Common -->
     <!--  Symbol  -->
@@ -62,11 +64,11 @@
     <string name="hint_recommend_code">请输入推荐代码</string>
     <string name="error_recommend_code">推荐码不存在</string>
     <string name="member_account">会员账号</string>
-    <string name="hint_member_account">长度需4-16个字符含英数</string>
+    <string name="hint_member_account">长度需4–16个字符含英数</string>
     <string name="error_member_account">需为4~16个英数组合</string>
     <string name="desc_register_checking_account">帐号检查中</string>
     <string name="error_register_id_exist">已有此帐户名</string>
-    <string name="hint_register_password">长度需6-20个字符含英数</string>
+    <string name="hint_register_password">长度需6–20个字符含英数</string>
     <string name="error_register_password">需为6~20个英数组合</string>
     <string name="error_password_format">需使用英数组合的密码</string>
     <string name="error_password_empty">密码不得为空</string>
@@ -243,16 +245,17 @@
     <!-- Setting password page-->
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
-    <string name="current_password">当前密码</string>
-    <string name="hint_current_login_password">请输入当前登录密码</string>
-    <string name="hint_current_withdrawal_password">请输入旧提款密码</string>
+    <string name="current_login_password">当前登录密码</string>
+    <string name="current_withdrawal_password">当前提款密码</string>
+    <string name="hint_current_login_password">请输入登录密码</string>
+    <string name="hint_current_withdrawal_password">请输入提款密码</string>
     <string name="new_password">新密码</string>
-    <string name="hint_new_password">请输入新密码</string>
-    <string name="hint_confirm_new_password">请再次输入新密码</string>
+    <string name="hint_withdrawal_new_password">密码为4个数字</string>
+    <string name="hint_confirm_new_password">请再次输入密码</string>
     <string name="missing_required_fields">未填写必要的字段</string>
     <string name="error_password_cannot_be_same">新密码与旧密码不能相同</string>
     <string name="update_login_pwd">修改登录密码成功，下次请使用新密码登录!</string>
-    <string name="update_withdrawal_pwd">修改提现密码成功，下次请使用新密码提现!</string>
+    <string name="update_withdrawal_pwd">提款密码修改成功</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
