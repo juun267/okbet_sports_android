@@ -2,12 +2,10 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
@@ -16,17 +14,15 @@ import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
-import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
-        BetInfoListAdapter.OnItemClickListener {
+    BetInfoListAdapter.OnItemClickListener {
 
 
     companion object {
@@ -194,6 +190,4 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
         context?.startActivity(intent)
         dismiss()
     }
-
-
 }
