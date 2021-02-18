@@ -9,12 +9,26 @@ import java.net.URLEncoder
 
 object Constants {
     val SERVER_URL_LIST = listOf("app66app.com", "app99app.vip", "app66app.vip", "app88app.vip")
-    const val BASE_URL = "https://sports.cxct.org"
+    private var mBaseUrl = ""
+    var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
+
+    fun setBaseUrl(baseUrl: String) {
+        mBaseUrl = baseUrl
+    }
+
+    //20210208 記錄問題：retrofit.setBaseUrl() 開頭一定要有 http://[isNotEmpty] or https://[isNotEmpty]，否則會直接 exception
+    fun getBaseUrl(): String {
+        val regex = "^http[s]?://.+".toRegex()
+        return if (mBaseUrl.contains(regex))
+            mBaseUrl
+        else
+            "https://default"
+    }
 
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?): String? {
         return try {
-            BASE_URL + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
+            getBaseUrl() + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             null
@@ -35,7 +49,6 @@ object Constants {
         }
     }
 
-    var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
@@ -45,6 +58,10 @@ object Constants {
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
         return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk";
+    }
+
+    fun getHostListUrl(serverUrl: String?): String {
+        return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomain/${BuildConfig.CHANNEL_NAME}.json"
     }
 
     //bet
