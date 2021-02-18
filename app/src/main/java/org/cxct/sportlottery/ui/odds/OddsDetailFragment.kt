@@ -23,13 +23,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class),
-        Animation.AnimationListener, OnOddClickListener {
+    Animation.AnimationListener, OnOddClickListener {
 
 
     companion object {
@@ -39,14 +40,14 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         const val ODDS_TYPE = "oddsType"
 
         fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
-                OddsDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(GAME_TYPE, gameType)
-                        putString(TYPE_NAME, typeName)
-                        putString(MATCH_ID, matchId)
-                        putString(ODDS_TYPE, oddsType)
-                    }
+            OddsDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString(GAME_TYPE, gameType)
+                    putString(TYPE_NAME, typeName)
+                    putString(MATCH_ID, matchId)
+                    putString(ODDS_TYPE, oddsType)
                 }
+            }
     }
 
 
@@ -137,7 +138,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         tv_more.setOnClickListener {

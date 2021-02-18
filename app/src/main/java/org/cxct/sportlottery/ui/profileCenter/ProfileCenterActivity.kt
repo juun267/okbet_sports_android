@@ -132,9 +132,6 @@ class ProfileCenterActivity :
         btn_news_center.setOnClickListener {
             startActivity(Intent(this, InfoCenterActivity::class.java))
         }
-        btn_bell.setOnClickListener {
-            btn_news_center.performClick()
-        }
 
         //優惠活動
         btn_promotion.setOnClickListener {

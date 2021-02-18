@@ -16,15 +16,18 @@ import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSel
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSelectionMode.SINGLE
 import java.util.Calendar
 
-internal class CalendarDateRangeManagerImpl(startMonthDate: Calendar,
-                                            endMonthDate: Calendar,
-                                            private val calendarStyleAttributes: CalendarStyleAttributes) : CalendarDateRangeManager {
+internal class CalendarDateRangeManagerImpl(
+    startMonthDate: Calendar,
+    endMonthDate: Calendar,
+    private val calendarStyleAttributes: CalendarStyleAttributes
+) : CalendarDateRangeManager {
     private lateinit var mStartVisibleMonth: Calendar
     private lateinit var mEndVisibleMonth: Calendar
     private lateinit var mStartSelectableDate: Calendar
     private lateinit var mEndSelectableDate: Calendar
     private var mMinSelectedDate: Calendar? = null
     private var mMaxSelectedDate: Calendar? = null
+    private var mDateSelectedType: DateSelectedType = DateSelectedType.START
     private val mVisibleMonths = mutableListOf<Calendar>()
 
     companion object {
@@ -57,6 +60,14 @@ internal class CalendarDateRangeManagerImpl(startMonthDate: Calendar,
             }
         }
         throw RuntimeException("Month(" + month.time.toString() + ") is not available in the given month range.")
+    }
+
+    override fun setDateSelectedType(dateSelectedType: DateSelectedType) {
+        mDateSelectedType = dateSelectedType
+    }
+
+    override fun getDateSelectedType(): DateSelectedType {
+        return mDateSelectedType
     }
 
     override fun setVisibleMonths(startMonth: Calendar, endMonth: Calendar) {
@@ -97,14 +108,18 @@ internal class CalendarDateRangeManagerImpl(startMonthDate: Calendar,
         mEndSelectableDate = endDate.clone() as Calendar
         resetTime(mEndSelectableDate, END)
         if (mStartSelectableDate.before(mStartVisibleMonth)) {
-            throw InvalidDateException("Selectable start date ${printDate(startDate)} is out of visible months" +
-                    "(${printDate(mStartVisibleMonth)} " +
-                    "- ${printDate(mEndVisibleMonth)}).")
+            throw InvalidDateException(
+                "Selectable start date ${printDate(startDate)} is out of visible months" +
+                        "(${printDate(mStartVisibleMonth)} " +
+                        "- ${printDate(mEndVisibleMonth)})."
+            )
         }
         if (mEndSelectableDate.after(mEndVisibleMonth)) {
-            throw InvalidDateException("Selectable end date ${printDate(endDate)} is out of visible months" +
-                    "(${printDate(mStartVisibleMonth)} " +
-                    "- ${printDate(mEndVisibleMonth)}).")
+            throw InvalidDateException(
+                "Selectable end date ${printDate(endDate)} is out of visible months" +
+                        "(${printDate(mStartVisibleMonth)} " +
+                        "- ${printDate(mEndVisibleMonth)})."
+            )
         }
         resetSelectedDateRange()
     }
@@ -114,9 +129,9 @@ internal class CalendarDateRangeManagerImpl(startMonthDate: Calendar,
         this.mMaxSelectedDate = null
     }
 
-    override fun setSelectedDateRange(startDate: Calendar, endDate: Calendar?) {
+    override fun setSelectedDateRange(startDate: Calendar?, endDate: Calendar?) {
         validateDatesOrder(startDate, endDate)
-        if (startDate.before(mStartSelectableDate)) {
+        if (startDate?.before(mStartSelectableDate) == true) {
             throw InvalidDateException("Start date(${printDate(startDate)}) is out of selectable date range.")
         }
         if (endDate?.after(mEndSelectableDate) == true) {
@@ -126,19 +141,19 @@ internal class CalendarDateRangeManagerImpl(startMonthDate: Calendar,
         val finalEndDate: Calendar?
         when (selectionMode) {
             SINGLE -> {
-                finalEndDate = startDate.clone() as Calendar
+                finalEndDate = startDate?.clone() as Calendar
                 Log.w(TAG, "End date is ignored due date selection mode: $selectionMode")
             }
             FIXED_RANGE -> {
                 Log.w(TAG, "End date is ignored due date selection mode: $selectionMode")
-                finalEndDate = startDate.clone() as Calendar
+                finalEndDate = startDate?.clone() as Calendar
                 finalEndDate.add(Calendar.DATE, calendarStyleAttributes.fixedDaysSelectionNumber)
             }
             FREE_RANGE -> finalEndDate = endDate
             else -> throw IllegalArgumentException("Unsupported selectionMode: $selectionMode")
         }
         Log.i(TAG, "Selected dates: Start(${printDate(startDate)})-End(${printDate(finalEndDate)}) for mode:$selectionMode")
-        this.mMinSelectedDate = startDate.clone() as Calendar
+        this.mMinSelectedDate = startDate?.clone() as Calendar?
         this.mMaxSelectedDate = finalEndDate?.clone() as Calendar?
     }
 
@@ -185,8 +200,8 @@ internal class CalendarDateRangeManagerImpl(startMonthDate: Calendar,
         return isSelectable
     }
 
-    private fun validateDatesOrder(start: Calendar, end: Calendar?) {
-        if (start.after(end)) {
+    private fun validateDatesOrder(start: Calendar?, end: Calendar?) {
+        if (start?.after(end) == true) {
             throw InvalidDateException("Start date(${printDate(start)}) can not be after end date(${printDate(end)}).")
         }
     }
