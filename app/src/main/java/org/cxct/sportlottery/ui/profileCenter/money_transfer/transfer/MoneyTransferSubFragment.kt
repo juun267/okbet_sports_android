@@ -25,14 +25,16 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private val rvOutAdapter by lazy {
         SpinnerOutAdapter(viewModel.defaultOutPlat, SpinnerOutAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
-                if (!isPlatSwitched) {
-                    out_account.setText(data.showName)
-                    viewModel.defaultOutPlat = data.code ?: ""
-                    out_account.dismiss()
-                } else {
-                    in_account.setText(data.showName)
-                    viewModel.defaultInPlat = data.code
-                    in_account.dismiss()
+                viewModel.isPlatSwitched.value?.let { isPlatSwitched ->
+                    if (!isPlatSwitched) {
+                        out_account.setText(data.showName)
+                        viewModel.defaultOutPlat = data.code ?: ""
+                        out_account.dismiss()
+                    } else {
+                        in_account.setText(data.showName)
+                        viewModel.defaultInPlat = data.code
+                        in_account.dismiss()
+                    }
                 }
             }
         })
@@ -41,14 +43,16 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private val rvInAdapter by lazy {
         SpinnerInAdapter(viewModel.defaultInPlat, SpinnerInAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
-                if (!isPlatSwitched) {
-                    in_account.setText(data.showName)
-                    viewModel.defaultInPlat = data.code
-                    in_account.dismiss()
-                } else {
-                    out_account.setText(data.showName)
-                    viewModel.defaultOutPlat = data.code ?: ""
-                    out_account.dismiss()
+                viewModel.isPlatSwitched.value?.let { isPlatSwitched ->
+                    if (!isPlatSwitched) {
+                        in_account.setText(data.showName)
+                        viewModel.defaultInPlat = data.code
+                        in_account.dismiss()
+                    } else {
+                        out_account.setText(data.showName)
+                        viewModel.defaultOutPlat = data.code ?: ""
+                        out_account.dismiss()
+                    }
                 }
             }
         })
@@ -83,8 +87,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
 
-    private var isPlatSwitched = false
-
     private fun initOnclick() {
         out_account.setOnItemClickListener(rvOutAdapter)
         in_account.setOnItemClickListener(rvInAdapter)
@@ -94,29 +96,11 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         iv_spin.setOnClickListener {
 
             iv_spin.startAnimation(rotateAnimation)
-            isPlatSwitched = !isPlatSwitched
 
-            val outAccountText = out_account.getText()
-            val inAccountText = in_account.getText()
-            out_account.setText(inAccountText)
-            in_account.setText(outAccountText)
-
-            val outTag = out_account.tag
-            val inTag = in_account.tag
-            out_account.tag = inTag
-            in_account.tag = outTag
-
-            viewModel.defaultOutPlat = inTag.toString()
-            viewModel.defaultInPlat = outTag.toString()
-
-            if (isPlatSwitched) {
-                out_account.setOnItemClickListener(rvInAdapter)
-                in_account.setOnItemClickListener(rvOutAdapter)
-            } else {
-                out_account.setOnItemClickListener(rvOutAdapter)
-                in_account.setOnItemClickListener(rvInAdapter)
-
+            viewModel.isPlatSwitched.value?.let {
+                viewModel.setIsPlatSwitched(!it)
             }
+
         }
 
         layout_balance.btn_refresh.setOnClickListener {
@@ -160,6 +144,30 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 if (it.success) {
                     view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                 }
+            }
+        }
+
+        viewModel.isPlatSwitched.observe(viewLifecycleOwner) {
+
+            val outAccountText = out_account.getText()
+            val inAccountText = in_account.getText()
+            out_account.setText(inAccountText)
+            in_account.setText(outAccountText)
+
+            val outTag = out_account.tag
+            val inTag = in_account.tag
+            out_account.tag = inTag
+            in_account.tag = outTag
+
+            viewModel.defaultOutPlat = inTag.toString()
+            viewModel.defaultInPlat = outTag.toString()
+
+            if (it == true) {
+                out_account.setOnItemClickListener(rvInAdapter)
+                in_account.setOnItemClickListener(rvOutAdapter)
+            } else {
+                out_account.setOnItemClickListener(rvOutAdapter)
+                in_account.setOnItemClickListener(rvInAdapter)
             }
         }
 

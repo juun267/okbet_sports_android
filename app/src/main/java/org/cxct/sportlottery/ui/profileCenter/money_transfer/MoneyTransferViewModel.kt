@@ -43,6 +43,9 @@ class MoneyTransferViewModel(
         "CR" to androidContext.getString(R.string.third_game_cr),
     )
 
+    val isPlatSwitched: LiveData<Boolean>
+        get() = _isPlatSwitched
+
     val allBalanceResultList: LiveData<List<GameData>>
         get() = _allBalanceResultList
 
@@ -72,6 +75,7 @@ class MoneyTransferViewModel(
 
 
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
+    private val _isPlatSwitched = MutableLiveData<Boolean>().apply { this.value = false }
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
@@ -102,6 +106,9 @@ class MoneyTransferViewModel(
         _toolbarName.value = name
     }
 
+    fun setIsPlatSwitched(isSwitched: Boolean) {
+        _isPlatSwitched.value = isSwitched
+    }
 
 //    var selectedOutPlatCode = "CG"
 //    var selectedInPlatCode: String ?= null
