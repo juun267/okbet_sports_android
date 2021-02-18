@@ -23,6 +23,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -70,6 +71,8 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             matchId = it.getString(MATCH_ID)
             oddsType = it.getString(ODDS_TYPE)
         }
+
+        service.subscribeEventChannel(matchId)
     }
 
 
@@ -148,7 +151,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         tv_more.setOnClickListener {
@@ -361,4 +364,9 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        service.unSubscribeEventChannel(matchId)
+    }
 }

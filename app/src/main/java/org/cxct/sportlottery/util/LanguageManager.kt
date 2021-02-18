@@ -20,21 +20,22 @@ object LanguageManager {
     }
 
     fun getSelectLanguage(context: Context?): Language {
+        //TODO 20210217 Simon 紀錄：目前只有 簡體中文、英文 選項，且預設是簡體中文，待之後 review
         return when (SPUtil.getInstance(context).getSelectLanguage()) {
             Language.ZH.key -> Language.ZH
-            Language.ZHT.key -> Language.ZHT
+//            Language.ZHT.key -> Language.ZHT
             Language.EN.key ->  Language.EN
-            Language.VI.key -> Language.VI
+//            Language.VI.key -> Language.VI
             else -> {
                 //若APP local 未設定過語系，就使用系統語系判斷
                 val local = getSystemLocale(context)
 
                 when {
                     local.language == Locale.ENGLISH.language -> Language.EN
-                    local.language == Locale("vi").language -> Language.VI
-                    local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country -> Language.ZH
-                    local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZHT
-                    else -> Language.EN
+//                    local.language == Locale("vi").language -> Language.VI
+//                    local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country -> Language.ZH
+//                    local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZHT
+                    else -> Language.ZH
                 }
             }
         }

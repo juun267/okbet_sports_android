@@ -10,9 +10,10 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -25,9 +26,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 import org.cxct.sportlottery.ui.bet.record.statusNameMap
+import org.cxct.sportlottery.util.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,9 +67,38 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     }
 
     private fun setObserver() {
-        viewModel.selectedBetStatus.observe(viewLifecycleOwner, {
+        viewModel.waitingResult.observe(viewLifecycleOwner, Observer {
+            showLoadingView(it)
+        })
+
+        viewModel.selectedBetStatus.observe(viewLifecycleOwner, Observer {
             tv_bet_status.text = it
         })
+
+        viewModel.betListRequestState.observe(viewLifecycleOwner, Observer {
+            if (!it.hasStatus) tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+            if (!it.hasStartDate) tv_start_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+            if (!it.hasEndDate) tv_end_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
+
+        })
+
+        viewModel.betRecordResult.observe(viewLifecycleOwner, Observer {
+            val eventResult = it.getContentIfNotHandled()
+            eventResult?.let { result ->
+                if (result.success) {
+                    view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment())
+                } else {
+                    Toast.makeText(context, result.msg, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun showLoadingView(show: Boolean) {
+        if (show)
+            loading()
+        else
+            hideLoading()
     }
 
     private fun initBottomSheetDialog() {
@@ -96,25 +126,46 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
     private fun calendarBottomSheet() {
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar, null)
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
-        calendarBottomSheet.setContentView(bottomSheetView)
-        calendarBottomSheet.calendar.setSelectableDateRange(getDateInCalendar(30).first, getDateInCalendar(30).second)
-        calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(startDate: Calendar) {
-                setStartEndDateText(simpleDateFormat.format(startDate.time), "")
-                calendarBottomSheet.dismiss()
-            }
+        calendarBottomSheet.apply {
+            setContentView(bottomSheetView)
+            val monthRange = getMonthRangeCalendar()
+            calendar.setVisibleMonthRange(monthRange.first, monthRange.second)
+            calendar.setSelectableDateRange(getDateInCalendar(30).first, getDateInCalendar(30).second)
+            calendar.setCurrentMonth(monthRange.second)
+            calendar.setCalendarListener(object : CalendarListener {
+                override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
+                    setStartEndDateText(dateSelectedType, simpleDateFormat.format(startDate.time), null)
+                    dismiss()
+                }
 
-            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                setStartEndDateText(simpleDateFormat.format(startDate.time), simpleDateFormat.format(endDate.time))
-                calendarBottomSheet.dismiss()
-            }
+                override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
+                    setStartEndDateText(dateSelectedType, simpleDateFormat.format(startDate.time), simpleDateFormat.format(endDate.time))
+                    dismiss()
+                }
 
-        })
+            })
+        }
+
     }
 
-    private fun setStartEndDateText(startDate: String, endDate: String) {
-        tv_start_date.text = startDate
-        tv_end_date.text = endDate
+    private fun setStartEndDateText(dateSelectedType: DateSelectedType?, startDate: String?, endDate: String?) {
+        if (startDate != null && endDate != null) {
+            tv_start_date.text = startDate
+            tv_end_date.text = endDate
+        } else {
+            //若只有其中一個日期, 則根據當前點選的是開始或結束日期去做更新文字
+            when (dateSelectedType) {
+                DateSelectedType.START -> tv_start_date.text = startDate
+                DateSelectedType.END -> tv_end_date.text = startDate
+            }
+        }
+    }
+
+    private fun getMonthRangeCalendar(): Pair<Calendar, Calendar> {
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val lastCalendar = TimeUtil.getTodayStartTimeCalendar()
+        lastCalendar.add(Calendar.MONTH, -1)
+        return Pair(lastCalendar, todayCalendar)
     }
 
     private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
@@ -122,6 +173,12 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
         if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
         return Pair(minusDaysCalendar, todayCalendar)
+    }
+
+    private fun getYesterdayDateInCalendar(): Pair<Calendar, Calendar> {
+        val yesterdayStartCalendar = TimeUtil.getTodayStartTimeCalendar().apply { add(Calendar.DATE, -1) }
+        val yesterdayEndCalendar = TimeUtil.getTodayEndTimeCalendar().apply { add(Calendar.DATE, -1) }
+        return Pair(yesterdayStartCalendar, yesterdayEndCalendar)
     }
 
     private fun initListView() {
@@ -187,11 +244,13 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
         ll_start_date.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
+            calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.START)
             calendarBottomSheet.show()
         }
 
         ll_end_date.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.end_date)
+            calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.END)
             calendarBottomSheet.show()
         }
 
@@ -200,7 +259,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         btn_yesterday.setOnClickListener {
-            setCalendarDate(getDateInCalendar(1))
+            setCalendarDate(getYesterdayDateInCalendar())
         }
 
         btn_past30days.setOnClickListener {
@@ -208,31 +267,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         btn_search.setOnClickListener {
-
-            val statusList = betStatusList.filter { it.isSelected && (it.code!=null) }.map {it.code!!}
-
-            viewModel.checkRequestState(tv_start_date.text.toString(), tv_end_date.text.toString())
-
-            viewModel.betListRequestState.observe(viewLifecycleOwner, {
-                if (!it.hasStatus) tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
-                if (!it.hasStartDate) tv_start_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
-                if (!it.hasEndDate) tv_end_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
-
-                if (it.hasStatus && it.hasStartDate && it.hasEndDate) {
-                    loading()
-                    viewModel.getBetList(btn_champion.isChecked, statusList, tv_start_date.text.toString(), tv_end_date.text.toString())
-                }
-            })
-
-            viewModel.betRecordResult.observe(viewLifecycleOwner, {
-                hideLoading()
-                if (it.success) {
-                    view?.findNavController()?.navigate(BetRecordSearchFragmentDirections.actionBetRecordSearchFragmentToBetRecordResultFragment())
-                } else {
-                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                }
-            })
-
+            viewModel.confirmSearch(betStatusList, btn_champion.isChecked, tv_start_date.text.toString(), tv_end_date.text.toString())
         }
     }
 
@@ -244,12 +279,12 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         val startDateStr = simpleDateFormat.format(startDate.time)
         val endDateStr = simpleDateFormat.format(endDate.time)
 
-        setStartEndDateText(startDateStr, endDateStr)
+        setStartEndDateText(null, startDateStr, endDateStr)
     }
 
 }
 
-data class BetTypeItemData(val code: Int? = null, val name: String = "", var isSelected: Boolean = false)
+data class BetTypeItemData(val code: Int, val name: String = "", var isSelected: Boolean = false)
 
 class BetStatusLvAdapter(private val context: Context, private val dataList: List<BetTypeItemData>) : BaseAdapter() {
 

@@ -8,8 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
-import kotlinx.android.synthetic.main.fragment_bet_record_result.tv_bet_status
-import kotlinx.android.synthetic.main.fragment_bet_record_search.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordResultBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -55,7 +53,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         rv_bet_record.adapter = rvAdapter
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
             it.let {
-                rvAdapter.addFooterAndSubmitList(it.rows)
+                rvAdapter.addFooterAndSubmitList(it.getContentIfNotHandled()?.rows)
             }
         })
 

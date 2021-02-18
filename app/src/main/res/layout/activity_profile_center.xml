@@ -100,18 +100,6 @@
             app:layout_constraintStart_toEndOf="@id/tv_currency"
             app:layout_constraintTop_toTopOf="@id/label_account_balance" />
 
-        <ImageButton
-            android:id="@+id/btn_bell"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/effect_ripple_circle_blue_light"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_profile_center_bell"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_head"
             android:layout_width="53dp"

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.record.search.BetTypeItemData
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.dateToTimeStamp
 
@@ -26,6 +27,9 @@ class BetRecordViewModel(
     betInfoRepository: BetInfoRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
+    val waitingResult: LiveData<Boolean>
+        get() = _waitingResult
+
     val selectStatusNameList: LiveData<MutableList<BetTypeItemData>>
         get() = _selectStatusList
 
@@ -35,23 +39,48 @@ class BetRecordViewModel(
     val betListRequestState: LiveData<BetListRequestState>
         get() = _betListRequestState
 
-    val betRecordResult: LiveData<BetListResult>
+    val betRecordResult: LiveData<Event<BetListResult>>
         get() = _betRecordResult
 
     private val _selectStatusList = MutableLiveData<MutableList<BetTypeItemData>>().apply {
         this.value = mutableListOf()
     }
 
+    private val _waitingResult = MutableLiveData<Boolean>()
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
-    private val _betRecordResult = MutableLiveData<BetListResult>()
+    private val _betRecordResult = MutableLiveData<Event<BetListResult>>()
     private val _selectedBetStatus = MutableLiveData<String?>()
 
     fun checkRequestState(startDate: String, endDate: String) {
         _betListRequestState.value = BetListRequestState(
-                hasStatus = selectStatusNameList.value?.size ?: 0 > 0,
-                hasStartDate = startDate.isNotEmpty(),
-                hasEndDate = endDate.isNotEmpty()
+            hasStatus = selectStatusNameList.value?.size ?: 0 > 0,
+            hasStartDate = startDate.isNotEmpty(),
+            hasEndDate = endDate.isNotEmpty()
         )
+    }
+
+    fun confirmSearch(betStatusList: List<BetTypeItemData>, isOutRight: Boolean, startDate: String, endDate: String) {
+        val selectBetStatus = filterStatusList(betStatusList)
+        if (checkInputFilter(selectBetStatus, startDate, endDate)) {
+            _waitingResult.postValue(true)
+            getBetList(isOutRight, selectBetStatus, startDate, endDate)
+        }
+    }
+
+    private fun filterStatusList(betStatusList: List<BetTypeItemData>): List<Int> {
+        return betStatusList.filter { it.isSelected }.map { it.code }
+    }
+
+    private fun checkInputFilter(betStatusList: List<Int>, startDate: String, endDate: String): Boolean {
+        val inputBetStatus = betStatusList.isNotEmpty()
+        val inputStartDate = startDate.isNotEmpty()
+        val inputEndDate = endDate.isNotEmpty()
+        _betListRequestState.value = BetListRequestState(
+            hasStatus = inputBetStatus,
+            hasStartDate = inputStartDate,
+            hasEndDate = inputEndDate
+        )
+        return inputBetStatus && inputStartDate && inputEndDate
     }
 
     private fun getBetStatus(): String? {
@@ -84,15 +113,20 @@ class BetRecordViewModel(
         val championOnly = if (isChampionChecked) 1 else 0
 
         viewModelScope.launch {
-            val betListRequest = BetListRequest(championOnly = championOnly,
-                    statusList = statusList,
-                    startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START_OF_DAY).toString(),
-                    endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END_OF_DAY).toString())
+            val betListRequest = BetListRequest(
+                championOnly = championOnly,
+                statusList = statusList,
+                startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START_OF_DAY).toString(),
+                endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END_OF_DAY).toString()
+            )
 
             doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
-                _betRecordResult.postValue(result)
+                Event(result).let { eventResult ->
+                    _betRecordResult.postValue(eventResult)
+                    _waitingResult.postValue(false)
+                }
             }
         }
     }

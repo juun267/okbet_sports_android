@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.MatchTypeRow
 import org.cxct.sportlottery.ui.game.league.LeagueAdapter
 import org.cxct.sportlottery.ui.game.league.LeagueListener
@@ -64,6 +65,8 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             matchOddListener = MatchOddListener(
                 {
                     viewModel.getOddsDetail(it.matchInfo?.id)
+                }, {
+                    viewModel.updateMatchOddExpandInPlay(it)
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(
@@ -78,12 +81,23 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     val code = gameTypeAdapter.data.find {
                         it.isSelected
                     }?.code
-                    val eventId = leagueOdd.matchOdds[0].matchInfo?.id
 
-                    if (isExpand) {
-                        service.subscribeHallChannel(code, eventId)
-                    } else {
-                        service.unSubscribeHallChannel(code, eventId)
+                    leagueOdd.matchOdds.forEach {
+                        val eventId = it.matchInfo?.id
+
+                        if (isExpand) {
+                            service.subscribeHallChannel(
+                                code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                eventId
+                            )
+                        } else {
+                            service.unSubscribeHallChannel(
+                                code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                eventId
+                            )
+                        }
                     }
                 }
             }
@@ -93,15 +107,15 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(LeagueListener {
-            viewModel.getLeagueOddsList(args.matchType, it)
+        LeagueAdapter(LeagueListener { leagueId ->
+            viewModel.getLeagueOddsList(args.matchType, leagueId)
         })
     }
 
     private val outrightSeasonAdapter by lazy {
         SeasonAdapter().apply {
-            seasonSubListener = SeasonSubAdapter.SeasonSubListener {
-                viewModel.getOutrightOddsList(it.id)
+            seasonSubListener = SeasonSubAdapter.SeasonSubListener { season ->
+                viewModel.getOutrightOddsList(season.id)
             }
         }
     }
@@ -330,7 +344,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun setupOddsList(view: View) {
         view.hall_odds_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueOddAdapter
             this.addItemDecoration(
                 DividerItemDecoration(
@@ -344,7 +358,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun setupLeagueList(view: View) {
         view.hall_league_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             this.addItemDecoration(
                 DividerItemDecoration(
@@ -358,7 +372,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun setupOutrightSeasonList(view: View) {
         view.hall_outright_season_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = outrightSeasonAdapter
             this.addItemDecoration(
                 DividerItemDecoration(
@@ -401,6 +415,16 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
             gameDateAdapter.data = it
+        })
+
+        viewModel.curDatePosition.observe(this.viewLifecycleOwner, Observer {
+            val centerOfOffset =
+                hall_date_list.width / 2 - resources.getDimensionPixelOffset(R.dimen.recyclerview_item_date_row_item_width) / 2
+
+            (hall_date_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                it,
+                centerOfOffset
+            )
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
@@ -536,6 +560,26 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             hall_no_history_img.visibility = View.GONE
             hall_no_history_title.visibility = View.GONE
             hall_no_history_content.visibility = View.GONE
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val code = gameTypeAdapter.data.find {
+            it.isSelected
+        }?.code
+
+        leagueOddAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        code,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
         }
     }
 

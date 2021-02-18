@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
@@ -368,11 +369,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             getDateInCalendar(30).second
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(startDate: Calendar) {
+            override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
                 calendarBottomSheet.dismiss()
             }
 
-            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+            override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
                 val formatter =
                     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 txv_recharge_time.text = formatter.format(startDate.time)
