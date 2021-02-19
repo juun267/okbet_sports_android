@@ -10,7 +10,7 @@ data class Odd(
     @Json(name = "extInfo")
     var extInfo: String?, //额外信息. （如果是球员玩法，则H表示主队,C表示客队）
     @Json(name = "id")
-    var id: String, //赔率id
+    var id: String?, //赔率id
     @Json(name = "name")
     var name: String?, //玩法名称（如果是球员玩法，则名称代码球员名称）
     @Json(name = "odds")

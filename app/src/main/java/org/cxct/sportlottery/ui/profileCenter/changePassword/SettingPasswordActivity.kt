@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
@@ -155,7 +156,7 @@ class SettingPasswordActivity :
     private fun updateUiWithResult(updateFundPwdResult: UpdateFundPwdResult?) {
         hideLoading()
         if (updateFundPwdResult?.success == true) {
-            showPromptDialog(getString(R.string.setting_password), getString(R.string.update_withdrawal_pwd)) { finish() }
+            showPromptDialog(getString(R.string.prompt), getString(R.string.update_withdrawal_pwd)) { finish() }
         } else {
             val errorMsg = updateFundPwdResult?.msg ?: getString(R.string.unknown_error)
             showErrorDialog(errorMsg)
@@ -163,10 +164,19 @@ class SettingPasswordActivity :
     }
 
     private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage, updatePayPw: Int?) {
-        if (pwdPage == PwdPage.BANK_PWD && updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
+        if (pwdPage == PwdPage.LOGIN_PWD) {
+            et_current_password.setTitle(getString(R.string.current_login_password))
             et_current_password.setHint(getString(R.string.hint_current_login_password))
-        else
-            et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
+            et_new_password.setHint(getString(R.string.hint_register_password))
+        } else {
+            et_current_password.setTitle(getString(R.string.current_withdrawal_password))
+            et_current_password.setHint(if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
+                getString(R.string.hint_current_login_password)
+            else
+                getString(R.string.hint_current_withdrawal_password)
+            )
+            et_new_password.setHint(getString(R.string.hint_withdrawal_new_password))
+        }
     }
 
     private fun cleanField() {

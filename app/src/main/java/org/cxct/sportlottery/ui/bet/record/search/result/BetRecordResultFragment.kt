@@ -5,17 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
-import kotlinx.android.synthetic.main.fragment_bet_record_result.tv_bet_status
-import kotlinx.android.synthetic.main.fragment_bet_record_search.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordResultBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 
+
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
+
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            recyclerView.layoutManager?.let {
+                val visibleItemCount: Int = it.childCount
+                val totalItemCount: Int = it.itemCount
+                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
+
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentBetRecordResultBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_record_result, container, false)
@@ -29,6 +43,14 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initView()
+    }
+
+    private fun initView() {
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            if (it) loading() else hideLoading()
+        })
         initTv()
         initRv()
     }
@@ -46,20 +68,16 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 detailDialog.show(parentFragmentManager, "BetRecordDetailDialog")
             }
         })
-        rvAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                rv_bet_record.layoutManager?.scrollToPosition(0)
-            }
-        })
 
         rv_bet_record.adapter = rvAdapter
-        viewModel.betRecordResult.observe(viewLifecycleOwner, {
+        rv_bet_record.addOnScrollListener(recyclerViewOnScrollListener)
+        viewModel.betRecordResult.observe(viewLifecycleOwner, Observer {
             it.let {
-                rvAdapter.addFooterAndSubmitList(it.rows)
+                viewModel.isLastPage = (rvAdapter.itemCount >= (it.peekContent().total ?: 0))
+                rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
             }
         })
 
     }
-
 
 }

@@ -124,7 +124,7 @@ class SettlementViewModel(
         when (dataType) {
             SettleType.MATCH -> {
                 _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
-                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.contains(gameKeyWord))
+                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.contains(gameKeyWord) || filterTeamNameByKeyWord(row, gameKeyWord))
                 })
             }
             SettleType.OUTRIGHT -> {
@@ -133,6 +133,18 @@ class SettlementViewModel(
                 })
             }
         }
+    }
+
+    private fun filterTeamNameByKeyWord(row: Row, keyWord: String): Boolean {
+        row.list.forEach { match ->
+            if (match.matchInfo.homeName.contains(keyWord)) {
+                return true
+            }
+            if (match.matchInfo.awayName.contains(keyWord)) {
+                return true
+            }
+        }
+        return false
     }
 
     /**
