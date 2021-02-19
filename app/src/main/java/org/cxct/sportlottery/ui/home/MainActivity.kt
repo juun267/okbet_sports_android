@@ -340,6 +340,8 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
+
+        receiver.main
     }
 
     private fun subscribeEventChannel(eventId: String?) {

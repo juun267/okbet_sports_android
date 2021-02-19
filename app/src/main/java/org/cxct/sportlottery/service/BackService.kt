@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit
 const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
 const val SERVICE_TOKEN = "TOKEN"
 const val SERVICE_USER_ID = "USER_ID"
+const val SERVICE_PLATFORM_ID = "PLATFORM_ID"
 
 class BackService : Service() {
     companion object {
@@ -38,7 +39,9 @@ class BackService : Service() {
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
         private var mUserId: Long? = null
-        val URL_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
+        private var mPlatformId: Int? = null
+        val URL_PRIVATE: String = "/ws/notify/user/$mUserId"  //用户私人频道
+        val URL_PLATFORM = "/ws/notify/platform/$mPlatformId" //全体公共频道  这个通道会通知主站平台维护
         var URL_EVENT = "/ws/notify/event/" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
         var URL_HALL = "/ws/notify/hall/" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
@@ -107,6 +110,7 @@ class BackService : Service() {
     override fun onBind(intent: Intent?): IBinder {
         mToken = intent?.getStringExtra(SERVICE_TOKEN) ?: ""
         mUserId = intent?.getLongExtra(SERVICE_USER_ID, -1)
+        mPlatformId = intent?.getIntExtra(SERVICE_PLATFORM_ID, -1)
         if (mToken.isEmpty()) return mBinder
 
         if (mStompClient?.isConnected != true && mToken.isNotEmpty()) {
