@@ -23,17 +23,23 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addFooterAndSubmitList(list: List<Row>?) {
+    fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
         adapterScope.launch {
             val items = when (list) {
                 null -> listOf(DataItem.NoData)
                 else -> {
-                    if (list.isEmpty())
-                        listOf(DataItem.NoData)
-                    else
-                        list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                    when {
+                        list.isEmpty() -> listOf(DataItem.NoData)
+                        isLastPage -> {
+                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                        }
+                        else -> {
+                            list.map { DataItem.Item(it) }
+                        }
+                    }
                 }
             }
+
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
             }
@@ -119,7 +125,7 @@ class ItemClickListener(val clickListener: (data: Row) -> Unit) {
 
 sealed class DataItem {
 
-    abstract val orderNum: String
+    abstract val orderNum: String?
 
     data class Item(val row: Row) : DataItem() {
         override val orderNum = row.orderNo
@@ -130,6 +136,6 @@ sealed class DataItem {
     }
 
     object NoData : DataItem() {
-        override val orderNum: String = ""
+        override val orderNum: String? = null
     }
 }
