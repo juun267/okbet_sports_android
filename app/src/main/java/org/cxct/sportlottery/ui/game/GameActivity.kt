@@ -42,6 +42,18 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
         initObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        rv_marquee.startAuto()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        rv_marquee.stopAuto()
+    }
+
     private fun setupToolbar() {
         iv_head.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
