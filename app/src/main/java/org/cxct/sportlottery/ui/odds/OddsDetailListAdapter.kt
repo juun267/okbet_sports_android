@@ -89,10 +89,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         HTFT("HT/FT", R.layout.content_odds_detail_list_one_list, 20),//半场/全场
         W3("W3", R.layout.content_odds_detail_list_group_item, 21),//三项让球
         TG_OU("TG&O/U", R.layout.content_odds_detail_list_two_sides, 22),//球队进球数&大/小
-
         C_OU("CORNER-O/U", R.layout.content_odds_detail_list_two_sides, 23),//角球大/小
         C_OE("CORNER-OE", R.layout.content_odds_detail_list_two_sides, 24),//角球单/双
-
+        OU_I_OT("O/U-INCL-OT", R.layout.content_odds_detail_list_two_sides, 25),//大/小(含加时)
     }
 
 
@@ -137,7 +136,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == GameType.WEH.value -> return GameType.WEH.type
 
-            type == GameType.WM.value -> return GameType.WM.type
+            checkKey(type, GameType.WM.value) -> return GameType.WM.type
 
             type == GameType.CLSH.value -> return GameType.CLSH.type
 
@@ -150,6 +149,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             checkKey(type, GameType.C_OU.value) -> return GameType.C_OU.type
 
             checkKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
+
+            checkKey(type, GameType.OU_I_OT.value) -> return GameType.OU_I_OT.type
 
             else -> {
                 return -1
@@ -189,6 +190,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.TG_OU.type -> layout = GameType.TG_OU.layout
             GameType.C_OU.type -> layout = GameType.C_OU.layout
             GameType.C_OE.type -> layout = GameType.C_OE.layout
+            GameType.OU_I_OT.type -> layout = GameType.OU_I_OT.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -316,7 +318,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.OE.type,
                 GameType.TG_OU.type,
                 GameType.C_OU.type,
-                GameType.C_OE.type -> twoSides(oddsDetail)
+                GameType.C_OE.type,
+                GameType.OU_I_OT.type -> twoSides(oddsDetail)
 
                 GameType.CS.type -> cs(oddsDetail)
 
