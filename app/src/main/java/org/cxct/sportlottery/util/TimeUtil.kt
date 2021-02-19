@@ -28,6 +28,12 @@ object TimeUtil {
     }
 
     @JvmStatic
+    fun stampToDateTime(date:Date): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return simpleDateFormat.format(date)
+    }
+
+    @JvmStatic
     fun timeFormat(
         time: Long?,
         format: String,

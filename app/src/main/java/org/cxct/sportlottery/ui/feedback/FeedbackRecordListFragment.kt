@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
@@ -36,9 +37,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     lateinit var calendarBottomSheet: BottomSheetDialog
     lateinit var typeBottomSheet: BottomSheetDialog
     lateinit var statusBottomSheet: BottomSheetDialog
-
-    private var simpleDateFormat: SimpleDateFormat =
-        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     val adapter by lazy {
         context?.let {
@@ -110,10 +108,12 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
 
         ll_start_date.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
+            calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.START)
             calendarBottomSheet.show()
         }
         ll_end_date.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.end_date)
+            calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.END)
             calendarBottomSheet.show()
         }
 
@@ -139,15 +139,22 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
             getDateInCalendar(30).second
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(startDate: Calendar) {
-                setStartEndDateText(simpleDateFormat.format(startDate.time), "")
+            override fun onFirstDateSelected(
+                dateSelectedType: DateSelectedType,
+                startDate: Calendar
+            ) {
+                setStartEndDateText(dateSelectedType,TimeUtil.stampToDateTime(startDate.time), "")
                 calendarBottomSheet.dismiss()
             }
 
-            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                setStartEndDateText(
-                    simpleDateFormat.format(startDate.time),
-                    simpleDateFormat.format(endDate.time)
+            override fun onDateRangeSelected(
+                dateSelectedType: DateSelectedType,
+                startDate: Calendar,
+                endDate: Calendar
+            ) {
+                setStartEndDateText(dateSelectedType,
+                    TimeUtil.stampToDateTime(startDate.time),
+                    TimeUtil.stampToDateTime(endDate.time)
                 )
                 calendarBottomSheet.dismiss()
             }
@@ -161,20 +168,31 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         return Pair(minusDaysCalendar, todayCalendar)
     }
 
-    private fun setStartEndDateText(startDate: String, endDate: String) {
+    private fun setStartEndDateText(dateSelectedType:DateSelectedType,startDate: String, endDate: String) {
         tv_start_date.text = startDate
         tv_end_date.text = endDate
 //        feedbackListRequest.startTime = startDate
 //        feedbackListRequest.endTime = endDate
 
-        viewModel.feedbackListRequest.startTime= startDate
-        viewModel.feedbackListRequest.endTime= endDate
+        if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
+            tv_start_date.text = startDate
+            tv_end_date.text = endDate
+        } else {
+            //若只有其中一個日期, 則根據當前點選的是開始或結束日期去做更新文字
+            when (dateSelectedType) {
+                DateSelectedType.START -> tv_start_date.text = startDate
+                DateSelectedType.END -> tv_end_date.text = startDate
+            }
+        }
+
+
+        viewModel.feedbackListRequest.startTime = startDate
+        viewModel.feedbackListRequest.endTime = endDate
     }
 
     //類別的BottomSheet
     private fun setupStateBottomSheet(container: ViewGroup?) {
         try {
-            viewModel.getStatusMap()
             val textList = ArrayList(viewModel.statusMap.values)
 
             val bottomSheetView =
@@ -197,7 +215,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     //狀態的BottomSheet
     private fun setupTypeBottomSheet(container: ViewGroup?) {
         try {
-            viewModel.getTypeMap()
             val textList = viewModel.typeMap.let { ArrayList(it.values) }
 
             val bottomSheetView =

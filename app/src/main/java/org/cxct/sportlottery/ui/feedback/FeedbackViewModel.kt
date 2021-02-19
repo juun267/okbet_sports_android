@@ -53,15 +53,15 @@ class FeedbackViewModel(
     var feedbackCode: String? = null
 
     //Bottomsheet Data
-    val typeMap = HashMap<Int, String>()
-    val statusMap = HashMap<Int, String>()
+    val typeMap = mapOf(0 to "充值问题",1 to "提款问题",2 to "其他问题",3 to "提交建议",4 to "我要投诉",5 to "客服反馈",6 to "玩家回复")
+    val statusMap = mapOf(0 to "待反馈",1 to "已反馈")
 
     //API Input
     var feedbackListRequest = FeedbackListRequest()
 
 
     private var mNextRequestPage = 1//未讀
-    private var pageSize = 20 //預設每次載入20筆資料
+    private val pageSize = 20 //預設每次載入20筆資料
     private var mIsGettingData = false //判斷請求任務是否進行中
     private var mNeedMoreLoading = false //資料判斷滑到底是否需要繼續加載
 
@@ -157,21 +157,5 @@ class FeedbackViewModel(
             }
             userID = result?.userInfoData?.userId
         }
-    }
-
-    //Bottomsheet Data
-    fun getTypeMap() {
-        typeMap[0] = "充值问题"
-        typeMap[1] = "提款问题"
-        typeMap[2] = "其他问题"
-        typeMap[3] = "提交建议"
-        typeMap[4] = "我要投诉"
-        typeMap[5] = "客服反馈"
-        typeMap[6] = "玩家回复"
-    }
-
-    fun getStatusMap() {
-        statusMap[0] = "待反馈"
-        statusMap[1] = "已反馈"
     }
 }
