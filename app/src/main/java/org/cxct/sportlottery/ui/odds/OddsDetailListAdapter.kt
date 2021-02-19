@@ -26,7 +26,7 @@ import kotlin.collections.ArrayList
 
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-        RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
@@ -276,9 +276,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             val type = oddsDetailDataList[position].gameType
 
-            if(type.contains(":")){
+            if (type.contains(":")) {
                 tvName.text = oddsDetail.name.plus("  ").plus(type.split(":")[1])
-            }else{
+            } else {
                 tvName.text = oddsDetail.name
             }
 
@@ -357,7 +357,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             val homeList: MutableList<Odd> = mutableListOf()
             val drawList = ArrayList<Odd>()
-            val awayList = ArrayList<Odd>()
+            val awayList: MutableList<Odd> = mutableListOf()
 
             for (odd in oddsDetail.oddArrayList) {
 
@@ -420,9 +420,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             homeList.sortBy {
+                it.name?.split(" - ")?.get(1)?.toInt()
+            }
+            homeList.sortBy {
                 it.name?.split(" - ")?.get(0)?.toInt()
             }
 
+
+            awayList.sortBy {
+                it.name?.split(" - ")?.get(0)?.toInt()
+            }
             awayList.sortBy {
                 it.name?.split(" - ")?.get(1)?.toInt()
             }
@@ -477,18 +484,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         Handler().postDelayed(
-                {
-                    when (odd.isSelect) {
-                        true -> {
-                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
-                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-                        }
-                        false -> {
-                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
-                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
-                        }
+            {
+                when (odd.isSelect) {
+                    true -> {
+                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
+                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
                     }
-                }, CHANGING_ITEM_BG_COLOR_DURATION
+                    false -> {
+                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
+                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
+                    }
+                }
+            }, CHANGING_ITEM_BG_COLOR_DURATION
         )
     }
 

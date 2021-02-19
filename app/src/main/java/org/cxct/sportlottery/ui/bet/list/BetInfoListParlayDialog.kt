@@ -117,12 +117,13 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
 
 
     private fun observeData() {
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { result ->
-            result?.success?.let {
-                if (!it) {
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { it ->
+            val eventResult = it.getContentIfNotHandled()
+            eventResult?.success?.let { success ->
+                if (!success) {
                     val dialog = CustomAlertDialog(requireActivity())
                     dialog.setTitle(getString(R.string.prompt))
-                    dialog.setMessage(result.msg)
+                    dialog.setMessage(eventResult.msg)
                     dialog.setNegativeButtonText(null)
                     dialog.setTextColor(R.color.red2)
                     dialog.show()

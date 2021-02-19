@@ -175,8 +175,8 @@ class MainViewModel(
     val oddsDetailMoreList: LiveData<List<*>?>
         get() = _oddsDetailMoreList
 
-    private val _betInfoResult = MutableLiveData<BetInfoResult?>()
-    val betInfoResult: LiveData<BetInfoResult?>
+    private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
+    val betInfoResult: LiveData<Event<BetInfoResult?>>
         get() = _betInfoResult
 
     private val _matchOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>()
@@ -940,7 +940,7 @@ class MainViewModel(
                         }
                     }
                 }
-                _betInfoResult.postValue(result)
+                _betInfoResult.postValue(Event(result))
             }
         }
     }
@@ -1023,7 +1023,7 @@ class MainViewModel(
                     }
                 }
             }
-            _betInfoResult.postValue(result)
+            _betInfoResult.postValue(Event(result))
         }
     }
 

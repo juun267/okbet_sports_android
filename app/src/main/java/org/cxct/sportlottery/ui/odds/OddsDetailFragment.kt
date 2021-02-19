@@ -23,6 +23,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -265,12 +266,14 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
-            if (it?.success != true) {
-                ToastUtil.showBetResultToast(
-                    requireActivity(),
-                    it?.msg ?: getString(R.string.unknown_error),
-                    false
-                )
+            val eventResult = it.peekContent()
+            if (eventResult?.success != true) {
+                val dialog = CustomAlertDialog(requireActivity())
+                dialog.setTitle(getString(R.string.prompt))
+                dialog.setMessage(eventResult?.msg ?: getString(R.string.unknown_error))
+                dialog.setNegativeButtonText(null)
+                dialog.setTextColor(R.color.red2)
+                dialog.show()
             }
         })
 
