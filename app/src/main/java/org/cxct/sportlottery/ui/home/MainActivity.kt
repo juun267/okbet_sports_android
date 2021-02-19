@@ -75,6 +75,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         initToolBar()
         initMenu()
         initRvMarquee()
+        initBottomNav()
         refreshTabLayout(null)
         initObserve()
 
@@ -133,6 +134,32 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     private fun initRvMarquee() {
         rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_marquee.adapter = mMarqueeAdapter
+    }
+
+    private fun initBottomNav() {
+        bottom_nav_view.setOnNavigationItemSelectedListener {
+
+            Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
+
+            when (it.itemId) {
+                R.id.home_page -> {
+                    true
+                }
+                R.id.game_page -> {
+                    true
+                }
+                R.id.promotion_page -> {
+                    true
+                }
+                R.id.chat_page -> {
+                    true
+                }
+                R.id.my_account_page -> {
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {

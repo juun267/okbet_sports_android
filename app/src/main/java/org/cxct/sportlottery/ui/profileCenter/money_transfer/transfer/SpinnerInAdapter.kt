@@ -4,18 +4,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ContentBottomSheetItemBinding
-import org.cxct.sportlottery.network.third_game.money_transfer.GameData
+import org.cxct.sportlottery.databinding.ContentBottomSheetItem2Binding
+import org.cxct.sportlottery.network.third_game.money_transfer.GameDataInPlat
 
-class SpinnerInAdapter (private val checkedListener: ItemCheckedListener) : ListAdapter<GameData, RecyclerView.ViewHolder>(DiffCallback()) {
+class SpinnerInAdapter (private val defaultCheckedCode: String?, private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 //        var previousCheckedPosition: Int? = null
 
+    var dataList = mutableListOf<GameDataInPlat>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     private var mNowCheckedPos:Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -26,36 +29,42 @@ class SpinnerInAdapter (private val checkedListener: ItemCheckedListener) : List
 
         when (holder) {
             is ItemViewHolder -> {
-                val data = getItem(position)
+                val data = dataList[position]
 
-                setSingleChecked(holder.binding.checkbox, position, data)
+                setSingleChecked(holder.binding.checkbox, position)
 
                 holder.bind(data)
             }
         }
     }
 
-    private fun setSingleChecked(checkbox: CheckBox, position: Int, data: GameData) {
+    private fun setSingleChecked(checkbox: CheckBox, position: Int) {
+        val data = dataList[position]
+
+        if (data.code == defaultCheckedCode && mNowCheckedPos == null) {
+            data.isChecked = true
+            mNowCheckedPos = position
+        }
+
         checkbox.setOnClickListener {
             val previousPosition = mNowCheckedPos
 
-            if (previousPosition != null) {
-//                    checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.white))
-                getItem(previousPosition).isChecked = false
-                notifyItemChanged(previousPosition)
+            previousPosition?.let {
+                dataList[previousPosition].isChecked = false
+                notifyItemChanged(it)
             }
 
             mNowCheckedPos = position
-//                checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.blue2))
-            checkbox.isChecked = true
-            checkedListener.onChecked(checkbox.isChecked, data)
+            data.isChecked = true
+            checkedListener.onChecked(data.isChecked, data)
+
             notifyItemChanged(position)
         }
     }
 
-    class ItemViewHolder private constructor(val binding: ContentBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder private constructor(val binding: ContentBottomSheetItem2Binding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: GameData) {
+        fun bind(data: GameDataInPlat) {
             itemView.apply {
                 if (data.isChecked) {
                     checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.blue2))
@@ -63,34 +72,27 @@ class SpinnerInAdapter (private val checkedListener: ItemCheckedListener) : List
                     checkbox.setBackgroundColor(ContextCompat.getColor(checkbox.context, R.color.white))
                 }
             }
-            binding.item = data
 
+            binding.item = data
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ContentBottomSheetItemBinding.inflate(layoutInflater, parent, false)
+                val binding = ContentBottomSheetItem2Binding.inflate(layoutInflater, parent, false)
                 return ItemViewHolder(binding)
             }
         }
 
     }
 
-    class ItemCheckedListener(val checkedListener: (isChecked: Boolean, data: GameData) -> Unit) {
-        fun onChecked(isChecked: Boolean, data: GameData) = checkedListener(isChecked, data)
+    class ItemCheckedListener(val checkedListener: (isChecked: Boolean, data: GameDataInPlat) -> Unit) {
+        fun onChecked(isChecked: Boolean, data: GameDataInPlat) = checkedListener(isChecked, data)
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<GameData>() {
-        override fun areItemsTheSame(oldItem: GameData, newItem: GameData): Boolean {
-            return oldItem.showName == newItem.showName
-        }
-
-        override fun areContentsTheSame(oldItem: GameData, newItem: GameData): Boolean {
-            return oldItem == newItem
-        }
-
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
 }

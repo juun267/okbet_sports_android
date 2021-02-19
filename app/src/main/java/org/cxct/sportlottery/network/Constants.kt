@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network
 
 import android.content.Context
+import android.util.Log
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -28,7 +29,7 @@ object Constants {
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?): String? {
         return try {
-            getBaseUrl() + "/activity/mobile.html?token=" + URLEncoder.encode(token, "utf-8")
+            "${getBaseUrl()}/activity/mobile/#/useractilist?token=${URLEncoder.encode(token, "utf-8")}"
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             null

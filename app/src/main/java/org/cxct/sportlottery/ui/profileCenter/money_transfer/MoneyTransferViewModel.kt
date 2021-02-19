@@ -1,8 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.nfc.tech.MifareUltralight
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GameData
+import org.cxct.sportlottery.network.third_game.money_transfer.GameDataInPlat
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
@@ -43,13 +43,16 @@ class MoneyTransferViewModel(
         "CR" to androidContext.getString(R.string.third_game_cr),
     )
 
+    val isPlatSwitched: LiveData<Boolean>
+        get() = _isPlatSwitched
+
     val allBalanceResultList: LiveData<List<GameData>>
         get() = _allBalanceResultList
 
     val thirdGamesResult: LiveData<ThirdGamesResult>
         get() = _thirdGamesResult
 
-    val recycleAllMoneyResult: LiveData<BlankResult>
+    val recycleAllMoneyResult: LiveData<BlankResult?>
         get() = _recycleAllMoneyResult
 
     val transferResult: LiveData<BlankResult?>
@@ -61,32 +64,66 @@ class MoneyTransferViewModel(
     val userMoney: LiveData<Double?>
         get() = _userMoney
 
+    val isShowTitleBar: LiveData<Boolean>
+        get() = _isShowTitleBar
 
+    val loading: LiveData<Boolean> //使用者餘額
+        get() = _loading
+
+    val toolbarName: LiveData<String>
+        get() = _toolbarName
+
+
+    private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
+    private val _isPlatSwitched = MutableLiveData<Boolean>().apply { this.value = false }
+    private val _loading = MutableLiveData<Boolean>()
+    private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
     private var _allBalanceResultList = MutableLiveData<List<GameData>>()
     private var _thirdGamesResult = MutableLiveData<ThirdGamesResult>()
-    private var _recycleAllMoneyResult = MutableLiveData<BlankResult>()
+    private var _recycleAllMoneyResult = MutableLiveData<BlankResult?>()
     private var _transferResult = MutableLiveData<BlankResult?>()
     private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
 
+    fun showTitleBar(visible: Boolean) {
+        _isShowTitleBar.value = visible
+    }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun getMoney() {
+        loading()
         viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
+            }?.let {
+                hideLoading()
+                _userMoney.postValue(it.money)
             }
-
-            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 
+    fun setToolbarName(name: String) {
+        _toolbarName.value = name
+    }
+
+    fun setIsPlatSwitched(isSwitched: Boolean) {
+        _isPlatSwitched.value = isSwitched
+    }
+
+//    var selectedOutPlatCode = "CG"
+//    var selectedInPlatCode: String ?= null
+
+    private val resultList = mutableListOf<GameData>()
+    var outPlatDataList = mutableListOf<GameData>()
+    var inPlatDataList = mutableListOf<GameDataInPlat>()
     fun getAllBalance() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getAllBalance()
             }?.let { result ->
-
-                val resultList = mutableListOf<GameData>()
+                hideLoading()
+                resultList.clear()
                 for ((key, value) in result.resultMap ?: mapOf()) {
                     value?.apply {
                         val gameData = GameData(money, remark, transRemaining).apply {
@@ -98,80 +135,143 @@ class MoneyTransferViewModel(
                     }
                 }
 
+                setPlatDataList()
+
                 _allBalanceResultList.postValue(resultList)
             }
         }
     }
 
-    fun addPlatMoneyItem() {
-        val platItem = GameData().apply {
+    var defaultOutPlat = "CG"
+    var defaultInPlat : String? = null
+
+    fun setPlatDataList() {
+        outPlatDataList.clear()
+        inPlatDataList.clear()
+
+        resultList.forEach { gameData ->
+            val inPlatData = GameDataInPlat(gameData.money, gameData.remark, gameData.transRemaining).apply {
+                isChecked = false
+                showName = gameData.showName
+                code = gameData.code
+            }
+            inPlatDataList.add(inPlatData)
+        }
+
+
+        resultList.forEach { gameData ->
+            val inPlatData = gameData.apply { gameData.isChecked = false }
+            outPlatDataList.add(inPlatData)
+        }
+
+        inPlatDataList.add(0, GameDataInPlat().apply {
+            isChecked = false
             code = "CG"
             showName = androidContext.getString(R.string.plat_money)
-        }
+        })
+
+        outPlatDataList.add(0, GameData().apply {
+            isChecked = false
+            code = "CG"
+            showName = androidContext.getString(R.string.plat_money)
+        })
+
     }
 
     fun recycleAllMoney() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.allTransferOut()
             }?.let { result ->
+                hideLoading()
                 _recycleAllMoneyResult.value = result
+
+                getAllBalance()
+                getMoney()
+                clearRecycleAllMoneyResult()
             }
         }
     }
 
     fun transfer(outPlat: String, inPlat: String, amount: Long?) {
         if (amount == null) return
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
             }?.let { result ->
+                hideLoading()
                 _transferResult.value = result
+
+                getAllBalance()
+                getMoney()
+                clearTransferResult()
             }
         }
     }
 
     var isLastPage = false
-    var isLoading = false
+    private var isLoading = false
+    private var nowPage = 1
+    val recordDataList = mutableListOf<Row>()
 
-    var nowPage = 1
+    fun queryTransfers(page: Int? = 1) {
+        loading()
+        if (page == 1) {
+            nowPage = 1
+            recordDataList.clear()
+        }
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE))
+            }?.let { result ->
+                hideLoading()
+                isLoading = false
+                _queryTransfersResult.value = result
+                recordDataList.addAll(result.rows as List<Row>)
+            }
+        }
+    }
 
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
-        Log.e(">>>", "isLoading = $isLoading, isLastPage = $isLastPage")
         if (!isLoading && !isLastPage) {
-            Log.e(">>>", "1: ${visibleItemCount + firstVisibleItemPosition >= totalItemCount}, " + "2: ${firstVisibleItemPosition >= 0}," + "3: ${totalItemCount >= MifareUltralight.PAGE_SIZE}")
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
-                Log.e(">>>", "getNextPage")
                 isLoading = true
                 queryTransfers(++nowPage)
             }
         }
     }
 
-    fun queryTransfers(page: Int? = 1) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE))
-            }?.let { result ->
-                isLoading = false
-                _queryTransfersResult.value = result
-            }
-        }
-    }
 
     fun getThirdGames() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getThirdGames()
             }?.let { result ->
+                hideLoading()
                 _thirdGamesResult.value = result
             }
         }
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun clearTransferResult() {
         _transferResult.postValue(null)
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
+    fun clearRecycleAllMoneyResult() {
+        _recycleAllMoneyResult.postValue(null)
+    }
+
+    private fun loading() {
+        _loading.postValue(true)
+    }
+
+    private fun hideLoading() {
+        _loading.postValue(false)
+    }
 
 }

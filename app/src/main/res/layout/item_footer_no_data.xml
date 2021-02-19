@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_no_data"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <TextView
-        android:id="@+id/tv_no_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingVertical="12dp"
-        android:text="@string/no_data"
-        android:textColor="@color/gray6"
-        android:textSize="@dimen/textSize12sp" />
-</FrameLayout>
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingVertical="12dp"
+    android:text="@string/no_data"
+    android:textColor="@color/gray6"
+    android:textSize="@dimen/textSize12sp" />

@@ -9,6 +9,7 @@
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
 
     <LinearLayout
+        android:id="@+id/ll_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dark_blue2"
@@ -43,34 +44,13 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/layout_transfer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <fragment
-            android:id="@+id/my_nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/money_transfer_navigation" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/layout_record"
+    <fragment
+        android:id="@+id/my_nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <fragment
-            android:id="@+id/recordFragment"
-            android:name="org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_money_transfer_record" />
-    </FrameLayout>
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/money_transfer_navigation" />
 
 </LinearLayout>
 

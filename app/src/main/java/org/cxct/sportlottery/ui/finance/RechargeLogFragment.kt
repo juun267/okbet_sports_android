@@ -232,12 +232,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private fun setupNoRecordView(visible: Boolean) {
         if (visible) {
             list_swipe_refresh_layout.visibility = View.GONE
-            list_no_record_img.visibility = View.VISIBLE
-            list_no_record_text.visibility = View.VISIBLE
+            view_no_record.visibility = View.VISIBLE
         } else {
             list_swipe_refresh_layout.visibility = View.VISIBLE
-            list_no_record_img.visibility = View.GONE
-            list_no_record_text.visibility = View.GONE
+            view_no_record.visibility = View.GONE
         }
     }
 }
