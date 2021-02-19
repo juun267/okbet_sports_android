@@ -169,7 +169,6 @@ class BackService : Service() {
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL)
 
-                Log.e(">>> STOMP", "URL_PLATFORM = $URL_PLATFORM")
                 val platformDisposable: Disposable? = stompClient.subscribe(URL_PLATFORM)
 
                 mCompositeDisposable?.add(lifecycleDisposable)
