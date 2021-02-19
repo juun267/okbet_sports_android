@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home_start_page.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
-import timber.log.Timber
 
 class HomeStartPageFragment : BaseFragment<MainViewModel>(MainViewModel::class)  {
 
@@ -29,6 +27,16 @@ class HomeStartPageFragment : BaseFragment<MainViewModel>(MainViewModel::class) 
         queryData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        rv_marquee.startAuto()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        rv_marquee.stopAuto()
+    }
+
     //公告
     private fun initRvMarquee() {
         rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -40,19 +48,6 @@ class HomeStartPageFragment : BaseFragment<MainViewModel>(MainViewModel::class) 
         viewModel.messageListResult.observe(viewLifecycleOwner, Observer {
             hideLoading()
             updateUiWithResult(it)
-        })
-
-        viewModel.matchTypeCardForParlay.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                MatchType.PARLAY -> {
-                    tabLayout.getTabAt(4)?.select()
-                }
-                MatchType.AT_START -> {
-                    tabLayout.getTabAt(6)?.select()
-                }
-                else -> {
-                }
-            }
         })
     }
 
