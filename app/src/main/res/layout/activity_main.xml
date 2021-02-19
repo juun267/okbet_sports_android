@@ -220,10 +220,18 @@
                     android:id="@+id/odds_detail_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/white"
+                app:menu="@menu/bottom_navigation_menu" />
 
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        
         <!-- 側邊導覽列 -->
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_right"

@@ -567,4 +567,11 @@
     <string name="transfer_state">转换状态：</string>
     <string name="remark">备注：</string>
     <string name="transfer_info">转换信息</string>
+
+    <!--bottom navigation view-->
+    <string name="bottom_nav_home">首页</string>
+    <string name="bottom_nav_game">赛事</string>
+    <string name="bottom_nav_promotion">活动</string>
+    <string name="bottom_nav_chat">聊天</string>
+    <string name="bottom_nav_my_account">我的</string>
 </resources>
