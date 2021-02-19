@@ -16,4 +16,6 @@ data class ParlayOdd(
     val odds: Double,
     @Json(name = "parlayType")
     val parlayType: String
-)
+) {
+    var sendOutStatus: Boolean = true
+}

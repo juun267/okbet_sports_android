@@ -120,6 +120,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         Glide.with(this).load(bitmap).into(iv_verification_code)
     }
 
+    fun setTitle(value: String?) {
+        tv_title.text = value
+    }
+
     fun setHint(value: String?) {
         et_input.hint = value
     }

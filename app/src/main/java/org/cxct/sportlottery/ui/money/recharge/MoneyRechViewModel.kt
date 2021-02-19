@@ -133,8 +133,8 @@ class MoneyRechViewModel(
     }
 
     //充值頁面[轉帳充值]-[按鈕]提交申請
-    fun rechargeSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?) {
-        checkAll(moneyAddRequest, rechType)
+    fun rechargeSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
+        checkAll(moneyAddRequest, rechType, rechConfig)
         if (checkTransferPayInput()) {
             rechargeAdd(moneyAddRequest)
         }
@@ -157,12 +157,13 @@ class MoneyRechViewModel(
     }
 
     //在線支付
-    fun rechargeOnlinePay(context: Context, id: Int, depositMoney: Int, bankCode: String?) {
+    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, bankCode: String?) {
+        checkRcgOnlineAmount(depositMoney.toString(), mSelectRechCfgs)
         if (onlinePayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
-                "rechCfgId" to id.toString(),
+                "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney.toString()
             )
@@ -173,8 +174,8 @@ class MoneyRechViewModel(
         }
     }
 
-    //送出前判斷全部
-    private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?) {
+    //轉帳支付 - 送出前判斷全部
+    private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         when (rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 checkUserName(moneyAddRequest.payerName)
@@ -188,21 +189,21 @@ class MoneyRechViewModel(
                 checkUserName(moneyAddRequest.payerInfo ?: "")
             }
         }
-        checkRechargeAmount(moneyAddRequest.depositMoney.toString())
+        checkRechargeAmount(moneyAddRequest.depositMoney.toString(), rechConfig)
     }
 
     //充值金額驗證
-    fun checkRechargeAmount(rechargeAmount: String) {
+    fun checkRechargeAmount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+        val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
+        val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAmountMsg.value = when {
-            rechargeAmount.isEmpty() -> {
-                androidContext.getString(R.string.error_recharge_amount_empty)
+            rechargeAmount.isEmpty() || rechargeAmount == "0" -> {
+                androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
-                0,
-                9999999
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.minMoney?.toLong()?:0,
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.maxMoney?.toLong()
+                channelMinMoney,
+                channelMaxMoney
             ) -> {// TODO Bill
                 androidContext.getString(R.string.error_recharge_amount)
             }
@@ -213,17 +214,17 @@ class MoneyRechViewModel(
     }
 
     //在線充值金額
-    fun checkRcgOnlineAmount(rechargeAmount: String) {
+    fun checkRcgOnlineAmount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+        val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
+        val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeOnlineAmountMsg.value = when {
-            rechargeAmount.isEmpty() -> {
-                androidContext.getString(R.string.error_recharge_amount)
+            rechargeAmount.isEmpty() || rechargeAmount == "0"-> {
+                androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
-                0,
-                9999999
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.minMoney?.toLong()?:0,
-//                rechargeConfigs.value?.rechCfgs?.get(dataIndex)?.maxMoney?.toLong()
+                channelMinMoney,
+                channelMaxMoney
             ) -> {// TODO Bill
                 androidContext.getString(R.string.error_recharge_amount)
             }
@@ -254,12 +255,12 @@ class MoneyRechViewModel(
     fun checkUserName(userName: String) {
         _nameErrorMsg.value = when {
             userName.isEmpty() -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyNickname(
+            !VerifyConstUtil.verifyFullName(
                 userName
             ) -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_incompatible_format)
             }
             else -> {
                 ""
@@ -271,12 +272,12 @@ class MoneyRechViewModel(
     fun checkNickName(userName: String) {
         _nickNameErrorMsg.value = when {
             userName.isEmpty() -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyNickname(
                 userName
             ) -> {
-                androidContext.getString(R.string.error_user_name)
+                androidContext.getString(R.string.error_incompatible_format)
             }
             else -> {
                 ""
@@ -289,7 +290,7 @@ class MoneyRechViewModel(
         _bankIDErrorMsg.postValue(
             when {
                 bankId.isEmpty() -> {
-                    androidContext.getString(R.string.error_bank_id)
+                    androidContext.getString(R.string.error_input_empty)
                 }
                 !VerifyConstUtil.verifyBankCardNumber(
                     bankId

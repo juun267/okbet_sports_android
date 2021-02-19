@@ -39,14 +39,13 @@
                 android:id="@+id/rl_input"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_radius_5_edittext_unfocus">
+                android:layout_marginBottom="10dp">
 
                 <EditText
                     android:id="@+id/et_bet"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
+                    android:background="@drawable/effect_select_bet_edit_text"
                     android:inputType="number"
                     android:maxLength="18"
                     android:paddingStart="10dp"

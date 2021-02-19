@@ -9,8 +9,8 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginEnd="5dp"
+        android:gravity="center"
         android:text=""
         android:textColor="@color/text_spread"
         android:textSize="@dimen/textSize14sp" />
@@ -21,12 +21,9 @@
 
         <TextView
             android:id="@+id/tv_odds"
+            style="@style/OddsButton"
             android:layout_width="56dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:background="@drawable/select_button_radius_5_odds"
-            android:textColor="@color/color_select_text_odds"
-            android:textSize="@dimen/textSize14sp" />
+            android:layout_height="50dp" />
 
         <ImageView
             android:id="@+id/iv_disable_cover"
@@ -43,7 +40,6 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-
 
 
 </LinearLayout>
