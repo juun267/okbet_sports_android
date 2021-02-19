@@ -29,7 +29,6 @@ object Constants {
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?): String? {
         return try {
-            Log.e(">>>", "url = ${getBaseUrl() + "/activity/mobile/#/useractilist?token=${token}"}")
             "${getBaseUrl()}/activity/mobile/#/useractilist?token=${URLEncoder.encode(token, "utf-8")}"
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
