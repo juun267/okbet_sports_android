@@ -89,6 +89,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         HTFT("HT/FT", R.layout.content_odds_detail_list_one_list, 20),//半场/全场
         W3("W3", R.layout.content_odds_detail_list_group_item, 21),//三项让球
         TG_OU("TG&O/U", R.layout.content_odds_detail_list_two_sides, 22),//球队进球数&大/小
+
+        C_OU("CORNER-O/U", R.layout.content_odds_detail_list_two_sides, 23),//角球大/小
+        C_OE("CORNER-OE", R.layout.content_odds_detail_list_two_sides, 24),//角球单/双
+
     }
 
 
@@ -143,6 +147,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             checkKey(type, GameType.TG_OU.value) -> return GameType.TG_OU.type
 
+            checkKey(type, GameType.C_OU.value) -> return GameType.C_OU.type
+
+            checkKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
+
             else -> {
                 return -1
             }
@@ -177,6 +185,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.CLSH.type -> layout = GameType.CLSH.layout
             GameType.HTFT.type -> layout = GameType.HTFT.layout
             GameType.W3.type -> layout = GameType.W3.layout
+            GameType.W3.type -> layout = GameType.W3.layout
+            GameType.TG_OU.type -> layout = GameType.TG_OU.layout
+            GameType.C_OU.type -> layout = GameType.C_OU.layout
+            GameType.C_OE.type -> layout = GameType.C_OE.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -302,7 +314,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.OU_1ST.type,
                 GameType.OU_2ST.type,
                 GameType.OE.type,
-                GameType.TG_OU.type -> twoSides(oddsDetail)
+                GameType.TG_OU.type,
+                GameType.C_OU.type,
+                GameType.C_OE.type -> twoSides(oddsDetail)
 
                 GameType.CS.type -> cs(oddsDetail)
 
