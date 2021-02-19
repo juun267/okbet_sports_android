@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
@@ -26,6 +27,13 @@ class BetRecordViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+
+    companion object {
+        private const val PAGE_SIZE = 10
+    }
+
+    val loading: LiveData<Boolean>
+        get() = _loading
 
     val waitingResult: LiveData<Boolean>
         get() = _waitingResult
@@ -46,10 +54,13 @@ class BetRecordViewModel(
         this.value = mutableListOf()
     }
 
+    private val _loading = MutableLiveData<Boolean>()
     private val _waitingResult = MutableLiveData<Boolean>()
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<Event<BetListResult>>()
     private val _selectedBetStatus = MutableLiveData<String?>()
+
+    private var mBetListRequest: BetListRequest? = null
 
     fun checkRequestState(startDate: String, endDate: String) {
         _betListRequestState.value = BetListRequestState(
@@ -63,7 +74,7 @@ class BetRecordViewModel(
         val selectBetStatus = filterStatusList(betStatusList)
         if (checkInputFilter(selectBetStatus, startDate, endDate)) {
             _waitingResult.postValue(true)
-            getBetList(isOutRight, selectBetStatus, startDate, endDate)
+            getBetRecord(isOutRight, selectBetStatus, startDate, endDate)
         }
     }
 
@@ -109,26 +120,70 @@ class BetRecordViewModel(
         _selectStatusList.value = _selectStatusList.value
     }
 
-    fun getBetList(isChampionChecked: Boolean, statusList: List<Int>, startDate: String, endDate: String) {
+    private fun getBetRecord(isChampionChecked: Boolean, statusList: List<Int>, startDate: String, endDate: String) {
         val championOnly = if (isChampionChecked) 1 else 0
+        mBetListRequest = BetListRequest(
+            championOnly = championOnly,
+            statusList = statusList,
+            startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START_OF_DAY).toString(),
+            endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END_OF_DAY).toString(),
+            page = 1,
+            pageSize = 10
+        )
+        mBetListRequest?.let { getBetList(it) }
+    }
 
+    var isLastPage = false
+    private var isLoading = false
+    private var nowPage = 1
+    val recordDataList = mutableListOf<Row>()
+
+    fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
+        if (!isLoading && !isLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
+                isLoading = true
+                mBetListRequest?.let {
+                    mBetListRequest = BetListRequest(
+                        championOnly = it.championOnly,
+                        statusList = it.statusList,
+                        startTime = it.startTime,
+                        endTime = it.endTime,
+                        page = it.page?.plus(1),
+                        pageSize = PAGE_SIZE
+                    )
+                    getBetList(mBetListRequest!!)
+                }
+            }
+        }
+
+    }
+
+    private fun getBetList(betListRequest: BetListRequest) {
+        if (betListRequest.page == 1) {
+            nowPage = 1
+            recordDataList.clear()
+        }
+        loading()
         viewModelScope.launch {
-            val betListRequest = BetListRequest(
-                championOnly = championOnly,
-                statusList = statusList,
-                startTime = dateToTimeStamp(startDate, TimeUtil.TimeType.START_OF_DAY).toString(),
-                endTime = dateToTimeStamp(endDate, TimeUtil.TimeType.END_OF_DAY).toString()
-            )
-
             doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
                 Event(result).let { eventResult ->
+                    hideLoading()
+                    isLoading = false
                     _betRecordResult.postValue(eventResult)
                     _waitingResult.postValue(false)
+                    recordDataList.addAll(result.rows as List<Row>)
                 }
             }
         }
     }
 
+    private fun loading() {
+        _loading.postValue(true)
+    }
+
+    private fun hideLoading() {
+        _loading.postValue(false)
+    }
 }
