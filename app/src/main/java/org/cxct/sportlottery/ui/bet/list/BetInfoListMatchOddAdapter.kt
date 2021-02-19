@@ -90,7 +90,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             val strVerse = context.getString(R.string.verse_)
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
             binding.betInfoDetail.tvMatch.text = strMatch
-
+            binding.betInfoDetail.tvName.text = if (matchOdd.inplay == INPLAY) context.getString(R.string.bet_info_in_play) + matchOdd.playCateName else matchOdd.playCateName
 
             when (matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {

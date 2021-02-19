@@ -127,8 +127,10 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.tvParlayType.text = parlayOdd.parlayType.replace("C", "串")
 
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
-            binding.tvParlayOdds.text =
-                    String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(parlayOdd.odds))
+
+            binding.tvParlayOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(parlayOdd.odds))
+
+            binding.tvParlayOdds.visibility = if (position == 0) View.VISIBLE else View.GONE
 
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
