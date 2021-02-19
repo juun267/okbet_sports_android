@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
+import org.cxct.sportlottery.ui.home2.HomeStartPageFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -259,7 +260,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     private fun navGameFragment(matchType: MatchType) {
         when (navController.currentDestination?.id) {
             R.id.homeFragment -> {
-                val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
+                val action = HomeStartPageFragmentDirections.actionHomeFragmentToGameFragment(matchType)
                 navController.navigate(action)
             }
             R.id.gameFragment -> {
