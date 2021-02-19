@@ -5,13 +5,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_game.drawer_layout
 import kotlinx.android.synthetic.main.toast_top_bet_result.*
+import kotlinx.android.synthetic.main.view_message.*
+import kotlinx.android.synthetic.main.view_message.rv_marquee
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_nav_right.nav_right
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import kotlinx.android.synthetic.main.view_toolbar_main.btn_login
+import kotlinx.android.synthetic.main.view_toolbar_main.btn_register
+import kotlinx.android.synthetic.main.view_toolbar_main.iv_head
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -20,12 +27,17 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) {
 
+    private val mMarqueeAdapter by lazy {
+        MarqueeAdapter()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
         setupToolbar()
         setupDrawer()
+        setupMessage()
 
         initObserver()
     }
@@ -64,10 +76,27 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private fun setupMessage() {
+        rv_marquee.apply {
+            layoutManager =
+                LinearLayoutManager(this@GameActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = mMarqueeAdapter
+        }
+    }
+
     private fun initObserver() {
         viewModel.isLogin.observe(this, Observer {
             updateLoginWidget(it)
+
+            viewModel.getMessage()
+            loading()
         })
+
+        viewModel.messageListResult.observe(this, Observer {
+            hideLoading()
+            updateMessage(it)
+        })
+
     }
 
     private fun updateLoginWidget(isLogin: Boolean) {
@@ -84,6 +113,16 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
                 toolbar_divider.visibility = View.VISIBLE
                 iv_head.visibility = View.GONE
             }
+        }
+    }
+
+    private fun updateMessage(messageList: List<String>) {
+        mMarqueeAdapter.setData(messageList.toMutableList())
+
+        if (messageList.isEmpty()) {
+            rv_marquee.stopAuto()
+        } else {
+            rv_marquee.startAuto()
         }
     }
 }
