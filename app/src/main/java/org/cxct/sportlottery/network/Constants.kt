@@ -96,6 +96,7 @@ object Constants {
     const val USER_EDIT_ICON_URL = "/api/front/user/editIconUrl" //更新头像
     const val USER_UPDATE_PWD = "/api/front/user/updatepwd" //更新密码
     const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
+    const val USER_WITHDRAW_INFO = "/api/front/user/setWdUserInfo" //設置提款資料
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
