@@ -284,7 +284,7 @@ class BackService : Service() {
         subscribedMap[url] = newDisposable
     }
 
-    fun unSubscribeChannel(url: String) {
+    private fun unSubscribeChannel(url: String) {
         Timber.e(">>> unSubscribeEvent: $url")
         subscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
     }
