@@ -92,6 +92,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         C_OU("CORNER-O/U", R.layout.content_odds_detail_list_two_sides, 23),//角球大/小
         C_OE("CORNER-OE", R.layout.content_odds_detail_list_two_sides, 24),//角球单/双
         OU_I_OT("O/U-INCL-OT", R.layout.content_odds_detail_list_two_sides, 25),//大/小(含加时)
+        OU_SEG("O/U-SEG", R.layout.content_odds_detail_list_two_sides, 26),//总得分大/小-第X节
     }
 
 
@@ -152,6 +153,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             checkKey(type, GameType.OU_I_OT.value) -> return GameType.OU_I_OT.type
 
+            checkKey(type, GameType.OU_SEG.value) -> return GameType.OU_SEG.type
+
             else -> {
                 return -1
             }
@@ -191,6 +194,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.C_OU.type -> layout = GameType.C_OU.layout
             GameType.C_OE.type -> layout = GameType.C_OE.layout
             GameType.OU_I_OT.type -> layout = GameType.OU_I_OT.layout
+            GameType.OU_SEG.type -> layout = GameType.OU_SEG.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -319,7 +323,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.TG_OU.type,
                 GameType.C_OU.type,
                 GameType.C_OE.type,
-                GameType.OU_I_OT.type -> twoSides(oddsDetail)
+                GameType.OU_I_OT.type,
+                GameType.OU_SEG.type-> twoSides(oddsDetail)
 
                 GameType.CS.type -> cs(oddsDetail)
 
