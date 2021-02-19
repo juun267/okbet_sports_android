@@ -23,4 +23,5 @@ enum class EventType(val value: String) {
     NOTICE("NOTICE"), //公告
     GLOBAL_STOP("GLOBAL_STOP"), //所有赔率禁用，不允许投注
     PRODUCER_UP("PRODUCER_UP"), //開啟允許投注
+    SYS_MAINTENANCE("SYS_MAINTENANCE"), //系统维护状态
 }

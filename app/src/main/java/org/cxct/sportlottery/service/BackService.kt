@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import io.reactivex.CompletableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -39,17 +40,13 @@ class BackService : Service() {
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
         private var mUserId: Long? = null
-        private var mPlatformId: Int? = null
-        val URL_PRIVATE: String = "/ws/notify/user/$mUserId"  //用户私人频道
-        val URL_PLATFORM = "/ws/notify/platform/$mPlatformId" //全体公共频道  这个通道会通知主站平台维护
+        private var mPlatformId: Long? = null
+        val URL_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
+        val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId" //公共频道  这个通道会通知主站平台维护
         var URL_EVENT = "/ws/notify/event/" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
         var URL_HALL = "/ws/notify/hall/" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
-//        var URL_HALL = "/ws/notify/hall/FT/HDP&OU/sr:simple_tournament:96787/sr:match:25305514"
-        //    private val URL_HALL by lazy { "/notify/hall/{gameType}/{cateMenuCode}/{eventId}" }
-
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
-
         //        private const val MAX_RECONNECT_COUNT = 3 //嘗試重新連線次數
     }
 
@@ -67,8 +64,7 @@ class BackService : Service() {
     private var mStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
-//    private var mDefaultEventDisposable: Disposable? = null
-    private val mPingDisposable: Disposable? = null //TODO Cheryl
+    private val mPingDisposable: Disposable? = null
 
 
     fun subscribeEventChannel(eventId: String?) {
@@ -83,7 +79,7 @@ class BackService : Service() {
         if (eventId == null) return
 
         val url = "$URL_EVENT$eventId"
-        unSubscribe(url)
+        unSubscribeChannel(url)
     }
 
     fun subscribeHallChannel(gameType: String?, eventId: String?) {
@@ -99,7 +95,7 @@ class BackService : Service() {
 
         val url = "$URL_HALL${gameType}/${CateMenuCode.HDP_AND_OU.code}/$eventId"
 
-        unSubscribe(url)
+        unSubscribeChannel(url)
     }
 
     override fun onDestroy() {
@@ -110,7 +106,7 @@ class BackService : Service() {
     override fun onBind(intent: Intent?): IBinder {
         mToken = intent?.getStringExtra(SERVICE_TOKEN) ?: ""
         mUserId = intent?.getLongExtra(SERVICE_USER_ID, -1)
-        mPlatformId = intent?.getIntExtra(SERVICE_PLATFORM_ID, -1)
+        mPlatformId = intent?.getLongExtra(SERVICE_PLATFORM_ID, -1)
         if (mToken.isEmpty()) return mBinder
 
         if (mStompClient?.isConnected != true && mToken.isNotEmpty()) {
@@ -173,22 +169,13 @@ class BackService : Service() {
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL)
 
-                /*
-                //具体赛事/赛季频道
-                defaultEventDisposable = stompClient.subscribe(URL_EVENT) { topicMessage ->
-                    Timber.d("$URL_EVENT, msg = ${topicMessage.payload}")
-                }
+                Log.e(">>> STOMP", "URL_PLATFORM = $URL_PLATFORM")
+                val platformDisposable: Disposable? = stompClient.subscribe(URL_PLATFORM)
 
-                //大厅赔率频道
-                val hallDisposable: Disposable? = stompClient.subscribe(URL_HALL) { topicMessage ->
-                    Timber.d("$URL_HALL, msg = ${topicMessage.payload}")
-                }
-*/
                 mCompositeDisposable?.add(lifecycleDisposable)
                 mCompositeDisposable?.add(privateDisposable!!)
                 mCompositeDisposable?.add(allDisposable!!)
-//                mCompositeDisposable?.add(defaultEventDisposable!!)
-//                mCompositeDisposable?.add(hallDisposable!!)
+                mCompositeDisposable?.add(platformDisposable!!)
 
                 stompClient.connect(mHeader)
             }
@@ -293,22 +280,12 @@ class BackService : Service() {
         Timber.e(">>> subscribeEvent: $url")
         val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
             Timber.e(">>> returned msg: ${topicMessage.payload}")
-//            if (!topicMessage.payload.isNullOrEmpty())
-//                Timber.e(">>> has sth returned")
         }
-/*
-        if (defaultEventDisposable != null) {
-            Log.e(">>>", "remove previous")
-            mCompositeDisposable?.remove(defaultEventDisposable!!)
-        }
-        defaultEventDisposable = eventDisposable
-*/
-
         mCompositeDisposable?.add(newDisposable!!)
         subscribedMap[url] = newDisposable
     }
 
-    fun unSubscribe(url: String) {
+    fun unSubscribeChannel(url: String) {
         Timber.e(">>> unSubscribeEvent: $url")
         subscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
     }
@@ -326,14 +303,5 @@ class BackService : Service() {
         mCompositeDisposable = CompositeDisposable()
     }
 
-
-    private fun sendPing() { //TODO Cheryl
-
-    }
-
-    fun getStr(): String {
-        //        return BackService::class.java.name
-        return "test"
-    }
 }
 

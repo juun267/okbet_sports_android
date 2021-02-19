@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -312,7 +313,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         })
 
         viewModel.isOpenMatchOdds.observe(this, Observer {
-            Log.e(">>>", "isOpenMatchOdds = $it")
             getAppBarLayout().setExpanded(true, true)
             subscribeHallChannel()
             addFragment(GameDetailFragment(), Page.ODDS)
@@ -341,7 +341,11 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             }
         })
 
-        receiver.main
+        receiver.sysMaintenance.observe(this) {
+            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
+        }
     }
 
     private fun subscribeEventChannel(eventId: String?) {
