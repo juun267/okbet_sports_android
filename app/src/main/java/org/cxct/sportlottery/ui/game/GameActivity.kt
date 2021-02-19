@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_game.drawer_layout
@@ -14,6 +15,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) {
 
@@ -22,6 +25,7 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
         setContentView(R.layout.activity_game)
 
         setupToolbar()
+        setupDrawer()
 
         initObserver()
     }
@@ -40,6 +44,23 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
 
         btn_register.setOnClickListener {
             startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
+        }
+    }
+
+    private fun setupDrawer() {
+        try {
+            //關閉側邊欄滑動行為
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+            //選單選擇結束要收起選單
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
+
+            nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
