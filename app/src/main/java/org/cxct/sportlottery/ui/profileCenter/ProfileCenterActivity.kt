@@ -135,9 +135,6 @@ class ProfileCenterActivity :
         btn_news_center.setOnClickListener {
             startActivity(Intent(this, InfoCenterActivity::class.java))
         }
-        btn_bell.setOnClickListener {
-            btn_news_center.performClick()
-        }
 
         //優惠活動
         btn_promotion.setOnClickListener {
@@ -149,9 +146,10 @@ class ProfileCenterActivity :
         }
 
         //代理加盟
-        btn_agent.setOnClickListener {
+        //7610 確認移除代理加盟
+        /*btn_agent.setOnClickListener {
             //TODO 代理加盟
-        }
+        }*/
 
         //幫助中心
         btn_help_center.setOnClickListener {

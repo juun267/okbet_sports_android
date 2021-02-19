@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -30,12 +28,14 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
+import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
+import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -57,12 +57,14 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     private val mMarqueeAdapter = MarqueeAdapter()
 
     enum class Page {
-        ODDS_DETAIL, ODDS
+        ODDS_DETAIL, ODDS, OUTRIGHT
     }
 
     private val navController by lazy {
         findNavController(R.id.homeFragment)
     }
+
+    private var closeOddsDetail = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +78,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         initToolBar()
         initMenu()
         initRvMarquee()
+        initBottomNav()
         refreshTabLayout(null)
         initObserve()
 
@@ -96,6 +99,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
+        iv_logo.setOnClickListener {
+            tabLayout.getTabAt(0)?.select()
+        }
 
         //頭像 當 側邊欄 開/關
         iv_head.setOnClickListener {
@@ -136,6 +142,32 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         rv_marquee.adapter = mMarqueeAdapter
     }
 
+    private fun initBottomNav() {
+        bottom_nav_view.setOnNavigationItemSelectedListener {
+
+            Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
+
+            when (it.itemId) {
+                R.id.home_page -> {
+                    true
+                }
+                R.id.game_page -> {
+                    true
+                }
+                R.id.promotion_page -> {
+                    true
+                }
+                R.id.chat_page -> {
+                    true
+                }
+                R.id.my_account_page -> {
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
             val countInPlay =
@@ -152,8 +184,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tab_all)
-            tabAll?.tv_number?.text =
-                (countInPlay + countToday + countEarly + countParlay + countAsStart).toString()
+            tabAll?.tv_number?.text = countParlay.toString() //等於串關數量
 
             val tabInPlay = tabLayout.getTabAt(1)?.customView
             tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
@@ -187,7 +218,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
-                popAllFragment()
+                if (closeOddsDetail) {
+                    popAllFragment()
+                }
                 viewModel.isParlayPage(tab?.position == 4)
 
                 when (tab?.position) {
@@ -219,6 +252,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
+                popAllFragment()
             }
         })
     }
@@ -270,7 +304,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-//            doBackService(it)
             queryData()
         })
 
@@ -292,7 +325,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
             getAppBarLayout().setExpanded(true, true)
 
-            subscribeEventChannel(matchId)
             addFragment(
                 OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
                 Page.ODDS_DETAIL
@@ -312,10 +344,15 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             }
         })
 
-        viewModel.isOpenMatchOdds.observe(this, Observer {
+        viewModel.openGameDetail.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
-            subscribeHallChannel()
-            addFragment(GameDetailFragment(), Page.ODDS)
+            addFragment(GameDetailFragment.newInstance(it.second, it.first), Page.ODDS)
+
+        })
+
+        viewModel.openOutrightDetail.observe(this, Observer {
+            getAppBarLayout().setExpanded(true, true)
+            addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
         })
 
         viewModel.errorResultToken.observe(this, Observer {
@@ -348,41 +385,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         }
     }
 
-    private fun subscribeEventChannel(eventId: String?) {
-        if (eventId.isNullOrEmpty()) return
-        backService.subscribeChannel(viewModel.getEventUrl(eventId))
-    }
-
-    private fun subscribeHallChannel() {
-
-        //一般遊戲
-        viewModel.oddsListResult.observe(this, Observer {
-            if (it != null && it.success) {
-                val eventId = it.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
-                if (!eventId.isNullOrEmpty())
-                    backService.subscribeChannel(viewModel.getHallUrl(eventId = eventId))
-            }
-        })
-
-        //冠軍玩法
-        viewModel.outrightOddsListResult.observe(this, Observer {
-            if (it != null && it.success) {
-                val eventId = it.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.matchInfo?.id
-                if (!eventId.isNullOrEmpty())
-                    backService.subscribeChannel(
-                        viewModel.getHallUrl(
-                            cateMenuCode = CateMenuCode.OUTRIGHT.code,
-                            eventId = eventId
-                        )
-                    )
-            }
-        })
-
-    }
-
     private fun updateUiWithResult(messageListResult: MessageListResult) {
         val titleList: MutableList<String> = mutableListOf()
-        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.content) }
+        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
         if (messageListResult.success && titleList.size > 0) {
             rv_marquee.startAuto() //啟動跑馬燈
@@ -428,6 +433,33 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         for (i in 0 until manager.backStackEntryCount) {
             supportFragmentManager.popBackStack()
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val bundle = intent.extras
+        val gameTypeList = GameType.values()
+        val typeName = gameTypeList.find { it.key == bundle?.getString("gameType") }?.string
+        val gameType = bundle?.getString("gameType")
+        val matchId = bundle?.getString("matchId")
+
+        val fragment: Fragment? = supportFragmentManager.findFragmentByTag(Page.ODDS_DETAIL.name)
+        if (fragment != null) {
+            closeOddsDetail = false
+            (fragment as OddsDetailFragment).refreshData(gameType, matchId, typeName?.let { getString(it) })
+        } else {
+            viewModel.getOddsDetail(gameType, typeName?.let { getString(it) }, matchId)
+        }
+
+        when (bundle?.getString("matchType")) {
+            null, MatchType.IN_PLAY.postValue -> tabLayout.getTabAt(1)?.select()
+            MatchType.TODAY.postValue -> tabLayout.getTabAt(2)?.select()
+            MatchType.EARLY.postValue -> tabLayout.getTabAt(3)?.select()
+            MatchType.PARLAY.postValue -> tabLayout.getTabAt(4)?.select()
+            MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
+            MatchType.AT_START.postValue -> tabLayout.getTabAt(6)?.select()
+        }
+        closeOddsDetail = true
     }
 
 }

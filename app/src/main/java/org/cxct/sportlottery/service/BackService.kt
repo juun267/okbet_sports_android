@@ -82,18 +82,18 @@ class BackService : Service() {
         unSubscribeChannel(url)
     }
 
-    fun subscribeHallChannel(gameType: String?, eventId: String?) {
+    fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL${gameType}/${CateMenuCode.HDP_AND_OU.code}/$eventId"
+        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
 
         subscribeChannel(url)
     }
 
-    fun unSubscribeHallChannel(gameType: String?, eventId: String?) {
+    fun unSubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL${gameType}/${CateMenuCode.HDP_AND_OU.code}/$eventId"
+        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
 
         unSubscribeChannel(url)
     }
@@ -276,7 +276,7 @@ class BackService : Service() {
 
     private val subscribedMap = mutableMapOf<String, Disposable?>()
 
-    fun subscribeChannel(url: String) {
+    private fun subscribeChannel(url: String) {
         Timber.e(">>> subscribeEvent: $url")
         val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
             Timber.e(">>> returned msg: ${topicMessage.payload}")

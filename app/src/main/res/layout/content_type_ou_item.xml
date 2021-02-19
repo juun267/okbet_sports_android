@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white">
 
     <RelativeLayout
@@ -19,21 +19,18 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_toStartOf="@+id/tv_spread"
             android:textColor="@color/textColorDark"
-            tools:text="大"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            tools:text="大" />
 
         <TextView
             android:id="@+id/tv_odds"
+            style="@style/OddsButton"
             android:layout_width="64dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:background="@drawable/select_button_radius_5_odds"
-            android:gravity="center"
-            tools:text= "1.52"
-            android:textColor="@color/color_select_text_odds"
-            android:textSize="@dimen/textSize14sp" />
+            tools:text="1.52" />
 
         <ImageView
             android:id="@+id/iv_disable_cover"

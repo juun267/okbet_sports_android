@@ -1,18 +1,18 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.annotation.SuppressLint
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoParlayItemBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
@@ -22,12 +22,12 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
         RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
 
 
+    var focusPosition = -1
+
+
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
-
-
     val winQuotaList: MutableList<Double> = mutableListOf()
     val betQuotaList: MutableList<Double> = mutableListOf()
-    val statusList: MutableList<Boolean> = mutableListOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,13 +50,13 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     inner class ViewHolder(private val binding: ContentBetInfoParlayItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private fun check(it: String, parlayOdd: ParlayOdd, position: Int): Boolean {
-            val error: Boolean
+            val sendOutStatus: Boolean
             if (TextUtils.isEmpty(it)) {
                 binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_bigger_than_zero)
                 binding.tvParlayWinQuota.text = "--"
                 winQuotaList[position] = 0.0
                 betQuotaList[position] = 0.0
-                error = true
+                sendOutStatus = true
             } else {
 
                 val quota = it.toLong()
@@ -68,7 +68,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                                         binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
                                         parlayOdd.max.toString()
                                 )
-                        error = true
+                        sendOutStatus = false
                     }
 
                     quota < parlayOdd.min -> {
@@ -77,11 +77,11 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                                         binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit),
                                         parlayOdd.min.toString()
                                 )
-                        error = true
+                        sendOutStatus = false
                     }
 
                     else -> {
-                        error = false
+                        sendOutStatus = true
                     }
                 }
 
@@ -97,48 +97,77 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             }
             onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())
 
-            (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (error) 0.dp else 10.dp
+            (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (sendOutStatus) 10.dp else 0.dp
 
-            binding.tvErrorMessage.visibility = if (error) View.VISIBLE else View.GONE
+            binding.tvErrorMessage.visibility = if (sendOutStatus) View.GONE else View.VISIBLE
 
-            binding.rlInput.background =
-                    if (error) ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_error)
-                    else ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_focus)
+            binding.etBet.setBackgroundResource(if(sendOutStatus)R.drawable.effect_select_bet_edit_text else R.drawable.bg_radius_5_edittext_error)
 
             binding.etBet.setTextColor(
-                    if (error) ContextCompat.getColor(binding.root.context, R.color.orangeRed)
-                    else ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                    if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                    else ContextCompat.getColor(binding.root.context, R.color.orangeRed)
             )
-            return error
+            return sendOutStatus
         }
 
         @SuppressLint("SetTextI18n")
         fun bind(parlayOdd: ParlayOdd, position: Int) {
 
+            /* fix focus */
+            if (binding.etBet.tag is TextWatcher) {
+                binding.etBet.removeTextChangedListener(binding.etBet.tag as TextWatcher)
+            }
+            binding.etBet.onFocusChangeListener = null
+
             winQuotaList.add(0.0)
             betQuotaList.add(0.0)
-            statusList.add(true)
 
             binding.parlayOdd = parlayOdd
 
-            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
+            binding.tvParlayType.text = parlayOdd.parlayType.replace("C", "串")
+
+            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
             binding.tvParlayOdds.text =
                     String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(parlayOdd.odds))
-
-            if (!TextUtils.isEmpty(binding.etBet.text.toString())) {
-                statusList[position] = check(binding.etBet.text.toString(), parlayOdd, position)
-                onTotalQuotaListener.status(statusList)
-            }
-
-
-            binding.etBet.afterTextChanged {
-                statusList[position] = check(it, parlayOdd, position)
-                onTotalQuotaListener.status(statusList)
-            }
 
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
             binding.tvNum.text = "x${parlayOdd.num}"
+
+            if (!TextUtils.isEmpty(binding.etBet.text.toString())) {
+                parlayOddList[position].sendOutStatus = check(binding.etBet.text.toString(), parlayOdd, position)
+                onTotalQuotaListener.sendOutStatus(parlayOddList)
+            }
+
+            /* check input focus */
+            if (position == focusPosition) {
+                binding.etBet.requestFocus()
+                binding.etBet.setSelection(binding.etBet.text.length)
+            }
+
+            /* set listener */
+            val tw = object : TextWatcher {
+                override fun afterTextChanged(it: Editable?) {
+                    parlayOddList[position].sendOutStatus = check(it.toString(), parlayOdd, position)
+                    onTotalQuotaListener.sendOutStatus(parlayOddList)
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            }
+
+            val fc = View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    focusPosition = position
+                    binding.etBet.requestFocus()
+                } else {
+                    binding.etBet.clearFocus()
+                }
+            }
+
+            binding.etBet.onFocusChangeListener = fc
+            binding.etBet.addTextChangedListener(tw)
+            binding.etBet.tag = tw
+
 
             binding.executePendingBindings()
 
@@ -149,7 +178,6 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     fun modify(list: List<ParlayOdd>) {
         winQuotaList.clear()
         betQuotaList.clear()
-        statusList.clear()
         parlayOddList.clear()
         parlayOddList.addAll(list.filterNot {
             it.parlayType == "1C1"
@@ -160,7 +188,8 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
     interface OnTotalQuotaListener {
         fun count(totalWin: Double, totalBet: Double)
-        fun status(statusList: MutableList<Boolean>)
+        fun sendOutStatus(parlayOddList: MutableList<ParlayOdd>)
     }
+
 
 }
