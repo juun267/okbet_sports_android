@@ -7,17 +7,17 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class WithdrawInfoRequest(
     @Json(name = "email")
-    val email: String?,
+    var email: String? = null,
     @Json(name = "fullName")
-    val fullName: String?,
+    var fullName: String? = null,
     @Json(name = "fundPwd")
-    val fundPwd: String?,
+    var fundPwd: String? = null,
     @Json(name = "phone")
-    val phone: String?,
+    var phone: String? = null,
     @Json(name = "qq")
-    val qq: String?,
+    var qq: String? = null,
     @Json(name = "userId")
-    val userId: Int,
+    val userId: Long,
     @Json(name = "wechat")
-    val wechat: String?
+    var wechat: String? = null
 )

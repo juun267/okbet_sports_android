@@ -88,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvHint="@string/hint_qq_number"
+            app:cvInputType="number"
             app:cvTitle="@string/qq_number" />
     </LinearLayout>
 
@@ -125,11 +126,12 @@
             android:id="@+id/et_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             app:cvHint="@string/hint_phone_number"
+            app:cvInputType="number"
             app:cvTitle="@string/phone_number" />
 
-        <RelativeLayout
+        <!--  簡訊驗證碼暫時先關閉, 待後端完成後再處理  -->
+        <!--<RelativeLayout
             android:id="@+id/block_sms_valid_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -173,7 +175,7 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </RelativeLayout>-->
     </LinearLayout>
 
     <!--  微信  -->
@@ -192,6 +194,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvHint="@string/hint_we_chat_number"
+            app:cvInputType="text"
             app:cvTitle="@string/we_chat" />
     </LinearLayout>
 

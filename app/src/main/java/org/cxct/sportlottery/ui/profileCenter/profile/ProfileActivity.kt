@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -11,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.activity_modify_profile_info.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile.btn_back
 import kotlinx.android.synthetic.main.activity_profile.ll_e_mail
@@ -167,24 +167,26 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
 
     private fun setWithdrawInfo(userInfo: UserInfo) {
         userInfo.apply {
-            judgeImproveInfo(tv_real_name, icon_real_name, fullName)
-            judgeImproveInfo(tv_qq_number, icon_qq_number, qq)
-            judgeImproveInfo(tv_e_mail, icon_e_mail, email)
-            judgeImproveInfo(tv_phone_number, icon_phone_number, phone)
-            judgeImproveInfo(tv_we_chat, icon_wechat, wechat)
+            judgeImproveInfo(ll_real_name, tv_real_name, icon_real_name, fullName)
+            judgeImproveInfo(ll_qq_number, tv_qq_number, icon_qq_number, qq)
+            judgeImproveInfo(ll_e_mail, tv_e_mail, icon_e_mail, email)
+            judgeImproveInfo(ll_phone_number, tv_phone_number, icon_phone_number, phone)
+            judgeImproveInfo(ll_wechat, tv_we_chat, icon_wechat, wechat)
         }
     }
 
-    private fun judgeImproveInfo(tvInfo: TextView, iconModify: ImageView, infoData: String?) {
+    private fun judgeImproveInfo(itemLayout: LinearLayout, tvInfo: TextView, iconModify: ImageView, infoData: String?) {
         tvInfo.apply {
             if (infoData.isNullOrEmpty()) {
                 text = getString(R.string.need_improve)
                 setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.text_tips_blue))
                 iconModify.visibility = View.VISIBLE
+                itemLayout.isEnabled = true
             } else {
                 text = infoData
                 setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.textColorDark))
                 iconModify.visibility = View.GONE
+                itemLayout.isEnabled = false
             }
         }
     }

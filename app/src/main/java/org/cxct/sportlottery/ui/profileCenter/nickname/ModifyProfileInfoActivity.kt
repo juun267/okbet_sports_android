@@ -5,15 +5,14 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_modify_profile_info.*
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.login.LoginEditText
 
-class ModifyProfileInfoActivity : BaseOddButtonActivity<NicknameModel>(NicknameModel::class) {
+class ModifyProfileInfoActivity : BaseOddButtonActivity<ModifyProfileInfoViewModel>(ModifyProfileInfoViewModel::class) {
     private val modifyType by lazy { intent.getSerializableExtra(MODIFY_INFO) }
 
     companion object {
@@ -60,9 +59,9 @@ class ModifyProfileInfoActivity : BaseOddButtonActivity<NicknameModel>(NicknameM
     }
 
     private fun setupNickname() {
-        et_nickname.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+        et_nickname.setEditTextOnFocusChangeListener { et: View, hasFocus: Boolean ->
             if (!hasFocus)
-                checkInputData()
+                viewModel.checkInput(modifyType as ModifyType, et.et_input.text.toString())
         }
     }
 
@@ -72,37 +71,74 @@ class ModifyProfileInfoActivity : BaseOddButtonActivity<NicknameModel>(NicknameM
         }
 
         btn_confirm.setOnClickListener {
-            if (checkInputData()) {
-                editNickName()
-            }
+            checkInputData()
         }
     }
 
-    private fun checkInputData(): Boolean {
-        return viewModel.nicknameDataChanged(this, et_nickname.getText())
-    }
-
-    private fun editNickName() {
-        loading()
-        viewModel.editNickName(et_nickname.getText())
+    private fun checkInputData() {
+        val inputText = when (modifyType as ModifyType) {
+            ModifyType.RealName -> et_real_name.getText()
+            ModifyType.QQNumber -> et_qq_number.getText()
+            ModifyType.Email -> et_e_mail.getText()
+            ModifyType.WeChat -> et_we_chat.getText()
+            ModifyType.PhoneNumber -> et_phone_number.getText()
+            ModifyType.NickName -> et_nickname.getText()
+        }
+        viewModel.confirmProfileInfo(modifyType as ModifyType, inputText)
     }
 
     private fun initObserve() {
-        viewModel.nicknameFormState.observe(this, Observer {
-            et_nickname.setError(it.nicknameError)
+        viewModel.loading.observe(this, Observer {
+            if (it)
+                loading()
+            else
+                hideLoading()
         })
+
+        setupEditTextErrorMsgObserve()
 
         viewModel.nicknameResult.observe(this, Observer {
             updateUiWithResult(it)
         })
+
+        viewModel.withdrawInfoResult.observe(this, Observer {
+            updateUiWithResult(it)
+        })
     }
 
-    private fun updateUiWithResult(nicknameResult: NicknameResult?) {
-        hideLoading()
-        if (nicknameResult?.success == true) {
+    private fun setupEditTextErrorMsgObserve() {
+        viewModel.apply {
+            nickNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
+                et_nickname.setError(it)
+            })
+
+            fullNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
+                et_real_name.setError(it)
+            })
+
+            qqErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
+                et_qq_number.setError(it)
+            })
+
+            eMailErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
+                et_e_mail.setError(it)
+            })
+
+            phoneErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
+                et_phone_number.setError(it)
+            })
+
+            weChatErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
+                et_we_chat.setError(it)
+            })
+        }
+    }
+
+    private fun updateUiWithResult(result: BaseResult?) {
+        if (result?.success == true) {
             finish()
         } else {
-            val errorMsg = nicknameResult?.msg ?: getString(R.string.unknown_error)
+            val errorMsg = result?.msg ?: getString(R.string.unknown_error)
             showErrorDialog(errorMsg)
         }
     }
