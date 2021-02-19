@@ -65,7 +65,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { FeedbackViewModel(get(), get(), get(), get(),get()) }
         viewModel { VersionUpdateViewModel(get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get()) }
+        viewModel { GameViewModel(get(), get(), get()) }
     }
 
     private val repoModule = module {
