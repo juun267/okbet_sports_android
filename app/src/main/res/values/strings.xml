@@ -78,9 +78,11 @@
     <string name="withdrawal_pwd">取款密码</string>
     <string name="hint_withdrawal_pwd">请输入四位数取款密码</string>
     <string name="phone">手机</string>
+    <string name="phone_number">手机号码</string>
     <string name="hint_phone_number">请输入手机号码</string>
     <string name="error_phone_number">手机号码格式错误</string>
     <string name="qq">QQ</string>
+    <string name="qq_number">QQ号码</string>
     <string name="hint_qq_number">请输入QQ号码</string>
     <string name="error_qq_number">QQ帐号格式错误</string>
     <string name="e_mail">邮箱</string>
@@ -224,6 +226,7 @@
     <string name="online_service">在线客服</string>
 
     <!-- Profile page-->
+    <string name="need_improve">需完善</string>
     <string name="profile_info">个人资讯</string>
     <string name="avatar">头像</string>
     <string name="nickname">昵称</string>

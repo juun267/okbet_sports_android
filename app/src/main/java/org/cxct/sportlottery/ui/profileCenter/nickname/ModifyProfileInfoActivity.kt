@@ -2,21 +2,61 @@ package org.cxct.sportlottery.ui.profileCenter.nickname
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import androidx.core.view.children
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.activity_change_nickname.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_modify_profile_info.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.LoginEditText
 
-class ChangeNicknameActivity : BaseOddButtonActivity<NicknameModel>(NicknameModel::class) {
+class ModifyProfileInfoActivity : BaseOddButtonActivity<NicknameModel>(NicknameModel::class) {
+    private val modifyType by lazy { intent.getSerializableExtra(MODIFY_INFO) }
+
+    companion object {
+        const val MODIFY_INFO = "MODIFY_INFO"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_nickname)
+        setContentView(R.layout.activity_modify_profile_info)
 
+        initSetting()
         setupNickname()
         initButton()
         initObserve()
+    }
+
+    private fun initSetting() {
+        initView()
+    }
+
+    private fun initView() {
+        //預設將所有輸入欄位隱藏
+        val allEditText = ll_root.children
+        allEditText.forEach { if (it is LinearLayout) it.visibility = View.GONE }
+
+        //根據傳入的ModifyType當前編輯的欄位做顯示
+        when (modifyType) {
+            ModifyType.NickName -> {
+                ll_nickname.visibility = View.VISIBLE
+            }
+            ModifyType.QQNumber -> {
+                ll_qq_number.visibility = View.VISIBLE
+            }
+            ModifyType.Email -> {
+                ll_e_mail.visibility = View.VISIBLE
+            }
+            ModifyType.PhoneNumber -> {
+                ll_phone_number.visibility = View.VISIBLE
+            }
+            ModifyType.WeChat -> {
+                ll_wechat.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun setupNickname() {
@@ -62,7 +102,7 @@ class ChangeNicknameActivity : BaseOddButtonActivity<NicknameModel>(NicknameMode
         if (nicknameResult?.success == true) {
             finish()
         } else {
-            val errorMsg = nicknameResult?.msg?: getString(R.string.unknown_error)
+            val errorMsg = nicknameResult?.msg ?: getString(R.string.unknown_error)
             showErrorDialog(errorMsg)
         }
     }
