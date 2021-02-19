@@ -17,4 +17,9 @@ object TextUtil {
         return df.format(any)
     }
 
+    fun formatForBetHint(any: Any):String{
+        val df = DecimalFormat("###,###,###,###")
+        return df.format(any)
+    }
+
 }

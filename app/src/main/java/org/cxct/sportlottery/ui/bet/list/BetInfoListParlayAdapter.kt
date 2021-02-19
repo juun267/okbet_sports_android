@@ -1,18 +1,18 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.annotation.SuppressLint
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoParlayItemBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
@@ -20,6 +20,9 @@ import java.math.RoundingMode
 
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
         RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
+
+
+    var focusPosition = -1
 
 
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
@@ -98,9 +101,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.tvErrorMessage.visibility = if (sendOutStatus) View.GONE else View.VISIBLE
 
-            binding.rlInput.background =
-                    if (sendOutStatus) ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_focus)
-                    else ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_edittext_error)
+            binding.etBet.setBackgroundResource(if(sendOutStatus)R.drawable.effect_select_bet_edit_text else R.drawable.bg_radius_5_edittext_error)
 
             binding.etBet.setTextColor(
                     if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.main_dark)
@@ -112,6 +113,12 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
         @SuppressLint("SetTextI18n")
         fun bind(parlayOdd: ParlayOdd, position: Int) {
 
+            /* fix focus */
+            if (binding.etBet.tag is TextWatcher) {
+                binding.etBet.removeTextChangedListener(binding.etBet.tag as TextWatcher)
+            }
+            binding.etBet.onFocusChangeListener = null
+
             winQuotaList.add(0.0)
             betQuotaList.add(0.0)
 
@@ -119,23 +126,48 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.tvParlayType.text = parlayOdd.parlayType.replace("C", "串")
 
-            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), parlayOdd.max.toString())
+            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
             binding.tvParlayOdds.text =
                     String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(parlayOdd.odds))
+
+            binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
+
+            binding.tvNum.text = "x${parlayOdd.num}"
 
             if (!TextUtils.isEmpty(binding.etBet.text.toString())) {
                 parlayOddList[position].sendOutStatus = check(binding.etBet.text.toString(), parlayOdd, position)
                 onTotalQuotaListener.sendOutStatus(parlayOddList)
             }
 
-            binding.etBet.afterTextChanged {
-                parlayOddList[position].sendOutStatus = check(it, parlayOdd, position)
-                onTotalQuotaListener.sendOutStatus(parlayOddList)
+            /* check input focus */
+            if (position == focusPosition) {
+                binding.etBet.requestFocus()
+                binding.etBet.setSelection(binding.etBet.text.length)
             }
 
-            binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
+            /* set listener */
+            val tw = object : TextWatcher {
+                override fun afterTextChanged(it: Editable?) {
+                    parlayOddList[position].sendOutStatus = check(it.toString(), parlayOdd, position)
+                    onTotalQuotaListener.sendOutStatus(parlayOddList)
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            }
 
-            binding.tvNum.text = "x${parlayOdd.num}"
+            val fc = View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    focusPosition = position
+                    binding.etBet.requestFocus()
+                } else {
+                    binding.etBet.clearFocus()
+                }
+            }
+
+            binding.etBet.onFocusChangeListener = fc
+            binding.etBet.addTextChangedListener(tw)
+            binding.etBet.tag = tw
+
 
             binding.executePendingBindings()
 

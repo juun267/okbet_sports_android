@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.MetricsUtil
 
 class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) {
@@ -56,6 +57,8 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     private val navController by lazy {
         findNavController(R.id.homeFragment)
     }
+
+    private var closeOddsDetail = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -178,7 +181,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
-                popAllFragment()
+                if (closeOddsDetail) {
+                    popAllFragment()
+                }
                 viewModel.isParlayPage(tab?.position == 4)
 
                 when (tab?.position) {
@@ -385,6 +390,33 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         for (i in 0 until manager.backStackEntryCount) {
             supportFragmentManager.popBackStack()
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val bundle = intent.extras
+        val gameTypeList = GameType.values()
+        val typeName = gameTypeList.find { it.key == bundle?.getString("gameType") }?.string
+        val gameType = bundle?.getString("gameType")
+        val matchId = bundle?.getString("matchId")
+
+        val fragment: Fragment? = supportFragmentManager.findFragmentByTag(Page.ODDS_DETAIL.name)
+        if (fragment != null) {
+            closeOddsDetail = false
+            (fragment as OddsDetailFragment).refreshData(gameType, matchId, typeName?.let { getString(it) })
+        } else {
+            viewModel.getOddsDetail(gameType, typeName?.let { getString(it) }, matchId)
+        }
+
+        when (bundle?.getString("matchType")) {
+            null, MatchType.IN_PLAY.postValue -> tabLayout.getTabAt(1)?.select()
+            MatchType.TODAY.postValue -> tabLayout.getTabAt(2)?.select()
+            MatchType.EARLY.postValue -> tabLayout.getTabAt(3)?.select()
+            MatchType.PARLAY.postValue -> tabLayout.getTabAt(4)?.select()
+            MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
+            MatchType.AT_START.postValue -> tabLayout.getTabAt(6)?.select()
+        }
+        closeOddsDetail = true
     }
 
 }
