@@ -7,5 +7,5 @@
     android:gravity="center_vertical"
     android:singleLine="true"
     android:textColor="@color/textColorLight"
-    android:textSize="@dimen/textSize14sp"
+    android:textSize="@dimen/textSize12sp"
     tools:text="內容長度一定要超過控制元件的長度,內容長度一定要超過控制元件的長度,內容長度一定要超過控制元件的長度" />
