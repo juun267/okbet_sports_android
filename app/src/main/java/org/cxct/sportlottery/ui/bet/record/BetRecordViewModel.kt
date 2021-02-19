@@ -94,11 +94,11 @@ class BetRecordViewModel(
         return inputBetStatus && inputStartDate && inputEndDate
     }
 
-    private fun getBetStatus(): String? {
+    private fun getBetStatus(): String {
         return if (selectStatusNameList.value?.size == statusNameMap.values.size) {
             androidContext.getString(R.string.all_order)
         } else {
-            selectStatusNameList.value?.joinToString(",") { it.name }
+            selectStatusNameList.value?.joinToString(",") { it.name }?: ""
         }
     }
 
