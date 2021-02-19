@@ -353,7 +353,7 @@ class MainViewModel(
 
     fun getGameHallList(matchType: MatchType, item: Item) {
         updateSportSelectedState(matchType, item)
-        getGameHallList(matchType, false)
+        getGameHallList(matchType, true)
     }
 
     fun getGameHallList(matchType: MatchType, date: Date) {
@@ -765,7 +765,7 @@ class MainViewModel(
                 dateRow.add(Date("", TimeUtil.getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
-                TimeUtil.getOneWeekDate().forEach {
+                TimeUtil.getFutureDate(7).forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
                 }
                 dateRow.add(
@@ -789,7 +789,7 @@ class MainViewModel(
 
                     )
                 )
-                TimeUtil.getOneWeekDate().forEach {
+                TimeUtil.getFutureDate(6).forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
                 }
 
