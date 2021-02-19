@@ -359,9 +359,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val drawList = ArrayList<Odd>()
             val awayList: MutableList<Odd> = mutableListOf()
 
-            val newHomeList: MutableList<Odd> = mutableListOf()
-            val newAwayList: MutableList<Odd> = mutableListOf()
-
             for (odd in oddsDetail.oddArrayList) {
 
                 if (odd.name != null) {
