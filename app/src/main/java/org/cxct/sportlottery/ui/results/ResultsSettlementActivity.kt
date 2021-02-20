@@ -349,7 +349,7 @@ class ResultsSettlementActivity : BaseToolBarActivity<SettlementViewModel>(Settl
                 6 to getString(R.string.friday),
                 7 to getString(R.string.saturday)
             ) //1:星期日, 2:星期一, ...
-            weekList.add("${weekName[week]}\n$month${getString(R.string.month)}$day${getString(R.string.day)}") //格式：星期一\n12月21日
+            weekList.add("${weekName[week]}\n${String.format("%02d", month)}-${String.format("%02d", day)}")
         }
         weekList.add(getString(R.string.champion))
         return weekList
