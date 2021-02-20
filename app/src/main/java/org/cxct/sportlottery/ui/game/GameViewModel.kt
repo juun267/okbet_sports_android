@@ -131,6 +131,42 @@ class GameViewModel(
         }
     }
 
+    fun selectHomeCard(matchType: MatchType, sportType: SportType?) {
+        sportType?.let {
+            _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
+                it.isSelected = (it.code == sportType.code)
+            }
+        }
+
+        selectMatchType(matchType)
+    }
+
+    fun selectMatchType(matchType: MatchType?) {
+        val tempResult = _sportMenuResult.value
+
+        tempResult?.sportMenuData?.menu?.inPlay?.isSelect =
+            (matchType != null && matchType == MatchType.IN_PLAY)
+
+        tempResult?.sportMenuData?.menu?.today?.isSelect =
+            (matchType != null && matchType == MatchType.TODAY)
+
+        tempResult?.sportMenuData?.menu?.early?.isSelect =
+            (matchType != null && matchType == MatchType.EARLY)
+
+        tempResult?.sportMenuData?.menu?.parlay?.isSelect =
+            (matchType != null && matchType == MatchType.PARLAY)
+
+        tempResult?.sportMenuData?.menu?.outright?.isSelect =
+            (matchType != null && matchType == MatchType.OUTRIGHT)
+
+        tempResult?.sportMenuData?.atStart?.isSelect =
+            (matchType != null && matchType == MatchType.AT_START)
+
+        tempResult?.let {
+            _sportMenuResult.postValue(it)
+        }
+    }
+
     private fun updateMatchTypeCount(sportMenuResult: SportMenuResult) {
         _countInPlay.value =
             sportMenuResult.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
@@ -167,41 +203,5 @@ class GameViewModel(
         _countParlayVolleyball.value =
             sportMenuResult.sportMenuData?.menu?.parlay?.items?.find { it.code == SportType.VOLLEYBALL.code }?.num
                 ?: 0
-    }
-
-    fun selectHomeCard(matchType: MatchType, sportType: SportType?) {
-        sportType?.let {
-            _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
-                it.isSelected = (it.code == sportType.code)
-            }
-        }
-
-        selectMatchType(matchType)
-    }
-
-    fun selectMatchType(matchType: MatchType?) {
-        val tempResult = _sportMenuResult.value
-
-        tempResult?.sportMenuData?.menu?.inPlay?.isSelect =
-            (matchType != null && matchType == MatchType.IN_PLAY)
-
-        tempResult?.sportMenuData?.menu?.today?.isSelect =
-            (matchType != null && matchType == MatchType.TODAY)
-
-        tempResult?.sportMenuData?.menu?.early?.isSelect =
-            (matchType != null && matchType == MatchType.EARLY)
-
-        tempResult?.sportMenuData?.menu?.parlay?.isSelect =
-            (matchType != null && matchType == MatchType.PARLAY)
-
-        tempResult?.sportMenuData?.menu?.outright?.isSelect =
-            (matchType != null && matchType == MatchType.OUTRIGHT)
-
-        tempResult?.sportMenuData?.atStart?.isSelect =
-            (matchType != null && matchType == MatchType.AT_START)
-
-        tempResult?.let {
-            _sportMenuResult.postValue(it)
-        }
     }
 }
