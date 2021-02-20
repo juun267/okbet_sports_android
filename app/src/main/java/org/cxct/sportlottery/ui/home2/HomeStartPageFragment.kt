@@ -34,6 +34,8 @@ class HomeStartPageFragment : BaseFragment<MainViewModel>(MainViewModel::class) 
         initRvMarquee()
         initObserve()
         getAnnouncement()
+
+        initTab()
     }
 
     override fun onResume() {
@@ -149,5 +151,41 @@ class HomeStartPageFragment : BaseFragment<MainViewModel>(MainViewModel::class) 
 
     private fun getAnnouncement() {
         viewModel.getAnnouncement()
+    }
+
+    private fun initTab() {
+        tab_sport.setOnClickListener {
+            selectTab(tab_sport)
+        }
+
+        tab_lottery.setOnClickListener {
+            selectTab(tab_lottery)
+        }
+
+        tab_live.setOnClickListener {
+            selectTab(tab_live)
+        }
+
+        tab_poker.setOnClickListener {
+            selectTab(tab_poker)
+        }
+
+        tab_slot.setOnClickListener {
+            selectTab(tab_slot)
+        }
+
+        tab_fishing.setOnClickListener {
+            selectTab(tab_fishing)
+        }
+
+    }
+
+    private fun selectTab(select: View) {
+        tab_sport.isSelected = tab_sport == select
+        tab_lottery.isSelected = tab_lottery == select
+        tab_live.isSelected = tab_live == select
+        tab_poker.isSelected = tab_poker == select
+        tab_slot.isSelected = tab_slot == select
+        tab_fishing.isSelected = tab_fishing == select
     }
 }
