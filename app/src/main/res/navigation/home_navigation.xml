@@ -6,9 +6,9 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="org.cxct.sportlottery.ui.home2.HomeStartPageFragment"
+        android:name="org.cxct.sportlottery.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home_start_page">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_gameFragment"
             app:destination="@id/gameFragment">

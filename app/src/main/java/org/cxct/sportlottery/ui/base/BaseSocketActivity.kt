@@ -4,11 +4,9 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import androidx.lifecycle.Observer
-import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.SERVICE_SEND_DATA
-import org.cxct.sportlottery.service.SERVICE_TOKEN
-import org.cxct.sportlottery.service.SERVICE_USER_ID
+import org.cxct.sportlottery.service.*
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -64,6 +62,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         val serviceIntent = Intent(this, BackService::class.java)
         serviceIntent.putExtra(SERVICE_TOKEN, viewModel.loginRepository.token)
         serviceIntent.putExtra(SERVICE_USER_ID, viewModel.loginRepository.userId)
+        serviceIntent.putExtra(SERVICE_PLATFORM_ID, viewModel.loginRepository.platformId)
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
         isServiceBound = true
     }

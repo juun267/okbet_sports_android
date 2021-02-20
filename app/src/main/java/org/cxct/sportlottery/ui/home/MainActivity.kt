@@ -14,8 +14,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
@@ -104,6 +106,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                     true
                 }
                 R.id.game_page -> {
+                    startActivity(Intent(this, GameActivity::class.java))
                     true
                 }
                 R.id.promotion_page -> {
@@ -142,6 +145,12 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             if (it != null) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
+        })
+
+        receiver.sysMaintenance.observe(this, Observer {
+            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
         })
     }
 

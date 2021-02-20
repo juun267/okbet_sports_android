@@ -90,13 +90,13 @@
             </LinearLayout>
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/homeFragment"
+                android:id="@+id/mainFragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                app:navGraph="@navigation/home_navigation"
-                tools:layout="@layout/fragment_home" />
+                app:navGraph="@navigation/main_navigation"
+                tools:layout="@layout/fragment_main" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav_view"

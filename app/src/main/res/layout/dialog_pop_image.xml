@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.home2.PopImageDialog">
+    tools:context=".ui.main.PopImageDialog">
 
     <!-- 20191115 記錄問題： 因為在 rootLayout 設置 margin 無效果，所以在包一層 LinearLayout -->
     <androidx.constraintlayout.widget.ConstraintLayout

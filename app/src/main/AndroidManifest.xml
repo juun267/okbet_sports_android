@@ -16,13 +16,14 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.game.GameActivity"/>
         <activity
             android:name=".ui.feedback.FeedbackMainActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <!-- 後臺服務-長連線 -->
         <service android:name=".service.BackService" />
-        <!--broadCast-->
+        <!-- broadCast -->
         <receiver
             android:name=".ui.home.broadcast.ServiceBroadcastReceiver"
             android:exported="true">
@@ -32,6 +33,10 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ui.maintenance.MaintenanceActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".ui.infoCenter.InfoCenterActivity"
             android:screenOrientation="portrait" />
@@ -100,7 +105,7 @@
         <activity android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"
             android:screenOrientation="portrait" />
 
-        <!-- Since JCore2.0.0 Required SDK核心功能-->
+        <!-- Since JCore2.0.0 Required SDK核心功能 -->
         <!-- 可配置android:process参数将Service放在其他进程中；android:enabled属性不能是false -->
         <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
