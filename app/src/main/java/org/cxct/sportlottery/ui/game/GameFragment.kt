@@ -320,6 +320,27 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupMatchTypeRow(view: View) {
+        view.hall_match_type_row.type = when (args.matchType) {
+            MatchType.IN_PLAY -> {
+                MatchTypeRow.IN_PLAY
+            }
+            MatchType.TODAY -> {
+                MatchTypeRow.TODAY
+            }
+            MatchType.EARLY -> {
+                MatchTypeRow.EARLY
+            }
+            MatchType.PARLAY -> {
+                MatchTypeRow.PARLAY
+            }
+            MatchType.OUTRIGHT -> {
+                MatchTypeRow.OUTRIGHT
+            }
+            MatchType.AT_START -> {
+                MatchTypeRow.AT_START
+            }
+        }
+
         view.hall_match_type_row.ouHDPClickListener = View.OnClickListener {
             viewModel.setPlayType(PlayType.OU_HDP)
         }
