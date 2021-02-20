@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.view_toolbar_main.btn_register
 import kotlinx.android.synthetic.main.view_toolbar_main.iv_head
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.home.HomeFragmentDirections
@@ -63,7 +64,6 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
     private val tabAtStart by lazy {
         tabLayout.getTabAt(6)?.customView
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,51 +142,34 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                popAllFragment()
-
-                when (tab?.position) {
-                    0 -> navController.popBackStack(R.id.homeFragment, false)
-                    1 -> navGameFragment(MatchType.IN_PLAY)
-                    2 -> navGameFragment(MatchType.TODAY)
-                    3 -> navGameFragment(MatchType.EARLY)
-                    4 -> navGameFragment(MatchType.PARLAY)
-                    5 -> navGameFragment(MatchType.OUTRIGHT)
-                    6 -> navGameFragment(MatchType.AT_START)
-                }
+                selectTab(tab?.position ?: 0)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                popAllFragment()
+                selectTab(tab?.position ?: 0)
             }
         })
+    }
+
+    private fun selectTab(position: Int) {
+        popAllFragment()
+
+        when (position) {
+            0 -> viewModel.selectMatchType(null)
+            1 -> viewModel.selectMatchType(MatchType.IN_PLAY)
+            2 -> viewModel.selectMatchType(MatchType.TODAY)
+            3 -> viewModel.selectMatchType(MatchType.EARLY)
+            4 -> viewModel.selectMatchType(MatchType.PARLAY)
+            5 -> viewModel.selectMatchType(MatchType.OUTRIGHT)
+        }
     }
 
     private fun popAllFragment() {
         for (i in 0 until supportFragmentManager.backStackEntryCount) {
             supportFragmentManager.popBackStack()
-        }
-    }
-
-    private fun navGameFragment(matchType: MatchType) {
-        when (navController.currentDestination?.id) {
-            R.id.homeFragment -> {
-                val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
-                navController.navigate(action)
-            }
-            R.id.gameFragment -> {
-                val action = GameFragmentDirections.actionGameFragmentToGameFragment(matchType)
-                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                navController.navigate(action, navOptions)
-            }
-            R.id.game2Fragment -> {
-                val action =
-                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(matchType)
-                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                navController.navigate(action, navOptions)
-            }
         }
     }
 
@@ -233,6 +216,10 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
             hideLoading()
             tabAll?.tv_number?.text = it.toString()
         })
+
+        viewModel.sportMenuResult.observe(this, Observer {
+            updateTabLayout(it)
+        })
     }
 
     private fun updateLoginWidget(isLogin: Boolean) {
@@ -259,6 +246,62 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
             rv_marquee.stopAuto()
         } else {
             rv_marquee.startAuto()
+        }
+    }
+
+    private fun updateTabLayout(sportMenuResult: SportMenuResult) {
+        tabInPlay?.isSelected = sportMenuResult.sportMenuData?.menu?.inPlay?.isSelect ?: false
+        tabToday?.isSelected = sportMenuResult.sportMenuData?.menu?.today?.isSelect ?: false
+        tabEarly?.isSelected = sportMenuResult.sportMenuData?.menu?.early?.isSelect ?: false
+        tabParlay?.isSelected = sportMenuResult.sportMenuData?.menu?.parlay?.isSelect ?: false
+        tabOutright?.isSelected = sportMenuResult.sportMenuData?.menu?.outright?.isSelect ?: false
+        tabAtStart?.isSelected = sportMenuResult.sportMenuData?.atStart?.isSelect ?: false
+        tabAll?.isSelected = !(tabInPlay?.isSelected ?: false) && !(tabToday?.isSelected
+            ?: false) && !(tabEarly?.isSelected ?: false) && !(tabParlay?.isSelected
+            ?: false) && !(tabOutright?.isSelected ?: false) && !(tabAtStart?.isSelected ?: false)
+
+        when {
+            tabInPlay?.isSelected ?: false -> {
+                navGameFragment(MatchType.IN_PLAY)
+            }
+            tabToday?.isSelected ?: false -> {
+                navGameFragment(MatchType.TODAY)
+            }
+            tabEarly?.isSelected ?: false -> {
+                navGameFragment(MatchType.EARLY)
+            }
+            tabParlay?.isSelected ?: false -> {
+                navGameFragment(MatchType.PARLAY)
+            }
+            tabOutright?.isSelected ?: false -> {
+                navGameFragment(MatchType.OUTRIGHT)
+            }
+            tabAtStart?.isSelected ?: false -> {
+                navGameFragment(MatchType.AT_START)
+            }
+            tabAll?.isSelected ?: false -> {
+                navController.popBackStack(R.id.homeFragment, false)
+            }
+        }
+    }
+
+    private fun navGameFragment(matchType: MatchType) {
+        when (navController.currentDestination?.id) {
+            R.id.homeFragment -> {
+                val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
+                navController.navigate(action)
+            }
+            R.id.gameFragment -> {
+                val action = GameFragmentDirections.actionGameFragmentToGameFragment(matchType)
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+                navController.navigate(action, navOptions)
+            }
+            R.id.game2Fragment -> {
+                val action =
+                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(matchType)
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+                navController.navigate(action, navOptions)
+            }
         }
     }
 }

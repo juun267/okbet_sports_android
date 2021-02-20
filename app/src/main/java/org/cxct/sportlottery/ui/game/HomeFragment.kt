@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.ui.base.BaseFragment
 
 
@@ -17,7 +20,35 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false).apply {
+            setupGameTypeCard(this)
+        }
+    }
+
+    private fun setupGameTypeCard(view: View) {
+        view.card_game_soon.setOnClickListener {
+            viewModel.selectHomeCard(MatchType.AT_START, null)
+        }
+
+        view.card_football.setOnClickListener {
+            viewModel.selectHomeCard(MatchType.PARLAY, SportType.FOOTBALL)
+        }
+
+        view.card_basketball.setOnClickListener {
+            viewModel.selectHomeCard(MatchType.PARLAY, SportType.BASKETBALL)
+        }
+
+        view.card_tennis.setOnClickListener {
+            viewModel.selectHomeCard(MatchType.PARLAY, SportType.TENNIS)
+        }
+
+        view.card_badminton.setOnClickListener {
+            viewModel.selectHomeCard(MatchType.PARLAY, SportType.BADMINTON)
+        }
+
+        view.card_volleyball.setOnClickListener {
+            viewModel.selectHomeCard(MatchType.PARLAY, SportType.VOLLEYBALL)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
