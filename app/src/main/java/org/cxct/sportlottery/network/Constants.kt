@@ -21,10 +21,26 @@ object Constants {
 
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
+
         return try {
             when (getSelectLanguage(context)) {
                 LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/"
                 else -> "https://sportsrule.cxct.org/us"
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun getGameRuleUrl(context: Context, type: String): String? {
+        return try {
+            when (getSelectLanguage(context)) {
+
+                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/".plus("?type=$type")
+
+                else -> "https://sportsrule.cxct.org/us".plus("?type=$type")
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -113,5 +129,8 @@ object Constants {
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000
     const val READ_TIMEOUT: Long = 15 * 1000
+
+    //rule type
+    const val COMBO = "combo"
 
 }

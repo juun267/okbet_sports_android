@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
-        BetInfoListParlayAdapter.OnTotalQuotaListener {
+    BetInfoListParlayAdapter.OnTotalQuotaListener {
 
 
     companion object {
@@ -74,7 +73,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         }
 
         tv_to_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext(), Constants.COMBO), getString(R.string.game_rule))
         }
 
         rl_expandable.setOnClickListener {
@@ -96,10 +95,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = matchOddAdapter
             addItemDecoration(
-                    SpaceItemDecoration(
-                            context,
-                            R.dimen.recyclerview_item_dec_spec_bet_info_list
-                    )
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_bet_info_list
+                )
             )
         }
 
@@ -107,10 +106,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = parlayAdapter
             addItemDecoration(
-                    SpaceItemDecoration(
-                            context,
-                            R.dimen.recyclerview_item_dec_spec_bet_info_list
-                    )
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_bet_info_list
+                )
             )
         }
     }
@@ -172,7 +171,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> =
-                    mutableListOf()
+                mutableListOf()
             for ((key, value) in it.odds) {
                 newList.addAll(value)
             }
@@ -183,9 +182,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                    mutableListOf()
+                mutableListOf()
             for ((key, value) in it.odds) {
-                value.odds?.forEach { odd->
+                value.odds?.forEach { odd ->
                     odd?.let { o ->
                         newList.add(o)
                     }
@@ -230,18 +229,18 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         }
         val parlayList: MutableList<Stake> = mutableListOf()
         for (i in parlayAdapter.parlayOddList.indices) {
-            if(parlayAdapter.betQuotaList[i]>0){
+            if (parlayAdapter.betQuotaList[i] > 0) {
                 parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.betQuotaList[i]))
             }
         }
 
         viewModel.addBet(
-                BetAddRequest(
-                        matchList,
-                        parlayList,
-                        1,
-                        "EU"
-                ), MatchType.PARLAY
+            BetAddRequest(
+                matchList,
+                parlayList,
+                1,
+                "EU"
+            ), MatchType.PARLAY
         )
     }
 
