@@ -91,7 +91,7 @@ object VerifyConstUtil {
 
     //充值金額
     fun verifyRechargeAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
-        return (withdrawAmount.toString().toLong().let { it in minAmount until (maxAmount ?: it + 1) })
+        return (withdrawAmount.toString().toLong().let { it in minAmount until (maxAmount?.plus(1) ?: it + 1) })
     }
 
     //暱稱 //中英文組合長度2–50字

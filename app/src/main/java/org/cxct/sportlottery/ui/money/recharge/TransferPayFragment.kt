@@ -399,8 +399,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_deposit_money),
-                ArithUtil.toMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
-                ArithUtil.toMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
+                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney ?: 0.0),
+                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney ?: 999999.0)
             )
         )
     }
