@@ -240,7 +240,7 @@
     <string name="save_avatar_success">头像设置成功</string>
     <string name="no_set_avatar">没有设置头像</string>
 
-    <!-- Change nickname page-->
+    <!-- Modify Profile Info page-->
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2–50字</string>
     <string name="error_nickname_empty">昵称不能为空</string>

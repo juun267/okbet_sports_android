@@ -41,18 +41,23 @@ class ModifyProfileInfoActivity : BaseOddButtonActivity<ModifyProfileInfoViewMod
         //根據傳入的ModifyType當前編輯的欄位做顯示
         when (modifyType) {
             ModifyType.NickName -> {
+                tv_title.text = getString(R.string.change_nickname)
                 ll_nickname.visibility = View.VISIBLE
             }
             ModifyType.QQNumber -> {
+                tv_title.text = getString(R.string.qq_number)
                 ll_qq_number.visibility = View.VISIBLE
             }
             ModifyType.Email -> {
+                tv_title.text = getString(R.string.e_mail)
                 ll_e_mail.visibility = View.VISIBLE
             }
             ModifyType.PhoneNumber -> {
+                tv_title.text = getString(R.string.phone_number)
                 ll_phone_number.visibility = View.VISIBLE
             }
             ModifyType.WeChat -> {
+                tv_title.text = getString(R.string.we_chat)
                 ll_wechat.visibility = View.VISIBLE
             }
         }
