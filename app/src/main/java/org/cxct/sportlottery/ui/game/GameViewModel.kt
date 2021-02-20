@@ -8,6 +8,8 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.match.MatchPreloadRequest
+import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -35,6 +37,8 @@ class GameViewModel(
         get() = _messageListResult
     val sportMenuResult: LiveData<SportMenuResult>
         get() = _sportMenuResult
+    val matchPreloadResult: LiveData<MatchPreloadResult>
+        get() = _matchPreloadResult
 
     val countInPlay: LiveData<Int>
         get() = _countInPlay
@@ -65,6 +69,7 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<List<String>>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult>()
+    private val _matchPreloadResult = MutableLiveData<MatchPreloadResult>()
 
     private val _countInPlay = MutableLiveData<Int>().apply { value = 0 }
     private val _countToday = MutableLiveData<Int>().apply { value = 0 }
@@ -126,6 +131,20 @@ class GameViewModel(
                     updateMatchTypeCount(result)
                     updateParlayCount(result)
                     _sportMenuResult.postValue(result)
+                }
+            }
+        }
+    }
+
+    fun getMatchPreload(matchType: MatchType) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.matchService.getMatchPreload(
+                    MatchPreloadRequest(matchType.postValue)
+                )
+            }?.let { result ->
+                if (result.success) {
+                    _matchPreloadResult.postValue(result)
                 }
             }
         }

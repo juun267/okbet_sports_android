@@ -9,9 +9,11 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 
 
 class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
@@ -22,6 +24,7 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false).apply {
             setupGameTypeCard(this)
+            setupInPlayPreloadList(this)
         }
     }
 
@@ -51,6 +54,14 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun setupInPlayPreloadList(view: View) {
+        view.drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
+            override fun onClick(select: GameEntity) {
+                //TODO refactor and move
+            }
+        })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,6 +69,19 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserver() {
+        viewModel.isLogin.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                viewModel.getMatchPreload(MatchType.IN_PLAY)
+                loading()
+            }
+        })
+
+        viewModel.matchPreloadResult.observe(viewLifecycleOwner, Observer {
+            hideLoading()
+            drawer_in_play.tv_count.text = (it.matchPreloadData?.num ?: 0).toString()
+            drawer_in_play.setRvGameData(it.matchPreloadData)
+        })
+
         viewModel.countAtStart.observe(viewLifecycleOwner, Observer {
             hideLoading()
             card_game_soon.tv_count.text = it.toString()
