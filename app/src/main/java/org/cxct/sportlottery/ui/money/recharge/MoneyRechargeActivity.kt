@@ -42,7 +42,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         initData()
         initView()
         initButton()
-        menuVisible(View.INVISIBLE)
+        isOpenMenu(false)
     }
 
     private fun initData() {
