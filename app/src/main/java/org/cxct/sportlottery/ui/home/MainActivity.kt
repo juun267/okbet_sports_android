@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -376,6 +377,12 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
+
+        receiver.sysMaintenance.observe(this) {
+            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
+        }
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
