@@ -224,16 +224,17 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 if (mBankCardStatus) {
                     ToastUtil.showToast(context, getString(R.string.text_bank_card_modify_success))
                 } else {
-                    ToastUtil.showToast(context, getString(R.string.text_bank_card_add_success))
-                }
-                //綁定成功後回至銀行卡列表bank card list
-                when (args.navigateFrom) {
-                    PageFrom.WITHDRAW -> {
-                        val action = BankCardFragmentDirections.actionBankCardFragmentToWithdrawFragment(args.navigateFrom)
-                        mNavController.navigate(action)
-                    }
-                    else -> {
-                        mNavController.popBackStack()
+                    //綁定成功後回至銀行卡列表bank card list
+                    showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_add_success)) {
+                        when (args.navigateFrom) {
+                            PageFrom.WITHDRAW -> {
+                                val action = BankCardFragmentDirections.actionBankCardFragmentToWithdrawFragment(args.navigateFrom)
+                                mNavController.navigate(action)
+                            }
+                            else -> {
+                                mNavController.popBackStack()
+                            }
+                        }
                     }
                 }
             } else {
@@ -245,7 +246,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (result.success) {
                 showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_delete_success)) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
-                showPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
+                showErrorPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
             }
         })
 
