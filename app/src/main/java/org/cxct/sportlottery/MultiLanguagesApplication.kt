@@ -23,7 +23,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
-import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
+import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -57,7 +57,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { HelpCenterViewModel(get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get()) }
         viewModel { ProfileModel(get(), get(), get(), get()) }
-        viewModel { NicknameModel(get(), get(), get(), get()) }
+        viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
