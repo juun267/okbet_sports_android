@@ -23,19 +23,16 @@ import org.cxct.sportlottery.util.JumpUtil
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
-    private val mMarqueeAdapter = MarqueeAdapter()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initBannerAndPopImage()
-        initRvMarquee()
-        initObserve()
-        getAnnouncement()
-
         initTab()
+        initObserve()
+        getMarquee()
+        getBanner()
+        getPopImage()
     }
 
     override fun onResume() {
@@ -46,6 +43,59 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
+    }
+
+    private fun initTab() {
+        tab_sport.setOnClickListener {
+            selectTab(tab_sport)
+        }
+
+        tab_lottery.setOnClickListener {
+            selectTab(tab_lottery)
+        }
+
+        tab_live.setOnClickListener {
+            selectTab(tab_live)
+        }
+
+        tab_poker.setOnClickListener {
+            selectTab(tab_poker)
+        }
+
+        tab_slot.setOnClickListener {
+            selectTab(tab_slot)
+        }
+
+        tab_fishing.setOnClickListener {
+            selectTab(tab_fishing)
+        }
+
+    }
+
+    private fun selectTab(select: View) {
+        tab_sport.isSelected = tab_sport == select
+        tab_lottery.isSelected = tab_lottery == select
+        tab_live.isSelected = tab_live == select
+        tab_poker.isSelected = tab_poker == select
+        tab_slot.isSelected = tab_slot == select
+        tab_fishing.isSelected = tab_fishing == select
+    }
+
+    private fun initObserve() {
+        //輪播圖
+        viewModel.bannerList.observe(viewLifecycleOwner, Observer {
+            setBanner(it)
+        })
+
+        //彈窗圖
+        viewModel.popImageList.observe(viewLifecycleOwner, Observer {
+            setPopImage(it)
+        })
+
+        //公告跑馬燈
+        viewModel.messageListResult.observe(viewLifecycleOwner, Observer {
+            setMarquee(it)
+        })
     }
 
     //輪播廣告圖示
@@ -97,46 +147,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    //獲取 輪播圖 和 彈窗圖
-    private fun initBannerAndPopImage() {
-        val bannerList = mutableListOf<ImageData>()
-        val popImageList = mutableListOf<ImageData>()
-        sConfigData?.imageList?.forEach { data ->
-            when (data.imageType) {
-                2 -> { //H5轮播
-                    bannerList.add(data)
-                }
-                7 -> { //H5彈窗圖
-                    popImageList.add(data)
-                }
-            }
-        }
-
-        //H5轮播
-        if (!bannerList.isNullOrEmpty()) {
-            setBanner(bannerList.sortedBy { it.imageSort })
-        }
-
-        //彈窗圖
-        if (!popImageList.isNullOrEmpty()) {
-            setPopImage(popImageList.sortedBy { it.imageSort })
-        }
-    }
-
-    //公告
-    private fun initRvMarquee() {
-        rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_marquee.adapter = mMarqueeAdapter
-    }
-
-    private fun initObserve() {
-        viewModel.messageListResult.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            updateUiWithResult(it)
-        })
-    }
-
-    private fun updateUiWithResult(messageListResult: MessageListResult) {
+    //公告跑馬燈
+    private fun setMarquee(messageListResult: MessageListResult) {
         val titleList: MutableList<String> = mutableListOf()
         messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
@@ -146,46 +158,22 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             rv_marquee.stopAuto() //停止跑馬燈
         }
 
-        mMarqueeAdapter.setData(titleList)
+        val adapter = MarqueeAdapter()
+        adapter.setData(titleList)
+        rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_marquee.adapter = adapter
     }
 
-    private fun getAnnouncement() {
-        viewModel.getAnnouncement()
+    private fun getBanner() {
+        viewModel.getBanner()
     }
 
-    private fun initTab() {
-        tab_sport.setOnClickListener {
-            selectTab(tab_sport)
-        }
-
-        tab_lottery.setOnClickListener {
-            selectTab(tab_lottery)
-        }
-
-        tab_live.setOnClickListener {
-            selectTab(tab_live)
-        }
-
-        tab_poker.setOnClickListener {
-            selectTab(tab_poker)
-        }
-
-        tab_slot.setOnClickListener {
-            selectTab(tab_slot)
-        }
-
-        tab_fishing.setOnClickListener {
-            selectTab(tab_fishing)
-        }
-
+    private fun getPopImage() {
+        viewModel.getPopImage()
     }
 
-    private fun selectTab(select: View) {
-        tab_sport.isSelected = tab_sport == select
-        tab_lottery.isSelected = tab_lottery == select
-        tab_live.isSelected = tab_live == select
-        tab_poker.isSelected = tab_poker == select
-        tab_slot.isSelected = tab_slot == select
-        tab_fishing.isSelected = tab_fishing == select
+    private fun getMarquee() {
+        viewModel.getMarquee()
     }
+
 }
