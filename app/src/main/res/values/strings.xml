@@ -597,4 +597,10 @@
     <string name="bottom_nav_promotion">活动</string>
     <string name="bottom_nav_chat">聊天</string>
     <string name="bottom_nav_my_account">我的</string>
+    <string name="sport">体育</string>
+    <string name="cp">彩票</string>
+    <string name="live">真人</string>
+    <string name="qp">棋牌</string>
+    <string name="dz">电子</string>
+    <string name="by">捕鱼</string>
 </resources>

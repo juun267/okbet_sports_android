@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.ui.home2
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -34,6 +36,14 @@ class HomeStartPageFragment : BaseFragment<MainViewModel>(MainViewModel::class) 
         initRvMarquee()
         initObserve()
         getAnnouncement()
+
+        testClick()
+    }
+
+    private fun testClick() {
+        test.setOnClickListener {
+            view?.findNavController()?.navigate(HomeStartPageFragmentDirections.actionHomeFragmentToHomeNextFragment())
+        }
     }
 
     override fun onResume() {
