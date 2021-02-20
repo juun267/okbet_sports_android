@@ -1,13 +1,13 @@
 [
   {
-    "title": "网银在线支付",
+    "title": "在线网银",
     "subtitle": "支持多家银行，转账更便捷",
     "image": "ic_online_pay",
     "rechType": "onlinePayment",
     "onlineType": "1"
   },
   {
-    "title": "在线信用卡支付",
+    "title": "在线信用卡",
     "subtitle": "支持多家银行，转账更便捷",
     "image": "money_xyk_online_pay",
     "rechType": "onlinePayment",
@@ -21,21 +21,21 @@
     "onlineType": "0"
   },
   {
-    "title": "支付宝在线支付",
+    "title": "在线支付宝",
     "subtitle": "支付宝在线支付",
     "image": "ic_alipay",
     "rechType": "onlinePayment",
     "onlineType": "2"
   },
   {
-    "title": "微信在线支付",
+    "title": "在线微信",
     "subtitle": "微信在线支付",
     "image": "ic_wechat_pay",
     "rechType": "onlinePayment",
     "onlineType": "3"
   },
   {
-    "title": "QQ在线支付",
+    "title": "在线QQ",
     "subtitle": "QQ在线支付",
     "image": "money_qqpay_icon",
     "rechType": "onlinePayment",
