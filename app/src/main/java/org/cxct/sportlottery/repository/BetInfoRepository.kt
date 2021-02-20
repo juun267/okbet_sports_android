@@ -83,7 +83,7 @@ class BetInfoRepository {
         _betInfoList.postValue(betList)
     }
 
-    fun removeItem(oddId: String) {
+    fun removeItem(oddId: String?) {
         betList.remove(betList.find {
             it.matchOdd.oddsId == oddId
         })

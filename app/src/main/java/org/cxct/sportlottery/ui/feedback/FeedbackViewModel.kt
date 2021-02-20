@@ -12,6 +12,7 @@ import org.cxct.sportlottery.repository.FeedbackRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import timber.log.Timber
 
 class FeedbackViewModel(
@@ -51,19 +52,66 @@ class FeedbackViewModel(
     //feedbackCode
     var feedbackCode: String? = null
 
+    //Bottomsheet Data
+    val typeMap = mapOf(0 to "充值问题",1 to "提款问题",2 to "其他问题",3 to "提交建议",4 to "我要投诉",5 to "客服反馈",6 to "玩家回复")
+    val statusMap = mapOf(0 to "待反馈",1 to "已反馈")
+
+    //API Input
+    var feedbackListRequest = FeedbackListRequest()
+
+
+    private var mNextRequestPage = 1//未讀
+    private val pageSize = 20 //預設每次載入20筆資料
+    private var mIsGettingData = false //判斷請求任務是否進行中
+    private var mNeedMoreLoading = false //資料判斷滑到底是否需要繼續加載
+
+
     //API
-    fun getFbQueryList() {
+    fun getFbQueryList(
+        isReload: Boolean,
+        currentTotalCount: Int
+    ) {
+        _isLoading.value = true
+        if (mIsGettingData) {
+            _isLoading.value = false
+            return
+        }
+        mIsGettingData = true
+
+        var mCurrentTotalCount = currentTotalCount
+
         viewModelScope.launch {
+
+            if (isReload) {//重新載入
+
+                mNextRequestPage = 1
+                _feedbackList.value = mutableListOf()
+                mCurrentTotalCount = 0
+                mNeedMoreLoading = true
+
+                mNextRequestPage = 1
+            }
+
             _isLoading.value = true
             val result = doNetwork(androidContext) {
-                feedbackRepository.getFbQueryList(FeedbackListRequest())
+                feedbackListRequest.page = mNextRequestPage
+                feedbackListRequest.pageSize = pageSize
+                feedbackRepository.getFbQueryList(feedbackListRequest)
             }
+            Timber.i("=====>Inptut:$feedbackListRequest")
+
+            //判斷是不是可以再加載
+            mNeedMoreLoading =
+                (mCurrentTotalCount + (result?.rows?.size
+                    ?: 0)) < result?.total ?: 0
+            mNextRequestPage++
+
             if (result?.rows?.size ?: 0 > 0)
                 _feedbackList.value = result?.rows
 
             _isLoading.value = false
         }
-
+        mIsGettingData = false
     }
 
     fun fbSave(content: String) { //目前只確定使用者會傳意見

@@ -70,16 +70,15 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             }
 
             setupMatchOddDetail(item, playType, matchOddListener)
-            setupMatchOddDetailExpand(item)
+            setupMatchOddDetailExpand(item, matchOddListener)
         }
 
-        private fun setupMatchOddDetailExpand(item: MatchOdd) {
+        private fun setupMatchOddDetailExpand(item: MatchOdd, matchOddListener: MatchOddListener?) {
             itemView.match_odd_expand.setExpanded(item.isExpand, false)
             itemView.match_odd_arrow.setOnClickListener {
-                item.isExpand = !item.isExpand
-                itemView.match_odd_expand.setExpanded(item.isExpand, true)
-                updateArrowExpand()
+                matchOddListener?.onItemExpand(item)
             }
+            updateArrowExpand()
         }
 
         private fun setupMatchOddDetail(
@@ -194,15 +193,37 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             val odd1X2String = PlayType.X12.code
             val oddList1X2 = item.odds[odd1X2String]
 
-            val oddBet1 = if (oddList1X2?.size ?: 0 >= 1) oddList1X2?.get(0) else null
-            val oddBetX = if (oddList1X2?.size ?: 0 >= 2) oddList1X2?.get(1) else null
-            val oddBet2 = if (oddList1X2?.size ?: 0 >= 3) oddList1X2?.get(2) else null
+            var oddBet1: Odd? = null
+            var oddBetX: Odd? = null
+            var oddBet2: Odd? = null
+
+            when (oddList1X2?.size ?: 0) {
+                2 -> { //tennis badminton volleyball
+                    oddBet1 = if (oddList1X2?.size ?: 0 >= 1) oddList1X2?.get(0) else null
+                    oddBet2 = if (oddList1X2?.size ?: 0 >= 2) oddList1X2?.get(1) else null
+                }
+                3 -> { //football basketball
+                    oddBet1 = if (oddList1X2?.size ?: 0 >= 1) oddList1X2?.get(0) else null
+                    oddBetX = if (oddList1X2?.size ?: 0 >= 2) oddList1X2?.get(1) else null
+                    oddBet2 = if (oddList1X2?.size ?: 0 >= 3) oddList1X2?.get(2) else null
+                }
+            }
 
             itemView.match_odd_1x2.visibility = View.VISIBLE
             itemView.match_odd_ou_hdp.visibility = View.GONE
 
             itemView.x12_home_name.text = item.matchInfo?.homeName
             itemView.x12_away_name.text = item.matchInfo?.awayName
+
+            if (oddBet1 == null) {
+                itemView.x12_bet_1.visibility = View.INVISIBLE
+            }
+            if (oddBetX == null) {
+                itemView.x12_bet_x.visibility = View.INVISIBLE
+            }
+            if (oddBet2 == null) {
+                itemView.x12_bet_2.visibility = View.INVISIBLE
+            }
 
             oddBet1?.let {
                 itemView.x12_bet_1.apply {
@@ -297,9 +318,11 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
 class MatchOddListener(
     val clickListener: (matchOdd: MatchOdd) -> Unit,
+    val expandListener: (matchOdd: MatchOdd) -> Unit,
     val betClickListener: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
     fun onItemClick(matchOdd: MatchOdd) = clickListener(matchOdd)
+    fun onItemExpand(matchOdd: MatchOdd) = expandListener(matchOdd)
     fun onBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         betClickListener(matchOdd, oddString, odd)
 }

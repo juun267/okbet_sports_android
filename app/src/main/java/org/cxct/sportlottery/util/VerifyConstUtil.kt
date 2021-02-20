@@ -8,6 +8,7 @@ object VerifyConstUtil {
     private const val CHINESE_WORD = "\u4e00-\u9fa5"
     private const val VIETNAM_WORD = "àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ"
     private const val ENGLISH_WORD = "a-zA-Z"
+    private const val EMAIL_REGEX = "(?=[$NUMBER$ENGLISH_WORD[-+_]]+@[$NUMBER$ENGLISH_WORD]+[.][$NUMBER$ENGLISH_WORD]+)[$NUMBER$ENGLISH_WORD[-+_@.]]"
 
     //是否為越南文文字
     private fun isValidVietnamWord(inputStr: CharSequence): Boolean {
@@ -19,12 +20,24 @@ object VerifyConstUtil {
         return Pattern.matches("[$CHINESE_WORD]", inputStr)
     }
 
+    fun verifyInviteCode(inviteCode: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{8}", inviteCode)
+    }
+
     fun verifyPayPwd(pwd: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", pwd)
     }
 
     fun verifyAccount(account: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER$ENGLISH_WORD]{4,16}$", account)
+        return Pattern.matches("(?=.*[$NUMBER])(?=.*[$ENGLISH_WORD])([_$ENGLISH_WORD$NUMBER]+){4,16}$", account)
+    }
+
+    fun verifyCombinationAccount(account: CharSequence): Boolean {
+        return Pattern.matches("(?=.*[$NUMBER])(?=.*[$ENGLISH_WORD]).{4,16}", account)
+    }
+
+    fun verifyPwdFormat(pwd: CharSequence): Boolean {
+        return !(Pattern.matches("[$NUMBER]*", pwd) || Pattern.matches("[$ENGLISH_WORD]*", pwd))
     }
 
     fun verifyPwd(pwd: CharSequence): Boolean {
@@ -32,9 +45,10 @@ object VerifyConstUtil {
     }
 
     //真實姓名 //中文2-20,英文2-50 可空格 可點
+    //20210205判斷文件只容許中文2-20
     fun verifyFullName(fullName: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD]{2,20}", fullName) ||
-                Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
+        return Pattern.matches("[$CHINESE_WORD]{2,20}", fullName)
+//                || Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
     }
 
     //持卡人姓名 //中文2-20
@@ -77,32 +91,61 @@ object VerifyConstUtil {
 
     //充值金額
     fun verifyRechargeAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
-        return (withdrawAmount.toString().toLong().let { it in (minAmount + 1) until (maxAmount ?: it + 1) })
+        return (withdrawAmount.toString().toLong().let { it in minAmount until (maxAmount ?: it + 1) })
     }
 
     //暱稱 //中英文組合長度2–50字
     fun verifyNickname(nickname: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD]{2,50}", nickname)
+        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD]{2,6}", nickname)
     }
 
     //qq //判断qq字數小於五
-    fun verifyQQ(text: CharSequence): Boolean {
-        return text.length >= 5
+    fun verifyQQ(qqAcount: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{5,11}", qqAcount)
     }
 
     //mail
     fun verifyMail(mail: CharSequence): Boolean {
-        return Pattern.matches("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", mail)
+        return Pattern.matches("$EMAIL_REGEX{0,50}", mail)
+    }
+
+    //手機號碼 //11個內全數字組合
+    fun verifyPhone(phone: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{11}", phone)
     }
 
     //微信 //英文第一位大小寫 後面可以數字或英文6~20
     fun verifyWeChat(weChat: CharSequence): Boolean {
-        return Pattern.matches("^[$ENGLISH_WORD][-_$NUMBER$ENGLISH_WORD]{5,20}$", weChat)
+        return Pattern.matches("[$ENGLISH_WORD][-_$NUMBER$ENGLISH_WORD]{5,19}", weChat)
+    }
+
+    //Facebook //50個內英數組合電子郵件格式(含特殊字元)
+    fun verifyFacebook(facebook: CharSequence): Boolean {
+        return Pattern.matches("$EMAIL_REGEX{0,50}", facebook)
+    }
+
+    //WhatsApp //25個內英數組合電子郵件格式(含特殊字元)
+    fun verifyWhatsApp(whatsApp: CharSequence): Boolean {
+        return Pattern.matches("$EMAIL_REGEX{0,25}", whatsApp)
+    }
+
+    //Zalo //11個內全數字組合(通常是由中國或越南手機註冊認證)
+    fun verifyZalo(zalo: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{0,11}", zalo)
     }
 
     //Telegram //可以數字、英文或底線, 5~32個char
     fun verifyTelegram(telegram: CharSequence): Boolean {
-        return Pattern.matches("^[-_$NUMBER$ENGLISH_WORD]{5,32}$", telegram)
+        return Pattern.matches("[$NUMBER]{0,11}", telegram)
     }
 
+    //驗證碼 //數字 4位
+    fun verifyValidCode(validCode: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{4}", validCode)
+    }
+
+    //簡訊驗證碼 //數字 4位
+    fun verifySecurityCode(securityCode: CharSequence): Boolean {
+        return Pattern.matches("[$NUMBER]{4}", securityCode)
+    }
 }

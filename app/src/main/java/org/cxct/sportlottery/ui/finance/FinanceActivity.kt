@@ -45,6 +45,7 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
         intent.apply {
             val viewLog = getStringExtra(RechargeViewLog)
             viewLog?.let {
+                setupToolbarTitle(it)
                 when (it) {
                     getString(R.string.record_recharge) -> {
                         navRechargeLogFragment(it)

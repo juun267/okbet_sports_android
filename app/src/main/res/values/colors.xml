@@ -112,11 +112,14 @@
     <color name="blue3">#445e77</color>
     <color name="blue4">#dae2eb</color>
     <color name="blue5">#4d7fde</color>
+    <color name="blue6">#25588d</color>
+
 
     <color name="date_select_orange">#F98B00</color>
     <color name="skin_rowBg1_light">#F1F1F1</color>
     <color name="gray_blue">#f0f2f6</color>
     <color name="dark_blue2">#2e3a49</color>
+    <color name="black2">#182d35</color>
 
 
 </resources>
