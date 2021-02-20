@@ -22,6 +22,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
@@ -85,10 +86,10 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
 
     private fun initView() {
         sConfigData?.apply {
-            ll_qq_number.visibility = if (enableWithdrawQQ == ENABLE_SWITCH) View.VISIBLE else View.GONE
-            ll_e_mail.visibility = if (enableWithdrawEmail == ENABLE_SWITCH) View.VISIBLE else View.GONE
-            ll_phone_number.visibility = if (enableWithdrawPhone == ENABLE_SWITCH) View.VISIBLE else View.GONE
-            ll_wechat.visibility = if (enableWithdrawWechat == ENABLE_SWITCH) View.VISIBLE else View.GONE
+            ll_qq_number.visibility = if (enableWithdrawQQ == FLAG_OPEN) View.VISIBLE else View.GONE
+            ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
+            ll_phone_number.visibility = if (enableWithdrawPhone == FLAG_OPEN) View.VISIBLE else View.GONE
+            ll_wechat.visibility = if (enableWithdrawWechat == FLAG_OPEN) View.VISIBLE else View.GONE
         }
 
     }

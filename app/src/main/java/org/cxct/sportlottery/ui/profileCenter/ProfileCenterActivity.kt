@@ -179,6 +179,16 @@ class ProfileCenterActivity :
                     startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
                 }
             } else if (it == false) {
+                viewModel.checkProfileInfoComplete()
+            }
+        })
+
+        viewModel.needToCompleteProfileInfo.observe(this, Observer {
+            if (it == true) {
+                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                }
+            } else if (it == false) {
                 viewModel.checkBankCardPermissions()
             }
         })
