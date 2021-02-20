@@ -9,14 +9,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.online_pay_fragment.*
-import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
-import kotlinx.android.synthetic.main.online_pay_fragment.ll_fee_amount
-import kotlinx.android.synthetic.main.online_pay_fragment.ll_fee_rate
-import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_amount
-import kotlinx.android.synthetic.main.online_pay_fragment.title_fee_rate
-import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_amount
-import kotlinx.android.synthetic.main.online_pay_fragment.tv_fee_rate
-import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
@@ -203,7 +195,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
 
     private fun getAmountLimitHint(): String {
-        return String.format(getString(R.string.edt_hint_deposit_money), ArithUtil.toMoneyFormat(mSelectRechCfgs?.minMoney), ArithUtil.toMoneyFormat(mSelectRechCfgs?.maxMoney))
+        return String.format(getString(R.string.edt_hint_deposit_money), ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney), ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney))
     }
 
     private fun setupRebateFee() {
