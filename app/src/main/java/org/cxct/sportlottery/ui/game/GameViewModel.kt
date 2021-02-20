@@ -73,7 +73,7 @@ class GameViewModel(
 
                 if (result.success) {
                     result.rows?.map {
-                        it.title + " - " + it.content
+                        it.title + " - " + it.message
                     }?.let {
                         messageList.addAll(it)
                     }
