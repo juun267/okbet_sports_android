@@ -81,4 +81,9 @@ abstract class BaseToolBarActivity<T : BaseOddButtonViewModel>(claazz: KClass<T>
     fun setToolBarName(title: String) {
         tv_toolbar_title.text = title
     }
+
+    fun menuVisible(visible: Int) {
+        btn_toolbar_menu.visibility = visible
+    }
+
 }
