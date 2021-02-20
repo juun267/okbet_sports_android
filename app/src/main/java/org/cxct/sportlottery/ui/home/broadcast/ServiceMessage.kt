@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_money.UserMoneyEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.util.MoshiUtil
@@ -29,6 +30,11 @@ object ServiceMessage {
 
     fun getProducerUp(messageStr: String): ProducerUpEvent? {
         val adapter = moshi.adapter(ProducerUpEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
+    fun getSysMaintenance(messageStr: String): SysMaintenanceEvent? {
+        val adapter = moshi.adapter(SysMaintenanceEvent::class.java)
         return adapter.fromJson(messageStr)
     }
 

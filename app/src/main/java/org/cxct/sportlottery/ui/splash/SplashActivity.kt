@@ -13,6 +13,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -49,6 +50,11 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         finish()
     }
 
+    private fun goMaintenancePage() {
+        startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
+        finish()
+    }
+
     //過程中任一流程請求失敗，點擊確定按鈕重試
     private fun showErrorRetryDialog(message: String) {
         val dialog = CustomAlertDialog(this)
@@ -73,10 +79,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         viewModel.configResult.observe(this, Observer {
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
-                    //TODO 跳轉到維護頁面
-                    showErrorRetryDialog("測試跳轉維護頁面")
-//                    JumpUtil.ToWeb(this@SplashActivity, ApiUrl.getBaseUrl() + ApiUrl.ACTION_WH_WEB, getString(R.string.maintaining))
-//                    finish()
+                    goMaintenancePage()
                 }
                 it?.success == true -> checkAppMinVersion()
                 else -> showErrorRetryDialog(getString(R.string.error_config))

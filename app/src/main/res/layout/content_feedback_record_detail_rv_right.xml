@@ -15,11 +15,12 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <View
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/bg_feedback_dialog_right"
-            android:minWidth="200dp"
+            android:src="@drawable/bg_feedback_dialog_right"
+            android:minWidth="100dp"
+            android:maxWidth="150dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +49,8 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="130dp"
             android:layout_marginTop="80dp"
-            android:layout_marginEnd="38dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="10dp"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
