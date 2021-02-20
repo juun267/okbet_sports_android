@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.lifecycle.Observer
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.bumptech.glide.Glide
@@ -132,10 +133,27 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
         })
-        viewModel.userMoneyResult.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.userMoneyResult.observe(viewLifecycleOwner, Observer {
             txv_wallet_money.text = (ArithUtil.toMoneyFormat(it?.money)) + " RMB"
         })
 
+        viewModel.apiResult.observe(viewLifecycleOwner, Observer {
+            if (it.success) {
+                resetEvent()
+            }
+        })
+    }
+
+    //重置畫面事件
+    private fun resetEvent() {
+        clearFocus()
+        et_recharge_amount.setText("")
+        et_wx_id.setText("")
+        et_name.setText("")
+        et_bank_account.setText("")
+        et_nickname.setText("")
+        sp_pay_account.setSelection(0)
+        viewModel.clearnRechargeStatus()
     }
 
     //入款帳號選單

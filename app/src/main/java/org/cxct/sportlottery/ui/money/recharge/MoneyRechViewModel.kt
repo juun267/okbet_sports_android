@@ -287,21 +287,19 @@ class MoneyRechViewModel(
 
     //銀行卡號認證
     fun checkBankID(bankId: String) {
-        _bankIDErrorMsg.postValue(
-            when {
-                bankId.isEmpty() -> {
-                    androidContext.getString(R.string.error_input_empty)
-                }
-                !VerifyConstUtil.verifyBankCardNumber(
-                    bankId
-                ) -> {
-                    androidContext.getString(R.string.error_bank_id)
-                }
-                else -> {
-                    ""
-                }
+        _bankIDErrorMsg.value = when {
+            bankId.isEmpty() -> {
+                androidContext.getString(R.string.error_input_empty)
             }
-        )
+            !VerifyConstUtil.verifyBankCardNumber(
+                bankId
+            ) -> {
+                androidContext.getString(R.string.error_bank_id)
+            }
+            else -> {
+                ""
+            }
+        }
     }
 
     //獲取使用者餘額
@@ -335,11 +333,11 @@ class MoneyRechViewModel(
     }
 
     fun clearnRechargeStatus() {
-        _rechargeAmountMsg = MutableLiveData()
-        _wxErrorMsg = MutableLiveData()
-        _nameErrorMsg = MutableLiveData()
-        _bankIDErrorMsg = MutableLiveData()
-        _nickNameErrorMsg = MutableLiveData()
-        _rechargeOnlineAmountMsg = MutableLiveData()
+        _rechargeAmountMsg.value = ""
+        _wxErrorMsg.value = ""
+        _nameErrorMsg.value = ""
+        _bankIDErrorMsg.value = ""
+        _nickNameErrorMsg.value = ""
+        _rechargeOnlineAmountMsg.value = ""
     }
 }
