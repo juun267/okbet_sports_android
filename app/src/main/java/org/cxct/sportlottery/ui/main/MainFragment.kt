@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
+import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -33,6 +35,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         getMarquee()
         getBanner()
         getPopImage()
+
+        setupSport()
+        setupLottery()
+        setupUpdate()
     }
 
     override fun onResume() {
@@ -174,6 +180,24 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getMarquee() {
         viewModel.getMarquee()
+    }
+
+    private fun setupSport() {
+        btn_update.setOnClickListener {
+            //TODO simon test 體育賽事跳轉
+        }
+    }
+
+    private fun setupLottery() {
+        btn_lottery.setOnClickListener {
+            //TODO simon test 彩票遊戲跳轉
+        }
+    }
+
+    private fun setupUpdate() {
+        btn_update.setOnClickListener {
+            JumpUtil.toExternalWeb(btn_update.context, sConfigData?.mobileAppDownUrl)
+        }
     }
 
 }
