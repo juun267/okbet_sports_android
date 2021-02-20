@@ -43,6 +43,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     }
 
     private fun initViews(context: Context, attrs: AttributeSet?) {
+
         locale = Locale.getDefault()
         calendarStyleAttr = CalendarStyleAttrImpl(context, attrs)
         val layoutInflater = LayoutInflater.from(context)
@@ -92,6 +93,15 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     }
 
     /**
+     * To set start date or end date now.
+     *
+     * @param dateSelectedType current modify date type
+     */
+    fun setDateSelectedType(dateSelectedType: DateSelectedType) {
+        mDateRangeCalendarManager.setDateSelectedType(dateSelectedType)
+    }
+
+    /**
      * To set navigation header ( Left-Right button )
      *
      * @param position New page position
@@ -123,7 +133,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
         if (locale.displayLanguage == "en") {
             yearTitle = "${currentCalendarMonth[Calendar.YEAR]} $dateText"
         } else {
-            yearTitle = "${currentCalendarMonth[Calendar.YEAR]}年 ${currentCalendarMonth[Calendar.MONTH]+1}月"
+            yearTitle = "${currentCalendarMonth[Calendar.YEAR]}年 ${currentCalendarMonth[Calendar.MONTH] + 1}月"
         }
         tvYearTitle.text = yearTitle
         tvYearTitle.setTextColor(calendarStyleAttr.titleColor)

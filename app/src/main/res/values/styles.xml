@@ -61,4 +61,12 @@
         <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
 
+    <style name="OddsButton" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/select_button_radius_5_odds</item>
+        <item name="android:foreground">?android:selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/color_select_text_odds</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

@@ -28,7 +28,8 @@
             android:background="@color/main">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/ll_type_name"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -47,19 +48,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/text_focus"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="足球" />
 
 
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginStart="10dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@+id/ll_type_name"
+                android:gravity="center"
                 android:text="@{oddsDetailViewModel.oddsDetailResult.oddsDetailData.league.name}"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </RelativeLayout>
 
@@ -145,9 +149,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background"
-            tools:listitem="@layout/content_odds_detail_list_item"
             android:clipToPadding="false"
-            android:paddingTop="10dp" />
+            android:paddingTop="10dp"
+            tools:listitem="@layout/content_odds_detail_list_item" />
 
     </LinearLayout>
 

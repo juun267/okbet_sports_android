@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -109,8 +110,24 @@ class FinanceViewModel(
         _recordType.postValue(recordType)
     }
 
-    fun setRecordTimeRange(start: Calendar, end: Calendar? = null) {
+    fun setRecordTimeRange(dateSelectedType: DateSelectedType? = null, start: Calendar, end: Calendar? = null) {
 
+        if (end != null) {
+            setRecordStartTime(start)
+            setRecordEndTime(end)
+        } else {
+            when (dateSelectedType) {
+                DateSelectedType.START -> {
+                    setRecordStartTime(start)
+                }
+                DateSelectedType.END -> {
+                    setRecordEndTime(start)
+                }
+            }
+        }
+    }
+
+    private fun setRecordStartTime(start: Calendar) {
         val startDateStr = TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd")
         val startDate =
             RechargeTime(
@@ -118,16 +135,16 @@ class FinanceViewModel(
                 TimeUtil.getDayDateTimeRangeParams(startDateStr)
             )
         _recordCalendarStartDate.postValue(startDate)
+    }
 
-        end?.let {
-            val endDateStr = TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd")
-            val endDate =
-                RechargeTime(
-                    endDateStr,
-                    TimeUtil.getDayDateTimeRangeParams(endDateStr)
-                )
-            _recordCalendarEndDate.postValue(endDate)
-        }
+    private fun setRecordEndTime(end: Calendar) {
+        val endDateStr = TimeUtil.timeFormat(end.timeInMillis, "yyyy-MM-dd")
+        val endDate =
+            RechargeTime(
+                endDateStr,
+                TimeUtil.getDayDateTimeRangeParams(endDateStr)
+            )
+        _recordCalendarEndDate.postValue(endDate)
     }
 
     fun setRechargeState(position: Int) {
@@ -182,7 +199,7 @@ class FinanceViewModel(
 
     fun getRechargeState() {
         val rechargeStateList =
-                androidContext.resources.getStringArray(R.array.recharge_state_array)
+            androidContext.resources.getStringArray(R.array.recharge_state_array)
 
         val list = rechargeStateList.map {
             when (it) {
@@ -207,7 +224,7 @@ class FinanceViewModel(
 
     fun getRechargeChannel() {
         val rechargeChannelList =
-                androidContext.resources.getStringArray(R.array.recharge_channel_array)
+            androidContext.resources.getStringArray(R.array.recharge_channel_array)
 
         val list = rechargeChannelList.map {
             when (it) {
@@ -265,14 +282,14 @@ class FinanceViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.moneyService.getUserRechargeList(
-                        RechargeListRequest(
-                                rechType = rechType,
-                                status = status,
-                                startTime = startTime,
-                                endTime = endTime,
-                                page = page,
-                                pageSize = pageSize
-                        )
+                    RechargeListRequest(
+                        rechType = rechType,
+                        status = status,
+                        startTime = startTime,
+                        endTime = endTime,
+                        page = page,
+                        pageSize = pageSize
+                    )
                 )
             }
 
@@ -332,7 +349,7 @@ class FinanceViewModel(
 
     fun getWithdrawState() {
         val withdrawStateList =
-                androidContext.resources.getStringArray(R.array.withdraw_state_array)
+            androidContext.resources.getStringArray(R.array.withdraw_state_array)
 
         val list = withdrawStateList.map {
             when (it) {
@@ -356,7 +373,7 @@ class FinanceViewModel(
 
     fun getWithdrawType() {
         val withdrawTypeList =
-                androidContext.resources.getStringArray(R.array.withdraw_type_array)
+            androidContext.resources.getStringArray(R.array.withdraw_type_array)
 
         val list = withdrawTypeList.map {
             when (it) {
@@ -402,13 +419,13 @@ class FinanceViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.withdrawService.getWithdrawList(
-                        WithdrawListRequest(
-                                checkStatus = checkStatus,
-                                uwType = uwType,
-                                startTime = startTime,
-                                endTime = endTime,
+                    WithdrawListRequest(
+                        checkStatus = checkStatus,
+                        uwType = uwType,
+                        startTime = startTime,
+                        endTime = endTime,
 
-                                )
+                        )
                 )
             }
 

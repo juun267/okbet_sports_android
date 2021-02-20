@@ -25,4 +25,6 @@
 
     <dimen name="recyclerview_item_dec_spec">5dp</dimen>
     <dimen name="recyclerview_item_dec_spec_bet_info_list">6dp</dimen>
+
+    <dimen name="recyclerview_item_date_row_item_width">92dp</dimen>
 </resources>

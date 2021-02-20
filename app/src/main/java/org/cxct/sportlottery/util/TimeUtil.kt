@@ -28,6 +28,12 @@ object TimeUtil {
     }
 
     @JvmStatic
+    fun stampToDateTime(date:Date): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return simpleDateFormat.format(date)
+    }
+
+    @JvmStatic
     fun timeFormat(
         time: Long?,
         format: String,
@@ -104,6 +110,13 @@ object TimeUtil {
             override val endTime: String
                 get() = getTodayEndTimeStamp().toString()
         }
+    }
+
+    fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
+        if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
+        return Pair(minusDaysCalendar, todayCalendar)
     }
 
     fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
@@ -185,12 +198,12 @@ object TimeUtil {
         }
     }
 
-    fun getOneWeekDate(): List<String> {
+    fun getFutureDate(day: Int): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
         val format = "yyyy-MM-dd"
 
-        repeat(7) {
+        repeat(day) {
             calendar.add(Calendar.DATE, 1)
             weekDateList.add(timeFormat(calendar.time.time, format))
         }

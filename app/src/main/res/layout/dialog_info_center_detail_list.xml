@@ -5,6 +5,7 @@
     tools:content="org.cxct.sportlottery.ui.infoCenter.InfoCenterDetailDialog">
 
     <data>
+
         <variable
             name="infoCenterViewModel"
             type="org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel" />
@@ -48,15 +49,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        tools:text="工商银行停用通知"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/textSize16sp" />
+                        android:textSize="@dimen/textSize16sp"
+                        tools:text="工商银行停用通知" />
 
-                    <ImageView
-                        android:id="@+id/img_close"
-                        android:layout_width="15dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_close"/>
                 </LinearLayout>
 
                 <TextView
@@ -68,8 +64,24 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    tools:text="公告假文：人护是仍现升诗时坐价一！有孩维样的师中院？大倒发机，说广的西家时，种常的形小质到不功片统业，友年度器量居味静，告作头这城思没师王保，心有作况业后去，了选下步，到去般分想后史位当步那已；家前的…"/>
+                    tools:text="公告假文：人护是仍现升诗时坐价一！有孩维样的师中院？大倒发机，说广的西家时，种常的形小质到不功片统业，友年度器量居味静，告作头这城思没师王保，心有作况业后去，了选下步，到去般分想后史位当步那已；家前的…" />
+
+                <View
+                    android:id="@+id/info_center_detail_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"
+                    app:layout_constraintTop_toBottomOf="@id/txv_detail" />
+
+                <Button
+                    android:id="@+id/info_center_detail_confirm"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_confirm"
+                    android:textColor="@color/blue3"
+                    android:textSize="@dimen/textSize16sp"
+                    app:layout_constraintTop_toBottomOf="@id/info_center_detail_divider" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -146,6 +146,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                     showPromptDialog(getString(R.string.prompt), getString(R.string.content_coming_soon)) {}
                 })
             )
+
             moneySubmitDialog.show(supportFragmentManager, "")
         })
 
