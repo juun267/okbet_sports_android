@@ -248,7 +248,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
-                tv_hint2.visibility = View.VISIBLE
+                ll_hit2.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.money_recharge_hint1)
                 tv_hint2.text = getString(R.string.money_recharge_hint2)
@@ -260,7 +260,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
-                tv_hint2.visibility = View.GONE
+                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.cft_recharge_hint)
             }
@@ -271,7 +271,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.GONE
                 et_name.visibility = View.GONE
-                tv_hint2.visibility = View.GONE
+                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.wx_recharge_hint)
 
@@ -283,7 +283,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.VISIBLE
                 et_bank_account.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
-                tv_hint2.visibility = View.GONE
+                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.ali_recharge_hint)
             }
