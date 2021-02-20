@@ -15,7 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -63,8 +66,9 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener(
-                {
-                    viewModel.getOddsDetail(it.matchInfo?.id)
+                { matchOdd, matchOddList ->
+                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                    viewModel.setOddsDetailMoreList(matchOddList)
                 }, {
                     viewModel.updateMatchOddExpandInPlay(it)
                 },
