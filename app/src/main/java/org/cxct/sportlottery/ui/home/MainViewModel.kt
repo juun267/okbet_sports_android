@@ -865,7 +865,7 @@ class MainViewModel(
                 }
             }
         }
-       _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
+        _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
     }
 
     fun getOddsDetail(entity: GameEntity) {
@@ -940,7 +940,9 @@ class MainViewModel(
                         }
                     }
                 }
-                _betInfoResult.postValue(Event(result))
+                if (betInfoRepository.betList.size != 0) {
+                    _betInfoResult.postValue(Event(result))
+                }
             }
         }
     }
@@ -1023,7 +1025,9 @@ class MainViewModel(
                     }
                 }
             }
-            _betInfoResult.postValue(Event(result))
+            if (betInfoRepository.betList.size != 0) {
+                _betInfoResult.postValue(Event(result))
+            }
         }
     }
 

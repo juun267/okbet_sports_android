@@ -299,6 +299,14 @@
     <string name="game_playing">比赛中</string>
     <string name="ended">已结束</string>
     <string name="suspend">延期</string>
+
+    <string name="uncheck">未确认</string>
+    <string name="undone">未结算</string>
+    <string name="win_all">全赢</string>
+    <string name="win_half">赢半</string>
+    <string name="lose_all">全输</string>
+    <string name="lose_half">输半</string>
+    <string name="draw">和</string>
     <string name="canceled">已取消</string>
 
     <string name="bet_detail">注单详情</string>
@@ -310,6 +318,7 @@
     <string name="match_names">(主) %s  vs  %s (客)</string>
     <string name="bet_item">投注项目 - %s</string>
     <string name="nothing">--</string>
+    <string name="draw_or_cancel">00.000</string>
 
 
     <!--game hall-->
