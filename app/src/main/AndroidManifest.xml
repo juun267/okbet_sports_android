@@ -16,6 +16,7 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.game.GameActivity"/>
         <activity
             android:name=".ui.feedback.FeedbackMainActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"

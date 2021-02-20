@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
@@ -152,6 +153,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                     true
                 }
                 R.id.game_page -> {
+                    startActivity(Intent(this, GameActivity::class.java))
                     true
                 }
                 R.id.promotion_page -> {
