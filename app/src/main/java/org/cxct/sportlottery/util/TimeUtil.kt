@@ -112,6 +112,13 @@ object TimeUtil {
         }
     }
 
+    fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
+        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
+        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
+        if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
+        return Pair(minusDaysCalendar, todayCalendar)
+    }
+
     fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
         //指定日期 00:00:00 ~ 23:59:59:59
         //date : yyyy-MM-dd

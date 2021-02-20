@@ -135,8 +135,8 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
         calendarBottomSheet.setContentView(bottomSheetView)
         calendarBottomSheet.calendar.setSelectableDateRange(
-            getDateInCalendar(30).first,
-            getDateInCalendar(30).second
+            TimeUtil.getDateInCalendar(30).first,
+            TimeUtil.getDateInCalendar(30).second
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(
@@ -161,18 +161,9 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         })
     }
 
-    private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
-        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
-        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
-        if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
-        return Pair(minusDaysCalendar, todayCalendar)
-    }
-
     private fun setStartEndDateText(dateSelectedType:DateSelectedType,startDate: String, endDate: String) {
         tv_start_date.text = startDate
         tv_end_date.text = endDate
-//        feedbackListRequest.startTime = startDate
-//        feedbackListRequest.endTime = endDate
 
         if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
             tv_start_date.text = startDate
@@ -184,7 +175,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 DateSelectedType.END -> tv_end_date.text = startDate
             }
         }
-
 
         viewModel.feedbackListRequest.startTime = startDate
         viewModel.feedbackListRequest.endTime = endDate
@@ -215,7 +205,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     //狀態的BottomSheet
     private fun setupTypeBottomSheet(container: ViewGroup?) {
         try {
-            val textList = viewModel.typeMap.let { ArrayList(it.values) }
+            val textList = listOf(viewModel.typeMap.values)
 
             val bottomSheetView =
                 layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
