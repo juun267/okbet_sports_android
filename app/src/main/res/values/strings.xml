@@ -348,7 +348,7 @@
     <string name="title_deposit_money">充值金额</string>
     <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
     <string name="title_real_name">认证姓名</string>
-    <string name="title_nick_name">昵称</string>
+    <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">中文长度2-20字</string>
     <string name="edt_hint_nick_name">中英文长度2-6字</string>
     <string name="title_wx_id">微信号</string>
