@@ -237,6 +237,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         if (selectRechCfgs?.qrCode.isNullOrEmpty()) {
             ll_qr_code.visibility = View.GONE
         } else {
+            ll_qr_code.visibility = View.VISIBLE
             Glide.with(this).load(selectRechCfgs?.qrCode).into(iv_address)
         }
 
