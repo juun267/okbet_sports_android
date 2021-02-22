@@ -175,13 +175,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 mSpannerList.add(selectBank)
             }
         else {
-            val title = mMoneyPayWay?.title
 
             if (rechCfgsList.size > 1)
                 rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
-                            title + count++,
+                            it.rechName + " " + count++,
                             getBankAccountIcon(it.rechType ?: "")
                         )
                     mSpannerList.add(selectBank)
@@ -190,7 +189,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
-                            title + "",
+                            it.rechName + "",
                             getBankAccountIcon(it.rechType ?: "")
                         )
                     mSpannerList.add(selectBank)

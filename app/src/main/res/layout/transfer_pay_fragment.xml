@@ -40,7 +40,6 @@
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/bright_gray" />
 
@@ -48,7 +47,6 @@
                     android:id="@+id/sp_pay_account"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:textColor="@color/colorDarkBlack"

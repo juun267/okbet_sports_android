@@ -350,7 +350,7 @@
     <string name="bottom_sheet_close">关闭</string>
 
     <!--money-recharge-->
-    <string name="title_bank">选择银行:</string>
+    <string name="title_bank">选择银行</string>
     <string name="title_name">姓名:</string>
     <string name="title_account">账号:</string>
     <string name="title_address">地址:</string>
