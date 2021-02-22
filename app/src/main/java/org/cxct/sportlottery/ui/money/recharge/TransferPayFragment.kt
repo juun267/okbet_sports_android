@@ -327,7 +327,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
 
         //存款時間
-        txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
+        txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(Date().time)
 
     }
 
@@ -392,9 +392,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             }
 
             override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
-                val formatter =
-                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                txv_recharge_time.text = formatter.format(startDate.time)
+                txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(startDate.timeInMillis)
                 calendarBottomSheet.dismiss()
             }
         })

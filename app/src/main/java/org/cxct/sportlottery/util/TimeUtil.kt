@@ -22,6 +22,11 @@ object TimeUtil {
         return simpleDateFormat.format(Date(time))
     }
 
+    fun stampToDateHMSTimeZone(time: Long): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
+        return simpleDateFormat.format(Date(time)) + " (" + TimeZone.getDefault().getDisplayName(true, TimeZone.SHORT) + ")"
+    }
+
     @JvmStatic
     fun dateToStamp(date: String): Long {
         return SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date).time
