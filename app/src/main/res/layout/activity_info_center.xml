@@ -18,34 +18,70 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <TextView
-            android:id="@+id/btn_readed_letters"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selected_under_yellow_line_effect"
-            android:clickable="true"
-            android:ems="5"
-            android:focusable="true"
-            android:gravity="center"
-            tools:text="@string/inbox"
-            android:textColor="@color/pumpkinOrange"
-            android:textSize="@dimen/textSize14sp" />
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/btn_unread_letters"
+            <TextView
+                android:id="@+id/btn_readed_letters"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:ems="5"
+                android:focusable="true"
+                android:gravity="center"
+                tools:text="@string/inbox"
+                android:textColor="@color/pumpkinOrange"
+                android:textSize="@dimen/textSize14sp" />
+
+            <View
+                android:id="@+id/v_been_read_indicator"
+                android:layout_width="match_parent"
+                android:background="@color/pumpkinOrange"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="2dp"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_gravity="center"
+            android:background="@color/gray10"
+            android:layout_height="14dp"/>
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selected_under_yellow_line_effect"
-            android:clickable="true"
-            android:ems="5"
-            android:focusable="true"
-            android:gravity="center"
-            tools:text="@string/unread_letters"
-            android:textColor="@color/pumpkinOrange"
-            android:textSize="@dimen/textSize14sp" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_unread_letters"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:ems="5"
+                android:focusable="true"
+                android:gravity="center"
+                tools:text="@string/unread_letters"
+                android:textColor="@color/pumpkinOrange"
+                android:textSize="@dimen/textSize14sp" />
+
+            <View
+                android:id="@+id/v_yet_read_indicator"
+                android:layout_width="match_parent"
+                android:background="@color/pumpkinOrange"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="2dp"/>
+
+
+        </RelativeLayout>
+
+
 
     </LinearLayout>
 

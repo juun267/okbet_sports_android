@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.home
 
 import android.content.*
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -267,7 +268,11 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            queryData()
+            if(!it){
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            }else{
+                queryData()
+            }
         })
 
         viewModel.messageListResult.observe(this, Observer {

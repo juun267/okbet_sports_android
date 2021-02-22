@@ -42,6 +42,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         initData()
         initView()
         initButton()
+        isOpenMenu(false)
     }
 
     private fun initData() {

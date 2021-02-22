@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.ui.bet.record.search.result
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +22,34 @@ import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
+        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
+            iv_scroll_to_top.apply {
+                if (firstVisibleItemPosition > 0) {
+                    if (alpha == 0f) {
+                        alpha = 0f
+                        visibility = View.VISIBLE
+                        animate()
+                            .alpha(1f)
+                            .setDuration(300)
+                            .setListener(null)
+                    }
+                } else {
+                    if (alpha == 1f) {
+                        alpha = 1f
+                        animate()
+                            .alpha(0f)
+                            .setDuration(300)
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    visibility = View.GONE
+                                }
+                            })
+                    }
+                }
+            }
+        }
+
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
@@ -26,7 +57,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 val totalItemCount: Int = it.itemCount
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
                 viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
-
+                scrollToTopControl(firstVisibleItemPosition)
             }
         }
     }
@@ -53,6 +84,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         })
         initTv()
         initRv()
+        initTopButton()
     }
 
     private fun initTv() {
@@ -77,7 +109,11 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
             }
         })
-
     }
 
+    private fun initTopButton(){
+        iv_scroll_to_top.setOnClickListener {
+            rv_bet_record.smoothScrollToPosition(0)
+        }
+    }
 }
