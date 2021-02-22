@@ -27,8 +27,8 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
     val winQuotaList: MutableList<Double> = mutableListOf()
-    val betQuotaList: MutableList<Double> = mutableListOf()
-
+    val betQuotaList: MutableList<Double> = mutableListOf()//用於計算
+    val sendBetQuotaList: MutableList<Double> = mutableListOf()//用於送出
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -56,6 +56,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 binding.tvParlayWinQuota.text = "--".plus(binding.root.context.getString(R.string.bet_info_list_rmb))
                 winQuotaList[position] = 0.0
                 betQuotaList[position] = 0.0
+                sendBetQuotaList[position] = 0.0
                 sendOutStatus = true
             } else {
 
@@ -87,6 +88,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
                 winQuotaList[position] = it.toDouble() * parlayOdd.odds
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
+                sendBetQuotaList[position] = it.toDouble()
 
                 binding.tvParlayWinQuota.text =
                     ArithUtil.round(
@@ -122,6 +124,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             winQuotaList.add(0.0)
             betQuotaList.add(0.0)
+            sendBetQuotaList.add(0.0)
 
             binding.parlayOdd = parlayOdd
 
@@ -182,6 +185,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     fun modify(list: List<ParlayOdd>) {
         winQuotaList.clear()
         betQuotaList.clear()
+        sendBetQuotaList.clear()
         parlayOddList.clear()
         parlayOddList.addAll(list.filterNot {
             it.parlayType == "1C1"

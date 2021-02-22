@@ -235,8 +235,8 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         }
         val parlayList: MutableList<Stake> = mutableListOf()
         for (i in parlayAdapter.parlayOddList.indices) {
-            if (parlayAdapter.betQuotaList[i] > 0) {
-                parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.betQuotaList[i]))
+            if (parlayAdapter.sendBetQuotaList[i] > 0) {
+                parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.sendBetQuotaList[i]))
             }
         }
 
