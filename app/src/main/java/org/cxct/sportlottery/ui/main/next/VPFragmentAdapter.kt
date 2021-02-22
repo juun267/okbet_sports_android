@@ -1,7 +1,9 @@
-package org.cxct.sportlottery.ui.home2.next
+package org.cxct.sportlottery.ui.main.next
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import org.cxct.sportlottery.ui.main.next.BYFragment
+import org.cxct.sportlottery.ui.main.next.CPFragment
 
 class VPFragmentAdapter(private val titleList: List<Int>, parentFragment: Fragment): FragmentStateAdapter(parentFragment) {
 

@@ -12,6 +12,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
+import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
@@ -65,6 +66,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { FeedbackViewModel(get(), get(), get(), get(),get()) }
         viewModel { VersionUpdateViewModel(get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get()) }
     }
 

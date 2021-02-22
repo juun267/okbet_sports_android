@@ -8,14 +8,19 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainFragment
+import org.cxct.sportlottery.ui.main.MainFragmentDirections
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -50,10 +55,17 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         initMenu()
         initBottomNav()
         initObserve()
+        testClick()
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
         if (mSplashViewModel.isNeedGetHost())
             mSplashViewModel.getHost()
+    }
+
+    private fun testClick() {
+        test.setOnClickListener {
+            mainFragment?.findNavController()?.navigate(MainFragmentDirections.actionMainFragmentToHomeStartNextPageFragment())
+        }
     }
 
     private fun initToolBar() {
@@ -105,6 +117,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                     true
                 }
                 R.id.game_page -> {
+                    startActivity(Intent(this, GameActivity::class.java))
                     true
                 }
                 R.id.promotion_page -> {
@@ -145,11 +158,11 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             }
         })
 
-        receiver.sysMaintenance.observe(this) {
+        receiver.sysMaintenance.observe(this, Observer {
             startActivity(Intent(this, MaintenanceActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             })
-        }
+        })
     }
 
     //載入頭像

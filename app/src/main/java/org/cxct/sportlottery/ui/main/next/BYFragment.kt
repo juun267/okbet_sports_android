@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home2.next
+package org.cxct.sportlottery.ui.main.next
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
