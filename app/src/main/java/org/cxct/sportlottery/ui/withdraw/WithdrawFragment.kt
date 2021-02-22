@@ -126,6 +126,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
             tv_balance.text = ArithUtil.toMoneyFormat(it)
+            viewModel.getWithdrawHint()
         })
 
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
@@ -182,6 +183,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun initSocketObserver() {
         receiver.userMoney.observe(this.viewLifecycleOwner, Observer {
             tv_balance.text = ArithUtil.toMoneyFormat(it)
+            viewModel.getMoney() //TODO : 是否應該要讓將socket&api的userMoney統一來源
         })
     }
 
