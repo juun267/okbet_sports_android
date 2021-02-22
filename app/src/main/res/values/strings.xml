@@ -52,8 +52,8 @@
     <string name="forget_password_question">忘记密码?</string>
     <string name="forget_password">忘记密码</string>
     <string name="desc_forget_password">请联系在线客服为您找回密码，是否立即访问？</string>
-    <string name="desc_no_account">还没有账号？</string>
-    <string name="sign_up_know">立即注册</string>
+    <string name="desc_have_account">已有账户？</string>
+    <string name="sign_up_now">注册新账户</string>
 
     <!-- Service select dialog -->
     <string name="online_service1">在线客服1</string>
@@ -535,4 +535,5 @@
     <string name="finance_list_no_record">暂无纪录</string>
 
     <string name="finance_rmb">%s RMB</string>
+    <string name="visit_first">先去逛逛</string>
 </resources>

@@ -26,7 +26,7 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 class RegisterViewModel(
     private val androidContext: Context,
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
 ) : BaseViewModel() {
     val registerFormState: LiveData<RegisterFormState>
         get() = _registerFormState
@@ -38,12 +38,15 @@ class RegisterViewModel(
         get() = _smsResult
     val checkAccountResult: LiveData<CheckAccountResult?>
         get() = _checkAccountResult
+    val loginForGuestResult: LiveData<LoginResult>
+        get() = _loginForGuestResult
 
     private val _registerFormState = MutableLiveData<RegisterFormState>()
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _smsResult = MutableLiveData<SmsResult?>()
     private val _checkAccountResult = MutableLiveData<CheckAccountResult?>()
+    private val _loginForGuestResult = MutableLiveData<LoginResult>()
 
     fun checkInputData(
         context: Context,
@@ -291,6 +294,16 @@ class RegisterViewModel(
                 OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
             }
             _validCodeResult.postValue(result)
+        }
+    }
+
+    fun loginAsGuest() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                loginRepository.loginForGuest()
+            }?.let {
+                _loginForGuestResult.value = it
+            }
         }
     }
 

@@ -47,6 +47,7 @@ object Constants {
     const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
     const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
+    const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
