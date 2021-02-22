@@ -78,9 +78,11 @@
     <string name="withdrawal_pwd">取款密码</string>
     <string name="hint_withdrawal_pwd">请输入四位数取款密码</string>
     <string name="phone">手机</string>
+    <string name="phone_number">手机号码</string>
     <string name="hint_phone_number">请输入手机号码</string>
     <string name="error_phone_number">手机号码格式错误</string>
     <string name="qq">QQ</string>
+    <string name="qq_number">QQ号码</string>
     <string name="hint_qq_number">请输入QQ号码</string>
     <string name="error_qq_number">QQ帐号格式错误</string>
     <string name="e_mail">邮箱</string>
@@ -224,6 +226,7 @@
     <string name="online_service">在线客服</string>
 
     <!-- Profile page-->
+    <string name="need_improve">需完善</string>
     <string name="profile_info">个人资讯</string>
     <string name="avatar">头像</string>
     <string name="nickname">昵称</string>
@@ -237,7 +240,7 @@
     <string name="save_avatar_success">头像设置成功</string>
     <string name="no_set_avatar">没有设置头像</string>
 
-    <!-- Change nickname page-->
+    <!-- Modify Profile Info page-->
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2–50字</string>
     <string name="error_nickname_empty">昵称不能为空</string>
@@ -410,6 +413,7 @@
     <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
     <string name="error_withdraw_amount_bigger_than_balance">提款金额大于帐号余额</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
+    <string name="please_complete_profile_info">完善个人资料</string>
     <string name="please_setting_bank_card">请设置银行卡</string>
     <!--  prompt message  -->
     <string name="text_money_get_success">提现成功，请等待客服人员审核</string>

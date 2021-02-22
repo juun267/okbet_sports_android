@@ -22,11 +22,10 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
-import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
+import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -57,7 +56,7 @@ class ProfileCenterActivity :
 
     private fun setupEditNickname() {
         btn_edit_nickname.setOnClickListener {
-            startActivity(Intent(this, ChangeNicknameActivity::class.java))
+            startActivity(Intent(this, ModifyProfileInfoActivity::class.java))
         }
     }
 
@@ -178,6 +177,16 @@ class ProfileCenterActivity :
             if (it == true) {
                 showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
                     startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                }
+            } else if (it == false) {
+                viewModel.checkProfileInfoComplete()
+            }
+        })
+
+        viewModel.needToCompleteProfileInfo.observe(this, Observer {
+            if (it == true) {
+                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
+                    startActivity(Intent(this, ProfileActivity::class.java))
                 }
             } else if (it == false) {
                 viewModel.checkBankCardPermissions()

@@ -273,6 +273,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_real_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -308,12 +309,260 @@
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee051**" />
 
+                <ImageView
+                    android:id="@+id/icon_real_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right_gray" />
+
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/light_gray" />
+
+            <!--  QQ號碼  -->
+            <LinearLayout
+                android:id="@+id/ll_qq_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_qq" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/qq_number"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_qq_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="1022423383" />
+
+                    <ImageView
+                        android:id="@+id/icon_qq_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+            </LinearLayout>
+
+
+            <!--  郵箱  -->
+            <LinearLayout
+                android:id="@+id/ll_e_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_email" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/e_mail"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_e_mail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="ianlee051＠gmail.com" />
+
+                    <ImageView
+                        android:id="@+id/icon_e_mail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+            </LinearLayout>
+
+
+            <!--  手機號碼  -->
+            <LinearLayout
+                android:id="@+id/ll_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_mobile" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/phone_number"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_phone_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="1022423383" />
+
+                    <ImageView
+                        android:id="@+id/icon_phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+            </LinearLayout>
+
+
+            <!--  微信  -->
+            <LinearLayout
+                android:id="@+id/ll_wechat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_wechat" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/we_chat"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_we_chat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="2443875459" />
+
+                    <ImageView
+                        android:id="@+id/icon_wechat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
