@@ -125,7 +125,7 @@ object VerifyConstUtil {
 
     //微信 //英文第一位大小寫 後面可以數字或英文6~20
     fun verifyWeChat(weChat: CharSequence): Boolean {
-        return isVerifyEmailFormat(weChat, "{6,20}")
+        return Pattern.matches("[$ENGLISH_WORD][-_$NUMBER$ENGLISH_WORD]{5,19}", weChat)
     }
 
     //Facebook //50個內英數組合電子郵件格式(含特殊字元)

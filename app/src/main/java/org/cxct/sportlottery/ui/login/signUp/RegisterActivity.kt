@@ -308,10 +308,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             userName = userName,
             password = MD5Util.MD5Encode(loginPassword),
             loginSrc = LOGIN_SRC,
-            deviceSn = deviceSn
+            deviceSn = deviceSn,
+            inviteCode = inviteCode
         ).apply {
-            if (sConfigData?.enableInviteCode == FLAG_OPEN)
-                this.inviteCode = inviteCode
             if (sConfigData?.enableFullName == FLAG_OPEN)
                 this.fullName = fullName
             if (sConfigData?.enableFundPwd == FLAG_OPEN)
