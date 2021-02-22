@@ -28,6 +28,7 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar_layout"
                 android:layout_width="match_parent"
+                app:elevation="0dp"
                 android:layout_height="wrap_content">
 
 

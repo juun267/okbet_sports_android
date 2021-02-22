@@ -347,9 +347,9 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueOddAdapter
             this.addItemDecoration(
-                DividerItemDecoration(
+                SpaceItemDecoration(
                     context,
-                    DividerItemDecoration.VERTICAL
+                    R.dimen.recyclerview_item_dec_spec
                 )
             )
         }
@@ -361,9 +361,9 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             this.addItemDecoration(
-                DividerItemDecoration(
+                SpaceItemDecoration(
                     context,
-                    DividerItemDecoration.VERTICAL
+                    R.dimen.recyclerview_item_dec_spec
                 )
             )
         }
@@ -375,9 +375,9 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = outrightSeasonAdapter
             this.addItemDecoration(
-                DividerItemDecoration(
+                SpaceItemDecoration(
                     context,
-                    DividerItemDecoration.VERTICAL
+                    R.dimen.recyclerview_item_dec_spec
                 )
             )
         }
