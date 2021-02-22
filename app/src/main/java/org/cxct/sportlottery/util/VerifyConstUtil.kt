@@ -8,11 +8,20 @@ object VerifyConstUtil {
     private const val CHINESE_WORD = "\u4e00-\u9fa5"
     private const val VIETNAM_WORD = "àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ"
     private const val ENGLISH_WORD = "a-zA-Z"
-    private const val EMAIL_REGEX = "(?=[$NUMBER$ENGLISH_WORD[-+_]]+@[$NUMBER$ENGLISH_WORD]+[.][$NUMBER$ENGLISH_WORD]+)[$NUMBER$ENGLISH_WORD[-+_@.]]"
+    private const val SYMBOL = "!#\$%&'*+-/=?^_`{|}~"
+    private const val EMAIL_REGEX = "[$ENGLISH_WORD]([.]?[_$ENGLISH_WORD$NUMBER$SYMBOL]+)+@[-$ENGLISH_WORD$NUMBER]+[.][-$ENGLISH_WORD$NUMBER]+([.]?[-$NUMBER$ENGLISH_WORD])+"
 
     //是否為越南文文字
     private fun isValidVietnamWord(inputStr: CharSequence): Boolean {
         return Pattern.matches("[${ENGLISH_WORD}${VIETNAM_WORD}\\s]+", inputStr)
+    }
+
+    private fun isVerifyEmailFormat(inputStr: CharSequence, strLength: String): Boolean {
+        return if (!Pattern.matches(".{0,50}", inputStr))
+            false
+        else {
+            Pattern.matches(EMAIL_REGEX, inputStr)
+        }
     }
 
     //是否為中文文字
@@ -106,7 +115,7 @@ object VerifyConstUtil {
 
     //mail
     fun verifyMail(mail: CharSequence): Boolean {
-        return Pattern.matches("$EMAIL_REGEX{0,50}", mail)
+        return isVerifyEmailFormat(mail, "{0,50}")
     }
 
     //手機號碼 //11個內全數字組合
@@ -116,17 +125,17 @@ object VerifyConstUtil {
 
     //微信 //英文第一位大小寫 後面可以數字或英文6~20
     fun verifyWeChat(weChat: CharSequence): Boolean {
-        return Pattern.matches("[$ENGLISH_WORD][-_$NUMBER$ENGLISH_WORD]{5,19}", weChat)
+        return isVerifyEmailFormat(weChat, "{6,20}")
     }
 
     //Facebook //50個內英數組合電子郵件格式(含特殊字元)
     fun verifyFacebook(facebook: CharSequence): Boolean {
-        return Pattern.matches("$EMAIL_REGEX{0,50}", facebook)
+        return isVerifyEmailFormat(facebook, "{0,50}")
     }
 
     //WhatsApp //25個內英數組合電子郵件格式(含特殊字元)
     fun verifyWhatsApp(whatsApp: CharSequence): Boolean {
-        return Pattern.matches("$EMAIL_REGEX{0,25}", whatsApp)
+        return isVerifyEmailFormat(whatsApp, "{0,25}")
     }
 
     //Zalo //11個內全數字組合(通常是由中國或越南手機註冊認證)
