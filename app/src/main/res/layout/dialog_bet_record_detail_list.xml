@@ -13,6 +13,10 @@
             name="row"
             type="org.cxct.sportlottery.network.bet.list.Row" />
 
+        <variable
+            name="TextUtil"
+            type="org.cxct.sportlottery.util.TextUtil" />
+
     </data>
 
     <FrameLayout
@@ -172,8 +176,8 @@
                         android:id="@+id/tv_status_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{(row.win == null) ? @string/nothing : row.win > 0 ? String.format(@string/plus_symbol, row.win.toString()): String.format(@string/minus_symbol, row.win.toString())}"
-                        android:textColor="@{(row.win == null) ?  @color/gray6 : row.win > 0 ? @color/green : @color/red2}"
+                        android:text="@{(row.status == 0 || row.status == 1) ? @string/nothing : (row.status == 2 || row.status == 3) ? String.format(@string/plus_symbol, TextUtil.format(row.win)): (row.status == 4 || row.status == 5) ? String.format(@string/minus_symbol, TextUtil.format(row.win)): @string/draw_or_cancel}"
+                        android:textColor="@{(row.status == 0 || row.status == 1 || row.status == 6 || row.status == 7) ?  @color/gray6 : (row.status == 2 || row.status == 3) ? @color/green : @color/red2}"
                         android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/text_view4"
                         app:layout_constraintEnd_toStartOf="@id/tv_status"
