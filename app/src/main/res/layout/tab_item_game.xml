@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_baseline_assistant_24"
     android:gravity="center"
     android:orientation="vertical"
     tools:layout_gravity="center_horizontal"
@@ -12,7 +11,7 @@
     tools:layout_width="56dp"
     >
     <!--    android:background="@drawable/selector_home_game_tab"-->
-    <!--    android:background="@drawable/skin_select_home_shortcut_effect"-->
+    <!--    android:background="@drawable/ic_baseline_assistant_24"-->
 
     <ImageView
         android:id="@+id/iv_icon"
