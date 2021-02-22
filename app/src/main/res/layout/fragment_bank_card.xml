@@ -89,7 +89,6 @@
             android:id="@+id/et_withdrawal_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:cvHint="@string/hint_please_enter_withdraw_password"
             app:cvInputType="textPassword"
             app:cvTitle="@string/withdraw_password" />
