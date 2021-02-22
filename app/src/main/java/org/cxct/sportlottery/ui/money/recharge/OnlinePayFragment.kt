@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import org.cxct.sportlottery.R
@@ -16,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.MoneyManager.getBankIcon
 import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -28,7 +28,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
 
-    private val mSpannerList: MutableList<CustomImageAdapter.SelectBank> by lazy {
+    private val mBankList: MutableList<CustomImageAdapter.SelectBank> by lazy {
+        mutableListOf()
+    }
+
+    private val mGapList: MutableList<CustomImageAdapter.SelectBank> by lazy {
         mutableListOf()
     }
 
@@ -103,13 +107,17 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         val payRoadSpannerList = mutableListOf<String>()
         val title = mMoneyPayWay?.title
-        if (rechCfgsList.size > 1)
-            rechCfgsList.forEach { _ -> payRoadSpannerList.add(title + count++) }
-        else
-            rechCfgsList.forEach { _ -> payRoadSpannerList.add(title + "") }
+        if (rechCfgsList.size > 1) {
+            rechCfgsList.forEach { _ -> mGapList.add(CustomImageAdapter.SelectBank(title + count++, getBankIcon(mMoneyPayWay?.image ?: ""))) }
 
+        } else {
+            rechCfgsList.forEach { _ -> mGapList.add(CustomImageAdapter.SelectBank(title + "", getBankIcon(mMoneyPayWay?.image ?: ""))) }
+        }
+
+        /*sp_pay_gap.adapter =
+            ArrayAdapter(requireContext(), R.layout.spinner_text_item, payRoadSpannerList)*/
         sp_pay_gap.adapter =
-            ArrayAdapter(requireContext(), R.layout.spinner_text_item, payRoadSpannerList)
+            CustomImageAdapter(context, mGapList)
 
         //選擇入款帳號
         sp_pay_gap.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -156,9 +164,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     it.bankName,
                     MoneyManager.getBankIconByBankName(it.bankName.toString())
                 )
-            mSpannerList.add(data)
+            mBankList.add(data)
         }
-        sp_pay_bank.adapter = CustomImageAdapter(context, mSpannerList)
+        sp_pay_bank.adapter = CustomImageAdapter(context, mBankList)
         sp_pay_bank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 //do nothing
