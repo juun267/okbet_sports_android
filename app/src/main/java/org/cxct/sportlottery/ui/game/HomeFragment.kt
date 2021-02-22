@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
@@ -17,94 +19,80 @@ import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 
 
 class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
+    private lateinit var homeBinding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false).apply {
-            setupGameTypeCard(this)
-            setupInPlayPreloadList(this)
-        }
-    }
+    ): View {
 
-    private fun setupGameTypeCard(view: View) {
-        view.card_game_soon.setOnClickListener {
-            viewModel.selectHomeCard(MatchType.AT_START, null)
+        homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        homeBinding.apply {
+            gameViewModel = this@HomeFragment.viewModel
+            lifecycleOwner = this@HomeFragment
         }
-
-        view.card_football.setOnClickListener {
-            viewModel.selectHomeCard(MatchType.PARLAY, SportType.FOOTBALL)
-        }
-
-        view.card_basketball.setOnClickListener {
-            viewModel.selectHomeCard(MatchType.PARLAY, SportType.BASKETBALL)
-        }
-
-        view.card_tennis.setOnClickListener {
-            viewModel.selectHomeCard(MatchType.PARLAY, SportType.TENNIS)
-        }
-
-        view.card_badminton.setOnClickListener {
-            viewModel.selectHomeCard(MatchType.PARLAY, SportType.BADMINTON)
-        }
-
-        view.card_volleyball.setOnClickListener {
-            viewModel.selectHomeCard(MatchType.PARLAY, SportType.VOLLEYBALL)
-        }
-    }
-
-    private fun setupInPlayPreloadList(view: View) {
-        view.drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-            override fun onClick(select: GameEntity) {
-                //TODO refactor and move
-            }
-        })
+        return homeBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initObserver()
+        initEvent()
+        initObserve()
     }
 
-    private fun initObserver() {
+    private fun initEvent() {
+        card_football.setOnClickListener {
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.FOOTBALL)
+        }
+
+        card_basketball.setOnClickListener {
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.BASKETBALL)
+        }
+
+        card_tennis.setOnClickListener {
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.TENNIS)
+        }
+
+        card_badminton.setOnClickListener {
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.BADMINTON)
+        }
+
+        card_volleyball.setOnClickListener {
+            viewModel.getGameHallList(MatchType.PARLAY, SportType.VOLLEYBALL)
+        }
+
+        card_game_soon.setOnClickListener {
+            viewModel.getGameHallList(MatchType.AT_START, null)
+        }
+    }
+
+    private fun initObserve() {
         viewModel.isLogin.observe(viewLifecycleOwner, Observer {
             if (it) {
-                viewModel.getMatchPreload(MatchType.IN_PLAY)
-                loading()
+                queryData()
             }
         })
 
-        viewModel.matchPreloadResult.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            drawer_in_play.tv_count.text = (it.matchPreloadData?.num ?: 0).toString()
+        viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
+            drawer_in_play.setCount(it.matchPreloadData?.num?.toString())
             drawer_in_play.setRvGameData(it.matchPreloadData)
-        })
+            drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
+                override fun onClick(select: GameEntity) {
+                    //使用於投注細項 -> [更多]
+                    val selectData =
+                        it.matchPreloadData?.datas?.find { data -> select.code == data.code }
+                    selectData?.matchs?.let { list -> viewModel.setOddsDetailMoreList(list) }
 
-        viewModel.countAtStart.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            card_game_soon.tv_count.text = it.toString()
-        })
-        viewModel.countParlayFootball.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            tv_football_count.text = it.toString()
-        })
-        viewModel.countParlayBasketball.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            tv_basketball_count.text = it.toString()
-        })
-        viewModel.countParlayTennis.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            card_tennis.tv_count.text = it.toString()
-        })
-        viewModel.countParlayBadminton.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            card_badminton.tv_count.text = it.toString()
-        })
-        viewModel.countParlayVolleyball.observe(viewLifecycleOwner, Observer {
-            hideLoading()
-            card_volleyball.tv_count.text = it.toString()
+                    scroll_view.smoothScrollTo(0, 0)
+                    viewModel.getOddsDetail(select)
+                }
+            })
         })
     }
+
+    private fun queryData() {
+        viewModel.getInPlayMatchPreload()
+    }
+
 }

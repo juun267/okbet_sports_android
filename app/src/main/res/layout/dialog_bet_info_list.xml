@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="mainViewModel"
-            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+            name="gameViewModel"
+            type="org.cxct.sportlottery.ui.game.GameViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -32,7 +32,6 @@ import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import timber.log.Timber
 
@@ -42,7 +41,7 @@ import timber.log.Timber
  * Use the [GameFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
+class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
     private val scope = CoroutineScope(Dispatchers.Default)
 
