@@ -237,7 +237,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     }
                 }
             } else {
-                showPromptDialog(if (mBankCardStatus) getString(R.string.text_bank_card_modify_fail) else getString(R.string.text_bank_card_add_fail), result.msg) {}
+                showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
             }
         })
 
@@ -245,7 +245,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (result.success) {
                 showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_delete_success)) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
-                showPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
+                showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
             }
         })
 
