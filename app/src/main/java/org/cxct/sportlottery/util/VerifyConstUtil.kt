@@ -17,7 +17,7 @@ object VerifyConstUtil {
     }
 
     private fun isVerifyEmailFormat(inputStr: CharSequence, strLength: String): Boolean {
-        return if (!Pattern.matches(".{0,50}", inputStr))
+        return if (!Pattern.matches(".$strLength", inputStr))
             false
         else {
             Pattern.matches(EMAIL_REGEX, inputStr)
