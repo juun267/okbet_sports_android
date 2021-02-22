@@ -175,8 +175,12 @@ class ProfileCenterActivity :
 
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             if (it == true) {
-                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
                     startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                }).apply {
+                    setTipsTitle(R.string.withdraw_setting)
+                    setTipsContent(R.string.please_setting_withdraw_password)
+                    show(supportFragmentManager, "")
                 }
             } else if (it == false) {
                 viewModel.checkProfileInfoComplete()
@@ -185,8 +189,12 @@ class ProfileCenterActivity :
 
         viewModel.needToCompleteProfileInfo.observe(this, Observer {
             if (it == true) {
-                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
+                SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
                     startActivity(Intent(this, ProfileActivity::class.java))
+                }).apply {
+                    setTipsTitle(R.string.withdraw_setting)
+                    setTipsContent(R.string.please_complete_profile_info)
+                    show(supportFragmentManager, "")
                 }
             } else if (it == false) {
                 viewModel.checkBankCardPermissions()
@@ -195,8 +203,12 @@ class ProfileCenterActivity :
 
         viewModel.needToBindBankCard.observe(this, Observer {
             if (it == true) {
-                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_bank_card)) {
+                SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
                     startActivity(Intent(this, BankActivity::class.java))
+                }).apply {
+                    setTipsTitle(R.string.withdraw_setting)
+                    setTipsContent(R.string.please_setting_bank_card)
+                    show(supportFragmentManager, "")
                 }
             } else {
                 startActivity(Intent(this, WithdrawActivity::class.java))

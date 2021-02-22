@@ -415,7 +415,8 @@
     <string name="error_withdraw_amount_bigger_than_balance">提款金额大于账号余额</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_complete_profile_info">完善个人资料</string>
-    <string name="please_setting_bank_card">请设置银行卡</string>
+    <string name="please_setting_bank_card">请先设置银行卡</string>
+    <string name="go_to_setting">前往设置</string>
     <!--  prompt message  -->
     <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
     <string name="title_withdraw_success">提款成功</string>
