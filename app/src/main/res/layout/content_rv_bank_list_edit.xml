@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv_edit"
     android:layout_width="match_parent"
     android:layout_height="196dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginStart="12dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="8dp"
-    android:background="@color/black"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="2dp"
-    app:contentPaddingLeft="10dp"
-    app:contentPaddingRight="10dp">
+    android:background="@drawable/ic_card_background"
+    android:paddingStart="15dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="20dp"
+        android:paddingStart="16dp"
         android:paddingTop="20dp"
-        android:paddingEnd="20dp">
+        android:paddingEnd="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -67,105 +61,114 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_title_name"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:text="@string/name"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/ll_tail_number">
 
-        <TextView
-            android:id="@+id/tv_colon1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/colon"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_title_name"
-            app:layout_constraintTop_toTopOf="@+id/tv_title_name" />
+            <TextView
+                android:id="@+id/tv_title_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_colon1"
-            app:layout_constraintTop_toTopOf="@+id/tv_colon1"
-            tools:text="王明尉" />
+            <TextView
+                android:id="@+id/tv_colon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_title_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_title_name" />
 
-        <TextView
-            android:id="@+id/tv_title_tail_number"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/tail_number"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_title_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_name" />
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_colon1"
+                app:layout_constraintTop_toTopOf="@+id/tv_colon1"
+                tools:text="王明尉" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_colon2"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll_tail_number"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/colon"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_title_tail_number"
-            app:layout_constraintTop_toTopOf="@+id/tv_title_tail_number" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/ll_bind_time">
 
-        <TextView
-            android:id="@+id/tv_tail_number"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_colon2"
-            app:layout_constraintTop_toTopOf="@+id/tv_colon2"
-            tools:text="1681" />
+            <TextView
+                android:id="@+id/tv_title_tail_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tail_number"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp" />
 
-        <TextView
-            android:id="@+id/tv_bind_start_time"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_colon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp" />
+
+            <TextView
+                android:id="@+id/tv_tail_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="1681" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_bind_time"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:layout_marginBottom="20dp"
-            android:text="@string/bind_start_time"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_title_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_tail_number" />
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/tv_colon3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/colon"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_bind_start_time"
-            app:layout_constraintTop_toTopOf="@+id/tv_bind_start_time" />
+            <TextView
+                android:id="@+id/tv_bind_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bind_start_time"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp" />
 
-        <TextView
-            android:id="@+id/tv_bind_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_colon3"
-            app:layout_constraintTop_toTopOf="@+id/tv_colon3"
-            tools:text="2020-12-12  23:08:43" />
+            <TextView
+                android:id="@+id/tv_colon3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp" />
+
+            <TextView
+                android:id="@+id/tv_bind_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/gray4"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="2020-12-12  23:08:43" />
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
-
-</androidx.cardview.widget.CardView>
