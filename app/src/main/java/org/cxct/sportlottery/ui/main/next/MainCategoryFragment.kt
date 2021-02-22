@@ -18,7 +18,7 @@ class MainCategoryFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         listOf(R.string.sport, R.string.cp, R.string.live, R.string.qp, R.string.dz, R.string.by)
     }
     private val tabIconList by lazy {
-        listOf(R.drawable.ic_football, R.drawable.ic_alipay, R.drawable.ic_football, R.drawable.ic_football, R.drawable.ic_football, R.drawable.ic_football)
+        listOf(R.drawable.ic_sport, R.drawable.ic_cp, R.drawable.ic_live, R.drawable.ic_qp, R.drawable.ic_dz, R.drawable.ic_by)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,7 +30,7 @@ class MainCategoryFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         // attaching tab mediator
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->
-            tab.setCustomView(R.layout.tab_game)
+            tab.setCustomView(R.layout.tab_item_game)
             tab.customView?.apply {
                 findViewById<TextView>(R.id.tv_title)?.text = getString(tabTitleList[position])
                 findViewById<ImageView>(R.id.iv_icon)?.setImageResource(tabIconList[position])

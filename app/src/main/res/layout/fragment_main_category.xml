@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.home2.HomeStartPageFragment">
+    tools:context="org.cxct.sportlottery.ui.main.next.MainCategoryFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/gray1"
-        app:tabIndicatorHeight="0dp"
+        app:tabIndicatorHeight="1dp"
         app:tabMode="fixed"
         app:tabPaddingBottom="-1dp"
         app:tabPaddingTop="-1dp"
@@ -21,41 +20,41 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_more_on"
+            android:icon="@drawable/ic_sport"
             android:text="@string/sport"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_more_on"
+            android:icon="@drawable/ic_cp"
             android:text="@string/cp"/>
 
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_more_on"
+            android:icon="@drawable/ic_live"
             android:text="@string/live"/>
 
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_more_on"
+            android:icon="@drawable/ic_qp"
             android:text="@string/qp"/>
 
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_more_on"
+            android:icon="@drawable/ic_dz"
             android:text="@string/dz"/>
 
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_more_on"
+            android:icon="@drawable/ic_by"
             android:text="@string/by"/>
 
     </com.google.android.material.tabs.TabLayout>

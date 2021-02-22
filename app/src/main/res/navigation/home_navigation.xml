@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeNextFragment"
-        android:name="org.cxct.sportlottery.ui.home2.next.HomeStartNextPageFragment"
+        android:name="org.cxct.sportlottery.ui.main.next.HomeStartNextPageFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_main_category">
     </fragment>
