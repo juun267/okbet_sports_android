@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
@@ -100,18 +101,26 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 detailDialog.show(parentFragmentManager, "BetRecordDetailDialog")
             }
         })
-
-        rv_bet_record.adapter = rvAdapter
-        rv_bet_record.addOnScrollListener(recyclerViewOnScrollListener)
+        rv_bet_record.apply {
+            adapter = rvAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+            addOnScrollListener(recyclerViewOnScrollListener)
+        }
         viewModel.betRecordResult.observe(viewLifecycleOwner, Observer {
             it.let {
                 viewModel.isLastPage = (rvAdapter.itemCount >= (it.peekContent().total ?: 0))
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
             }
         })
+
     }
 
-    private fun initTopButton(){
+    private fun initTopButton() {
         iv_scroll_to_top.setOnClickListener {
             rv_bet_record.smoothScrollToPosition(0)
         }
