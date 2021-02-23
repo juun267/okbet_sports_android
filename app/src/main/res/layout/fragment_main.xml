@@ -97,7 +97,9 @@
             android:minHeight="56dp"
             android:orientation="horizontal"
             android:paddingStart="14dp"
+            android:paddingTop="2dp"
             android:paddingEnd="14dp"
+            android:paddingBottom="5dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <org.cxct.sportlottery.ui.main.MainTab
@@ -179,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="11dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -235,7 +237,7 @@
                     android:id="@+id/liveGamePager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvSpanCount="3"/>
+                    app:cvSpanCount="3" />
 
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_poker"
@@ -248,7 +250,7 @@
                     android:id="@+id/pokerGamePager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvSpanCount="1"/>
+                    app:cvSpanCount="1" />
 
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_slot"
@@ -261,7 +263,7 @@
                     android:id="@+id/slotGamePager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvSpanCount="2"/>
+                    app:cvSpanCount="2" />
 
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_fishing"
@@ -274,7 +276,7 @@
                     android:id="@+id/fishingGamePager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvSpanCount="2"/>
+                    app:cvSpanCount="2" />
 
             </LinearLayout>
 

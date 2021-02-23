@@ -98,6 +98,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             scrollToTabPosition(tab_fishing)
         }
 
+
+        tab_sport.performClick() //default select
     }
 
     private fun selectTab(select: View) {
@@ -277,9 +279,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         if (gameList.isEmpty()) {
+            tab_live.visibility = View.GONE
             label_live.visibility = View.GONE
             liveGamePager.visibility = View.GONE
         } else {
+            tab_live.visibility = View.VISIBLE
             label_live.visibility = View.VISIBLE
             liveGamePager.visibility = View.VISIBLE
 
@@ -297,9 +301,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         if (gameList.isEmpty()) {
+            tab_poker.visibility = View.GONE
             label_poker.visibility = View.GONE
             pokerGamePager.visibility = View.GONE
         } else {
+            tab_poker.visibility = View.VISIBLE
             label_poker.visibility = View.VISIBLE
             pokerGamePager.visibility = View.VISIBLE
 
@@ -317,9 +323,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         if (gameList.isEmpty()) {
+            tab_slot.visibility = View.GONE
             label_slot.visibility = View.GONE
             slotGamePager.visibility = View.GONE
         } else {
+            tab_slot.visibility = View.VISIBLE
             label_slot.visibility = View.VISIBLE
             slotGamePager.visibility = View.VISIBLE
 
@@ -337,9 +345,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         if (gameList.isEmpty()) {
+            tab_fishing.visibility = View.GONE
             label_fishing.visibility = View.GONE
             fishingGamePager.visibility = View.GONE
         } else {
+            tab_fishing.visibility = View.VISIBLE
             label_fishing.visibility = View.VISIBLE
             fishingGamePager.visibility = View.VISIBLE
 
