@@ -1146,30 +1146,33 @@ class MainViewModel(
     }
 
     fun sportMenuSelectFT(matchType: MatchType) {
+
+        val menuData = _sportMenuResult.value?.sportMenuData?.menu
+
         when (matchType) {
             MatchType.IN_PLAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.forEach {
-                    it.isSelected = it.code == "FT"
+                menuData?.inPlay?.items?.map { sport ->
+                    sport.isSelected = (menuData.inPlay.items.indexOf(sport) == 0)
                 }
             }
             MatchType.TODAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.forEach {
-                    it.isSelected = it.code == "FT"
+                menuData?.today?.items?.map { sport ->
+                    sport.isSelected = (menuData.today.items.indexOf(sport) == 0)
                 }
             }
             MatchType.EARLY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.forEach {
-                    it.isSelected = it.code == "FT"
+                menuData?.early?.items?.map { sport ->
+                    sport.isSelected = (menuData.early.items.indexOf(sport) == 0)
                 }
             }
             MatchType.PARLAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.forEach {
-                    it.isSelected = it.code == "FT"
+                menuData?.parlay?.items?.map { sport ->
+                    sport.isSelected = (menuData.parlay.items.indexOf(sport) == 0)
                 }
             }
             MatchType.OUTRIGHT -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.forEach {
-                    it.isSelected = it.code == "FT"
+                menuData?.outright?.items?.map { sport ->
+                    sport.isSelected = (menuData.outright.items.indexOf(sport) == 0)
                 }
             }
             else -> {}
