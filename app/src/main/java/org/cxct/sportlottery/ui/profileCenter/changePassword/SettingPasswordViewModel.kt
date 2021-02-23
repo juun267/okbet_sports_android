@@ -99,6 +99,7 @@ class SettingPasswordViewModel(
 
     private fun checkConfirmPwd(context: Context, newPwd: String, confirmPwd: String): String? {
         return when {
+            confirmPwd.isBlank() -> context.getString(R.string.error_input_empty)
             newPwd != confirmPwd -> context.getString(R.string.error_confirm_password)
             else -> null
         }
