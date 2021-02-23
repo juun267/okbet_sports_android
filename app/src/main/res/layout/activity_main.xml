@@ -110,6 +110,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="true"
+                            android:background="@color/white"
                             android:focusableInTouchMode="true"
                             android:orientation="vertical">
 
@@ -118,7 +119,6 @@
                                 android:id="@+id/ll_announce"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
-                                android:background="@color/gray"
                                 android:gravity="center_vertical">
 
                                 <ImageView
@@ -146,11 +146,12 @@
                             <com.google.android.material.tabs.TabLayout
                                 android:id="@+id/tabLayout"
                                 android:layout_width="match_parent"
+                                android:layout_marginEnd="36dp"
                                 android:layout_height="56dp"
                                 android:background="@android:color/white"
                                 app:tabGravity="fill"
                                 app:tabIndicatorHeight="0dp"
-                                app:tabMode="scrollable">
+                                app:tabMode="fixed">
 
                                 <com.google.android.material.tabs.TabItem
                                     android:id="@+id/tab_all"
@@ -188,11 +189,11 @@
                                     android:layout_height="wrap_content"
                                     android:layout="@layout/home_cate_tab" />
 
-                                <com.google.android.material.tabs.TabItem
-                                    android:id="@+id/tab_at_start"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout="@layout/home_cate_tab" />
+<!--                                <com.google.android.material.tabs.TabItem-->
+<!--                                    android:id="@+id/tab_at_start"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout="@layout/home_cate_tab" />-->
 
                             </com.google.android.material.tabs.TabLayout>
 
