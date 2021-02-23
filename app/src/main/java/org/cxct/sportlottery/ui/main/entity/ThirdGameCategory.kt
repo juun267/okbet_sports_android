@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.main.entity
 
-enum class GameCategory(var title: String? = null) {
+enum class ThirdGameCategory(var title: String? = null) {
     CGCP, //CG遊戲
     BY, //捕魚
     QP, //棋牌
@@ -12,7 +12,7 @@ enum class GameCategory(var title: String? = null) {
     UNKNOWN; //未知
 
     companion object {
-        fun getCategory(cateCode: String?): GameCategory {
+        fun getCategory(cateCode: String?): ThirdGameCategory {
             return when(cateCode) {
                 CGCP.name -> CGCP
                 BY.name -> BY

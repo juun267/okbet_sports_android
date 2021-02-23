@@ -37,6 +37,7 @@ import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGameData
@@ -46,6 +47,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -1203,8 +1205,8 @@ class MainViewModel(
 
         val homeGameList = mutableListOf<GameCateData>()
         gameCatList.forEach { category ->
-            val homeGame = GameCateData(GameCategory.getCategory(category.code))
-            homeGame.category.title = category.typeName //類別名稱
+            val homeGame = GameCateData(ThirdGameCategory.getCategory(category.code))
+            homeGame.categoryThird.title = category.typeName //類別名稱
             homeGame.isShowTabLayout = true
 
             //2. 第二層 tab 按鈕
@@ -1267,11 +1269,11 @@ class MainViewModel(
         return pageList
     }
 
-    private fun createSingleThirdGame(category: GameCategory, gameFirm: GameFirmValues): GameItemData {
+    private fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {
         //20190716 若 thirdDict 清單資料為空，用 gameFirm 產生一筆，
         val thirdDict = ThirdDictValues(
             id = gameFirm.id,
-            gameCategory = category.code,
+            gameCategory = gameCategory.code,
             chineseName = gameFirm.firmName,
             englishName = gameFirm.firmName,
             firmType = gameFirm.firmType,

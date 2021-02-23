@@ -29,7 +29,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
-import org.cxct.sportlottery.ui.main.entity.GameCategory
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.JumpUtil
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -266,10 +266,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         //第三方遊戲開啟才顯示 類別 tabLayout
         tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
 
-        refreshGameLive(cateDataList?.find { it.category == GameCategory.LIVE })
-        refreshGameQP(cateDataList?.find { it.category == GameCategory.QP })
-        refreshGameDZ(cateDataList?.find { it.category == GameCategory.DZ })
-        refreshGameBY(cateDataList?.find { it.category == GameCategory.BY })
+        refreshGameLive(cateDataList?.find { it.categoryThird == ThirdGameCategory.LIVE })
+        refreshGameQP(cateDataList?.find { it.categoryThird == ThirdGameCategory.QP })
+        refreshGameDZ(cateDataList?.find { it.categoryThird == ThirdGameCategory.DZ })
+        refreshGameBY(cateDataList?.find { it.categoryThird == ThirdGameCategory.BY })
     }
 
     //真人
