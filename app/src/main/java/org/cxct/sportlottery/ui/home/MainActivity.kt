@@ -24,7 +24,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
@@ -40,7 +40,7 @@ import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) {
+class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效
@@ -368,8 +368,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         receiver.userNotice.observe(this, Observer {
             //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
             it?.userNoticeList?.let { list ->
-                if (list.isNotEmpty())
-                    UserNoticeDialog(this).setNoticeList(list).show()
+                viewModel.setUserNoticeList(list)
             }
         })
 
