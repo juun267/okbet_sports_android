@@ -132,18 +132,27 @@
         app:layout_constraintBottom_toBottomOf="@id/guidelineBottom">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/desc_no_account"
-            android:textColor="@color/gray4"
-            android:textSize="@dimen/textSize12sp" />
-
-        <TextView
             android:id="@+id/btn_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="@string/sign_up_know"
+            android:text="@string/sign_up_now"
+            android:textColor="@color/pumpkinOrange"
+            android:textSize="@dimen/textSize12sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="12dp"
+            android:background="@color/bright_gray"
+            android:layout_marginHorizontal="4dp"
+            />
+
+        <TextView
+            android:id="@+id/btn_visit_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/visit_first"
             android:textColor="@color/pumpkinOrange"
             android:textSize="@dimen/textSize12sp" />
 

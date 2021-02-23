@@ -2,12 +2,11 @@ package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -15,6 +14,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
@@ -131,6 +131,43 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         }
 
         return loginResponse
+    }
+
+    suspend fun loginForGuest(): Response<LoginResult> {
+
+        val loginForGuestResponse = OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
+
+        if (loginForGuestResponse.isSuccessful) {
+            loginForGuestResponse.body()?.let {
+                        isCheckToken = true
+                        updateLoginData(it.loginData)
+                        updateUserInfo(it.loginData)
+            }
+        }
+
+        return loginForGuestResponse
+    }
+
+    private fun getDeviceName(): String {
+        val manufacturer: String = Build.MANUFACTURER
+        val model: String = Build.MODEL
+        return if (model.startsWith(manufacturer)) {
+            capitalize(model)
+        } else {
+            capitalize(manufacturer) + " " + model
+        }
+    }
+
+    private fun capitalize(s: String?): String {
+        if (s == null || s.isEmpty()) {
+            return ""
+        }
+        val first = s[0]
+        return if (Character.isUpperCase(first)) {
+            s
+        } else {
+            Character.toUpperCase(first).toString() + s.substring(1)
+        }
     }
 
     suspend fun checkToken(): Response<LoginResult> {

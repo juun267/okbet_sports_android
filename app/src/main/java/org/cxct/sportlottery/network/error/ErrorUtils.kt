@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
+import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
@@ -269,6 +270,11 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return WithdrawInfoResult(it.code, it.msg,  it.success, null) as T
                     }
+                    (url.contains(LOGIN_FOR_GUEST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LoginResult(it.code, it.msg, it.success, null) as T
+                    }
+
                 }
             }
         }

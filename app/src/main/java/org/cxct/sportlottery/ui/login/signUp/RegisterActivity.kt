@@ -20,6 +20,7 @@ import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.MD5Util
@@ -346,6 +347,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+
+        btn_visit_first.setOnClickListener {
+            viewModel.loginAsGuest()
+        }
     }
 
     private fun initObserve() {
@@ -368,6 +373,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         viewModel.checkAccountResult.observe(this, Observer {
             updateUiWithResult(it)
         })
+
+        viewModel.loginForGuestResult.observe(this) {
+            updateUiWithResult(it)
+        }
     }
 
     private fun updateUiWithResult(state: RegisterFormState) {

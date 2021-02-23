@@ -102,7 +102,7 @@
 
                 <TextView
                     android:id="@+id/tv_num"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
@@ -112,7 +112,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/rl_input"
                     app:layout_constraintStart_toEndOf="@+id/rl_input"
                     app:layout_constraintTop_toTopOf="@id/rl_input"
-                    app:layout_constraintWidth_percent="0.139"
                     tools:text="x1" />
 
                 <LinearLayout
@@ -139,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="--"
+                        android:text="--RMB"
                         android:textColor="@color/textGray"
                         android:textSize="12sp" />
 
