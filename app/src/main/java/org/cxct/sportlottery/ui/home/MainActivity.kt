@@ -425,29 +425,11 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     }
 
     private fun nonSelectTab(){
-        val tabAll = tabLayout.getTabAt(0)?.customView
-        tabAll?.tv_title?.isSelected = false
-        tabAll?.tv_number?.isSelected = false
-
-        val tabInPlay = tabLayout.getTabAt(1)?.customView
-        tabInPlay?.tv_title?.isSelected = false
-        tabInPlay?.tv_number?.isSelected = false
-
-        val tabToday = tabLayout.getTabAt(2)?.customView
-        tabToday?.tv_title?.isSelected = false
-        tabToday?.tv_number?.isSelected = false
-
-        val tabEarly = tabLayout.getTabAt(3)?.customView
-        tabEarly?.tv_title?.isSelected = false
-        tabEarly?.tv_number?.isSelected = false
-
-        val tabParlay = tabLayout.getTabAt(4)?.customView
-        tabParlay?.tv_title?.isSelected = false
-        tabParlay?.tv_number?.isSelected = false
-
-        val tabOutright = tabLayout.getTabAt(5)?.customView
-        tabOutright?.tv_title?.isSelected = false
-        tabOutright?.tv_number?.isSelected = false
+        for (i in 0 until tabLayout.tabCount){
+            val tab = tabLayout.getTabAt(i)?.customView
+            tab?.tv_title?.isSelected = false
+            tab?.tv_number?.isSelected = false
+        }
     }
 
     private fun toAtStart(){
