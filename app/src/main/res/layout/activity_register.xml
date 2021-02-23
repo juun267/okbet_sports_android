@@ -127,8 +127,9 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="4dp"
+                app:cvEms="4"
                 app:cvHint="@string/hint_withdrawal_pwd"
-                app:cvInputType="number"
+                app:cvInputType="numberPassword"
                 app:cvTitle="@string/withdrawal_pwd" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
