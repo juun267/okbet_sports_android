@@ -36,14 +36,18 @@ class InfoCenterRepository {
     }
 
     suspend fun setMsgReaded(msgId: String): Response<InfoCenterResult> {
-        val noticeList = _unreadNoticeList.value?.toMutableList()
-        val noticeRead = noticeList?.find {
-            it.id == msgId.toInt()
-        }
-        noticeList?.remove(noticeRead)
-        _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
+        val response = OneBoSportApi.infoCenterService.setMsgReaded(msgId)
 
-        return OneBoSportApi.infoCenterService.setMsgReaded(msgId)
+        if (response.isSuccessful) {
+            val noticeList = _unreadNoticeList.value?.toMutableList()
+            val noticeRead = noticeList?.find {
+                it.id == msgId.toInt()
+            }
+            noticeList?.remove(noticeRead)
+            _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
+        }
+
+        return response
     }
 
     fun setUserNoticeList(userNoticeList: List<UserNotice>) {
