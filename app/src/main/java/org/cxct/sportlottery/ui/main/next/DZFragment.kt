@@ -1,14 +1,16 @@
 package org.cxct.sportlottery.ui.main.next
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.content_dz_adapter.view.*
 import kotlinx.android.synthetic.main.fragment_dz.*
 import org.cxct.sportlottery.R
 
@@ -38,25 +40,29 @@ class DZFragment : Fragment() {
 
 }
 
-class DzVpAdapter(private val titleList: List<Int>): RecyclerView.Adapter<DzVpAdapter.ItemViewHolder>() {
+class DzVpAdapter(private val tabPageDataList: List<Int>): RecyclerView.Adapter<DzVpAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
-        val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.view_dz_adapter, viewGroup, false)
+        val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_dz_adapter, viewGroup, false)
         return ItemViewHolder(layout)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind()
     }
 
     override fun getItemCount(): Int {
-        return titleList.size
+        return tabPageDataList.size
     }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val testDataList = listOf(R.string.sport, R.string.cp, R.string.live, R.string.qp, R.string.dz, R.string.by)
+        private val dzSubRvAdapter = DzSubRvAdapter()
 
         fun bind() {
             itemView.apply {
-
+                rv_dz_sub.adapter = dzSubRvAdapter
+                dzSubRvAdapter.dataList = testDataList
             }
         }
 

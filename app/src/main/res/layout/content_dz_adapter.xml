@@ -6,21 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="test"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_dz_sub"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
-        tools:itemCount="22"
-        tools:listitem="@layout/content_qp_sub_item" />
-
+        tools:itemCount="20"
+        tools:listitem="@layout/content_qp_sub_rv_item" />
 
 </FrameLayout>
