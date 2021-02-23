@@ -37,16 +37,21 @@ import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.third_game.third_games.GameCategory
+import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
+import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.third_game.third_games.ThirdGameData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.main.entity.HomeCatePageData
+import org.cxct.sportlottery.ui.main.entity.HomeGameItemData
+import org.cxct.sportlottery.ui.main.entity.HomeTabPageData
+import org.cxct.sportlottery.ui.main.entity.MainCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 
@@ -216,6 +221,10 @@ class MainViewModel(
     private val _popImageList = MutableLiveData<List<ImageData>>()
     val popImageList: LiveData<List<ImageData>>
         get() = _popImageList
+
+    private val _homeCatePageDataList = MutableLiveData<List<HomeCatePageData>>()
+    val homeCatePageDataList: LiveData<List<HomeCatePageData>>
+        get() = _homeCatePageDataList
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -1155,4 +1164,138 @@ class MainViewModel(
             betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
         }
     }
+
+    fun getThirdGame() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.getThirdGames()
+            }
+
+            if (result?.success == true) {
+                val homeCatePageList = createHomeGameList(result.t)
+                _homeCatePageDataList.postValue(homeCatePageList)
+            } else {
+                //TODO simon test 獲取第三方遊戲配置失敗
+            }
+        }
+    }
+
+    private fun createHomeGameList(thirdGameData: ThirdGameData?): MutableList<HomeCatePageData> {
+        //1. 第一層 category 按鈕
+        val gameCatList = mutableListOf<GameCategory>()
+
+        //第三方遊戲開啟判斷
+        if (sConfigData?.thirdOpen == "1") {
+            //判斷第一層級按鈕，各別要不要顯示 //category 內至少要有一項 open Game，才要顯示此 category
+            thirdGameData?.gameCategories?.forEach gameCatList@{ categories ->
+                categories.gameFirmIds?.split(",")?.forEach { gameFirmId ->
+                    thirdGameData.gameFirmMap?.forEach {
+                        val gameFirm = it.value
+                        if (gameFirm.id.toString() == gameFirmId && gameFirm.open == 1) {
+                            gameCatList.add(categories)
+                            return@gameCatList
+                        }
+                    }
+                }
+            }
+
+            //cate list 排序，sort 從小到大排序
+            gameCatList.sortBy { it.sort }
+        }
+
+        val homeGameList = mutableListOf<HomeCatePageData>()
+        gameCatList.forEach { category ->
+            val homeGame = HomeCatePageData(MainCategory.getCategory(category.code))
+            homeGame.category.title = category.typeName //類別名稱
+            homeGame.isShowTabLayout = true
+
+            //2. 第二層 tab 按鈕
+            val gameFirmList = mutableListOf<GameFirmValues>()
+            category.gameFirmIds?.split(",")?.forEach { gameFirmId ->
+                thirdGameData?.gameFirmMap?.forEach gameFirmMap@{ data ->
+                    val gameFirm = data.value
+                    if (gameFirm.id.toString() == gameFirmId && gameFirm.open == 1) {
+                        gameFirmList.add(gameFirm)
+                        return@gameFirmMap
+                    }
+                }
+            }
+
+            //tab list 排序，sort 從小到大排序
+            gameFirmList.sortBy { it.sort }
+
+            var isTabHasNoGameCount = 0 //在第二層中的tab，裡面的第三層game是否為空
+            val singlePageList = mutableListOf<HomeGameItemData>() //某些第三方遊戲只有兩層資料結構，所以需要獨立創建 singlePageList
+            gameFirmList.forEach { gameFirm ->
+                //3. 第三層 game 按鈕
+                val pageList = createThirdGamePage(thirdGameData, gameFirm)
+
+                //若第三層產生清單為空，用 gameFirm 產生一個 第三層按鈕
+                if (pageList.isEmpty()) {
+                    isTabHasNoGameCount += 1 //第二層中的tab裡面無遊戲
+                    singlePageList.add(createSingleThirdGame(category, gameFirm))
+                } else {
+                    val iconUrl = GameConfigManager.getThirdGameTabIconUrlFirm(category.code, gameFirm.firmCode)
+                    homeGame.tabPageDataList.add(HomeTabPageData(tabTitle = gameFirm.firmName, gameList = pageList, imageStyleLayout = false, iconUrl = iconUrl))
+                }
+            }
+            if (singlePageList.isNotEmpty() && (isTabHasNoGameCount == gameFirmList.size)) { //如果有第三層遊戲 且 所有tab底下皆無遊戲
+                homeGame.isShowTabLayout = false
+                homeGame.tabPageDataList.add(HomeTabPageData(null, singlePageList, true))
+            }
+
+            homeGameList.add(homeGame)
+        }
+
+        return homeGameList
+    }
+
+    private fun createThirdGamePage(thirdGameData: ThirdGameData?, gameFirm: GameFirmValues): MutableList<HomeGameItemData> {
+        val pageList = mutableListOf<HomeGameItemData>()
+        thirdGameData?.thirdDictMap?.get(gameFirm.firmCode)?.forEach { thirdDict ->
+            if (thirdDict?.gameCode == null)
+                thirdDict?.gameCode = gameFirm.playCode
+
+            //20200120 記錄問題: 修正電子類遊戲無法進入的問題 by Bee
+            thirdDict?.open = gameFirm.open
+
+            val entity = HomeGameItemData()
+            entity.dataType = HomeGameItemData.DataType.THIRD_GAME
+            entity.thirdGameData = thirdDict
+            pageList.add(entity)
+        }
+
+        //page list 排序，sort 從小到大排序
+        pageList.sortBy { it.thirdGameData?.sort }
+
+        return pageList
+    }
+
+    private fun createSingleThirdGame(category: GameCategory, gameFirm: GameFirmValues): HomeGameItemData {
+        //20190716 若 thirdDict 清單資料為空，用 gameFirm 產生一筆，
+        val thirdDict = ThirdDictValues(
+            id = gameFirm.id,
+            gameCategory = category.code,
+            chineseName = gameFirm.firmName,
+            englishName = gameFirm.firmName,
+            firmType = gameFirm.firmType,
+            firmCode = gameFirm.firmCode,
+            sort = gameFirm.sort,
+            gameCode = gameFirm.playCode,
+            isH5 = null,
+            isFlash = null,
+            imageName = null,
+            h5ImageName = null,
+            gameType = null
+        )
+
+        thirdDict.open = gameFirm.open
+
+        val entity = HomeGameItemData()
+        entity.dataType = HomeGameItemData.DataType.THIRD_GAME
+        entity.thirdGameData = thirdDict
+
+        return entity
+    }
+
 }

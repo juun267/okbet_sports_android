@@ -87,8 +87,11 @@ class VersionUpdateViewModel(
             e.printStackTrace()
             if (++mServerUrlIndex in Constants.SERVER_URL_LIST.indices)
                 check(compareFun)
-            else
+            else {
                 _appVersionState.postValue(AppVersionState(false, BuildConfig.VERSION_CODE.toString(), BuildConfig.VERSION_NAME))
+                val version = BuildConfig.VERSION_CODE.toString()+"_"+BuildConfig.VERSION_NAME
+                _appMinVersionState.postValue(AppMinVersionState(false, isForceUpdate = false, version = version))
+            }
         }
     }
 
