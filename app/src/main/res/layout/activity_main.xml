@@ -89,6 +89,11 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/mainFragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"

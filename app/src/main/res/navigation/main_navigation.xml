@@ -10,6 +10,15 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
 
+        <action
+            android:id="@+id/action_mainFragment_to_homeStartNextPageFragment"
+            app:destination="@id/homeStartNextPageFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/homeStartNextPageFragment"
+        android:name="org.cxct.sportlottery.ui.main.next.MainCategoryFragment"
+        android:label="HomeStartNextPageFragment"
+        tools:layout="@layout/fragment_main_category"/>
 
 </navigation>
