@@ -272,7 +272,7 @@ object ErrorUtils {
                     }
                     (url.contains(LOGIN_FOR_GUEST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return LoginForGuestResult(it.code, it.msg, it.success, null) as T
+                        return LoginResult(it.code, it.msg, it.success, null) as T
                     }
 
                 }
