@@ -36,9 +36,7 @@ class MainCategoryFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 }
 
-
 class VpFragmentPagerAdapter(private val titleList: List<Int>, fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
-    //ps. 不使用新版FragmentStateAdapter和vp2, 因為vp2會吃掉內層嵌套child viewpager的page swipe, 且vp2無法override去改寫
 
     override fun getCount(): Int {
         return titleList.size
