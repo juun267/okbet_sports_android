@@ -13,7 +13,12 @@ object TextUtil {
     }
 
     fun formatForOdd(any: Any):String{
-        val df = DecimalFormat("0.000")
+        val df = DecimalFormat("###,###,###,##0.000")
+        return df.format(any)
+    }
+
+    fun formatForBetHint(any: Any):String{
+        val df = DecimalFormat("###,###,###,###")
         return df.format(any)
     }
 

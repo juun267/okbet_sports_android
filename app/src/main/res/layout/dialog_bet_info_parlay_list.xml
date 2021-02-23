@@ -112,6 +112,7 @@
                                     android:textSize="14sp" />
 
                                 <ImageView
+                                    android:id="@+id/tv_to_game_rule"
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_centerVertical="true"

@@ -40,7 +40,9 @@ data class MatchOdd(
     @Json(name = "startTime")
     val startTime: Long,
     @Json(name = "status")
-    var status: Int = BetStatus.ACTIVATED.code
+    var status: Int = BetStatus.ACTIVATED.code,
+    @Json(name = "gameType")
+    var gameType: String,
 ){
     var oddState: Int = OddState.SAME.state
 

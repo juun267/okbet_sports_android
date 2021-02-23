@@ -1,11 +1,10 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,14 +14,15 @@ import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
-import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
-        BetInfoListAdapter.OnItemClickListener {
+    BetInfoListAdapter.OnItemClickListener {
 
 
     companion object {
@@ -44,7 +44,11 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
         binding.apply {
             mainViewModel = this@BetInfoListDialog.viewModel
@@ -84,7 +88,7 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
 
 
     private fun observeData() {
-        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
             } else {
@@ -94,12 +98,12 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { result ->
-                val m :String
+                val m: String
                 val color: Int
-                if(result.success){
+                if (result.success) {
                     m = resources.getString(R.string.bet_info_add_bet_success)
                     color = R.color.gray6
-                }else{
+                } else {
                     m = result.msg
                     color = R.color.red2
                 }
@@ -174,9 +178,16 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
     }
 
 
-    override fun onAddMoreClick() {
+    override fun onAddMoreClick(betInfoList: BetInfoListData) {
+        val bundle = Bundle().apply {
+            putString("gameType", betInfoList.matchOdd.gameType)
+            putString("matchId", betInfoList.matchOdd.matchId)
+            putString("matchType", betInfoList.matchType?.postValue)
+        }
+        val intent = Intent(context, MainActivity::class.java).apply {
+            putExtras(bundle)
+        }
+        context?.startActivity(intent)
         dismiss()
     }
-
-
 }
