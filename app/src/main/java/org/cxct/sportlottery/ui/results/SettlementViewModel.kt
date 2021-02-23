@@ -79,9 +79,9 @@ class SettlementViewModel(
                     this.settleRvPosition = settleRvPosition
                     this.gameResultRvPosition = gameResultRvPosition
                     this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
-                    requestListener.requestIng(false)
                 })
             }
+            requestListener.requestIng(false)
         }
     }
 
