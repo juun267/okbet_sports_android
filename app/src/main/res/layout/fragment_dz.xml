@@ -28,10 +28,27 @@
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable"
                 app:tabPaddingBottom="8dp"
-                app:tabRippleColor="@color/transparent" />
+                app:tabRippleColor="@color/transparent">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_sport"/>
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_cp" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_live"/>
+
+            </com.google.android.material.tabs.TabLayout>
 
 
-            <androidx.viewpager2.widget.ViewPager2
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
