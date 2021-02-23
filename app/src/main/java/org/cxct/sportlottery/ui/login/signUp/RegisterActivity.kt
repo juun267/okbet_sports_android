@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_register.*
@@ -264,7 +265,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun sendSms() {
         val phone = et_phone.getText()
         if (phone.isBlank())
-            showErrorDialog(getString(R.string.hint_phone_number))
+            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.hint_phone_number)) {}
         else {
             btn_send_sms.isEnabled = false
             viewModel.sendSms(phone)
@@ -433,7 +434,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         if (smsResult?.success == true) {
             showSmeTimer300()
         } else {
-            ToastUtil.showToastInCenter(this@RegisterActivity, smsResult?.msg)
+            smsResult?.msg?.let { showErrorPromptDialog(getString(R.string.prompt), it) {} }
+            showSmeTimer300()
         }
     }
 
@@ -446,19 +448,21 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun showSmeTimer300() {
         try {
             stopSmeTimer()
-            btn_send_sms.visibility = View.GONE
 
-            var sec = 300
+            var sec = 60
             mSmsTimer = Timer()
             mSmsTimer?.schedule(object : TimerTask() {
                 override fun run() {
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
-                            tv_timer.text = getString(R.string.send_timer, sec)
+                            btn_send_sms.isEnabled = false
+                            btn_send_sms.text = getString(R.string.send_timer, sec)
+                            btn_send_sms.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.colorPrimaryDark))
                         } else {
                             stopSmeTimer()
-                            btn_send_sms.visibility = View.VISIBLE
-                            tv_timer.text = null
+                            btn_send_sms.isEnabled = true
+                            btn_send_sms.text = getString(R.string.get_verification_code)
+                            btn_send_sms.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.white))
                         }
                     }
                 }
@@ -467,8 +471,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             e.printStackTrace()
 
             stopSmeTimer()
-            btn_send_sms.visibility = View.VISIBLE
-            tv_timer.text = null
+            btn_send_sms.isEnabled = true
+            btn_send_sms.text = getString(R.string.get_verification_code)
         }
     }
 

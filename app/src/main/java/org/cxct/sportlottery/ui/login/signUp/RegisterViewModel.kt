@@ -83,8 +83,8 @@ class RegisterViewModel(
         val facebookError = checkFacebook(context, facebook)
         val whatsAppError = checkWhatsApp(context, whatsApp)
         val telegramError = checkTelegram(context, telegram)
-        val securityCodeError = checkSecurityCode(context, securityCode)
         val validCodeError = checkValidCode(context, validCode)
+        val securityCodeError = checkSecurityCode(context, securityCode)
         val isDataValid = (sConfigData?.enableInviteCode != FLAG_OPEN || inviteCodeError == null) &&
                 memberAccountError == null &&
                 loginPasswordError == null &&
