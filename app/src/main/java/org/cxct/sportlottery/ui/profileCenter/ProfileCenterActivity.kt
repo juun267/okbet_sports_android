@@ -241,7 +241,7 @@ class ProfileCenterActivity :
 
         Glide.with(this)
             .load(userInfo?.iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head) //載入頭像
 
         tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {

@@ -362,7 +362,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
+        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
             iv_head
         ) //載入頭像
     }
