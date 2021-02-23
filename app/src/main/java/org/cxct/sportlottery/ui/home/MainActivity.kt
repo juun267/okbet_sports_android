@@ -203,9 +203,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                     5 -> {
                         navGameFragment(MatchType.OUTRIGHT)
                     }
-//                    6 -> {
-//                        navGameFragment(MatchType.AT_START)
-//                    }
                 }
             }
 
@@ -214,6 +211,12 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 popAllFragment()
+                if(tab?.position == 0){
+                    val tabView = tabLayout.getTabAt(0)?.customView
+                    tabView?.tv_title?.isSelected = true
+                    tabView?.tv_number?.isSelected = true
+                    navController.popBackStack(R.id.homeFragment, false)
+                }
             }
         })
     }
