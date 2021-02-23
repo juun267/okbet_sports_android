@@ -12,11 +12,11 @@ import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
-import org.cxct.sportlottery.ui.main.entity.HomeGameItemData
+import org.cxct.sportlottery.ui.main.entity.GameItemData
 
 class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainGameRvAdapter.ItemViewHolder>() {
 
-    private var mDataList: MutableList<HomeGameItemData> = mutableListOf()
+    private var mDataList: MutableList<GameItemData> = mutableListOf()
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null
     private val mRequestOptions = RequestOptions()
         .centerCrop()
@@ -53,7 +53,7 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
         Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 
-    fun setData(newDataList: MutableList<HomeGameItemData>?) {
+    fun setData(newDataList: MutableList<GameItemData>?) {
         mDataList = newDataList ?: mutableListOf() //若 newDataList == null，則給一個空 list
         notifyDataSetChanged()
     }

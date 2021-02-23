@@ -12,14 +12,12 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainFragment
 import org.cxct.sportlottery.ui.main.MainFragmentDirections
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -27,7 +25,7 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) {
+class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效
@@ -146,8 +144,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         receiver.userNotice.observe(this, Observer {
             //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
             it?.userNoticeList?.let { list ->
-                if (list.isNotEmpty())
-                    UserNoticeDialog(this).setNoticeList(list).show()
+                viewModel.setUserNoticeList(list)
             }
         })
 

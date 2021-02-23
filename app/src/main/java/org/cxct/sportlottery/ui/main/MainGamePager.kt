@@ -11,11 +11,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.common.AlignLeftSnapHelper
-import org.cxct.sportlottery.ui.main.entity.HomeGameItemData
+import org.cxct.sportlottery.ui.main.entity.GameItemData
 
 class MainGamePager @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
-    private var mDataList = mutableListOf<HomeGameItemData>()
+    private var mDataList = mutableListOf<GameItemData>()
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null
 
     private lateinit var mMainGameRvAdapter: MainGameRvAdapter
@@ -60,7 +60,7 @@ class MainGamePager @JvmOverloads constructor(context: Context, attrs: Attribute
         mOnSelectThirdGameListener = onSelectItemListener
     }
 
-    fun setData(newDataList: MutableList<HomeGameItemData>?) {
+    fun setData(newDataList: MutableList<GameItemData>?) {
         mDataList = newDataList ?: mutableListOf()
         refreshView()
     }
