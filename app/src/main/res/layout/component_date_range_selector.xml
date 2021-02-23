@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:text="@string/start_date"
-        android:textSize="13sp"
+        android:textSize="@dimen/textSize13sp"
         app:layout_constraintBottom_toBottomOf="@id/ll_start_date"
         app:layout_constraintStart_toStartOf="@id/ll_start_date"
         app:layout_constraintTop_toTopOf="@id/ll_start_date" />
