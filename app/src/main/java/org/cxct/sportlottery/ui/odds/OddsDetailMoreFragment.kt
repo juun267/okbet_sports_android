@@ -12,9 +12,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.game.GameViewModel
 
-class OddsDetailMoreFragment : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class), OddsDetailMoreAdapter.OnItemClickListener {
+class OddsDetailMoreFragment : BaseBottomSheetFragment<GameViewModel>(GameViewModel::class), OddsDetailMoreAdapter.OnItemClickListener {
 
     private var matchOddList: MutableList<MoreGameEntity> = mutableListOf()
 

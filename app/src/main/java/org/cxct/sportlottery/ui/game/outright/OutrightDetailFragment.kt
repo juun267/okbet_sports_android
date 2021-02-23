@@ -18,14 +18,14 @@ import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.game.GameViewModel
 import timber.log.Timber
 
 
 private const val ARG_EVENT_ID = "eventId"
 private const val ARG_GAME_TYPE = "gameType"
 
-class OutrightDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
+class OutrightDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     //just for service subscribe use
     private var eventId: String? = null
     private var gameType: String? = null

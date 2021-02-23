@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_navigation"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="org.cxct.sportlottery.ui.game.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_gameFragment"
+            app:destination="@id/gameFragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="org.cxct.sportlottery.ui.game.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game">
+        <argument
+            android:name="matchType"
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        <action
+            android:id="@+id/action_gameFragment_to_gameFragment"
+            app:destination="@id/gameFragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
+        <action
+            android:id="@+id/action_gameFragment_to_game2Fragment"
+            app:destination="@id/game2Fragment" />
+        <action
+            android:id="@+id/action_gameFragment_to_betListDialog"
+            app:destination="@id/betListDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/game2Fragment"
+        android:name="org.cxct.sportlottery.ui.game.GameDetailFragment"
+        android:label="fragment_game2"
+        tools:layout="@layout/fragment_game_detail">
+        <argument
+            android:name="oddsListId"
+            app:argType="string" />
+        <argument
+            android:name="matchType"
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        <argument
+            android:name="startTime"
+            app:argType="string" />
+        <argument
+            android:name="endTime"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_game2Fragment_to_gameFragment"
+            app:destination="@+id/gameFragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
+        <action
+            android:id="@+id/action_game2Fragment_to_betListDialog"
+            app:destination="@id/betListDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/betListDialog"
+        android:name="org.cxct.sportlottery.ui.game.BetListDialog"
+        android:label="dialog_bet_list"
+        tools:layout="@layout/dialog_bet_list" />
+</navigation>

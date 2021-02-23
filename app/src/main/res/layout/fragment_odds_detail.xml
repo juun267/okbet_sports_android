@@ -10,8 +10,8 @@
             type="org.cxct.sportlottery.ui.odds.OddsDetailFragment" />
 
         <variable
-            name="oddsDetailViewModel"
-            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+            name="gameViewModel"
+            type="org.cxct.sportlottery.ui.game.GameViewModel" />
     </data>
 
     <LinearLayout
@@ -61,7 +61,7 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@+id/ll_type_name"
                 android:gravity="center"
-                android:text="@{oddsDetailViewModel.oddsDetailResult.oddsDetailData.league.name}"
+                android:text="@{gameViewModel.oddsDetailResult.oddsDetailData.league.name}"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
 
