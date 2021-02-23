@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.HomeCatePageData
 import org.cxct.sportlottery.ui.main.entity.HomeGameItemData
@@ -375,8 +377,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupSport() {
-        btn_update.setOnClickListener {
-            //TODO simon test 體育賽事跳轉
+        btn_sport.setOnClickListener {
+            startActivity(Intent(activity, GameActivity::class.java))
         }
     }
 
