@@ -26,6 +26,7 @@
         </attr>
         <attr name="cvEnableVerificationCode" format="boolean" />
         <attr name="cvEnableMoreBtn" format="boolean" />
+        <attr name="cvSpanCount" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="SpinnerWithTitleAtStartStyle">

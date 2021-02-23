@@ -102,7 +102,7 @@
 
             <!-- 遊戲類別列表 -->
             <LinearLayout
-                android:id="@+id/tabLayout"
+                android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -183,7 +183,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/tabLayout">
+                app:layout_constraintTop_toBottomOf="@id/tab_layout">
 
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_sport"
@@ -230,12 +230,24 @@
                     app:cvEnableMoreBtn="true"
                     app:cvIcon="@drawable/ic_main_label_live" />
 
+                <org.cxct.sportlottery.ui.main.MainGamePager
+                    android:id="@+id/liveGamePager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvSpanCount="3"/>
+
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_poker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cvEnableMoreBtn="true"
                     app:cvIcon="@drawable/ic_main_label_poker" />
+
+                <org.cxct.sportlottery.ui.main.MainGamePager
+                    android:id="@+id/pokerGamePager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvSpanCount="1"/>
 
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_slot"
@@ -244,12 +256,24 @@
                     app:cvEnableMoreBtn="true"
                     app:cvIcon="@drawable/ic_main_label_slot" />
 
+                <org.cxct.sportlottery.ui.main.MainGamePager
+                    android:id="@+id/slotGamePager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvSpanCount="2"/>
+
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_fishing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cvEnableMoreBtn="true"
                     app:cvIcon="@drawable/ic_main_label_fishing" />
+
+                <org.cxct.sportlottery.ui.main.MainGamePager
+                    android:id="@+id/fishingGamePager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvSpanCount="2"/>
 
             </LinearLayout>
 

@@ -1,13 +1,20 @@
 package org.cxct.sportlottery.ui.game
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_game.drawer_layout
@@ -22,74 +29,92 @@ import kotlinx.android.synthetic.main.view_toolbar_main.*
 import kotlinx.android.synthetic.main.view_toolbar_main.btn_login
 import kotlinx.android.synthetic.main.view_toolbar_main.btn_register
 import kotlinx.android.synthetic.main.view_toolbar_main.iv_head
+import kotlinx.android.synthetic.main.view_toolbar_main.iv_logo
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ActivityGameBinding
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.home.HomeFragmentDirections
+import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.home.UserNoticeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.ui.results.GameType
+import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) {
+
+    companion object {
+        //切換語系，activity 要重啟才會生效
+        fun reStart(context: Context) {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+    }
+
+    private val mSplashViewModel: SplashViewModel by viewModel()
+
+    private lateinit var mainBinding: ActivityGameBinding
+
+    private val mMarqueeAdapter = MarqueeAdapter()
+
+    enum class Page {
+        ODDS_DETAIL, ODDS, OUTRIGHT
+    }
 
     private val navController by lazy {
         findNavController(R.id.homeFragment)
     }
 
-    private val mMarqueeAdapter by lazy {
-        MarqueeAdapter()
-    }
-
-    private val tabAll by lazy {
-        tabLayout.getTabAt(0)?.customView
-    }
-    private val tabInPlay by lazy {
-        tabLayout.getTabAt(1)?.customView
-    }
-    private val tabToday by lazy {
-        tabLayout.getTabAt(2)?.customView
-    }
-    private val tabEarly by lazy {
-        tabLayout.getTabAt(3)?.customView
-    }
-    private val tabParlay by lazy {
-        tabLayout.getTabAt(4)?.customView
-    }
-    private val tabOutright by lazy {
-        tabLayout.getTabAt(5)?.customView
-    }
-    private val tabAtStart by lazy {
-        tabLayout.getTabAt(6)?.customView
-    }
-
+    private var closeOddsDetail = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game)
+        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
 
-        setupToolbar()
-        setupDrawer()
-        setupMessage()
-        setupTabLayout()
+        mainBinding.apply {
+            gameViewModel = this@GameActivity.viewModel
+            lifecycleOwner = this@GameActivity
+        }
 
-        initObserver()
+        initToolBar()
+        initMenu()
+        initRvMarquee()
+        refreshTabLayout(null)
+        initObserve()
+
+        //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
+        if (mSplashViewModel.isNeedGetHost())
+            mSplashViewModel.getHost()
     }
 
     override fun onResume() {
         super.onResume()
-
         rv_marquee.startAuto()
     }
 
     override fun onPause() {
         super.onPause()
-
         rv_marquee.stopAuto()
     }
 
-    private fun setupToolbar() {
+    private fun initToolBar() {
+        iv_logo.setImageResource(R.drawable.ic_logo)
+        iv_logo.setOnClickListener {
+            tabLayout.getTabAt(0)?.select()
+        }
+
+        //頭像 當 側邊欄 開/關
         iv_head.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
@@ -106,7 +131,7 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun setupDrawer() {
+    private fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -117,41 +142,94 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
             menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun setupMessage() {
-        rv_marquee.apply {
-            layoutManager =
-                LinearLayoutManager(this@GameActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = mMarqueeAdapter
-        }
+    //公告
+    private fun initRvMarquee() {
+        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_marquee.adapter = mMarqueeAdapter
     }
 
-    private fun setupTabLayout() {
-        tabAll?.tv_title?.setText(R.string.home_tab_all)
-        tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
-        tabToday?.tv_title?.setText(R.string.home_tab_today)
-        tabEarly?.tv_title?.setText(R.string.home_tab_early)
-        tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
-        tabOutright?.tv_title?.setText(R.string.home_tab_outright)
-        tabAtStart?.visibility = View.GONE
+    private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
+        try {
+            val countInPlay =
+                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+            val countToday =
+                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+            val countEarly =
+                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countParlay =
+                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countOutright =
+                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+            val countAsStart = sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
+
+            val tabAll = tabLayout.getTabAt(0)?.customView
+            tabAll?.tv_title?.setText(R.string.home_tab_all)
+            tabAll?.tv_number?.text = countParlay.toString() //等於串關數量
+
+            val tabInPlay = tabLayout.getTabAt(1)?.customView
+            tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
+            tabInPlay?.tv_number?.text = countInPlay.toString()
+
+            val tabToday = tabLayout.getTabAt(2)?.customView
+            tabToday?.tv_title?.setText(R.string.home_tab_today)
+            tabToday?.tv_number?.text = countToday.toString()
+
+            val tabEarly = tabLayout.getTabAt(3)?.customView
+            tabEarly?.tv_title?.setText(R.string.home_tab_early)
+            tabEarly?.tv_number?.text = countEarly.toString()
+
+            val tabParlay = tabLayout.getTabAt(4)?.customView
+            tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
+            tabParlay?.tv_number?.text = countParlay.toString()
+
+            val tabOutright = tabLayout.getTabAt(5)?.customView
+            tabOutright?.tv_title?.setText(R.string.home_tab_outright)
+            tabOutright?.tv_number?.text = countOutright.toString()
+
+            val tabAtStart = tabLayout.getTabAt(6)?.customView
+            tabAtStart?.visibility = View.GONE
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        viewModel.isParlayPage(false)
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                popAllFragment()
+
+                if (closeOddsDetail) {
+                    popAllFragment()
+                }
+                viewModel.isParlayPage(tab?.position == 4)
 
                 when (tab?.position) {
-                    0 -> navController.popBackStack(R.id.homeFragment, false)
-                    1 -> navGameFragment(MatchType.IN_PLAY)
-                    2 -> navGameFragment(MatchType.TODAY)
-                    3 -> navGameFragment(MatchType.EARLY)
-                    4 -> navGameFragment(MatchType.PARLAY)
-                    5 -> navGameFragment(MatchType.OUTRIGHT)
-                    6 -> navGameFragment(MatchType.AT_START)
+                    0 -> {
+                        navController.popBackStack(R.id.homeFragment, false)
+                    }
+                    1 -> {
+                        navGameFragment(MatchType.IN_PLAY)
+                    }
+                    2 -> {
+                        navGameFragment(MatchType.TODAY)
+                    }
+                    3 -> {
+                        navGameFragment(MatchType.EARLY)
+                    }
+                    4 -> {
+                        navGameFragment(MatchType.PARLAY)
+                    }
+                    5 -> {
+                        navGameFragment(MatchType.OUTRIGHT)
+                    }
+                    6 -> {
+                        navGameFragment(MatchType.AT_START)
+                    }
                 }
             }
 
@@ -162,12 +240,6 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
                 popAllFragment()
             }
         })
-    }
-
-    private fun popAllFragment() {
-        for (i in 0 until supportFragmentManager.backStackEntryCount) {
-            supportFragmentManager.popBackStack()
-        }
     }
 
     private fun navGameFragment(matchType: MatchType) {
@@ -190,75 +262,207 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun initObserver() {
-        viewModel.isLogin.observe(this, Observer {
-            updateLoginWidget(it)
+    private fun addFragment(fragment: Fragment, page: Page) {
+        if (supportFragmentManager.findFragmentByTag(page.name) == null) {
+            supportFragmentManager.beginTransaction().setCustomAnimations(
+                R.anim.enter_from_right,
+                0
+            ).add(
+                R.id.odds_detail_container,
+                fragment,
+                page.name
+            ).addToBackStack(
+                page.name
+            ).commit()
+        }
+    }
 
-            viewModel.getMessage()
-            viewModel.getSportMenu()
-            loading()
+
+    override fun onBackPressed() {
+        if (navController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
+            tabLayout.getTabAt(0)?.select()
+            return
+        }
+
+        super.onBackPressed()
+    }
+
+    private fun initObserve() {
+        viewModel.isLogin.observe(this, Observer {
+            updateUiWithLogin(it)
+            queryData()
         })
 
         viewModel.messageListResult.observe(this, Observer {
             hideLoading()
-            updateMessage(it)
+            updateUiWithResult(it)
         })
 
-        viewModel.countInPlay.observe(this, Observer {
+        viewModel.sportMenuResult.observe(this, Observer {
             hideLoading()
-            tabInPlay?.tv_number?.text = it.toString()
+            updateUiWithResult(it)
         })
 
-        viewModel.countToday.observe(this, Observer {
-            hideLoading()
-            tabToday?.tv_number?.text = it.toString()
+        viewModel.curOddsDetailParams.observe(this, Observer {
+            val gameType = it[0]
+            val typeName = it[1]
+            val matchId = it[2] ?: ""
+            val oddsType = "EU"
+
+            getAppBarLayout().setExpanded(true, true)
+
+            addFragment(
+                OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
+                Page.ODDS_DETAIL
+            )
         })
 
-        viewModel.countEarly.observe(this, Observer {
-            hideLoading()
-            tabEarly?.tv_number?.text = it.toString()
-        })
-
-        viewModel.countParlay.observe(this, Observer {
-            hideLoading()
-            tabParlay?.tv_number?.text = it.toString()
-        })
-
-        viewModel.countOutright.observe(this, Observer {
-            hideLoading()
-            tabOutright?.tv_number?.text = it.toString()
-        })
-
-        viewModel.countAll.observe(this, Observer {
-            hideLoading()
-            tabAll?.tv_number?.text = it.toString()
-        })
-    }
-
-    private fun updateLoginWidget(isLogin: Boolean) {
-        when (isLogin) {
-            true -> {
-                btn_login.visibility = View.GONE
-                btn_register.visibility = View.GONE
-                toolbar_divider.visibility = View.GONE
-                iv_head.visibility = View.VISIBLE
+        viewModel.matchTypeCardForParlay.observe(this, Observer {
+            when (it) {
+                MatchType.PARLAY -> {
+                    tabLayout.getTabAt(4)?.select()
+                }
+                MatchType.AT_START -> {
+                    tabLayout.getTabAt(6)?.select()
+                }
+                else -> {
+                }
             }
-            false -> {
-                btn_login.visibility = View.VISIBLE
-                btn_register.visibility = View.VISIBLE
-                toolbar_divider.visibility = View.VISIBLE
-                iv_head.visibility = View.GONE
+        })
+
+        viewModel.openGameDetail.observe(this, Observer {
+            getAppBarLayout().setExpanded(true, true)
+            addFragment(GameDetailFragment.newInstance(it.second, it.first), Page.ODDS)
+
+        })
+
+        viewModel.openOutrightDetail.observe(this, Observer {
+            getAppBarLayout().setExpanded(true, true)
+            addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
+        })
+
+        viewModel.errorResultToken.observe(this, Observer {
+            viewModel.logout()
+        })
+
+        viewModel.userInfo.observe(this, Observer {
+            updateAvatar(it?.iconUrl)
+        })
+
+        receiver.userNotice.observe(this, Observer {
+            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
+            it?.userNoticeList?.let { list ->
+                if (list.isNotEmpty())
+                    UserNoticeDialog(this).setNoticeList(list).show()
             }
+        })
+
+        receiver.notice.observe(this, Observer {
+            hideLoading()
+            if (it != null) {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        receiver.sysMaintenance.observe(this) {
+            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
         }
     }
 
-    private fun updateMessage(messageList: List<String>) {
-        mMarqueeAdapter.setData(messageList.toMutableList())
-
-        if (messageList.isEmpty()) {
-            rv_marquee.stopAuto()
+    private fun updateUiWithLogin(isLogin: Boolean) {
+        if (isLogin) {
+            btn_login.visibility = View.GONE
+            btn_register.visibility = View.GONE
+            toolbar_divider.visibility = View.GONE
+            iv_head.visibility = View.VISIBLE
         } else {
-            rv_marquee.startAuto()
+            btn_login.visibility = View.VISIBLE
+            btn_register.visibility = View.VISIBLE
+            toolbar_divider.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
         }
     }
+
+    private fun updateUiWithResult(messageListResult: MessageListResult) {
+        val titleList: MutableList<String> = mutableListOf()
+        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
+
+        if (messageListResult.success && titleList.size > 0) {
+            rv_marquee.startAuto() //啟動跑馬燈
+        } else {
+            rv_marquee.stopAuto() //停止跑馬燈
+        }
+
+        mMarqueeAdapter.setData(titleList)
+    }
+
+    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
+        if (sportMenuResult?.success == true) {
+            refreshTabLayout(sportMenuResult)
+        }
+    }
+
+    private fun updateAvatar(iconUrl: String?) {
+        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
+            iv_head
+        ) //載入頭像
+    }
+
+    private fun queryData() {
+        getAnnouncement()
+        getSportMenu()
+    }
+
+    private fun getAnnouncement() {
+        viewModel.getAnnouncement()
+    }
+
+    private fun getSportMenu() {
+        loading()
+        viewModel.getSportMenu()
+    }
+
+    fun getAppBarLayout(): AppBarLayout {
+        return mainBinding.appBarLayout
+    }
+
+    private fun popAllFragment() {
+        val manager = supportFragmentManager
+        for (i in 0 until manager.backStackEntryCount) {
+            supportFragmentManager.popBackStack()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val bundle = intent.extras
+        val gameTypeList = GameType.values()
+        val typeName = gameTypeList.find { it.key == bundle?.getString("gameType") }?.string
+        val gameType = bundle?.getString("gameType")
+        val matchId = bundle?.getString("matchId")
+
+        val fragment: Fragment? = supportFragmentManager.findFragmentByTag(Page.ODDS_DETAIL.name)
+        if (fragment != null) {
+            closeOddsDetail = false
+            (fragment as OddsDetailFragment).refreshData(
+                gameType,
+                matchId,
+                typeName?.let { getString(it) })
+        } else {
+            viewModel.getOddsDetail(gameType, typeName?.let { getString(it) }, matchId)
+        }
+
+        when (bundle?.getString("matchType")) {
+            null, MatchType.IN_PLAY.postValue -> tabLayout.getTabAt(1)?.select()
+            MatchType.TODAY.postValue -> tabLayout.getTabAt(2)?.select()
+            MatchType.EARLY.postValue -> tabLayout.getTabAt(3)?.select()
+            MatchType.PARLAY.postValue -> tabLayout.getTabAt(4)?.select()
+            MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
+            MatchType.AT_START.postValue -> tabLayout.getTabAt(6)?.select()
+        }
+        closeOddsDetail = true
+    }
+
 }

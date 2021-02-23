@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,18 +11,25 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
-import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.entity.HomeCatePageData
+import org.cxct.sportlottery.ui.main.entity.HomeGameItemData
+import org.cxct.sportlottery.ui.main.entity.MainCategory
 import org.cxct.sportlottery.util.JumpUtil
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+
+    private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null //TODO simon test 第三方遊戲點擊 listener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -35,6 +41,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         getMarquee()
         getBanner()
         getPopImage()
+        getThirdGame()
 
         setupSport()
         setupLottery()
@@ -101,6 +108,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         //公告跑馬燈
         viewModel.messageListResult.observe(viewLifecycleOwner, Observer {
             setMarquee(it)
+        })
+
+        //第三方遊戲清單
+        viewModel.homeCatePageDataList.observe(viewLifecycleOwner, Observer {
+            setGameData(it)
         })
     }
 
@@ -170,6 +182,96 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         rv_marquee.adapter = adapter
     }
 
+    private fun setGameData(catePageDataList: List<HomeCatePageData>?) {
+        //第三方遊戲開啟才顯示 類別 tabLayout
+        tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
+
+        refreshGameLive(catePageDataList?.find { it.category == MainCategory.LIVE })
+        refreshGameQP(catePageDataList?.find { it.category == MainCategory.QP })
+        refreshGameDZ(catePageDataList?.find { it.category == MainCategory.DZ })
+        refreshGameBY(catePageDataList?.find { it.category == MainCategory.BY })
+    }
+
+    //真人
+    private fun refreshGameLive(cateData: HomeCatePageData?) {
+        val gameList = mutableListOf<HomeGameItemData>()
+
+        cateData?.tabPageDataList?.forEach {
+            it.gameList?.run { gameList.addAll(this) }
+        }
+
+        if (gameList.isEmpty()) {
+            label_live.visibility = View.GONE
+            liveGamePager.visibility = View.GONE
+        } else {
+            label_live.visibility = View.VISIBLE
+            liveGamePager.visibility = View.VISIBLE
+
+            liveGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            liveGamePager.setData(gameList)
+        }
+    }
+
+    //棋牌
+    private fun refreshGameQP(cateData: HomeCatePageData?) {
+        val gameList = mutableListOf<HomeGameItemData>()
+
+        cateData?.tabPageDataList?.forEach {
+            it.gameList?.run { gameList.addAll(this) }
+        }
+
+        if (gameList.isEmpty()) {
+            label_poker.visibility = View.GONE
+            pokerGamePager.visibility = View.GONE
+        } else {
+            label_poker.visibility = View.VISIBLE
+            pokerGamePager.visibility = View.VISIBLE
+
+            pokerGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            pokerGamePager.setData(gameList)
+        }
+    }
+
+    //電子
+    private fun refreshGameDZ(cateData: HomeCatePageData?) {
+        val gameList = mutableListOf<HomeGameItemData>()
+
+        cateData?.tabPageDataList?.forEach {
+            it.gameList?.run { gameList.addAll(this) }
+        }
+
+        if (gameList.isEmpty()) {
+            label_slot.visibility = View.GONE
+            slotGamePager.visibility = View.GONE
+        } else {
+            label_slot.visibility = View.VISIBLE
+            slotGamePager.visibility = View.VISIBLE
+
+            slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            slotGamePager.setData(gameList)
+        }
+    }
+
+    //捕魚
+    private fun refreshGameBY(cateData: HomeCatePageData?) {
+        val gameList = mutableListOf<HomeGameItemData>()
+
+        cateData?.tabPageDataList?.forEach {
+            it.gameList?.run { gameList.addAll(this) }
+        }
+
+        if (gameList.isEmpty()) {
+            label_fishing.visibility = View.GONE
+            fishingGamePager.visibility = View.GONE
+        } else {
+            label_fishing.visibility = View.VISIBLE
+            fishingGamePager.visibility = View.VISIBLE
+
+            fishingGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            fishingGamePager.setData(gameList)
+        }
+    }
+
     private fun getBanner() {
         viewModel.getBanner()
     }
@@ -180,6 +282,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getMarquee() {
         viewModel.getMarquee()
+    }
+
+    private fun getThirdGame() {
+        viewModel.getThirdGame()
     }
 
     private fun setupSport() {
