@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.home_game_card.view.*
 class MainTab @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     init {
-        val view = LayoutInflater.from(context).inflate(org.cxct.sportlottery.R.layout.home_start_tab, this, false)
+        val view = LayoutInflater.from(context).inflate(org.cxct.sportlottery.R.layout.main_tab, this, false)
         addView(view)
 
         val typedArray = context.theme

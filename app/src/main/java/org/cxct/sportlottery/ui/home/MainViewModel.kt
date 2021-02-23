@@ -1,12 +1,10 @@
 package org.cxct.sportlottery.ui.home
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.squareup.moshi.Json
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -16,7 +14,11 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -33,13 +35,9 @@ import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
@@ -211,6 +209,13 @@ class MainViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
+    private val _bannerList = MutableLiveData<List<ImageData>>()
+    val bannerList: LiveData<List<ImageData>>
+        get() = _bannerList
+
+    private val _popImageList = MutableLiveData<List<ImageData>>()
+    val popImageList: LiveData<List<ImageData>>
+        get() = _popImageList
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -257,12 +262,28 @@ class MainViewModel(
     }
 
     //獲取系統公告
-    fun getAnnouncement() {
+    fun getMarquee() {
         val messageType = "1"
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.messageService.getMessageList(messageType)
             }?.let { result -> _messageListResult.postValue(result) }
+        }
+    }
+
+    //獲取輪播圖
+    fun getBanner() {
+        //H5轮播: imageType = 2
+        sConfigData?.imageList?.filter { it.imageType == 2 }.apply {
+            _bannerList.postValue(this)
+        }
+    }
+
+    //獲取彈窗圖
+    fun getPopImage() {
+        //H5彈窗圖: imageType = 7
+        sConfigData?.imageList?.filter { it.imageType == 7 }.apply {
+            _popImageList.postValue(this)
         }
     }
 
@@ -865,7 +886,7 @@ class MainViewModel(
                 }
             }
         }
-       _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
+        _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
     }
 
     fun getOddsDetail(entity: GameEntity) {
