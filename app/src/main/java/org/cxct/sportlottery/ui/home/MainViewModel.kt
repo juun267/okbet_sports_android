@@ -1145,7 +1145,7 @@ class MainViewModel(
         }
     }
 
-    fun sportMenuSelectFT(matchType: MatchType) {
+    fun sportMenuSelectFirstItem(matchType: MatchType) {
 
         val menuData = _sportMenuResult.value?.sportMenuData?.menu
 

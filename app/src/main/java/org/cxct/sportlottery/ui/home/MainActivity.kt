@@ -223,7 +223,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun navGameFragment(matchType: MatchType) {
 
-        viewModel.sportMenuSelectFT(matchType)
+        viewModel.sportMenuSelectFirstItem(matchType)
 
         when (navController.currentDestination?.id) {
             R.id.homeFragment -> {
