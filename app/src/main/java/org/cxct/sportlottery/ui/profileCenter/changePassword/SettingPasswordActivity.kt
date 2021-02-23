@@ -159,7 +159,7 @@ class SettingPasswordActivity :
             showPromptDialog(getString(R.string.prompt), getString(R.string.update_withdrawal_pwd)) { finish() }
         } else {
             val errorMsg = updateFundPwdResult?.msg ?: getString(R.string.unknown_error)
-            showErrorDialog(errorMsg)
+            showErrorPromptDialog(getString(R.string.prompt), errorMsg) {}
         }
     }
 
