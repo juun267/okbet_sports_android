@@ -149,7 +149,7 @@ class SettingPasswordActivity :
             finish()
         } else {
             val errorMsg = updatePwdResult?.msg ?: getString(R.string.unknown_error)
-            showErrorDialog(errorMsg)
+            showErrorPromptDialog(getString(R.string.prompt), errorMsg) {}
         }
     }
 
@@ -170,10 +170,11 @@ class SettingPasswordActivity :
             et_new_password.setHint(getString(R.string.hint_register_password))
         } else {
             et_current_password.setTitle(getString(R.string.current_withdrawal_password))
-            et_current_password.setHint(if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
-                getString(R.string.hint_current_login_password)
-            else
-                getString(R.string.hint_current_withdrawal_password)
+            et_current_password.setHint(
+                if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
+                    getString(R.string.hint_current_login_password)
+                else
+                    getString(R.string.hint_current_withdrawal_password)
             )
             et_new_password.setHint(getString(R.string.hint_withdrawal_new_password))
         }
