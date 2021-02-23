@@ -127,8 +127,9 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="4dp"
+                app:cvEms="4"
                 app:cvHint="@string/hint_withdrawal_pwd"
-                app:cvInputType="number"
+                app:cvInputType="numberPassword"
                 app:cvTitle="@string/withdrawal_pwd" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
@@ -140,7 +141,7 @@
                 android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_qq_number"
                 app:cvInputType="number"
-                app:cvTitle="@string/qq" />
+                app:cvTitle="@string/qq_number" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_phone"
@@ -339,9 +340,8 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="12dp"
-                    android:background="@color/bright_gray"
                     android:layout_marginHorizontal="4dp"
-                    />
+                    android:background="@color/bright_gray" />
 
                 <TextView
                     android:id="@+id/btn_visit_first"

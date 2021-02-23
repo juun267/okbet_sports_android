@@ -106,7 +106,7 @@
             android:layout_height="53dp"
             android:layout_marginStart="30dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_head"
+            android:src="@drawable/img_avatar_default"
             app:layout_constraintBottom_toTopOf="@id/label_account_balance"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

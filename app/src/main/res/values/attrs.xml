@@ -10,6 +10,7 @@
         <attr name="cvIcon" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
+        <attr name="cvEms" format="integer"/>
         <attr name="cvInputType">
             <!-- Just plain old text.  Corresponds to
             {@link android.text.InputType#TYPE_CLASS_TEXT} |
@@ -23,6 +24,7 @@
             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
             {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
             <flag name="number" value="0x00000002" />
+            <flag name="numberPassword" value="0x00000012"/>
         </attr>
         <attr name="cvEnableVerificationCode" format="boolean" />
     </declare-styleable>

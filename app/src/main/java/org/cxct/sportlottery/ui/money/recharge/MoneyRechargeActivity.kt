@@ -69,9 +69,9 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             }
 
             //TODO Dean : 此處邏輯不應該寫在這裡, 應抽離出去
-            if (currentTab == RechargeType.TRANSFER_PAY){
+            if (currentTab == RechargeType.TRANSFER_PAY) {
                 bankTypeAdapter?.data = transferPayList
-            }else if(currentTab == RechargeType.ONLINE_PAY){
+            } else if (currentTab == RechargeType.ONLINE_PAY) {
                 bankTypeAdapter?.data = onlinePayList
             }
             when (currentTab) {
@@ -164,7 +164,6 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                 getPayFragment(transferPayList[0]),
                 "TransferPayFragment"
             )
-            viewModel.clearnRechargeStatus()
         }
         btn_online_pay.setOnClickListener {
             currentTab = RechargeType.ONLINE_PAY
@@ -176,7 +175,6 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                 getPayFragment(onlinePayList[0]),
                 "OnlinePayFragment"
             )
-            viewModel.clearnRechargeStatus()
         }
     }
 

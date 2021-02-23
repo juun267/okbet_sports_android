@@ -86,7 +86,7 @@ class SettingPasswordViewModel(
         return when {
             newPwd.isBlank() -> context.getString(R.string.missing_required_fields)
             pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD && !VerifyConstUtil.verifyPwd(newPwd) -> context.getString(R.string.error_register_password)
-            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> context.getString(R.string.hint_withdrawal_pwd)
+            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> context.getString(R.string.error_withdrawal_pwd)
             currentPwd == newPwd -> context.getString(R.string.error_password_cannot_be_same)
             else -> null
         }

@@ -246,7 +246,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (result.success) {
                 showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_delete_success)) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
-                showErrorPromptDialog(getString(R.string.text_bank_card_delete_fail), result.msg) {}
+                showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
             }
         })
 
