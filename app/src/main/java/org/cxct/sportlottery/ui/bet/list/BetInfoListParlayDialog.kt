@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_bet_info_item_action.*
+import kotlinx.android.synthetic.main.content_bet_info_item_action.tv_bet
+import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
@@ -25,6 +28,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
@@ -68,9 +72,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
     private fun initUI() {
         iv_close.setOnClickListener { dismiss() }
         tv_add_more.setOnClickListener { dismiss() }
-        tv_bet.setOnClickListener {
-            addBet()
-        }
+        tv_bet.setOnClickListener(object : OnForbidClickListener() {
+            override fun forbidClick(view: View?) {
+                addBet()
+            }
+        })
 
         tv_to_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext(), Constants.COMBO), getString(R.string.game_rule))
@@ -229,8 +235,8 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
         }
         val parlayList: MutableList<Stake> = mutableListOf()
         for (i in parlayAdapter.parlayOddList.indices) {
-            if (parlayAdapter.betQuotaList[i] > 0) {
-                parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.betQuotaList[i]))
+            if (parlayAdapter.sendBetQuotaList[i] > 0) {
+                parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.sendBetQuotaList[i]))
             }
         }
 

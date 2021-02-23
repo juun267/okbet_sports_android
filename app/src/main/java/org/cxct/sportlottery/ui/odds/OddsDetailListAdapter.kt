@@ -421,7 +421,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                         }
                                         onOddClickListener.getBetInfoList(odd)
                                     } else {
-                                        onOddClickListener.removeBetInfoItem(odd)
+                                        Handler().postDelayed({//讓ripple效果呈現出來
+                                            onOddClickListener.removeBetInfoItem(odd)
+                                        }, 200)
                                     }
                                 }
                             }

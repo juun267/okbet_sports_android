@@ -297,7 +297,7 @@
     <string name="no_data">沒有資料了</string>
     <string name="at_symbol">\u0040%s</string>
     <string name="plus_symbol">+%s</string>
-    <string name="minus_symbol">-%s</string>
+    <string name="minus_symbol">%s</string>
     <string name="not_start_yet">未开始</string>
     <string name="game_playing">比赛中</string>
     <string name="ended">已结束</string>
@@ -316,7 +316,7 @@
     <string name="bet_time">投注时间：</string>
     <string name="league_name">联赛名称：</string>
     <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
-    <string name="play_type">玩&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;法：</string>
+    <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s  vs  %s (客)</string>
     <string name="bet_item">投注项目 - %s</string>
