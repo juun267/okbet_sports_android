@@ -87,8 +87,18 @@ class VersionUpdateViewModel(
             e.printStackTrace()
             if (++mServerUrlIndex in Constants.SERVER_URL_LIST.indices)
                 check(compareFun)
-            else
-                _appVersionState.postValue(AppVersionState(false, BuildConfig.VERSION_CODE.toString(), BuildConfig.VERSION_NAME))
+            else {
+                _appVersionState.postValue(
+                    AppVersionState(
+                        false,
+                        BuildConfig.VERSION_CODE.toString(),
+                        BuildConfig.VERSION_NAME
+                    )
+                )
+
+                val version = "${BuildConfig.VERSION_CODE}_${BuildConfig.VERSION_NAME}"
+                _appMinVersionState.postValue(AppMinVersionState(false, false, version))
+            }
         }
     }
 
@@ -97,14 +107,27 @@ class VersionUpdateViewModel(
         val versionList = result.version?.split("_")
         val androidVersionCode = versionList?.get(0) ?: ""
         val androidVersionName = versionList?.get(1) ?: ""
-        _appVersionState.postValue(AppVersionState(isNewVersionCode, androidVersionCode, androidVersionName))
+        _appVersionState.postValue(
+            AppVersionState(
+                isNewVersionCode,
+                androidVersionCode,
+                androidVersionName
+            )
+        )
     }
 
     private fun compareMinVersion(result: CheckAppVersionResult) {
         val after72Hours = System.currentTimeMillis() - lastShowUpdateTime > 24 * 60 * 60 * 1000
-        val isShowUpdateDialog = after72Hours && result.check == FLAG_OPEN && judgeNewVersion(result)
+        val isShowUpdateDialog =
+            after72Hours && result.check == FLAG_OPEN && judgeNewVersion(result)
         val isForceUpdate = judgeForceUpdate(result)
-        _appMinVersionState.postValue(AppMinVersionState(isShowUpdateDialog, isForceUpdate, result.version?: ""))
+        _appMinVersionState.postValue(
+            AppMinVersionState(
+                isShowUpdateDialog,
+                isForceUpdate,
+                result.version ?: ""
+            )
+        )
     }
 
     private fun judgeForceUpdate(result: CheckAppVersionResult): Boolean {
