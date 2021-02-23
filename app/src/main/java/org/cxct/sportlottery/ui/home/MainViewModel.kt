@@ -37,7 +37,6 @@ import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGameData
@@ -46,10 +45,9 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
-import org.cxct.sportlottery.ui.main.entity.HomeCatePageData
-import org.cxct.sportlottery.ui.main.entity.HomeGameItemData
-import org.cxct.sportlottery.ui.main.entity.HomeTabPageData
-import org.cxct.sportlottery.ui.main.entity.MainCategory
+import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
@@ -222,8 +220,8 @@ class MainViewModel(
     val popImageList: LiveData<List<ImageData>>
         get() = _popImageList
 
-    private val _homeCatePageDataList = MutableLiveData<List<HomeCatePageData>>()
-    val homeCatePageDataList: LiveData<List<HomeCatePageData>>
+    private val _homeCatePageDataList = MutableLiveData<List<GameCateData>>()
+    val gameCateDataList: LiveData<List<GameCateData>>
         get() = _homeCatePageDataList
 
     fun isParlayPage(boolean: Boolean) {
@@ -1180,7 +1178,7 @@ class MainViewModel(
         }
     }
 
-    private fun createHomeGameList(thirdGameData: ThirdGameData?): MutableList<HomeCatePageData> {
+    private fun createHomeGameList(thirdGameData: ThirdGameData?): MutableList<GameCateData> {
         //1. 第一層 category 按鈕
         val gameCatList = mutableListOf<GameCategory>()
 
@@ -1203,9 +1201,9 @@ class MainViewModel(
             gameCatList.sortBy { it.sort }
         }
 
-        val homeGameList = mutableListOf<HomeCatePageData>()
+        val homeGameList = mutableListOf<GameCateData>()
         gameCatList.forEach { category ->
-            val homeGame = HomeCatePageData(MainCategory.getCategory(category.code))
+            val homeGame = GameCateData(GameCategory.getCategory(category.code))
             homeGame.category.title = category.typeName //類別名稱
             homeGame.isShowTabLayout = true
 
@@ -1225,7 +1223,7 @@ class MainViewModel(
             gameFirmList.sortBy { it.sort }
 
             var isTabHasNoGameCount = 0 //在第二層中的tab，裡面的第三層game是否為空
-            val singlePageList = mutableListOf<HomeGameItemData>() //某些第三方遊戲只有兩層資料結構，所以需要獨立創建 singlePageList
+            val singlePageList = mutableListOf<GameItemData>() //某些第三方遊戲只有兩層資料結構，所以需要獨立創建 singlePageList
             gameFirmList.forEach { gameFirm ->
                 //3. 第三層 game 按鈕
                 val pageList = createThirdGamePage(thirdGameData, gameFirm)
@@ -1236,12 +1234,12 @@ class MainViewModel(
                     singlePageList.add(createSingleThirdGame(category, gameFirm))
                 } else {
                     val iconUrl = GameConfigManager.getThirdGameTabIconUrlFirm(category.code, gameFirm.firmCode)
-                    homeGame.tabPageDataList.add(HomeTabPageData(tabTitle = gameFirm.firmName, gameList = pageList, imageStyleLayout = false, iconUrl = iconUrl))
+                    homeGame.tabDataList.add(GameTabData(tabTitle = gameFirm.firmName, gameList = pageList, iconUrl = iconUrl))
                 }
             }
             if (singlePageList.isNotEmpty() && (isTabHasNoGameCount == gameFirmList.size)) { //如果有第三層遊戲 且 所有tab底下皆無遊戲
                 homeGame.isShowTabLayout = false
-                homeGame.tabPageDataList.add(HomeTabPageData(null, singlePageList, true))
+                homeGame.tabDataList.add(GameTabData(null, singlePageList))
             }
 
             homeGameList.add(homeGame)
@@ -1250,8 +1248,8 @@ class MainViewModel(
         return homeGameList
     }
 
-    private fun createThirdGamePage(thirdGameData: ThirdGameData?, gameFirm: GameFirmValues): MutableList<HomeGameItemData> {
-        val pageList = mutableListOf<HomeGameItemData>()
+    private fun createThirdGamePage(thirdGameData: ThirdGameData?, gameFirm: GameFirmValues): MutableList<GameItemData> {
+        val pageList = mutableListOf<GameItemData>()
         thirdGameData?.thirdDictMap?.get(gameFirm.firmCode)?.forEach { thirdDict ->
             if (thirdDict?.gameCode == null)
                 thirdDict?.gameCode = gameFirm.playCode
@@ -1259,9 +1257,7 @@ class MainViewModel(
             //20200120 記錄問題: 修正電子類遊戲無法進入的問題 by Bee
             thirdDict?.open = gameFirm.open
 
-            val entity = HomeGameItemData()
-            entity.dataType = HomeGameItemData.DataType.THIRD_GAME
-            entity.thirdGameData = thirdDict
+            val entity = GameItemData(thirdDict)
             pageList.add(entity)
         }
 
@@ -1271,7 +1267,7 @@ class MainViewModel(
         return pageList
     }
 
-    private fun createSingleThirdGame(category: GameCategory, gameFirm: GameFirmValues): HomeGameItemData {
+    private fun createSingleThirdGame(category: GameCategory, gameFirm: GameFirmValues): GameItemData {
         //20190716 若 thirdDict 清單資料為空，用 gameFirm 產生一筆，
         val thirdDict = ThirdDictValues(
             id = gameFirm.id,
@@ -1291,11 +1287,7 @@ class MainViewModel(
 
         thirdDict.open = gameFirm.open
 
-        val entity = HomeGameItemData()
-        entity.dataType = HomeGameItemData.DataType.THIRD_GAME
-        entity.thirdGameData = thirdDict
-
-        return entity
+        return GameItemData(thirdDict)
     }
 
 }

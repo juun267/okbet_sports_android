@@ -27,9 +27,9 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.ui.main.entity.HomeCatePageData
-import org.cxct.sportlottery.ui.main.entity.HomeGameItemData
-import org.cxct.sportlottery.ui.main.entity.MainCategory
+import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.ui.main.entity.GameCategory
 import org.cxct.sportlottery.util.JumpUtil
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -191,7 +191,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         //第三方遊戲清單
-        viewModel.homeCatePageDataList.observe(viewLifecycleOwner, Observer {
+        viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
             setGameData(it)
         })
     }
@@ -262,21 +262,21 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         rv_marquee.adapter = adapter
     }
 
-    private fun setGameData(catePageDataList: List<HomeCatePageData>?) {
+    private fun setGameData(cateDataList: List<GameCateData>?) {
         //第三方遊戲開啟才顯示 類別 tabLayout
         tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
 
-        refreshGameLive(catePageDataList?.find { it.category == MainCategory.LIVE })
-        refreshGameQP(catePageDataList?.find { it.category == MainCategory.QP })
-        refreshGameDZ(catePageDataList?.find { it.category == MainCategory.DZ })
-        refreshGameBY(catePageDataList?.find { it.category == MainCategory.BY })
+        refreshGameLive(cateDataList?.find { it.category == GameCategory.LIVE })
+        refreshGameQP(cateDataList?.find { it.category == GameCategory.QP })
+        refreshGameDZ(cateDataList?.find { it.category == GameCategory.DZ })
+        refreshGameBY(cateDataList?.find { it.category == GameCategory.BY })
     }
 
     //真人
-    private fun refreshGameLive(cateData: HomeCatePageData?) {
-        val gameList = mutableListOf<HomeGameItemData>()
+    private fun refreshGameLive(cateData: GameCateData?) {
+        val gameList = mutableListOf<GameItemData>()
 
-        cateData?.tabPageDataList?.forEach {
+        cateData?.tabDataList?.forEach {
             it.gameList?.run { gameList.addAll(this) }
         }
 
@@ -295,10 +295,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     //棋牌
-    private fun refreshGameQP(cateData: HomeCatePageData?) {
-        val gameList = mutableListOf<HomeGameItemData>()
+    private fun refreshGameQP(cateData: GameCateData?) {
+        val gameList = mutableListOf<GameItemData>()
 
-        cateData?.tabPageDataList?.forEach {
+        cateData?.tabDataList?.forEach {
             it.gameList?.run { gameList.addAll(this) }
         }
 
@@ -317,10 +317,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     //電子
-    private fun refreshGameDZ(cateData: HomeCatePageData?) {
-        val gameList = mutableListOf<HomeGameItemData>()
+    private fun refreshGameDZ(cateData: GameCateData?) {
+        val gameList = mutableListOf<GameItemData>()
 
-        cateData?.tabPageDataList?.forEach {
+        cateData?.tabDataList?.forEach {
             it.gameList?.run { gameList.addAll(this) }
         }
 
@@ -339,10 +339,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     //捕魚
-    private fun refreshGameBY(cateData: HomeCatePageData?) {
-        val gameList = mutableListOf<HomeGameItemData>()
+    private fun refreshGameBY(cateData: GameCateData?) {
+        val gameList = mutableListOf<GameItemData>()
 
-        cateData?.tabPageDataList?.forEach {
+        cateData?.tabDataList?.forEach {
             it.gameList?.run { gameList.addAll(this) }
         }
 
