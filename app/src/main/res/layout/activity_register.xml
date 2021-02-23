@@ -152,7 +152,7 @@
                 android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_phone_number"
                 app:cvInputType="number"
-                app:cvTitle="@string/phone" />
+                app:cvTitle="@string/phone_number" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_mail"
