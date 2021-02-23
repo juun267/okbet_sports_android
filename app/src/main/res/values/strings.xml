@@ -200,11 +200,11 @@
     <string name="third_plat">第三盘</string>
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
-    <string name="first">第一</string>
-    <string name="second">第二</string>
-    <string name="third">第三</string>
-    <string name="fourth">第四</string>
-    <string name="fifth">第五</string>
+    <string name="first">一</string>
+    <string name="second">二</string>
+    <string name="third">三</string>
+    <string name="fourth">四</string>
+    <string name="fifth">五</string>
 
     <!-- Profile center page -->
     <string name="good_midnight">凌晨好</string>
