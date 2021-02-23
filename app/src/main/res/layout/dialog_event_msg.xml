@@ -49,6 +49,7 @@
             tools:orientation="horizontal" />
 
         <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_msg"
             android:layout_width="wrap_content"
             android:layout_height="250dp"
             android:background="@color/white" />
@@ -56,6 +57,7 @@
     </LinearLayout>
 
         <ImageView
+            android:id="@+id/img_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_circle_close"

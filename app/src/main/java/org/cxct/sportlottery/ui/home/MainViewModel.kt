@@ -76,6 +76,9 @@ class MainViewModel(
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
 
+    val messageDialogResult: LiveData<MessageListResult>
+        get() = _messageDialogResult
+
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
@@ -127,6 +130,7 @@ class MainViewModel(
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
+    private val _messageDialogResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
@@ -263,6 +267,15 @@ class MainViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.messageService.getMessageList(messageType)
             }?.let { result -> _messageListResult.postValue(result) }
+        }
+    }
+
+    fun getMsgDialog() {
+        val messageType = "2"
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.messageService.getMessageList(messageType)
+            }?.let { result -> _messageDialogResult.postValue(result) }
         }
     }
 

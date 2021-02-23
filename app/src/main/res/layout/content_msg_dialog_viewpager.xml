@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/img_arrow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_gray_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ll_msg"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_msg"/>
+
+    <LinearLayout
+        android:id="@+id/ll_msg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/img_arrow_right"
+        app:layout_constraintStart_toEndOf="@+id/img_arrow_left"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            tools:text="工商银行停用通知" />
+
+        <TextView
+            android:id="@+id/txv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/textSize12sp"
+            android:layout_weight="1"
+            tools:text="公告假文：工商银行停用通知；人护是仍现升诗时坐价一！有孩维样的师中院？大倒发机，说广的西家时，种常的形小质到不功片统业，友年度器量居味静，告作头这城思没师王保，心有作况业后去，工商银行停用通知；了选下步，到去般分想后史位当步那已；家前的…" />
+
+        <TextView
+            android:id="@+id/txv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#8AA7C2"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="2021/02/16 13:26:28" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_arrow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_gray_right"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ll_msg"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_msg"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

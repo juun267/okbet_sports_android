@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.game.GameDetailFragment
 import org.cxct.sportlottery.ui.game.GameDetailFragmentDirections
 import org.cxct.sportlottery.ui.game.GameFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
+import org.cxct.sportlottery.ui.home.news.NewsDiaolog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -300,7 +301,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             tabLayout.getTabAt(0)?.select()
             return
         }
-
         super.onBackPressed()
     }
 
@@ -312,6 +312,11 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         viewModel.messageListResult.observe(this, Observer {
             hideLoading()
             updateUiWithResult(it)
+        })
+
+        viewModel.messageDialogResult.observe(this, Observer {
+            val newsDiaolog = NewsDiaolog(this@MainActivity,it.rows)
+            newsDiaolog.show(supportFragmentManager,null)
         })
 
         viewModel.sportMenuResult.observe(this, Observer {
@@ -419,6 +424,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
     private fun getAnnouncement() {
         viewModel.getAnnouncement()
+        viewModel.getMsgDialog()
     }
 
     private fun getSportMenu() {

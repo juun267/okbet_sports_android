@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/txv_tab"
+    <LinearLayout
+        android:id="@+id/rootItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textSize14sp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="#8C9DA7"
-        tools:text="游戏公告"/>
+        android:background="@drawable/bg_tab_selected_under_line_dark_blue"
+        android:padding="5dp">
 
+        <TextView
+            android:id="@+id/txv_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@drawable/skin_select_tab_text_effect_blue"
+            android:textSize="@dimen/textSize14sp"
+            tools:text="游戏公告" />
+
+    </LinearLayout>
+    
 </LinearLayout>
