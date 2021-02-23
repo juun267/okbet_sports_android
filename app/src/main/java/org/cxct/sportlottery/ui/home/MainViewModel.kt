@@ -1091,6 +1091,12 @@ class MainViewModel(
         }
     }
 
+    fun removeOddsDetailPageValue() {
+        _playCateListResult.postValue(null)
+        _oddsDetailResult.postValue(null)
+        _oddsDetailList.postValue(ArrayList())
+    }
+
     fun getPlayCateList(gameType: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1138,4 +1144,36 @@ class MainViewModel(
             betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
         }
     }
+
+    fun sportMenuSelectFT(matchType: MatchType) {
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.forEach {
+                    it.isSelected = it.code == "FT"
+                }
+            }
+            MatchType.TODAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.forEach {
+                    it.isSelected = it.code == "FT"
+                }
+            }
+            MatchType.EARLY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.forEach {
+                    it.isSelected = it.code == "FT"
+                }
+            }
+            MatchType.PARLAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.forEach {
+                    it.isSelected = it.code == "FT"
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.forEach {
+                    it.isSelected = it.code == "FT"
+                }
+            }
+            else -> {}
+        }
+    }
+
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
@@ -84,6 +85,9 @@ class HomeFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
                     scroll_view.smoothScrollTo(0,0)
                     viewModel.getOddsDetail(select)
+
+                    (activity as MainActivity).tabLayout.getTabAt(1)?.select()
+
                 }
             })
         })

@@ -222,6 +222,9 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
     }
 
     private fun navGameFragment(matchType: MatchType) {
+
+        viewModel.sportMenuSelectFT(matchType)
+
         when (navController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
