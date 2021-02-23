@@ -35,7 +35,6 @@ class DZFragment : BaseFragment<MainViewModel>(MainViewModel::class)  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        view_pager.adapter = DzPageAdapter(tabIconList)
 
         view_pager.adapter = DzVpAdapter(tabIconList)
 
@@ -45,29 +44,6 @@ class DZFragment : BaseFragment<MainViewModel>(MainViewModel::class)  {
                 viewModel.setSwipeable((view_pager.currentItem == 0) || (view_pager.currentItem == tabIconList.size - 1))
             }
         })
-/*
-
-        view_pager.setOnTouchListener { v, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    x1 = event.x
-                }
-                MotionEvent.ACTION_UP -> {
-                    x2 = event.x
-                    val deltaX = x2 - x1
-                    if (abs(deltaX) > MIN_DISTANCE) {
-                        Toast.makeText(context, "left2right swipe", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "test swipe", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            }
-
-            v.onTouchEvent(event)
-        }
-*/
-
 
 
         // attaching tab mediator
