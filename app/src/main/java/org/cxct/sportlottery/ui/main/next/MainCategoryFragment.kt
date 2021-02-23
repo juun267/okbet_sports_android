@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.ui.main.next
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_main_category.*
 import org.cxct.sportlottery.R
@@ -26,7 +28,18 @@ class MainCategoryFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        initObserver()
         view_pager.adapter = VPFragmentAdapter(tabTitleList, this)
+
+
+        view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                Log.e(">>>", "main pos = $position")
+                viewModel.setSwipeable(view_pager.currentItem != 4)
+            }
+        })
 
         // attaching tab mediator
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->
@@ -36,6 +49,14 @@ class MainCategoryFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 findViewById<ImageView>(R.id.iv_icon)?.setImageResource(tabIconList[position])
             }
         }.attach()
+    }
+
+    private fun initObserver() {
+        viewModel.isMainCateVpSwipeable.observe(viewLifecycleOwner) {
+            view_pager.isUserInputEnabled = it
+//            view_pager.requestDisallowInterceptTouchEvent(true)
+
+        }
     }
 
 }

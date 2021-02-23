@@ -27,14 +27,12 @@ class DzSubRvAdapter: RecyclerView.Adapter<DzSubRvAdapter.ItemViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        Log.e(">>>", "dataList.size = ${dataList.size} ")
         return dataList.size
     }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(data: Int) {
             itemView.apply {
-                Log.e(">>>", "item = ${context.getString(data)} ")
                 tv_game_name.text = context.getString(data)
 //                iv_game_icon.setImageResource() //TODO Cheryl: set game icon url from gameData
             }

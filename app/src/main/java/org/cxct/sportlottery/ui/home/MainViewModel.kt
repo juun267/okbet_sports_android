@@ -127,8 +127,15 @@ class MainViewModel(
     val openOutrightDetail: LiveData<Pair<String, String>>
         get() = _openOutrightDetail
 
+
+    val isMainCateVpSwipeable: LiveData<Boolean>
+        get() = _isMainCateVpSwipeable
+
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
+    private val _isMainCateVpSwipeable = MutableLiveData<Boolean>().apply {
+        value = true
+    }
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
@@ -255,6 +262,10 @@ class MainViewModel(
                 loginRepository.checkToken()
             }
         }
+    }
+
+    fun setSwipeable (canSwipe: Boolean) {
+        _isMainCateVpSwipeable.value = canSwipe
     }
 
     fun logout() {
