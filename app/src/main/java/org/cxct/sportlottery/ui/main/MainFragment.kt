@@ -1,10 +1,13 @@
 package org.cxct.sportlottery.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -31,12 +34,18 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null //TODO simon test 第三方遊戲點擊 listener
 
+
+    private var mLastAction = Action.IS_TAB_SELECT
+
+    private enum class Action { IS_SCROLL, IS_TAB_SELECT }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initTab()
+        initScrollView()
         initObserve()
         getMarquee()
         getBanner()
@@ -61,26 +70,32 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initTab() {
         tab_sport.setOnClickListener {
             selectTab(tab_sport)
+            scrollToTabPosition(tab_sport)
         }
 
         tab_lottery.setOnClickListener {
             selectTab(tab_lottery)
+            scrollToTabPosition(tab_lottery)
         }
 
         tab_live.setOnClickListener {
             selectTab(tab_live)
+            scrollToTabPosition(tab_live)
         }
 
         tab_poker.setOnClickListener {
             selectTab(tab_poker)
+            scrollToTabPosition(tab_poker)
         }
 
         tab_slot.setOnClickListener {
             selectTab(tab_slot)
+            scrollToTabPosition(tab_slot)
         }
 
         tab_fishing.setOnClickListener {
             selectTab(tab_fishing)
+            scrollToTabPosition(tab_fishing)
         }
 
     }
@@ -92,6 +107,67 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         tab_poker.isSelected = tab_poker == select
         tab_slot.isSelected = tab_slot == select
         tab_fishing.isSelected = tab_fishing == select
+
+        appbar_layout.setExpanded(false)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initScrollView() {
+        scroll_view.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_MOVE -> mLastAction = Action.IS_SCROLL
+            }
+            false // Do not consume events
+        }
+
+        scroll_view.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { view, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (mLastAction == Action.IS_SCROLL) {
+                when (scrollY) {
+                    in 0 until label_lottery.top -> {
+                        selectTab(tab_sport)
+                    }
+                    in label_lottery.top until label_live.top -> {
+                        selectTab(tab_lottery)
+                    }
+                    in label_live.top until label_poker.top -> {
+                        selectTab(tab_live)
+                    }
+                    in label_poker.top until label_slot.top -> {
+                        selectTab(tab_poker)
+                    }
+                    in label_slot.top until label_fishing.top -> {
+                        selectTab(tab_slot)
+                    }
+                    in label_fishing.top until btn_update.bottom -> {
+                        selectTab(tab_fishing)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun scrollToTabPosition(tab: View) {
+        mLastAction = Action.IS_TAB_SELECT
+        when (tab) {
+            tab_sport -> {
+                scroll_view.smoothScrollTo(0, label_sport.top)
+            }
+            tab_lottery -> {
+                scroll_view.smoothScrollTo(0, label_lottery.top)
+            }
+            tab_live -> {
+                scroll_view.smoothScrollTo(0, label_live.top)
+            }
+            tab_poker -> {
+                scroll_view.smoothScrollTo(0, label_poker.top)
+            }
+            tab_slot -> {
+                scroll_view.smoothScrollTo(0, label_slot.top)
+            }
+            tab_fishing -> {
+                scroll_view.smoothScrollTo(0, label_fishing.top)
+            }
+        }
     }
 
     private fun initObserve() {

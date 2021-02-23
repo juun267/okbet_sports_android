@@ -88,9 +88,72 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 遊戲類別列表 -->
+        <LinearLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="56dp"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <org.cxct.sportlottery.ui.main.MainTab
+                android:id="@+id/tab_sport"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cvIcon="@drawable/selector_main_tab_sport"
+                app:cvTitle="@string/sport" />
+
+            <org.cxct.sportlottery.ui.main.MainTab
+                android:id="@+id/tab_lottery"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cvIcon="@drawable/selector_main_tab_lottery"
+                app:cvTitle="@string/lottery" />
+
+            <org.cxct.sportlottery.ui.main.MainTab
+                android:id="@+id/tab_live"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cvIcon="@drawable/selector_main_tab_live"
+                app:cvTitle="@string/live" />
+
+            <org.cxct.sportlottery.ui.main.MainTab
+                android:id="@+id/tab_poker"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cvIcon="@drawable/selector_main_tab_poker"
+                app:cvTitle="@string/poker" />
+
+            <org.cxct.sportlottery.ui.main.MainTab
+                android:id="@+id/tab_slot"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cvIcon="@drawable/selector_main_tab_slot"
+                app:cvTitle="@string/slot" />
+
+            <org.cxct.sportlottery.ui.main.MainTab
+                android:id="@+id/tab_fishing"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cvIcon="@drawable/selector_main_tab_fishing"
+                app:cvTitle="@string/fishing" />
+
+        </LinearLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -99,68 +162,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <!-- 遊戲類別列表 -->
-            <LinearLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minHeight="56dp"
-                android:orientation="horizontal"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <org.cxct.sportlottery.ui.main.MainTab
-                    android:id="@+id/tab_sport"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:cvIcon="@drawable/selector_main_tab_sport"
-                    app:cvTitle="@string/sport" />
-
-                <org.cxct.sportlottery.ui.main.MainTab
-                    android:id="@+id/tab_lottery"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:cvIcon="@drawable/selector_main_tab_lottery"
-                    app:cvTitle="@string/lottery" />
-
-                <org.cxct.sportlottery.ui.main.MainTab
-                    android:id="@+id/tab_live"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:cvIcon="@drawable/selector_main_tab_live"
-                    app:cvTitle="@string/live" />
-
-                <org.cxct.sportlottery.ui.main.MainTab
-                    android:id="@+id/tab_poker"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:cvIcon="@drawable/selector_main_tab_poker"
-                    app:cvTitle="@string/poker" />
-
-                <org.cxct.sportlottery.ui.main.MainTab
-                    android:id="@+id/tab_slot"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:cvIcon="@drawable/selector_main_tab_slot"
-                    app:cvTitle="@string/slot" />
-
-                <org.cxct.sportlottery.ui.main.MainTab
-                    android:id="@+id/tab_fishing"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:cvIcon="@drawable/selector_main_tab_fishing"
-                    app:cvTitle="@string/fishing" />
-
-            </LinearLayout>
 
             <View
                 android:layout_width="0dp"
@@ -183,7 +184,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/tab_layout">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <org.cxct.sportlottery.ui.main.MainLabel
                     android:id="@+id/label_sport"
