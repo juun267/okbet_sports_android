@@ -32,7 +32,6 @@ import org.cxct.sportlottery.ui.game.odds.LeagueOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
 import org.cxct.sportlottery.ui.game.outright.season.SeasonAdapter
 import org.cxct.sportlottery.ui.game.outright.season.SeasonSubAdapter
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import timber.log.Timber
 
@@ -42,7 +41,7 @@ import timber.log.Timber
  * Use the [GameFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
+class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val args: GameFragmentArgs by navArgs()
     private val scope = CoroutineScope(Dispatchers.Default)
 
@@ -320,6 +319,27 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupMatchTypeRow(view: View) {
+        view.hall_match_type_row.type = when (args.matchType) {
+            MatchType.IN_PLAY -> {
+                MatchTypeRow.IN_PLAY
+            }
+            MatchType.TODAY -> {
+                MatchTypeRow.TODAY
+            }
+            MatchType.EARLY -> {
+                MatchTypeRow.EARLY
+            }
+            MatchType.PARLAY -> {
+                MatchTypeRow.PARLAY
+            }
+            MatchType.OUTRIGHT -> {
+                MatchTypeRow.OUTRIGHT
+            }
+            MatchType.AT_START -> {
+                MatchTypeRow.AT_START
+            }
+        }
+
         view.hall_match_type_row.ouHDPClickListener = View.OnClickListener {
             viewModel.setPlayType(PlayType.OU_HDP)
         }

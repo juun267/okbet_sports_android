@@ -1,122 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.game.GameActivity">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="gameViewModel"
+            type="org.cxct.sportlottery.ui.game.GameViewModel" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolbarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- toolBar -->
-                    <include layout="@layout/view_toolbar_main" />
-
-                    <!-- 公告輪播跑馬燈 -->
-                    <include layout="@layout/view_message" />
-
-                    <!-- 遊戲類別列表 -->
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:background="@android:color/white"
-                        app:tabGravity="fill"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabMode="scrollable">
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/tab_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/home_cate_tab" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/tab_inPlay"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/home_cate_tab" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/tab_today"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/home_cate_tab" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/tab_early"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/home_cate_tab" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/tab_parlay"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/home_cate_tab" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/tab_outright"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/home_cate_tab" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/tab_at_start"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/home_cate_tab" />
-
-                    </com.google.android.material.tabs.TabLayout>
-
-                </LinearLayout>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:orientation="vertical">
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/homeFragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsingToolbarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- toolBar -->
+                        <include layout="@layout/view_toolbar_main" />
+
+                        <!-- 公告輪播跑馬燈 -->
+                        <include layout="@layout/view_message" />
+
+                        <!-- 遊戲類別列表 -->
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="@android:color/white"
+                            app:tabGravity="fill"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabMode="scrollable">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_all"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_inPlay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_today"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_early"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_parlay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_outright"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_at_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                        </com.google.android.material.tabs.TabLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:navGraph="@navigation/home_navigation"
-                tools:layout="@layout/fragment_home" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <FrameLayout
-                android:id="@+id/odds_detail_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/homeFragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:navGraph="@navigation/game_navigation"
+                    tools:layout="@layout/fragment_home" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <FrameLayout
+                    android:id="@+id/odds_detail_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 側邊導覽列 -->
-    <include layout="@layout/view_nav_right" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</androidx.drawerlayout.widget.DrawerLayout>
+        <!-- 側邊導覽列 -->
+        <include layout="@layout/view_nav_right" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>
