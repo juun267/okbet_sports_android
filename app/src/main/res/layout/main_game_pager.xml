@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         tools:itemCount="2"
-        tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/content_main_game_rv"
         tools:orientation="vertical"
         tools:spanCount="2" />
@@ -34,8 +34,8 @@
         android:id="@+id/btn_arrow_right"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:contentDescription="@null"
         android:scaleType="center"
         android:src="@drawable/ic_main_game_arrow_right" />
