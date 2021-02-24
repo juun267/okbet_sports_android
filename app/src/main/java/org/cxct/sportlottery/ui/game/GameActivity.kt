@@ -363,12 +363,6 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
-
-        receiver.sysMaintenance.observe(this) {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
-        }
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
