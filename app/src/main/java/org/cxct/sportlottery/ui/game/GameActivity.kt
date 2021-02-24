@@ -36,14 +36,12 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.UserNoticeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -51,7 +49,7 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效
