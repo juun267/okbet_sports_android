@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -20,7 +21,10 @@ import org.cxct.sportlottery.R
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
-    private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus -> block_editText.isSelected = hasFocus }
+    private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+        block_editText.isSelected = hasFocus
+        setError(null)
+    }
 
     var eyeVisibility
         get() = btn_eye.visibility
