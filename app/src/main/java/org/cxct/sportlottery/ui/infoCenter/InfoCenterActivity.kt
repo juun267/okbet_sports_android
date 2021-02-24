@@ -12,9 +12,11 @@ import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 
 const val BEEN_READ = 0
 const val YET_READ = 1
+
 class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
     var adapter: InfoCenterAdapter? = null
+    private var nowLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +47,9 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
         letterTabStatus(BEEN_READ)
     }
 
-    private fun letterTabStatus(status: Int){
-        when(status){
-            BEEN_READ ->{
+    private fun letterTabStatus(status: Int) {
+        when (status) {
+            BEEN_READ -> {
                 btn_readed_letters.isSelected = true
                 btn_unread_letters.isSelected = false
                 btn_readed_letters.setTextColor(ContextCompat.getColor(this, R.color.pumpkinOrange))
@@ -78,7 +80,12 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             if (adapter?.data?.isNotEmpty() == true) {
                 adapter?.addData(userMsgList)//上拉加載
             } else {
-                adapter?.data = userMsgList//重新載入
+                if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
+                    image_no_message.visibility = View.VISIBLE
+                } else {
+                    image_no_message.visibility = View.GONE
+                    adapter?.data = userMsgList//重新載入
+                }
             }
         })
         //已讀總筆數
@@ -92,7 +99,12 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             if (adapter?.data?.isNotEmpty() == true) {
                 adapter?.addData(userMsgList)//上拉加載
             } else {
-                adapter?.data = userMsgList//重新載入
+                if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
+                    image_no_message.visibility = View.VISIBLE
+                } else {
+                    image_no_message.visibility = View.GONE
+                    adapter?.data = userMsgList//重新載入
+                }
             }
         })
         //未讀總筆數
@@ -102,10 +114,14 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
         })
         //Loading
         viewModel.isLoading.observe(this@InfoCenterActivity, {
-            if (it)
+            if (it) {
+                nowLoading = it
                 loading()
-            else
+            } else {
+                nowLoading = it
                 hideLoading()
+            }
+
 
         })
     }
