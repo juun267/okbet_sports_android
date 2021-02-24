@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="org.cxct.sportlottery.ui.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_mainFragment_to_homeStartNextPageFragment"
+            app:destination="@id/homeStartNextPageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeStartNextPageFragment"
+        android:name="org.cxct.sportlottery.ui.main.next.MainCategoryFragment"
+        android:label="HomeStartNextPageFragment"
+        tools:layout="@layout/fragment_main_category"/>
+
+</navigation>

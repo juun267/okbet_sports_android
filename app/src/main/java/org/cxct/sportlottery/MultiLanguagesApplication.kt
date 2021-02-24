@@ -50,7 +50,7 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
         viewModel { SplashViewModel(get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get()) }
@@ -66,7 +66,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { FeedbackViewModel(get(), get(), get(), get(),get()) }
         viewModel { VersionUpdateViewModel(get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get()) }
     }
 

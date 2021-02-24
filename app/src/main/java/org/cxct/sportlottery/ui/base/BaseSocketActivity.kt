@@ -44,12 +44,16 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 false -> unBindService()
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         subscribeBroadCastReceiver()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
 
         removeBroadCastReceiver()
         unBindService()
@@ -57,7 +61,6 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     private fun bindService() {
         if (isServiceBound) return
-        if (checkServiceRunning()) return
 
         val serviceIntent = Intent(this, BackService::class.java)
         serviceIntent.putExtra(SERVICE_TOKEN, viewModel.loginRepository.token)

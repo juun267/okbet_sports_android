@@ -17,11 +17,11 @@ import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
-class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
+class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     BetInfoListAdapter.OnItemClickListener {
 
 
@@ -51,7 +51,7 @@ class BetInfoListDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class),
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
         binding.apply {
-            mainViewModel = this@BetInfoListDialog.viewModel
+            gameViewModel = this@BetInfoListDialog.viewModel
             lifecycleOwner = this@BetInfoListDialog.viewLifecycleOwner
         }
 

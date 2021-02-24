@@ -97,7 +97,7 @@ class VersionUpdateViewModel(
                 )
 
                 val version = "${BuildConfig.VERSION_CODE}_${BuildConfig.VERSION_NAME}"
-                _appMinVersionState.postValue(AppMinVersionState(false, false, version))
+                _appMinVersionState.postValue(AppMinVersionState(isShowUpdateDialog = false, isForceUpdate = false, version = version))
             }
         }
     }

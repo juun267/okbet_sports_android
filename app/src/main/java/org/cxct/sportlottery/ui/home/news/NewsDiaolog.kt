@@ -70,7 +70,7 @@ class NewsDiaolog(activity: Activity, messageListResult: List<Row>?) :
 
     private fun getTypeMsg(index: Int): List<Row>? {
         var filterData = msgData?.filter {
-            it.messageType == index
+            it.msgType.toInt() == index
         }
         return filterData ?: mutableListOf()
     }

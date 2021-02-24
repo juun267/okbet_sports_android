@@ -25,12 +25,12 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 
-class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class),
+class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     Animation.AnimationListener, OnOddClickListener {
 
 
@@ -86,7 +86,7 @@ class OddsDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::clas
             DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
         dataBinding.apply {
             view = this@OddsDetailFragment
-            oddsDetailViewModel = this@OddsDetailFragment.viewModel
+            gameViewModel = this@OddsDetailFragment.viewModel
             lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
         }
         return dataBinding.root

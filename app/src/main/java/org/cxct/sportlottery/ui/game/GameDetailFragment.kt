@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import org.cxct.sportlottery.ui.game.odds.MatchOddListener
-import org.cxct.sportlottery.ui.home.MainViewModel
 import timber.log.Timber
 
 /**
@@ -38,7 +37,7 @@ import timber.log.Timber
 private const val ARG_EVENT_ID = "eventId"
 private const val ARG_GAME_TYPE = "gameType"
 
-class GameDetailFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
+class GameDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     //just for service subscribe use
     private var eventId: String? = null
     private var gameType: String? = null
