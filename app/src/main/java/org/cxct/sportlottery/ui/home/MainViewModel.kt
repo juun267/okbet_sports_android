@@ -14,7 +14,11 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
@@ -33,16 +37,23 @@ import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.third_game.third_games.GameCategory
+import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
+import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.third_game.third_games.ThirdGameData
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 
@@ -70,6 +81,9 @@ class MainViewModel(
 
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
+
+    val messageDialogResult: LiveData<MessageListResult>
+        get() = _messageDialogResult
 
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
@@ -122,6 +136,7 @@ class MainViewModel(
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
+    private val _messageDialogResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
@@ -206,6 +221,17 @@ class MainViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
+    private val _bannerList = MutableLiveData<List<ImageData>>()
+    val bannerList: LiveData<List<ImageData>>
+        get() = _bannerList
+
+    private val _popImageList = MutableLiveData<List<ImageData>>()
+    val popImageList: LiveData<List<ImageData>>
+        get() = _popImageList
+
+    private val _homeCatePageDataList = MutableLiveData<List<GameCateData>>()
+    val gameCateDataList: LiveData<List<GameCateData>>
+        get() = _homeCatePageDataList
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -252,12 +278,37 @@ class MainViewModel(
     }
 
     //獲取系統公告
-    fun getAnnouncement() {
+    fun getMarquee() {
         val messageType = "1"
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.messageService.getMessageList(messageType)
             }?.let { result -> _messageListResult.postValue(result) }
+        }
+    }
+
+    fun getMsgDialog() {
+        val messageType = "2"
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.messageService.getMessageList(messageType)
+            }?.let { result -> _messageDialogResult.postValue(result) }
+        }
+    }
+
+    //獲取輪播圖
+    fun getBanner() {
+        //H5轮播: imageType = 2
+        sConfigData?.imageList?.filter { it.imageType == 2 }.apply {
+            _bannerList.postValue(this)
+        }
+    }
+
+    //獲取彈窗圖
+    fun getPopImage() {
+        //H5彈窗圖: imageType = 7
+        sConfigData?.imageList?.filter { it.imageType == 7 }.apply {
+            _popImageList.postValue(this)
         }
     }
 
@@ -860,7 +911,7 @@ class MainViewModel(
                 }
             }
         }
-       _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
+        _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
     }
 
     fun getOddsDetail(entity: GameEntity) {
@@ -1129,4 +1180,132 @@ class MainViewModel(
             betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
         }
     }
+
+    fun getThirdGame() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.getThirdGames()
+            }
+
+            if (result?.success == true) {
+                val homeCatePageList = createHomeGameList(result.t)
+                _homeCatePageDataList.postValue(homeCatePageList)
+            } else {
+                //TODO simon test 獲取第三方遊戲配置失敗
+            }
+        }
+    }
+
+    private fun createHomeGameList(thirdGameData: ThirdGameData?): MutableList<GameCateData> {
+        //1. 第一層 category 按鈕
+        val gameCatList = mutableListOf<GameCategory>()
+
+        //第三方遊戲開啟判斷
+        if (sConfigData?.thirdOpen == "1") {
+            //判斷第一層級按鈕，各別要不要顯示 //category 內至少要有一項 open Game，才要顯示此 category
+            thirdGameData?.gameCategories?.forEach gameCatList@{ categories ->
+                categories.gameFirmIds?.split(",")?.forEach { gameFirmId ->
+                    thirdGameData.gameFirmMap?.forEach {
+                        val gameFirm = it.value
+                        if (gameFirm.id.toString() == gameFirmId && gameFirm.open == 1) {
+                            gameCatList.add(categories)
+                            return@gameCatList
+                        }
+                    }
+                }
+            }
+
+            //cate list 排序，sort 從小到大排序
+            gameCatList.sortBy { it.sort }
+        }
+
+        val homeGameList = mutableListOf<GameCateData>()
+        gameCatList.forEach { category ->
+            val homeGame = GameCateData(ThirdGameCategory.getCategory(category.code))
+            homeGame.categoryThird.title = category.typeName //類別名稱
+            homeGame.isShowTabLayout = true
+
+            //2. 第二層 tab 按鈕
+            val gameFirmList = mutableListOf<GameFirmValues>()
+            category.gameFirmIds?.split(",")?.forEach { gameFirmId ->
+                thirdGameData?.gameFirmMap?.forEach gameFirmMap@{ data ->
+                    val gameFirm = data.value
+                    if (gameFirm.id.toString() == gameFirmId && gameFirm.open == 1) {
+                        gameFirmList.add(gameFirm)
+                        return@gameFirmMap
+                    }
+                }
+            }
+
+            //tab list 排序，sort 從小到大排序
+            gameFirmList.sortBy { it.sort }
+
+            var isTabHasNoGameCount = 0 //在第二層中的tab，裡面的第三層game是否為空
+            val singlePageList = mutableListOf<GameItemData>() //某些第三方遊戲只有兩層資料結構，所以需要獨立創建 singlePageList
+            gameFirmList.forEach { gameFirm ->
+                //3. 第三層 game 按鈕
+                val pageList = createThirdGamePage(thirdGameData, gameFirm)
+
+                //若第三層產生清單為空，用 gameFirm 產生一個 第三層按鈕
+                if (pageList.isEmpty()) {
+                    isTabHasNoGameCount += 1 //第二層中的tab裡面無遊戲
+                    singlePageList.add(createSingleThirdGame(category, gameFirm))
+                } else {
+                    val iconUrl = GameConfigManager.getThirdGameTabIconUrlFirm(category.code, gameFirm.firmCode)
+                    homeGame.tabDataList.add(GameTabData(tabTitle = gameFirm.firmName, gameList = pageList, iconUrl = iconUrl))
+                }
+            }
+            if (singlePageList.isNotEmpty() && (isTabHasNoGameCount == gameFirmList.size)) { //如果有第三層遊戲 且 所有tab底下皆無遊戲
+                homeGame.isShowTabLayout = false
+                homeGame.tabDataList.add(GameTabData(null, singlePageList))
+            }
+
+            homeGameList.add(homeGame)
+        }
+
+        return homeGameList
+    }
+
+    private fun createThirdGamePage(thirdGameData: ThirdGameData?, gameFirm: GameFirmValues): MutableList<GameItemData> {
+        val pageList = mutableListOf<GameItemData>()
+        thirdGameData?.thirdDictMap?.get(gameFirm.firmCode)?.forEach { thirdDict ->
+            if (thirdDict?.gameCode == null)
+                thirdDict?.gameCode = gameFirm.playCode
+
+            //20200120 記錄問題: 修正電子類遊戲無法進入的問題 by Bee
+            thirdDict?.open = gameFirm.open
+
+            val entity = GameItemData(thirdDict)
+            pageList.add(entity)
+        }
+
+        //page list 排序，sort 從小到大排序
+        pageList.sortBy { it.thirdGameData?.sort }
+
+        return pageList
+    }
+
+    private fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {
+        //20190716 若 thirdDict 清單資料為空，用 gameFirm 產生一筆，
+        val thirdDict = ThirdDictValues(
+            id = gameFirm.id,
+            gameCategory = gameCategory.code,
+            chineseName = gameFirm.firmName,
+            englishName = gameFirm.firmName,
+            firmType = gameFirm.firmType,
+            firmCode = gameFirm.firmCode,
+            sort = gameFirm.sort,
+            gameCode = gameFirm.playCode,
+            isH5 = null,
+            isFlash = null,
+            imageName = null,
+            h5ImageName = null,
+            gameType = null
+        )
+
+        thirdDict.open = gameFirm.open
+
+        return GameItemData(thirdDict)
+    }
+
 }

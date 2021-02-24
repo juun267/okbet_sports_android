@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="2dp"
+    tools:context=".ui.main.MainGamePager">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/alignLeftRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        tools:itemCount="2"
+        tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+        tools:listitem="@layout/content_main_game_rv"
+        tools:orientation="vertical"
+        tools:spanCount="2" />
+
+    <ImageView
+        android:id="@+id/btn_arrow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@null"
+        android:scaleType="center"
+        android:src="@drawable/ic_main_game_arrow_left" />
+
+    <ImageView
+        android:id="@+id/btn_arrow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@null"
+        android:scaleType="center"
+        android:src="@drawable/ic_main_game_arrow_right" />
+
+</RelativeLayout>
