@@ -346,13 +346,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
-
-        receiver.notice.observe(this, Observer {
-            hideLoading()
-            if (it != null) {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
