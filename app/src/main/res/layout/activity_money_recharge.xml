@@ -41,7 +41,7 @@
                 android:padding="4dp"
                 android:text="@string/txv_transfer_pay"
                 android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="14sp" />
+                android:textSize="@dimen/textSize14sp" />
 
             <TextView
                 android:id="@+id/btn_online_pay"
@@ -55,7 +55,7 @@
                 android:padding="4dp"
                 android:text="@string/txv_online_pay"
                 android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="14sp" />
+                android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
 

@@ -24,13 +24,13 @@
             android:layout_marginEnd="16dp"
             android:text="@string/now_balance"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             tools:text="19940.000" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_marginStart="4dp"
             android:text="@string/currency"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
 

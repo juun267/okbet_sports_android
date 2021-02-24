@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray6"
-                android:textSize="14sp"
+                android:textSize="@dimen/textSize14sp"
                 tools:text="2串1" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/orangeRed"
-                android:textSize="14sp"
+                android:textSize="@dimen/textSize14sp"
                 tools:text="\＠ 1.85" />
 
         </LinearLayout>
@@ -86,7 +86,7 @@
                         android:paddingStart="10dp"
                         android:textColor="@color/main_dark"
                         android:textColorHint="@color/gray10"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:hint="限额：20,000.00"
                         tools:ignore="RtlSymmetry" />
 

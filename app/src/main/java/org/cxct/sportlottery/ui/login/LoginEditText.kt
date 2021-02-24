@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.login
 import android.content.Context
 import android.graphics.Bitmap
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -54,6 +55,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
+            typedArray.getInt(R.styleable.CustomView_cvEms, -1).let {
+                if (it != -1) {
+                    view.et_input.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(it))
+                }
+            }
             view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
 
             val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
@@ -108,7 +114,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private fun setupKeyBoardPressDown() {
         et_input.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 clearFocus()
             }
             return@setOnEditorActionListener false
@@ -168,6 +174,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 }
+
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
  */

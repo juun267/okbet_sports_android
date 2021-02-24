@@ -113,7 +113,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
         view.date_range_selector.ll_end_date.setOnClickListener {
             calendarBottomSheet.apply {
-                calendar.setDateSelectedType(DateSelectedType.START)
+                calendar.setDateSelectedType(DateSelectedType.END)
                 show()
             }
         }

@@ -64,7 +64,7 @@
                             android:gravity="center"
                             android:text="@string/bet_info_list_title"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="@dimen/textSize16sp" />
 
                         <ImageView
                             android:id="@+id/iv_close"
