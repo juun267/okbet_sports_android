@@ -32,12 +32,6 @@ import org.cxct.sportlottery.util.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
-var formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-fun timeStampToDate(time: Long?): String? {
-    if (time == null) return null
-    return formatter.format(time)
-}
-
 class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 
     lateinit var calendarBottomSheet: BottomSheetDialog

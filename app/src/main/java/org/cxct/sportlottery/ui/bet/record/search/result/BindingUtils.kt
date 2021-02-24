@@ -4,13 +4,13 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.bet.record.search.timeStampToDate
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
     timeStamp?.let {
-        text = timeStampToDate(timeStamp)
+        text = TimeUtil.timeStampToDate(timeStamp)
     }
 }
 
