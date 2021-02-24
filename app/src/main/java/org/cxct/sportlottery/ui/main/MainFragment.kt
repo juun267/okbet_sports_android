@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -31,7 +32,6 @@ import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.JumpUtil
-import timber.log.Timber
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
@@ -51,10 +51,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initObserve()
         getMarquee()
         getBanner()
-        getPopImage()
         getThirdGame()
 
         setupSport()
+        setMoreButtons()
         setupUpdate()
     }
 
@@ -187,11 +187,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setBanner(it)
         })
 
-        //彈窗圖
-        viewModel.popImageList.observe(viewLifecycleOwner, Observer {
-            setPopImage(it)
-        })
-
         //公告跑馬燈
         viewModel.messageListResult.observe(viewLifecycleOwner, Observer {
             setMarquee(it)
@@ -243,13 +238,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
 
         xBanner.setData(bannerList, null)
-    }
-
-    //彈窗圖
-    private fun setPopImage(popImageList: List<ImageData>) {
-        context?.run {
-            PopImageDialog(this, popImageList).show()
-        }
     }
 
     //公告跑馬燈
@@ -395,10 +383,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.getBanner()
     }
 
-    private fun getPopImage() {
-        viewModel.getPopImage()
-    }
-
     private fun getMarquee() {
         viewModel.getMarquee()
     }
@@ -413,10 +397,32 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun setMoreButtons() {
+        label_live.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.LIVE)
+        }
+
+        label_poker.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.QP)
+        }
+
+        label_slot.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.DZ)
+        }
+
+        label_fishing.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.BY)
+        }
+    }
+
     private fun setupUpdate() {
         btn_update.setOnClickListener {
             JumpUtil.toExternalWeb(btn_update.context, sConfigData?.mobileAppDownUrl)
         }
     }
 
+    private fun goToNextFragment(cate: ThirdGameCategory) {
+        val action = MainFragmentDirections.actionMainFragmentToHomeStartNextPageFragment(cate)
+        findNavController().navigate(action)
+    }
 }

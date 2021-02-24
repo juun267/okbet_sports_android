@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_category.*
 import org.cxct.sportlottery.R
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.home.MainViewModel
 
 class MainCategoryFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+    private val args: MainCategoryFragmentArgs by navArgs()
 
     private val tabTitleList by lazy {
         listOf(R.string.sport, R.string.cp, R.string.live, R.string.qp, R.string.dz, R.string.by)

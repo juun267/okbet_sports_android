@@ -9,16 +9,23 @@
         android:name="org.cxct.sportlottery.ui.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
-
         <action
             android:id="@+id/action_mainFragment_to_homeStartNextPageFragment"
-            app:destination="@id/homeStartNextPageFragment" />
+            app:destination="@id/mainCategoryFragment">
+            <argument
+                android:name="thirdGameCategory"
+                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+        </action>
     </fragment>
 
     <fragment
-        android:id="@+id/homeStartNextPageFragment"
+        android:id="@+id/mainCategoryFragment"
         android:name="org.cxct.sportlottery.ui.main.next.MainCategoryFragment"
         android:label="HomeStartNextPageFragment"
-        tools:layout="@layout/fragment_main_category"/>
+        tools:layout="@layout/fragment_main_category">
+        <argument
+            android:name="thirdGameCategory"
+            app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+    </fragment>
 
 </navigation>
