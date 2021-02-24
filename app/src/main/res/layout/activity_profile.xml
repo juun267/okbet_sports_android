@@ -47,7 +47,7 @@
                 android:id="@+id/btn_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
+                android:background="@drawable/effect_ripple_rectangle_gray"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
@@ -96,7 +96,7 @@
                 android:id="@+id/btn_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
+                android:background="@drawable/effect_ripple_rectangle_gray"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
@@ -149,7 +149,7 @@
                 android:id="@+id/btn_pwd_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
+                android:background="@drawable/effect_ripple_rectangle_gray"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
