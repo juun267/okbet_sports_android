@@ -30,7 +30,7 @@
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="error_input_empty">此栏位为必填栏位</string>
-    <string name="error_incompatible_format">您输入的字元不符</string>
+    <string name="error_incompatible_format">您輸入的字元不符(可能含有全形或特殊字元或空格)</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -397,10 +397,10 @@
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
-    <string name="error_recharge_amount">充值金额格式或数值错误</string>
+    <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
     <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
     <string name="error_wx">您输入的微信格式或数值错误</string>
-    <string name="error_bank_id">银行卡号格式有错误</string>
+    <string name="error_bank_id">您输入的银行卡号格式有错误</string>
     <string name="text_money_copy_success">复制成功</string>
 
 
