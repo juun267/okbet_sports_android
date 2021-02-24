@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.TextUtil
 
 
 class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
@@ -125,7 +126,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
 
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
-            tv_balance.text = ArithUtil.toMoneyFormat(it)
+            tv_balance.text = TextUtil.format(ArithUtil.toMoneyFormat(it).toDouble())
             viewModel.getWithdrawHint()
         })
 
@@ -182,7 +183,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     private fun initSocketObserver() {
         receiver.userMoney.observe(this.viewLifecycleOwner, Observer {
-            tv_balance.text = ArithUtil.toMoneyFormat(it)
+            tv_balance.text = TextUtil.format(ArithUtil.toMoneyFormat(it).toDouble())
             viewModel.getMoney() //TODO : 是否應該要讓將socket&api的userMoney統一來源
         })
     }

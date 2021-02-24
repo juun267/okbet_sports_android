@@ -210,8 +210,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     app:cardCornerRadius="4dp"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -225,7 +225,7 @@
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="8dp"
                             android:paddingVertical="8dp"
-                            android:text="@{row.matchOdds.size() > 0 ? String.format(@string/bet_item, row.matchOdds[0].playCateName) : null}"
+                            android:text="@{row.matchOdds.size() > 1 ? String.format(@string/bet_item, TextUtil.replaceParlayByC(row.parlayType)) : row.matchOdds.size() == 1 ? String.format(@string/bet_item, row.matchOdds[0].playCateName):null}"
                             android:textColor="@color/gray6"
                             tools:text="投注项目 - 3串4" />
 
@@ -235,8 +235,8 @@
                             android:layout_height="wrap_content"
                             android:background="@color/white"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/item_bet_record_detail"
-                            tools:itemCount="2"/>
+                            tools:itemCount="2"
+                            tools:listitem="@layout/item_bet_record_detail" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

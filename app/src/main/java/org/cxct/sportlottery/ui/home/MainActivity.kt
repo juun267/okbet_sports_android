@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -169,10 +170,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             val tabOutright = tabLayout.getTabAt(5)?.customView
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
-
-            val tabAtStart = tabLayout.getTabAt(6)?.customView
-            tabAtStart?.visibility = View.GONE
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -206,9 +203,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                     5 -> {
                         navGameFragment(MatchType.OUTRIGHT)
                     }
-                    6 -> {
-                        navGameFragment(MatchType.AT_START)
-                    }
                 }
             }
 
@@ -217,6 +211,12 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 popAllFragment()
+                if(tab?.position == 0){
+                    val tabView = tabLayout.getTabAt(0)?.customView
+                    tabView?.tv_title?.isSelected = true
+                    tabView?.tv_number?.isSelected = true
+                    navController.popBackStack(R.id.homeFragment, false)
+                }
             }
         })
     }
@@ -308,7 +308,7 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
                     tabLayout.getTabAt(4)?.select()
                 }
                 MatchType.AT_START -> {
-                    tabLayout.getTabAt(6)?.select()
+                    toAtStart()
                 }
                 else -> {
                 }
@@ -422,9 +422,22 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
             MatchType.EARLY.postValue -> tabLayout.getTabAt(3)?.select()
             MatchType.PARLAY.postValue -> tabLayout.getTabAt(4)?.select()
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
-            MatchType.AT_START.postValue -> tabLayout.getTabAt(6)?.select()
+            MatchType.AT_START.postValue -> toAtStart()
         }
         closeOddsDetail = true
+    }
+
+    private fun nonSelectTab(){
+        for (i in 0 until tabLayout.tabCount){
+            val tab = tabLayout.getTabAt(i)?.customView
+            tab?.tv_title?.isSelected = false
+            tab?.tv_number?.isSelected = false
+        }
+    }
+
+    private fun toAtStart(){
+        nonSelectTab()
+        navGameFragment(MatchType.AT_START)
     }
 
 }
