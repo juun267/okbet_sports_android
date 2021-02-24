@@ -347,10 +347,7 @@ class WithdrawViewModel(
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
-            androidContext.getString(R.string.hint_please_enter_withdraw_amount),
-            ArithUtil.toMoneyFormat(limit.min.toDouble()),
-            ArithUtil.toMoneyFormat(limit.max.toDouble())
-        )
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min, limit.max)
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
