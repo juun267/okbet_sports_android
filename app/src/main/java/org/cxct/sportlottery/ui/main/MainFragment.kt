@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -142,12 +143,20 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     in label_slot.top until label_fishing.top -> {
                         selectTab(tab_slot)
                     }
-                    in label_fishing.top until btn_update.bottom -> {
+                    in label_fishing.top until over_scroll_view.top -> {
                         selectTab(tab_fishing)
                     }
                 }
             }
         })
+
+        //為了讓滑動切換 tab 效果能到最後一項，需動態變更 over_scroll_view 高度，來補足滑動距離
+        scroll_view.post {
+            val distanceY = over_scroll_view.bottom - label_fishing.top
+            val paddingHeight = scroll_view.height - distanceY - tab_layout.height
+            if (paddingHeight > 0)
+                over_scroll_view.minimumHeight = paddingHeight
+        }
     }
 
     private fun scrollToTabPosition(tab: View) {
