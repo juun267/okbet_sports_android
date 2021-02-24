@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.home.news
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
-import timber.log.Timber
 
 class NewsDiaolog(activity: FragmentActivity?, messageListResult: List<Row>?) :
     BaseDialog<MainViewModel>(MainViewModel::class) {
@@ -22,7 +20,7 @@ class NewsDiaolog(activity: FragmentActivity?, messageListResult: List<Row>?) :
         setStyle(R.style.CustomDialogStyle)
     }
 
-    var mActivity = activity
+    private var mActivity = activity
 
     var msgData = messageListResult
 
@@ -33,9 +31,7 @@ class NewsDiaolog(activity: FragmentActivity?, messageListResult: List<Row>?) :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_event_msg, container, false).apply {
-
-        }
+        return inflater.inflate(R.layout.dialog_event_msg, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
