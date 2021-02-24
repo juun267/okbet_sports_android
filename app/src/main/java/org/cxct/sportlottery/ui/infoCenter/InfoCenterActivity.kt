@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
-import org.cxct.sportlottery.ui.home.news.NewsDiaolog
 
 class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 

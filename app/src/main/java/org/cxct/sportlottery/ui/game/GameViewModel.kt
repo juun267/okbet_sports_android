@@ -43,7 +43,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
-import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager

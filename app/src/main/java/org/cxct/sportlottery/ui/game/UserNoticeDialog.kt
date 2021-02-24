@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home
+package org.cxct.sportlottery.ui.game
 
 import android.app.AlertDialog
 import android.content.Context

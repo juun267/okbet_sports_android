@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_event_msg.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.MainViewModel
 
 class NewsDiaolog(activity: Activity, messageListResult: List<Row>?) :
     BaseDialog<MainViewModel>(MainViewModel::class) {

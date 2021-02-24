@@ -18,7 +18,7 @@ import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
-import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
@@ -28,7 +28,6 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ChangeNicknameActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil

@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main_category.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.MainViewModel
 
 class MainCategoryFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val args: MainCategoryFragmentArgs by navArgs()

@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity

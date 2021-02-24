@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="32dp"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.home.gameDrawer.RvGameDrawerAdapter">
+    tools:context=".ui.game.home.gameDrawer.RvGameDrawerAdapter">
 
     <View
         android:layout_width="match_parent"

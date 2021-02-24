@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home
+package org.cxct.sportlottery.ui.main
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,6 @@ import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.PopImageDialog
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel

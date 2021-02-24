@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
 
 
 class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {

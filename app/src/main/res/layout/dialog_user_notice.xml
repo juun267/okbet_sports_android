@@ -9,7 +9,7 @@
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
-    tools:context="org.cxct.sportlottery.ui.home.UserNoticeDialog">
+    tools:context="org.cxct.sportlottery.ui.game.UserNoticeDialog">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"

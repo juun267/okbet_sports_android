@@ -27,7 +27,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
