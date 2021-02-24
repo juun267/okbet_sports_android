@@ -124,7 +124,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/finance_list_no_record"
         android:textColor="@color/gray4"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
         app:layout_constraintStart_toStartOf="@id/list_no_record_img"
