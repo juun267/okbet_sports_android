@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.util.GameConfigManager
 
 class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainGameRvAdapter.ItemViewHolder>() {
 
@@ -43,7 +44,7 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
     }
 
     override fun getItemCount(): Int {
-        return Integer.MAX_VALUE
+        return if (mDataList.size <= 1) mDataList.size else Integer.MAX_VALUE
     }
 
     //20190115 避免快速連點，所有的 item 一次只能點擊一個
@@ -68,14 +69,9 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
         private val mIvImage: ImageView = itemView.findViewById(R.id.iv_image)
 
         fun bind(data: ThirdDictValues?) {
-            //TODO simon test 第三方遊戲icon獲取
-//            val imgDrawable = GameConfigManager.getThirdGameIconFromLocal(GameConfigManager.ThirdGameIconType.HOME,
-//                viewHolder.ivImage.context,
-//                data?.gameCategory,
-//                data?.firmCode)
-            val imgDrawable = R.drawable.ic_image_load
+            val iconUrl = GameConfigManager.getThirdGameIconUrlFirm(data?.gameCategory, data?.firmCode)
             Glide.with(itemView.context)
-                .load(imgDrawable)
+                .load(iconUrl)
                 .apply(mRequestOptions)
                 .thumbnail(0.5f)
                 .into(mIvImage)

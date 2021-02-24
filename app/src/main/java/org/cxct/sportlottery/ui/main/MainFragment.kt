@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -32,11 +31,11 @@ import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.JumpUtil
+import timber.log.Timber
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null //TODO simon test 第三方遊戲點擊 listener
-
 
     private var mLastAction = Action.IS_TAB_SELECT
 
@@ -56,7 +55,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         getThirdGame()
 
         setupSport()
-        setupLottery()
         setupUpdate()
     }
 
@@ -275,11 +273,35 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         //第三方遊戲開啟才顯示 類別 tabLayout
         tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
 
+        refreshGameCGCP(cateDataList?.find { it.categoryThird == ThirdGameCategory.CGCP })
         refreshGameLive(cateDataList?.find { it.categoryThird == ThirdGameCategory.LIVE })
         refreshGameQP(cateDataList?.find { it.categoryThird == ThirdGameCategory.QP })
         refreshGameDZ(cateDataList?.find { it.categoryThird == ThirdGameCategory.DZ })
         refreshGameBY(cateDataList?.find { it.categoryThird == ThirdGameCategory.BY })
     }
+
+    //彩票
+    private fun refreshGameCGCP(cateData: GameCateData?) {
+        val gameList = mutableListOf<GameItemData>()
+
+        cateData?.tabDataList?.forEach {
+            it.gameList?.run { gameList.addAll(this) }
+        }
+
+        if (gameList.isEmpty()) {
+            tab_lottery.visibility = View.GONE
+            label_lottery.visibility = View.GONE
+            lotteryGamePager.visibility = View.GONE
+        } else {
+            tab_lottery.visibility = View.VISIBLE
+            label_lottery.visibility = View.VISIBLE
+            lotteryGamePager.visibility = View.VISIBLE
+
+            lotteryGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            lotteryGamePager.setData(gameList)
+        }
+    }
+
 
     //真人
     private fun refreshGameLive(cateData: GameCateData?) {
@@ -388,12 +410,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun setupSport() {
         btn_sport.setOnClickListener {
             startActivity(Intent(activity, GameActivity::class.java))
-        }
-    }
-
-    private fun setupLottery() {
-        btn_lottery.setOnClickListener {
-            //TODO simon test 彩票遊戲跳轉
         }
     }
 

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.main
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +52,14 @@ class MainGamePager @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun refreshView() {
+        if (mDataList.size <= 1) {
+            btn_arrow_left.visibility = View.INVISIBLE
+            btn_arrow_right.visibility = View.INVISIBLE
+        } else {
+            btn_arrow_left.visibility = View.VISIBLE
+            btn_arrow_right.visibility = View.VISIBLE
+        }
+
         mMainGameRvAdapter.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
         mMainGameRvAdapter.setData(mDataList)
     }

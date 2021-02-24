@@ -1251,7 +1251,7 @@ class MainViewModel(
                     isTabHasNoGameCount += 1 //第二層中的tab裡面無遊戲
                     singlePageList.add(createSingleThirdGame(category, gameFirm))
                 } else {
-                    val iconUrl = GameConfigManager.getThirdGameTabIconUrlFirm(category.code, gameFirm.firmCode)
+                    val iconUrl = GameConfigManager.getThirdGameIconUrlFirm(category.code, gameFirm.firmCode)
                     homeGame.tabDataList.add(GameTabData(tabTitle = gameFirm.firmName, gameList = pageList, iconUrl = iconUrl))
                 }
             }
