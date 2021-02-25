@@ -189,6 +189,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
             statusBottomSheet = BottomSheetDialog(this.requireContext())
             statusBottomSheet.setContentView(bottomSheetView)
+            statusBottomSheet.aaa.text=""
             statusBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
                 viewModel.feedbackListRequest.status = position
                 tv_status.text = viewModel.statusMap[position]

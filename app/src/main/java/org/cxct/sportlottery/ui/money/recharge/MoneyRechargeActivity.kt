@@ -63,26 +63,10 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
             btn_transfer_pay.visibility = if (transferPayList.size > 0) {
                 View.VISIBLE
             } else {
-                currentTab = RechargeType.ONLINE_PAY //TODO Dean : 此處邏輯不應該寫在這裡, 應抽離出去
+                setTab(RechargeType.ONLINE_PAY)
                 View.GONE
             }
-
-            //TODO Dean : 此處邏輯不應該寫在這裡, 應抽離出去
-            if (currentTab == RechargeType.TRANSFER_PAY){
-                bankTypeAdapter?.data = transferPayList
-            }else if(currentTab == RechargeType.ONLINE_PAY){
-                bankTypeAdapter?.data = onlinePayList
-            }
-            when (currentTab) {
-                RechargeType.TRANSFER_PAY -> switchFragment(
-                    getPayFragment(transferPayList[0]),
-                    "TransferPayFragment"
-                )
-                RechargeType.ONLINE_PAY -> switchFragment(
-                    getPayFragment(onlinePayList[0]),
-                    "OnlinePayFragment"
-                )
-            }
+            changePage()
         })
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
@@ -122,9 +106,17 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                     (apiResult.result ?: 0).toString(),
                     MoneySubmitDialog.MoneySubmitDialogListener({
                         finish()
-                        startActivity(Intent(this, FinanceActivity::class.java).apply { putExtra(RechargeViewLog, getString(R.string.record_recharge)) })
+                        startActivity(Intent(this, FinanceActivity::class.java).apply {
+                            putExtra(
+                                RechargeViewLog,
+                                getString(R.string.record_recharge)
+                            )
+                        })
                     }, {
-                        showPromptDialog(getString(R.string.prompt), getString(R.string.content_coming_soon)) {}
+                        showPromptDialog(
+                            getString(R.string.prompt),
+                            getString(R.string.content_coming_soon)
+                        ) {}
                     })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
@@ -141,9 +133,17 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
                 it.toString(),
                 MoneySubmitDialog.MoneySubmitDialogListener({
                     finish()
-                    startActivity(Intent(this, FinanceActivity::class.java).apply { putExtra(RechargeViewLog, getString(R.string.record_recharge)) })
+                    startActivity(Intent(this, FinanceActivity::class.java).apply {
+                        putExtra(
+                            RechargeViewLog,
+                            getString(R.string.record_recharge)
+                        )
+                    })
                 }, {
-                    showPromptDialog(getString(R.string.prompt), getString(R.string.content_coming_soon)) {}
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.content_coming_soon)
+                    ) {}
                 })
             )
 
@@ -154,27 +154,14 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
     private fun initButton() {
         btn_transfer_pay.setOnClickListener {
-            currentTab = RechargeType.TRANSFER_PAY
-            btn_transfer_pay.isSelected = true
-            btn_online_pay.isSelected = false
+            setTab(RechargeType.TRANSFER_PAY)
             initRecyclerView()
-            bankTypeAdapter?.data = transferPayList
-            switchFragment(
-                getPayFragment(transferPayList[0]),
-                "TransferPayFragment"
-            )
             viewModel.clearnRechargeStatus()
         }
         btn_online_pay.setOnClickListener {
-            currentTab = RechargeType.ONLINE_PAY
-            btn_transfer_pay.isSelected = false
-            btn_online_pay.isSelected = true
+            setTab(RechargeType.ONLINE_PAY)
             initRecyclerView()
-            bankTypeAdapter?.data = onlinePayList
-            switchFragment(
-                getPayFragment(onlinePayList[0]),
-                "OnlinePayFragment"
-            )
+            changePage()
             viewModel.clearnRechargeStatus()
         }
     }
@@ -198,6 +185,42 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         return when (moneyPayWay.rechType) {
             "onlinePayment" -> OnlinePayFragment().setArguments(moneyPayWay)
             else -> TransferPayFragment().setArguments(moneyPayWay)
+        }
+    }
+
+    /**
+     * 切換Tab 連同 rv_pay_type 一起切換
+     * */
+    private fun changePage() {
+        when (currentTab) {
+            RechargeType.TRANSFER_PAY -> {
+                bankTypeAdapter?.data = transferPayList
+                switchFragment(
+                    getPayFragment(transferPayList[0]),
+                    "TransferPayFragment"
+                )
+            }
+            RechargeType.ONLINE_PAY -> {
+                bankTypeAdapter?.data = onlinePayList
+                switchFragment(
+                    getPayFragment(onlinePayList[0]),
+                    "OnlinePayFragment"
+                )
+            }
+        }
+    }
+
+    private fun setTab(selectTab: RechargeType) {
+        currentTab = selectTab
+        when (currentTab) {
+            RechargeType.TRANSFER_PAY -> {
+                btn_transfer_pay.isSelected = true
+                btn_online_pay.isSelected = false
+            }
+            RechargeType.ONLINE_PAY -> {
+                btn_transfer_pay.isSelected = false
+                btn_online_pay.isSelected = true
+            }
         }
     }
 
