@@ -13,6 +13,9 @@ import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.util.TextUtil
 
 class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
+
+    private val levelBubbleList by lazy { listOf<TextView>(bubble_level_one, bubble_level_two, bubble_level_three, bubble_level_four, bubble_level_five, bubble_level_six) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vip)
@@ -35,7 +38,8 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
 
     private fun initView() {
         viewModel.getUserLevelGrowth()
-        bubble_level_one.isSelected = true
+        pb_user_level.max = levelBubbleList.size
+
         banner_vip_level.setPageTransformer(Transformer.Default)
     }
 
@@ -46,13 +50,25 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun updateUserGrowthBar(userInfo: UserInfoData) {
+        if (verifyMaxLevel(userInfo.userLevelId)) {
+            pb_user_growth.apply {
+                max = 1
+                progress = 1
+            }
+            return
+        }
         val growthRequirement = getUpgradeGrowthRequirement(userInfo.userLevelId)
         val userGrowth = userInfo.growth?.toInt() ?: 0
+        val nextLevelRequirement = (growthRequirement - userGrowth).let { if (it < 0) 0 else it }
         pb_user_growth.apply {
             max = growthRequirement
             progress = userGrowth
         }
-        tv_requirement_amount.text = TextUtil.format((growthRequirement - userGrowth).toDouble())
+        tv_requirement_amount.text = TextUtil.format(nextLevelRequirement.toDouble())
+    }
+
+    private fun verifyMaxLevel(levelId: Int): Boolean {
+        return Level.values().last() === Level.values().find { level -> level.levelRequirement.levelId == levelId }
     }
 
     private fun getUpgradeGrowthRequirement(levelId: Int): Int {
@@ -70,6 +86,19 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
         Level.values().find { it.levelRequirement.levelId == levelId }?.apply {
             tv_vip_name.text = levelRequirement.levelName
             iv_vip.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, levelRequirement.levelIcon))
+            updateLevelBar(ordinal)
+        }
+    }
+
+    private fun updateLevelBar(levelIndex: Int) {
+        //0: VIP1, 1: VIP2 ...
+        val level = levelIndex + 1
+        pb_user_level.progress = level
+        runOnUiThread {
+            levelBubbleList.forEachIndexed { index, textView ->
+                textView.isSelected = index == levelIndex
+                textView.requestLayout()
+            }
         }
     }
 

@@ -11,6 +11,7 @@
     <string name="colon">：</string>
     <string name="dot">・</string>
     <string name="loading">加载中</string>
+    <string name="greet">Hi!</string>
     <string name="connect_first">请先连上网路</string>
     <string name="currency_symbol">¥</string>
 

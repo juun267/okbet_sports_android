@@ -56,13 +56,21 @@
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/greet"
+                    android:textColor="@color/blue7"
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tv_greet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/blue7"
                     android:textSize="@dimen/textSize16sp"
                     android:textStyle="bold"
-                    tools:text="Hi! Jason0921" />
+                    tools:text="Jason0921" />
 
             </LinearLayout>
             <!--會員等級-->
@@ -114,11 +122,17 @@
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/currency_symbol"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
                     android:id="@+id/tv_user_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textSize12sp"
-                    tools:text="¥0.00" />
+                    tools:text="0.00" />
 
             </LinearLayout>
 
@@ -173,6 +187,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ProgressBar
+                android:id="@+id/pb_user_level"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
