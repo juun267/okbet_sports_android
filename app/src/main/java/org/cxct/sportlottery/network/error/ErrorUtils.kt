@@ -42,6 +42,7 @@ import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
+import org.cxct.sportlottery.network.Constants.USER_LEVEL_GROWTH
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ADD
@@ -89,6 +90,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
+import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
@@ -315,6 +317,10 @@ object ErrorUtils {
                     (url.contains(QUERY_TRANSFERS)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(USER_LEVEL_GROWTH)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LevelGrowthResult(it.code, it.msg, it.success, null) as T
                     }
                 }
             }

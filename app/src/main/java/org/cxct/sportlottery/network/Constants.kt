@@ -115,6 +115,9 @@ object Constants {
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
     const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
 
+    //vip / member level
+    const val USER_LEVEL_GROWTH = "/api/front/user/level/getLevelGrowth"
+
     //money
     const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
     const val USER_RECHARGE_ADD = "/api/front/userrech/add"
