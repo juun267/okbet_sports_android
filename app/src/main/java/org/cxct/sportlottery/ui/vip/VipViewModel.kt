@@ -31,7 +31,7 @@ class VipViewModel(
         get() = _userInfoResult
     private val _userInfoResult = MutableLiveData<UserInfoResult>()
 
-    init {
+    private fun getUserInfo() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 userInfoRepository.getUserInfo()
@@ -60,6 +60,7 @@ class VipViewModel(
                         it.levelRequirement.growthRequirement
                     }
                     _userLevelGrowthResult.value = result
+                    getUserInfo()
                 }
             }
 

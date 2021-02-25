@@ -9,8 +9,8 @@ import com.stx.xhb.androidx.transformers.Transformer
 import kotlinx.android.synthetic.main.activity_vip.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.user.info.UserInfoData
-
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.util.TextUtil
 
 class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +42,21 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     private fun userInfoUpdateView(userInfo: UserInfoData) {
         setupViewByUserInfo(userInfo)
         updateUserLevel(userInfo.userLevelId)
+        updateUserGrowthBar(userInfo)
+    }
+
+    private fun updateUserGrowthBar(userInfo: UserInfoData) {
+        val growthRequirement = getUpgradeGrowthRequirement(userInfo.userLevelId)
+        val userGrowth = userInfo.growth?.toInt() ?: 0
+        pb_user_growth.apply {
+            max = growthRequirement
+            progress = userGrowth
+        }
+        tv_requirement_amount.text = TextUtil.format((growthRequirement - userGrowth).toDouble())
+    }
+
+    private fun getUpgradeGrowthRequirement(levelId: Int): Int {
+        return Level.values().find { level -> level.levelRequirement.levelId == levelId + 1 }?.levelRequirement?.growthRequirement ?: 0
     }
 
     private fun setupViewByUserInfo(userInfo: UserInfoData) {

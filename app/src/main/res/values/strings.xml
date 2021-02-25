@@ -11,6 +11,7 @@
     <string name="colon">：</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
+    <string name="currency_symbol">¥</string>
 
     <string name="error_url_fail">跳转地址错误</string>
     <string name="unknown_error">未知错误</string>

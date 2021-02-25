@@ -448,6 +448,17 @@
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold" />
 
+        <ProgressBar
+            android:id="@+id/pb_user_growth"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:progressDrawable="@drawable/color_vip_level_progress_bar"
+            tools:max="6"
+            tools:progress="3" />
+
 
         <!--Tips amount for next-->
         <LinearLayout
@@ -465,9 +476,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/currency_symbol"
+                android:textColor="@color/textGray"
+                android:textSize="@dimen/textSize12sp" />
+
+            <TextView
+                android:id="@+id/tv_requirement_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textColor="@color/textGray"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="¥500.00" />
+                tools:text="500.00" />
         </LinearLayout>
     </LinearLayout>
     <!--  Vip Level Description  -->
