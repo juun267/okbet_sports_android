@@ -10,5 +10,7 @@ data class LevelRequirement(
     var levelName: String? = null,
     @DrawableRes
     val levelIcon: Int,
+    @DrawableRes
+    val levelTitleIcon: Int,
     var growthRequirement: Int? = null
 )

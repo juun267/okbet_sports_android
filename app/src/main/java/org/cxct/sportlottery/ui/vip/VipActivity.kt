@@ -100,7 +100,7 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     private fun updateUserLevel(levelId: Int) {
         Level.values().find { it.levelRequirement.levelId == levelId }?.apply {
             tv_vip_name.text = levelRequirement.levelName
-            iv_vip.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, levelRequirement.levelIcon))
+            iv_vip.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, levelRequirement.levelTitleIcon))
             updateLevelBar(ordinal)
         }
     }
