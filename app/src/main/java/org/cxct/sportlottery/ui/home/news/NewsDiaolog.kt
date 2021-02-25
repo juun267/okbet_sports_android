@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_event_msg.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.home.MainViewModel
+import timber.log.Timber
 
 class NewsDiaolog(activity: FragmentActivity?, messageListResult: List<Row>?) :
     BaseDialog<MainViewModel>(MainViewModel::class) {
@@ -55,18 +57,35 @@ class NewsDiaolog(activity: FragmentActivity?, messageListResult: List<Row>?) :
     }
 
     private fun initTabRecyclerView() {
-        view?.post( Runnable() {
+        view?.post(Runnable() {
             rv_tab.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)//LinearLayout
-            rv_tab.adapter = NewsAdapter(img_top.width /3 ,NewsAdapter.ItemClickListener {
+            rv_tab.adapter = NewsAdapter(img_top.width / 3, NewsAdapter.ItemClickListener {
                 mNewsViewPagerAdapter = NewsViewPagerAdapter(mActivity)
                 mNewsViewPagerAdapter.data = getTypeMsg(it) as MutableList<Row>
                 vp_msg.adapter = mNewsViewPagerAdapter
             })
-            var mPagerSnapHelper = PagerSnapHelper()
+            rv_tab.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    when ((recyclerView.getChildAt(0).layoutParams as RecyclerView.LayoutParams).viewAdapterPosition) {
+                        0 -> {
+                            img_arrow_right.visibility = View.VISIBLE
+                            img_arrow_left.visibility = View.INVISIBLE
+                        }
+                        3 -> {
+                            img_arrow_right.visibility = View.INVISIBLE
+                            img_arrow_left.visibility = View.VISIBLE
+                        }
+                        else -> {
+                            img_arrow_left.visibility = View.VISIBLE
+                            img_arrow_right.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            })
+            val mPagerSnapHelper = PagerSnapHelper()
             mPagerSnapHelper.attachToRecyclerView(rv_tab)
         })
-
     }
 
     private fun getTypeMsg(index: Int): List<Row>? {
