@@ -14,8 +14,10 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 
@@ -45,6 +47,8 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             btn_withdraw_all.visibility = if (value) View.VISIBLE else View.GONE
         }
 
+    private var inputType: Int = 0
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
         addView(view)
@@ -62,24 +66,26 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             }
             view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
 
-            val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
+            inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
             view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
-            view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
+//            view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
+            view.btn_clear.visibility = View.GONE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             typedArray.recycle()
         }
-
+        afterTextChanged { }
         setupFocus()
         setupEye()
         setupClear()
         setupVerificationCode()
         setError(null)
         setupKeyBoardPressDown()
+
     }
 
     private fun setupFocus() {
@@ -158,7 +164,12 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
-        et_input.afterTextChanged { afterTextChanged.invoke(it) }
+        et_input.afterTextChanged {
+            if (inputType != 0x00000081) {
+                clearIsShow = it.isNotEmpty()
+            }
+            afterTextChanged.invoke(it)
+        }
     }
 
     fun getAllButton(clickGetAll: (EditText) -> Unit) {
