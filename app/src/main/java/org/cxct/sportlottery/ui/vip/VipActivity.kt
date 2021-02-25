@@ -22,6 +22,7 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
 
         initView()
         initObserve()
+        initEvent()
     }
 
     private fun initObserve() {
@@ -45,6 +46,12 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
         pb_user_level.max = levelBubbleList.size
 
         banner_vip_level.setPageTransformer(Transformer.Default)
+    }
+
+    private fun initEvent() {
+        iv_logo.setOnClickListener {
+            finish()
+        }
     }
 
     private fun userInfoUpdateView(userInfo: UserInfoData) {
