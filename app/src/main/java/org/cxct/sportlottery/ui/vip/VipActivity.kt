@@ -26,6 +26,10 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
 
     private fun initObserve() {
         viewModel.apply {
+            //讀取資料
+            loading.observe(this@VipActivity, Observer {
+                if (it) loading() else hideLoading()
+            })
             //獲取用戶資料
             userInfoResult.observe(this@VipActivity, Observer {
                 it.userInfoData?.let { data -> userInfoUpdateView(data) }

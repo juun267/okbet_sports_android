@@ -23,6 +23,10 @@ class VipViewModel(
 ) :
     BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
+    val loading: LiveData<Boolean>
+        get() = _loading
+    private val _loading = MutableLiveData<Boolean>()
+
     val userLevelGrowthResult: LiveData<LevelGrowthResult>
         get() = _userLevelGrowthResult
     private val _userLevelGrowthResult = MutableLiveData<LevelGrowthResult>()
@@ -31,7 +35,16 @@ class VipViewModel(
         get() = _userInfoResult
     private val _userInfoResult = MutableLiveData<UserInfoResult>()
 
+    private fun loading() {
+        _loading.value = true
+    }
+
+    private fun hideLoading() {
+        _loading.value = false
+    }
+
     private fun getUserInfo() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 userInfoRepository.getUserInfo()
@@ -39,11 +52,13 @@ class VipViewModel(
                 if (result.success) {
                     _userInfoResult.value = result
                 }
+                hideLoading()
             }
         }
     }
 
     fun getUserLevelGrowth() {
+        loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 vipService.getUserLevelGrowth()
@@ -61,6 +76,8 @@ class VipViewModel(
                     }
                     _userLevelGrowthResult.value = result
                     getUserInfo()
+                } else {
+                    hideLoading()
                 }
             }
 
