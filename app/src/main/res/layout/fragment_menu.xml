@@ -103,13 +103,6 @@
                 app:cvIcon="@drawable/ic_logout"
                 app:cvTitle="@string/sign_out" />
 
-            <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_third_game_test"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_logout"
-                app:cvTitle="第三方遊戲測試" />
-
         </LinearLayout>
 
     </ScrollView>

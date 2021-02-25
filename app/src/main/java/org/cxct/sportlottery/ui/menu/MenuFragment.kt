@@ -103,14 +103,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_sign_out)
         }
 
-        menu_third_game_test.setOnClickListener {
-            //TODO 第三方遊戲跳轉測試
-            val url = "https://fishxy.sdbaifuquan.com/index.html?lang=zh-CN&io=1"
-            context?.run {
-                JumpUtil.toThirdGameWeb(this, url)
-            }
-            mDownMenuListener?.onClick(menu_third_game_test)
-        }
     }
 
     private fun setupSelectLanguage() {
