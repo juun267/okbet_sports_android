@@ -59,6 +59,22 @@ class BackService : Service() {
     inner class MyBinder : Binder() {
         val service: BackService
             get() = this@BackService
+
+        fun connect(token: String?, userId: Long, platformId: Long) {
+            mToken = token ?: ""
+            mUserId = userId
+            mPlatformId = platformId
+
+            if (mToken.isEmpty()) return
+
+            if (mStompClient?.isConnected != true && mToken.isNotEmpty()) {
+                Timber.d("==尚未建立連線，連線開始==")
+                connect()
+            } else {
+                Timber.d("==已建立連線，傳遞資料==")
+                reconnect()
+            }
+        }
     }
 
     private var mStompClient: StompClient? = null
@@ -104,18 +120,6 @@ class BackService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        mToken = intent?.getStringExtra(SERVICE_TOKEN) ?: ""
-        mUserId = intent?.getLongExtra(SERVICE_USER_ID, -1)
-        mPlatformId = intent?.getLongExtra(SERVICE_PLATFORM_ID, -1)
-        if (mToken.isEmpty()) return mBinder
-
-        if (mStompClient?.isConnected != true && mToken.isNotEmpty()) {
-            Timber.d("==尚未建立連線，連線開始==")
-            connect()
-        } else {
-            Timber.d("==已建立連線，傳遞資料==")
-        }
-
         return mBinder
     }
 

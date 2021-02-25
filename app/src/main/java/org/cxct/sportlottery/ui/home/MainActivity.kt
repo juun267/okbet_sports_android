@@ -140,26 +140,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
-
-        receiver.userNotice.observe(this, Observer {
-            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
-            it?.userNoticeList?.let { list ->
-                viewModel.setUserNoticeList(list)
-            }
-        })
-
-        receiver.notice.observe(this, Observer {
-            hideLoading()
-            if (it != null) {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        receiver.sysMaintenance.observe(this, Observer {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
-        })
     }
 
     //載入頭像
