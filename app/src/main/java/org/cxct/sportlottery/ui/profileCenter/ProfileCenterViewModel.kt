@@ -8,9 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import timber.log.Timber
@@ -33,6 +31,11 @@ class ProfileCenterViewModel(
     private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>()
     val needToUpdateWithdrawPassword: LiveData<Boolean> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
         get() = _needToUpdateWithdrawPassword
+
+    private var _needToCompleteProfileInfo = MutableLiveData<Boolean>()
+    val needToCompleteProfileInfo: LiveData<Boolean> //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+        get() = _needToCompleteProfileInfo
+
 
     private var _settingNeedToUpdateWithdrawPassword = MutableLiveData<Boolean>()
     val settingNeedToUpdateWithdrawPassword: LiveData<Boolean> //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
@@ -91,8 +94,7 @@ class ProfileCenterViewModel(
         }
     }
 
-    private fun checkPermissions(): Boolean? {
-        //TODO Dean : 此處sUserInfo為寫死測試資料, 待api串接過後取得真的資料重新review
+    private fun checkNeedUpdatePassWord(): Boolean? {
         return when (userInfo.value?.updatePayPw) {
             1 -> true
             0 -> false
@@ -102,12 +104,31 @@ class ProfileCenterViewModel(
 
     //提款判斷權限
     fun withdrawCheckPermissions() {
-        checkPermissions()?.let { _needToUpdateWithdrawPassword.value = it }
+        this.checkNeedUpdatePassWord()?.let { _needToUpdateWithdrawPassword.value = it }
     }
 
     //提款設置判斷權限
     fun settingCheckPermissions() {
-        checkPermissions()?.let { _settingNeedToUpdateWithdrawPassword.value = it }
+        this.checkNeedUpdatePassWord()?.let { _settingNeedToUpdateWithdrawPassword.value = it }
+    }
+
+    /**
+     * 判斷個人資訊是否完整, 若不完整需要前往個人資訊頁面完善資料.
+     * complete true: 個人資訊有缺漏, false: 個人資訊完整
+     */
+    fun checkProfileInfoComplete() {
+        var complete = false
+        sConfigData?.apply {
+            if (enableWithdrawFullName == FLAG_OPEN && userInfo.value?.fullName.isNullOrBlank() ||
+                enableWithdrawQQ == FLAG_OPEN && userInfo.value?.qq.isNullOrBlank() ||
+                enableWithdrawEmail == FLAG_OPEN && userInfo.value?.email.isNullOrBlank() ||
+                enableWithdrawPhone == FLAG_OPEN && userInfo.value?.phone.isNullOrBlank() ||
+                enableWithdrawWechat == FLAG_OPEN && userInfo.value?.wechat.isNullOrBlank()
+            ) {
+                complete = true
+            }
+        }
+        _needToCompleteProfileInfo.value = complete
     }
 
     fun checkBankCardPermissions() {

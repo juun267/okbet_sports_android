@@ -28,6 +28,21 @@ interface UserInfoDao {
     @Query("UPDATE user_info_table SET nick_name=:nickname WHERE user_id=:userId")
     suspend fun updateNickname(userId: Long, nickname: String)
 
+    @Query("UPDATE user_info_table SET full_name=:fullName WHERE user_id=:userId")
+    suspend fun updateFullName(userId: Long, fullName: String)
+
+    @Query("UPDATE user_info_table SET qq=:qq WHERE user_id=:userId")
+    suspend fun updateQQ(userId: Long, qq: String)
+
+    @Query("UPDATE user_info_table SET email=:email WHERE user_id=:userId")
+    suspend fun updateEmail(userId: Long, email: String)
+
+    @Query("UPDATE user_info_table SET phone=:phone WHERE user_id=:userId")
+    suspend fun updatePhone(userId: Long, phone: String)
+
+    @Query("UPDATE user_info_table SET wechat=:wechat WHERE user_id=:userId")
+    suspend fun updateWeChat(userId: Long, wechat: String)
+
     @Query("UPDATE user_info_table SET setted=:setted WHERE user_id=:userId")
     suspend fun updateSetted(userId: Long, setted: Int)
 

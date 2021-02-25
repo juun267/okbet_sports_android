@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
+import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
@@ -215,6 +216,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                     response = getMockJsonData(request, "query_transfers.mock")
                 }
 
+                path.contains(LOGIN_FOR_GUEST) -> {
+                    response = getMockJsonData(request, "login_for_guest.mock")
+                }
             }
         }
         return response

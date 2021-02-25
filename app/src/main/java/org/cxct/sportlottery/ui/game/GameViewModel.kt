@@ -1101,6 +1101,12 @@ class GameViewModel(
         }
     }
 
+    fun removeOddsDetailPageValue() {
+        _playCateListResult.postValue(null)
+        _oddsDetailResult.postValue(null)
+        _oddsDetailList.postValue(ArrayList())
+    }
+
     fun getPlayCateList(gameType: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1149,6 +1155,40 @@ class GameViewModel(
         } else {
             betInfoRepository.betList.clear()
             betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
+        }
+    }
+
+    fun sportMenuSelectFirstItem(matchType: MatchType) {
+
+        val menuData = _sportMenuResult.value?.sportMenuData?.menu
+
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                menuData?.inPlay?.items?.map { sport ->
+                    sport.isSelected = (menuData.inPlay.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.TODAY -> {
+                menuData?.today?.items?.map { sport ->
+                    sport.isSelected = (menuData.today.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.EARLY -> {
+                menuData?.early?.items?.map { sport ->
+                    sport.isSelected = (menuData.early.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.PARLAY -> {
+                menuData?.parlay?.items?.map { sport ->
+                    sport.isSelected = (menuData.parlay.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                menuData?.outright?.items?.map { sport ->
+                    sport.isSelected = (menuData.outright.items.indexOf(sport) == 0)
+                }
+            }
+            else -> {}
         }
     }
 }

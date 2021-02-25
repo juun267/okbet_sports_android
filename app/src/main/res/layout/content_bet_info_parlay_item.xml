@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray6"
-                android:textSize="14sp"
+                android:textSize="@dimen/textSize14sp"
                 tools:text="2串1" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/orangeRed"
-                android:textSize="14sp"
+                android:textSize="@dimen/textSize14sp"
                 tools:text="\＠ 1.85" />
 
         </LinearLayout>
@@ -86,7 +86,7 @@
                         android:paddingStart="10dp"
                         android:textColor="@color/main_dark"
                         android:textColorHint="@color/gray10"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:hint="限额：20,000.00"
                         tools:ignore="RtlSymmetry" />
 
@@ -102,7 +102,7 @@
 
                 <TextView
                     android:id="@+id/tv_num"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
@@ -112,7 +112,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/rl_input"
                     app:layout_constraintStart_toEndOf="@+id/rl_input"
                     app:layout_constraintTop_toTopOf="@id/rl_input"
-                    app:layout_constraintWidth_percent="0.139"
                     tools:text="x1" />
 
                 <LinearLayout
@@ -139,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="--"
+                        android:text="--RMB"
                         android:textColor="@color/textGray"
                         android:textSize="12sp" />
 

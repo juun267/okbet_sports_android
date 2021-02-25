@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.results
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.SettlementRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import java.util.*
 
 
 class SettlementViewModel(
@@ -79,9 +81,9 @@ class SettlementViewModel(
                     this.settleRvPosition = settleRvPosition
                     this.gameResultRvPosition = gameResultRvPosition
                     this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
-                    requestListener.requestIng(false)
                 })
             }
+            requestListener.requestIng(false)
         }
     }
 
@@ -120,27 +122,29 @@ class SettlementViewModel(
     /**
      * 依選擇聯盟、關鍵字進行篩選做資料顯示
      */
+    @SuppressLint("DefaultLocale")
     private fun filterResult() {
         when (dataType) {
             SettleType.MATCH -> {
                 _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
-                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.contains(gameKeyWord) || filterTeamNameByKeyWord(row, gameKeyWord))
+                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.toLowerCase().contains(gameKeyWord) || filterTeamNameByKeyWord(row, gameKeyWord))
                 })
             }
             SettleType.OUTRIGHT -> {
                 _outRightList.postValue(_outRightListResult.value?.rows?.filterIndexed { index, row ->
-                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.season.name.contains(gameKeyWord))
+                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.season.name.toLowerCase().contains(gameKeyWord))
                 })
             }
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun filterTeamNameByKeyWord(row: Row, keyWord: String): Boolean {
         row.list.forEach { match ->
-            if (match.matchInfo.homeName.contains(keyWord)) {
+            if (match.matchInfo.homeName.toLowerCase().contains(keyWord.toLowerCase())) {
                 return true
             }
-            if (match.matchInfo.awayName.contains(keyWord)) {
+            if (match.matchInfo.awayName.toLowerCase().contains(keyWord.toLowerCase())) {
                 return true
             }
         }

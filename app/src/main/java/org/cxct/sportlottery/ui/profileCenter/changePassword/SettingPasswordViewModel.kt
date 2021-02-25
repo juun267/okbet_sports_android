@@ -77,16 +77,21 @@ class SettingPasswordViewModel(
 
     private fun checkCurrentPwd(context: Context, currentPwd: String): String? {
         return when {
-            currentPwd.isBlank() -> context.getString(R.string.missing_required_fields)
+            currentPwd.isBlank() -> context.getString(R.string.error_input_empty)
             else -> null
         }
     }
 
     private fun checkNewPwd(pwdPage: SettingPasswordActivity.PwdPage, context: Context, currentPwd: String, newPwd: String): String? {
         return when {
-            newPwd.isBlank() -> context.getString(R.string.missing_required_fields)
-            pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD && !VerifyConstUtil.verifyPwd(newPwd) -> context.getString(R.string.error_register_password)
-            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> context.getString(R.string.hint_withdrawal_pwd)
+            newPwd.isBlank() -> context.getString(R.string.error_input_empty)
+            pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD -> when {
+                !VerifyConstUtil.verifyPwdFormat(newPwd) -> context.getString(R.string.error_password_format)
+                newPwd.length !in 6..20 -> context.getString(R.string.error_register_password)
+                !VerifyConstUtil.verifyPwd(newPwd) -> context.getString(R.string.error_incompatible_format)
+                else -> null
+            }
+            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> context.getString(R.string.error_withdrawal_pwd)
             currentPwd == newPwd -> context.getString(R.string.error_password_cannot_be_same)
             else -> null
         }
@@ -94,6 +99,7 @@ class SettingPasswordViewModel(
 
     private fun checkConfirmPwd(context: Context, newPwd: String, confirmPwd: String): String? {
         return when {
+            confirmPwd.isBlank() -> context.getString(R.string.error_input_empty)
             newPwd != confirmPwd -> context.getString(R.string.error_confirm_password)
             else -> null
         }

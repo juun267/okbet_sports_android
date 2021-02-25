@@ -40,7 +40,6 @@
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/bright_gray" />
 
@@ -48,7 +47,6 @@
                     android:id="@+id/sp_pay_account"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:textColor="@color/colorDarkBlack"
@@ -298,22 +296,52 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tv_hint1"
+        <LinearLayout
+            android:id="@+id/ll_hit1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/money_recharge_hint1"
-            android:textColor="@color/orangeRed"
-            android:textSize="@dimen/textSize12sp" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_hint2"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dot"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp" />
+
+            <TextView
+                android:id="@+id/tv_hint1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/money_recharge_hint1"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_hit2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/money_recharge_hint2"
-            android:textColor="@color/orangeRed"
-            android:textSize="@dimen/textSize12sp" />
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dot"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp" />
+
+            <TextView
+                android:id="@+id/tv_hint2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/money_recharge_hint2"
+                android:textColor="@color/orangeRed"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
+
 
         <!-- 充值金額 -->
         <org.cxct.sportlottery.ui.login.LoginEditText

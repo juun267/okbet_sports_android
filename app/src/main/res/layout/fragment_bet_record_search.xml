@@ -20,8 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:background="@drawable/bg_square_shape_4dp_menu_blue"
+            android:background="@drawable/bg_radius_5_main"
             android:orientation="horizontal"
+            android:backgroundTint="@color/main_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -71,7 +72,7 @@
                 android:layout_weight="1"
                 android:padding="16dp"
                 android:hint="@string/please_choose_start_date"
-                android:textColor="@color/gray2" />
+                android:textColor="@color/textColorDark" />
 
             <ImageView
                 android:layout_width="30dp"
@@ -100,7 +101,7 @@
                 android:layout_weight="1"
                 android:padding="16dp"
                 android:hint="@string/please_choose_end_date"
-                android:textColor="@color/gray2" />
+                android:textColor="@color/textColorDark" />
 
             <ImageView
                 android:layout_width="30dp"
@@ -118,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:layout_marginHorizontal="16dp"
-            android:background="@drawable/bg_square_shape_4dp_menu_blue"
+            android:background="@drawable/bg_radius_5_main"
             android:text="@string/today"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +131,7 @@
             android:id="@+id/btn_yesterday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_square_shape_4dp_menu_blue"
+            android:background="@drawable/bg_radius_5_main"
             android:text="@string/yesterday"
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/btn_today"
@@ -141,7 +142,7 @@
             android:id="@+id/btn_past30days"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_square_shape_4dp_menu_blue"
+            android:background="@drawable/bg_radius_5_main"
             android:text="@string/past_30_days"
             android:textColor="@color/white"
             android:layout_marginHorizontal="16dp"
@@ -155,7 +156,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:background="@drawable/bg_square_shape_4dp_menu_blue"
+            android:background="@drawable/bg_radius_5_main"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@+id/btn_today"
@@ -182,10 +183,10 @@
             android:id="@+id/btn_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_square_shape_4dp_menu_blue"
+            android:background="@drawable/bg_radius_5_main"
             android:text="@string/inquire"
             android:textColor="@color/white"
-            android:backgroundTint="@color/orange"
+            android:backgroundTint="@color/pumpkinOrange"
             app:layout_constraintEnd_toEndOf="@+id/btn_past30days"
             app:layout_constraintStart_toStartOf="@+id/btn_yesterday"
             app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
