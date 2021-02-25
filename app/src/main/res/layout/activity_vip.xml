@@ -395,19 +395,14 @@
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--  Vip Level Card Banner  -->
-    <com.stx.xhb.xbanner.XBanner
+    <com.stx.xhb.androidx.XBanner
         android:id="@+id/banner_vip_level"
         android:layout_width="match_parent"
         android:layout_height="134dp"
-        android:layout_marginTop="10dp"
-        app:bannerBottomMargin="30dp"
-        app:clipChildrenLeftMargin="10dp"
         app:isAutoPlay="false"
         app:isClipChildrenMode="true"
         app:isHandLoop="false"
         app:pageChangeDuration="800"
-        app:pointsContainerBackground="@android:color/transparent"
-        app:pointsPosition="CENTER"
         app:pointsVisibility="false" />
     <!--  Tips For Next Level  -->
     <LinearLayout
@@ -421,10 +416,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/next_level_requirement"
             android:textColor="@color/blue7"
             android:textSize="@dimen/textSize14sp"
-            android:textStyle="bold"
-            tools:text="距离下一等级：" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
