@@ -8,6 +8,8 @@ import androidx.lifecycle.Observer
 import com.stx.xhb.androidx.transformers.Transformer
 import kotlinx.android.synthetic.main.activity_vip.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.user.info.UserInfoData
+
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 
 class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
@@ -21,6 +23,10 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
 
     private fun initObserve() {
         viewModel.apply {
+            //獲取用戶資料
+            userInfoResult.observe(this@VipActivity, Observer {
+                it.userInfoData?.let { data -> userInfoUpdateView(data) }
+            })
             userLevelGrowthResult.observe(this@VipActivity, Observer {
                 setupBannerData()
             })
@@ -31,6 +37,25 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
         viewModel.getUserLevelGrowth()
         bubble_level_one.isSelected = true
         banner_vip_level.setPageTransformer(Transformer.Default)
+    }
+
+    private fun userInfoUpdateView(userInfo: UserInfoData) {
+        setupViewByUserInfo(userInfo)
+        updateUserLevel(userInfo.userLevelId)
+    }
+
+    private fun setupViewByUserInfo(userInfo: UserInfoData) {
+        userInfo.let { user ->
+            tv_greet.text = user.nickName
+            tv_user_amount.text = user.growth.toString()
+        }
+    }
+
+    private fun updateUserLevel(levelId: Int) {
+        Level.values().find { it.levelRequirement.levelId == levelId }?.apply {
+            tv_vip_name.text = levelRequirement.levelName
+            iv_vip.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, levelRequirement.levelIcon))
+        }
     }
 
     private fun setupBannerData() {
@@ -62,7 +87,7 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     }
 
     /**
-     * 獲取會員層級設定、圖片、名稱
+     * 設置會員層級資料至BannerItem
      */
     private fun setupBannerLevelRequirement(): List<BannerLevelCard> {
         return mutableListOf<BannerLevelCard>().apply {

@@ -85,6 +85,7 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
+                    android:id="@+id/tv_vip_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/member_name_level_one"
@@ -113,6 +114,7 @@
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
+                    android:id="@+id/tv_user_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textSize12sp"

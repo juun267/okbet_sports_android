@@ -6,19 +6,42 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi.vipService
-import org.cxct.sportlottery.network.vip.VipService
+import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 
-class VipViewModel(private val androidContext: Context, loginRepository: LoginRepository, betInfoRepository: BetInfoRepository, infoCenterRepository: InfoCenterRepository) :
+class VipViewModel(
+    private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) :
     BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val userLevelGrowthResult: LiveData<LevelGrowthResult>
         get() = _userLevelGrowthResult
     private val _userLevelGrowthResult = MutableLiveData<LevelGrowthResult>()
+
+    val userInfoResult: LiveData<UserInfoResult>
+        get() = _userInfoResult
+    private val _userInfoResult = MutableLiveData<UserInfoResult>()
+
+    init {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                userInfoRepository.getUserInfo()
+            }?.let { result ->
+                if (result.success) {
+                    _userInfoResult.value = result
+                }
+            }
+        }
+    }
 
     fun getUserLevelGrowth() {
         viewModelScope.launch {
