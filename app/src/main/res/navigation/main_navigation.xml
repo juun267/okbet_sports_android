@@ -13,8 +13,11 @@
             android:id="@+id/action_mainFragment_to_homeStartNextPageFragment"
             app:destination="@id/mainCategoryFragment">
             <argument
-                android:name="thirdGameCategory"
-                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+                android:name="categoryCode"
+                app:argType="string" />
+            <argument
+                android:name="firmCode"
+                app:argType="string" />
         </action>
     </fragment>
 
@@ -24,8 +27,11 @@
         android:label="HomeStartNextPageFragment"
         tools:layout="@layout/fragment_main_category">
         <argument
-            android:name="thirdGameCategory"
-            app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+            android:name="categoryCode"
+            app:argType="string" />
+        <argument
+            android:name="firmCode"
+            app:argType="string" />
     </fragment>
 
 </navigation>

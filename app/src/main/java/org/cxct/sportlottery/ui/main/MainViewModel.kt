@@ -6,21 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGameData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
-import org.cxct.sportlottery.ui.main.entity.GameCateData
-import org.cxct.sportlottery.ui.main.entity.GameItemData
-import org.cxct.sportlottery.ui.main.entity.GameTabData
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.ui.main.entity.*
 import timber.log.Timber
 
 
@@ -65,6 +63,10 @@ class MainViewModel(
     private val _homeCatePageDataList = MutableLiveData<List<GameCateData>>()
     val gameCateDataList: LiveData<List<GameCateData>>
         get() = _homeCatePageDataList
+
+    private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
+    val enterThirdGameResult: LiveData<EnterThirdGameResult>
+        get() = _enterThirdGameResult
 
     private fun checkToken() {
         viewModelScope.launch {
@@ -201,13 +203,12 @@ class MainViewModel(
                     isTabHasNoGameCount += 1 //第二層中的tab裡面無遊戲
                     singlePageList.add(createSingleThirdGame(category, gameFirm))
                 } else {
-                    val iconUrl = GameConfigManager.getThirdGameIconUrlFirm(category.code, gameFirm.firmCode)
-                    homeGame.tabDataList.add(GameTabData(tabTitle = gameFirm.firmName, gameList = pageList, iconUrl = iconUrl))
+                    homeGame.tabDataList.add(GameTabData(category, gameFirm, pageList))
                 }
             }
             if (singlePageList.isNotEmpty() && (isTabHasNoGameCount == gameFirmList.size)) { //如果有第三層遊戲 且 所有tab底下皆無遊戲
                 homeGame.isShowTabLayout = false
-                homeGame.tabDataList.add(GameTabData(null, singlePageList))
+                homeGame.tabDataList.add(GameTabData(category, null, singlePageList))
             }
 
             homeGameList.add(homeGame)
@@ -235,7 +236,7 @@ class MainViewModel(
         return pageList
     }
 
-    private fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {
+    fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {
         //20190716 若 thirdDict 清單資料為空，用 gameFirm 產生一筆，
         val thirdDict = ThirdDictValues(
             id = gameFirm.id,
@@ -256,6 +257,71 @@ class MainViewModel(
         thirdDict.open = gameFirm.open
 
         return GameItemData(thirdDict)
+    }
+
+    fun requestEnterThirdGame(gameData: ThirdDictValues?) {
+        when {
+            gameData == null -> {
+                _enterThirdGameResult.postValue(
+                    EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.FAIL,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.error_url_fail)
+                    )
+                )
+            }
+            loginRepository.isLogin.value != true -> {
+                EnterThirdGameResult(
+                    resultType = EnterThirdGameResult.ResultType.NEED_LOGIN,
+                    url = null,
+                    errorMsg = null
+                )
+            }
+            else -> {
+                viewModelScope.launch {
+                    val thirdLoginResult = thirdGameLogin(gameData)
+
+                    //若自動轉換功能開啟，要先把錢都轉過去在進入遊戲
+                    if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
+                        autoTransfer(gameData)
+
+                    when (thirdLoginResult?.success) {
+                        true -> {
+                            _enterThirdGameResult.postValue(
+                                EnterThirdGameResult(
+                                    resultType = EnterThirdGameResult.ResultType.SUCCESS,
+                                    url = thirdLoginResult.msg
+                                )
+                            )
+                        }
+                        else -> {
+                            _enterThirdGameResult.postValue(
+                                EnterThirdGameResult(
+                                    resultType = EnterThirdGameResult.ResultType.FAIL,
+                                    url = null,
+                                    errorMsg = thirdLoginResult?.msg
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun autoTransfer(gameData: ThirdDictValues) {
+        val result = doNetwork(androidContext) {
+            OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)
+        }
+
+        if (result?.success == true)
+            getMoney() //金額有變動，通知刷新
+    }
+
+    private suspend fun thirdGameLogin(gameData: ThirdDictValues): ThirdLoginResult? {
+        return doNetwork(androidContext) {
+            OneBoSportApi.thirdGameService.thirdLogin(gameData.firmType, gameData.gameCode)
+        }
     }
 
 }

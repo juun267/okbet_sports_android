@@ -27,6 +27,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -34,7 +36,19 @@ import org.cxct.sportlottery.util.JumpUtil
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
-    private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null //TODO simon test 第三方遊戲點擊 listener
+    private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
+        override fun onClick(select: ThirdDictValues?) {
+            loading()
+            viewModel.requestEnterThirdGame(select)
+        }
+    }
+
+    //電子遊戲 點擊事件特別處理
+    private var mOnSelectThirdGameDzListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
+        override fun onClick(select: ThirdDictValues?) {
+            goToNextFragment(select?.gameCategory, select?.firmCode)
+        }
+    }
 
     private var mLastAction = Action.IS_TAB_SELECT
 
@@ -195,6 +209,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
             setGameData(it)
         })
+
+        viewModel.enterThirdGameResult.observe(viewLifecycleOwner, Observer {
+            enterThirdGame(it)
+        })
     }
 
     //輪播廣告圖示
@@ -267,12 +285,21 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         refreshGameBY(cateDataList?.find { it.categoryThird == ThirdGameCategory.BY })
     }
 
+    private fun enterThirdGame(result: EnterThirdGameResult) {
+        hideLoading()
+        when (result.resultType) {
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
+        }
+    }
+
     //彩票
     private fun refreshGameCGCP(cateData: GameCateData?) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            it.gameList.run { gameList.addAll(this) }
         }
 
         if (gameList.isEmpty()) {
@@ -289,13 +316,12 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-
     //真人
     private fun refreshGameLive(cateData: GameCateData?) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            it.gameList.run { gameList.addAll(this) }
         }
 
         if (gameList.isEmpty()) {
@@ -317,7 +343,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            it.gameList.run { gameList.addAll(this) }
         }
 
         if (gameList.isEmpty()) {
@@ -334,12 +360,15 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    //電子
+    //電子 //電子遊戲特別處理，此處展示的是第二層 tab，點擊要跳轉到對應遊戲列表畫面
     private fun refreshGameDZ(cateData: GameCateData?) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            if (it.gameFirm != null) {
+                val tab = viewModel.createSingleThirdGame(it.gameCategory, it.gameFirm)
+                gameList.add(tab)
+            }
         }
 
         if (gameList.isEmpty()) {
@@ -351,7 +380,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_slot.visibility = View.VISIBLE
             slotGamePager.visibility = View.VISIBLE
 
-            slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameDzListener)
             slotGamePager.setData(gameList)
         }
     }
@@ -361,7 +390,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            it.gameList.run { gameList.addAll(this) }
         }
 
         if (gameList.isEmpty()) {
@@ -398,19 +427,19 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setMoreButtons() {
         label_live.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.LIVE)
+            goToNextFragment(ThirdGameCategory.LIVE.name)
         }
 
         label_poker.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.QP)
+            goToNextFragment(ThirdGameCategory.QP.name)
         }
 
         label_slot.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.DZ)
+            goToNextFragment(ThirdGameCategory.DZ.name)
         }
 
         label_fishing.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.BY)
+            goToNextFragment(ThirdGameCategory.BY.name)
         }
     }
 
@@ -420,8 +449,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun goToNextFragment(cate: ThirdGameCategory) {
-        val action = MainFragmentDirections.actionMainFragmentToHomeStartNextPageFragment(cate)
+    private fun goToNextFragment(cateCode: String?, firmCode: String? = null) {
+        val action = MainFragmentDirections.actionMainFragmentToHomeStartNextPageFragment(cateCode ?: "", firmCode ?: "")
         findNavController().navigate(action)
     }
 }

@@ -149,10 +149,12 @@ object Constants {
 
     //third game
     const val THIRD_GAMES = "/api/front/index/thirdgames"
-    const val GET_ALL_BALANCE = "/api/front/thirdapi/getAllBalance"
+    const val THIRD_GET_ALL_BALANCE = "/api/front/thirdapi/getAllBalance"
     const val THIRD_ALL_TRANSFER_OUT = "/api/front/thirdapi/allTransferOut"
-    const val TRANSFER = "/api/front/thirdapi/{outPlat}/{inPlat}/transfer?=amount"
-    const val QUERY_TRANSFERS = "/api/front/thirdapi/queryTransfers"
+    const val THIRD_TRANSFER = "/api/front/thirdapi/{outPlat}/{inPlat}/transfer?=amount"
+    const val THIRD_QUERY_TRANSFERS = "/api/front/thirdapi/queryTransfers"
+    const val THIRD_AUTO_TRANSFER = "/api/front/thirdapi/{inPlat}/autoTransfer" //自动转入、转出（先将第三方都转至彩票，再将彩票的余额转至第三方）
+    const val THIRD_LOGIN = "/api/front/thirdapi/{firmType}/login" //登录
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
