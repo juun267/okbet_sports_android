@@ -264,7 +264,7 @@
     <string name="update_withdrawal_pwd">提款密码修改成功</string>
 
     <!--  information center  -->
-    <string name="inbox">收件箱 (%1$d)</string>
+    <string name="inbox">已读邮件 (%1$d)</string>
     <string name="unread_letters">未读邮件 (%1$d)</string>
     <string name="index">序号</string>
     <string name="title">标题</string>
