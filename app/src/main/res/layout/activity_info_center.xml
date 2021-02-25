@@ -18,34 +18,69 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <TextView
-            android:id="@+id/btn_readed_letters"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selected_under_yellow_line_effect"
-            android:clickable="true"
-            android:ems="5"
-            android:focusable="true"
-            android:gravity="center"
-            tools:text="@string/inbox"
-            android:textColor="@color/pumpkinOrange"
-            android:textSize="@dimen/textSize14sp" />
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/btn_unread_letters"
+            <TextView
+                android:id="@+id/btn_readed_letters"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:ems="5"
+                android:focusable="true"
+                android:gravity="center"
+                android:textColor="@color/pumpkinOrange"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="@string/inbox" />
+
+            <View
+                android:id="@+id/v_been_read_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@color/pumpkinOrange" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center"
+            android:background="@color/gray10" />
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selected_under_yellow_line_effect"
-            android:clickable="true"
-            android:ems="5"
-            android:focusable="true"
-            android:gravity="center"
-            tools:text="@string/unread_letters"
-            android:textColor="@color/pumpkinOrange"
-            android:textSize="@dimen/textSize14sp" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_unread_letters"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:ems="5"
+                android:focusable="true"
+                android:gravity="center"
+                android:textColor="@color/pumpkinOrange"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="@string/unread_letters" />
+
+            <View
+                android:id="@+id/v_yet_read_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:background="@color/pumpkinOrange" />
+
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 
@@ -100,6 +135,33 @@
         tools:itemCount="5"
         tools:listitem="@layout/content_infocenter_list"
         tools:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/image_no_message"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="60dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_imgnorecord" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/finance_list_no_record" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

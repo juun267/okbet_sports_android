@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.TextUtil
 import java.lang.Exception
 import java.math.RoundingMode
@@ -205,14 +206,16 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
             binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
-            binding.betInfoAction.tv_bet.setOnClickListener {
-                val stake = if (TextUtils.isEmpty(binding.etBet.text.toString())) {
-                    0.0
-                } else {
-                    binding.etBet.text.toString().toDouble()
+            binding.betInfoAction.tv_bet.setOnClickListener(object : OnForbidClickListener() {
+                override fun forbidClick(view: View?) {
+                    val stake = if (TextUtils.isEmpty(binding.etBet.text.toString())) {
+                        0.0
+                    } else {
+                        binding.etBet.text.toString().toDouble()
+                    }
+                    onItemClickListener.onBetClick(betInfoList[position], stake)
                 }
-                onItemClickListener.onBetClick(betInfoList[position], stake)
-            }
+            })
             binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(mBetInfoList) }
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
@@ -241,6 +244,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         betInfoList[position].input = it.toString()
                     }
                 }
+
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             }

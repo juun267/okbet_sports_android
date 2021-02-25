@@ -120,6 +120,31 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun initSocketObserver() {
+
+        receiver.oddsChange.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
+                mutableListOf()
+            it.odds.forEach { map ->
+                val value = map.value
+                value.forEach { odd ->
+                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                        null,
+                        odd.id,
+                        null,
+                        odd.odds,
+                        odd.producerId,
+                        odd.spread,
+                        odd.status,
+                    )
+                    newOdd.isSelect = odd.isSelected
+                    newOdd.oddState = odd.oddState
+                    newList.add(newOdd)
+                }
+            }
+            betInfoListAdapter.updatedBetInfoList = newList
+        })
+
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =

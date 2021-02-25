@@ -1,12 +1,16 @@
 package org.cxct.sportlottery.ui.bet.record.search.result
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_bet_record_result.*
@@ -19,6 +23,34 @@ import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
+        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
+            iv_scroll_to_top.apply {
+                if (firstVisibleItemPosition > 0) {
+                    if (alpha == 0f) {
+                        alpha = 0f
+                        visibility = View.VISIBLE
+                        animate()
+                            .alpha(1f)
+                            .setDuration(300)
+                            .setListener(null)
+                    }
+                } else {
+                    if (alpha == 1f) {
+                        alpha = 1f
+                        animate()
+                            .alpha(0f)
+                            .setDuration(300)
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    visibility = View.GONE
+                                }
+                            })
+                    }
+                }
+            }
+        }
+
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
@@ -26,7 +58,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 val totalItemCount: Int = it.itemCount
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
                 viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
-
+                scrollToTopControl(firstVisibleItemPosition)
             }
         }
     }
@@ -53,6 +85,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         })
         initTv()
         initRv()
+        initTopButton()
     }
 
     private fun initTv() {
@@ -68,9 +101,16 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 detailDialog.show(parentFragmentManager, "BetRecordDetailDialog")
             }
         })
-
-        rv_bet_record.adapter = rvAdapter
-        rv_bet_record.addOnScrollListener(recyclerViewOnScrollListener)
+        rv_bet_record.apply {
+            adapter = rvAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+            addOnScrollListener(recyclerViewOnScrollListener)
+        }
         viewModel.betRecordResult.observe(viewLifecycleOwner, Observer {
             it.let {
                 viewModel.isLastPage = (rvAdapter.itemCount >= (it.peekContent().total ?: 0))
@@ -80,4 +120,9 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     }
 
+    private fun initTopButton() {
+        iv_scroll_to_top.setOnClickListener {
+            rv_bet_record.smoothScrollToPosition(0)
+        }
+    }
 }

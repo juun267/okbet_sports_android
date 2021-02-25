@@ -18,7 +18,7 @@
         android:layout_marginStart="10dp"
         android:gravity="center"
         android:textColor="@color/pumpkinOrange"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         tools:text="@string/football" />
 
 </LinearLayout>

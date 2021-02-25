@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -27,12 +26,11 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -40,7 +38,7 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效
@@ -178,9 +176,6 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
 
-            val tabAtStart = tabLayout.getTabAt(6)?.customView
-            tabAtStart?.visibility = View.GONE
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -214,9 +209,6 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
                     5 -> {
                         navGameFragment(MatchType.OUTRIGHT)
                     }
-                    6 -> {
-                        navGameFragment(MatchType.AT_START)
-                    }
                 }
             }
 
@@ -225,11 +217,20 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 popAllFragment()
+                if (tab?.position == 0) {
+                    val tabView = tabLayout.getTabAt(0)?.customView
+                    tabView?.tv_title?.isSelected = true
+                    tabView?.tv_number?.isSelected = true
+                    navController.popBackStack(R.id.homeFragment, false)
+                }
             }
         })
     }
 
     private fun navGameFragment(matchType: MatchType) {
+
+        viewModel.sportMenuSelectFirstItem(matchType)
+
         when (navController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
@@ -276,8 +277,8 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            updateUiWithLogin(it)
             queryData()
+            updateUiWithLogin(it)
         })
 
         viewModel.messageListResult.observe(this, Observer {
@@ -310,7 +311,7 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
                     tabLayout.getTabAt(4)?.select()
                 }
                 MatchType.AT_START -> {
-                    tabLayout.getTabAt(6)?.select()
+                    toAtStart()
                 }
                 else -> {
                 }
@@ -335,27 +336,6 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
-
-        receiver.userNotice.observe(this, Observer {
-            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
-            it?.userNoticeList?.let { list ->
-                if (list.isNotEmpty())
-                    UserNoticeDialog(this).setNoticeList(list).show()
-            }
-        })
-
-        receiver.notice.observe(this, Observer {
-            hideLoading()
-            if (it != null) {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        receiver.sysMaintenance.observe(this) {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
-        }
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
@@ -392,9 +372,10 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
-            iv_head
-        ) //載入頭像
+        Glide.with(this).load(iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
+                iv_head
+            ) //載入頭像
     }
 
     private fun queryData() {
@@ -447,9 +428,22 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
             MatchType.EARLY.postValue -> tabLayout.getTabAt(3)?.select()
             MatchType.PARLAY.postValue -> tabLayout.getTabAt(4)?.select()
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
-            MatchType.AT_START.postValue -> tabLayout.getTabAt(6)?.select()
+            MatchType.AT_START.postValue -> toAtStart()
         }
         closeOddsDetail = true
+    }
+
+    private fun nonSelectTab() {
+        for (i in 0 until tabLayout.tabCount) {
+            val tab = tabLayout.getTabAt(i)?.customView
+            tab?.tv_title?.isSelected = false
+            tab?.tv_number?.isSelected = false
+        }
+    }
+
+    private fun toAtStart() {
+        nonSelectTab()
+        navGameFragment(MatchType.AT_START)
     }
 
 }

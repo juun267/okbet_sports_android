@@ -22,4 +22,8 @@ object TextUtil {
         return df.format(any)
     }
 
+    fun replaceParlayByC(str: String):String{
+        return str.replace("C", "串")
+    }
+
 }

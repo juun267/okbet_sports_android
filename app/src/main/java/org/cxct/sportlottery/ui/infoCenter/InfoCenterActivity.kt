@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.infoCenter
 
 import android.os.Bundle
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -8,9 +10,13 @@ import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 
+const val BEEN_READ = 0
+const val YET_READ = 1
+
 class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
     var adapter: InfoCenterAdapter? = null
+    private var nowLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,21 +33,39 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
 
     private fun initButton() {
         btn_readed_letters.setOnClickListener {
-            btn_readed_letters.isSelected = true
-            btn_unread_letters.isSelected = false
+            letterTabStatus(BEEN_READ)
             adapter?.data = mutableListOf()//清空資料
             viewModel.getUserMsgList(true, 0, InfoCenterViewModel.DataType.READED)//已讀
             viewModel.getMsgCount(InfoCenterViewModel.DataType.UNREAD)//未讀資料比數
-
         }
         btn_unread_letters.setOnClickListener {
-            btn_readed_letters.isSelected = false
-            btn_unread_letters.isSelected = true
+            letterTabStatus(YET_READ)
             adapter?.data = mutableListOf()//清空資料
             viewModel.getMsgCount(InfoCenterViewModel.DataType.READED)//已讀資料筆數
             viewModel.getUserMsgList(true, 0, InfoCenterViewModel.DataType.UNREAD)//未讀
         }
-        btn_readed_letters.isSelected = true
+        letterTabStatus(BEEN_READ)
+    }
+
+    private fun letterTabStatus(status: Int) {
+        when (status) {
+            BEEN_READ -> {
+                btn_readed_letters.isSelected = true
+                btn_unread_letters.isSelected = false
+                btn_readed_letters.setTextColor(ContextCompat.getColor(this, R.color.pumpkinOrange))
+                v_been_read_indicator.visibility = View.VISIBLE
+                btn_unread_letters.setTextColor(ContextCompat.getColor(this, R.color.gray3))
+                v_yet_read_indicator.visibility = View.GONE
+            }
+            YET_READ -> {
+                btn_readed_letters.isSelected = false
+                btn_unread_letters.isSelected = true
+                btn_readed_letters.setTextColor(ContextCompat.getColor(this, R.color.gray3))
+                v_been_read_indicator.visibility = View.GONE
+                btn_unread_letters.setTextColor(ContextCompat.getColor(this, R.color.pumpkinOrange))
+                v_yet_read_indicator.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun initData() {
@@ -56,7 +80,12 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             if (adapter?.data?.isNotEmpty() == true) {
                 adapter?.addData(userMsgList)//上拉加載
             } else {
-                adapter?.data = userMsgList//重新載入
+                if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
+                    image_no_message.visibility = View.VISIBLE
+                } else {
+                    image_no_message.visibility = View.GONE
+                    adapter?.data = userMsgList//重新載入
+                }
             }
         })
         //已讀總筆數
@@ -70,7 +99,12 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             if (adapter?.data?.isNotEmpty() == true) {
                 adapter?.addData(userMsgList)//上拉加載
             } else {
-                adapter?.data = userMsgList//重新載入
+                if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
+                    image_no_message.visibility = View.VISIBLE
+                } else {
+                    image_no_message.visibility = View.GONE
+                    adapter?.data = userMsgList//重新載入
+                }
             }
         })
         //未讀總筆數
@@ -80,10 +114,14 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
         })
         //Loading
         viewModel.isLoading.observe(this@InfoCenterActivity, {
-            if (it)
+            if (it) {
+                nowLoading = it
                 loading()
-            else
+            } else {
+                nowLoading = it
                 hideLoading()
+            }
+
 
         })
     }

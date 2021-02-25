@@ -334,23 +334,19 @@ class WithdrawViewModel(
                 _userMoney.value,
                 ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount.toLong())).toDouble()
             ) -> {// TODO Dean : 根據config獲取 但只有最小沒有最大
-                getWithdrawRate(withdrawAmount.toLong())
                 androidContext.getString(R.string.error_withdraw_amount)
             }
             else -> {
-                getWithdrawRate(withdrawAmount.toLong())
                 ""
             }
         }
+        getWithdrawRate(withdrawAmount.toLong())
     }
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
-            androidContext.getString(R.string.hint_please_enter_withdraw_amount),
-            ArithUtil.toMoneyFormat(limit.min.toDouble()),
-            ArithUtil.toMoneyFormat(limit.max.toDouble())
-        )
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min, limit.max)
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
@@ -361,7 +357,7 @@ class WithdrawViewModel(
         //用戶可提取最大金額
         val configMaxLimit = rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney?.toDouble()
         val maxLimit = if (configMaxLimit == null) balanceMaxLimit else min(balanceMaxLimit, configMaxLimit)
-        return WithdrawAmountLimit(minLimit, maxLimit.toLong(), balanceMaxLimit > (configMaxLimit ?: 0.0))
+        return WithdrawAmountLimit(minLimit, maxLimit.toLong(), balanceMaxLimit < (configMaxLimit ?: 0.0))
     }
 
     fun getBalanceMaxLimit(): Double {

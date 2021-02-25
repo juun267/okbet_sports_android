@@ -19,7 +19,6 @@ import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
@@ -152,26 +151,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             updateAvatar(it?.iconUrl)
         })
 
-        receiver.userNotice.observe(this, Observer {
-            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
-            it?.userNoticeList?.let { list ->
-                viewModel.setUserNoticeList(list)
-            }
-        })
-
-        receiver.notice.observe(this, Observer {
-            hideLoading()
-            if (it != null) {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        receiver.sysMaintenance.observe(this, Observer {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
-        })
-
         //彈窗圖
         viewModel.popImageList.observe(this, Observer {
             setPopImage(it)
@@ -187,7 +166,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this)
             .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head)
     }
 

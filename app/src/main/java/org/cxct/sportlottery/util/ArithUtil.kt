@@ -42,6 +42,13 @@ object ArithUtil {
     }
 
     /**
+     * 20210220 輸入欄位內提示之金額不顯示小數點
+     */
+    fun toMoneyFormatForHint(value: Double?): String {
+        return round(value ?: 0.0, 0, RoundingMode.HALF_UP)
+    }
+
+    /**
      * 20201015賠率、手續費率等，保留小數點後三位
      */
     fun toOddFormat(value: Double?): String {
@@ -53,14 +60,14 @@ object ArithUtil {
      * 20201124 贈送金額四捨五入到小數點第二位
      * */
     fun toBonusMoneyFormat(value: Double?): String {
-        return round(value?:0.0, 2, RoundingMode.HALF_UP)
+        return round(value ?: 0.0, 2, RoundingMode.HALF_UP)
     }
 
     /**
      * 提款金額取整數
      */
-    fun moneyToLong(value: String?): String{
-        return (value?.toDouble()?.toLong() ?: 0 ).toString()
+    fun moneyToLong(value: String?): String {
+        return (value?.toDouble()?.toLong() ?: 0).toString()
     }
 
 

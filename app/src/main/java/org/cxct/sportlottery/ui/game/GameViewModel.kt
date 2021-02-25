@@ -36,11 +36,8 @@ import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
@@ -56,8 +53,9 @@ class GameViewModel(
     private val userInfoRepository: UserInfoRepository,
     private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin.apply {
@@ -1103,6 +1101,12 @@ class GameViewModel(
         }
     }
 
+    fun removeOddsDetailPageValue() {
+        _playCateListResult.postValue(null)
+        _oddsDetailResult.postValue(null)
+        _oddsDetailList.postValue(ArrayList())
+    }
+
     fun getPlayCateList(gameType: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1151,6 +1155,40 @@ class GameViewModel(
         } else {
             betInfoRepository.betList.clear()
             betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
+        }
+    }
+
+    fun sportMenuSelectFirstItem(matchType: MatchType) {
+
+        val menuData = _sportMenuResult.value?.sportMenuData?.menu
+
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                menuData?.inPlay?.items?.map { sport ->
+                    sport.isSelected = (menuData.inPlay.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.TODAY -> {
+                menuData?.today?.items?.map { sport ->
+                    sport.isSelected = (menuData.today.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.EARLY -> {
+                menuData?.early?.items?.map { sport ->
+                    sport.isSelected = (menuData.early.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.PARLAY -> {
+                menuData?.parlay?.items?.map { sport ->
+                    sport.isSelected = (menuData.parlay.items.indexOf(sport) == 0)
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                menuData?.outright?.items?.map { sport ->
+                    sport.isSelected = (menuData.outright.items.indexOf(sport) == 0)
+                }
+            }
+            else -> {}
         }
     }
 }
