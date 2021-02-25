@@ -8,28 +8,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
-import org.cxct.sportlottery.ui.home.news.NewsDiaolog
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
 const val BEEN_READ = 0
 const val YET_READ = 1
 
-class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
+class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
     var adapter: InfoCenterAdapter? = null
     private var nowLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initView()
+
+        setContentView(R.layout.activity_info_center)
+        initToolbar()
         initLiveData()
         initRecyclerView()
         initData()
         initButton()
     }
 
-    private fun initView() {
-        isOpenMenu(false)
+    private fun initToolbar() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initButton() {
@@ -165,13 +168,4 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             }
         })
     }
-
-    override fun setContentView(): Int {
-        return R.layout.activity_info_center
-    }
-
-    override fun setToolBarName(): String {
-        return "消息中心"
-    }
-
 }
