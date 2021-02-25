@@ -90,7 +90,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/now_level"
                     android:textColor="@color/main"
-                    android:textSize="@dimen/textSize14sp" />
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_vip_name"
@@ -99,6 +100,7 @@
                     android:text="@string/member_name_level_one"
                     android:textColor="@color/main"
                     android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
                     tools:text="@string/member_name_level_one" />
 
             </LinearLayout>
