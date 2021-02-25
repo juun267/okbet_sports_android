@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
@@ -148,9 +149,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         tv_error.text = value
         if (tv_error.text.isNullOrEmpty()) {
             tv_error.visibility = View.INVISIBLE
+            (tv_error.layoutParams as LayoutParams).setMargins(0, 0, 0, 0)
             block_editText.isActivated = false
         } else {
             tv_error.visibility = View.VISIBLE
+            (tv_error.layoutParams as LayoutParams).setMargins(0, 4.dp, 0, 10.dp)
             block_editText.isActivated = true
         }
     }
