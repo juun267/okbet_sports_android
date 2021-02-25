@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
 import org.cxct.sportlottery.network.user.UserService
+import org.cxct.sportlottery.network.vip.VipService
 import org.cxct.sportlottery.network.withdraw.WithdrawService
 
 
@@ -146,5 +147,11 @@ object OneBoSportApi {
         RequestManager.instance
             .retrofit
             .create(HostService::class.java)
+    }
+
+    val vipService: VipService by lazy {
+        RequestManager.instance
+            .retrofit
+            .create(VipService::class.java)
     }
 }

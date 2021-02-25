@@ -1,32 +1,40 @@
 package org.cxct.sportlottery.ui.vip
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.stx.xhb.androidx.XBanner
-import com.stx.xhb.androidx.entity.BaseBannerInfo
+import androidx.lifecycle.Observer
 import com.stx.xhb.androidx.transformers.Transformer
 import kotlinx.android.synthetic.main.activity_vip.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
-import org.cxct.sportlottery.ui.home.MainViewModel
 
-class VipActivity : AppCompatActivity() {
+class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vip)
 
         initView()
+        initObserve()
+    }
+
+    private fun initObserve() {
+        viewModel.apply {
+            userLevelGrowthResult.observe(this@VipActivity, Observer {
+                setupBannerData()
+            })
+        }
     }
 
     private fun initView() {
+        viewModel.getUserLevelGrowth()
         bubble_level_one.isSelected = true
+        banner_vip_level.setPageTransformer(Transformer.Default)
+    }
+
+    private fun setupBannerData() {
         banner_vip_level.apply {
-            setPageTransformer(Transformer.Default)
             setBannerData(R.layout.item_banner_member_level, setupBannerLevelRequirement())
             loadImage { banner, model, view, position ->
                 val tvLevel: TextView? = view?.findViewById(R.id.tv_level)
@@ -34,15 +42,29 @@ class VipActivity : AppCompatActivity() {
                 //TODO Dean : 階級會員名稱、所需成長值
                 val tvLevelName: TextView? = view?.findViewById(R.id.tv_level_name)
                 val tvGrowthRequirement: TextView? = view?.findViewById(R.id.tv_growth_requirement)
-                val dataItem = (model as BannerLevelCard)
-                tvLevel?.text = getString(dataItem.xBannerUrl.level)
-                ivLevel?.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, dataItem.xBannerUrl.levelIcon))
+                val cardInfo = (model as BannerLevelCard).xBannerUrl
+                tvLevel?.text = getString(cardInfo.level)
+                ivLevel?.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, cardInfo.levelIcon))
+                tvLevelName?.text = cardInfo.levelName
+                tvGrowthRequirement?.text = getGrowthRequirementTips(cardInfo.growthRequirement)
             }
         }
     }
 
+    private fun getGrowthRequirementTips(requirement: Int?): String {
+        return when {
+            requirement == null -> ""
+            (requirement <= 1) -> {
+                getString(R.string.no_value)
+            }
+            else -> "$requirement ${getString(R.string.level_requirement_unit)}"
+        }
+    }
+
+    /**
+     * 獲取會員層級設定、圖片、名稱
+     */
     private fun setupBannerLevelRequirement(): List<BannerLevelCard> {
-        //TODO Dean : 根據api回傳更新該階級所需成長值
         return mutableListOf<BannerLevelCard>().apply {
             Level.values().forEach {
                 this.add(BannerLevelCard(it.levelRequirement))

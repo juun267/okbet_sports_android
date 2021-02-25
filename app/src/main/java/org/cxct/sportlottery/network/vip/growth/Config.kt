@@ -6,8 +6,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Config(
-    @Json(name = "GrowthConfigs")
+    @Json(name = "growthConfigs")
     val growthConfigs: List<GrowthConfig>,
-    @Json(name = "UserLevelConfigs")
+    @Json(name = "userLevelConfigs")
     val userLevelConfigs: List<UserLevelConfig>
 )

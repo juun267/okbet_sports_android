@@ -4,8 +4,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
 data class LevelRequirement(
-    @StringRes val level: Int,
-    @StringRes val levelName: Int,
-    @DrawableRes val levelIcon: Int,
-    var growthRequirement: String? = null
+    var levelId: Int? = null, //2~7
+    @StringRes
+    val level: Int,
+    var levelName: String? = null,
+    @DrawableRes
+    val levelIcon: Int,
+    var growthRequirement: Int? = null
 )
