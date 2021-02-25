@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_triangle_left"
+                android:visibility="invisible"
                 android:layout_marginStart="5dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
