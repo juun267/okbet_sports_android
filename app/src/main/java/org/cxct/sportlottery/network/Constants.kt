@@ -38,6 +38,7 @@ object Constants {
 
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
+
         return try {
             when (getSelectLanguage(context)) {
                 LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/"
@@ -65,6 +66,21 @@ object Constants {
         return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomain/${BuildConfig.CHANNEL_NAME}.json"
     }
 
+    fun getGameRuleUrl(context: Context, type: String): String? {
+        return try {
+            when (getSelectLanguage(context)) {
+
+                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/".plus("?type=$type")
+
+                else -> "https://sportsrule.cxct.org/us".plus("?type=$type")
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     //bet
     const val MATCH_BET_INFO = "/api/front/match/bet/info"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
@@ -79,6 +95,7 @@ object Constants {
     const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
     const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
+    const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
@@ -131,6 +148,7 @@ object Constants {
     const val USER_EDIT_ICON_URL = "/api/front/user/editIconUrl" //更新头像
     const val USER_UPDATE_PWD = "/api/front/user/updatepwd" //更新密码
     const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
+    const val USER_WITHDRAW_INFO = "/api/front/user/setWdUserInfo" //設置提款資料
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
@@ -161,5 +179,8 @@ object Constants {
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000
     const val READ_TIMEOUT: Long = 15 * 1000
+
+    //rule type
+    const val COMBO = "combo"
 
 }

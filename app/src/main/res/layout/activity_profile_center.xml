@@ -106,7 +106,7 @@
             android:layout_height="53dp"
             android:layout_marginStart="30dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_head"
+            android:src="@drawable/img_avatar_default"
             app:layout_constraintBottom_toTopOf="@id/label_account_balance"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -207,7 +207,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -238,7 +238,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -286,7 +286,7 @@
                         android:id="@+id/btn_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -322,7 +322,7 @@
                         android:id="@+id/btn_account_transfer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -357,7 +357,7 @@
                         android:id="@+id/btn_withdrawal_setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -392,7 +392,7 @@
                         android:id="@+id/btn_bet_record"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -427,7 +427,7 @@
                         android:id="@+id/btn_fund_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -469,7 +469,7 @@
                         android:id="@+id/btn_news_center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -504,7 +504,7 @@
                         android:id="@+id/btn_promotion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -582,7 +582,7 @@
                         android:id="@+id/btn_help_center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -617,7 +617,7 @@
                         android:id="@+id/btn_feedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
+                        android:background="@drawable/effect_ripple_rectangle_gray"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">

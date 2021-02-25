@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.Row
+import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 
 class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -66,7 +67,15 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.rech_log_date.text = item.rechDateStr
             itemView.rech_log_time.text = item.rechTimeStr
             itemView.rech_log_amount.text = item.displayMoney
-            itemView.rech_log_type.text = item.rechName
+            itemView.rech_log_type.text = when (item.rechType) {
+                RechType.ONLINE_PAYMENT.type -> itemView.context.getString(R.string.recharge_channel_online)
+                RechType.ADMIN_ADD_MONEY.type -> itemView.context.getString(R.string.recharge_channel_admin)
+                RechType.CFT.type -> itemView.context.getString(R.string.recharge_channel_cft)
+                RechType.WEIXIN.type -> itemView.context.getString(R.string.recharge_channel_weixin)
+                RechType.ALIPAY.type -> itemView.context.getString(R.string.recharge_channel_alipay)
+                RechType.BANK_TRANSFER.type -> itemView.context.getString(R.string.recharge_channel_bank)
+                else -> ""
+            }
             itemView.rech_log_state.text = item.rechState
             itemView.setOnClickListener {
                 rechargeLogListener?.onClick(item)

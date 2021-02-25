@@ -2,7 +2,6 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
@@ -20,6 +19,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
+import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
@@ -50,6 +50,7 @@ import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
+import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
 import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
@@ -84,10 +85,11 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResu
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
-import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
@@ -321,6 +323,14 @@ object ErrorUtils {
                     (url.contains(USER_LEVEL_GROWTH)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LevelGrowthResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(USER_WITHDRAW_INFO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return WithdrawInfoResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(LOGIN_FOR_GUEST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LoginResult(it.code, it.msg, it.success, null) as T
                     }
                 }
             }

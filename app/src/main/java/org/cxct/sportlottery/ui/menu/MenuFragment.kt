@@ -131,7 +131,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun updateUI(iconUrl: String?, userName: String?, nickName: String?) {
         Glide.with(this)
             .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head) //載入頭像
 
         tv_name.text = if (nickName.isNullOrEmpty()) {

@@ -189,9 +189,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
 
-            val tabAtStart = tabLayout.getTabAt(6)?.customView
-            tabAtStart?.visibility = View.GONE
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -225,9 +222,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     5 -> {
                         navGameFragment(MatchType.OUTRIGHT)
                     }
-                    6 -> {
-                        navGameFragment(MatchType.AT_START)
-                    }
                 }
             }
 
@@ -236,11 +230,20 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 popAllFragment()
+                if (tab?.position == 0) {
+                    val tabView = tabLayout.getTabAt(0)?.customView
+                    tabView?.tv_title?.isSelected = true
+                    tabView?.tv_number?.isSelected = true
+                    navController.popBackStack(R.id.homeFragment, false)
+                }
             }
         })
     }
 
     private fun navGameFragment(matchType: MatchType) {
+
+        viewModel.sportMenuSelectFirstItem(matchType)
+
         when (navController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
@@ -287,8 +290,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            updateUiWithLogin(it)
             queryData()
+            updateUiWithLogin(it)
         })
 
         viewModel.messageListResult.observe(this, Observer {
@@ -321,7 +324,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     tabLayout.getTabAt(4)?.select()
                 }
                 MatchType.AT_START -> {
-                    tabLayout.getTabAt(6)?.select()
+                    toAtStart()
                 }
                 else -> {
                 }
@@ -382,9 +385,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateAvatar(iconUrl: String?) {
-        Glide.with(this).load(iconUrl).apply(RequestOptions().placeholder(R.drawable.ic_head)).into(
-            iv_head
-        ) //載入頭像
+        Glide.with(this).load(iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
+                iv_head
+            ) //載入頭像
     }
 
     private fun queryData() {
@@ -437,9 +441,22 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             MatchType.EARLY.postValue -> tabLayout.getTabAt(3)?.select()
             MatchType.PARLAY.postValue -> tabLayout.getTabAt(4)?.select()
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
-            MatchType.AT_START.postValue -> tabLayout.getTabAt(6)?.select()
+            MatchType.AT_START.postValue -> toAtStart()
         }
         closeOddsDetail = true
+    }
+
+    private fun nonSelectTab() {
+        for (i in 0 until tabLayout.tabCount) {
+            val tab = tabLayout.getTabAt(i)?.customView
+            tab?.tv_title?.isSelected = false
+            tab?.tv_number?.isSelected = false
+        }
+    }
+
+    private fun toAtStart() {
+        nonSelectTab()
+        navGameFragment(MatchType.AT_START)
     }
 
 }

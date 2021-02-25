@@ -51,11 +51,11 @@
                     android:textStyle="" />
 
                 <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:textColor="@color/gray13" />
+                    android:background="@color/bright_gray" />
 
 
                 <Spinner
@@ -107,11 +107,11 @@
                     android:textStyle="" />
 
                 <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:textColor="@color/gray13" />
+                    android:background="@color/bright_gray" />
 
 
                 <Spinner

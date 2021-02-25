@@ -31,6 +31,7 @@
     <color name="text_focus">#FF9900</color>
     <color name="text_spread">#FF4B2C</color>
     <color name="text_brownish_gray">#666666</color>
+    <color name="text_tips_blue">#205D98</color>
 
     <color name="button_focus">#F98B00</color>
     <color name="button_unfocus">#F7F7F7</color>
@@ -95,6 +96,7 @@
     <color name="gray13">#e1e6e8</color>
     <color name="gray14">#7C7C7C</color>
 
+    <color name="gray6_alpha50">#80202020</color>
 
     <!--紅色系-->
     <color name="red">#ff4c2c</color>

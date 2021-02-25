@@ -986,7 +986,9 @@ class MainViewModel(
                         }
                     }
                 }
-                _betInfoResult.postValue(Event(result))
+                if (betInfoRepository.betList.size != 0) {
+                    _betInfoResult.postValue(Event(result))
+                }
             }
         }
     }
@@ -1069,7 +1071,9 @@ class MainViewModel(
                     }
                 }
             }
-            _betInfoResult.postValue(Event(result))
+            if (betInfoRepository.betList.size != 0) {
+                _betInfoResult.postValue(Event(result))
+            }
         }
     }
 
@@ -1131,6 +1135,12 @@ class MainViewModel(
                 }
             }
         }
+    }
+
+    fun removeOddsDetailPageValue() {
+        _playCateListResult.postValue(null)
+        _oddsDetailResult.postValue(null)
+        _oddsDetailList.postValue(ArrayList())
     }
 
     fun getPlayCateList(gameType: String) {

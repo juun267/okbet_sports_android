@@ -81,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/effect_ripple_rectangle_blue_light"
+            android:background="@drawable/effect_ripple_rectangle_gray"
             android:minWidth="135dp"
             android:minHeight="36dp"
             android:text="@string/btn_determine"

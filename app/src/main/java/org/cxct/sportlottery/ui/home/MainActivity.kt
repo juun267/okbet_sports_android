@@ -3,8 +3,10 @@ package org.cxct.sportlottery.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -146,7 +148,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this)
             .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head)
     }
 
