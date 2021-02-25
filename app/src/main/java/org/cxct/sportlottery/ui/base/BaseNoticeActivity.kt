@@ -23,6 +23,12 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
         viewModel.infoCenterRepository.unreadNoticeList.observe(this, Observer {
             updateNoticeButton(it.isNotEmpty())
         })
+
+        receiver.userNotice.observe(this, Observer {
+            it?.userNoticeList?.let { list ->
+                viewModel.setUserNoticeList(list)
+            }
+        })
     }
 
     private fun updateNoticeButton(isVisible: Boolean) {

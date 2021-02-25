@@ -36,11 +36,8 @@ import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
@@ -56,8 +53,9 @@ class GameViewModel(
     private val userInfoRepository: UserInfoRepository,
     private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin.apply {

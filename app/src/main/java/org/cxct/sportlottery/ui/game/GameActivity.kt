@@ -36,14 +36,12 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.UserNoticeDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -51,7 +49,7 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效
@@ -348,27 +346,6 @@ class GameActivity : BaseOddButtonActivity<GameViewModel>(GameViewModel::class) 
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
-
-        receiver.userNotice.observe(this, Observer {
-            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
-            it?.userNoticeList?.let { list ->
-                if (list.isNotEmpty())
-                    UserNoticeDialog(this).setNoticeList(list).show()
-            }
-        })
-
-        receiver.notice.observe(this, Observer {
-            hideLoading()
-            if (it != null) {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        receiver.sysMaintenance.observe(this) {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
-        }
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
