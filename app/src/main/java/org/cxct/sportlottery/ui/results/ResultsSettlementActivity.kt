@@ -22,8 +22,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
