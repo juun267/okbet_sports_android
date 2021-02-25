@@ -47,6 +47,13 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
         setupViewByUserInfo(userInfo)
         updateUserLevel(userInfo.userLevelId)
         updateUserGrowthBar(userInfo)
+        updateNextLevelTips(userInfo)
+    }
+
+    private fun updateNextLevelTips(userInfo: UserInfoData) {
+        getNextLevel(userInfo.userLevelId)?.let { nextLevel ->
+            tv_next_level_tips.text = "${getString(nextLevel.levelRequirement.level)}  ${nextLevel.levelRequirement.levelName}"
+        }
     }
 
     private fun updateUserGrowthBar(userInfo: UserInfoData) {
@@ -72,7 +79,11 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun getUpgradeGrowthRequirement(levelId: Int): Int {
-        return Level.values().find { level -> level.levelRequirement.levelId == levelId + 1 }?.levelRequirement?.growthRequirement ?: 0
+        return getNextLevel(levelId)?.levelRequirement?.growthRequirement ?: 0
+    }
+
+    private fun getNextLevel(levelId: Int): Level? {
+        return Level.values().find { level -> level.levelRequirement.levelId == levelId + 1 }
     }
 
     private fun setupViewByUserInfo(userInfo: UserInfoData) {

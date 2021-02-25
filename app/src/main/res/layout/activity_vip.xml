@@ -439,6 +439,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_next_level_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/blue7"
