@@ -10,7 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.FeedBackRows
 
-class FeedbackListAdapter(var context: Context, private val clickListener: ItemClickListener) : RecyclerView.Adapter<FeedbackListAdapter.ViewHolder>() {
+class FeedbackListAdapter(var context: Context, private val clickListener: ItemClickListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    enum class ItemType {
+        ITEM, NO_DATA
+    }
 
     var data = mutableListOf<FeedBackRows>()
         set(value) {
@@ -18,22 +23,46 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+    var isFinalPage: Boolean = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ItemType.NO_DATA.ordinal -> NoDataViewHolder.from(parent)
+            else -> ViewHolder.from(parent)
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvType.text = data[position].type?.let { getMsgType(it) }
-        holder.tvStatus.text = data[position].type?.let { getMsgStatus(it) }
-        val item = data[position]
-        holder.bind(item, clickListener)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> {
+                holder.tvStatus.text = data[position].type?.let { getMsgStatus(it) }
+                val item = data[position]
+                holder.bind(item, clickListener)
+            }
+            is NoDataViewHolder -> {
+                holder.bind(isFinalPage)
+            }
+        }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = data.size + 1
+
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            (data.size) -> {
+                ItemType.NO_DATA.ordinal
+            }
+            else -> ItemType.ITEM.ordinal
+        }
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val tvType: TextView = itemView.findViewById(R.id.tv_type)
+        //        val tvType: TextView = itemView.findViewById(R.id.tv_type)
         private val tvTime: TextView = itemView.findViewById(R.id.tv_time)
         private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
         val tvStatus: TextView = itemView.findViewById(R.id.tv_status)
@@ -54,6 +83,25 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
                     .inflate(R.layout.content_feedback_record_list_rv, parent, false)
                 return ViewHolder(view)
             }
+        }
+    }
+
+    class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(isFinalPage: Boolean) {
+            itemView.visibility = if (isFinalPage) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup) =
+                NoDataViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_finance_no_data, parent, false)
+                )
         }
     }
 
