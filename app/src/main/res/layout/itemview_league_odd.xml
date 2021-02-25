@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/league_odd_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginTop="7dp"
@@ -36,13 +36,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/league_odd_count"
             tools:text="洪都拉斯國際聯賽" />
 
         <TextView
             android:id="@+id/league_odd_count"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
             android:background="@android:color/white"
             android:gravity="center"
             android:textColor="@android:color/black"
