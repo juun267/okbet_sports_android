@@ -324,7 +324,7 @@
     <string name="match_names">(主) %s  vs  %s (客)</string>
     <string name="bet_item">投注项目 - %s</string>
     <string name="nothing">--</string>
-    <string name="draw_or_cancel">00.000</string>
+    <string name="draw_or_cancel">0.000</string>
 
 
     <!--game hall-->
