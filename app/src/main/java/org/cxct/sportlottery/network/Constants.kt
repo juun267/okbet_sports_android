@@ -79,7 +79,7 @@ object Constants {
     const val MESSAGE_LIST = "/api/front/message/list"
 
     //odds
-    const val MATCH_ODDS_LIST = "/api/front/match/odds/list"
+    const val MATCH_ODDS_LIST = "/api/front/match/odds/simple/list"
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
 
     //sport
