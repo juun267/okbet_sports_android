@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +48,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
                 val visibleItemCount: Int = it.childCount
                 val totalItemCount: Int = it.itemCount
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
+                viewModel.getRecordNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
                 scrollToTopControl(firstVisibleItemPosition)
             }
         }
@@ -121,6 +120,13 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     }
 
     private fun initObserver() {
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        }
+
         viewModel.thirdGamesResult.observe(viewLifecycleOwner) {
             sheetAdapter.dataList = it ?: listOf()
         }

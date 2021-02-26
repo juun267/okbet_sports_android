@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.*
 import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.layout_total
-import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.rv_record
 import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -22,24 +22,19 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
-        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-            iv_scroll_to_top.apply {
-                if (firstVisibleItemPosition > 0) {
-                    if (alpha == 0f) {
-                        alpha = 0f
-                        visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                } else {
-                    if (alpha == 1f) {
-                        alpha = 1f
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                                override fun onAnimationEnd(animation: Animator) {
-                                    visibility = View.GONE
-                                }
-                            })
-                    }
-                }
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (recyclerView.canScrollVertically(-1)) {
+                iv_scroll_to_top.visibility = View.GONE
+            } else {
+                iv_scroll_to_top.visibility = View.VISIBLE
+            }
+            recyclerView.layoutManager?.let {
+                val visibleItemCount: Int = it.childCount
+                val totalItemCount: Int = it.itemCount
+                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                viewModel.getRecordDetailNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
+
             }
         }
     }
@@ -80,6 +75,13 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
     }
 
     private fun initObserver() {
+
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        }
 
         viewModel.recordDetailResult.observe(viewLifecycleOwner) {
             it?.t?.apply {

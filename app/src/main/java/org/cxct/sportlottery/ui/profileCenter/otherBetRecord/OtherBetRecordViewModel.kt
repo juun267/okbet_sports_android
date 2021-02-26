@@ -100,14 +100,6 @@ class OtherBetRecordViewModel(
         }
     }
 
-    fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
-        if (!isLoading && !isLastPage) {
-            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
-                isLoading = true
-                recordRequest?.let { queryFirstOrders(++nowPage, it.startTime, it.endTime, it.firmType ) }
-            }
-        }
-    }
 
     fun querySecondOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
         loading()
@@ -133,6 +125,23 @@ class OtherBetRecordViewModel(
         }
     }
 
+    fun getRecordNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
+        if (!isLoading && !isLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
+                isLoading = true
+                recordRequest?.let { queryFirstOrders(++nowPage, it.startTime, it.endTime, it.firmType ) }
+            }
+        }
+    }
+
+    fun getRecordDetailNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
+        if (!isLoading && !isLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
+                isLoading = true
+                recordRequest?.let { querySecondOrders(++nowPage, it.startTime, it.endTime, it.firmType ) }
+            }
+        }
+    }
     private fun loading() {
         _loading.postValue(true)
     }
