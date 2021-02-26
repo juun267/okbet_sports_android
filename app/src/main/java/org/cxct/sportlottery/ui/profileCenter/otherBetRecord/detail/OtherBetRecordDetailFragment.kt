@@ -24,7 +24,7 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            if (recyclerView.canScrollVertically(-1)) {
+            if (!recyclerView.canScrollVertically(-1)) {
                 iv_scroll_to_top.visibility = View.GONE
             } else {
                 iv_scroll_to_top.visibility = View.VISIBLE
