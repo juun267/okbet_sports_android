@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi.vipService
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.network.vip.LoadingResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
+import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -23,10 +25,6 @@ class VipViewModel(
 ) :
     BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    val loading: LiveData<Boolean>
-        get() = _loading
-    private val _loading = MutableLiveData<Boolean>()
-
     val userLevelGrowthResult: LiveData<LevelGrowthResult>
         get() = _userLevelGrowthResult
     private val _userLevelGrowthResult = MutableLiveData<LevelGrowthResult>()
@@ -35,16 +33,16 @@ class VipViewModel(
         get() = _userInfoResult
     private val _userInfoResult = MutableLiveData<UserInfoResult>()
 
-    private fun loading() {
-        _loading.value = true
-    }
+    val thirdRebatesResult: LiveData<ThirdRebatesResult>
+        get() = _thirdRebatesResult
+    private val _thirdRebatesResult = MutableLiveData<ThirdRebatesResult>()
 
-    private fun hideLoading() {
-        _loading.value = false
-    }
+    val loadingResult: LiveData<LoadingResult>
+        get() = _loadingResult
+    private val _loadingResult = MutableLiveData<LoadingResult>(LoadingResult())
 
     private fun getUserInfo() {
-        loading()
+        _loadingResult.value = _loadingResult.value?.apply { userInfoLoading = true }
         viewModelScope.launch {
             doNetwork(androidContext) {
                 userInfoRepository.getUserInfo()
@@ -52,13 +50,14 @@ class VipViewModel(
                 if (result.success) {
                     _userInfoResult.value = result
                 }
-                hideLoading()
+                _loadingResult.value = _loadingResult.value?.apply { userInfoLoading = false }
             }
         }
     }
 
+    //TODO Dean : 檢視並刪除不需要用到的資料
     fun getUserLevelGrowth() {
-        loading()
+        _loadingResult.value = _loadingResult.value?.apply { userGrowthLoading = true }
         viewModelScope.launch {
             doNetwork(androidContext) {
                 vipService.getUserLevelGrowth()
@@ -76,11 +75,25 @@ class VipViewModel(
                     }
                     _userLevelGrowthResult.value = result
                     getUserInfo()
-                } else {
-                    hideLoading()
                 }
+                _loadingResult.value = _loadingResult.value?.apply { userGrowthLoading = false }
             }
 
+        }
+    }
+
+    //TODO Dean : 檢視並刪除不需要用到的資料
+    fun getThirdRebates(firmCode: String, firmType: String) {
+        _loadingResult.value = _loadingResult.value?.apply { thirdRebatesLoading = true }
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                vipService.getThirdRebates(firmCode, firmType)
+            }?.let { result ->
+                if (result.success) {
+                    _thirdRebatesResult.value = result
+                }
+                _loadingResult.value = _loadingResult.value?.apply { thirdRebatesLoading = false }
+            }
         }
     }
 }

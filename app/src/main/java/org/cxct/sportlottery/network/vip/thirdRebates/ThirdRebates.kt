@@ -10,7 +10,7 @@ data class ThirdRebates(
     val firmCode: String,
     @Json(name = "firmType")
     val firmType: String,
-    @Json(name = "GameFirms")
+    @Json(name = "gameFirms")
     val gameFirms: List<GameFirm>,
     @Json(name = "thirdDebateBeans")
     val thirdDebateBeans: List<ThirdDebateBean>

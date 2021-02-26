@@ -7,21 +7,21 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Debate(
     @Json(name = "debate")
-    val debate: Int,
+    val debate: Double?,
     @Json(name = "firmCode")
     val firmCode: String,
     @Json(name = "firmType")
     val firmType: String,
     @Json(name = "id")
-    val id: Int,
+    val id: Double,
     @Json(name = "maxDebateMoney")
-    val maxDebateMoney: Int,
+    val maxDebateMoney: Double?,
     @Json(name = "maxMoney")
-    val maxMoney: Int,
+    val maxMoney: Double?,
     @Json(name = "minMoney")
-    val minMoney: Int,
+    val minMoney: Double?,
     @Json(name = "platformId")
-    val platformId: Int,
+    val platformId: Long,
     @Json(name = "userLevelId")
     val userLevelId: Int,
     @Json(name = "userLevelName")

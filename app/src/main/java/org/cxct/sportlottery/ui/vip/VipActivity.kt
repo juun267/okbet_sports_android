@@ -28,24 +28,42 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     private fun initObserve() {
         viewModel.apply {
             //讀取資料
-            loading.observe(this@VipActivity, Observer {
-                if (it) loading() else hideLoading()
+            loadingResult.observe(this@VipActivity, Observer {
+                it.apply {
+                    when {
+                        !userInfoLoading && !userGrowthLoading && !thirdRebatesLoading -> hideLoading()
+                        else -> loading()
+                    }
+                }
             })
             //獲取用戶資料
             userInfoResult.observe(this@VipActivity, Observer {
                 it.userInfoData?.let { data -> userInfoUpdateView(data) }
             })
+            //會員層級成長值
             userLevelGrowthResult.observe(this@VipActivity, Observer {
                 setupBannerData()
+            })
+            //第三方遊戲各會員層級資料
+            thirdRebatesResult.observe(this@VipActivity, Observer {
+                //TODO Dean: set data to recycler view
             })
         }
     }
 
     private fun initView() {
-        viewModel.getUserLevelGrowth()
+        getDataFromApi()
+
         pb_user_level.max = levelBubbleList.size
 
         banner_vip_level.setPageTransformer(Transformer.Default)
+    }
+
+    private fun getDataFromApi() {
+        viewModel.apply {
+            getUserLevelGrowth()
+            getThirdRebates("AGIN", "AG")
+        }
     }
 
     private fun initEvent() {
