@@ -197,7 +197,14 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         tvMatch.visibility = View.GONE
                     }
                     else -> {
-                        tvOddsSpread.visibility = View.VISIBLE
+                        matchOdd.spread.apply {
+                            if(isEmpty()){
+                                tvOddsSpread.visibility = View.GONE
+                            }else{
+                                tvOddsSpread.visibility = View.VISIBLE
+                                tvOddsSpread.text = this
+                            }
+                        }
                         tvMatch.visibility = View.VISIBLE
                     }
                 }

@@ -5,11 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/rl_top_bar"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/bottom_sheet_top_bar_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/bottom_sheet_close"
+            android:textColor="@color/bottom_sheet_top_bar_close_text"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry" />
+
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/rech_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_top_bar"
         tools:listitem="@layout/itemview_simple_list_center" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
