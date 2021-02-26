@@ -210,8 +210,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 }
             }
 
-            //tvOddsSpread.visibility = if(matchOdd.spread == null)View.GONE else View.VISIBLE
-
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
             binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
