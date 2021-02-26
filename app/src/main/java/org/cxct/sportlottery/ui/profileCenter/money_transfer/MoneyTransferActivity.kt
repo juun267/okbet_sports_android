@@ -7,12 +7,12 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_money_transfer.*
 import kotlinx.android.synthetic.main.activity_money_transfer.btn_toolbar_back
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
 
 class MoneyTransferActivity :
-    BaseOddButtonActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+    BaseNoticeActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
