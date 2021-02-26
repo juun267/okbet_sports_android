@@ -10,10 +10,10 @@ import kotlinx.android.synthetic.main.dialog_money_transfer_record_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.bet.record.search.result.setDateTime
-import org.cxct.sportlottery.ui.bet.record.search.result.setMoneyFormat
-import org.cxct.sportlottery.ui.bet.record.search.result.setPlatName
-import org.cxct.sportlottery.ui.bet.record.search.result.setRecordStatus
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setDateTime
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setMoneyFormat
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setPlatName
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setRecordStatus
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 
 class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransferViewModel::class) {

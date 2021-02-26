@@ -2,15 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.bet.record.BetRecordActivity">
+    tools:context=".ui.profileCenter.sportRecord.BetRecordActivity">
 
     <data>
         <variable name="activity"
-            type="org.cxct.sportlottery.ui.bet.record.BetRecordActivity"/>
+            type="org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity"/>
 
         <variable
             name="betRecordViewModel"
-            type="org.cxct.sportlottery.ui.bet.record.BetRecordViewModel" />
+            type="org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel" />
     </data>
 
     <LinearLayout

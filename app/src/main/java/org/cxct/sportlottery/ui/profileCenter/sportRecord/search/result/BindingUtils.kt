@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet.record.search.result
+package org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result
 
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -69,6 +69,18 @@ fun TextView.setMoneyFormat(money: Double?) {
     }
 }
 
+@BindingAdapter("moneyProfitFormat")
+fun TextView.setMoneyProfitFormat(money: Double?) {
+    var symbol = ""
+    money?.let {
+        when {
+            money > 0.0 -> symbol = "+"
+            money < 0.0 -> symbol = "-"
+        }
+        text = "$symbol${TextUtil.format(it)}"
+    }
+}
+
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Long?) {
     money?.let {
@@ -94,5 +106,19 @@ fun TextView.setPlatName(platCode: String?) {
     platCode?.let {
         text = gameNameMap[it]?.let { stringId -> context.getString(stringId) }
     }
+}
+
+
+@BindingAdapter("moneyColor")
+fun TextView.setMoneyColor(profit: Double = 0.0) {
+
+    val color = when {
+        profit > 0.0 -> R.color.green
+        profit < 0.0 -> R.color.red
+        profit == 0.0 -> R.color.gray3
+        else -> R.color.gray3
+    }
+
+    this.setTextColor(ContextCompat.getColor(context, color))
 }
 

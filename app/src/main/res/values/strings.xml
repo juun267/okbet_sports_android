@@ -335,6 +335,7 @@
 
     <string name="bet_detail">注单详情</string>
     <string name="bet_time">投注时间：</string>
+    <string name="bet_time2">投注时间</string>
     <string name="league_name">联赛名称：</string>
     <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
     <string name="play_type">投注玩法：</string>
@@ -633,4 +634,9 @@
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
     <string name="visit_first">先去逛逛</string>
+    <string name="bet_number">注数</string>
+    <string name="bet_money">下注金額</string>
+    <string name="profit_and_loss">盈亏</string>
+    <string name="total_bet_number">总笔数：</string>
+    <string name="total_profit_and_loss">总盈亏：</string>
 </resources>

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".ui.bet.record.search.BetRecordSearchFragment">
+    tools:context=".ui.profileCenter.sportRecord.search.BetRecordSearchFragment">
 
     <include
         android:id="@+id/layout_all"

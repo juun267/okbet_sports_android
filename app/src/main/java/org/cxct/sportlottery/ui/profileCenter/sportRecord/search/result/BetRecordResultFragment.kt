@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet.record.search.result
+package org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_bet_record_result.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordResultBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 
 
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {

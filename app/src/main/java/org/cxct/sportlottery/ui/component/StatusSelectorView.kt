@@ -19,11 +19,18 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    var text : String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
+    var selectedText : String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
         get() = tv_selected.text.toString()
         set(value) {
             field = value
             tv_selected.text = value
+        }
+
+    var selectedTag : String? = ""
+        get() = tv_selected.tag.toString()
+        set(value) {
+            field = value
+            tv_selected.tag = value
         }
 
     init {
@@ -37,7 +44,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                 setOnClickListener {
                     bottomSheet.show()
                 }
-
+                tv_selected.tag = ""
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             }
 

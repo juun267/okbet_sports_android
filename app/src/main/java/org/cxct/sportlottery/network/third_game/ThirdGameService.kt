@@ -43,12 +43,12 @@ interface ThirdGameService {
 
     @POST(QUERY_FIRST_ORDERS)
     suspend fun queryFirstOrders(
-        @Body queryTransfersRequest: OtherBetHistoryRequest
+        @Body queryFirstOrdersRequest: OtherBetHistoryRequest?
     ): Response<OtherBetHistoryResult>
 
     @POST(QUERY_SECOND_ORDERS)
     suspend fun querySecondOrders(
-        @Body queryTransfersRequest: OtherBetHistoryRequest
+        @Body querySecondOrdersRequest: OtherBetHistoryRequest
     ): Response<QueryTransfersResult>
 
 }

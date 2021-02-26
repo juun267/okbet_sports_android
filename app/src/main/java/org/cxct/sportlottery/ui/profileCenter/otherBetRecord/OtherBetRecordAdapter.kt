@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet.record.search.result
+package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +11,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemBetRecordResultBinding
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.databinding.ItemOtherBetRecordBinding
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Order
 import org.cxct.sportlottery.util.TextUtil
 
-class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
         ITEM, FOOTER, NO_DATA
@@ -23,7 +23,7 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
+    fun addFooterAndSubmitList(list: List<Order>?, isLastPage: Boolean) {
         adapterScope.launch {
             val items = when (list) {
                 null -> listOf(DataItem.NoData)
@@ -57,8 +57,8 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, clickListener)
+                val item = getItem(position) as DataItem.Item
+                holder.bind(item.data, clickListener)
             }
 
             is FooterViewHolder -> {}
@@ -75,9 +75,9 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
         }
     }
 
-    class ItemViewHolder private constructor(val binding: ItemBetRecordResultBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row, clickListener: ItemClickListener) {
-            binding.row = data
+    class ItemViewHolder private constructor(val binding: ItemOtherBetRecordBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: Order, clickListener: ItemClickListener) {
+            binding.data = data
             binding.clickListener = clickListener
             binding.textUtil = TextUtil
             binding.executePendingBindings()
@@ -86,7 +86,7 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemBetRecordResultBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemOtherBetRecordBinding.inflate(layoutInflater, parent, false)
                 return ItemViewHolder(binding)
             }
         }
@@ -103,14 +103,14 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_bet_record, parent, false))
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
         }
     }
 
 
     class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
         override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem.orderNum == newItem.orderNum
+            return oldItem.statDate == newItem.statDate
         }
 
         override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
@@ -120,23 +120,23 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     }
 }
 
-class ItemClickListener(val clickListener: (data: Row) -> Unit) {
-    fun onClick(data: Row) = clickListener(data)
+class ItemClickListener(val clickListener: (data: Order) -> Unit) {
+    fun onClick(data: Order) = clickListener(data)
 }
 
 sealed class DataItem {
 
-    abstract val orderNum: String?
+    abstract val statDate: String?
 
-    data class Item(val row: Row) : DataItem() {
-        override val orderNum = row.orderNo
+    data class Item(val data: Order) : DataItem() {
+        override val statDate = data.statDate
     }
 
     object Footer : DataItem() {
-        override val orderNum: String = ""
+        override val statDate: String = ""
     }
 
     object NoData : DataItem() {
-        override val orderNum: String? = null
+        override val statDate: String? = null
     }
 }

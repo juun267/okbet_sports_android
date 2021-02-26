@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet.record
+package org.cxct.sportlottery.ui.profileCenter.sportRecord
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -13,7 +13,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.bet.record.search.BetTypeItemData
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.BetTypeItemData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.dateToTimeStamp

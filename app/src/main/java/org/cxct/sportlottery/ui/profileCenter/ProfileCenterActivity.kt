@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
-import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity

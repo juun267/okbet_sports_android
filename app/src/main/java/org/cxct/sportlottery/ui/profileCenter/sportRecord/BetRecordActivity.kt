@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet.record
+package org.cxct.sportlottery.ui.profileCenter.sportRecord
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
