@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
@@ -12,13 +11,13 @@ import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 
 class SettingPasswordActivity :
-    BaseOddButtonActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
+    BaseNoticeActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
     companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }
