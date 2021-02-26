@@ -42,7 +42,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
 
     fun getStartAndEndDate(): Pair<Long?, Long?> {
         val startTimeStamp = TimeUtil.dateToTimeStamp(tv_start_date.text.toString(), TimeUtil.TimeType.START_OF_DAY)
-        val endTimeStamp = TimeUtil.dateToTimeStamp(tv_end_date.text.toString(), TimeUtil.TimeType.START_OF_DAY)
+        val endTimeStamp = TimeUtil.dateToTimeStamp(tv_end_date.text.toString(), TimeUtil.TimeType.END_OF_DAY)
         return startTimeStamp to endTimeStamp
     }
 
