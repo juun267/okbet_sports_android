@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
+import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
@@ -120,9 +121,14 @@ class ProfileCenterActivity :
             viewModel.settingCheckPermissions()
         }
 
-        //投注記錄
-        btn_bet_record.setOnClickListener {
+        //體育投注記錄
+        btn_sport_bet_record.setOnClickListener {
             startActivity(Intent(this, BetRecordActivity::class.java))
+        }
+
+        //其他投注記錄
+        btn_other_bet_record.setOnClickListener {
+            startActivity(Intent(this, OtherBetRecordActivity::class.java))
         }
 
         //資金明細
