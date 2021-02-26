@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -27,6 +28,7 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.home.news.NewsDiaolog
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -50,6 +52,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initScrollView()
         initObserve()
         getMarquee()
+        getMsgDialog()
         getBanner()
         getPopImage()
         getThirdGame()
@@ -190,6 +193,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setMarquee(it)
         })
 
+        //公告彈窗
+        viewModel.messageDialogResult.observe(viewLifecycleOwner,{
+            setMsgDiaolog(it)
+        })
+
         //第三方遊戲清單
         viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
             setGameData(it)
@@ -270,6 +278,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         refreshGameQP(cateDataList?.find { it.categoryThird == ThirdGameCategory.QP })
         refreshGameDZ(cateDataList?.find { it.categoryThird == ThirdGameCategory.DZ })
         refreshGameBY(cateDataList?.find { it.categoryThird == ThirdGameCategory.BY })
+    }
+
+    private fun setMsgDiaolog(messageListResult: MessageListResult) {
+       var newsDiaolog = NewsDiaolog(activity,messageListResult.rows)
+        fragmentManager?.let { newsDiaolog.show(it,null) }
     }
 
     //真人
@@ -370,6 +383,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getMarquee() {
         viewModel.getMarquee()
+    }
+
+    private fun getMsgDialog() {
+        viewModel.getMsgDialog()
     }
 
     private fun getThirdGame() {
