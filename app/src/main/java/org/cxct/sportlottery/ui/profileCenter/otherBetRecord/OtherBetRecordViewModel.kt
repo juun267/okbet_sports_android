@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,8 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Order
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryRequest
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OrderData
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -35,10 +38,14 @@ class OtherBetRecordViewModel(
     val recordResult: LiveData<OtherBetHistoryResult?>
         get() = _recordResult
 
+    val recordDetailResult: LiveData<OtherBetHistoryDetailResult?>
+        get() = _recordDetailResult
+
     val thirdGamesResult: LiveData<List<SheetData>?>
         get() = _thirdGamesResult
 
-    private var _recordResult = MutableLiveData<OtherBetHistoryResult?>()//List<Order>
+    private var _recordResult = MutableLiveData<OtherBetHistoryResult?>()
+    private var _recordDetailResult = MutableLiveData<OtherBetHistoryDetailResult?>()
     private var _thirdGamesResult = MutableLiveData<List<SheetData>?>()
     private val _loading = MutableLiveData<Boolean>()
 
@@ -46,6 +53,7 @@ class OtherBetRecordViewModel(
     private var isLoading = false
     private var nowPage = 1
     val recordDataList = mutableListOf<Order>()
+    val recordDetailDataList = mutableListOf<OrderData>()
 
     private var recordRequest: OtherBetHistoryRequest? = null
 
@@ -97,6 +105,30 @@ class OtherBetRecordViewModel(
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 isLoading = true
                 recordRequest?.let { queryFirstOrders(++nowPage, it.startTime, it.endTime, it.firmType ) }
+            }
+        }
+    }
+
+    fun querySecondOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
+        loading()
+        if (page == 1) {
+            nowPage = 1
+            recordDetailDataList.clear()
+        }
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                recordRequest = OtherBetHistoryRequest(page, PAGE_SIZE,
+                                                       startTime = startTime,
+                                                       endTime = endTime,
+                                                       firmType = firmType)
+
+                recordRequest.let { OneBoSportApi.thirdGameService.querySecondOrders(it) }
+
+            }?.let { result ->
+                hideLoading()
+                isLoading = false
+                recordDetailDataList.addAll(result.t?.orderList?.dataList as List<OrderData>)
+                _recordDetailResult.value = result
             }
         }
     }

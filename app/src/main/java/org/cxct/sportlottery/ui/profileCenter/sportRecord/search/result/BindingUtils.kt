@@ -14,6 +14,13 @@ fun TextView.setDateTime(timeStamp: Long?) {
     }
 }
 
+@BindingAdapter("date")
+fun TextView.setDate(timeStamp: Long?) {
+    timeStamp?.let {
+        text = TimeUtil.timeStampToDay(timeStamp)
+    }
+}
+
 @BindingAdapter("gameStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setGameStatus(status: Int?) {
 }
@@ -66,18 +73,6 @@ fun TextView.setRecordStatusColor(status: Int?) {
 fun TextView.setMoneyFormat(money: Double?) {
     money?.let {
         text = TextUtil.format(it)
-    }
-}
-
-@BindingAdapter("moneyProfitFormat")
-fun TextView.setMoneyProfitFormat(money: Double?) {
-    var symbol = ""
-    money?.let {
-        when {
-            money > 0.0 -> symbol = "+"
-            money < 0.0 -> symbol = "-"
-        }
-        text = "$symbol${TextUtil.format(it)}"
     }
 }
 

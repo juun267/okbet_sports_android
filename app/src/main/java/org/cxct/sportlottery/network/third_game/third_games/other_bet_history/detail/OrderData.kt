@@ -9,7 +9,7 @@ data class OrderData(
     @Json(name = "addTime")
     val addTime: String?,
     @Json(name = "betAmount")
-    val betAmount: Int?,
+    val betAmount: Double?,
     @Json(name = "betTime")
     val betTime: String?,
     @Json(name = "dlId")
@@ -29,11 +29,11 @@ data class OrderData(
     @Json(name = "gameType")
     val gameType: String?,
     @Json(name = "jackBonus")
-    val jackBonus: Int?,
+    val jackBonus: Double?,
     @Json(name = "jackpot")
-    val jackpot: Int?,
+    val jackpot: Double?,
     @Json(name = "netAmount")
-    val netAmount: Int?,
+    val netAmount: Double?,
     @Json(name = "orderNo")
     val orderNo: String?,
     @Json(name = "platformCode")
@@ -49,7 +49,7 @@ data class OrderData(
     @Json(name = "userName")
     val userName: String?,
     @Json(name = "validBetAmount")
-    val validBetAmount: Int?,
+    val validBetAmount: Double?,
     @Json(name = "zdlId")
     val zdlId: Int?,
     @Json(name = "zdlName")

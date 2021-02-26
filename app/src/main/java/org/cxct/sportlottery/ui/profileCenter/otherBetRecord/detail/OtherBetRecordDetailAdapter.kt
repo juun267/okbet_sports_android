@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
+package org.cxct.sportlottery.ui.profileCenter.otherBetRecord.detail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemOtherBetRecordBinding
-import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Order
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.databinding.ItemOtherBetRecordDetailBinding
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OrderData
 
-class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
         ITEM, FOOTER, NO_DATA
@@ -23,7 +22,7 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addFooterAndSubmitList(list: List<Order>?, isLastPage: Boolean) {
+    fun addFooterAndSubmitList(list: List<OrderData>?, isLastPage: Boolean) {
         adapterScope.launch {
             val items = when (list) {
                 null -> listOf(DataItem.NoData)
@@ -58,7 +57,7 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
         when (holder) {
             is ItemViewHolder -> {
                 val item = getItem(position) as DataItem.Item
-                holder.bind(item.data, clickListener)
+                holder.bind(item.data)
             }
 
             is FooterViewHolder -> {}
@@ -75,17 +74,16 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
         }
     }
 
-    class ItemViewHolder private constructor(val binding: ItemOtherBetRecordBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Order, clickListener: ItemClickListener) {
+    class ItemViewHolder private constructor(val binding: ItemOtherBetRecordDetailBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: OrderData) {
             binding.data = data
-            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemOtherBetRecordBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemOtherBetRecordDetailBinding.inflate(layoutInflater, parent, false)
                 return ItemViewHolder(binding)
             }
         }
@@ -109,7 +107,7 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
 
     class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
         override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem.statDate == newItem.statDate
+            return oldItem.orderNo == newItem.orderNo
         }
 
         override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
@@ -119,23 +117,23 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
     }
 }
 
-class ItemClickListener(val clickListener: (data: Order) -> Unit) {
-    fun onClick(data: Order) = clickListener(data)
+class ItemClickListener(val clickListener: (data: OrderData) -> Unit) {
+    fun onClick(data: OrderData) = clickListener(data)
 }
 
 sealed class DataItem {
 
-    abstract val statDate: Long?
+    abstract val orderNo: String?
 
-    data class Item(val data: Order) : DataItem() {
-        override val statDate = data.statDate
+    data class Item(val data: OrderData) : DataItem() {
+        override val orderNo = data.orderNo
     }
 
     object Footer : DataItem() {
-        override val statDate: Long? = null
+        override val orderNo: String? = null
     }
 
     object NoData : DataItem() {
-        override val statDate: Long? = null
+        override val orderNo: String? = null
     }
 }

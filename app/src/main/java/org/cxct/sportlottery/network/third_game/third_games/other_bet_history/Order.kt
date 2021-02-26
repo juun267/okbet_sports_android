@@ -15,9 +15,9 @@ data class Order(
     @Json(name = "gameName")
     val gameName: String?,
     @Json(name = "netAmount")
-    val netAmount: Int?,
+    val netAmount: Double?,
     @Json(name = "statDate")
-    val statDate: String?,
+    val statDate: Long?,
     @Json(name = "userCount")
     val userCount: Int?,
     @Json(name = "validBetAmount")
