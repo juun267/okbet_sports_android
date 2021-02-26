@@ -39,6 +39,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
             wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
             wd_log_detail_status.text = it.withdrawState ?: ""
             wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""
+            wd_log_detail_reason.text = it.reason ?: ""
 
             it.displayMoney?.let { nonNullDisplayMoney ->
                 wd_log_detail_amount.text = getString(R.string.finance_rmb, nonNullDisplayMoney)
@@ -47,6 +48,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
             it.displayFee?.let { nonNullDisplayFee ->
                 wd_log_detail_handle_fee.text = getString(R.string.finance_rmb, nonNullDisplayFee)
             }
+
         })
     }
 }

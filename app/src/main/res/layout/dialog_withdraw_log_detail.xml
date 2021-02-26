@@ -151,13 +151,39 @@
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_review_time_subtitle"
             tools:text="2020-12-12 19:58:22" />
 
+        <TextView
+            android:id="@+id/wd_log_detail_reason_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:text="@string/log_detail_reason"
+            android:textColor="@color/textGray"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/wd_log_detail_review_time_subtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_review_time_subtitle" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_reason"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_reason_subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_reason_subtitle"
+            tools:text="请求第三方接口失败" />
+
         <View
             android:id="@+id/log_detail_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="17dp"
             android:background="@color/light_gray"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_review_time_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_reason_subtitle" />
 
         <Button
             android:id="@+id/log_detail_confirm"
@@ -165,7 +191,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/btn_confirm"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/main"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/log_detail_divider" />
 
