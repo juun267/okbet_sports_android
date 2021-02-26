@@ -167,8 +167,9 @@ class MainViewModel(
                 }
             }
 
-            //cate list 排序，sort 從小到大排序
-            gameCatList.sortBy { it.sort }
+            //20200226 紀錄： cate 暫時不使用 sort 排序
+//            //cate list 排序，sort 從小到大排序
+//            gameCatList.sortBy { it.sort }
         }
 
         val homeGameList = mutableListOf<GameCateData>()

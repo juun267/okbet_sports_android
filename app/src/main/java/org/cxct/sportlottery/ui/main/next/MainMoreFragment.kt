@@ -72,7 +72,7 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         cateDataList?.forEach { cateData ->
             val gameFrag = when (cateData.categoryThird) {
                 ThirdGameCategory.LOCAL_SP -> SportFragment()
-                ThirdGameCategory.CGCP -> CGCPFragment()
+                ThirdGameCategory.CGCP -> CGCPFragment(cateData)
                 ThirdGameCategory.LIVE -> LiveFragment()
                 ThirdGameCategory.QP -> QPFragment()
                 ThirdGameCategory.DZ -> DZFragment()
