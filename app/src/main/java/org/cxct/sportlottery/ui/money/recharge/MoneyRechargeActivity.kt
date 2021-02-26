@@ -10,11 +10,11 @@ import kotlinx.android.synthetic.main.activity_money_recharge.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 
-class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     companion object {
         const val RechargeViewLog = "rechargeViewLog"
@@ -37,12 +37,21 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_money_recharge)
+
+        initToolbar()
         initRecyclerView()
         initLiveData()
         initData()
         initView()
         initButton()
-        isOpenMenu(false)
+    }
+
+    private fun initToolbar() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initData() {
@@ -227,13 +236,4 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)
         rv_pay_type.adapter = bankTypeAdapter
     }
-
-    override fun setContentView(): Int {
-        return R.layout.activity_money_recharge
-    }
-
-    override fun setToolBarName(): String {
-        return "充值"
-    }
-
 }

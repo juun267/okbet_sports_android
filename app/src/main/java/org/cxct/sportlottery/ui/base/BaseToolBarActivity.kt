@@ -15,6 +15,7 @@ import kotlin.reflect.KClass
  */
 
 
+@Deprecated("only main and game activity need drawer")
 abstract class BaseToolBarActivity<T : BaseOddButtonViewModel>(claazz: KClass<T>) :
     BaseOddButtonActivity<T>(claazz) {
 
