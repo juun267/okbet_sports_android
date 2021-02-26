@@ -3,11 +3,13 @@ package org.cxct.sportlottery.ui.game.league
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
+import org.cxct.sportlottery.util.ItemNonLastDecoration
 
 class LeagueAdapter(private val leagueListener: LeagueListener) : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     var data = listOf<Row>()
@@ -51,6 +53,11 @@ class LeagueAdapter(private val leagueListener: LeagueListener) : RecyclerView.A
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 this.adapter = leagueSubAdapter
+                addItemDecoration(
+                    ItemNonLastDecoration(
+                        ContextCompat.getDrawable(context, R.drawable.divider_straight)
+                    )
+                )
             }
 
             leagueSubAdapter.data = item.list
