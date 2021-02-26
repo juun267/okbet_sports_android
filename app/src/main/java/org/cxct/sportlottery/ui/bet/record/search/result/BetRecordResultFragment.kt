@@ -18,6 +18,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordResultBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 
 
 class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
@@ -115,6 +117,8 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             it.let {
                 viewModel.isLastPage = (rvAdapter.itemCount >= (it.peekContent().total ?: 0))
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+                tv_total_bet_money.text = TextUtil.format(ArithUtil.toMoneyFormat(it.peekContent().other?.totalAmount?.toDouble()).toDouble())
+                tv_total_win_money.text = TextUtil.format(ArithUtil.toMoneyFormat(it.peekContent().other?.win).toDouble())
             }
         })
 
