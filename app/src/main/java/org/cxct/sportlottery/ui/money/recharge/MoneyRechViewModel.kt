@@ -243,7 +243,7 @@ class MoneyRechViewModel(
             !VerifyConstUtil.verifyWeChat(
                 wxID
             ) -> {
-                androidContext.getString(R.string.error_wx)
+                androidContext.getString(R.string.error_incompatible_format)
             }
             else -> {
                 ""

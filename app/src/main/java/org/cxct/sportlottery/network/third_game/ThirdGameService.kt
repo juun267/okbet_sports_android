@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.network.third_game
 
 import org.cxct.sportlottery.network.Constants.GET_ALL_BALANCE
+import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
@@ -9,6 +11,8 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResu
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryRequest
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -35,6 +39,16 @@ interface ThirdGameService {
     @POST(QUERY_TRANSFERS)
     suspend fun queryTransfers(
         @Body queryTransfersRequest: QueryTransfersRequest
+    ): Response<QueryTransfersResult>
+
+    @POST(QUERY_FIRST_ORDERS)
+    suspend fun queryFirstOrders(
+        @Body queryTransfersRequest: OtherBetHistoryRequest
+    ): Response<OtherBetHistoryResult>
+
+    @POST(QUERY_SECOND_ORDERS)
+    suspend fun querySecondOrders(
+        @Body queryTransfersRequest: OtherBetHistoryRequest
     ): Response<QueryTransfersResult>
 
 }

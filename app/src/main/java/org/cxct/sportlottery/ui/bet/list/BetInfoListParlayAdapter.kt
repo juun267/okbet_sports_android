@@ -53,7 +53,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             val sendOutStatus: Boolean
             if (TextUtils.isEmpty(it)) {
                 binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_bigger_than_zero)
-                binding.tvParlayWinQuota.text = "--".plus(binding.root.context.getString(R.string.bet_info_list_rmb))
+                binding.tvParlayWinQuota.text = "--".plus(" ").plus(binding.root.context.getString(R.string.bet_info_list_rmb))
                 winQuotaList[position] = 0.0
                 betQuotaList[position] = 0.0
                 sendBetQuotaList[position] = 0.0
@@ -95,7 +95,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                         it.toDouble() * parlayOdd.odds,
                         3,
                         RoundingMode.HALF_UP
-                    ).plus(binding.root.context.getString(R.string.bet_info_list_rmb))
+                    ).plus(" ").plus(binding.root.context.getString(R.string.bet_info_list_rmb))
 
             }
             onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())

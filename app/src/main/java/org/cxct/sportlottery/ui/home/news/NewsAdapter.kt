@@ -10,15 +10,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 
-class NewsAdapter(context: Context?, private val clickListener: ItemClickListener) :
+class NewsAdapter(width: Int, private val clickListener: ItemClickListener) :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     private var mSelectedPosition = 0
 
     val data = mutableListOf("游戏公告", "会员福利", "转账须知", "劲爆推荐", "导航网", "其他")
 
+    private val tabWidth = width
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, tabWidth)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -45,17 +47,12 @@ class NewsAdapter(context: Context?, private val clickListener: ItemClickListene
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, width: Int): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.content_news_tab, parent, false)
 
-                val metrics = Resources.getSystem().displayMetrics.widthPixels
-                val mWith = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.dialog_event_msg, parent, false)
-                    .findViewById<ImageView>(R.id.img_top).width / 3
-                view.layoutParams.width = metrics / 3
-
+                view.layoutParams.width = width
                 return ViewHolder(view)
             }
         }

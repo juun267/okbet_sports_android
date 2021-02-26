@@ -176,6 +176,9 @@ object Constants {
     const val TRANSFER = "/api/front/thirdapi/{outPlat}/{inPlat}/transfer?=amount"
     const val QUERY_TRANSFERS = "/api/front/thirdapi/queryTransfers"
 
+    const val QUERY_FIRST_ORDERS = "/api/front/thirdapi/queryFirstOrders"
+    const val QUERY_SECOND_ORDERS = "api/front/thirdapi/querySecondOrders"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000

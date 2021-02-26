@@ -35,7 +35,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     }
 
     lateinit var calendarBottomSheet: BottomSheetDialog
-    lateinit var typeBottomSheet: BottomSheetDialog
     lateinit var statusBottomSheet: BottomSheetDialog
 
     val adapter by lazy {
@@ -54,7 +53,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     ): View? {
         return inflater.inflate(R.layout.fragment_feedback_record_list, container, false).apply {
             setupStateBottomSheet(container)
-            setupTypeBottomSheet(container)
         }
     }
 
@@ -91,6 +89,9 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
             val listData = it ?: return@Observer
             adapter?.data = listData
         })
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
+            adapter?.isFinalPage = true
+        })
     }
 
     private fun initView() {
@@ -105,7 +106,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         btn_submit.setOnClickListener {
             getList()
         }
-
         ll_start_date.setOnClickListener {
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
             calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.START)
@@ -115,10 +115,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
             calendarBottomSheet.tv_calendar_title.text = getString(R.string.end_date)
             calendarBottomSheet.calendar.setDateSelectedType(DateSelectedType.END)
             calendarBottomSheet.show()
-        }
-
-        ll_type.setOnClickListener {
-            typeBottomSheet.show()
         }
         ll_status.setOnClickListener {
             statusBottomSheet.show()
@@ -143,7 +139,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 dateSelectedType: DateSelectedType,
                 startDate: Calendar
             ) {
-                setStartEndDateText(dateSelectedType,TimeUtil.stampToDateTime(startDate.time), "")
+                setStartEndDateText(dateSelectedType, TimeUtil.stampToDateTime(startDate.time), "")
                 calendarBottomSheet.dismiss()
             }
 
@@ -152,7 +148,8 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 startDate: Calendar,
                 endDate: Calendar
             ) {
-                setStartEndDateText(dateSelectedType,
+                setStartEndDateText(
+                    dateSelectedType,
                     TimeUtil.stampToDateTime(startDate.time),
                     TimeUtil.stampToDateTime(endDate.time)
                 )
@@ -161,7 +158,11 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         })
     }
 
-    private fun setStartEndDateText(dateSelectedType:DateSelectedType,startDate: String, endDate: String) {
+    private fun setStartEndDateText(
+        dateSelectedType: DateSelectedType,
+        startDate: String,
+        endDate: String
+    ) {
         tv_start_date.text = startDate
         tv_end_date.text = endDate
 
@@ -201,29 +202,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
             e.printStackTrace()
         }
     }
-
-    //狀態的BottomSheet
-    private fun setupTypeBottomSheet(container: ViewGroup?) {
-        try {
-            val textList = listOf(viewModel.typeMap.values)
-
-            val bottomSheetView =
-                layoutInflater.inflate(R.layout.dialog_bottom_sheet_rech_list, container, false)
-            typeBottomSheet = BottomSheetDialog(this.requireContext())
-            typeBottomSheet.setContentView(bottomSheetView)
-            typeBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
-                viewModel.feedbackListRequest.type = position
-                tv_type.text = viewModel.typeMap[position]
-                typeBottomSheet.dismiss()
-            }
-            typeBottomSheet.rech_list.apply {
-                adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
 
     private fun getList() {
         viewModel.getFbQueryList(true, 0)//首次進來跟點選查詢都重新撈資料
