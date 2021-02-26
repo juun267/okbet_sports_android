@@ -59,7 +59,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { InfoCenterViewModel(get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get()) }
