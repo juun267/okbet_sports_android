@@ -15,7 +15,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:text="@string/bet_info_list_bet_quota"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

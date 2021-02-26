@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.lifecycle.Observer
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.bumptech.glide.Glide
@@ -132,10 +133,27 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
         })
-        viewModel.userMoneyResult.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.userMoneyResult.observe(viewLifecycleOwner, Observer {
             txv_wallet_money.text = (ArithUtil.toMoneyFormat(it?.money)) + " RMB"
         })
 
+        viewModel.apiResult.observe(viewLifecycleOwner, Observer {
+            if (it.success) {
+                resetEvent()
+            }
+        })
+    }
+
+    //重置畫面事件
+    private fun resetEvent() {
+        clearFocus()
+        et_recharge_amount.setText("")
+        et_wx_id.setText("")
+        et_name.setText("")
+        et_bank_account.setText("")
+        et_nickname.setText("")
+        sp_pay_account.setSelection(0)
+        viewModel.clearnRechargeStatus()
     }
 
     //入款帳號選單
@@ -157,13 +175,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 mSpannerList.add(selectBank)
             }
         else {
-            val title = mMoneyPayWay?.title
 
             if (rechCfgsList.size > 1)
                 rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
-                            title + count++,
+                            it.rechName + " " + count++,
                             getBankAccountIcon(it.rechType ?: "")
                         )
                     mSpannerList.add(selectBank)
@@ -172,7 +189,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
-                            title + "",
+                            it.rechName + "",
                             getBankAccountIcon(it.rechType ?: "")
                         )
                     mSpannerList.add(selectBank)
@@ -219,6 +236,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         if (selectRechCfgs?.qrCode.isNullOrEmpty()) {
             ll_qr_code.visibility = View.GONE
         } else {
+            ll_qr_code.visibility = View.VISIBLE
             Glide.with(this).load(selectRechCfgs?.qrCode).into(iv_address)
         }
 
@@ -248,7 +266,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
-                tv_hint2.visibility = View.VISIBLE
+                ll_hit2.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.money_recharge_hint1)
                 tv_hint2.text = getString(R.string.money_recharge_hint2)
@@ -260,7 +278,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
-                tv_hint2.visibility = View.GONE
+                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.cft_recharge_hint)
             }
@@ -271,7 +289,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.GONE
                 et_name.visibility = View.GONE
-                tv_hint2.visibility = View.GONE
+                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.wx_recharge_hint)
 
@@ -283,7 +301,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 et_nickname.visibility = View.VISIBLE
                 et_bank_account.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
-                tv_hint2.visibility = View.GONE
+                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.ali_recharge_hint)
             }
@@ -309,7 +327,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
 
         //存款時間
-        txv_recharge_time.text = TimeUtil.stampToDate(Date().time)
+        txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(Date().time)
 
     }
 
@@ -374,9 +392,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             }
 
             override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
-                val formatter =
-                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                txv_recharge_time.text = formatter.format(startDate.time)
+                txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(startDate.timeInMillis)
                 calendarBottomSheet.dismiss()
             }
         })
@@ -399,8 +415,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_deposit_money),
-                ArithUtil.toMoneyFormat(mSelectRechCfgs?.minMoney ?: 0.0),
-                ArithUtil.toMoneyFormat(mSelectRechCfgs?.maxMoney ?: 999999.0)
+                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney ?: 0.0),
+                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney ?: 999999.0)
             )
         )
     }

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -62,8 +66,9 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val leagueOddAdapter by lazy {
         LeagueOddAdapter().apply {
             matchOddListener = MatchOddListener(
-                {
-                    viewModel.getOddsDetail(it.matchInfo?.id)
+                { matchOdd, matchOddList ->
+                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                    viewModel.setOddsDetailMoreList(matchOddList)
                 }, {
                     viewModel.updateMatchOddExpandInPlay(it)
                 },
@@ -367,9 +372,9 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueOddAdapter
             this.addItemDecoration(
-                DividerItemDecoration(
+                SpaceItemDecoration(
                     context,
-                    DividerItemDecoration.VERTICAL
+                    R.dimen.recyclerview_item_dec_spec
                 )
             )
         }
@@ -381,9 +386,9 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             this.addItemDecoration(
-                DividerItemDecoration(
+                SpaceItemDecoration(
                     context,
-                    DividerItemDecoration.VERTICAL
+                    R.dimen.recyclerview_item_dec_spec
                 )
             )
         }
@@ -395,9 +400,9 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = outrightSeasonAdapter
             this.addItemDecoration(
-                DividerItemDecoration(
+                SpaceItemDecoration(
                     context,
-                    DividerItemDecoration.VERTICAL
+                    R.dimen.recyclerview_item_dec_spec
                 )
             )
         }

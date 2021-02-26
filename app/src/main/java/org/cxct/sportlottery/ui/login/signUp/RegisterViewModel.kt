@@ -26,7 +26,7 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 class RegisterViewModel(
     private val androidContext: Context,
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
 ) : BaseViewModel() {
     val registerFormState: LiveData<RegisterFormState>
         get() = _registerFormState
@@ -38,12 +38,15 @@ class RegisterViewModel(
         get() = _smsResult
     val checkAccountResult: LiveData<CheckAccountResult?>
         get() = _checkAccountResult
+    val loginForGuestResult: LiveData<LoginResult>
+        get() = _loginForGuestResult
 
     private val _registerFormState = MutableLiveData<RegisterFormState>()
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _smsResult = MutableLiveData<SmsResult?>()
     private val _checkAccountResult = MutableLiveData<CheckAccountResult?>()
+    private val _loginForGuestResult = MutableLiveData<LoginResult>()
 
     fun checkInputData(
         context: Context,
@@ -80,8 +83,8 @@ class RegisterViewModel(
         val facebookError = checkFacebook(context, facebook)
         val whatsAppError = checkWhatsApp(context, whatsApp)
         val telegramError = checkTelegram(context, telegram)
-        val securityCodeError = checkSecurityCode(context, securityCode)
         val validCodeError = checkValidCode(context, validCode)
+        val securityCodeError = checkSecurityCode(context, securityCode)
         val isDataValid = (sConfigData?.enableInviteCode != FLAG_OPEN || inviteCodeError == null) &&
                 memberAccountError == null &&
                 loginPasswordError == null &&
@@ -182,6 +185,7 @@ class RegisterViewModel(
 
     private fun checkFullName(context: Context, fullName: String?): String? {
         return when {
+            fullName.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_incompatible_format)
             else -> null
         }
@@ -189,7 +193,8 @@ class RegisterViewModel(
 
     private fun checkFundPwd(context: Context, fundPwd: String?): String? {
         return when {
-            !VerifyConstUtil.verifyPayPwd(fundPwd ?: "") -> context.getString(R.string.hint_withdrawal_pwd)
+            fundPwd.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPayPwd(fundPwd) -> context.getString(R.string.error_withdrawal_pwd)
             else -> null
         }
     }
@@ -236,7 +241,7 @@ class RegisterViewModel(
 
     private fun checkFacebook(context: Context, facebook: String?): String? {
         return when {
-            facebook.isNullOrBlank() -> context.getString(R.string.hint_facebook)
+            facebook.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyFacebook(facebook) -> context.getString(R.string.error_facebook)
             else -> null
         }
@@ -244,7 +249,7 @@ class RegisterViewModel(
 
     private fun checkWhatsApp(context: Context, whatsApp: String?): String? {
         return when {
-            whatsApp.isNullOrBlank() -> context.getString(R.string.hint_whats_app)
+            whatsApp.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWhatsApp(whatsApp) -> context.getString(R.string.error_whats_app)
             else -> null
         }
@@ -291,6 +296,16 @@ class RegisterViewModel(
                 OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
             }
             _validCodeResult.postValue(result)
+        }
+    }
+
+    fun loginAsGuest() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                loginRepository.loginForGuest()
+            }?.let {
+                _loginForGuestResult.value = it
+            }
         }
     }
 

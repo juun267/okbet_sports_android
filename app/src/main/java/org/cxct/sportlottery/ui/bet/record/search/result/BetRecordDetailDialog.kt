@@ -9,6 +9,7 @@ import org.cxct.sportlottery.databinding.DialogBetRecordDetailListBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.util.TextUtil
 
 class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetRecordViewModel::class) {
 
@@ -19,6 +20,7 @@ class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetR
             betRecordDetailViewModel = this@BetRecordDetailDialog.viewModel
             lifecycleOwner = this@BetRecordDetailDialog
             row = data
+            this.textUtil = TextUtil
         }
 
         return binding.root

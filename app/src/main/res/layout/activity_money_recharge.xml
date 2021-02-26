@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F3F4F5"
+    android:background="@color/gray11"
     tools:context=".ui.money.recharge.MoneyRechargeActivity">
 
     <!-- Tab bar-->
@@ -20,7 +20,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
@@ -39,9 +39,9 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:padding="4dp"
-                android:text="转账充值"
+                android:text="@string/txv_transfer_pay"
                 android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize16sp" />
+                android:textSize="@dimen/textSize14sp" />
 
             <TextView
                 android:id="@+id/btn_online_pay"
@@ -53,9 +53,9 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:padding="4dp"
-                android:text="在线充值"
+                android:text="@string/txv_online_pay"
                 android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize16sp" />
+                android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
 

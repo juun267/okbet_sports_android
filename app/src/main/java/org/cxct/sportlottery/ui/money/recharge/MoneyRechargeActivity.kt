@@ -42,6 +42,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         initData()
         initView()
         initButton()
+        isOpenMenu(false)
     }
 
     private fun initData() {
@@ -156,6 +157,7 @@ class MoneyRechargeActivity : BaseToolBarActivity<MoneyRechViewModel>(MoneyRechV
         btn_transfer_pay.setOnClickListener {
             setTab(RechargeType.TRANSFER_PAY)
             initRecyclerView()
+            changePage()
             viewModel.clearnRechargeStatus()
         }
         btn_online_pay.setOnClickListener {

@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
+import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
@@ -49,6 +50,7 @@ import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
+import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
 import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
@@ -87,6 +89,7 @@ import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
@@ -316,6 +319,15 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
                     }
+                    (url.contains(USER_WITHDRAW_INFO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return WithdrawInfoResult(it.code, it.msg,  it.success, null) as T
+                    }
+                    (url.contains(LOGIN_FOR_GUEST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LoginResult(it.code, it.msg, it.success, null) as T
+                    }
+
                 }
             }
         }

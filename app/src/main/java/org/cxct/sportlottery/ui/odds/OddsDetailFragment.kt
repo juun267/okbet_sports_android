@@ -214,7 +214,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
-
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
             }
@@ -243,9 +242,13 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.oddsDetailDataList?.clear()
-            oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-            dataBinding.tabCat.getTabAt(0)?.select()
+            if(it.size>0) {
+                oddsDetailListAdapter?.oddsDetailDataList?.clear()
+                oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
+                oddsDetailListAdapter?.notifyDataSetChanged()
+
+                dataBinding.tabCat.getTabAt(0)?.select()
+            }
         })
 
         viewModel.oddsDetailMoreList.observe(this.viewLifecycleOwner, {
@@ -369,7 +372,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onDestroy() {
         super.onDestroy()
-
+        viewModel.removeOddsDetailPageValue()
         service.unSubscribeEventChannel(matchId)
     }
 }
