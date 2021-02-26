@@ -8,9 +8,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
-class CPFragment : BaseFragment<MainViewModel>(MainViewModel::class)  {
+class CGCPFragment : BaseFragment<MainViewModel>(MainViewModel::class)  {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_cp, container, false)
+        return inflater.inflate(R.layout.fragment_cgcp, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

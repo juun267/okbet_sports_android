@@ -10,8 +10,8 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_homeStartNextPageFragment"
-            app:destination="@id/mainCategoryFragment">
+            android:id="@+id/action_mainFragment_to_mainMoreFragment"
+            app:destination="@id/mainMoreFragment">
             <argument
                 android:name="categoryCode"
                 app:argType="string" />
@@ -22,10 +22,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/mainCategoryFragment"
-        android:name="org.cxct.sportlottery.ui.main.next.MainCategoryFragment"
-        android:label="HomeStartNextPageFragment"
-        tools:layout="@layout/fragment_main_category">
+        android:id="@+id/mainMoreFragment"
+        android:name="org.cxct.sportlottery.ui.main.next.MainMoreFragment"
+        android:label="fragment_main_more"
+        tools:layout="@layout/fragment_main_more">
         <argument
             android:name="categoryCode"
             app:argType="string" />

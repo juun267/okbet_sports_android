@@ -450,7 +450,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun goToNextFragment(cateCode: String?, firmCode: String? = null) {
-        val action = MainFragmentDirections.actionMainFragmentToHomeStartNextPageFragment(cateCode ?: "", firmCode ?: "")
+        val action = MainFragmentDirections.actionMainFragmentToMainMoreFragment(cateCode ?: "", firmCode ?: "")
         findNavController().navigate(action)
     }
 }
