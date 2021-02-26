@@ -17,16 +17,6 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/textGray"
-            android:textSize="@dimen/textSize12sp"
-            tools:text="提交建議" />
-
-        <TextView
             android:id="@+id/tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -32,7 +32,7 @@
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="error_input_empty">此栏位为必填栏位</string>
-    <string name="error_incompatible_format">您输入的字元不符</string>
+    <string name="error_incompatible_format">您輸入的字元不符(可能含有全形或特殊字元或空格)</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -56,7 +56,7 @@
     <string name="remember_password">记住密码</string>
     <string name="forget_password_question">忘记密码?</string>
     <string name="forget_password">忘记密码</string>
-    <string name="desc_forget_password">请联系在线客服为您找回密码，是否立即访问？</string>
+    <string name="desc_forget_password">请联系客服</string>
     <string name="desc_no_account">还没有账号？</string>
     <string name="desc_have_account">已有账号？</string>
     <string name="sign_up_know">立即注册</string>
@@ -380,8 +380,8 @@
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
 
-    <string name="total_bet_amount">总共有 投注额</string>
-    <string name="win_lose">赢 / 输</string>
+    <string name="total_bet_amount">总共有 投注额 (RMB)</string>
+    <string name="win_lose">赢 / 输 (RMB)</string>
     <string name="no_any_bet_record">暂无任何投注纪录</string>
     <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
 
@@ -434,10 +434,10 @@
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
-    <string name="error_recharge_amount">充值金额格式或数值错误</string>
+    <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
     <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
     <string name="error_wx">您输入的微信格式或数值错误</string>
-    <string name="error_bank_id">银行卡号格式有错误</string>
+    <string name="error_bank_id">您输入的银行卡号格式有错误</string>
     <string name="text_money_copy_success">复制成功</string>
 
 
@@ -648,5 +648,8 @@
     <string name="by">捕鱼</string>
     <string name="soccer">足球</string>
     <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容， 致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
+    <string name="sport_bet_record">体育投注记录</string>
+    <string name="other_bet_record">其他投注记录</string>
+    <string name="all_plat_type">全部平台类型</string>
     <string name="visit_first">先去逛逛</string>
 </resources>

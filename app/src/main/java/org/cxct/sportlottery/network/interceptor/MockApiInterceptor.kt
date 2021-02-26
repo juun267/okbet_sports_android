@@ -38,6 +38,8 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
+import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
@@ -219,7 +221,12 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(USER_LEVEL_GROWTH) -> {
                     response = getMockJsonData(request, "user_level_growth.mock")
                 }
-
+                path.contains(QUERY_FIRST_ORDERS) -> {
+                    response = getMockJsonData(request, "query_first_orders.mock")
+                }
+                path.contains(QUERY_SECOND_ORDERS) -> {
+                    response = getMockJsonData(request, "query_second_orders.mock")
+                }
                 path.contains(LOGIN_FOR_GUEST) -> {
                     response = getMockJsonData(request, "login_for_guest.mock")
                 }
