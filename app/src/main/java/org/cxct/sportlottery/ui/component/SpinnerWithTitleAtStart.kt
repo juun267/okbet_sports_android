@@ -3,16 +3,10 @@ package org.cxct.sportlottery.ui.component
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -20,12 +14,8 @@ import kotlinx.android.synthetic.main.content_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.custom_spinner.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ContentBottomSheetItemBinding
-import org.cxct.sportlottery.network.custom.SpinnerItem
-import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 
 class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
-
 
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.SpinnerWithTitleAtStartStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.SpinnerWithTitleAtStartStyle_spinnerLayout, R.layout.dialog_bottom_sheet_custom) }
@@ -55,7 +45,7 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
 
     fun setOnItemClickListener (adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
         this.setOnClickListener {
-            bottomSheetView.spinner_rv_more.adapter = adapter
+            bottomSheetView.sheet_rv_more.adapter = adapter
             bottomSheet.show()
         }
     }
@@ -86,10 +76,10 @@ class SpinnerWithTitleAtStart @JvmOverloads constructor(context: Context, attrs:
         })
 
         bottomSheetView.apply {
-            bottomSheetView.spinner_tv_title.text = typedArray.getText(R.styleable.SpinnerWithTitleAtStartStyle_spinnerTitle)
+            bottomSheetView.sheet_tv_title.text = typedArray.getText(R.styleable.SpinnerWithTitleAtStartStyle_spinnerTitle)
             val isShowCloseButton = typedArray.getBoolean(R.styleable.SpinnerWithTitleAtStartStyle_spinnerIsShowCloseButton, true)
-            spinner_tv_close.visibility = if (isShowCloseButton) View.VISIBLE else View.GONE
-            spinner_tv_close.setOnClickListener {
+            sheet_tv_close.visibility = if (isShowCloseButton) View.VISIBLE else View.GONE
+            sheet_tv_close.setOnClickListener {
                 bottomSheet.dismiss()
             }
         }

@@ -39,6 +39,17 @@
         <attr name="spinnerList" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="CalendarBottomSheetStyle">
+        <attr name="calendarLayout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="StatusBottomSheetStyle">
+        <attr name="sheetLayout" format="reference" />
+        <attr name="defaultStatusText" format="string" />
+        <attr name="defaultBottomSheetTitleText" format="string" />
+        <attr name="bottomSheetShowCloseButton" format="boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="ToolBarView">
         <attr name="title" format="string" />
         <attr name="fragmentNavGraph" format="reference" />

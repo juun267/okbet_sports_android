@@ -89,14 +89,14 @@ class LoginViewModel(
 
     private fun checkAccount(context: Context, username: String): String? {
         return when {
-            username.isBlank() -> context.getString(R.string.please_input_account)
+            username.isBlank() -> context.getString(R.string.error_input_empty)
             else -> null
         }
     }
 
     private fun checkPassword(context: Context, password: String): String? {
         return when {
-            password.isBlank() -> context.getString(R.string.please_input_password)
+            password.isBlank() -> context.getString(R.string.error_input_empty)
             else -> null
         }
     }

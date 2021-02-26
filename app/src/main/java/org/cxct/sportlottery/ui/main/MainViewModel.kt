@@ -47,6 +47,8 @@ class MainViewModel(
         get() = _messageListResult
 
     private val _messageDialogResult = MutableLiveData<MessageListResult>()
+    val messageDialogResult: LiveData<MessageListResult>
+        get() = _messageDialogResult
 
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額

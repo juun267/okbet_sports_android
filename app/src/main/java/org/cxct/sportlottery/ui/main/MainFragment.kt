@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.main
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -27,12 +28,14 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.home.news.NewsDiaolog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.JumpUtil
+
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
@@ -63,6 +66,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initScrollView()
         initObserve()
         getMarquee()
+        getMsgDialog()
         getBanner()
         getThirdGame()
 
@@ -205,6 +209,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setMarquee(it)
         })
 
+        //公告彈窗
+        viewModel.messageDialogResult.observe(viewLifecycleOwner, Observer {
+            setMsgDiaolog(it)
+        })
+
         //第三方遊戲清單
         viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
             setGameData(it)
@@ -272,6 +281,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         adapter.setData(titleList)
         rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_marquee.adapter = adapter
+    }
+
+    private fun setMsgDiaolog(messageListResult: MessageListResult) {
+        val newsDialog = NewsDiaolog(activity, messageListResult.rows)
+        fragmentManager?.let { newsDialog.show(it, null) }
     }
 
     private fun setGameData(cateDataList: List<GameCateData>?) {
@@ -413,6 +427,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getMarquee() {
         viewModel.getMarquee()
+    }
+
+    private fun getMsgDialog() {
+        viewModel.getMsgDialog()
     }
 
     private fun getThirdGame() {

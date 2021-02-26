@@ -8,27 +8,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_info_center.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
 const val BEEN_READ = 0
 const val YET_READ = 1
 
-class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
+class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
     var adapter: InfoCenterAdapter? = null
     private var nowLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initView()
+
+        setContentView(R.layout.activity_info_center)
+        initToolbar()
         initLiveData()
         initRecyclerView()
         initData()
         initButton()
     }
 
-    private fun initView() {
-        isOpenMenu(false)
+    private fun initToolbar() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initButton() {
@@ -89,7 +93,7 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             }
         })
         //已讀總筆數
-        viewModel.totalReadedMsgCount.observe(this@InfoCenterActivity, {
+        viewModel.totalReadedMsgCount.observe(this@InfoCenterActivity, Observer {
             btn_readed_letters.text =
                 String.format(resources.getString(R.string.inbox), it)
         })
@@ -108,12 +112,12 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             }
         })
         //未讀總筆數
-        viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, {
+        viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, Observer {
             btn_unread_letters.text =
                 String.format(resources.getString(R.string.unread_letters), it)
         })
         //Loading
-        viewModel.isLoading.observe(this@InfoCenterActivity, {
+        viewModel.isLoading.observe(this@InfoCenterActivity, Observer {
             if (it) {
                 nowLoading = it
                 loading()
@@ -164,13 +168,4 @@ class InfoCenterActivity : BaseToolBarActivity<InfoCenterViewModel>(InfoCenterVi
             }
         })
     }
-
-    override fun setContentView(): Int {
-        return R.layout.activity_info_center
-    }
-
-    override fun setToolBarName(): String {
-        return "消息中心"
-    }
-
 }

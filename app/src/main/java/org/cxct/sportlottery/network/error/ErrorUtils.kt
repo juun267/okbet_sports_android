@@ -31,6 +31,8 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
@@ -44,6 +46,7 @@ import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
+import org.cxct.sportlottery.network.Constants.USER_LEVEL_GROWTH
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ADD
@@ -87,6 +90,7 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -95,6 +99,7 @@ import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
+import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
@@ -332,9 +337,21 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return ThirdLoginResult(it.code, it.msg, it.success) as T
                     }
+                    (url.contains(USER_LEVEL_GROWTH)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LevelGrowthResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(QUERY_FIRST_ORDERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OtherBetHistoryResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(QUERY_SECOND_ORDERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
+                    }
                     (url.contains(USER_WITHDRAW_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return WithdrawInfoResult(it.code, it.msg,  it.success, null) as T
+                        return WithdrawInfoResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(LOGIN_FOR_GUEST)) -> {
                         @Suppress("UNCHECKED_CAST")

@@ -132,6 +132,9 @@ object Constants {
     const val USER_NOTICE_LIST = "/api/front/user/notice/list"
     const val USER_NOTICE_READED = "/api/front/user/notice/readed/{id}"
 
+    //vip / member level
+    const val USER_LEVEL_GROWTH = "/api/front/user/level/getLevelGrowth"
+
     //money
     const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"
     const val USER_RECHARGE_ADD = "/api/front/userrech/add"
@@ -173,6 +176,9 @@ object Constants {
     const val THIRD_QUERY_TRANSFERS = "/api/front/thirdapi/queryTransfers"
     const val THIRD_AUTO_TRANSFER = "/api/front/thirdapi/{inPlat}/autoTransfer" //自动转入、转出（先将第三方都转至彩票，再将彩票的余额转至第三方）
     const val THIRD_LOGIN = "/api/front/thirdapi/{firmType}/login" //登录
+
+    const val QUERY_FIRST_ORDERS = "/api/front/thirdapi/queryFirstOrders"
+    const val QUERY_SECOND_ORDERS = "api/front/thirdapi/querySecondOrders"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

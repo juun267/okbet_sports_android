@@ -10,6 +10,12 @@ import java.util.*
 object TimeUtil {
     private const val TAG = "TimeUtil"
 
+    fun timeStampToDate(time: Long?): String? {
+        if (time == null) return null
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return simpleDateFormat.format(time)
+    }
+
     @JvmStatic
     fun stampToDate(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm")
@@ -61,6 +67,7 @@ object TimeUtil {
     }
 
     fun dateToTimeStamp(date: String, timeType: TimeType = TimeType.START_OF_DAY): Long? {
+        if (date.isEmpty()) return null
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val startTimeStamp = formatter.parse("$date 00:00:00")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59")?.time

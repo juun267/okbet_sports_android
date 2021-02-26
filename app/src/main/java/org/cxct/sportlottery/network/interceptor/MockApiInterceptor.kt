@@ -11,7 +11,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
-import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -37,16 +36,20 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
-import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
+import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
+import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
+import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
+import org.cxct.sportlottery.network.Constants.USER_LEVEL_GROWTH
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
@@ -175,7 +178,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")
                 }
-                path.contains(RECHARGE_CONFIG_MAP) ->{
+                path.contains(RECHARGE_CONFIG_MAP) -> {
                     response = getMockJsonData(request, "money_recharge_config.mock")
                 }
                 path.contains(UPLOAD_IMG) -> {
@@ -214,7 +217,15 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(THIRD_QUERY_TRANSFERS) -> {
                     response = getMockJsonData(request, "query_transfers.mock")
                 }
-
+                path.contains(USER_LEVEL_GROWTH) -> {
+                    response = getMockJsonData(request, "user_level_growth.mock")
+                }
+                path.contains(QUERY_FIRST_ORDERS) -> {
+                    response = getMockJsonData(request, "query_first_orders.mock")
+                }
+                path.contains(QUERY_SECOND_ORDERS) -> {
+                    response = getMockJsonData(request, "query_second_orders.mock")
+                }
                 path.contains(LOGIN_FOR_GUEST) -> {
                     response = getMockJsonData(request, "login_for_guest.mock")
                 }

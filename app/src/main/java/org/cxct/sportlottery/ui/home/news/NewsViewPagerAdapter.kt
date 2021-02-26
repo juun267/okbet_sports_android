@@ -1,17 +1,17 @@
 package org.cxct.sportlottery.ui.home.news
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.PagerAdapter
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.util.TimeUtil
 
-class NewsViewPagerAdapter(val mActivity: Activity) : PagerAdapter() {
+class NewsViewPagerAdapter(private val mActivity: FragmentActivity?) : PagerAdapter() {
 
     var data = mutableListOf<Row>()
         set(value) {
