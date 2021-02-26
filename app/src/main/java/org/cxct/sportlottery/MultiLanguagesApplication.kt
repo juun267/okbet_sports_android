@@ -62,7 +62,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { ProfileModel(get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get()) }
-        viewModel { FeedbackViewModel(get(), get(), get(), get(),get()) }
+        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get()) }
