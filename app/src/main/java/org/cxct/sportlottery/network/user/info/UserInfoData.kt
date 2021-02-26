@@ -72,5 +72,7 @@ data class UserInfoData(
     @Json(name = "whatsapp")
     val whatsapp: String?,
     @Json(name = "zalo")
-    val zalo: String?
+    val zalo: String?,
+    @Json(name = "growth")
+    val growth: Long?
 )

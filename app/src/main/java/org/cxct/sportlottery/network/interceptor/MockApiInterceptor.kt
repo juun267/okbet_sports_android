@@ -50,6 +50,7 @@ import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
+import org.cxct.sportlottery.network.Constants.USER_LEVEL_GROWTH
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
@@ -178,7 +179,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(USER_NOTICE_LIST) -> {
                     response = getMockJsonData(request, "user_notice_list.mock")
                 }
-                path.contains(RECHARGE_CONFIG_MAP) ->{
+                path.contains(RECHARGE_CONFIG_MAP) -> {
                     response = getMockJsonData(request, "money_recharge_config.mock")
                 }
                 path.contains(UPLOAD_IMG) -> {
@@ -217,13 +218,15 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(QUERY_TRANSFERS) -> {
                     response = getMockJsonData(request, "query_transfers.mock")
                 }
+                path.contains(USER_LEVEL_GROWTH) -> {
+                    response = getMockJsonData(request, "user_level_growth.mock")
+                }
                 path.contains(QUERY_FIRST_ORDERS) -> {
                     response = getMockJsonData(request, "query_first_orders.mock")
                 }
                 path.contains(QUERY_SECOND_ORDERS) -> {
                     response = getMockJsonData(request, "query_second_orders.mock")
                 }
-
                 path.contains(LOGIN_FOR_GUEST) -> {
                     response = getMockJsonData(request, "login_for_guest.mock")
                 }

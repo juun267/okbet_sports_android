@@ -124,7 +124,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{betRecordViewModel.betRecordResult.getContentIfNotHandled().other.totalAmount.toString()}"
                     android:textColor="@color/pumpkinOrange"
                     tools:text="0.0" />
             </LinearLayout>
@@ -144,7 +143,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{betRecordViewModel.betRecordResult.getContentIfNotHandled().other.win.toString()}"
                     android:textColor="@{betRecordViewModel.betRecordResult.getContentIfNotHandled().other.win > 0 ? @color/green : betRecordViewModel.betRecordResult.getContentIfNotHandled().other.win == 0 ? @color/gray6 : @color/red2}"
                     tools:text="0.0" />
             </LinearLayout>

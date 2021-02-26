@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActi
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
+import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
@@ -59,7 +60,9 @@ class ProfileCenterActivity :
 
     private fun setupEditNickname() {
         btn_edit_nickname.setOnClickListener {
-            startActivity(Intent(this, ModifyProfileInfoActivity::class.java))
+            startActivity(Intent(this@ProfileCenterActivity, ModifyProfileInfoActivity::class.java).apply {
+                putExtra(ModifyProfileInfoActivity.MODIFY_INFO, ModifyType.NickName)
+            })
         }
     }
 

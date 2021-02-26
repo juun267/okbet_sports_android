@@ -27,7 +27,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.bet.record.search.BetRecordSearchFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.statusNameMap
 import org.cxct.sportlottery.util.TimeUtil
