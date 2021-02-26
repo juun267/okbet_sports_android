@@ -38,7 +38,14 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupRememberPWD()
         setupForgetPasswordButton()
         setupRegisterButton()
+        setUpLoginForGuestButton()
         initObserve()
+    }
+
+    private fun setUpLoginForGuestButton() {
+        btn_visit_first.setOnClickListener {
+            viewModel.loginAsGuest()
+        }
     }
 
     private fun setupBackButton() {

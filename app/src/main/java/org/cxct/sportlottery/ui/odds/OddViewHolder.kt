@@ -47,7 +47,9 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                         }
                         onOddClickListener.getBetInfoList(odd)
                     } else {
-                        onOddClickListener.removeBetInfoItem(odd)
+                        Handler().postDelayed({//讓ripple效果呈現出來
+                            onOddClickListener.removeBetInfoItem(odd)
+                        }, 200)
                     }
                 }
             }
@@ -82,18 +84,18 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         }
 
         Handler().postDelayed(
-                {
-                    when (odd.isSelect) {
-                        true -> {
-                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
-                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-                        }
-                        false -> {
-                            textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
-                            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
-                        }
+            {
+                when (odd.isSelect) {
+                    true -> {
+                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
+                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
                     }
-                }, CHANGING_ITEM_BG_COLOR_DURATION
+                    false -> {
+                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
+                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
+                    }
+                }
+            }, CHANGING_ITEM_BG_COLOR_DURATION
         )
     }
 

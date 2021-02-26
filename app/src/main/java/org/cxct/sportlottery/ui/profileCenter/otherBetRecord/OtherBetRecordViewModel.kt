@@ -19,7 +19,6 @@ class OtherBetRecordViewModel(
     betInfoRepository: BetInfoRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
-    val typeAllPlat = "ALL_PLAT"
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -48,7 +47,7 @@ class OtherBetRecordViewModel(
                 hideLoading()
 
                 val resultList = mutableListOf<SheetData>()
-                resultList.add(SheetData(typeAllPlat, androidContext.getString(R.string.all_plat_type)))
+                resultList.add(SheetData("ALL_PLAT", androidContext.getString(R.string.all_plat_type)))
                 for ((key, value) in result.t?.gameFirmMap?: mapOf()) {
                         resultList.add(SheetData(value.firmType, value.firmShowName))
                 }

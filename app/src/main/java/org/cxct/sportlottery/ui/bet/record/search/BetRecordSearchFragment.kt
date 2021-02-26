@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.record.search
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,6 +116,13 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
             override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {}
         })
+        betStatusBottomSheet.setOnDismissListener {
+          betStatusList.any { d ->
+                d.isSelected
+            }.let { isSelected->
+              tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, if (isSelected) R.color.white else R.color.red))
+           }
+        }
     }
 
     private fun calendarBottomSheet() {

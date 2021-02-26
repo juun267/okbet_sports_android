@@ -3,8 +3,10 @@ package org.cxct.sportlottery.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -140,33 +142,13 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
-
-        receiver.userNotice.observe(this, Observer {
-            //TODO simon test review UserNotice 彈窗，需要顯示在最上層，目前如果開啟多個 activity，現行架構只會顯示在 MainActivity 裡面
-            it?.userNoticeList?.let { list ->
-                viewModel.setUserNoticeList(list)
-            }
-        })
-
-        receiver.notice.observe(this, Observer {
-            hideLoading()
-            if (it != null) {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        receiver.sysMaintenance.observe(this, Observer {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
-        })
     }
 
     //載入頭像
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this)
             .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head)
     }
 

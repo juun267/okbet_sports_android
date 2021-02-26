@@ -68,6 +68,16 @@ class LoginViewModel(
         }
     }
 
+    fun loginAsGuest() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                loginRepository.loginForGuest()
+            }?.let {
+                _loginResult.value = it
+            }
+        }
+    }
+
     fun getValidCode(identity: String?) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {

@@ -9,6 +9,7 @@
     <!-- Common -->
     <!--  Symbol  -->
     <string name="colon">：</string>
+    <string name="dot">・</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
 
@@ -23,7 +24,7 @@
     <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
 
     <!--common-->
-    <string name="verse">vs</string>
+    <string name="verse">VS</string>
     <string name="error">错误</string>
     <string name="verse_">&#160;&#160;VS&#160;&#160;</string>
     <string name="unknown_data">-</string>
@@ -55,7 +56,9 @@
     <string name="forget_password">忘记密码</string>
     <string name="desc_forget_password">请联系在线客服为您找回密码，是否立即访问？</string>
     <string name="desc_no_account">还没有账号？</string>
+    <string name="desc_have_account">已有账号？</string>
     <string name="sign_up_know">立即注册</string>
+    <string name="sign_up_now">注册新账户</string>
 
     <!-- Service select dialog -->
     <string name="online_service1">在线客服1</string>
@@ -68,8 +71,8 @@
     <string name="member_account">会员账号</string>
     <string name="hint_member_account">长度需4–16个字符含英数</string>
     <string name="error_member_account">需为4~16个英数组合</string>
-    <string name="desc_register_checking_account">帐号检查中</string>
-    <string name="error_register_id_exist">已有此帐户名</string>
+    <string name="desc_register_checking_account">账号检查中</string>
+    <string name="error_register_id_exist">已有此账户名</string>
     <string name="hint_register_password">长度需6–20个字符含英数</string>
     <string name="error_register_password">需为6~20个英数组合</string>
     <string name="error_password_format">需使用英数组合的密码</string>
@@ -78,34 +81,36 @@
     <string name="hint_confirm_password">请再次输入密码</string>
     <string name="error_confirm_password">两次密码输入不一致</string>
     <string name="withdrawal_pwd">取款密码</string>
-    <string name="hint_withdrawal_pwd">请输入四位数取款密码</string>
-    <string name="phone">手机</string>
+    <string name="hint_withdrawal_pwd">密码为4个数字</string>
+    <string name="error_withdrawal_pwd">您输入的密码错误</string>
+    <string name="phone_number">手机号码</string>
     <string name="hint_phone_number">请输入手机号码</string>
     <string name="error_phone_number">手机号码格式错误</string>
-    <string name="qq">QQ</string>
+    <string name="qq_number">QQ号码</string>
     <string name="hint_qq_number">请输入QQ号码</string>
-    <string name="error_qq_number">QQ帐号格式错误</string>
+    <string name="error_qq_number">QQ账号格式错误</string>
     <string name="e_mail">邮箱</string>
     <string name="hint_e_mail">请输入邮箱</string>
     <string name="error_e_mail">邮箱格式错误</string>
     <string name="we_chat">微信</string>
-    <string name="hint_we_chat_number">请输入微信号码</string>
+    <string name="hint_we_chat_number">请输入微信ID</string>
     <string name="error_we_chat_number">微信ID格式错误</string>
     <string name="zalo">Zalo</string>
     <string name="hint_zalo">请输入Zalo</string>
-    <string name="error_zalo">Zalo帐号格式错误</string>
+    <string name="error_zalo">Zalo账号格式错误</string>
     <string name="facebook">Facebook</string>
     <string name="hint_facebook">请输入Facebook</string>
-    <string name="error_facebook">Facebook帐号格式错误</string>
+    <string name="error_facebook">Facebook账号格式错误</string>
     <string name="whats_app">WhatsApp</string>
     <string name="hint_whats_app">请输入WhatsApp</string>
-    <string name="error_whats_app">Whatsapp帐号格式错误</string>
+    <string name="error_whats_app">Whatsapp账号格式错误</string>
     <string name="telegram">Telegram</string>
     <string name="hint_telegram">请输入Telegram</string>
-    <string name="error_telegram">Telegram帐号格式错误</string>
+    <string name="error_telegram">Telegram账号格式错误</string>
     <string name="real_name">真实姓名</string>
-    <string name="hint_real_name">姓名必须与你用于提款的银行户口一致,否则无法提款</string>
-    <string name="verification_code">验证码</string>
+    <string name="hint_real_name">姓名须与银行户口一致</string>
+    <string name="verification_code">注册验证码</string>
+    <string name="verification_code_by_sms">短信验证码</string>
     <string name="hint_verification_code">请输入验证码</string>
     <string name="error_verification_code">注册验证码错误</string>
     <string name="hint_verification_code_by_sms">请输入短信验证码</string>
@@ -186,7 +191,7 @@
     <string name="football">足球</string>
     <string name="basketball">篮球</string>
     <string name="tennis">网球</string>
-    <string name="badminton">羽毛球</string>
+    <string name="badminton">羽球</string>
     <string name="volleyball">排球</string>
     <string name="section">节</string>
     <string name="first_section">第一节</string>
@@ -202,11 +207,11 @@
     <string name="third_plat">第三盘</string>
     <string name="fourth_plat">第四盘</string>
     <string name="fifth_plat">第五盘</string>
-    <string name="first">第一</string>
-    <string name="second">第二</string>
-    <string name="third">第三</string>
-    <string name="fourth">第四</string>
-    <string name="fifth">第五</string>
+    <string name="first">一</string>
+    <string name="second">二</string>
+    <string name="third">三</string>
+    <string name="fourth">四</string>
+    <string name="fifth">五</string>
 
     <!-- Profile center page -->
     <string name="good_midnight">凌晨好</string>
@@ -231,6 +236,7 @@
     <string name="online_service">在线客服</string>
 
     <!-- Profile page-->
+    <string name="need_improve">需完善</string>
     <string name="profile_info">个人资讯</string>
     <string name="avatar">头像</string>
     <string name="nickname">昵称</string>
@@ -244,9 +250,9 @@
     <string name="save_avatar_success">头像设置成功</string>
     <string name="no_set_avatar">没有设置头像</string>
 
-    <!-- Change nickname page-->
+    <!-- Modify Profile Info page-->
     <string name="change_nickname">更换昵称</string>
-    <string name="hint_nickname">中英文长度2–50字</string>
+    <string name="hint_nickname">中英文长度2-6字</string>
     <string name="error_nickname_empty">昵称不能为空</string>
 
     <!-- Setting password page-->
@@ -312,22 +318,31 @@
     <string name="no_data">没有更多数据了</string>
     <string name="at_symbol">\u0040%s</string>
     <string name="plus_symbol">+%s</string>
-    <string name="minus_symbol">-%s</string>
+    <string name="minus_symbol">%s</string>
     <string name="not_start_yet">未开始</string>
     <string name="game_playing">比赛中</string>
     <string name="ended">已结束</string>
     <string name="suspend">延期</string>
+
+    <string name="uncheck">未确认</string>
+    <string name="undone">未结算</string>
+    <string name="win_all">全赢</string>
+    <string name="win_half">赢半</string>
+    <string name="lose_all">全输</string>
+    <string name="lose_half">输半</string>
+    <string name="draw">和</string>
     <string name="canceled">已取消</string>
 
     <string name="bet_detail">注单详情</string>
     <string name="bet_time">投注时间：</string>
     <string name="league_name">联赛名称：</string>
     <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
-    <string name="play_type">玩&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;法：</string>
+    <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s  vs  %s (客)</string>
     <string name="bet_item">投注项目 - %s</string>
     <string name="nothing">--</string>
+    <string name="draw_or_cancel">00.000</string>
 
 
     <!--game hall-->
@@ -355,14 +370,14 @@
     <string name="bottom_sheet_close">关闭</string>
 
     <!--money-recharge-->
-    <string name="title_bank">选择银行:</string>
+    <string name="title_bank">选择银行</string>
     <string name="title_name">姓名:</string>
     <string name="title_account">账号:</string>
     <string name="title_address">地址:</string>
     <string name="title_deposit_money">充值金额</string>
     <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
     <string name="title_real_name">认证姓名</string>
-    <string name="title_nick_name">昵称</string>
+    <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">中文长度2-20字</string>
     <string name="edt_hint_nick_name">中英文长度2-6字</string>
     <string name="title_wx_id">微信号</string>
@@ -381,12 +396,12 @@
     <string name="title_rebate_amount">・返利金额：</string>
     <string name="title_remark">备注:</string>
     <string name="title_tips">・温馨提示：</string>
-    <string name="money_recharge_hint1"><font color="#ff4b2c">・请先转账成功后再提交充值信息。</font></string>
-    <string name="money_recharge_hint2"><font color="#ff4b2c">・每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
+    <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
+    <string name="money_recharge_hint2"><font color="#ff4b2c">每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
     <string name="wx_recharge_hint">请每次入款前登录会员核对微信账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="ali_recharge_hint">请每次入款前登录会员核对支付宝账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="cft_recharge_hint">请每次入款前登录会员核对财付通账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
-    <string name="title_pay_gap">支付渠道</string>
+    <string name="title_pay_gap">支付账户</string>
     <string name="title_pay_bank">支付银行</string>
     <string name="title_rebate_fee">返利手续费</string>
     <string name="hint_tip"><font color="#ff4b2c">・温馨提示：%1$s。</font></string>
@@ -417,9 +432,11 @@
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount_empty">提款金额为必填栏位</string>
     <string name="error_withdraw_amount">您输入的提款金额格式或数值错误</string>
-    <string name="error_withdraw_amount_bigger_than_balance">提款金额大于帐号余额</string>
+    <string name="error_withdraw_amount_bigger_than_balance">提款金额大于账号余额</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
-    <string name="please_setting_bank_card">请设置银行卡</string>
+    <string name="please_complete_profile_info">完善个人资料</string>
+    <string name="please_setting_bank_card">请先设置银行卡</string>
+    <string name="go_to_setting">前往设置</string>
     <!--  prompt message  -->
     <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
     <string name="title_withdraw_success">提款成功</string>
@@ -441,12 +458,12 @@
     <string name="add_credit_card">新增银行卡</string>
     <!--  BankCard  -->
     <string name="create_bank">开户银行</string>
-    <string name="create_name">开户名</string>
+    <string name="create_name">持卡人姓名</string>
     <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
     <string name="edit_bank_card">编辑银行卡</string>
     <string name="bank_card_number">银行卡号</string>
     <string name="withdraw_amount_range">(限額%s~%s RMB)</string>
-    <string name="please_enter_bank_card_rule">請輸入12-19位數內的銀行卡號</string>
+    <string name="please_enter_bank_card_rule">请输入银行卡卡号</string>
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
@@ -459,7 +476,7 @@
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
-    <string name="text_bank_card_add_success">新增银行卡成功</string>
+    <string name="text_bank_card_add_success">银行卡绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_bank_card_delete_fail">删除银行卡失败</string>
     <string name="text_bank_card_add_fail">新增银行卡失败</string>
@@ -503,12 +520,12 @@
     <string name="recharge_state_all">全部订单状态</string>
 
     <string name="recharge_channel_all">全部渠道类型</string>
-    <string name="recharge_channel_online">在线支付</string>
-    <string name="recharge_channel_bank">银行汇款</string>
-    <string name="recharge_channel_alipay">支付宝支付</string>
-    <string name="recharge_channel_weixin">微信支付</string>
-    <string name="recharge_channel_cft">财付通</string>
-    <string name="recharge_channel_admin">后台加款</string>
+    <string name="recharge_channel_online">在线充值</string>
+    <string name="recharge_channel_bank">银行卡转帐</string>
+    <string name="recharge_channel_alipay">支付宝转帐</string>
+    <string name="recharge_channel_weixin">微信转帐</string>
+    <string name="recharge_channel_cft">财付通转帐</string>
+    <string name="recharge_channel_admin">后台加钱</string>
 
     <string name="recharge_log_order_time">订单时间</string>
     <string name="recharge_log_recharge_amount">充值金额</string>
@@ -615,4 +632,5 @@
     <string name="sport_bet_record">体育投注记录</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
+    <string name="visit_first">先去逛逛</string>
 </resources>

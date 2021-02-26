@@ -4,10 +4,10 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.service.*
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
 import kotlin.reflect.KClass
 
@@ -26,6 +26,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             Timber.e(">>> onServiceConnected")
             val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
             backService = binder.service
+
+            binder.connect(
+                viewModel.loginRepository.token,
+                viewModel.loginRepository.userId,
+                viewModel.loginRepository.platformId
+            )
+
             isServiceBound = true
         }
 
@@ -44,12 +51,19 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 false -> unBindService()
             }
         })
+
+        receiver.sysMaintenance.observe(this) {
+            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
+        }
     }
 
     override fun onStart() {
         super.onStart()
 
         subscribeBroadCastReceiver()
+        bindService()
     }
 
     override fun onStop() {
@@ -63,9 +77,6 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         if (isServiceBound) return
 
         val serviceIntent = Intent(this, BackService::class.java)
-        serviceIntent.putExtra(SERVICE_TOKEN, viewModel.loginRepository.token)
-        serviceIntent.putExtra(SERVICE_USER_ID, viewModel.loginRepository.userId)
-        serviceIntent.putExtra(SERVICE_PLATFORM_ID, viewModel.loginRepository.platformId)
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
         isServiceBound = true
     }

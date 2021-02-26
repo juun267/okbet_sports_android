@@ -17,7 +17,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
 
-    private val sheetAdapter = SheetAdapter(viewModel.typeAllPlat, SheetAdapter.ItemCheckedListener { isChecked, data ->
+    private val sheetAdapter = SheetAdapter("ALL_PLAT", SheetAdapter.ItemCheckedListener { isChecked, data ->
         if (isChecked) {
             Log.e(">>>", "data = ${data.showName}")
             status_selector.text = data.showName

@@ -62,6 +62,36 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updateFullName(userId: Long, fullName: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateFullName(userId, fullName)
+        }
+    }
+
+    suspend fun updateQQ(userId: Long, qq: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateQQ(userId, qq)
+        }
+    }
+
+    suspend fun updateEmail(userId: Long, email: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateEmail(userId, email)
+        }
+    }
+
+    suspend fun updatePhone(userId: Long, phone: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updatePhone(userId, phone)
+        }
+    }
+
+    suspend fun updateWeChat(userId: Long, wechat: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateWeChat(userId, wechat)
+        }
+    }
+
     //是否设置过昵称 0单标未设置过 1代表设置过
     suspend fun updateSetted(userId: Long, setted: Int) {
         withContext(Dispatchers.IO) {

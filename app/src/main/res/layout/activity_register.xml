@@ -127,8 +127,9 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="4dp"
+                app:cvEms="4"
                 app:cvHint="@string/hint_withdrawal_pwd"
-                app:cvInputType="number"
+                app:cvInputType="numberPassword"
                 app:cvTitle="@string/withdrawal_pwd" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
@@ -140,7 +141,7 @@
                 android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_qq_number"
                 app:cvInputType="number"
-                app:cvTitle="@string/qq" />
+                app:cvTitle="@string/qq_number" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_phone"
@@ -151,7 +152,7 @@
                 android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_phone_number"
                 app:cvInputType="number"
-                app:cvTitle="@string/phone" />
+                app:cvTitle="@string/phone_number" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_mail"
@@ -231,30 +232,31 @@
                 app:cvInputType="number"
                 app:cvTitle="@string/verification_code" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/block_sms_valid_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
                 android:layout_marginEnd="28dp"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
 
                 <org.cxct.sportlottery.ui.login.LoginEditText
                     android:id="@+id/et_sms_valid_code"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:cvEnableVerificationCode="true"
+                    android:layout_weight="1"
+                    app:cvEnableVerificationCode="false"
                     app:cvHint="@string/hint_verification_code_by_sms"
                     app:cvInputType="number"
-                    app:cvTitle="@string/verification_code" />
+                    app:cvTitle="@string/verification_code_by_sms" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:color/white"
+                    android:layout_marginStart="5dp"
+                    android:background="@color/transparent"
                     android:gravity="center"
                     android:minWidth="80dp"
                     android:orientation="horizontal">
@@ -265,20 +267,12 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/effect_ripple_rectangle_blue_light"
                         android:text="@string/get_verification_code"
-                        android:textColor="@color/color_select_black_gray"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/textSize14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_timer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/gray4"
-                        android:textSize="@dimen/textSize14sp"
-                        tools:text="@string/send_timer" />
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -329,18 +323,25 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/desc_no_account"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize12sp" />
-
-                <TextView
                     android:id="@+id/btn_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/desc_have_account"
+                    android:textColor="@color/pumpkinOrange"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="12dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:background="@color/bright_gray" />
+
+                <TextView
+                    android:id="@+id/btn_visit_first"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="4dp"
-                    android:text="@string/go_to_login"
+                    android:text="@string/visit_first"
                     android:textColor="@color/pumpkinOrange"
                     android:textSize="@dimen/textSize12sp" />
 

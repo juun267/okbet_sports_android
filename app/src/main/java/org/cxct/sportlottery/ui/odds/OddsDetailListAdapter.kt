@@ -89,6 +89,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         HTFT("HT/FT", R.layout.content_odds_detail_list_one_list, 20),//半场/全场
         W3("W3", R.layout.content_odds_detail_list_group_item, 21),//三项让球
         TG_OU("TG&O/U", R.layout.content_odds_detail_list_two_sides, 22),//球队进球数&大/小
+        C_OU("CORNER-O/U", R.layout.content_odds_detail_list_two_sides, 23),//角球大/小
+        C_OE("CORNER-OE", R.layout.content_odds_detail_list_two_sides, 24),//角球单/双
+        OU_I_OT("O/U-INCL-OT", R.layout.content_odds_detail_list_two_sides, 25),//大/小(含加时)
+        OU_SEG("O/U-SEG", R.layout.content_odds_detail_list_two_sides, 26),//总得分大/小-第X节
     }
 
 
@@ -133,7 +137,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == GameType.WEH.value -> return GameType.WEH.type
 
-            type == GameType.WM.value -> return GameType.WM.type
+            checkKey(type, GameType.WM.value) -> return GameType.WM.type
 
             type == GameType.CLSH.value -> return GameType.CLSH.type
 
@@ -142,6 +146,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             type == GameType.W3.value -> return GameType.W3.type
 
             checkKey(type, GameType.TG_OU.value) -> return GameType.TG_OU.type
+
+            checkKey(type, GameType.C_OU.value) -> return GameType.C_OU.type
+
+            checkKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
+
+            checkKey(type, GameType.OU_I_OT.value) -> return GameType.OU_I_OT.type
+
+            checkKey(type, GameType.OU_SEG.value) -> return GameType.OU_SEG.type
 
             else -> {
                 return -1
@@ -177,6 +189,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.CLSH.type -> layout = GameType.CLSH.layout
             GameType.HTFT.type -> layout = GameType.HTFT.layout
             GameType.W3.type -> layout = GameType.W3.layout
+            GameType.W3.type -> layout = GameType.W3.layout
+            GameType.TG_OU.type -> layout = GameType.TG_OU.layout
+            GameType.C_OU.type -> layout = GameType.C_OU.layout
+            GameType.C_OE.type -> layout = GameType.C_OE.layout
+            GameType.OU_I_OT.type -> layout = GameType.OU_I_OT.layout
+            GameType.OU_SEG.type -> layout = GameType.OU_SEG.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -302,7 +320,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.OU_1ST.type,
                 GameType.OU_2ST.type,
                 GameType.OE.type,
-                GameType.TG_OU.type -> twoSides(oddsDetail)
+                GameType.TG_OU.type,
+                GameType.C_OU.type,
+                GameType.C_OE.type,
+                GameType.OU_I_OT.type,
+                GameType.OU_SEG.type-> twoSides(oddsDetail)
 
                 GameType.CS.type -> cs(oddsDetail)
 
@@ -399,7 +421,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                         }
                                         onOddClickListener.getBetInfoList(odd)
                                     } else {
-                                        onOddClickListener.removeBetInfoItem(odd)
+                                        Handler().postDelayed({//讓ripple效果呈現出來
+                                            onOddClickListener.removeBetInfoItem(odd)
+                                        }, 200)
                                     }
                                 }
                             }

@@ -52,7 +52,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item, playType, matchOddListener)
+        holder.bind(data, item, playType, matchOddListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -61,12 +61,12 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 
         lateinit var timer: CountDownTimer
 
-        fun bind(item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
+        fun bind(data: List<MatchOdd>, item: MatchOdd, playType: PlayType, matchOddListener: MatchOddListener?) {
             itemView.match_odd_home_name.text = item.matchInfo?.homeName
             itemView.match_odd_away_name.text = item.matchInfo?.awayName
             itemView.match_odd_count.text = item.matchInfo?.playCateNum.toString()
             itemView.setOnClickListener {
-                matchOddListener?.onItemClick(item)
+                matchOddListener?.onItemClick(item, data)
             }
 
             setupMatchOddDetail(item, playType, matchOddListener)
@@ -317,11 +317,11 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
 }
 
 class MatchOddListener(
-    val clickListener: (matchOdd: MatchOdd) -> Unit,
+    val clickListener: (matchOdd: MatchOdd, data: List<MatchOdd>) -> Unit,
     val expandListener: (matchOdd: MatchOdd) -> Unit,
     val betClickListener: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
-    fun onItemClick(matchOdd: MatchOdd) = clickListener(matchOdd)
+    fun onItemClick(matchOdd: MatchOdd, data: List<MatchOdd>) = clickListener(matchOdd, data)
     fun onItemExpand(matchOdd: MatchOdd) = expandListener(matchOdd)
     fun onBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         betClickListener(matchOdd, oddString, odd)

@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetRecordResultBinding
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.util.TextUtil
 
 class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -78,6 +79,7 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
         fun bind(data: Row, clickListener: ItemClickListener) {
             binding.row = data
             binding.clickListener = clickListener
+            binding.textUtil = TextUtil
             binding.executePendingBindings()
         }
 
