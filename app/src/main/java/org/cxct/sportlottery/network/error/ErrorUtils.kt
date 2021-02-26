@@ -37,6 +37,7 @@ import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
+import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
@@ -93,6 +94,7 @@ import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
+import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
@@ -331,6 +333,10 @@ object ErrorUtils {
                     (url.contains(LOGIN_FOR_GUEST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(THIRD_REBATES)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ThirdRebatesResult(it.code, it.msg, it.success, null) as T
                     }
                 }
             }
