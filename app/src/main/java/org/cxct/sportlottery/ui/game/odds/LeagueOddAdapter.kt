@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.game.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_odd.view.*
@@ -10,6 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.util.ItemNonLastDecoration
 
 class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     var data = listOf<LeagueOdd>()
@@ -79,6 +82,11 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 this.adapter = matchOddAdapter
+                addItemDecoration(
+                    ItemNonLastDecoration(
+                        ContextCompat.getDrawable(context, R.drawable.divider_straight)
+                    )
+                )
             }
 
             if (item.isExpand) {
