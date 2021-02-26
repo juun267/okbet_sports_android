@@ -383,6 +383,7 @@
     <string name="wx_recharge_hint">请每次入款前登录会员核对微信账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="ali_recharge_hint">请每次入款前登录会员核对支付宝账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="cft_recharge_hint">请每次入款前登录会员核对财付通账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="title_pay_channel">支付渠道</string>
     <string name="title_pay_gap">支付账户</string>
     <string name="title_pay_bank">支付银行</string>
     <string name="title_rebate_fee">返利手续费</string>
