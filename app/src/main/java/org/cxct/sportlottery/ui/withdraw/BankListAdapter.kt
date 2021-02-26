@@ -115,6 +115,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             fun from(parent: ViewGroup): LastViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.content_rv_bank_list_new, parent, false)
+
                 return LastViewHolder(view)
             }
         }

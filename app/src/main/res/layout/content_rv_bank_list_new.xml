@@ -18,14 +18,16 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="76dp"
-            android:layout_height="56dp"
+            android:layout_width="82dp"
+            android:layout_height="58dp"
+            android:paddingStart="6dp"
             android:src="@drawable/ic_add_credit_card" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:textStyle="bold"
             android:text="@string/add_credit_card"
             android:textColor="@color/blue3"
             android:textSize="@dimen/textSize18sp" />
