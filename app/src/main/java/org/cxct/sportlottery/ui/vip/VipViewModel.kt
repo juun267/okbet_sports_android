@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.OneBoSportApi.vipService
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.vip.LoadingResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
+import org.cxct.sportlottery.network.vip.thirdRebates.Debate
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -33,9 +34,9 @@ class VipViewModel(
         get() = _userInfoResult
     private val _userInfoResult = MutableLiveData<UserInfoResult>()
 
-    val thirdRebatesResult: LiveData<ThirdRebatesResult>
-        get() = _thirdRebatesResult
-    private val _thirdRebatesResult = MutableLiveData<ThirdRebatesResult>()
+    val thirdRebatesReformatDataList: LiveData<List<Debate>>
+        get() = _thirdRebatesReformatDataList
+    private val _thirdRebatesReformatDataList = MutableLiveData<List<Debate>>()
 
     val loadingResult: LiveData<LoadingResult>
         get() = _loadingResult
@@ -90,10 +91,29 @@ class VipViewModel(
                 vipService.getThirdRebates(firmCode, firmType)
             }?.let { result ->
                 if (result.success) {
-                    _thirdRebatesResult.value = result
+                    _thirdRebatesReformatDataList.value = reorganizeThirdRebatesData(result)
                 }
                 _loadingResult.value = _loadingResult.value?.apply { thirdRebatesLoading = false }
             }
         }
+    }
+
+    /**
+     * 重組獲取的第三方反水資料至單層list
+     */
+    private fun reorganizeThirdRebatesData(thirdRebatesResult: ThirdRebatesResult): List<Debate> {
+        val reformattedDataList = mutableListOf<Debate>()
+        thirdRebatesResult.thirdRebates?.thirdDebateBeans?.forEach { thirdDebateBeans ->
+            thirdDebateBeans.debateList.forEachIndexed { index, debate ->
+                //處理是否為該層級的第一筆或最後一筆反水資料
+                if (index == 0)
+                    debate.isTitle = true
+                if (thirdDebateBeans.debateList.lastIndex == index)
+                    debate.isLevelTail = true
+                debate.levelIndex = index
+                reformattedDataList.add(debate)
+            }
+        }
+        return reformattedDataList
     }
 }

@@ -16,6 +16,8 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
 
     private val levelBubbleList by lazy { listOf<TextView>(bubble_level_one, bubble_level_two, bubble_level_three, bubble_level_four, bubble_level_five, bubble_level_six) }
 
+    private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vip)
@@ -45,8 +47,8 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
                 setupBannerData()
             })
             //第三方遊戲各會員層級資料
-            thirdRebatesResult.observe(this@VipActivity, Observer {
-                //TODO Dean: set data to recycler view
+            thirdRebatesReformatDataList.observe(this@VipActivity, Observer {
+                thirdRebatesAdapter.dataList = it
             })
         }
     }
@@ -57,8 +59,12 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
         pb_user_level.max = levelBubbleList.size
 
         banner_vip_level.setPageTransformer(Transformer.Default)
+
+        //第三方遊戲反水列表
+        rv_third_rebates.adapter = thirdRebatesAdapter
     }
 
+    //TODO Dean : 第三方遊戲列表
     private fun getDataFromApi() {
         viewModel.apply {
             getUserLevelGrowth()

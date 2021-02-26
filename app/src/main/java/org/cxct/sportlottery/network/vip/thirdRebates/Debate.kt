@@ -26,4 +26,8 @@ data class Debate(
     val userLevelId: Int,
     @Json(name = "userLevelName")
     val userLevelName: String
-)
+) {
+    var isTitle: Boolean = false
+    var isLevelTail: Boolean = false
+    var levelIndex: Int = 0
+}
