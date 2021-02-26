@@ -32,6 +32,8 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
@@ -82,6 +84,7 @@ import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
@@ -313,6 +316,14 @@ object ErrorUtils {
                         return BlankResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(QUERY_TRANSFERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(QUERY_FIRST_ORDERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OtherBetHistoryResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(QUERY_SECOND_ORDERS)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
                     }
