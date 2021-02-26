@@ -62,7 +62,6 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        //        val tvType: TextView = itemView.findViewById(R.id.tv_type)
         private val tvTime: TextView = itemView.findViewById(R.id.tv_time)
         private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
         val tvStatus: TextView = itemView.findViewById(R.id.tv_status)
