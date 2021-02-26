@@ -56,13 +56,24 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         view_pager.adapter = Vp2FragmentAdapter(gameFragList, this)
         view_pager.isUserInputEnabled = false //關閉 viewPager2 左右滑動功能
 
-        //tabLayout、viewPager2 連動邏輯
+        //tabLayout、viewPager2 綁定 //tab 依照 viewPager2 動態生成
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->
-            val tabCate = gameCateFilterList[position].categoryThird
-            tab.setCustomView(R.layout.main_more_cate_tab)
-            tab.customView?.apply {
-                this.iv_icon.setImageResource(tabCate.iconRes)
-                this.tv_title.text = tabCate.title
+            try {
+                val tabCate = gameCateFilterList[position].categoryThird
+                tab.setCustomView(R.layout.main_more_cate_tab)
+                tab.customView?.apply {
+                    this.iv_icon.setImageResource(tabCate.iconRes)
+                    this.tv_title.text = tabCate.title
+                }
+
+                tab_layout.post {
+                    //初始選定 tab 頁面
+                    val selectCate = ThirdGameCategory.getCategory(args.categoryCode)
+                    if (selectCate == tabCate)
+                        view_pager.setCurrentItem(position, false)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }.attach()
     }
