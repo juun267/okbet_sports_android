@@ -52,6 +52,11 @@ class FeedbackViewModel(
     //feedbackCode
     var feedbackCode: String? = null
 
+    //最後頁
+    val isFinalPage: LiveData<Boolean>
+        get() = _isFinalPage
+    private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
+
     //Bottomsheet Data
     val typeMap = mapOf(0 to "充值问题",1 to "提款问题",2 to "其他问题",3 to "提交建议",4 to "我要投诉",5 to "客服反馈",6 to "玩家回复")
     val statusMap = mapOf(0 to "待反馈",1 to "已反馈")
@@ -83,32 +88,31 @@ class FeedbackViewModel(
         viewModelScope.launch {
 
             if (isReload) {//重新載入
-
                 mNextRequestPage = 1
                 _feedbackList.value = mutableListOf()
                 mCurrentTotalCount = 0
                 mNeedMoreLoading = true
-
                 mNextRequestPage = 1
             }
+            if(mNeedMoreLoading){
+                _isLoading.value = true
+                val result = doNetwork(androidContext) {
+                    feedbackListRequest.page = mNextRequestPage
+                    feedbackListRequest.pageSize = pageSize
+                    feedbackRepository.getFbQueryList(feedbackListRequest)
+                }
+                //判斷是不是可以再加載
+                mNeedMoreLoading =
+                    (mCurrentTotalCount + (result?.rows?.size
+                        ?: 0)) < result?.total ?: 0
+                mNextRequestPage++
 
-            _isLoading.value = true
-            val result = doNetwork(androidContext) {
-                feedbackListRequest.page = mNextRequestPage
-                feedbackListRequest.pageSize = pageSize
-                feedbackRepository.getFbQueryList(feedbackListRequest)
+                if (result?.rows?.size ?: 0 > 0)
+                    _feedbackList.value = result?.rows
+
+                if(!mNeedMoreLoading)
+                    _isFinalPage.postValue(true)
             }
-            Timber.i("=====>Inptut:$feedbackListRequest")
-
-            //判斷是不是可以再加載
-            mNeedMoreLoading =
-                (mCurrentTotalCount + (result?.rows?.size
-                    ?: 0)) < result?.total ?: 0
-            mNextRequestPage++
-
-            if (result?.rows?.size ?: 0 > 0)
-                _feedbackList.value = result?.rows
-
             _isLoading.value = false
         }
         mIsGettingData = false
