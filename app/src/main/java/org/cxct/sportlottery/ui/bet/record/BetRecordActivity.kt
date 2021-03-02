@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityBetRecordBinding
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 
-class BetRecordActivity : BaseOddButtonActivity<BetRecordViewModel>(BetRecordViewModel::class) {
+class BetRecordActivity : BaseNoticeActivity<BetRecordViewModel>(BetRecordViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
