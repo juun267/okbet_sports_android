@@ -9,10 +9,11 @@ import kotlinx.android.synthetic.main.activity_modify_profile_info.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 
-class ModifyProfileInfoActivity : BaseOddButtonActivity<ModifyProfileInfoViewModel>(ModifyProfileInfoViewModel::class) {
+class ModifyProfileInfoActivity :
+    BaseNoticeActivity<ModifyProfileInfoViewModel>(ModifyProfileInfoViewModel::class) {
     private val modifyType by lazy { intent.getSerializableExtra(MODIFY_INFO) }
 
     companion object {

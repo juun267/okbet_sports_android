@@ -12,11 +12,12 @@ import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
+import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
@@ -82,7 +83,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_member_level.setOnClickListener {
-            //TODO 會員層級
+            startActivity(Intent(context, VipActivity::class.java))
+            mDownMenuListener?.onClick(menu_member_level)
         }
 
         menu_game_result.setOnClickListener {
@@ -103,14 +105,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_sign_out)
         }
 
-        menu_third_game_test.setOnClickListener {
-            //TODO 第三方遊戲跳轉測試
-            val url = "https://fishxy.sdbaifuquan.com/index.html?lang=zh-CN&io=1"
-            context?.run {
-                JumpUtil.toThirdGameWeb(this, url)
-            }
-            mDownMenuListener?.onClick(menu_third_game_test)
-        }
     }
 
     private fun setupSelectLanguage() {

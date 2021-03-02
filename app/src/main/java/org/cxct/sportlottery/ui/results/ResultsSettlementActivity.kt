@@ -21,13 +21,14 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.Row
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ResultsSettlementActivity : BaseToolBarActivity<SettlementViewModel>(SettlementViewModel::class) {
+class ResultsSettlementActivity :
+    BaseNoticeActivity<SettlementViewModel>(SettlementViewModel::class) {
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
     lateinit var settlementGameTypeBottomSheet: BottomSheetDialog
@@ -52,22 +53,23 @@ class ResultsSettlementActivity : BaseToolBarActivity<SettlementViewModel>(Settl
         fun requestIng(loading: Boolean)
     }
 
-    override fun setContentView(): Int {
-        return R.layout.activity_results_settlement
-    }
-
-    override fun setToolBarName(): String {
-        return getString(R.string.game_settlement)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.activity_results_settlement)
+
+        setupToolbar()
         setupAdapter()
         initEvent()
         setupSpinnerGameType() //設置體育種類列表
         observeData()
         initTimeSelector()
+    }
+
+    private fun setupToolbar() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setupAdapter() {

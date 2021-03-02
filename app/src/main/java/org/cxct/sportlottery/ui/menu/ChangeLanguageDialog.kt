@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.dialog_change_language.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.LanguageManager
 
 class ChangeLanguageDialog : BottomSheetDialogFragment() {

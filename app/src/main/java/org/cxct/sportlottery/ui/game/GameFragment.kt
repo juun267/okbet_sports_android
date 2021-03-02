@@ -80,7 +80,7 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     )
                 })
 
-            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, _ ->
+            itemExpandListener = ItemExpandListener { isExpand, leagueOdd, position ->
                 scope.launch {
                     val code = gameTypeAdapter.data.find {
                         it.isSelected
@@ -104,6 +104,7 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 }
+                notifyItemChanged(position)
             }
 
             betInfoListData = viewModel.betInfoRepository.betInfoList.value

@@ -4,9 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ContentOddsDetailMoreBinding
-import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
 
 
 class OddsDetailMoreAdapter(private val matchInfoList: List<MoreGameEntity>, private val onItemClickListener: OnItemClickListener) :

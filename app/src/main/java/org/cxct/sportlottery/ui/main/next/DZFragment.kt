@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.content_dz_adapter.view.*
 import kotlinx.android.synthetic.main.fragment_dz.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.MainViewModel
 
 class DZFragment : BaseFragment<MainViewModel>(MainViewModel::class)  {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

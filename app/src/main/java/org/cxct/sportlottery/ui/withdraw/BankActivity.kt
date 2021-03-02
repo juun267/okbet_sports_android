@@ -5,9 +5,9 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_bank.*
 import kotlinx.android.synthetic.main.activity_setting_password.btn_back
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 
-class BankActivity : BaseActivity<WithdrawViewModel>(WithdrawViewModel::class) {
+class BankActivity : BaseNoticeActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private val mNavController by lazy {
         findNavController(R.id.bank_container)

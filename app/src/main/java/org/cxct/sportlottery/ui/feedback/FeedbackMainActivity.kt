@@ -1,23 +1,25 @@
 package org.cxct.sportlottery.ui.feedback
 
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_feedback_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 
-class FeedbackMainActivity : BaseToolBarActivity<FeedbackViewModel>(FeedbackViewModel::class){
+class FeedbackMainActivity : BaseNoticeActivity<FeedbackViewModel>(FeedbackViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isOpenMenu(false) //關掉menu
+
+        setContentView(R.layout.activity_feedback_main)
+
+        initToolbar()
         initLiveData()
         initData()
     }
 
-    override fun setContentView(): Int {
-        return R.layout.activity_feedback_main
-    }
-
-    override fun setToolBarName(): String {
-        return getString(R.string.feedback_toolbar_title)
+    private fun initToolbar() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initLiveData() {
@@ -28,7 +30,7 @@ class FeedbackMainActivity : BaseToolBarActivity<FeedbackViewModel>(FeedbackView
                 hideLoading()
         })
     }
-    fun initData(){
+    private fun initData(){
         viewModel.getUserInfo()
     }
 }

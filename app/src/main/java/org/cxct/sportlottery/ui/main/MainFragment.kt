@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.main
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.widget.NestedScrollView
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -27,17 +28,30 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
 import org.cxct.sportlottery.ui.home.news.NewsDiaolog
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.JumpUtil
 
+
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
-    private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null //TODO simon test 第三方遊戲點擊 listener
+    private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
+        override fun onClick(select: ThirdDictValues?) {
+            loading()
+            viewModel.requestEnterThirdGame(select)
+        }
+    }
 
+    //電子遊戲 點擊事件特別處理
+    private var mOnSelectThirdGameDzListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
+        override fun onClick(select: ThirdDictValues?) {
+            goToNextFragment(select?.gameCategory, select?.firmCode)
+        }
+    }
 
     private var mLastAction = Action.IS_TAB_SELECT
 
@@ -54,11 +68,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         getMarquee()
         getMsgDialog()
         getBanner()
-        getPopImage()
         getThirdGame()
 
         setupSport()
-        setupLottery()
+        setMoreButtons()
         setupUpdate()
     }
 
@@ -145,12 +158,20 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     in label_slot.top until label_fishing.top -> {
                         selectTab(tab_slot)
                     }
-                    in label_fishing.top until btn_update.bottom -> {
+                    in label_fishing.top until over_scroll_view.top -> {
                         selectTab(tab_fishing)
                     }
                 }
             }
         })
+
+        //為了讓滑動切換 tab 效果能到最後一項，需動態變更 over_scroll_view 高度，來補足滑動距離
+        scroll_view.post {
+            val distanceY = over_scroll_view.bottom - label_fishing.top
+            val paddingHeight = scroll_view.height - distanceY - tab_layout.height
+            if (paddingHeight > 0)
+                over_scroll_view.minimumHeight = paddingHeight
+        }
     }
 
     private fun scrollToTabPosition(tab: View) {
@@ -183,24 +204,24 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setBanner(it)
         })
 
-        //彈窗圖
-        viewModel.popImageList.observe(viewLifecycleOwner, Observer {
-            setPopImage(it)
-        })
-
         //公告跑馬燈
         viewModel.messageListResult.observe(viewLifecycleOwner, Observer {
             setMarquee(it)
         })
 
         //公告彈窗
-        viewModel.messageDialogResult.observe(viewLifecycleOwner,{
+        viewModel.messageDialogResult.observe(viewLifecycleOwner, Observer {
             setMsgDiaolog(it)
         })
 
         //第三方遊戲清單
         viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
             setGameData(it)
+        })
+
+        viewModel.enterThirdGameResult.observe(viewLifecycleOwner, Observer {
+            if (isVisible)
+                enterThirdGame(it)
         })
     }
 
@@ -246,13 +267,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         xBanner.setData(bannerList, null)
     }
 
-    //彈窗圖
-    private fun setPopImage(popImageList: List<ImageData>) {
-        context?.run {
-            PopImageDialog(this, popImageList).show()
-        }
-    }
-
     //公告跑馬燈
     private fun setMarquee(messageListResult: MessageListResult) {
         val titleList: MutableList<String> = mutableListOf()
@@ -270,19 +284,53 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         rv_marquee.adapter = adapter
     }
 
+    private fun setMsgDiaolog(messageListResult: MessageListResult) {
+        val newsDialog = NewsDiaolog(activity, messageListResult.rows)
+        fragmentManager?.let { newsDialog.show(it, null) }
+    }
+
     private fun setGameData(cateDataList: List<GameCateData>?) {
         //第三方遊戲開啟才顯示 類別 tabLayout
         tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
 
+        refreshGameCGCP(cateDataList?.find { it.categoryThird == ThirdGameCategory.CGCP })
         refreshGameLive(cateDataList?.find { it.categoryThird == ThirdGameCategory.LIVE })
         refreshGameQP(cateDataList?.find { it.categoryThird == ThirdGameCategory.QP })
         refreshGameDZ(cateDataList?.find { it.categoryThird == ThirdGameCategory.DZ })
         refreshGameBY(cateDataList?.find { it.categoryThird == ThirdGameCategory.BY })
     }
 
-    private fun setMsgDiaolog(messageListResult: MessageListResult) {
-       var newsDiaolog = NewsDiaolog(activity,messageListResult.rows)
-        fragmentManager?.let { newsDiaolog.show(it,null) }
+    private fun enterThirdGame(result: EnterThirdGameResult) {
+        hideLoading()
+        when (result.resultType) {
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
+            EnterThirdGameResult.ResultType.NONE -> {}
+        }
+        viewModel.clearThirdGame()
+    }
+
+    //彩票
+    private fun refreshGameCGCP(cateData: GameCateData?) {
+        val gameList = mutableListOf<GameItemData>()
+
+        cateData?.tabDataList?.forEach {
+            it.gameList.run { gameList.addAll(this) }
+        }
+
+        if (gameList.isEmpty()) {
+            tab_lottery.visibility = View.GONE
+            label_lottery.visibility = View.GONE
+            lotteryGamePager.visibility = View.GONE
+        } else {
+            tab_lottery.visibility = View.VISIBLE
+            label_lottery.visibility = View.VISIBLE
+            lotteryGamePager.visibility = View.VISIBLE
+
+            lotteryGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            lotteryGamePager.setData(gameList)
+        }
     }
 
     //真人
@@ -290,7 +338,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            it.gameList.run { gameList.addAll(this) }
         }
 
         if (gameList.isEmpty()) {
@@ -312,7 +360,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            it.gameList.run { gameList.addAll(this) }
         }
 
         if (gameList.isEmpty()) {
@@ -329,12 +377,15 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    //電子
+    //電子 //電子遊戲特別處理，此處展示的是第二層 tab，點擊要跳轉到對應遊戲列表畫面
     private fun refreshGameDZ(cateData: GameCateData?) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            if (it.gameFirm != null) {
+                val tab = viewModel.createSingleThirdGame(it.gameCategory, it.gameFirm)
+                gameList.add(tab)
+            }
         }
 
         if (gameList.isEmpty()) {
@@ -346,7 +397,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_slot.visibility = View.VISIBLE
             slotGamePager.visibility = View.VISIBLE
 
-            slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+            slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameDzListener)
             slotGamePager.setData(gameList)
         }
     }
@@ -356,7 +407,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameList = mutableListOf<GameItemData>()
 
         cateData?.tabDataList?.forEach {
-            it.gameList?.run { gameList.addAll(this) }
+            it.gameList.run { gameList.addAll(this) }
         }
 
         if (gameList.isEmpty()) {
@@ -377,10 +428,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.getBanner()
     }
 
-    private fun getPopImage() {
-        viewModel.getPopImage()
-    }
-
     private fun getMarquee() {
         viewModel.getMarquee()
     }
@@ -399,9 +446,21 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun setupLottery() {
-        btn_lottery.setOnClickListener {
-            //TODO simon test 彩票遊戲跳轉
+    private fun setMoreButtons() {
+        label_live.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.LIVE.name)
+        }
+
+        label_poker.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.QP.name)
+        }
+
+        label_slot.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.DZ.name)
+        }
+
+        label_fishing.setOnMoreClickListener {
+            goToNextFragment(ThirdGameCategory.BY.name)
         }
     }
 
@@ -411,4 +470,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun goToNextFragment(cateCode: String?, firmCode: String? = null) {
+        val action = MainFragmentDirections.actionMainFragmentToMainMoreFragment(cateCode ?: "", firmCode ?: "")
+        findNavController().navigate(action)
+    }
 }

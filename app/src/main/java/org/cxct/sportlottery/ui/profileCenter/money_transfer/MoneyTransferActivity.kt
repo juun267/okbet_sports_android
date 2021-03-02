@@ -5,32 +5,33 @@ import android.view.View
 import android.widget.CheckBox
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_money_transfer.*
+import kotlinx.android.synthetic.main.activity_money_transfer.btn_toolbar_back
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseToolBarActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
 
-class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+class MoneyTransferActivity :
+    BaseNoticeActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_money_transfer)
 
 
         viewModel.getMoney()
         viewModel.getAllBalance()
 //        viewModel.getThirdGames() //TODO Cheryl: 平台名稱不太會換，跟ios先寫死，後續有更動再調整
 
+        initToolbar()
         initObserver()
         initOnClick()
     }
 
-
-
-    override fun setContentView(): Int {
-        return R.layout.activity_money_transfer
-    }
-
-    override fun setToolBarName(): String {
-        return getString(R.string.account_transfer)
+    private fun initToolbar() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initObserver() {
@@ -46,7 +47,7 @@ class MoneyTransferActivity : BaseToolBarActivity<MoneyTransferViewModel>(MoneyT
         })
 
         viewModel.toolbarName.observe(this, {
-            setToolBarName(it)
+            tv_toolbar_title.text = it
         })
     }
 

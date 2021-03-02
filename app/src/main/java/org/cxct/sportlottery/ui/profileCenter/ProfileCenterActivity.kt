@@ -13,18 +13,20 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
-import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
+import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
+import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
@@ -33,7 +35,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class ProfileCenterActivity :
-    BaseOddButtonActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+    BaseNoticeActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
@@ -58,7 +60,9 @@ class ProfileCenterActivity :
 
     private fun setupEditNickname() {
         btn_edit_nickname.setOnClickListener {
-            startActivity(Intent(this, ModifyProfileInfoActivity::class.java))
+            startActivity(Intent(this@ProfileCenterActivity, ModifyProfileInfoActivity::class.java).apply {
+                putExtra(ModifyProfileInfoActivity.MODIFY_INFO, ModifyType.NickName)
+            })
         }
     }
 
@@ -120,9 +124,14 @@ class ProfileCenterActivity :
             viewModel.settingCheckPermissions()
         }
 
-        //投注記錄
-        btn_bet_record.setOnClickListener {
+        //體育投注記錄
+        btn_sport_bet_record.setOnClickListener {
             startActivity(Intent(this, BetRecordActivity::class.java))
+        }
+
+        //其他投注記錄
+        btn_other_bet_record.setOnClickListener {
+            startActivity(Intent(this, OtherBetRecordActivity::class.java))
         }
 
         //資金明細

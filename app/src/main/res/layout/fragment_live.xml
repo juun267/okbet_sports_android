@@ -4,42 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.next.QPFragment">
+    tools:context=".ui.main.next.LiveFragment">
 
     <ImageView
-        android:id="@+id/imageView6"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@drawable/live_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        android:src="@drawable/live_bg" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/iv_banner"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:src="@drawable/ic_image_load"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:src="@drawable/live_banner"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_time_line_detail"
+        android:id="@+id/rv_live"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:padding="15dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="@+id/imageView6"
-        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_banner"
         app:spanCount="2"
         tools:itemCount="5"
-        tools:listitem="@layout/content_qp_item" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        tools:listitem="@layout/content_live_game_rv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
