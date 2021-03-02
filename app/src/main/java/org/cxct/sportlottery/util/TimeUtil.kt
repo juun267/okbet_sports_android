@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import android.util.Log
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -9,6 +10,8 @@ import java.util.*
 @SuppressLint("SimpleDateFormat")
 object TimeUtil {
     private const val TAG = "TimeUtil"
+    private val ymdhmsFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    private val ymdFormat = SimpleDateFormat("yyyy-MM-dd")
 
     fun timeStampToDate(time: Long?): String? {
         if (time == null) return null
@@ -80,6 +83,24 @@ object TimeUtil {
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
 
+    fun getDefaultTimeStamp(): TimeRangeParams {
+
+        val minusDay = ymdFormat.format(getDateInCalendar(7).first.time)
+        val today = ymdFormat.format(getDateInCalendar(7).second.time)
+
+        Log.e(">>>", "minusDay = $minusDay, today = $today")
+
+        val startTimeStamp = ymdhmsFormat.parse("$minusDay 00:00:00")?.time
+        val endTimeStamp = ymdhmsFormat.parse("$today 23:59:59")?.time
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
+                get() = endTimeStamp.toString()
+
+        }
+    }
+
     fun getNowTimeStamp(): Long {
         return System.currentTimeMillis()
     }
@@ -131,8 +152,8 @@ object TimeUtil {
     }
 
     fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
-        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
-        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
+        val todayCalendar = getTodayEndTimeCalendar()
+        val minusDaysCalendar = getTodayStartTimeCalendar()
         if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
         return Pair(minusDaysCalendar, todayCalendar)
     }

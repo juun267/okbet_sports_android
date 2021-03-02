@@ -151,7 +151,3 @@ class OtherBetRecordViewModel(
     }
 
 }
-
-data class SheetData(val firmType: String?, val showName: String?) {
-    var isChecked = false
-}

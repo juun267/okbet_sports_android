@@ -131,7 +131,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
         calendarBottomSheet.setContentView(bottomSheetView)
         calendarBottomSheet.calendar.setSelectableDateRange(
-            TimeUtil.getDateInCalendar(30).first,
+            TimeUtil. getDateInCalendar(30).first,
             TimeUtil.getDateInCalendar(30).second
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {

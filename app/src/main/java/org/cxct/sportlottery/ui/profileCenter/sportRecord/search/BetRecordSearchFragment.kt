@@ -2,17 +2,14 @@ package org.cxct.sportlottery.ui.profileCenter.sportRecord.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -28,7 +25,6 @@ import org.cxct.sportlottery.databinding.FragmentBetRecordSearchBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.statusNameMap
 import org.cxct.sportlottery.util.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,9 +33,9 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     lateinit var calendarBottomSheet: BottomSheetDialog
     lateinit var betStatusBottomSheet: BottomSheetDialog
-    private lateinit var betStatusLvAdapter: BetStatusLvAdapter
+//    private lateinit var betStatusLvAdapter: BetStatusLvAdapter
 
-    private var betStatusList = listOf<BetTypeItemData>()
+//    private var betStatusList = listOf<BetTypeItemData>()
     private var simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -56,13 +52,13 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         super.onViewCreated(view, savedInstanceState)
 
         initBottomSheetDialog()
-        initListView()
+//        initListView()
         setOnClick()
         setObserver()
     }
 
     private fun setObserver() {
-        viewModel.waitingResult.observe(viewLifecycleOwner, Observer {
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
             showLoadingView(it)
         })
 
@@ -74,9 +70,8 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             if (!it.hasStatus) tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
             if (!it.hasStartDate) tv_start_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
             if (!it.hasEndDate) tv_end_date.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, R.color.red))
-
         })
-
+/*
         viewModel.betRecordResult.observe(viewLifecycleOwner, Observer {
             val eventResult = it.getContentIfNotHandled()
             eventResult?.let { result ->
@@ -87,6 +82,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 }
             }
         })
+        */
     }
 
     private fun showLoadingView(show: Boolean) {
@@ -117,8 +113,8 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {}
         })
         betStatusBottomSheet.setOnDismissListener {
-          betStatusList.any { d ->
-                d.isSelected
+          viewModel.betStatusList.any { d ->
+                d.isChecked
             }.let { isSelected->
               tv_bet_status.setHintTextColor(ContextCompat.getColor(tv_bet_status.context, if (isSelected) R.color.white else R.color.red))
            }
@@ -183,11 +179,8 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         return Pair(yesterdayStartCalendar, yesterdayEndCalendar)
     }
 
+/*
     private fun initListView() {
-        betStatusList = statusNameMap.map {
-            BetTypeItemData(it.key, it.value, false)
-        }
-
         betStatusLvAdapter = BetStatusLvAdapter(betStatusBottomSheet.lv_bet_type.context, betStatusList)
         betStatusBottomSheet.lv_bet_type.adapter = betStatusLvAdapter
 
@@ -238,6 +231,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             viewModel.deleteSelectStatus(item)
         }
     }
+*/
 
     private fun setOnClick() {
         ll_bet_status.setOnClickListener {
@@ -269,7 +263,7 @@ class BetRecordSearchFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         btn_search.setOnClickListener {
-            viewModel.confirmSearch(betStatusList, btn_champion.isChecked, tv_start_date.text.toString(), tv_end_date.text.toString())
+//            viewModel.searchBetRecord(betStatusList, btn_champion.isChecked, tv_start_date.text.toString(), tv_end_date.text.toString())
         }
     }
 

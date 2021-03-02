@@ -11,7 +11,7 @@
         layout="@layout/item_listview_bet_type_all"/>
 
     <ListView
-        android:id="@+id/lv_bet_type"
+        android:id="@+id/sheet_rv_more"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:divider="@null"

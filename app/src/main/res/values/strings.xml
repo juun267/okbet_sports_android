@@ -381,7 +381,7 @@
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
 
-    <string name="total_bet_amount">总共有 投注额 (RMB)</string>
+    <string name="total_bet_amount">总投注额：</string>
     <string name="win_lose">赢 / 输 (RMB)</string>
     <string name="no_any_bet_record">暂无任何投注纪录</string>
     <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
@@ -660,4 +660,5 @@
     <string name="total_bet_number">总笔数：</string>
     <string name="total_profit_and_loss">总盈亏：</string>
     <string name="game_name">游戏名</string>
+    <string name="all_bet_status">全部注单状态</string>
 </resources>

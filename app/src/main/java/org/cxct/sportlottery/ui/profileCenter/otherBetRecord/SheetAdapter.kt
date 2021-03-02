@@ -17,6 +17,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBottomSheetOtherBetRecordItemBinding
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 
+data class SheetData(val firmType: String?, val showName: String?) {
+    var isChecked = false
+}
+
 class SheetAdapter (private val defaultCheckedCode: String?, private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mNowCheckedPos:Int? = null

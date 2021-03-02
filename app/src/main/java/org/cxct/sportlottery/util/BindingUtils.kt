@@ -1,11 +1,9 @@
-package org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result
+package org.cxct.sportlottery.util
 
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {

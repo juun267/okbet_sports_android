@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.fragment_other_bet_record.iv_scroll_to_top
 import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setMoneyColor
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setMoneyFormat
+import org.cxct.sportlottery.util.setMoneyColor
+import org.cxct.sportlottery.util.setMoneyFormat
 
 class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 

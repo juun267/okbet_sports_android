@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.profileCenter.otherBetRecord.detail
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +13,8 @@ import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setMoneyColor
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.setMoneyFormat
+import org.cxct.sportlottery.util.setMoneyColor
+import org.cxct.sportlottery.util.setMoneyFormat
 
 class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
