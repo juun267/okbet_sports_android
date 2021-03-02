@@ -7,6 +7,10 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.sportRecord.BetRecordActivity">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_base_tool_bar_no_drawer"/>
+
     <fragment
         android:id="@+id/my_nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

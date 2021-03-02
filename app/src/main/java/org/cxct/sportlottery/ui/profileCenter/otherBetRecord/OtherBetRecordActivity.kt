@@ -12,7 +12,6 @@ class OtherBetRecordActivity : BaseNoticeActivity<OtherBetRecordViewModel>(Other
         setContentView(R.layout.activity_other_bet_record)
 
         initToolbar()
-        initObserver()
     }
 
     private fun initToolbar() {
@@ -22,10 +21,6 @@ class OtherBetRecordActivity : BaseNoticeActivity<OtherBetRecordViewModel>(Other
                 onBackPressed()
             }
         }
-    }
-
-    private fun initObserver() {
-
     }
 
 }
