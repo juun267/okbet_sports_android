@@ -534,6 +534,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         hall_odds_list.visibility = View.VISIBLE
 
         leagueOddAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+        setupNoHistory(oddsListResult.oddsListData?.leagueOdds?.isEmpty() == true)
     }
 
     private fun setupLeagueList(leagueListResult: LeagueListResult) {
@@ -542,6 +543,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         hall_league_list.visibility = View.VISIBLE
 
         leagueAdapter.data = leagueListResult.rows ?: listOf()
+        setupNoHistory(leagueListResult.rows?.isEmpty() == true)
     }
 
     private fun setupOutrightSeasonList(outrightSeasonListResult: OutrightSeasonListResult) {
@@ -550,6 +552,7 @@ class GameFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         hall_outright_season_list.visibility = View.VISIBLE
 
         outrightSeasonAdapter.data = outrightSeasonListResult.rows ?: listOf()
+        setupNoHistory(outrightSeasonListResult.rows?.isEmpty() == true)
     }
 
     private fun setupNoHistory(isShow: Boolean) {
