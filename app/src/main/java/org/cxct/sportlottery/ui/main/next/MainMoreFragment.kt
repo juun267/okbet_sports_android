@@ -85,7 +85,7 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 ThirdGameCategory.LOCAL_SP -> SportFragment()
                 ThirdGameCategory.CGCP -> CGCPFragment(cateData)
                 ThirdGameCategory.LIVE -> LiveFragment(cateData)
-                ThirdGameCategory.QP -> QPFragment()
+                ThirdGameCategory.QP -> QPFragment(cateData)
                 ThirdGameCategory.DZ -> DZFragment(cateData, args.firmCode)
                 ThirdGameCategory.BY -> BYFragment(cateData)
                 else -> null
