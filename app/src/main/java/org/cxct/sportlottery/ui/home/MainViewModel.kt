@@ -290,6 +290,21 @@ class MainViewModel(
             result?.let {
                 if (it.sportMenuData != null)
                     initSportMenuSelectedState(it.sportMenuData)
+                it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.today?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.early?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.parlay?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
+                    item.sortNum
+                }
                 _sportMenuResult.postValue(it)
             }
         }
