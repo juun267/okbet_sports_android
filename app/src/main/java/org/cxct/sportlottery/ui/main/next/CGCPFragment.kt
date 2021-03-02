@@ -38,7 +38,8 @@ class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
 
     private fun initObserve() {
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner, Observer {
-            enterThirdGame(it)
+            if (isVisible)
+                enterThirdGame(it)
         })
     }
 
@@ -48,6 +49,8 @@ class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
+            EnterThirdGameResult.ResultType.NONE -> {}
         }
+        viewModel.clearThirdGame()
     }
 }

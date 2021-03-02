@@ -220,7 +220,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner, Observer {
-            enterThirdGame(it)
+            if (isVisible)
+                enterThirdGame(it)
         })
     }
 
@@ -305,7 +306,9 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
+            EnterThirdGameResult.ResultType.NONE -> {}
         }
+        viewModel.clearThirdGame()
     }
 
     //彩票

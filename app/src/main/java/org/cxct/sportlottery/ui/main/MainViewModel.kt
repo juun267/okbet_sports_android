@@ -274,10 +274,12 @@ class MainViewModel(
                 )
             }
             loginRepository.isLogin.value != true -> {
-                EnterThirdGameResult(
-                    resultType = EnterThirdGameResult.ResultType.NEED_LOGIN,
-                    url = null,
-                    errorMsg = null
+                _enterThirdGameResult.postValue(
+                    EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.NEED_LOGIN,
+                        url = null,
+                        errorMsg = null
+                    )
                 )
             }
             else -> {
@@ -310,6 +312,17 @@ class MainViewModel(
                 }
             }
         }
+    }
+
+    //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
+    fun clearThirdGame() {
+        _enterThirdGameResult.postValue(
+            EnterThirdGameResult(
+                resultType = EnterThirdGameResult.ResultType.NONE,
+                url = null,
+                errorMsg = null
+            )
+        )
     }
 
     private suspend fun autoTransfer(gameData: ThirdDictValues) {

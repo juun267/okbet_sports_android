@@ -17,6 +17,7 @@ import org.cxct.sportlottery.util.GameConfigManager
 
 class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainGameRvAdapter.ItemViewHolder>() {
 
+    private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
     private var mDataList: MutableList<GameItemData> = mutableListOf()
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?>? = null
     private val mRequestOptions = RequestOptions()
@@ -47,8 +48,6 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
         return if (mDataList.size <= 1) mDataList.size else Integer.MAX_VALUE
     }
 
-    //20190115 避免快速連點，所有的 item 一次只能點擊一個
-    private var mIsEnabled = true
     fun avoidFastDoubleClick() {
         mIsEnabled = false
         Handler().postDelayed({ mIsEnabled = true }, 500)
