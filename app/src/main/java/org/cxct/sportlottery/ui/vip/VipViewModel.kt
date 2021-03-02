@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.OneBoSportApi.thirdGameService
 import org.cxct.sportlottery.network.OneBoSportApi.vipService
+import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.vip.LoadingResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
@@ -41,6 +43,11 @@ class VipViewModel(
     val loadingResult: LiveData<LoadingResult>
         get() = _loadingResult
     private val _loadingResult = MutableLiveData<LoadingResult>(LoadingResult())
+
+    //第三方遊戲資料
+    val getThirdGamesFirmMap: LiveData<List<GameFirmValues>>
+        get() = _getThirdGamesFirmMap
+    private val _getThirdGamesFirmMap = MutableLiveData<List<GameFirmValues>>()
 
     private fun getUserInfo() {
         _loadingResult.value = _loadingResult.value?.apply { userInfoLoading = true }
@@ -94,6 +101,30 @@ class VipViewModel(
                     _thirdRebatesReformatDataList.value = reorganizeThirdRebatesData(result)
                 }
                 _loadingResult.value = _loadingResult.value?.apply { thirdRebatesLoading = false }
+            }
+        }
+    }
+
+    /**
+     * 獲取第三方遊戲列表
+     */
+    fun getThirdGamesFirmMap() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                thirdGameService.getThirdGames()
+            }?.let { result ->
+                if (result.success) {
+                    result.t?.gameFirmMap?.let {
+                        //過濾掉禁用的第三方遊戲
+                        val gameFirmList = mutableListOf<GameFirmValues>()
+                        it.toList().sortedBy { list -> list.second.sort }.forEach { pair ->
+                            if (pair.second.open == 1) {
+                                gameFirmList.add(pair.second)
+                            }
+                        }
+                        _getThirdGamesFirmMap.value = gameFirmList
+                    }
+                }
             }
         }
     }

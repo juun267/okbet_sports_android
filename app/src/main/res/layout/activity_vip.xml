@@ -541,10 +541,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
                             android:layout_marginBottom="14dp"
+                            android:text="@string/title_rebates_selector_form"
                             android:textColor="@color/main"
                             android:textSize="@dimen/textSize13sp"
-                            android:textStyle="bold"
-                            tools:text="各类别游戏层级福利" />
+                            android:textStyle="bold" />
 
                         <View
                             android:layout_width="1dp"
@@ -555,8 +555,10 @@
                             android:background="@color/bright_gray2" />
 
                         <org.cxct.sportlottery.ui.component.StatusSelectorView
+                            android:id="@+id/sv_third_games"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            app:defaultBottomSheetTitleText=""
                             app:horizontalChainStyle="spread_inside" />
                     </LinearLayout>
 
