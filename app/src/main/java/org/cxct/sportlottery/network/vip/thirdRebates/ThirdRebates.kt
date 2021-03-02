@@ -6,12 +6,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ThirdRebates(
-    @Json(name = "firmCode")
-    val firmCode: String,
-    @Json(name = "firmType")
-    val firmType: String,
-    @Json(name = "gameFirms")
-    val gameFirms: List<GameFirm>,
     @Json(name = "thirdDebateBeans")
     val thirdDebateBeans: List<ThirdDebateBean>
 )

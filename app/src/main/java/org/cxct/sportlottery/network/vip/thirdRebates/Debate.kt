@@ -8,10 +8,6 @@ import com.squareup.moshi.JsonClass
 data class Debate(
     @Json(name = "debate")
     val debate: Double?,
-    @Json(name = "firmCode")
-    val firmCode: String,
-    @Json(name = "firmType")
-    val firmType: String,
     @Json(name = "id")
     val id: Double,
     @Json(name = "maxDebateMoney")
@@ -20,8 +16,6 @@ data class Debate(
     val maxMoney: Double?,
     @Json(name = "minMoney")
     val minMoney: Double?,
-    @Json(name = "platformId")
-    val platformId: Long,
     @Json(name = "userLevelId")
     val userLevelId: Int,
     @Json(name = "userLevelName")
