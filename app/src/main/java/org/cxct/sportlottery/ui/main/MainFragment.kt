@@ -308,7 +308,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
             EnterThirdGameResult.ResultType.NONE -> {}
         }
-        viewModel.clearThirdGame()
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+            viewModel.clearThirdGame()
     }
 
     //彩票

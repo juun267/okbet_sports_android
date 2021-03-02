@@ -87,7 +87,7 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 ThirdGameCategory.LIVE -> LiveFragment(cateData)
                 ThirdGameCategory.QP -> QPFragment()
                 ThirdGameCategory.DZ -> DZFragment()
-                ThirdGameCategory.BY -> BYFragment()
+                ThirdGameCategory.BY -> BYFragment(cateData)
                 else -> null
             }
 

@@ -228,6 +228,7 @@ class MainViewModel(
 
             //20200120 記錄問題: 修正電子類遊戲無法進入的問題 by Bee
             thirdDict?.open = gameFirm.open
+            thirdDict?.firmName = gameFirm.firmName
 
             val entity = GameItemData(thirdDict)
             pageList.add(entity)
@@ -258,6 +259,7 @@ class MainViewModel(
         )
 
         thirdDict.open = gameFirm.open
+        thirdDict.firmName = gameFirm.firmName
 
         return GameItemData(thirdDict)
     }
