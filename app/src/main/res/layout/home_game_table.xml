@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/fillet_5dp_white"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeGameTable">
+    tools:context=".ui.game.home.HomeGameTable">
 
     <LinearLayout
         android:id="@+id/titleBar"

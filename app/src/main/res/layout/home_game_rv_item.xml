@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    tools:context="org.cxct.sportlottery.ui.home.gameDrawer.RvGameDrawerAdapter">
+    tools:context=".ui.game.home.gameDrawer.RvGameDrawerAdapter">
 
     <TextView
         android:id="@+id/team1"

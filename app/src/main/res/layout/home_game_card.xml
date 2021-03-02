@@ -5,7 +5,7 @@
     android:layout_width="98dp"
     android:layout_height="wrap_content"
     android:background="@drawable/fillet_4dp_home_game_item_dark"
-    tools:context=".ui.home.HomeGameCard">
+    tools:context=".ui.game.home.HomeGameCard">
 
     <ImageView
         android:id="@+id/iv_icon"

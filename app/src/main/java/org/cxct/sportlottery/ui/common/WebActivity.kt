@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_web.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.MainViewModel
 import timber.log.Timber
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder

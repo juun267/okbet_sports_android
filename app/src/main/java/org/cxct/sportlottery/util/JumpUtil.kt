@@ -48,15 +48,19 @@ object JumpUtil {
     }
 
     //跳轉第三方遊戲網頁
-    @Throws(Exception::class)
     fun toThirdGameWeb(context: Context, href: String) {
-        Timber.i("跳转到链接:$href")
-        if (Patterns.WEB_URL.matcher(href).matches()) {
-            context.startActivity(
-                Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href)
-            )
-        } else {
-            throw Exception(href) //20191022 記錄問題：當網址無效時，代表他回傳的 url 是錯誤訊息
+        try {
+            Timber.i("跳转到链接:$href")
+            if (Patterns.WEB_URL.matcher(href).matches()) {
+                context.startActivity(
+                    Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href)
+                )
+            } else {
+                throw Exception(href) //20191022 記錄問題：當網址無效時，代表他回傳的 url 是錯誤訊息
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ToastUtil.showToastInCenter(context, context.getString(R.string.error_url_fail))
         }
     }
 

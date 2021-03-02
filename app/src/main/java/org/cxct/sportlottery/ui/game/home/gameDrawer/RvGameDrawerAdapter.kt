@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home.gameDrawer
+package org.cxct.sportlottery.ui.game.home.gameDrawer
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home
+package org.cxct.sportlottery.ui.game.home
 
 import android.content.Context
 import android.util.AttributeSet

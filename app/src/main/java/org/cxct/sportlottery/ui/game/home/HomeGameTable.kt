@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home
+package org.cxct.sportlottery.ui.game.home
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,9 +9,9 @@ import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.match.MatchPreloadData
-import org.cxct.sportlottery.ui.home.gameDrawer.GameEntity
-import org.cxct.sportlottery.ui.home.gameDrawer.ItemType
-import org.cxct.sportlottery.ui.home.gameDrawer.RvGameDrawerAdapter
+import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.game.home.gameDrawer.ItemType
+import org.cxct.sportlottery.ui.game.home.gameDrawer.RvGameDrawerAdapter
 
 class HomeGameTable @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 

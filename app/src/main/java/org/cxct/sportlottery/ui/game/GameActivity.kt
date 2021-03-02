@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -17,19 +16,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.android.synthetic.main.activity_game.drawer_layout
-import kotlinx.android.synthetic.main.activity_game.tabLayout
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import kotlinx.android.synthetic.main.view_message.*
-import kotlinx.android.synthetic.main.view_message.rv_marquee
 import kotlinx.android.synthetic.main.view_nav_right.*
-import kotlinx.android.synthetic.main.view_nav_right.nav_right
 import kotlinx.android.synthetic.main.view_toolbar_main.*
-import kotlinx.android.synthetic.main.view_toolbar_main.btn_login
-import kotlinx.android.synthetic.main.view_toolbar_main.btn_register
-import kotlinx.android.synthetic.main.view_toolbar_main.iv_head
-import kotlinx.android.synthetic.main.view_toolbar_main.iv_logo
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGameBinding
 import org.cxct.sportlottery.network.common.MatchType
@@ -38,10 +28,9 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
-import org.cxct.sportlottery.ui.home.HomeFragmentDirections
-import org.cxct.sportlottery.ui.home.MainActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -70,9 +59,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         ODDS_DETAIL, ODDS, OUTRIGHT
     }
 
-    private val navController by lazy {
-        findNavController(R.id.homeFragment)
-    }
+    private val navController by lazy { findNavController(R.id.game_container) }
 
     private var closeOddsDetail = true
 
