@@ -86,7 +86,7 @@ class BackService : Service() {
     fun subscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
-        val url = "$URL_EVENT$eventId"
+        val url = "$URL_EVENT/$mPlatformId/$eventId"
 
         subscribeChannel(url)
     }
@@ -94,14 +94,14 @@ class BackService : Service() {
     fun unSubscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
-        val url = "$URL_EVENT$eventId"
+        val url = "$URL_EVENT/$mPlatformId/$eventId"
         unSubscribeChannel(url)
     }
 
     fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
 
         subscribeChannel(url)
     }
@@ -109,7 +109,7 @@ class BackService : Service() {
     fun unSubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
 
         unSubscribeChannel(url)
     }
