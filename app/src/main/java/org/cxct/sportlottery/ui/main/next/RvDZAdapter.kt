@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
 
-class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
+class RvDZAdapter : RecyclerView.Adapter<RvDZAdapter.ItemViewHolder>() {
 
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
     private var mDataList: MutableList<GameItemData> = mutableListOf()
@@ -27,27 +27,14 @@ class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    private enum class ViewType { LEFT, RIGHT }
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
-        val layout = when (viewType) {
-            ViewType.LEFT.ordinal -> {
-                LayoutInflater.from(viewGroup.context).inflate(R.layout.content_by_game_rv_left, viewGroup, false)
-            }
-            else -> {
-                LayoutInflater.from(viewGroup.context).inflate(R.layout.content_by_game_rv_right, viewGroup, false)
-            }
-        }
+        val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_dz_game_rv, viewGroup, false)
         return ItemViewHolder(layout)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val data = mDataList[position].thirdGameData
-        holder.bind(position, data)
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position % 2 == 0) ViewType.LEFT.ordinal else ViewType.RIGHT.ordinal
+        holder.bind(data)
     }
 
     override fun getItemCount(): Int {
@@ -71,34 +58,24 @@ class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
 
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val mIvBg: ImageView = itemView.findViewById(R.id.iv_bg)
-        private val mIvLogo: ImageView = itemView.findViewById(R.id.iv_logo)
-        private val mBtnStart: ImageView = itemView.findViewById(R.id.btn_start)
+        private val mIvImage: ImageView = itemView.findViewById(R.id.iv_image)
         private val mTvTitle: TextView = itemView.findViewById(R.id.tv_title)
 
-        fun bind(position: Int, data: ThirdDictValues?) {
-            val bgCode = (position + 1).toString()
-            val bgUrl = GameConfigManager.getThirdGameHallIconUrl(data?.gameCategory, bgCode)
+        fun bind(data: ThirdDictValues?) {
+            val iconUrl = GameConfigManager.getThirdGameIconUrl(data?.gameCategory, data?.h5ImageName)
             Glide.with(itemView.context)
-                .load(bgUrl)
+                .load(iconUrl)
                 .apply(mRequestOptions)
                 .thumbnail(0.5f)
-                .into(mIvBg)
+                .into(mIvImage)
 
-            val logoUrl = GameConfigManager.getThirdGameHallIconUrl(data?.gameCategory, data?.firmCode)
-            Glide.with(itemView.context)
-                .load(logoUrl)
-                .apply(mRequestOptions)
-                .thumbnail(0.5f)
-                .into(mIvLogo)
+            mTvTitle.text = data?.englishName
 
-            mBtnStart.setOnClickListener {
+            itemView.setOnClickListener {
                 if (!mIsEnabled) return@setOnClickListener
                 avoidFastDoubleClick()
                 mOnSelectThirdGameListener?.onClick(data)
             }
-
-            mTvTitle.text = data?.firmName
         }
     }
 }
