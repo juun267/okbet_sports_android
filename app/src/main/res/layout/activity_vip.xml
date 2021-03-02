@@ -530,13 +530,36 @@
                     android:layout_marginBottom="15dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="@null"
-                    app:contentPaddingLeft="10dp"
-                    app:contentPaddingRight="10dp">
+                    app:contentPaddingLeft="10dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="各类别游戏层级福利" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:layout_marginBottom="14dp"
+                            android:textColor="@color/main"
+                            android:textSize="@dimen/textSize13sp"
+                            android:textStyle="bold"
+                            tools:text="各类别游戏层级福利" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="@color/bright_gray2" />
+
+                        <org.cxct.sportlottery.ui.component.StatusSelectorView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:horizontalChainStyle="spread_inside" />
+                    </LinearLayout>
+
 
                 </androidx.cardview.widget.CardView>
                 <!--  Vip Level Description Form  -->
