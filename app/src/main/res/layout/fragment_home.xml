@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.game.HomeFragment">
 
     <data>
 
         <variable
             name="mainViewModel"
-            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+            type="org.cxct.sportlottery.ui.main.MainViewModel" />
 
         <variable
             name="gameViewModel"
@@ -192,7 +192,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_game_soon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
                                 app:cvIcon="@drawable/ic_game_soon"
                                 app:cvTitle="@string/game_soon" />
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_tennis"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
                                 app:cvIcon="@drawable/ic_tennis"
                                 app:cvTitle="@string/tennis" />
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_badminton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
                                 app:cvIcon="@drawable/ic_badminton"
                                 app:cvTitle="@string/badminton" />
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_volleyball"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <org.cxct.sportlottery.ui.home.HomeGameTable
+                <org.cxct.sportlottery.ui.game.home.HomeGameTable
                     android:id="@+id/drawer_in_play"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -1,12 +1,10 @@
-package org.cxct.sportlottery.ui.home
+package org.cxct.sportlottery.ui.main
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -16,12 +14,11 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainFragmentDirections
-import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
@@ -42,6 +39,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private lateinit var mainBinding: ActivityMainBinding
 
+    private val navController by lazy { findNavController(R.id.main_container) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -54,24 +53,29 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         initToolBar()
         initMenu()
         initBottomNav()
+        getPopImage()
         initObserve()
-        testClick()
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
         if (mSplashViewModel.isNeedGetHost())
             mSplashViewModel.getHost()
     }
 
-    private fun testClick() {
-        test.setOnClickListener {
-            mainFragment?.findNavController()?.navigate(MainFragmentDirections.actionMainFragmentToHomeStartNextPageFragment())
+    override fun onBackPressed() {
+        if (navController.currentDestination?.id != R.id.mainFragment) {
+            iv_logo.performClick()
+            return
         }
+
+        super.onBackPressed()
     }
 
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
+
+        //點擊 logo 回到首頁
         iv_logo.setOnClickListener {
-            //TODO simon test 首頁跳轉
+            navController.popBackStack(R.id.mainFragment, false)
         }
 
         //頭像 當 側邊欄 開/關
@@ -134,6 +138,10 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun getPopImage() {
+        viewModel.getPopImage()
+    }
+
     private fun initObserve() {
         viewModel.errorResultToken.observe(this, Observer {
             viewModel.logout()
@@ -142,6 +150,16 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
+
+        //彈窗圖
+        viewModel.popImageList.observe(this, Observer {
+            setPopImage(it)
+        })
+    }
+
+    //彈窗圖
+    private fun setPopImage(popImageList: List<ImageData>) {
+        PopImageDialog(this, popImageList).show()
     }
 
     //載入頭像

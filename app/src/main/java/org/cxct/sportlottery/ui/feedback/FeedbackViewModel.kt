@@ -1,27 +1,22 @@
 package org.cxct.sportlottery.ui.feedback
 
 import android.content.Context
-import android.provider.SyncStateContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.feedback.*
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.FeedbackRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
-import timber.log.Timber
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 
 class FeedbackViewModel(
     private val androidContext: Context,
     private val feedbackRepository: FeedbackRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     //API回傳成功
     val viewStatus: LiveData<FeedBackBaseResult>

@@ -11,8 +11,9 @@ import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.record.search.BetTypeItemData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
@@ -25,8 +26,9 @@ val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 t
 class BetRecordViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
         private const val PAGE_SIZE = 10

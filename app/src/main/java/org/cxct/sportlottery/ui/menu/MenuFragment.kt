@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
@@ -105,14 +105,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_sign_out)
         }
 
-        menu_third_game_test.setOnClickListener {
-            //TODO 第三方遊戲跳轉測試
-            val url = "https://fishxy.sdbaifuquan.com/index.html?lang=zh-CN&io=1"
-            context?.run {
-                JumpUtil.toThirdGameWeb(this, url)
-            }
-            mDownMenuListener?.onClick(menu_third_game_test)
-        }
     }
 
     private fun setupSelectLanguage() {
