@@ -902,14 +902,20 @@ class MainViewModel(
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                        newItem.status.let { newStatus -> it.matchOdd.status = newStatus }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
-        getBetInfoListForParlay(true)
 
+        val sendRequest = betInfoRepository.betList.find {
+            it.matchOdd.status == 1 || it.matchOdd.status == 2
+        }
+        if (sendRequest == null)
+            getBetInfoListForParlay(true)
+        else Timber.e("不執行 betInfo request")
     }
 
     fun updateBetInfoList(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
@@ -919,13 +925,19 @@ class MainViewModel(
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                        newItem.status?.let { newStatus -> it.matchOdd.status = newStatus }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
-        getBetInfoListForParlay(true)
+        val sendRequest = betInfoRepository.betList.find {
+            it.matchOdd.status == 1 || it.matchOdd.status == 2
+        }
+        if (sendRequest == null)
+            getBetInfoListForParlay(true)
+        else Timber.e("不執行 betInfo request")
 
     }
 
@@ -1190,7 +1202,8 @@ class MainViewModel(
                     sport.isSelected = (menuData.outright.items.indexOf(sport) == 0)
                 }
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
