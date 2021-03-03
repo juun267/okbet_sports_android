@@ -9,10 +9,8 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
-import org.cxct.sportlottery.network.Constants.GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -40,12 +38,13 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
-import org.cxct.sportlottery.network.Constants.QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
-import org.cxct.sportlottery.network.Constants.TRANSFER
+import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
+import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
+import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
@@ -203,7 +202,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(WITHDRAW_LIST) -> {
                     response = getMockJsonData(request, "user_withdraw_list.mock")
                 }
-                path.contains(GET_ALL_BALANCE) -> {
+                path.contains(THIRD_GET_ALL_BALANCE) -> {
                     response = getMockJsonData(request, "get_all_balance.mock")
                 }
                 path.contains(THIRD_ALL_TRANSFER_OUT) -> {
@@ -212,10 +211,10 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(THIRD_GAMES) -> {
                     response = getMockJsonData(request, "third_games.mock")
                 }
-                path.contains(TRANSFER) -> {
+                path.contains(THIRD_TRANSFER) -> {
                     response = getMockJsonData(request, "transfer.mock")
                 }
-                path.contains(QUERY_TRANSFERS) -> {
+                path.contains(THIRD_QUERY_TRANSFERS) -> {
                     response = getMockJsonData(request, "query_transfers.mock")
                 }
                 path.contains(USER_LEVEL_GROWTH) -> {

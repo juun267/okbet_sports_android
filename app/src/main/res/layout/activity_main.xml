@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.home.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="mainViewModel"
-            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+            type="org.cxct.sportlottery.ui.main.MainViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -89,13 +89,8 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/test"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/mainFragment"
+                android:id="@+id/main_container"
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

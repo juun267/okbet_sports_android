@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber

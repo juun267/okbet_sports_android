@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home.gameDrawer
+package org.cxct.sportlottery.ui.game.home.gameDrawer
 
 import org.cxct.sportlottery.network.match.Match
 
