@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -34,6 +35,13 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             tv_selected.tag = value
         }
 
+    var selectedTextColor: Int? = null
+        get() = tv_selected.currentTextColor
+        set(value) {
+            field = value
+            if (value != null) tv_selected.setTextColor(ContextCompat.getColor(context, value))
+        }
+
     var isShowAllCheckBoxView: Boolean? = false
         get() = bottomSheetView.checkbox_select_all.isVisible
         set(value) {
@@ -51,6 +59,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
             view?.apply {
                 setOnClickListener {
+//                    tv_selected.setTextColor(ContextCompat.getColor(context, R.color.textColorDark))
                     bottomSheet.show()
                 }
                 tv_selected.tag = ""

@@ -22,9 +22,9 @@
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/status_selector"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            app:defaultStatusText="@string/please_choose_bet_state"/>
+            android:layout_weight="1"
+            app:defaultStatusText="@string/all_bet_status" />
 
         <View
             android:layout_width="1dp"

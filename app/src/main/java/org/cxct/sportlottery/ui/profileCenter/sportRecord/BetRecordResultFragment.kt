@@ -31,6 +31,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         val cbAll = status_selector.bottomSheetView.checkbox_select_all
         cbAll.isChecked = viewModel.isAllCbChecked()
         status_selector.selectedText = viewModel.getBetStatus()
+        status_selector.selectedTextColor = R.color.textColorDark
     })
 
     private val rvAdapter = BetRecordAdapter(ItemClickListener {
@@ -140,7 +141,11 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         date_search_bar.setOnClickSearchListener {
-            viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString())
+            if (viewModel.betStatusList.none { it.isChecked }) {
+                status_selector.selectedTextColor = R.color.red
+            } else {
+                viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString())
+            }
         }
 
         iv_scroll_to_top.setOnClickListener {
