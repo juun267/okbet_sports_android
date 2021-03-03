@@ -41,6 +41,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
+
+        private var isPopImageDialog = true //第一次進 APP 才要跳 彈窗圖 dialog
     }
 
     private val mSplashViewModel: SplashViewModel by viewModel()
@@ -206,7 +208,10 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     //彈窗圖
     private fun setPopImage(popImageList: List<ImageData>) {
-        PopImageDialog(this, popImageList).show()
+        if (isPopImageDialog) {
+            isPopImageDialog = false
+            PopImageDialog(this, popImageList).show()
+        }
     }
 
     //用戶登入公告訊息彈窗
