@@ -354,6 +354,7 @@
 
     <string name="bet_detail">注单详情</string>
     <string name="bet_time">投注时间：</string>
+    <string name="bet_time2">投注时间</string>
     <string name="league_name">联赛名称：</string>
     <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
     <string name="play_type">投注玩法：</string>
@@ -380,7 +381,7 @@
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
 
-    <string name="total_bet_amount">总共有 投注额 (RMB)</string>
+    <string name="total_bet_amount">总投注额：</string>
     <string name="win_lose">赢 / 输 (RMB)</string>
     <string name="no_any_bet_record">暂无任何投注纪录</string>
     <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
@@ -564,6 +565,7 @@
 
     <string name="log_detail_title">查看详情</string>
     <string name="log_detail_trans_num_sub">交易编号：</string>
+    <string name="log_detail_trans_num_sub2">交易编号</string>
     <string name="log_detail_time_sub">发起时间：</string>
     <string name="log_detail_type_sub">交易类型：</string>
     <string name="log_detail_amount_sub">交易金额：</string>
@@ -652,4 +654,11 @@
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
     <string name="visit_first">先去逛逛</string>
+    <string name="bet_number">注数</string>
+    <string name="bet_money">下注金額</string>
+    <string name="profit_and_loss">盈亏</string>
+    <string name="total_bet_number">总笔数：</string>
+    <string name="total_profit_and_loss">总盈亏：</string>
+    <string name="game_name">游戏名</string>
+    <string name="all_bet_status">全部注单状态</string>
 </resources>

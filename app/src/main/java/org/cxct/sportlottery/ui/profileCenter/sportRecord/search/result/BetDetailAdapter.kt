@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet.record.search.result
+package org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result
 
 import android.view.LayoutInflater
 import android.view.View

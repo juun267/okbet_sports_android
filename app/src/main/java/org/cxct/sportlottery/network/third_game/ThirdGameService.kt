@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRe
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryRequest
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -57,12 +58,12 @@ interface ThirdGameService {
 
     @POST(QUERY_FIRST_ORDERS)
     suspend fun queryFirstOrders(
-        @Body queryTransfersRequest: OtherBetHistoryRequest
+        @Body queryFirstOrdersRequest: OtherBetHistoryRequest?
     ): Response<OtherBetHistoryResult>
 
     @POST(QUERY_SECOND_ORDERS)
     suspend fun querySecondOrders(
-        @Body queryTransfersRequest: OtherBetHistoryRequest
-    ): Response<QueryTransfersResult>
+        @Body querySecondOrdersRequest: OtherBetHistoryRequest?
+    ): Response<OtherBetHistoryDetailResult>
 
 }

@@ -178,7 +178,7 @@ object Constants {
     const val THIRD_LOGIN = "/api/front/thirdapi/{firmType}/login" //登录
 
     const val QUERY_FIRST_ORDERS = "/api/front/thirdapi/queryFirstOrders"
-    const val QUERY_SECOND_ORDERS = "api/front/thirdapi/querySecondOrders"
+    const val QUERY_SECOND_ORDERS = "/api/front/thirdapi/querySecondOrders"
 
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000

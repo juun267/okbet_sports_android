@@ -58,7 +58,7 @@
             android:name=".ui.results.ResultsSettlementActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.bet.record.BetRecordActivity"
+            android:name=".ui.profileCenter.sportRecord.BetRecordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.helpCenter.HelpCenterActivity"
