@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main
+package org.cxct.sportlottery.ui.main.next
 
 import android.os.Handler
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
 
-class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainGameRvAdapter.ItemViewHolder>() {
+class RvQPAdapter : RecyclerView.Adapter<RvQPAdapter.ItemViewHolder>() {
 
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
     private var mDataList: MutableList<GameItemData> = mutableListOf()
@@ -26,28 +26,18 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    private var mIsLoopItem: Boolean = true
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
-        val itemLayout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_main_game_rv, viewGroup, false)
-        val width = viewGroup.measuredWidth
-        itemLayout.layoutParams.width = width / spanCount
-        return ItemViewHolder(itemLayout)
+        val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_live_game_rv, viewGroup, false)
+        return ItemViewHolder(layout)
     }
 
-    override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
-        try {
-            val infiniteRvPosition = position % mDataList.size
-            val entity = mDataList[infiniteRvPosition]
-            val data = entity.thirdGameData
-            viewHolder.bind(data)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val data = mDataList[position].thirdGameData
+        holder.bind(data)
     }
 
     override fun getItemCount(): Int {
-        return if (mIsLoopItem) Integer.MAX_VALUE else mDataList.size
+        return mDataList.size
     }
 
     fun avoidFastDoubleClick() {
@@ -60,12 +50,6 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
         notifyDataSetChanged()
     }
 
-    //資料滑到底是否重複播放
-    fun enableItemLoop(enable: Boolean) {
-        mIsLoopItem = enable
-        notifyDataSetChanged()
-    }
-
     //設定選擇 遊戲 的listener
     fun setOnSelectThirdGameListener(onSelectItemListener: OnSelectItemListener<ThirdDictValues?>?) {
         mOnSelectThirdGameListener = onSelectItemListener
@@ -73,22 +57,27 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
 
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val mIvImage: ImageView = itemView.findViewById(R.id.iv_image)
+        private val mIvImage: ImageView = itemView.findViewById(R.id.btn_game)
 
         fun bind(data: ThirdDictValues?) {
-            val iconUrl = GameConfigManager.getThirdGameHomeIcon(data?.gameCategory, data?.firmCode)
-            Glide.with(itemView.context)
-                .load(iconUrl)
-                .apply(mRequestOptions)
-                .thumbnail(0.5f)
-                .into(mIvImage)
+            if (data == null) {
+                mIvImage.setImageResource(R.drawable.live_coming_soon)
+                mIvImage.setOnClickListener {}
 
-            itemView.setOnClickListener {
-                if (!mIsEnabled) return@setOnClickListener
-                avoidFastDoubleClick()
-                mOnSelectThirdGameListener?.onClick(data)
+            } else {
+                val iconUrl = GameConfigManager.getThirdGameHallIconUrl(data.gameCategory, data.firmCode)
+                Glide.with(itemView.context)
+                    .load(iconUrl)
+                    .apply(mRequestOptions)
+                    .thumbnail(0.5f)
+                    .into(mIvImage)
+
+                mIvImage.setOnClickListener {
+                    if (!mIsEnabled) return@setOnClickListener
+                    avoidFastDoubleClick()
+                    mOnSelectThirdGameListener?.onClick(data)
+                }
             }
         }
     }
-
 }

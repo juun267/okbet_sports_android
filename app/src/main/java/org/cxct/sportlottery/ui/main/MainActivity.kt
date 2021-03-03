@@ -12,16 +12,21 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
@@ -125,6 +130,17 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
                     true
                 }
                 R.id.promotion_page -> {
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            JumpUtil.toInternalWeb(this, Constants.getPromotionUrl(viewModel.token), getString(R.string.promotion))
+                        }
+                        null -> { //尚未登入
+                            startActivity(Intent(this, LoginActivity::class.java))
+                        }
+                        else -> { //遊客
+                            ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                        }
+                    }
                     true
                 }
                 R.id.chat_page -> {
