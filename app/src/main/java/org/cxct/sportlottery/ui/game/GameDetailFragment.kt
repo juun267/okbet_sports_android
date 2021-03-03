@@ -303,10 +303,4 @@ class GameDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             false
         })
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        service.unSubscribeHallChannel(gameType, CateMenuCode.HDP_AND_OU.code, eventId)
-    }
 }
