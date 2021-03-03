@@ -42,6 +42,7 @@ import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
+import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
@@ -228,6 +229,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(LOGIN_FOR_GUEST) -> {
                     response = getMockJsonData(request, "login_for_guest.mock")
+                }
+                path.contains(THIRD_REBATES) -> {
+                    response = getMockJsonData(request, "vip_third_rebates.mock")
                 }
             }
         }
