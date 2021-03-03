@@ -372,7 +372,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onDestroy() {
         super.onDestroy()
+        if(matchId?.let { viewModel.checkInBetInfo(it)} == false){
+            service.unSubscribeEventChannel(matchId)
+        }
         viewModel.removeOddsDetailPageValue()
-        service.unSubscribeEventChannel(matchId)
     }
 }
