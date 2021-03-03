@@ -15,11 +15,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.home.news.NewsDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -172,7 +174,17 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.getPopImage()
     }
 
+    private fun getMsgDialog() {
+        viewModel.getMsgDialog()
+    }
+
     private fun initObserve() {
+        viewModel.isLogin.observe(this, Observer {
+            //登入就去刷新彈窗公告
+            if (it)
+                getMsgDialog()
+        })
+
         viewModel.errorResultToken.observe(this, Observer {
             viewModel.logout()
         })
@@ -185,11 +197,24 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.popImageList.observe(this, Observer {
             setPopImage(it)
         })
+
+        //公告彈窗
+        viewModel.messageDialogResult.observe(this, Observer {
+            setNewsDialog(it)
+        })
     }
 
     //彈窗圖
     private fun setPopImage(popImageList: List<ImageData>) {
         PopImageDialog(this, popImageList).show()
+    }
+
+    //用戶登入公告訊息彈窗
+    private fun setNewsDialog(messageListResult: MessageListResult) {
+        //登出、遊客登入，不顯示登入彈窗公告
+        val isNormalLogin = viewModel.userInfo.value?.testFlag == TestFlag.NORMAL.index
+        if (isNormalLogin && !messageListResult.rows.isNullOrEmpty())
+            NewsDialog(this, messageListResult.rows).show(supportFragmentManager, null)
     }
 
     //載入頭像
