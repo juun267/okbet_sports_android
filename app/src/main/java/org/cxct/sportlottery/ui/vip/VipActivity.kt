@@ -89,7 +89,6 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
         rv_third_rebates.adapter = thirdRebatesAdapter
     }
 
-    //TODO Dean : 第三方遊戲列表
     private fun getDataFromApi() {
         viewModel.apply {
             getThirdGamesFirmMap()
@@ -181,13 +180,13 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     private fun setupBannerData() {
         banner_vip_level.apply {
             setBannerData(R.layout.item_banner_member_level, setupBannerLevelRequirement())
-            loadImage { banner, model, view, position ->
+            loadImage { _, model, view, _ ->
                 val tvLevel: TextView? = view?.findViewById(R.id.tv_level)
                 val ivLevel: ImageView? = view?.findViewById(R.id.iv_level_icon)
-                //TODO Dean : 階級會員名稱、所需成長值
                 val tvLevelName: TextView? = view?.findViewById(R.id.tv_level_name)
                 val tvGrowthRequirement: TextView? = view?.findViewById(R.id.tv_growth_requirement)
                 val cardInfo = (model as BannerLevelCard).xBannerUrl
+
                 tvLevel?.text = getString(cardInfo.level)
                 ivLevel?.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, cardInfo.levelIcon))
                 tvLevelName?.text = cardInfo.levelName

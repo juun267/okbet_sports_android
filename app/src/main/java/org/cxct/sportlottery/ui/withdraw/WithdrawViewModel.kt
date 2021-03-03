@@ -269,7 +269,6 @@ class WithdrawViewModel(
         return true
     }
 
-    //TODO Dean : bank delete check
     private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
@@ -331,7 +330,7 @@ class WithdrawViewModel(
                 rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney,
                 _userMoney.value,
                 ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount.toLong())).toDouble()
-            ) -> {// TODO Dean : 根據config獲取 但只有最小沒有最大
+            ) -> {
                 androidContext.getString(R.string.error_withdraw_amount)
             }
             else -> {

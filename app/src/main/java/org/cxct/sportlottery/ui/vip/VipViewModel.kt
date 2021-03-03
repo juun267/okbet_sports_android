@@ -63,7 +63,6 @@ class VipViewModel(
         }
     }
 
-    //TODO Dean : 檢視並刪除不需要用到的資料
     fun getUserLevelGrowth() {
         _loadingResult.value = _loadingResult.value?.apply { userGrowthLoading = true }
         viewModelScope.launch {
@@ -90,7 +89,6 @@ class VipViewModel(
         }
     }
 
-    //TODO Dean : 檢視並刪除不需要用到的資料
     fun getThirdRebates(firmCode: String, firmType: String) {
         _loadingResult.value = _loadingResult.value?.apply { thirdRebatesLoading = true }
         viewModelScope.launch {
