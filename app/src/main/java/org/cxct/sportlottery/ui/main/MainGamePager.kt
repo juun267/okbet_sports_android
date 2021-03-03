@@ -48,20 +48,27 @@ class MainGamePager @JvmOverloads constructor(context: Context, attrs: Attribute
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         alignLeftRv.layoutManager = layoutManager
-        alignLeftRv.layoutManager?.scrollToPosition(Integer.MAX_VALUE / 2)
+        alignLeftRv.layoutManager?.scrollToPosition(mToPosition)
     }
 
     private fun refreshView() {
-        if (mDataList.size <= 1) {
-            btn_arrow_left.visibility = View.INVISIBLE
-            btn_arrow_right.visibility = View.INVISIBLE
-        } else {
-            btn_arrow_left.visibility = View.VISIBLE
-            btn_arrow_right.visibility = View.VISIBLE
-        }
-
         mMainGameRvAdapter.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
         mMainGameRvAdapter.setData(mDataList)
+    }
+
+    fun isShowArrow(isShow: Boolean) {
+        if (isShow) {
+            btn_arrow_left.visibility = View.VISIBLE
+            btn_arrow_right.visibility = View.VISIBLE
+        } else {
+            btn_arrow_left.visibility = View.INVISIBLE
+            btn_arrow_right.visibility = View.INVISIBLE
+        }
+    }
+
+    //資料滑到底是否重複播放
+    fun enableItemLoop(enable: Boolean) {
+        mMainGameRvAdapter.enableItemLoop(enable)
     }
 
     //設定選擇第三方的listener

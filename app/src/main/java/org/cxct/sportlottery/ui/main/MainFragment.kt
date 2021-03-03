@@ -329,6 +329,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_lottery.visibility = View.VISIBLE
             lotteryGamePager.visibility = View.VISIBLE
 
+            lotteryGamePager.isShowArrow(false)
+            lotteryGamePager.enableItemLoop(false)
             lotteryGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             lotteryGamePager.setData(gameList)
         }
@@ -351,6 +353,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_live.visibility = View.VISIBLE
             liveGamePager.visibility = View.VISIBLE
 
+            liveGamePager.isShowArrow(gameList.size > 3)
+            liveGamePager.enableItemLoop(gameList.size > 3)
             liveGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             liveGamePager.setData(gameList)
         }
@@ -373,6 +377,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_poker.visibility = View.VISIBLE
             pokerGamePager.visibility = View.VISIBLE
 
+            pokerGamePager.isShowArrow(gameList.size > 1)
+            pokerGamePager.enableItemLoop(gameList.size > 1)
             pokerGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             pokerGamePager.setData(gameList)
         }
@@ -398,6 +404,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_slot.visibility = View.VISIBLE
             slotGamePager.visibility = View.VISIBLE
 
+            slotGamePager.isShowArrow(gameList.size > 2)
+            slotGamePager.enableItemLoop(gameList.size > 2)
             slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameDzListener)
             slotGamePager.setData(gameList)
         }
@@ -420,6 +428,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_fishing.visibility = View.VISIBLE
             fishingGamePager.visibility = View.VISIBLE
 
+            fishingGamePager.enableItemLoop(gameList.size > 2)
             fishingGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             fishingGamePager.setData(gameList)
         }
