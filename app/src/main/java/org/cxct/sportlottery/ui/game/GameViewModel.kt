@@ -1107,6 +1107,12 @@ class GameViewModel(
         _oddsDetailList.postValue(ArrayList())
     }
 
+    fun checkInBetInfo(matchId: String): Boolean {
+        return betInfoRepository.betList.any {
+            it.matchOdd.matchId == matchId
+        }
+    }
+
     fun getPlayCateList(gameType: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1188,7 +1194,8 @@ class GameViewModel(
                     sport.isSelected = (menuData.outright.items.indexOf(sport) == 0)
                 }
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 }
