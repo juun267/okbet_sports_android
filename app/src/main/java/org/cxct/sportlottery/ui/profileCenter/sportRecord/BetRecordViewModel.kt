@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.sportRecord
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -54,14 +53,6 @@ class BetRecordViewModel(
     private val selectedStatusList : List<SheetData>
             get() = betStatusList.filter { it.isChecked }
 
-/*
-    var betStatusList = listOf<SheetData>().apply {
-        list = statusNameMap.map {
-            SheetData(it.key, it.value)
-        }
-    }
-    */
-
     val betStatusList by lazy {
         statusNameMap.map {
             SheetData(it.key, it.value).apply {
@@ -72,8 +63,6 @@ class BetRecordViewModel(
 
     fun searchBetRecord(isChampionChecked: Boolean?= false, startDate: String ?= TimeUtil.getDefaultTimeStamp().startTime, endDate: String ?= TimeUtil.getDefaultTimeStamp().endTime) {
         val statusList = selectedStatusList.map { it.code }
-        Log.e(">>>", "startDate = ${TimeUtil.timeStampToDate(TimeUtil.getDefaultTimeStamp().startTime?.toLongOrNull())}")
-        Log.e(">>>", "startDate = ${TimeUtil.timeStampToDate(TimeUtil.getDefaultTimeStamp().endTime?.toLongOrNull())}")
         val championOnly = if (isChampionChecked == true) 1 else 0
         mBetListRequest = BetListRequest(championOnly = championOnly,
                                          statusList = statusList,
@@ -148,8 +137,6 @@ class BetRecordViewModel(
                 hideLoading()
                 result.rows?.let { recordDataList.addAll(it) }
                 _betRecordResult.value = result
-                Log.e(">>>", "recordDataList size = ${recordDataList.size}")
-
             }
         }
 

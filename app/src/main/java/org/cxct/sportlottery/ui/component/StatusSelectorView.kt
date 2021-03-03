@@ -59,7 +59,6 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
             view?.apply {
                 setOnClickListener {
-//                    tv_selected.setTextColor(ContextCompat.getColor(context, R.color.textColorDark))
                     bottomSheet.show()
                 }
                 tv_selected.tag = ""
