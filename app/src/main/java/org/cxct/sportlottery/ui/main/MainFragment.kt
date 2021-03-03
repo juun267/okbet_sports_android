@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
 import kotlinx.android.synthetic.main.fragment_main.*
+import okhttp3.internal.filterList
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -264,6 +265,15 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
+        if (bannerList.size <= 1) {
+            banner_arrow_l.visibility = View.GONE
+            banner_arrow_r.visibility = View.GONE
+            xBanner.setAutoPlayAble(false)
+        } else {
+            banner_arrow_l.visibility = View.VISIBLE
+            banner_arrow_r.visibility = View.VISIBLE
+            xBanner.setAutoPlayAble(true)
+        }
         xBanner.setData(bannerList, null)
     }
 
