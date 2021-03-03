@@ -4,7 +4,6 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import androidx.lifecycle.Observer
 import org.cxct.sportlottery.service.*
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -44,13 +43,6 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel.loginRepository.isLogin.observe(this, Observer {
-            when (it) {
-                true -> bindService()
-                false -> unBindService()
-            }
-        })
 
         receiver.sysMaintenance.observe(this) {
             startActivity(Intent(this, MaintenanceActivity::class.java).apply {

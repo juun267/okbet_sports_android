@@ -6,14 +6,12 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import io.reactivex.CompletableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
@@ -41,10 +39,12 @@ class BackService : Service() {
 
         private var mUserId: Long? = null
         private var mPlatformId: Long? = null
-        val URL_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
+
+        const val URL_USER = "/user/self"
+        val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
         val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId" //公共频道  这个通道会通知主站平台维护
-        var URL_EVENT = "/ws/notify/event/" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
-        var URL_HALL = "/ws/notify/hall/" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
+        var URL_EVENT = "/ws/notify/event" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
+        var URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
         //        private const val MAX_RECONNECT_COUNT = 3 //嘗試重新連線次數
@@ -65,9 +65,7 @@ class BackService : Service() {
             mUserId = userId
             mPlatformId = platformId
 
-            if (mToken.isEmpty()) return
-
-            if (mStompClient?.isConnected != true && mToken.isNotEmpty()) {
+            if (mStompClient?.isConnected != true) {
                 Timber.d("==尚未建立連線，連線開始==")
                 connect()
             } else {
@@ -86,7 +84,7 @@ class BackService : Service() {
     fun subscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
-        val url = "$URL_EVENT$eventId"
+        val url = "$URL_EVENT/$mPlatformId/$eventId"
 
         subscribeChannel(url)
     }
@@ -94,14 +92,14 @@ class BackService : Service() {
     fun unSubscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
-        val url = "$URL_EVENT$eventId"
+        val url = "$URL_EVENT/$mPlatformId/$eventId"
         unSubscribeChannel(url)
     }
 
     fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
 
         subscribeChannel(url)
     }
@@ -109,7 +107,7 @@ class BackService : Service() {
     fun unSubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
 
         unSubscribeChannel(url)
     }
@@ -125,14 +123,13 @@ class BackService : Service() {
 
     private fun connect() {
         try {
-            val headerMap = mHeader.map { it.key to it.value }.toMap()
             Timber.e(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
             mStompClient = Stomp.over(
                 Stomp.ConnectionProvider.OKHTTP,
                 URL_SOCKET_HOST_AND_PORT,
-                headerMap,
+                null,
                 httpClient.newBuilder().pingInterval(
                     40,
                     TimeUnit.SECONDS
@@ -168,7 +165,12 @@ class BackService : Service() {
                     }
 
                 //用户私人频道
-                val privateDisposable: Disposable? = stompClient.subscribe(URL_PRIVATE)
+                val privateDisposable: Disposable? =
+                    if (mToken.isEmpty()) {
+                        stompClient.subscribe(URL_USER)
+                    } else {
+                        stompClient.subscribe(URL_USER_PRIVATE)
+                    }
 
                 //全体公共频道
                 val allDisposable: Disposable? = stompClient.subscribe(URL_ALL)
