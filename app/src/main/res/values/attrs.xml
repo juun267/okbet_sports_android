@@ -10,7 +10,7 @@
         <attr name="cvIcon" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
-        <attr name="cvEms" format="integer"/>
+        <attr name="cvEms" format="integer" />
         <attr name="cvInputType">
             <!-- Just plain old text.  Corresponds to
             {@link android.text.InputType#TYPE_CLASS_TEXT} |
@@ -24,7 +24,7 @@
             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
             {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
             <flag name="number" value="0x00000002" />
-            <flag name="numberPassword" value="0x00000012"/>
+            <flag name="numberPassword" value="0x00000012" />
         </attr>
         <attr name="cvEnableVerificationCode" format="boolean" />
         <attr name="cvEnableMoreBtn" format="boolean" />
@@ -35,7 +35,7 @@
         <attr name="titleText" format="string" />
         <attr name="spinnerLayout" format="reference" />
         <attr name="spinnerTitle" format="string" />
-        <attr name="spinnerIsShowCloseButton" format="boolean"/>
+        <attr name="spinnerIsShowCloseButton" format="boolean" />
         <attr name="spinnerList" format="reference" />
     </declare-styleable>
 
@@ -47,7 +47,12 @@
         <attr name="sheetLayout" format="reference" />
         <attr name="defaultStatusText" format="string" />
         <attr name="defaultBottomSheetTitleText" format="string" />
-        <attr name="bottomSheetShowCloseButton" format="boolean"/>
+        <attr name="bottomSheetShowCloseButton" format="boolean" />
+        <attr name="horizontalChainStyle" format="enum">
+            <enum name="spread" value="0" />
+            <enum name="spread_inside" value="1" />
+            <enum name="packed" value="2" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="ToolBarView">
