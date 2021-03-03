@@ -5,14 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_list.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
-import kotlinx.android.synthetic.main.toast_top_bet_result.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
@@ -24,10 +20,6 @@ import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
-    companion object {
-        private const val TAG = "OnlinePayFragment"
-    }
-
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
@@ -36,23 +28,19 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         mutableListOf()
     }
 
-    private val mGapList: MutableList<CustomImageAdapter.SelectBank> by lazy {
-        mutableListOf()
-    }
-
     private var rechCfgsList: List<MoneyRechCfg.RechConfig> = mutableListOf()
 
     private var payRoadSpannerList = mutableListOf<CustomImageAdapter.SelectBank>()
 
-    lateinit var payGapBottomSheet: BottomSheetDialog
+    private lateinit var payGapBottomSheet: BottomSheetDialog
 
-    lateinit var bankBottomSheet: BottomSheetDialog
+    private lateinit var bankBottomSheet: BottomSheetDialog
 
-    private lateinit var payGapAdapter: ThirdTypeAdapter
+    private lateinit var payGapAdapter: BankBtsAdapter
 
     private lateinit var bankCardAdapter: BankBtsAdapter
 
-    var bankPosition = 0
+    private var bankPosition = 0
 
     private var typeIcon: Int = 0
 
@@ -80,7 +68,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         })
 
         //在線充值成功
-        viewModel.onlinePaySubmit.observe(this.viewLifecycleOwner, Observer {
+        viewModel.onlinePaySubmit.observe(this.viewLifecycleOwner, {
             et_recharge_online_amount.setText("")
         })
     }
@@ -134,7 +122,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //依據選擇的支付渠道，刷新UI
     @SuppressLint("SetTextI18n")
-    private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
+    private fun refreshSelectRechCfgs() {
         tv_hint.text = mSelectRechCfgs?.remark
         et_recharge_online_amount.setHint(getAmountLimitHint())
 
@@ -221,7 +209,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payGapBottomSheet.apply {
                 setContentView(bottomSheetView)
                 setTitle(R.string.choose_gap_type)
-                payGapAdapter = ThirdTypeAdapter(
+                payGapAdapter = BankBtsAdapter(
                     lv_bank_item.context,
                     payRoadSpannerList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
@@ -282,7 +270,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         //產生對應 spinner 選單
         var count = 1
 
-        payRoadSpannerList = mutableListOf<CustomImageAdapter.SelectBank>()
+        payRoadSpannerList = mutableListOf()
         val title = mMoneyPayWay?.title
 
         if (rechCfgsList.size > 1)
@@ -310,7 +298,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         try {
             if (payRoadSpannerList.size > 0) {
                 mSelectRechCfgs = rechCfgsList[position]
-                refreshSelectRechCfgs(mSelectRechCfgs)
+                refreshSelectRechCfgs()
 
                 if (cv_pay_bank.visibility == View.VISIBLE)
                     refreshPayBank(mSelectRechCfgs)

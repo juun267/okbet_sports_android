@@ -12,7 +12,11 @@ import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.ui.withdraw.ListViewHolder
 import org.cxct.sportlottery.util.MoneyManager
 
-open class BankBtsAdapter(private val context: Context, private val dataList: MutableList<CustomImageAdapter.SelectBank>, private val listener: BankAdapterListener) : BaseAdapter() {
+open class BankBtsAdapter(
+    private val context: Context,
+    private val dataList: MutableList<CustomImageAdapter.SelectBank>,
+    private val listener: BankAdapterListener
+) : BaseAdapter() {
 
     open var selectedPosition = 0
 
@@ -39,12 +43,22 @@ open class BankBtsAdapter(private val context: Context, private val dataList: Mu
         return convertView
     }
 
-    open fun setView(holder: ListViewHolder, data: CustomImageAdapter.SelectBank, position: Int, listener: BankAdapterListener) {
+    open fun setView(
+        holder: ListViewHolder,
+        data: CustomImageAdapter.SelectBank,
+        position: Int,
+        listener: BankAdapterListener
+    ) {
         holder.apply {
             tvBank?.text = data.bankName
-            ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName.toString()))
+            ivBankIcon?.setImageResource(data.bankIcon ?: 0)
             if (position == selectedPosition)
-                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                this.llSelectBankCard?.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.blue2
+                    )
+                )
             else
                 llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
             llSelectBankCard?.setOnClickListener {
@@ -52,7 +66,7 @@ open class BankBtsAdapter(private val context: Context, private val dataList: Mu
                     //                data.isSelected = !data.isSelected
                     selectedPosition = position
                     notifyDataSetChanged()
-                    listener.onClick(data,position)
+                    listener.onClick(data, position)
                 }
             }
         }
@@ -70,7 +84,8 @@ open class BankBtsAdapter(private val context: Context, private val dataList: Mu
         return 0
     }
 
-    class BankAdapterListener(val listener: (bankCard: CustomImageAdapter.SelectBank,position:Int) -> Unit) {
-        fun onClick(bankCard: CustomImageAdapter.SelectBank,position:Int) = listener(bankCard,position)
+    class BankAdapterListener(val listener: (bankCard: CustomImageAdapter.SelectBank, position: Int) -> Unit) {
+        fun onClick(bankCard: CustomImageAdapter.SelectBank, position: Int) =
+            listener(bankCard, position)
     }
 }

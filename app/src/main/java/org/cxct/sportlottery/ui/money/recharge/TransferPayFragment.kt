@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.bumptech.glide.Glide
@@ -36,10 +35,6 @@ import kotlin.math.abs
 
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
-    companion object {
-        private const val TAG = "TransferPayFragment"
-    }
-
     lateinit var calendarBottomSheet: BottomSheetDialog
 
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
@@ -48,13 +43,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private val mBottomSheetList = mutableListOf<CustomImageAdapter.SelectBank>()
 
-    var rechCfgsList = mutableListOf<MoneyRechCfg.RechConfig>()
+    private var rechCfgsList = mutableListOf<MoneyRechCfg.RechConfig>()
 
-    lateinit var bankBottomSheet: BottomSheetDialog
+    private lateinit var bankBottomSheet: BottomSheetDialog
 
-    private lateinit var bankCardAdapter: ThirdTypeAdapter
+    private lateinit var bankCardAdapter: BankBtsAdapter
 
-    var bankPosition = 0
+    private var bankPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,7 +70,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         initView()
         initButton()
         initObserve()
-        setPayBankBottomSheet(view)
+        setPayBankBottomSheet()
     }
 
     private fun initButton() {
@@ -153,18 +148,18 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
         })
-        viewModel.userMoneyResult.observe(viewLifecycleOwner, Observer {
+        viewModel.userMoneyResult.observe(viewLifecycleOwner,  {
             txv_wallet_money.text = (ArithUtil.toMoneyFormat(it?.money)) + " RMB"
         })
 
-        viewModel.apiResult.observe(viewLifecycleOwner, Observer {
+        viewModel.apiResult.observe(viewLifecycleOwner,  {
             if (it.success) {
                 resetEvent()
             }
         })
     }
 
-    private fun setPayBankBottomSheet(view: View) {
+    private fun setPayBankBottomSheet() {
         try {
 
             val contentView: ViewGroup? =
@@ -174,7 +169,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             bankBottomSheet = BottomSheetDialog(this.requireContext())
             bankBottomSheet.apply {
                 setContentView(bottomSheetView)
-                bankCardAdapter = ThirdTypeAdapter(
+                bankCardAdapter = BankBtsAdapter(
                     lv_bank_item.context,
                     mBottomSheetList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
@@ -395,7 +390,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit) {
-        customEditText.setEditTextOnFocusChangeListener { view, hasFocus ->
+        customEditText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 event.invoke(customEditText.et_input.text.toString())
         }
@@ -456,8 +451,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     //創建MoneyAddRequest
     private fun createMoneyAddRequest(): MoneyAddRequest? {
-        var moneyAddRequest: MoneyAddRequest? = null
-        moneyAddRequest = when (mMoneyPayWay?.rechType) {
+        return when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
@@ -511,7 +505,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             }
             else -> null
         }
-        return moneyAddRequest
     }
 
     private fun getBankType(position: Int) {
