@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -24,7 +23,6 @@ class OtherBetRecordViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -76,16 +74,20 @@ class OtherBetRecordViewModel(
 
     fun queryFirstOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
         loading()
+
         if (page == 1) {
             nowPage = 1
             recordDataList.clear()
         }
+
+        val filter = { firm: String? -> if(firm == "ALL_PLAT") null else firm}
+
         viewModelScope.launch {
             doNetwork(androidContext) {
                 recordRequest = OtherBetHistoryRequest(page, PAGE_SIZE,
                                            startTime = startTime,
                                            endTime = endTime,
-                                           firmType = firmType)
+                                           firmType = filter(firmType))
 
                 recordRequest.let { OneBoSportApi.thirdGameService.queryFirstOrders(it) }
 

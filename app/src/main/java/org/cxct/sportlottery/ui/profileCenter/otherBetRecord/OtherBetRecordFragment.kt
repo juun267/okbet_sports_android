@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -133,7 +134,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
 
         viewModel.recordResult.observe(viewLifecycleOwner) {
             it?.t?.apply {
-                viewModel.isLastPage = (rvAdapter.itemCount >= (totalCount ?: 0))
+                viewModel.isLastPage = (viewModel.recordDataList.size >= (totalCount ?: 0))
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
 
                 layout_total.apply {
