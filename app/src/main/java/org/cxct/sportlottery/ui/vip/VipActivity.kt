@@ -103,7 +103,7 @@ class VipActivity : BaseNoticeActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun setRebatesFormGame(gameFirmValues: GameFirmValues) {
-        sv_third_games.text = gameFirmValues.firmName
+        sv_third_games.selectedText = gameFirmValues.firmName
         viewModel.getThirdRebates(gameFirmValues.firmCode ?: "", gameFirmValues.firmType ?: "")
     }
 

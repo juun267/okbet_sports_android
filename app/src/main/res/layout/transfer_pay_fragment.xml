@@ -14,6 +14,7 @@
         android:padding="20dp">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_bank"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@android:color/white"
@@ -43,14 +44,23 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/bright_gray" />
 
-                <Spinner
-                    android:id="@+id/sp_pay_account"
+                <ImageView
+                    android:id="@+id/iv_bank_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_bank_default" />
+
+                <TextView
+                    android:id="@+id/txv_pay_bank"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/textSize13sp" />
+                    android:gravity="center_vertical|left"
+                    android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
                     android:id="@+id/iv_click_pay_account"

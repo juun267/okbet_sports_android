@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.bet.record.search.result
+package org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result
 
 import android.os.Bundle
 import android.view.*
@@ -8,7 +8,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetRecordDetailListBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.util.TextUtil
 
 class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetRecordViewModel::class) {
