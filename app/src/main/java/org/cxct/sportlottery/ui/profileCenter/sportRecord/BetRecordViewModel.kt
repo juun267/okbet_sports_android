@@ -35,11 +35,6 @@ class BetRecordViewModel(
 
     val loading: LiveData<Boolean>
         get() = _loading
-/*
-
-    val selectStatusList: LiveData<MutableList<SheetData>>
-        get() = _selectStatusList
-*/
 
     val selectedBetStatus: LiveData<String?>
         get() = _selectedBetStatus
@@ -49,12 +44,6 @@ class BetRecordViewModel(
 
     val betRecordResult: LiveData<BetListResult>
         get() = _betRecordResult
-/*
-
-    private val _selectStatusList = MutableLiveData<MutableList<SheetData>>().apply {
-        this.value = mutableListOf()
-    }
-*/
 
     private val _loading = MutableLiveData<Boolean>()
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
@@ -75,12 +64,16 @@ class BetRecordViewModel(
 
     val betStatusList by lazy {
         statusNameMap.map {
-            SheetData(it.key, it.value)
+            SheetData(it.key, it.value).apply {
+                this.isChecked = true
+            }
         }.toMutableList()
     }
 
     fun searchBetRecord(isChampionChecked: Boolean?= false, startDate: String ?= TimeUtil.getDefaultTimeStamp().startTime, endDate: String ?= TimeUtil.getDefaultTimeStamp().endTime) {
         val statusList = selectedStatusList.map { it.code }
+        Log.e(">>>", "startDate = ${TimeUtil.timeStampToDate(TimeUtil.getDefaultTimeStamp().startTime?.toLongOrNull())}")
+        Log.e(">>>", "startDate = ${TimeUtil.timeStampToDate(TimeUtil.getDefaultTimeStamp().endTime?.toLongOrNull())}")
         val championOnly = if (isChampionChecked == true) 1 else 0
         mBetListRequest = BetListRequest(championOnly = championOnly,
                                          statusList = statusList,
@@ -130,7 +123,7 @@ class BetRecordViewModel(
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (_loading.value != true && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
-                _loading.postValue(true)
+                loading()
                 mBetListRequest?.let {
                     mBetListRequest = BetListRequest(championOnly = it.championOnly, statusList = it.statusList, startTime = it.startTime, endTime = it.endTime, page = it.page?.plus(1), pageSize = PAGE_SIZE)
                     getBetList(mBetListRequest!!)
@@ -153,9 +146,10 @@ class BetRecordViewModel(
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
                 hideLoading()
-                _betRecordResult.value = result
-                _loading.postValue(false)
                 result.rows?.let { recordDataList.addAll(it) }
+                _betRecordResult.value = result
+                Log.e(">>>", "recordDataList size = ${recordDataList.size}")
+
             }
         }
 

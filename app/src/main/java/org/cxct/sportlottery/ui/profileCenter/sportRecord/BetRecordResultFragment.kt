@@ -3,11 +3,11 @@ package org.cxct.sportlottery.ui.profileCenter.sportRecord
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +19,7 @@ import kotlinx.android.synthetic.main.fragment_bet_record_result.status_selector
 import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result.*
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
 
@@ -136,6 +135,10 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     private fun initOnclick() {
 
+        ll_champion.setOnClickListener {
+            btn_champion.isChecked = !btn_champion.isChecked
+        }
+
         date_search_bar.setOnClickSearchListener {
             viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString())
         }
@@ -154,7 +157,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
                 if (it.success) {
-                    viewModel.isLastPage = (rvAdapter.itemCount >= (it.total ?: 0))
+                    viewModel.isLastPage = (viewModel.recordDataList.size >= (it.total ?: 0))
                     rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
                     layout_total.apply {
                         tv_total_number.setMoneyFormat(it.other?.totalAmount?: 0).toString()
@@ -174,7 +177,9 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                 DividerItemDecoration(
                     context,
                     DividerItemDecoration.VERTICAL
-                )
+                ).apply {
+                    ContextCompat.getDrawable(context, R.drawable.divider_gray)?.let { this.setDrawable(it) }
+                }
             )
             addOnScrollListener(recyclerViewOnScrollListener)
         }
