@@ -9,9 +9,9 @@ data class Data(
     @Json(name = "orderList")
     val orderList: List<Order>?,
     @Json(name = "totalBet")
-    val totalBet: Int?,
+    val totalBet: Double?,
     @Json(name = "totalCount")
     val totalCount: Int?,
     @Json(name = "totalWin")
-    val totalWin: Int?
+    val totalWin: Double?
 )

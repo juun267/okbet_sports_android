@@ -23,6 +23,6 @@
         android:button="@null"
         android:textColor="@color/textColorDark"
         android:textSize="@dimen/textSize12sp"
-        tools:text="平台名稱" />
+        tools:text="注單狀態" />
 
 </layout>

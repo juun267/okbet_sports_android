@@ -128,5 +128,9 @@
     <color name="dark_blue2">#2e3a49</color>
     <color name="black2">#182d35</color>
 
+    <!--  表格  -->
+    <color name="form_background_title">#DFEAF8</color>
+    <color name="form_background_odd">#EFF6FC</color>
+    <color name="form_background_even">#F5F8F9</color>
 
 </resources>

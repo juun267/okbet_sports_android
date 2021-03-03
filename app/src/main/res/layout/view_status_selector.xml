@@ -2,28 +2,35 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="44dp"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:paddingHorizontal="5dp">
 
     <TextView
         android:id="@+id/tv_selected"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:ellipsize="end"
         android:gravity="center"
+        android:maxLines="1"
         android:textColor="@color/textColorDark"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
+        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:layout_constraintEnd_toStartOf="@+id/img_arrow"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="全部订单状态" />
+        app:layout_constraintWidth_default="wrap"
+        tools:text="全部订单状态123123123" />
 
     <ImageView
         android:id="@+id/img_arrow"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginStart="5dp"
-        android:src="@drawable/ic_arrow_down_dark"
+        android:src="@drawable/ic_arrow_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_selected"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_selected"

@@ -1,16 +1,21 @@
-package org.cxct.sportlottery.ui.bet.record.search.result
+package org.cxct.sportlottery.util
 
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
     timeStamp?.let {
         text = TimeUtil.timeStampToDate(timeStamp)
+    }
+}
+
+@BindingAdapter("date")
+fun TextView.setDate(timeStamp: Long?) {
+    timeStamp?.let {
+        text = TimeUtil.timeStampToDay(timeStamp)
     }
 }
 
@@ -94,5 +99,19 @@ fun TextView.setPlatName(platCode: String?) {
     platCode?.let {
         text = gameNameMap[it]?.let { stringId -> context.getString(stringId) }
     }
+}
+
+
+@BindingAdapter("moneyColor")
+fun TextView.setMoneyColor(profit: Double = 0.0) {
+
+    val color = when {
+        profit > 0.0 -> R.color.green
+        profit < 0.0 -> R.color.red
+        profit == 0.0 -> R.color.gray3
+        else -> R.color.gray3
+    }
+
+    this.setTextColor(ContextCompat.getColor(context, color))
 }
 

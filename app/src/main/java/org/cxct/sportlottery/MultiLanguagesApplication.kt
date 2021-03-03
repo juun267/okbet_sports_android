@@ -9,7 +9,7 @@ import org.cxct.sportlottery.db.SportRoomDatabase
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.game.GameViewModel

@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Order(
     @Json(name = "betAmount")
-    val betAmount: Int?,
+    val betAmount: Double?,
     @Json(name = "betCount")
     val betCount: Int?,
     @Json(name = "firmType")
@@ -15,15 +15,11 @@ data class Order(
     @Json(name = "gameName")
     val gameName: String?,
     @Json(name = "netAmount")
-    val netAmount: Int?,
+    val netAmount: Double?,
     @Json(name = "statDate")
-    val statDate: String?,
+    val statDate: Long?,
     @Json(name = "userCount")
     val userCount: Int?,
     @Json(name = "validBetAmount")
     val validBetAmount: Int?
-){
-    var showName: String = ""
-    var code: String ?= null
-    var isChecked: Boolean = false
-}
+)

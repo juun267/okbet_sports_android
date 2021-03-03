@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.bet.record.search.BetRecordSearchFragment">
+    tools:context=".ui.profileCenter.sportRecord.search.BetRecordSearchFragment">
 
     <data>
         <variable
             name="betRecordViewModel"
-            type="org.cxct.sportlottery.ui.bet.record.BetRecordViewModel" />
+            type="org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
