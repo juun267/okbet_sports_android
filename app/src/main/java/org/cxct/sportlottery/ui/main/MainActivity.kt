@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -12,12 +11,13 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -118,16 +118,15 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private fun initBottomNav() {
         bottom_nav_view.setOnNavigationItemSelectedListener {
-
-            Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
-
+            //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
             when (it.itemId) {
                 R.id.home_page -> {
+                    iv_logo.performClick()
                     true
                 }
                 R.id.game_page -> {
                     startActivity(Intent(this, GameActivity::class.java))
-                    true
+                    false
                 }
                 R.id.promotion_page -> {
                     when (viewModel.userInfo.value?.testFlag) {
@@ -141,17 +140,20 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
                             ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
                         }
                     }
-                    true
+                    false
                 }
                 R.id.chat_page -> {
-                    true
+                    false
                 }
                 R.id.my_account_page -> {
-                    true
+                    false
                 }
                 else -> false
             }
         }
+
+        //聊天室按鈕 啟用判斷
+        bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
     }
 
     private fun getPopImage() {
