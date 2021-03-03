@@ -11,7 +11,9 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
@@ -19,8 +21,8 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivit
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.ToastUtil
 
 /**
  * 遊戲右側功能選單
@@ -78,7 +80,17 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_profile_center.setOnClickListener {
-            startActivity(Intent(context, ProfileCenterActivity::class.java))
+            when (viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    startActivity(Intent(context, ProfileCenterActivity::class.java))
+                }
+                null -> { //尚未登入
+                    startActivity(Intent(context, LoginActivity::class.java))
+                }
+                else -> { //遊客
+                    ToastUtil.showToastInCenter(context, getString(R.string.message_guest_no_permission))
+                }
+            }
             mDownMenuListener?.onClick(menu_profile_center)
         }
 

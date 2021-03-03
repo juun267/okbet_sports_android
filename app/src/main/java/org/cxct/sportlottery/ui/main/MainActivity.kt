@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MetricsUtil
@@ -146,6 +147,17 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
                     false
                 }
                 R.id.my_account_page -> {
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            startActivity(Intent(this, ProfileCenterActivity::class.java))
+                        }
+                        null -> { //尚未登入
+                            startActivity(Intent(this, LoginActivity::class.java))
+                        }
+                        else -> { //遊客
+                            ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                        }
+                    }
                     false
                 }
                 else -> false
