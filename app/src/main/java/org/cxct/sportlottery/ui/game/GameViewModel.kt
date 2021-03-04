@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -41,11 +42,9 @@ import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 class GameViewModel(
@@ -259,10 +258,18 @@ class GameViewModel(
         val messageType = "1"
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.messageService.getMessageList(messageType)
+                when(userInfo.value?.testFlag){
+                    null->{
+                        OneBoSportApi.messageService.getGuestMessageList(messageType)
+                    }
+                    else -> {
+                        OneBoSportApi.messageService.getMessageList(messageType)
+                    }
+                }
             }?.let { result -> _messageListResult.postValue(result) }
         }
     }
+
 
     //獲取體育菜單
     fun getSportMenu() {

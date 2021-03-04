@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.message
 
+import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,5 +14,10 @@ interface MessageService {
         @Query("messageType") messageType: String,
         @Query("userId") userId: Int? = null,
         @Query("platformId") platformId: Int? = null
+    ): Response<MessageListResult>
+
+    @GET(INDEX_PROMOTENOTICE)
+    suspend fun getGuestMessageList(
+        @Query("messageType") messageType: String,
     ): Response<MessageListResult>
 }

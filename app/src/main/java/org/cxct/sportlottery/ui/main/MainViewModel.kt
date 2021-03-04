@@ -96,7 +96,14 @@ class MainViewModel(
         val messageType = "1"
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.messageService.getMessageList(messageType)
+                when(userInfo.value?.testFlag){
+                    null->{
+                        OneBoSportApi.messageService.getGuestMessageList(messageType)
+                    }
+                    else -> {
+                        OneBoSportApi.messageService.getMessageList(messageType)
+                    }
+                }
             }?.let { result -> _messageListResult.postValue(result) }
         }
     }
@@ -105,7 +112,14 @@ class MainViewModel(
         val messageType = "2"
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.messageService.getMessageList(messageType)
+                when(userInfo.value?.testFlag){
+                    null->{
+                        OneBoSportApi.messageService.getGuestMessageList(messageType)
+                    }
+                    else -> {
+                        OneBoSportApi.messageService.getMessageList(messageType)
+                    }
+                }
             }?.let { result -> _messageDialogResult.postValue(result) }
         }
     }
