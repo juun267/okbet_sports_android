@@ -113,7 +113,7 @@
     <string name="error_verification_code">注册验证码错误</string>
     <string name="hint_verification_code_by_sms">请输入短信验证码</string>
     <string name="error_verification_code_by_sms">短信验证码错误</string>
-    <string name="get_verification_code">获取验证码</string>
+    <string name="get_verification_code">发送验证码</string>
     <string name="send_timer">已发送(%d)</string>
     <string name="get_valid_code_fail_point">请求验证码失败，请点击重试！</string>
     <string name="error_input_format">输入格式错误</string>

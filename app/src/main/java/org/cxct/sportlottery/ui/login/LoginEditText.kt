@@ -8,16 +8,13 @@ import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -71,7 +68,6 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.et_input.inputType = inputType
 
             view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
-//            view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
             view.btn_clear.visibility = View.GONE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
         } catch (e: Exception) {
