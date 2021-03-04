@@ -156,4 +156,19 @@
         tools:bottomText="1.03"
         tools:topText="+0.5" />
 
+    <TextView
+        android:id="@+id/ou_hdp_score_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/holo_orange_light"
+        android:paddingStart="15dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="4dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintTop_toBottomOf="@id/ou_hdp_away_name"
+        tools:text="6-3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
