@@ -93,10 +93,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //提款金額
-            et_withdrawal_amount.afterTextChanged {
-                if (it.isNotEmpty())
-                    checkWithdrawAmount(it)
-            }
+            et_withdrawal_amount.afterTextChanged { checkWithdrawAmount(it) }
 
             //提款密碼
             setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
