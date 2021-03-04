@@ -278,7 +278,7 @@ class MainViewModel(
             loginRepository.isLogin.value != true -> {
                 _enterThirdGameResult.postValue(
                     EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.NEED_LOGIN,
+                        resultType = EnterThirdGameResult.ResultType.NEED_REGISTER,
                         url = null,
                         errorMsg = null
                     )
