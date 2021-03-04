@@ -85,8 +85,6 @@ class MainViewModel(
             }.apply {
                 loginRepository.clear()
                 betInfoRepository.clear()
-                //TODO change timber to actual logout ui to da
-                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
         }
     }
@@ -145,7 +143,7 @@ class MainViewModel(
                 val homeCatePageList = createHomeGameList(result.t)
                 _homeCatePageDataList.postValue(homeCatePageList)
             } else {
-                //TODO simon test 獲取第三方遊戲配置失敗
+                Timber.e("獲取第三方遊戲配置失敗")
             }
         }
     }

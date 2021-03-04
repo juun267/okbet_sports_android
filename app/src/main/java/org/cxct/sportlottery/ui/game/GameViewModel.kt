@@ -248,8 +248,6 @@ class GameViewModel(
             }.apply {
                 loginRepository.clear()
                 betInfoRepository.clear()
-                //TODO change timber to actual logout ui to da
-                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
         }
     }

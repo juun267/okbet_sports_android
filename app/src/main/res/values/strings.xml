@@ -241,14 +241,6 @@
     <string name="fifth">五</string>
 
     <!-- Profile center page -->
-    <string name="good_midnight">凌晨好</string>
-    <string name="good_morning">早上好</string>
-    <string name="good_beforenoon">上午好</string>
-    <string name="good_noon">中午好</string>
-    <string name="good_afternoon">下午好</string>
-    <string name="good_evening">傍晚好</string>
-    <string name="good_night">晚上好</string>
-    <string name="good_dreams">夜里好</string>
     <string name="account_balance">账户余额</string>
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">充值</string>
@@ -511,8 +503,7 @@
     <string name="text_bank_card_add_fail">新增银行卡失败</string>
     <string name="text_bank_card_modify_fail">编辑银行卡失败</string>
     <string name="unknown_bank_card">未知银行卡</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <!--bet info list-->
     <string name="bet_info_list_title">投注单</string>
     <string name="bet_info_list_game_closed">盘口已关闭</string>
