@@ -126,7 +126,7 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
                 resultList.clear()
-                for ((key, value) in result.resultMap ?: mapOf()) {
+                for ((key, value) in result?.resultMap ?: mapOf()) {
                     value?.apply {
                         val gameData = GameData(money, remark, transRemaining).apply {
                             code = key
@@ -159,7 +159,6 @@ class MoneyTransferViewModel(
             }
             inPlatDataList.add(inPlatData)
         }
-
 
         resultList.forEach { gameData ->
             val inPlatData = gameData.apply { gameData.isChecked = false }
