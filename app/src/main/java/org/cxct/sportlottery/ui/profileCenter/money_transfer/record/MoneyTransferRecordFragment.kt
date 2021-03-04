@@ -44,7 +44,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
 
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
-            viewModel.isLastPage = (rvAdapter.itemCount >= (it.total ?:0))
             rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
         }
     }

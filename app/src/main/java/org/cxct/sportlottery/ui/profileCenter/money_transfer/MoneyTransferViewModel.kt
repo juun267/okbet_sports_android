@@ -229,8 +229,9 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
                 isLoading = false
-                _queryTransfersResult.value = result
                 recordDataList.addAll(result.rows as List<Row>)
+                isLastPage = (recordDataList.size >= (result.total ?:0))
+                _queryTransfersResult.value = result
             }
         }
     }
