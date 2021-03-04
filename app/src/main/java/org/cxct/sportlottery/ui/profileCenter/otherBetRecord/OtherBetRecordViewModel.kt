@@ -24,8 +24,12 @@ class OtherBetRecordViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
+
+    val allPlatTag = "ALL_PLAT"
+
     companion object {
         private const val PAGE_SIZE = 20
+
     }
 
     val loading: LiveData<Boolean> //使用者餘額
@@ -62,7 +66,7 @@ class OtherBetRecordViewModel(
                 hideLoading()
 
                 val resultList = mutableListOf<SheetData>()
-                resultList.add(SheetData("ALL_PLAT", androidContext.getString(R.string.all_plat_type)))
+                resultList.add(SheetData(allPlatTag, androidContext.getString(R.string.all_plat_type)))
                 for ((key, value) in result.t?.gameFirmMap?: mapOf()) {
                         resultList.add(SheetData(value.firmType, value.firmShowName))
                 }
@@ -80,7 +84,7 @@ class OtherBetRecordViewModel(
             recordDataList.clear()
         }
 
-        val filter = { firm: String? -> if(firm == "ALL_PLAT") null else firm}
+        val filter = { firm: String? -> if(firm == allPlatTag) null else firm}
 
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -95,6 +99,7 @@ class OtherBetRecordViewModel(
                 hideLoading()
                 isLoading = false
                 recordDataList.addAll(result.t?.orderList as List<Order>)
+                isLastPage = (recordDataList.size >= (result.t.totalCount ?: 0))
                 _recordResult.value = result
             }
         }
@@ -120,6 +125,8 @@ class OtherBetRecordViewModel(
                 hideLoading()
                 isLoading = false
                 recordDetailDataList.addAll(result.t?.orderList?.dataList as List<OrderData>)
+                isLastPage = (recordDetailDataList.size >= (result.t.totalCount ?: 0))
+
                 _recordDetailResult.value = result
             }
         }

@@ -35,6 +35,9 @@ class BetRecordViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
+    val statusSearchEnable: LiveData<Boolean>
+        get() = _statusSearchEnable
+
     val selectedBetStatus: LiveData<String?>
         get() = _selectedBetStatus
 
@@ -45,6 +48,7 @@ class BetRecordViewModel(
         get() = _betRecordResult
 
     private val _loading = MutableLiveData<Boolean>()
+    private val _statusSearchEnable = MutableLiveData<Boolean>()
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
     private val _selectedBetStatus = MutableLiveData<String?>()
@@ -62,15 +66,15 @@ class BetRecordViewModel(
     }
 
     fun searchBetRecord(isChampionChecked: Boolean?= false, startDate: String ?= TimeUtil.getDefaultTimeStamp().startTime, endDate: String ?= TimeUtil.getDefaultTimeStamp().endTime) {
-        val statusList = selectedStatusList.map { it.code }
-        val championOnly = if (isChampionChecked == true) 1 else 0
-        mBetListRequest = BetListRequest(championOnly = championOnly,
-                                         statusList = statusList,
-                                         startTime = startDate,
-                                         endTime = endDate,
-                                         page = 1,
-                                         pageSize = PAGE_SIZE)
-        mBetListRequest?.let { getBetList(it) }
+        if (betStatusList.none { it.isChecked }) {
+            _statusSearchEnable.value = false
+        } else {
+            _statusSearchEnable.value = true
+            val statusList = selectedStatusList.map { it.code }
+            val championOnly = if (isChampionChecked == true) 1 else 0
+            mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusList, startTime = startDate, endTime = endDate, page = 1, pageSize = PAGE_SIZE)
+            mBetListRequest?.let { getBetList(it) }
+        }
     }
 
     fun getBetStatus(): String {
@@ -136,6 +140,7 @@ class BetRecordViewModel(
             }?.let { result ->
                 hideLoading()
                 result.rows?.let { recordDataList.addAll(it) }
+                isLastPage = (recordDataList.size >= (result.total ?: 0))
                 _betRecordResult.value = result
             }
         }

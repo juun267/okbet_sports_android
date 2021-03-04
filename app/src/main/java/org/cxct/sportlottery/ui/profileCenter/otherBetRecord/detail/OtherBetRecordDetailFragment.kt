@@ -83,7 +83,6 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
 
         viewModel.recordDetailResult.observe(viewLifecycleOwner) {
             it?.t?.apply {
-                viewModel.isLastPage = (viewModel.recordDetailDataList.size >= (totalCount ?: 0))
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDetailDataList, viewModel.isLastPage)
 
                 layout_total.apply {

@@ -141,11 +141,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
         }
 
         date_search_bar.setOnClickSearchListener {
-            if (viewModel.betStatusList.none { it.isChecked }) {
-                status_selector.selectedTextColor = R.color.red
-            } else {
-                viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString())
-            }
+            viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString())
         }
 
         iv_scroll_to_top.setOnClickListener {
@@ -160,9 +156,12 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
             if (it) loading() else hideLoading()
         })
 
+        viewModel.statusSearchEnable.observe(viewLifecycleOwner, {
+            if (it == false) status_selector.selectedTextColor = R.color.red
+        })
+
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
                 if (it.success) {
-                    viewModel.isLastPage = (viewModel.recordDataList.size >= (it.total ?: 0))
                     rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
                     layout_total.apply {
                         tv_total_number.setMoneyFormat(it.other?.totalAmount?: 0).toString()
