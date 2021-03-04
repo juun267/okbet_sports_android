@@ -115,7 +115,6 @@ class ProfileCenterActivity :
 
         //額度轉換
         btn_account_transfer.setOnClickListener {
-            //TODO 額度轉換
             startActivity(Intent(this, MoneyTransferActivity::class.java))
         }
 
@@ -153,12 +152,6 @@ class ProfileCenterActivity :
                 ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
         }
 
-        //代理加盟
-        //7610 確認移除代理加盟
-        /*btn_agent.setOnClickListener {
-            //TODO 代理加盟
-        }*/
-
         //幫助中心
         btn_help_center.setOnClickListener {
             startActivity(Intent(this, HelpCenterActivity::class.java))
@@ -166,7 +159,6 @@ class ProfileCenterActivity :
 
         //建議反饋
         btn_feedback.setOnClickListener {
-            //TODO 建議反饋
             startActivity(Intent(this, FeedbackMainActivity::class.java))
         }
     }
