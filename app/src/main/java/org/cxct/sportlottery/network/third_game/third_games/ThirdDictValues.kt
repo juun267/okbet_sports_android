@@ -21,4 +21,5 @@ data class ThirdDictValues(
     //APP端新增 從第二層資料傳遞
     //20200213 review API 已經沒有回傳ban 改成open
     var open: Int? = null // 維護狀態： 0 - 維護, 1 - 正常
+    var firmName: String? = null
 }

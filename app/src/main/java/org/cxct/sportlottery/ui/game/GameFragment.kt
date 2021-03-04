@@ -599,11 +599,13 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         leagueOddAdapter.data.forEach {
             if (it.isExpand) {
                 it.matchOdds.forEach { matchOdd ->
-                    service.unSubscribeHallChannel(
-                        code,
-                        CateMenuCode.HDP_AND_OU.code,
-                        matchOdd.matchInfo?.id
-                    )
+                    if (matchOdd.matchInfo?.id?.let { mid -> viewModel.checkInBetInfo(mid) } == false) {
+                        service.unSubscribeHallChannel(
+                            code,
+                            CateMenuCode.HDP_AND_OU.code,
+                            matchOdd.matchInfo.id
+                        )
+                    }
                 }
             }
         }

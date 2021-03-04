@@ -6,38 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.next.QPFragment">
 
-
     <ImageView
-        android:id="@+id/imageView7"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/qp_bg" />
 
     <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:id="@+id/iv_banner"
+        android:layout_width="242dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
         android:src="@drawable/qp_title_img"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_time_line_detail"
+        android:id="@+id/rv_qp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_banner"
         app:spanCount="2"
         tools:itemCount="5"
         tools:listitem="@layout/content_live_game_rv" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -14,14 +13,23 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.home.news.NewsDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
@@ -33,6 +41,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
+
+        private var isPopImageDialog = true //第一次進 APP 才要跳 彈窗圖 dialog
     }
 
     private val mSplashViewModel: SplashViewModel by viewModel()
@@ -113,36 +123,70 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private fun initBottomNav() {
         bottom_nav_view.setOnNavigationItemSelectedListener {
-
-            Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
-
+            //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
             when (it.itemId) {
                 R.id.home_page -> {
+                    iv_logo.performClick()
                     true
                 }
                 R.id.game_page -> {
                     startActivity(Intent(this, GameActivity::class.java))
-                    true
+                    false
                 }
                 R.id.promotion_page -> {
-                    true
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            JumpUtil.toInternalWeb(this, Constants.getPromotionUrl(viewModel.token), getString(R.string.promotion))
+                        }
+                        null -> { //尚未登入
+                            startActivity(Intent(this, LoginActivity::class.java))
+                        }
+                        else -> { //遊客
+                            ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                        }
+                    }
+                    false
                 }
                 R.id.chat_page -> {
-                    true
+                    false
                 }
                 R.id.my_account_page -> {
-                    true
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            startActivity(Intent(this, ProfileCenterActivity::class.java))
+                        }
+                        null -> { //尚未登入
+                            startActivity(Intent(this, LoginActivity::class.java))
+                        }
+                        else -> { //遊客
+                            ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                        }
+                    }
+                    false
                 }
                 else -> false
             }
         }
+
+        //聊天室按鈕 啟用判斷
+        bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
     }
 
     private fun getPopImage() {
         viewModel.getPopImage()
     }
 
+    private fun getMsgDialog() {
+        viewModel.getMsgDialog()
+    }
+
     private fun initObserve() {
+        viewModel.isLogin.observe(this, Observer {
+            //登入就去刷新彈窗公告
+            if (it)
+                getMsgDialog()
+        })
+
         viewModel.errorResultToken.observe(this, Observer {
             viewModel.logout()
         })
@@ -155,11 +199,27 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.popImageList.observe(this, Observer {
             setPopImage(it)
         })
+
+        //公告彈窗
+        viewModel.messageDialogResult.observe(this, Observer {
+            setNewsDialog(it)
+        })
     }
 
     //彈窗圖
     private fun setPopImage(popImageList: List<ImageData>) {
-        PopImageDialog(this, popImageList).show()
+        if (isPopImageDialog) {
+            isPopImageDialog = false
+            PopImageDialog(this, popImageList).show()
+        }
+    }
+
+    //用戶登入公告訊息彈窗
+    private fun setNewsDialog(messageListResult: MessageListResult) {
+        //登出、遊客登入，不顯示登入彈窗公告
+        val isNormalLogin = viewModel.userInfo.value?.testFlag == TestFlag.NORMAL.index
+        if (isNormalLogin && !messageListResult.rows.isNullOrEmpty())
+            NewsDialog(this, messageListResult.rows).show(supportFragmentManager, null)
     }
 
     //載入頭像

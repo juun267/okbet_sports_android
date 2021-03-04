@@ -26,6 +26,8 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
+    private var mIsLoopItem: Boolean = true
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
         val itemLayout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_main_game_rv, viewGroup, false)
         val width = viewGroup.measuredWidth
@@ -45,7 +47,7 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
     }
 
     override fun getItemCount(): Int {
-        return if (mDataList.size <= 1) mDataList.size else Integer.MAX_VALUE
+        return if (mIsLoopItem) Integer.MAX_VALUE else mDataList.size
     }
 
     fun avoidFastDoubleClick() {
@@ -55,6 +57,12 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
 
     fun setData(newDataList: MutableList<GameItemData>?) {
         mDataList = newDataList ?: mutableListOf() //若 newDataList == null，則給一個空 list
+        notifyDataSetChanged()
+    }
+
+    //資料滑到底是否重複播放
+    fun enableItemLoop(enable: Boolean) {
+        mIsLoopItem = enable
         notifyDataSetChanged()
     }
 

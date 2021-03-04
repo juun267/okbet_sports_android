@@ -3,9 +3,7 @@ package org.cxct.sportlottery.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -30,10 +28,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
-
-        //TODO simon test 之後放正式圖片就可以刪掉了
-        iv_bg.scaleType = ImageView.ScaleType.FIT_CENTER
-        Glide.with(this).asGif().load(R.mipmap.bg_test).into(iv_bg)
     }
 
     private fun setupVersion() {

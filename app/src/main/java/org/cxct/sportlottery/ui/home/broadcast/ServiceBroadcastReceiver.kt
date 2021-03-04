@@ -112,7 +112,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                 }
 
                 //用户私人频道
-                BackService.URL_PRIVATE -> {
+                BackService.URL_USER_PRIVATE -> {
                     when (eventType) {
                         EventType.USER_MONEY.value -> {
                             val data = ServiceMessage.getUserMoney(jObjStr)

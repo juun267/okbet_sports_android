@@ -28,7 +28,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.home.news.NewsDiaolog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
@@ -57,6 +56,13 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private enum class Action { IS_SCROLL, IS_TAB_SELECT }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getMarquee()
+        getBanner()
+        getThirdGame()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
@@ -65,10 +71,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initTab()
         initScrollView()
         initObserve()
-        getMarquee()
-        getMsgDialog()
-        getBanner()
-        getThirdGame()
 
         setupSport()
         setMoreButtons()
@@ -209,11 +211,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setMarquee(it)
         })
 
-        //公告彈窗
-        viewModel.messageDialogResult.observe(viewLifecycleOwner, Observer {
-            setMsgDiaolog(it)
-        })
-
         //第三方遊戲清單
         viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
             setGameData(it)
@@ -264,6 +261,15 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
+        if (bannerList.size <= 1) {
+            banner_arrow_l.visibility = View.GONE
+            banner_arrow_r.visibility = View.GONE
+            xBanner.setAutoPlayAble(false)
+        } else {
+            banner_arrow_l.visibility = View.VISIBLE
+            banner_arrow_r.visibility = View.VISIBLE
+            xBanner.setAutoPlayAble(true)
+        }
         xBanner.setData(bannerList, null)
     }
 
@@ -282,11 +288,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         adapter.setData(titleList)
         rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_marquee.adapter = adapter
-    }
-
-    private fun setMsgDiaolog(messageListResult: MessageListResult) {
-        val newsDialog = NewsDiaolog(activity, messageListResult.rows)
-        fragmentManager?.let { newsDialog.show(it, null) }
     }
 
     private fun setGameData(cateDataList: List<GameCateData>?) {
@@ -308,7 +309,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
             EnterThirdGameResult.ResultType.NONE -> {}
         }
-        viewModel.clearThirdGame()
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+            viewModel.clearThirdGame()
     }
 
     //彩票
@@ -328,6 +330,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_lottery.visibility = View.VISIBLE
             lotteryGamePager.visibility = View.VISIBLE
 
+            lotteryGamePager.isShowArrow(false)
+            lotteryGamePager.enableItemLoop(false)
             lotteryGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             lotteryGamePager.setData(gameList)
         }
@@ -350,6 +354,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_live.visibility = View.VISIBLE
             liveGamePager.visibility = View.VISIBLE
 
+            liveGamePager.isShowArrow(gameList.size > 3)
+            liveGamePager.enableItemLoop(gameList.size > 3)
             liveGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             liveGamePager.setData(gameList)
         }
@@ -372,6 +378,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_poker.visibility = View.VISIBLE
             pokerGamePager.visibility = View.VISIBLE
 
+            pokerGamePager.isShowArrow(gameList.size > 1)
+            pokerGamePager.enableItemLoop(gameList.size > 1)
             pokerGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             pokerGamePager.setData(gameList)
         }
@@ -397,6 +405,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_slot.visibility = View.VISIBLE
             slotGamePager.visibility = View.VISIBLE
 
+            slotGamePager.isShowArrow(gameList.size > 2)
+            slotGamePager.enableItemLoop(gameList.size > 2)
             slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameDzListener)
             slotGamePager.setData(gameList)
         }
@@ -419,6 +429,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_fishing.visibility = View.VISIBLE
             fishingGamePager.visibility = View.VISIBLE
 
+            fishingGamePager.enableItemLoop(gameList.size > 2)
             fishingGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             fishingGamePager.setData(gameList)
         }
@@ -430,10 +441,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getMarquee() {
         viewModel.getMarquee()
-    }
-
-    private fun getMsgDialog() {
-        viewModel.getMsgDialog()
     }
 
     private fun getThirdGame() {

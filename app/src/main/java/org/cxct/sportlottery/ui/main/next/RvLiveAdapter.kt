@@ -70,7 +70,7 @@ class RvLiveAdapter : RecyclerView.Adapter<RvLiveAdapter.ItemViewHolder>() {
                 mIvImage.setOnClickListener {}
 
             } else {
-                val iconUrl = GameConfigManager.getThirdGameHallIcon(data.gameCategory, data.firmCode)
+                val iconUrl = GameConfigManager.getThirdGameHallIconUrl(data.gameCategory, data.firmCode)
                 Glide.with(itemView.context)
                     .load(iconUrl)
                     .apply(mRequestOptions)

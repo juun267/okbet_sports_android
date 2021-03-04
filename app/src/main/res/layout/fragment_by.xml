@@ -6,27 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.next.BYFragment">
 
-
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/by_bg" />
 
     <ImageView
+        android:id="@+id/iv_banner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/by_title_img"
         android:layout_marginTop="27dp"
+        android:contentDescription="@null"
+        android:src="@drawable/by_title_img"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_by"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_banner"
+        tools:itemCount="5"
+        tools:listitem="@layout/content_by_game_rv_left" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

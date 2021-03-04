@@ -8,12 +8,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.lifecycle.Observer
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
@@ -30,16 +29,11 @@ import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 
 
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
-
-    companion object {
-        private const val TAG = "TransferPayFragment"
-    }
 
     lateinit var calendarBottomSheet: BottomSheetDialog
 
@@ -47,7 +41,15 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
 
-    private val mSpannerList = mutableListOf<CustomImageAdapter.SelectBank>()
+    private val mBottomSheetList = mutableListOf<CustomImageAdapter.SelectBank>()
+
+    private var rechCfgsList = mutableListOf<MoneyRechCfg.RechConfig>()
+
+    private lateinit var bankBottomSheet: BottomSheetDialog
+
+    private lateinit var bankCardAdapter: BankBtsAdapter
+
+    private var bankPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,12 +70,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         initView()
         initButton()
         initObserve()
+        setPayBankBottomSheet()
     }
 
     private fun initButton() {
         //提交
         btn_submit.setOnClickListener {
-            createMoneyAddRequest()?.let { viewModel.rechargeSubmit(it, mMoneyPayWay?.rechType, mSelectRechCfgs) }
+            createMoneyAddRequest()?.let {
+                viewModel.rechargeSubmit(
+                    it,
+                    mMoneyPayWay?.rechType,
+                    mSelectRechCfgs
+                )
+            }
         }
 
         //選取日曆
@@ -100,6 +109,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
 
+        //選擇銀行
+        cv_bank.setOnClickListener {
+            bankBottomSheet.show()
+        }
+
     }
 
     private fun initView() {
@@ -108,6 +122,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         calendarBottomSheet()
         getMoney()
         updateMoneyRange()
+        getBankType(0)
     }
 
     @SuppressLint("SetTextI18n")
@@ -133,15 +148,45 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
             et_nickname.setError(it)
         })
-        viewModel.userMoneyResult.observe(viewLifecycleOwner, Observer {
+        viewModel.userMoneyResult.observe(viewLifecycleOwner,  {
             txv_wallet_money.text = (ArithUtil.toMoneyFormat(it?.money)) + " RMB"
         })
 
-        viewModel.apiResult.observe(viewLifecycleOwner, Observer {
+        viewModel.apiResult.observe(viewLifecycleOwner,  {
             if (it.success) {
                 resetEvent()
             }
         })
+    }
+
+    private fun setPayBankBottomSheet() {
+        try {
+
+            val contentView: ViewGroup? =
+                activity?.window?.decorView?.findViewById(android.R.id.content)
+            val bottomSheetView =
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, contentView, false)
+            bankBottomSheet = BottomSheetDialog(this.requireContext())
+            bankBottomSheet.apply {
+                setContentView(bottomSheetView)
+                bankCardAdapter = BankBtsAdapter(
+                    lv_bank_item.context,
+                    mBottomSheetList,
+                    BankBtsAdapter.BankAdapterListener { _, position ->
+                        bankPosition = position
+                        //更新銀行
+                        getBankType(position)
+                        dismiss()
+                    })
+                lv_bank_item.adapter = bankCardAdapter
+                bankBottomSheet.btn_close.setOnClickListener {
+                    this.dismiss()
+                }
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     //重置畫面事件
@@ -152,16 +197,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_name.setText("")
         et_bank_account.setText("")
         et_nickname.setText("")
-        sp_pay_account.setSelection(0)
+        getBankType(0)
+
         viewModel.clearnRechargeStatus()
     }
 
     //入款帳號選單
     private fun initPayAccountSpinner() {
         //支付類型的入款帳號清單
-        val rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
+        rechCfgsList = (viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType
-        } ?: mutableListOf()
+        } ?: mutableListOf()) as MutableList<MoneyRechCfg.RechConfig>
 
         //產生對應 spinner 選單
         var count = 1
@@ -172,7 +218,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     it.rechName.toString(),
                     getBankIconByBankName(it.rechName.toString())
                 )
-                mSpannerList.add(selectBank)
+                mBottomSheetList.add(selectBank)
             }
         else {
 
@@ -183,7 +229,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                             it.rechName + " " + count++,
                             getBankAccountIcon(it.rechType ?: "")
                         )
-                    mSpannerList.add(selectBank)
+                    mBottomSheetList.add(selectBank)
                 }
             else
                 rechCfgsList.forEach {
@@ -192,36 +238,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                             it.rechName + "",
                             getBankAccountIcon(it.rechType ?: "")
                         )
-                    mSpannerList.add(selectBank)
+                    mBottomSheetList.add(selectBank)
                 }
         }
-        sp_pay_account.adapter = CustomImageAdapter(context, mSpannerList)
-
-        //選擇入款帳號
-        sp_pay_account.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                try {
-                    mSelectRechCfgs = rechCfgsList[position]
-                    refreshSelectRechCfgs(mSelectRechCfgs)
-                    getMoney()
-                    updateMoneyRange()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-
-        //default 選擇第一個不為 null 的入款帳號資料
-        if (sp_pay_account.count > 0)
-            sp_pay_account.setSelection(0)
-        else
-            mSelectRechCfgs = null
     }
 
     //依據選擇的支付渠道，刷新UI
@@ -339,7 +358,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0)))
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(
+                        it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
+                    )
                 }
             }
             //微信
@@ -369,7 +390,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     private fun setupEditTextFocusEvent(customEditText: LoginEditText, event: (String) -> Unit) {
-        customEditText.setEditTextOnFocusChangeListener { view, hasFocus ->
+        customEditText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 event.invoke(customEditText.et_input.text.toString())
         }
@@ -387,11 +408,18 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             getDateInCalendar(30).second
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
+            override fun onFirstDateSelected(
+                dateSelectedType: DateSelectedType,
+                startDate: Calendar
+            ) {
                 calendarBottomSheet.dismiss()
             }
 
-            override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
+            override fun onDateRangeSelected(
+                dateSelectedType: DateSelectedType,
+                startDate: Calendar,
+                endDate: Calendar
+            ) {
                 txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(startDate.timeInMillis)
                 calendarBottomSheet.dismiss()
             }
@@ -423,12 +451,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     //創建MoneyAddRequest
     private fun createMoneyAddRequest(): MoneyAddRequest? {
-        var moneyAddRequest: MoneyAddRequest? = null
-        moneyAddRequest = when (mMoneyPayWay?.rechType) {
+        return when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
-                    bankCode = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
+                    bankCode = mBottomSheetList[bankPosition].bankName.toString(),
                     depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
                         et_recharge_amount.getText().toInt()
                     } else {
@@ -436,9 +463,10 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     },
                     payer = et_bank_account.getText(),
                     payerName = et_name.getText(),
-                    payerBankName = mSpannerList[sp_pay_account.selectedItemPosition].bankName.toString(),
+                    payerBankName = mBottomSheetList[bankPosition].bankName.toString(),
                     payerInfo = "",
-                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
+                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis
+                        ?: Date().time
                 )
             }
             MoneyType.WX_TYPE.code -> {
@@ -454,7 +482,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_wx_id.getText(),
                     payerBankName = null,
                     payerInfo = null,
-                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
+                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis
+                        ?: Date().time
                 )
             }
             MoneyType.ALI_TYPE.code -> {
@@ -470,11 +499,25 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_nickname.getText(),
                     payerBankName = null,
                     payerInfo = et_name.getText(),
-                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis ?: Date().time
+                    depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis
+                        ?: Date().time
                 )
             }
             else -> null
         }
-        return moneyAddRequest
+    }
+
+    private fun getBankType(position: Int) {
+        if (rechCfgsList.size > 0) {
+            mSelectRechCfgs = rechCfgsList[position]
+            refreshSelectRechCfgs(mSelectRechCfgs)
+            getMoney()
+            updateMoneyRange()
+
+            iv_bank_icon.setImageResource(mBottomSheetList[position].bankIcon ?: 0)
+            txv_pay_bank.text = mBottomSheetList[position].bankName.toString()
+        } else {
+            mSelectRechCfgs = null
+        }
     }
 }

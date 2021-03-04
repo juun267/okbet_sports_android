@@ -33,6 +33,7 @@
                 app:pointsVisibility="false" />
 
             <ImageView
+                android:id="@+id/banner_arrow_l"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="9dp"
@@ -43,6 +44,7 @@
                 app:layout_constraintTop_toTopOf="@id/xBanner" />
 
             <ImageView
+                android:id="@+id/banner_arrow_r"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="9dp"

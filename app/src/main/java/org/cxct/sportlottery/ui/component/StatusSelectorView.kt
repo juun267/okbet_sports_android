@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -15,6 +17,10 @@ import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
+
+    companion object {
+        const val STYLE_NULL = -99
+    }
 
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.StatusBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_sheetLayout, R.layout.dialog_bottom_sheet_custom) }
@@ -60,6 +66,19 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             view?.apply {
                 setOnClickListener {
                     bottomSheet.show()
+                }
+                val chainStyle = typedArray.getInt(R.styleable.StatusBottomSheetStyle_horizontalChainStyle, STYLE_NULL)
+                if (chainStyle != STYLE_NULL) {
+                    val constrainSet = ConstraintSet()
+                    val chain = IntArray(cl_root.childCount)
+                    constrainSet.apply {
+                        clone(cl_root)
+                        cl_root.children.forEachIndexed { index, view ->
+                            chain[index] = view.id
+                        }
+                        createHorizontalChain(ConstraintSet.PARENT_ID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, chain, null, ConstraintSet.CHAIN_SPREAD_INSIDE)
+                        applyTo(cl_root)
+                    }
                 }
                 tv_selected.tag = ""
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)

@@ -44,8 +44,6 @@ class LiveFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
         adapter.setData(gameList)
         adapter.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
         rv_live.adapter = adapter
-
-        //TODO 檢查第三方跳轉問題
     }
 
     private fun initObserve() {
@@ -63,7 +61,8 @@ class LiveFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
             EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
             EnterThirdGameResult.ResultType.NONE -> {}
         }
-        viewModel.clearThirdGame()
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+            viewModel.clearThirdGame()
     }
 
 }
