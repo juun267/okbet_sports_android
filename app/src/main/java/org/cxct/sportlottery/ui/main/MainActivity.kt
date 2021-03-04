@@ -134,17 +134,11 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
                     false
                 }
                 R.id.promotion_page -> {
-                    when (viewModel.userInfo.value?.testFlag) {
-                        TestFlag.NORMAL.index -> {
-                            JumpUtil.toInternalWeb(this, Constants.getPromotionUrl(viewModel.token), getString(R.string.promotion))
-                        }
-                        null -> { //尚未登入
-                            startActivity(Intent(this, LoginActivity::class.java))
-                        }
-                        else -> { //遊客
-                            ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
-                        }
-                    }
+                    JumpUtil.toInternalWeb(
+                        this,
+                        Constants.getPromotionUrl(viewModel.token),
+                        getString(R.string.promotion)
+                    )
                     false
                 }
                 R.id.chat_page -> {
