@@ -28,6 +28,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         addView(view)
 
         try {
+            initDate()
             setupCalendarBottomSheet()
             initOnclick()
 
@@ -37,6 +38,11 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
             typedArray.recycle()
         }
 
+    }
+
+    private fun initDate() {
+        tv_start_date.text = TimeUtil.getDefaultDate().startTime
+        tv_end_date.text = TimeUtil.getDefaultDate().endTime
     }
 
     val startTime: Long?
@@ -50,12 +56,6 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
 
     val endDate: String
         get() = tv_end_date.text.toString()
-
-    fun getStartAndEndDate(): Pair<Long?, Long?> {
-        val startTimeStamp = TimeUtil.dateToTimeStamp(tv_start_date.text.toString(), TimeUtil.TimeType.START_OF_DAY)
-        val endTimeStamp = TimeUtil.dateToTimeStamp(tv_end_date.text.toString(), TimeUtil.TimeType.END_OF_DAY)
-        return startTimeStamp to endTimeStamp
-    }
 
     fun setOnClickSearchListener (search: () -> Unit) {
         btn_search.setOnClickListener {

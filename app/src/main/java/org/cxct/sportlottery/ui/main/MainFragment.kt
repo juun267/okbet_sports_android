@@ -18,7 +18,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
 import kotlinx.android.synthetic.main.fragment_main.*
-import okhttp3.internal.filterList
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -29,8 +28,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.home.news.NewsDiaolog
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
@@ -58,6 +56,13 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private enum class Action { IS_SCROLL, IS_TAB_SELECT }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getMarquee()
+        getBanner()
+        getThirdGame()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
@@ -66,10 +71,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initTab()
         initScrollView()
         initObserve()
-        getMarquee()
-        getMsgDialog()
-        getBanner()
-        getThirdGame()
 
         setupSport()
         setMoreButtons()
@@ -210,11 +211,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             setMarquee(it)
         })
 
-        //公告彈窗
-        viewModel.messageDialogResult.observe(viewLifecycleOwner, Observer {
-            setMsgDiaolog(it)
-        })
-
         //第三方遊戲清單
         viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
             setGameData(it)
@@ -294,11 +290,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         rv_marquee.adapter = adapter
     }
 
-    private fun setMsgDiaolog(messageListResult: MessageListResult) {
-        val newsDialog = NewsDiaolog(activity, messageListResult.rows)
-        fragmentManager?.let { newsDialog.show(it, null) }
-    }
-
     private fun setGameData(cateDataList: List<GameCateData>?) {
         //第三方遊戲開啟才顯示 類別 tabLayout
         tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
@@ -315,7 +306,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
+            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {}
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE)
@@ -450,10 +442,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getMarquee() {
         viewModel.getMarquee()
-    }
-
-    private fun getMsgDialog() {
-        viewModel.getMsgDialog()
     }
 
     private fun getThirdGame() {
