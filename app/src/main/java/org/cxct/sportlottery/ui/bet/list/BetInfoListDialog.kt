@@ -15,9 +15,11 @@ import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -115,6 +117,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                 dialog.setTextColor(color)
                 dialog.show()
             }
+        })
+
+        viewModel.userInfo.observe(this, Observer {
+            betInfoListAdapter.isNeedRegister =
+                (it == null) || (it.testFlag == TestFlag.GUEST.index)
         })
     }
 
@@ -214,5 +221,9 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         }
         context?.startActivity(intent)
         dismiss()
+    }
+
+    override fun onRegisterClick() {
+        context?.startActivity(Intent(context, RegisterActivity::class.java))
     }
 }

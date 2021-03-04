@@ -55,6 +55,11 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             notifyDataSetChanged()
         }
 
+    var isNeedRegister: Boolean = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private fun updateItemDataFromSocket(betInfo: BetInfoListData, updatedBetInfoList: MutableList<Odd>) {
         for (newItem in updatedBetInfoList) {
@@ -206,16 +211,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
             binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
-            binding.betInfoAction.tv_bet.setOnClickListener(object : OnForbidClickListener() {
-                override fun forbidClick(view: View?) {
-                    val stake = if (TextUtils.isEmpty(binding.etBet.text.toString())) {
-                        0.0
-                    } else {
-                        binding.etBet.text.toString().toDouble()
-                    }
-                    onItemClickListener.onBetClick(betInfoList[position], stake)
-                }
-            })
             binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(mBetInfoList) }
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
@@ -293,6 +288,45 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 }
             }
             binding.executePendingBindings()
+
+
+            setupBetButton()
+            setupRegisterButton()
+        }
+
+        private fun setupRegisterButton() {
+            binding.betInfoAction.tv_register.apply {
+                visibility = if (isNeedRegister) {
+                    View.VISIBLE
+                } else {
+                    View.INVISIBLE
+                }
+
+                setOnClickListener {
+                    onItemClickListener.onRegisterClick()
+                }
+            }
+        }
+
+        private fun setupBetButton() {
+            binding.betInfoAction.tv_bet.apply {
+                visibility = if (isNeedRegister) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
+
+                setOnClickListener(object : OnForbidClickListener() {
+                    override fun forbidClick(view: View?) {
+                        val stake = if (TextUtils.isEmpty(binding.etBet.text.toString())) {
+                            0.0
+                        } else {
+                            binding.etBet.text.toString().toDouble()
+                        }
+                        onItemClickListener.onBetClick(betInfoList[position], stake)
+                    }
+                })
+            }
         }
     }
 
@@ -316,6 +350,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         fun onDeleteClick(position: Int)
         fun onBetClick(betInfoListData: BetInfoListData, stake: Double)
         fun onAddMoreClick(betInfoList: BetInfoListData)
+        fun onRegisterClick()
     }
 
 
