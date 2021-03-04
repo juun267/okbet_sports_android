@@ -278,9 +278,18 @@ class MainViewModel(
             loginRepository.isLogin.value != true -> {
                 _enterThirdGameResult.postValue(
                     EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.NEED_LOGIN,
+                        resultType = EnterThirdGameResult.ResultType.NEED_REGISTER,
                         url = null,
                         errorMsg = null
+                    )
+                )
+            }
+            (userInfo.value?.testFlag == TestFlag.GUEST.index) -> {
+                _enterThirdGameResult.postValue(
+                    EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.GUEST,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.message_guest_no_permission)
                     )
                 )
             }

@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +24,11 @@ import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -77,6 +79,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 addBet()
             }
         })
+
+        tv_register.setOnClickListener {
+            context?.startActivity(Intent(context, RegisterActivity::class.java))
+        }
 
         tv_to_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext(), Constants.COMBO), getString(R.string.game_rule))
@@ -171,6 +177,22 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 dialog.setNegativeButtonText(null)
                 dialog.setTextColor(color)
                 dialog.show()
+            }
+        })
+
+        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
+            val isNeedRegister = (it == null) || (it.testFlag == TestFlag.GUEST.index)
+
+            tv_bet.visibility = if (isNeedRegister) {
+                View.INVISIBLE
+            } else {
+                View.VISIBLE
+            }
+
+            tv_register.visibility = if (isNeedRegister) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
             }
         })
 
