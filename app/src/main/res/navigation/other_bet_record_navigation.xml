@@ -19,6 +19,10 @@
         android:name="org.cxct.sportlottery.ui.profileCenter.otherBetRecord.detail.OtherBetRecordDetailFragment"
         android:label="fragment_other_bet_record_detail"
         tools:layout="@layout/fragment_other_bet_record_detail" >
+        <argument
+            android:name="todayDate"
+            app:argType="string"
+            app:nullable="true"/>
     </fragment>
 
 </navigation>
