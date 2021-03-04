@@ -155,11 +155,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
                         TestFlag.NORMAL.index -> {
                             startActivity(Intent(this, ProfileCenterActivity::class.java))
                         }
-                        null -> { //尚未登入
-                            startActivity(Intent(this, LoginActivity::class.java))
-                        }
-                        else -> { //遊客
-                            ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                        else -> { //遊客 //尚未登入
+                            startActivity(Intent(this, RegisterActivity::class.java))
                         }
                     }
                     false
