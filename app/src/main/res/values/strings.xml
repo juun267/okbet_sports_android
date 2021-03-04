@@ -30,7 +30,7 @@
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="error_input_empty">此栏位为必填栏位</string>
-    <string name="error_incompatible_format">您輸入的字元不符(可能含有全形或特殊字元或空格)</string>
+    <string name="error_incompatible_format">您输入的字元不符</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -94,16 +94,16 @@
     <string name="hint_we_chat_number">请输入微信ID</string>
     <string name="error_we_chat_number">微信ID格式错误</string>
     <string name="zalo">Zalo</string>
-    <string name="hint_zalo">请输入Zalo</string>
+    <string name="hint_zalo">请输入Zalo账号</string>
     <string name="error_zalo">Zalo账号格式错误</string>
     <string name="facebook">Facebook</string>
-    <string name="hint_facebook">请输入Facebook</string>
+    <string name="hint_facebook">请输入Facebook账号</string>
     <string name="error_facebook">Facebook账号格式错误</string>
     <string name="whats_app">WhatsApp</string>
-    <string name="hint_whats_app">请输入WhatsApp</string>
+    <string name="hint_whats_app">请输入WhatsApp账号</string>
     <string name="error_whats_app">Whatsapp账号格式错误</string>
     <string name="telegram">Telegram</string>
-    <string name="hint_telegram">请输入Telegram</string>
+    <string name="hint_telegram">请输入Telegram账号</string>
     <string name="error_telegram">Telegram账号格式错误</string>
     <string name="real_name">真实姓名</string>
     <string name="hint_real_name">姓名须与银行户口一致</string>
@@ -446,7 +446,6 @@
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
-    <string name="error_create_name">您输入的字元不符(可能含有全形或特殊字元或空格)</string>
     <string name="error_create_name_empty">开户名为必填栏位</string>
     <string name="error_bank_card_number">您输入的银行卡号格式有错误</string>
     <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
