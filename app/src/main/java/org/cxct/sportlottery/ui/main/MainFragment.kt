@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
 import kotlinx.android.synthetic.main.fragment_main.*
+import okhttp3.internal.filterList
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -264,6 +265,15 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
+        if (bannerList.size <= 1) {
+            banner_arrow_l.visibility = View.GONE
+            banner_arrow_r.visibility = View.GONE
+            xBanner.setAutoPlayAble(false)
+        } else {
+            banner_arrow_l.visibility = View.VISIBLE
+            banner_arrow_r.visibility = View.VISIBLE
+            xBanner.setAutoPlayAble(true)
+        }
         xBanner.setData(bannerList, null)
     }
 
@@ -308,7 +318,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
             EnterThirdGameResult.ResultType.NONE -> {}
         }
-        viewModel.clearThirdGame()
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+            viewModel.clearThirdGame()
     }
 
     //彩票
@@ -328,6 +339,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_lottery.visibility = View.VISIBLE
             lotteryGamePager.visibility = View.VISIBLE
 
+            lotteryGamePager.isShowArrow(false)
+            lotteryGamePager.enableItemLoop(false)
             lotteryGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             lotteryGamePager.setData(gameList)
         }
@@ -350,6 +363,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_live.visibility = View.VISIBLE
             liveGamePager.visibility = View.VISIBLE
 
+            liveGamePager.isShowArrow(gameList.size > 3)
+            liveGamePager.enableItemLoop(gameList.size > 3)
             liveGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             liveGamePager.setData(gameList)
         }
@@ -372,6 +387,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_poker.visibility = View.VISIBLE
             pokerGamePager.visibility = View.VISIBLE
 
+            pokerGamePager.isShowArrow(gameList.size > 1)
+            pokerGamePager.enableItemLoop(gameList.size > 1)
             pokerGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             pokerGamePager.setData(gameList)
         }
@@ -397,6 +414,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_slot.visibility = View.VISIBLE
             slotGamePager.visibility = View.VISIBLE
 
+            slotGamePager.isShowArrow(gameList.size > 2)
+            slotGamePager.enableItemLoop(gameList.size > 2)
             slotGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameDzListener)
             slotGamePager.setData(gameList)
         }
@@ -419,6 +438,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             label_fishing.visibility = View.VISIBLE
             fishingGamePager.visibility = View.VISIBLE
 
+            fishingGamePager.enableItemLoop(gameList.size > 2)
             fishingGamePager.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
             fishingGamePager.setData(gameList)
         }

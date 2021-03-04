@@ -134,6 +134,7 @@ object Constants {
 
     //vip / member level
     const val USER_LEVEL_GROWTH = "/api/front/user/level/getLevelGrowth"
+    const val THIRD_REBATES = "/api/front/playcom/thirdRebates"
 
     //money
     const val RECHARGE_CONFIG_MAP = "/api/front/rechcfg/map"

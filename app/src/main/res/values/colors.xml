@@ -95,6 +95,7 @@
     <color name="gray11">#f0f2f6</color>
     <color name="gray13">#e1e6e8</color>
     <color name="gray14">#7C7C7C</color>
+    <color name="gray15">#5A5A5A</color>
 
     <color name="gray6_alpha50">#80202020</color>
 
@@ -127,5 +128,9 @@
     <color name="dark_blue2">#2e3a49</color>
     <color name="black2">#182d35</color>
 
+    <!--  表格  -->
+    <color name="form_background_title">#DFEAF8</color>
+    <color name="form_background_odd">#EFF6FC</color>
+    <color name="form_background_even">#F5F8F9</color>
 
 </resources>

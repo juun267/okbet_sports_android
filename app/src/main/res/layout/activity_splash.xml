@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@mipmap/bg_test" />
+        android:src="@mipmap/splash_bg" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/block_progress"

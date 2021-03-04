@@ -51,6 +51,7 @@ class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
             EnterThirdGameResult.ResultType.NEED_LOGIN -> context?.startActivity(Intent(context, LoginActivity::class.java))
             EnterThirdGameResult.ResultType.NONE -> {}
         }
-        viewModel.clearThirdGame()
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+            viewModel.clearThirdGame()
     }
 }

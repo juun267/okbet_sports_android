@@ -6,4 +6,5 @@
     android:layout_height="140dp"
     android:layout_margin="15dp"
     android:contentDescription="@null"
+    tools:context="org.cxct.sportlottery.ui.main.next.RvLiveAdapter"
     tools:src="@drawable/live_coming_soon" />

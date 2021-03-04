@@ -94,6 +94,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupRecommendCode() {
+        et_recommend_code.setNecessarySymbolVisibility(if (sConfigData?.enableInviteCode == FLAG_OPEN) View.VISIBLE else View.INVISIBLE)
         et_recommend_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus)
                 checkInputData()
