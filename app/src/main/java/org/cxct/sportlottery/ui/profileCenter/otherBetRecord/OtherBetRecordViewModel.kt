@@ -24,7 +24,6 @@ class OtherBetRecordViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-
     val allPlatTag = "ALL_PLAT"
 
     companion object {

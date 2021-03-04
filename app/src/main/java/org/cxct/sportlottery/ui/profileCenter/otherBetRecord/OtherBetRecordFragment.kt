@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
+import org.cxct.sportlottery.util.setProfitFormat
 
 class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
@@ -138,7 +139,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
 
                 layout_total.apply {
                     tv_total_number.text = (totalCount ?: 0).toString()
-                    tv_total_bet_profit.setMoneyFormat(totalWin)
+                    tv_total_bet_profit.setProfitFormat(totalWin)
                     tv_total_bet_profit.setMoneyColor(totalWin ?: 0.0)
                 }
 

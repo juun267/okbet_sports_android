@@ -12,20 +12,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
-import kotlinx.android.synthetic.main.fragment_bet_record_result.*
-import kotlinx.android.synthetic.main.fragment_bet_record_result.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_bet_record_result.layout_total
-import kotlinx.android.synthetic.main.fragment_bet_record_result.status_selector
+import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
+import org.cxct.sportlottery.util.setProfitFormat
 
 
-
-class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
+class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 
     private val statusAdapter = BottomSheetAdapter(BottomSheetAdapter.ItemCheckedListener {
         val cbAll = status_selector.bottomSheetView.checkbox_select_all
@@ -83,7 +80,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.searchBetRecord()
-        return inflater.inflate(R.layout.fragment_bet_record_result, container, false)
+        return inflater.inflate(R.layout.fragment_sport_bet_record, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -165,7 +162,7 @@ class BetRecordResultFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMo
                     rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
                     layout_total.apply {
                         tv_total_number.setMoneyFormat(it.other?.totalAmount?: 0).toString()
-                        tv_total_bet_profit.setMoneyFormat(it.other?.win)
+                        tv_total_bet_profit.setProfitFormat(it.other?.win)
                         tv_total_bet_profit.setMoneyColor(it.other?.win ?: 0.0)
                     }
                 } else {
