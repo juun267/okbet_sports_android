@@ -105,6 +105,10 @@ class OtherBetRecordViewModel(
         }
     }
 
+    fun querySecondOrders(today: String ?= null) {
+        querySecondOrders(startTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).startTime },
+                          endTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime })
+    }
 
     fun querySecondOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
         loading()

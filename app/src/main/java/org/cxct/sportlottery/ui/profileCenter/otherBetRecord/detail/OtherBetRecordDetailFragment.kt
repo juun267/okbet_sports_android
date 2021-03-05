@@ -51,8 +51,7 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        viewModel.querySecondOrders(startTime = args.todayDate?.let { TimeUtil.getDayDateTimeRangeParams(it).startTime },
-                                    endTime = args.todayDate?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime })
+        viewModel.querySecondOrders(args.todayDate)
         return inflater.inflate(R.layout.fragment_other_bet_record_detail, container, false)
     }
 
