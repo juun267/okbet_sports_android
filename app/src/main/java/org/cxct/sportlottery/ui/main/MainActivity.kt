@@ -29,7 +29,6 @@ import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.ToastUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
@@ -50,6 +49,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     private lateinit var mainBinding: ActivityMainBinding
 
     private val navController by lazy { findNavController(R.id.main_container) }
+
+    private var mNewsDialog: NewsDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -207,8 +208,11 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     //用戶登入公告訊息彈窗
     private fun setNewsDialog(messageListResult: MessageListResult) {
         //未登入、遊客登入都要顯示彈窗
-        if (!messageListResult.rows.isNullOrEmpty())
-            NewsDialog(this, messageListResult.rows).show(supportFragmentManager, null)
+        if (!messageListResult.rows.isNullOrEmpty() &&
+            mNewsDialog?.isVisible != true) {
+            mNewsDialog = NewsDialog(this, messageListResult.rows)
+            mNewsDialog?.show(supportFragmentManager, null)
+        }
     }
 
     //載入頭像
