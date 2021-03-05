@@ -892,9 +892,6 @@ class GameViewModel(
     val updateOddList: LiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>
         get() = _updateOddList
 
-//    private val _updateMatchOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>()
-//    val updateMatchOddList: LiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>
-//        get() = _updateMatchOddList
 
     fun updateOdd(it: OddsChangeEvent) {
         val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
