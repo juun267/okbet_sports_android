@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
-import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -315,7 +313,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
                 false
             } else {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_pumkinorange)
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_orange)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 true
             }
