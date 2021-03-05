@@ -2,10 +2,8 @@ package org.cxct.sportlottery.ui.home
 
 import android.content.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -324,10 +322,6 @@ class MainActivity : BaseOddButtonActivity<MainViewModel>(MainViewModel::class) 
         viewModel.openOutrightDetail.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
             addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
-        })
-
-        viewModel.errorResultToken.observe(this, Observer {
-            viewModel.logout()
         })
 
         viewModel.userInfo.observe(this, Observer {
