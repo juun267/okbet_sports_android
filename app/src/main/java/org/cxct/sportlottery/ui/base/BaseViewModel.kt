@@ -10,8 +10,7 @@ import kotlinx.coroutines.async
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
-import org.cxct.sportlottery.network.error.TokenError
-import org.cxct.sportlottery.network.index.logout.LogoutResult
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
 import java.net.SocketTimeoutException
@@ -79,15 +78,13 @@ abstract class BaseViewModel : ViewModel() {
 
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         val errorResult = ErrorUtils.parseError(response)
-        errorResult?.let {
-            if (it !is LogoutResult
-                    && it.code == TokenError.EXPIRED.code
-                    && it.code == TokenError.FAILURE.code
-                    && it.code == TokenError.REPEAT_LOGIN.code
-            ) {
+
+        if (response.code() == HttpError.UNAUTHORIZED.code) {
+            errorResult?.let {
                 _errorResultToken.postValue(it)
             }
         }
+
         return errorResult
     }
 
