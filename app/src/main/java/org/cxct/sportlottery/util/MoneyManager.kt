@@ -7,7 +7,6 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.money.MoneyRechCfg
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -43,22 +42,10 @@ object MoneyManager {
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
-            //TODO Bill 降低耦合度
             mMoneyPayWayList = MoshiUtil.fromJson<List<MoneyPayWayData>>(getRechargeConfig(mContext), Types.newParameterizedType(MutableList::class.java, MoneyPayWayData::class.java))
         }
         return mMoneyPayWayList
     }
-
-    //獲取最大充值金額，沒有值就取 default local value
-    fun getMaxMoney(rechConfig: MoneyRechCfg.RechConfig): Double {
-        return rechConfig.maxMoney ?: 9999999.0
-    }
-
-    //獲取最小充值金額，沒有值就取 config.json value
-//    fun getMinMoney(rechConfig: MoneyRechCfg.RechConfig?): Double { //TODO Bill 等AppConfigManager做好去裡面撈最小充值金額(每個使用者不一樣)
-//        return rechConfig?.minMoney ?: AppConfigManager.getAppConfig().minRechMoney!!.toDouble()
-//    }
-
 
     fun getBankIcon(bankName: String): Int {
         return when (bankName) {

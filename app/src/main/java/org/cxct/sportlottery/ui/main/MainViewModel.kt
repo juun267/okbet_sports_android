@@ -85,8 +85,6 @@ class MainViewModel(
             }.apply {
                 loginRepository.clear()
                 betInfoRepository.clear()
-                //TODO change timber to actual logout ui to da
-                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
         }
     }
@@ -145,7 +143,7 @@ class MainViewModel(
                 val homeCatePageList = createHomeGameList(result.t)
                 _homeCatePageDataList.postValue(homeCatePageList)
             } else {
-                //TODO simon test 獲取第三方遊戲配置失敗
+                Timber.e("獲取第三方遊戲配置失敗")
             }
         }
     }
@@ -278,9 +276,18 @@ class MainViewModel(
             loginRepository.isLogin.value != true -> {
                 _enterThirdGameResult.postValue(
                     EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.NEED_LOGIN,
+                        resultType = EnterThirdGameResult.ResultType.NEED_REGISTER,
                         url = null,
                         errorMsg = null
+                    )
+                )
+            }
+            (userInfo.value?.testFlag == TestFlag.GUEST.index) -> {
+                _enterThirdGameResult.postValue(
+                    EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.GUEST,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.message_guest_no_permission)
                     )
                 )
             }

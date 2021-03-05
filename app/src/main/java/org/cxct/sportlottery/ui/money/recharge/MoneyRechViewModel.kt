@@ -206,7 +206,7 @@ class MoneyRechViewModel(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) -> {// TODO Bill
+            ) -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
             else -> {
@@ -227,7 +227,7 @@ class MoneyRechViewModel(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) -> {// TODO Bill
+            ) -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
             else -> {

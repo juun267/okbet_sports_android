@@ -10,7 +10,6 @@ import org.cxct.sportlottery.util.JumpUtil
 
 /**
  * 客服選擇跳轉外部瀏覽器
- *   //TODO simon test UI 等待重新製作
  */
 class ServiceSelectDialog(context: Context) : AlertDialog(context) {
 
