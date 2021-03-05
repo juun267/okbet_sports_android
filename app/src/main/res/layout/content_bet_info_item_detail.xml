@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
-        android:paddingBottom="6dp">
+        android:paddingBottom="7dp">
 
         <RelativeLayout
             android:layout_width="match_parent"

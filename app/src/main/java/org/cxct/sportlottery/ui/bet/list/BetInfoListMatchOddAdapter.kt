@@ -1,10 +1,12 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import java.lang.Exception
 
@@ -86,11 +89,12 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
         fun bind(matchOdd: MatchOdd, position: Int) {
             binding.matchOdd = matchOdd
-            binding.betInfoDetail.tvOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
+            binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(matchOdd.odds)
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             val strVerse = context.getString(R.string.verse_)
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
             binding.betInfoDetail.tvMatch.text = strMatch
+            (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp
             binding.betInfoDetail.tvName.text = if (matchOdd.inplay == INPLAY) context.getString(R.string.bet_info_in_play) + matchOdd.playCateName else matchOdd.playCateName
 
             when (matchOdd.status) {
@@ -99,6 +103,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                         visibility = View.VISIBLE
                         text = context.getString(R.string.bet_info_list_game_closed)
                     }
+                    (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 0.dp
                 }
 
                 BetStatus.ACTIVATED.code -> {
@@ -108,6 +113,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                             binding.tvCloseWarning,
                             matchOdd,
                     )
+                    (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp
                 }
             }
             binding.executePendingBindings()
@@ -128,7 +134,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                 tv_odds.apply {
                     setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
-                    text = String.format(tv_odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
+                    text = TextUtil.formatForOdd(matchOdd.odds)
                 }
                 onItemClickListener.onOddChange()
             }
@@ -138,7 +144,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                 tv_odds.apply {
                     setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.green))
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
-                    text = String.format(tv_odds.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(matchOdd.odds))
+                    text = TextUtil.formatForOdd(matchOdd.odds)
                 }
                 onItemClickListener.onOddChange()
             }
@@ -148,7 +154,9 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             tv_close_warning.visibility = View.GONE
             tv_odds.apply {
                 setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.transparent))
-                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
+                /* colors 定義好後改 #FF8000 */
+//                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
+                setTextColor(Color.parseColor("#FF8000"))
             }
         }, CHANGING_ITEM_BG_COLOR_DURATION)
 
