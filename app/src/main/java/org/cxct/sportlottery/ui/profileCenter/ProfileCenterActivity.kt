@@ -29,13 +29,11 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -75,8 +73,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         }
 
     }
-
-    private val mProfileModel: ProfileModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -280,7 +276,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             }
         })
 
-        mProfileModel.editIconUrlResult.observe(this, Observer {
+        viewModel.editIconUrlResult.observe(this, Observer {
             if (it?.success == true)
                 ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
             else
@@ -319,7 +315,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
         val uploadImgRequest = UploadImgRequest(userId, file)
-        mProfileModel.uploadImage(uploadImgRequest)
+        viewModel.uploadImage(uploadImgRequest)
     }
 
 }

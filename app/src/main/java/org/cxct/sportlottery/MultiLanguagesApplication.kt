@@ -56,11 +56,11 @@ class MultiLanguagesApplication : Application() {
         viewModel { InfoCenterViewModel(get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -71,6 +71,7 @@ class MultiLanguagesApplication : Application() {
         single { InfoCenterRepository() }
         single { MoneyRepository(get()) }
         single { BetInfoRepository() }
+        single { AvatarRepository(get(), get()) }
     }
 
     private val dbModule = module {
