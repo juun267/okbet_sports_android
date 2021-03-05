@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
 
-class NewsDiaolog(activity: FragmentActivity?, messageListResult: List<Row>?) :
+class NewsDialog(activity: FragmentActivity?, messageListResult: List<Row>?) :
     BaseDialog<MainViewModel>(MainViewModel::class) {
 
     init {
@@ -88,7 +88,7 @@ class NewsDiaolog(activity: FragmentActivity?, messageListResult: List<Row>?) :
     }
 
     private fun getTypeMsg(index: Int): List<Row>? {
-        var filterData = msgData?.filter {
+        val filterData = msgData?.filter {
             it.msgType.toInt() == index
         }
         return filterData ?: mutableListOf()

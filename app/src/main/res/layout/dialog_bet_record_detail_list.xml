@@ -22,7 +22,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.profileCenter.sportRecord.search.result.BetRecordDetailDialog">
+        tools:context=".ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

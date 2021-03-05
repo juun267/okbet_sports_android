@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.sportRecord
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -35,11 +34,9 @@ class BetRecordViewModel(
 
     val loading: LiveData<Boolean>
         get() = _loading
-/*
 
-    val selectStatusList: LiveData<MutableList<SheetData>>
-        get() = _selectStatusList
-*/
+    val statusSearchEnable: LiveData<Boolean>
+        get() = _statusSearchEnable
 
     val selectedBetStatus: LiveData<String?>
         get() = _selectedBetStatus
@@ -49,14 +46,9 @@ class BetRecordViewModel(
 
     val betRecordResult: LiveData<BetListResult>
         get() = _betRecordResult
-/*
-
-    private val _selectStatusList = MutableLiveData<MutableList<SheetData>>().apply {
-        this.value = mutableListOf()
-    }
-*/
 
     private val _loading = MutableLiveData<Boolean>()
+    private val _statusSearchEnable = MutableLiveData<Boolean>()
     private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
     private val _selectedBetStatus = MutableLiveData<String?>()
@@ -65,30 +57,24 @@ class BetRecordViewModel(
     private val selectedStatusList : List<SheetData>
             get() = betStatusList.filter { it.isChecked }
 
-/*
-    var betStatusList = listOf<SheetData>().apply {
-        list = statusNameMap.map {
-            SheetData(it.key, it.value)
-        }
-    }
-    */
-
     val betStatusList by lazy {
         statusNameMap.map {
-            SheetData(it.key, it.value)
+            SheetData(it.key, it.value).apply {
+                this.isChecked = true
+            }
         }.toMutableList()
     }
 
     fun searchBetRecord(isChampionChecked: Boolean?= false, startDate: String ?= TimeUtil.getDefaultTimeStamp().startTime, endDate: String ?= TimeUtil.getDefaultTimeStamp().endTime) {
-        val statusList = selectedStatusList.map { it.code }
-        val championOnly = if (isChampionChecked == true) 1 else 0
-        mBetListRequest = BetListRequest(championOnly = championOnly,
-                                         statusList = statusList,
-                                         startTime = startDate,
-                                         endTime = endDate,
-                                         page = 1,
-                                         pageSize = PAGE_SIZE)
-        mBetListRequest?.let { getBetList(it) }
+        if (betStatusList.none { it.isChecked }) {
+            _statusSearchEnable.value = false
+        } else {
+            _statusSearchEnable.value = true
+            val statusList = selectedStatusList.map { it.code }
+            val championOnly = if (isChampionChecked == true) 1 else 0
+            mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusList, startTime = startDate, endTime = endDate, page = 1, pageSize = PAGE_SIZE)
+            mBetListRequest?.let { getBetList(it) }
+        }
     }
 
     fun getBetStatus(): String {
@@ -130,7 +116,7 @@ class BetRecordViewModel(
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (_loading.value != true && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
-                _loading.postValue(true)
+                loading()
                 mBetListRequest?.let {
                     mBetListRequest = BetListRequest(championOnly = it.championOnly, statusList = it.statusList, startTime = it.startTime, endTime = it.endTime, page = it.page?.plus(1), pageSize = PAGE_SIZE)
                     getBetList(mBetListRequest!!)
@@ -153,9 +139,9 @@ class BetRecordViewModel(
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
                 hideLoading()
-                _betRecordResult.value = result
-                _loading.postValue(false)
                 result.rows?.let { recordDataList.addAll(it) }
+                isLastPage = (recordDataList.size >= (result.total ?: 0))
+                _betRecordResult.value = result
             }
         }
 

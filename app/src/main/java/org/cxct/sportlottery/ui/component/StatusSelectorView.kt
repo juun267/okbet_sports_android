@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-
+import androidx.core.content.ContextCompat
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -39,6 +39,13 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         set(value) {
             field = value
             tv_selected.tag = value
+        }
+
+    var selectedTextColor: Int? = null
+        get() = tv_selected.currentTextColor
+        set(value) {
+            field = value
+            if (value != null) tv_selected.setTextColor(ContextCompat.getColor(context, value))
         }
 
     var isShowAllCheckBoxView: Boolean? = false

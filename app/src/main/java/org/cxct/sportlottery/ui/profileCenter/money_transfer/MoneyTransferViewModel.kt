@@ -123,23 +123,23 @@ class MoneyTransferViewModel(
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getAllBalance()
-            }?.let { result ->
+            }.let { result ->
                 hideLoading()
-                resultList.clear()
-                for ((key, value) in result.resultMap ?: mapOf()) {
-                    value?.apply {
-                        val gameData = GameData(money, remark, transRemaining).apply {
-                            code = key
-                            showName = gameNameMap[key] ?: key
+                result?.apply {
+                    resultList.clear()
+                    for ((key, value) in result.resultMap ?: mapOf()) {
+                        value?.apply {
+                            val gameData = GameData(money, remark, transRemaining).apply {
+                                code = key
+                                showName = gameNameMap[key] ?: key
+                            }
+
+                            resultList.add(gameData)
                         }
-
-                        resultList.add(gameData)
                     }
+                    setPlatDataList()
+                    _allBalanceResultList.postValue(resultList)
                 }
-
-                setPlatDataList()
-
-                _allBalanceResultList.postValue(resultList)
             }
         }
     }
@@ -159,7 +159,6 @@ class MoneyTransferViewModel(
             }
             inPlatDataList.add(inPlatData)
         }
-
 
         resultList.forEach { gameData ->
             val inPlatData = gameData.apply { gameData.isChecked = false }
@@ -230,8 +229,9 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
                 isLoading = false
-                _queryTransfersResult.value = result
                 recordDataList.addAll(result.rows as List<Row>)
+                isLastPage = (recordDataList.size >= (result.total ?:0))
+                _queryTransfersResult.value = result
             }
         }
     }

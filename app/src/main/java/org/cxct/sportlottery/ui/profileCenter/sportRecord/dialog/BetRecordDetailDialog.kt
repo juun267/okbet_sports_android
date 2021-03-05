@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.profileCenter.sportRecord.search.result
+package org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog
 
 import android.os.Bundle
 import android.view.*

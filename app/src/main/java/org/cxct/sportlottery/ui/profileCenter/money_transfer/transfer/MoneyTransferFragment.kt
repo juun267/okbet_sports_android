@@ -81,6 +81,9 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
             if (it == null) return@observe
             rvAdapter.addFooterAndSubmitList(it)
+
+            btn_recycle.isEnabled = it.any { data -> data.money != 0.0 }
+
         }
 
     }

@@ -62,13 +62,14 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
         })
     }
 
-    private val sheetAdapter = SheetAdapter("ALL_PLAT", SheetAdapter.ItemCheckedListener { isChecked, data ->
+    private val sheetAdapter by lazy { SheetAdapter(viewModel.allPlatTag, SheetAdapter.ItemCheckedListener { isChecked, data ->
         if (isChecked) {
             status_selector.selectedText = data.showName
             status_selector.selectedTag = data.firmType
             status_selector.dismiss()
         }
     })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -133,7 +134,6 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
 
         viewModel.recordResult.observe(viewLifecycleOwner) {
             it?.t?.apply {
-                viewModel.isLastPage = (rvAdapter.itemCount >= (totalCount ?: 0))
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
 
                 layout_total.apply {

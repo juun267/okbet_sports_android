@@ -196,7 +196,7 @@ class WithdrawViewModel(
             fullName = fullName,
             id = id,
             userId = userId,
-            uwType = uwType, //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+            uwType = uwType,
             bankCode = bankCode
         )
     }

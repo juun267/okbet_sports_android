@@ -88,15 +88,26 @@ object TimeUtil {
         val minusDay = ymdFormat.format(getDateInCalendar(7).first.time)
         val today = ymdFormat.format(getDateInCalendar(7).second.time)
 
-        Log.e(">>>", "minusDay = $minusDay, today = $today")
-
         val startTimeStamp = ymdhmsFormat.parse("$minusDay 00:00:00")?.time
         val endTimeStamp = ymdhmsFormat.parse("$today 23:59:59")?.time
+        
         return object : TimeRangeParams {
             override val startTime: String
                 get() = startTimeStamp.toString()
             override val endTime: String
                 get() = endTimeStamp.toString()
+
+        }
+    }
+
+    fun getDefaultDate(): TimeRangeParams {
+        val minusDay = ymdFormat.format(getDateInCalendar(7).first.time)
+        val today = ymdFormat.format(getDateInCalendar(7).second.time)
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = minusDay.toString()
+            override val endTime: String
+                get() = today.toString()
 
         }
     }

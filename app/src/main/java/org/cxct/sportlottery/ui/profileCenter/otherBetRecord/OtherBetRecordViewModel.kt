@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -26,8 +25,11 @@ class OtherBetRecordViewModel(
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
 
+    val allPlatTag = "ALL_PLAT"
+
     companion object {
         private const val PAGE_SIZE = 20
+
     }
 
     val loading: LiveData<Boolean> //使用者餘額
@@ -64,7 +66,7 @@ class OtherBetRecordViewModel(
                 hideLoading()
 
                 val resultList = mutableListOf<SheetData>()
-                resultList.add(SheetData("ALL_PLAT", androidContext.getString(R.string.all_plat_type)))
+                resultList.add(SheetData(allPlatTag, androidContext.getString(R.string.all_plat_type)))
                 for ((key, value) in result.t?.gameFirmMap?: mapOf()) {
                         resultList.add(SheetData(value.firmType, value.firmShowName))
                 }
@@ -76,16 +78,20 @@ class OtherBetRecordViewModel(
 
     fun queryFirstOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
         loading()
+
         if (page == 1) {
             nowPage = 1
             recordDataList.clear()
         }
+
+        val filter = { firm: String? -> if(firm == allPlatTag) null else firm}
+
         viewModelScope.launch {
             doNetwork(androidContext) {
                 recordRequest = OtherBetHistoryRequest(page, PAGE_SIZE,
                                            startTime = startTime,
                                            endTime = endTime,
-                                           firmType = firmType)
+                                           firmType = filter(firmType))
 
                 recordRequest.let { OneBoSportApi.thirdGameService.queryFirstOrders(it) }
 
@@ -93,6 +99,7 @@ class OtherBetRecordViewModel(
                 hideLoading()
                 isLoading = false
                 recordDataList.addAll(result.t?.orderList as List<Order>)
+                isLastPage = (recordDataList.size >= (result.t.totalCount ?: 0))
                 _recordResult.value = result
             }
         }
@@ -118,6 +125,8 @@ class OtherBetRecordViewModel(
                 hideLoading()
                 isLoading = false
                 recordDetailDataList.addAll(result.t?.orderList?.dataList as List<OrderData>)
+                isLastPage = (recordDetailDataList.size >= (result.t.totalCount ?: 0))
+
                 _recordDetailResult.value = result
             }
         }
