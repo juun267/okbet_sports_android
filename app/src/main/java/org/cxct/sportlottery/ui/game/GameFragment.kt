@@ -96,11 +96,13 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 eventId
                             )
                         } else {
-                            service.unSubscribeHallChannel(
-                                code,
-                                CateMenuCode.HDP_AND_OU.code,
-                                eventId
-                            )
+                            if (eventId?.let { mid -> viewModel.checkInBetInfo(mid) } == false) {
+                                service.unSubscribeHallChannel(
+                                    code,
+                                    CateMenuCode.HDP_AND_OU.code,
+                                    eventId
+                                )
+                            }
                         }
                     }
                 }

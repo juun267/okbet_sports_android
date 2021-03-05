@@ -20,6 +20,13 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
     </style>
 
+    <style name="CommonTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->
     <style name="WindowAnimationStyle">
         <item name="android:activityOpenEnterAnimation">@anim/push_right_to_left_enter</item>
