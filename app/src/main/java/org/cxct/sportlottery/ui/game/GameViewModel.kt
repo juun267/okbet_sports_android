@@ -264,8 +264,7 @@ class GameViewModel(
                         OneBoSportApi.messageService.getMessageList(messageType)
                     }
                 }
-            }?.let { result -> _messageListResult.postValue(result)
-                Timber.v(">>>>>>公告跑馬燈:${result}")}
+            }?.let { result -> _messageListResult.postValue(result) }
         }
     }
 
