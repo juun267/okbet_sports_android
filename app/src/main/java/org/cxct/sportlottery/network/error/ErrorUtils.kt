@@ -5,6 +5,10 @@ import okhttp3.ResponseBody
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
+import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
+import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
+import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
+import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -27,12 +31,23 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
+import org.cxct.sportlottery.network.Constants.THIRD_AUTO_TRANSFER
+import org.cxct.sportlottery.network.Constants.THIRD_GAMES
+import org.cxct.sportlottery.network.Constants.THIRD_REBATES
+import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
+import org.cxct.sportlottery.network.Constants.THIRD_LOGIN
+import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
+import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
+import org.cxct.sportlottery.network.Constants.USER_LEVEL_GROWTH
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.Constants.USER_NOTICE_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ADD
@@ -49,6 +64,8 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
+import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -68,14 +85,23 @@ import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.third_game.AutoTransferResult
+import org.cxct.sportlottery.network.third_game.BlankResult
+import org.cxct.sportlottery.network.third_game.ThirdLoginResult
+import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
+import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
+import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
+import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
-import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
+import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
+import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
@@ -266,15 +292,77 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return WithdrawListResult(it.code, it.msg, null, it.success, null) as T
                     }
+                    (url.contains(FEEDBACK_QUERYLIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedbackListResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(FEEDBACK_SAVE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedBackBaseResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(FEEDBACK_REPLY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedBackBaseResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(FEEDBACK_QUERYDETAIL)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return FeedBackBaseResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(THIRD_GET_ALL_BALANCE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return GetAllBalanceResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(THIRD_ALL_TRANSFER_OUT)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BlankResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(THIRD_GAMES)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ThirdGamesResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(THIRD_TRANSFER.replace("{outPlat}/{inPlat}/transfer?=amount", ""))
+                            && url.contains("transfer?=")) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BlankResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(THIRD_QUERY_TRANSFERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(THIRD_AUTO_TRANSFER.replace("{inPlat}/autoTransfer", ""))
+                            && url.contains("autoTransfer")) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return AutoTransferResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(THIRD_LOGIN.replace("{firmType}/login", ""))
+                            && url.contains("login")) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ThirdLoginResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(USER_LEVEL_GROWTH)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LevelGrowthResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(QUERY_FIRST_ORDERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OtherBetHistoryResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(QUERY_SECOND_ORDERS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return QueryTransfersResult(it.code, it.msg, it.success, null, null) as T
+                    }
                     (url.contains(USER_WITHDRAW_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return WithdrawInfoResult(it.code, it.msg,  it.success, null) as T
+                        return WithdrawInfoResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(LOGIN_FOR_GUEST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }
-
+                    (url.contains(THIRD_REBATES)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ThirdRebatesResult(it.code, it.msg, it.success, null) as T
+                    }
                 }
             }
         }

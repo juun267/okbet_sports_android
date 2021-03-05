@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ui.bet.record.search.BetRecordSearchFragment">
+    tools:context=".ui.profileCenter.sportRecord.search.BetRecordSearchFragment">
 
     <TextView
         android:id="@+id/tv_calendar_title"

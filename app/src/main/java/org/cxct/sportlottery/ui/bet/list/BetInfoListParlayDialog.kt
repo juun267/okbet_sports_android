@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,17 +24,19 @@ import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
-class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
-    BetInfoListParlayAdapter.OnTotalQuotaListener {
+class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
+        BetInfoListParlayAdapter.OnTotalQuotaListener {
 
 
     companion object {
@@ -54,7 +56,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: DialogBetInfoParlayListBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_parlay_list, container, false)
         binding.apply {
-            mainViewModel = this@BetInfoListParlayDialog.viewModel
+            gameViewModel = this@BetInfoListParlayDialog.viewModel
             lifecycleOwner = this@BetInfoListParlayDialog.viewLifecycleOwner
         }
         return binding.root
@@ -77,6 +79,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
                 addBet()
             }
         })
+
+        tv_register.setOnClickListener {
+            context?.startActivity(Intent(context, RegisterActivity::class.java))
+        }
 
         tv_to_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext(), Constants.COMBO), getString(R.string.game_rule))
@@ -171,6 +177,22 @@ class BetInfoListParlayDialog : BaseSocketDialog<MainViewModel>(MainViewModel::c
                 dialog.setNegativeButtonText(null)
                 dialog.setTextColor(color)
                 dialog.show()
+            }
+        })
+
+        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
+            val isNeedRegister = (it == null) || (it.testFlag == TestFlag.GUEST.index)
+
+            tv_bet.visibility = if (isNeedRegister) {
+                View.INVISIBLE
+            } else {
+                View.VISIBLE
+            }
+
+            tv_register.visibility = if (isNeedRegister) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
             }
         })
 

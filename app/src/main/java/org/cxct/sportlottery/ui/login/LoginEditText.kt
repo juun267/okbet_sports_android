@@ -14,6 +14,7 @@ import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.annotation.IntDef
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
@@ -67,6 +68,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
+            view.tv_start.visibility = typedArray.getInt(R.styleable.CustomView_necessarySymbol, 0x00000008) //預設隱藏 需要再打開
             view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
             view.btn_clear.visibility = View.GONE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
@@ -182,6 +184,12 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             mOnFocusChangeListener.onFocusChange(v, hasFocus)
             listener.invoke(v, hasFocus)
         }
+    }
+
+    @IntDef(View.VISIBLE, View.INVISIBLE, View.GONE)
+    annotation class Visibility
+    fun setNecessarySymbolVisibility(@Visibility visibility: Int) {
+        tv_start.visibility = visibility
     }
 }
 

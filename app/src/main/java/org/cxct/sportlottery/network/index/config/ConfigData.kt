@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.index.config
 
 data class ConfigData(
+    val platformId: Long?,
     val agentMode: String?, //代理模式：ulimit 无限级，fixed 固定级
     val agentUrl: String?, //代理地址
     val agentZxkfUrl: String?, //代理专属客服地址

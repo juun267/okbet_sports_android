@@ -6,23 +6,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.TextUtil
 import timber.log.Timber
 import java.util.*
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 
 class ProfileCenterViewModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    private val avatarRepository: AvatarRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    private val avatarRepository: AvatarRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
@@ -70,9 +70,7 @@ class ProfileCenterViewModel(
                 loginRepository.logout()
             }.apply {
                 loginRepository.clear()
-                betInfoRepository?.clear()
-                //TODO change timber to actual logout ui to da
-                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
+                betInfoRepository.clear()
             }
         }
     }
@@ -80,22 +78,6 @@ class ProfileCenterViewModel(
     fun getUserInfo() {
         viewModelScope.launch {
             userInfoRepository.getUserInfo()
-        }
-    }
-
-    @Deprecated("20210129 拿掉問候語")
-    fun sayHello(): String? {
-        val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
-        return when {
-            hour < 6 -> androidContext.getString(R.string.good_midnight) + ", "
-            hour < 9 -> androidContext.getString(R.string.good_morning) + ", "
-            hour < 12 -> androidContext.getString(R.string.good_beforenoon) + ", "
-            hour < 14 -> androidContext.getString(R.string.good_noon) + ", "
-            hour < 17 -> androidContext.getString(R.string.good_afternoon) + ", "
-            hour < 19 -> androidContext.getString(R.string.good_evening) + ", "
-            hour < 22 -> androidContext.getString(R.string.good_night) + ", "
-            hour < 24 -> androidContext.getString(R.string.good_dreams) + ", "
-            else -> null
         }
     }
 

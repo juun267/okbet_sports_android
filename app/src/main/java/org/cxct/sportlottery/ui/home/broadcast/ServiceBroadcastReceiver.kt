@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.service.BackService
 import org.json.JSONArray
@@ -54,6 +55,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val userNotice: LiveData<UserNoticeEvent?>
         get() = _userNotice
 
+    val sysMaintenance: LiveData<SysMaintenanceEvent?>
+        get() = _sysMaintenance
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -65,6 +69,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _producerUp = MutableLiveData<ProducerUpEvent?>()
     private val _userMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
+    private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -96,8 +101,18 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     }
                 }
 
+                //公共频道(这个通道会通知主站平台维护)
+                BackService.URL_PLATFORM -> {
+                    when (eventType) {
+                        EventType.SYS_MAINTENANCE.value -> {
+                            val data = ServiceMessage.getSysMaintenance(jObjStr)
+                            _sysMaintenance.value = data
+                        }
+                    }
+                }
+
                 //用户私人频道
-                BackService.URL_PRIVATE -> {
+                BackService.URL_USER_PRIVATE -> {
                     when (eventType) {
                         EventType.USER_MONEY.value -> {
                             val data = ServiceMessage.getUserMoney(jObjStr)
@@ -117,39 +132,6 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         }
                     }
                 }
-/*
-                //大廳賠率
-                BackService.URL_HALL -> {
-                    when (eventType) {
-                        EventType.MATCH_STATUS_CHANGE.value -> {
-                            val data = ServiceMessage.getMatchStatusChange(jObjStr)
-                            _matchStatusChange.value = data
-
-                        }
-                        EventType.MATCH_CLOCK.value -> {
-                            val data = ServiceMessage.getMatchClock(jObjStr)
-                            _matchClock.value = data
-
-                        }
-                        EventType.ODDS_CHANGE.value -> {
-                            val data = ServiceMessage.getOddsChange(jObjStr)
-                            _oddsChange.value = data
-
-                        }
-                    }
-                }
-
-                //具体赛事/赛季频道
-                BackService.URL_EVENT -> {
-                    when (eventType) {
-                        EventType.MATCH_ODDS_CHANGE.value -> {
-                            val data = ServiceMessage.getMatchOddsChange(jObjStr)
-                            _matchOddsChange.value = data
-                        }
-                    }
-
-                }
-*/
 
                 BackService.URL_PING -> {
                     when (eventType) {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import org.cxct.sportlottery.R
 
+@Deprecated("完善功能版本：OrderStatusSelectorView", ReplaceWith("OrderStatusSelectorView"))
 class OrderStatusSelectorComponent @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
     init {
         addView(LayoutInflater.from(context).inflate(R.layout.component_order_status_selector, null))

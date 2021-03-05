@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="org.cxct.sportlottery.ui.bet.record.search.result.ItemClickListener" />
+            type="org.cxct.sportlottery.ui.profileCenter.sportRecord.ItemClickListener" />
 
         <variable
             name="TextUtil"
@@ -22,7 +22,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp"
+        android:paddingHorizontal="4dp"
+        android:background="@color/white"
         android:gravity="center"
         android:onClick="@{() -> clickListener.onClick(row)}"
         android:orientation="horizontal"
@@ -135,8 +136,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{(row.status == 0 || row.status == 1) ? @string/nothing : (row.status == 2 || row.status == 3) ? String.format(@string/plus_symbol, TextUtil.format(row.win)): (row.status == 4 || row.status == 5) ? String.format(@string/minus_symbol, TextUtil.format(row.win)): @string/draw_or_cancel}"
-                android:textColor="@{(row.status == 0 || row.status == 1 || row.status == 6 || row.status == 7) ?  @color/gray6 : (row.status == 2 || row.status == 3) ? @color/green : @color/red2}"
+                app:moneyColor="@{row.win}"
+                app:profitFormat="@{row.win}"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="+1,060.00"
                 tools:textColor="@color/green" />

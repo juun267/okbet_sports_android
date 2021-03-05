@@ -24,7 +24,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
@@ -34,7 +34,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class) {
+class ProfileActivity : BaseNoticeActivity<ProfileModel>(ProfileModel::class) {
 
     companion object {
         private val ENABLE_SWITCH = "1"

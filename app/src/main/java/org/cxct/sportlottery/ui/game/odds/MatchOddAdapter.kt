@@ -97,6 +97,8 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 else -> {
                 }
             }
+
+            updateScoreStatus(item)
         }
 
         private fun setupMatchOddOuHdp(item: MatchOdd, matchOddListener: MatchOddListener?) {
@@ -318,6 +320,23 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                 override fun onFinish() {
                 }
             }.start()
+        }
+
+        private fun updateScoreStatus(item: MatchOdd) {
+            var scoreStatus = ""
+            item.matchStatusList.forEach {
+                scoreStatus = scoreStatus.plus("${it.homeScore} - ${it.awayScore}    ")
+            }
+
+            itemView.ou_hdp_score_status.apply {
+                visibility = if (scoreStatus.isEmpty()) View.GONE else View.VISIBLE
+                text = scoreStatus
+            }
+
+            itemView.x12_score_status.apply {
+                visibility = if (scoreStatus.isEmpty()) View.GONE else View.VISIBLE
+                text = scoreStatus
+            }
         }
 
         companion object {

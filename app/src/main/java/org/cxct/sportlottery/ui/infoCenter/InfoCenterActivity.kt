@@ -96,7 +96,7 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             }
         })
         //已讀總筆數
-        viewModel.totalReadedMsgCount.observe(this@InfoCenterActivity, {
+        viewModel.totalReadedMsgCount.observe(this@InfoCenterActivity, Observer {
             btn_readed_letters.text =
                 String.format(resources.getString(R.string.inbox), it)
         })
@@ -117,12 +117,12 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             }
         })
         //未讀總筆數
-        viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, {
+        viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, Observer {
             btn_unread_letters.text =
                 String.format(resources.getString(R.string.unread_letters), it)
         })
         //Loading
-        viewModel.isLoading.observe(this@InfoCenterActivity, {
+        viewModel.isLoading.observe(this@InfoCenterActivity, Observer {
             if (it) {
                 nowLoading = it
                 loading()

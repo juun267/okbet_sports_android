@@ -26,6 +26,7 @@ const val KEY_IS_LOGIN = "is_login"
 const val KEY_TOKEN = "token"
 const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
+const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 
 const val KEY_USER_ID = "user_id"
@@ -41,6 +42,15 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private val _isLogin = MutableLiveData<Boolean>().apply {
         value = sharedPref.getBoolean(KEY_IS_LOGIN, false) && isCheckToken
     }
+
+    var platformId
+        get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
+        set(value) {
+            with(sharedPref.edit()) {
+                putLong(KEY_PLATFORM_ID, value)
+                apply()
+            }
+        }
 
     var token
         get() = sharedPref.getString(KEY_TOKEN, "")
@@ -201,6 +211,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             putBoolean(KEY_IS_LOGIN, loginData != null)
             putString(KEY_TOKEN, loginData?.token)
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
+            putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
             apply()
         }
     }

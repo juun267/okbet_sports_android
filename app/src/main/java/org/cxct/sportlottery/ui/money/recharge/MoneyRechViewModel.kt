@@ -6,16 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants.BASE_URL
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
@@ -25,8 +26,9 @@ class MoneyRechViewModel(
     private val androidContext: Context,
     private val moneyRepository: MoneyRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs
@@ -160,7 +162,7 @@ class MoneyRechViewModel(
     fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, bankCode: String?) {
         checkRcgOnlineAmount(depositMoney.toString(), mSelectRechCfgs)
         if (onlinePayInput()) {
-            var url = BASE_URL + USER_RECHARGE_ONLINE_PAY
+            var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
@@ -204,7 +206,7 @@ class MoneyRechViewModel(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) -> {// TODO Bill
+            ) -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
             else -> {
@@ -225,7 +227,7 @@ class MoneyRechViewModel(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) -> {// TODO Bill
+            ) -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
             else -> {

@@ -59,6 +59,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="28dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -69,90 +71,159 @@
                 android:id="@+id/et_recommend_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_recommend_code"
                 app:cvInputType="number"
-                app:cvTitle="@string/recommend_code" />
+                app:cvTitle="@string/recommend_code"
+                app:necessarySymbol="visible"/>
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_member_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_member_account"
                 app:cvInputType="text"
-                app:cvTitle="@string/member_account" />
+                app:cvTitle="@string/member_account"
+                app:necessarySymbol="visible" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_register_password"
                 app:cvInputType="textPassword"
-                app:cvTitle="@string/login_password" />
+                app:cvTitle="@string/login_password"
+                app:necessarySymbol="visible" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_confirm_password"
                 app:cvInputType="textPassword"
-                app:cvTitle="@string/confirm_password" />
+                app:cvTitle="@string/confirm_password"
+                app:necessarySymbol="visible" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_real_name"
                 app:cvInputType="text"
-                app:cvTitle="@string/real_name" />
+                app:cvTitle="@string/real_name"
+                app:necessarySymbol="visible" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_withdrawal_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 app:cvEms="4"
                 app:cvHint="@string/hint_withdrawal_pwd"
                 app:cvInputType="numberPassword"
-                app:cvTitle="@string/withdrawal_pwd" />
+                app:cvTitle="@string/withdrawal_pwd"
+                app:necessarySymbol="visible" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_qq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_qq_number"
                 app:cvInputType="number"
-                app:cvTitle="@string/qq_number" />
+                app:cvTitle="@string/qq_number"
+                app:necessarySymbol="visible" />
 
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 app:cvHint="@string/hint_phone_number"
                 app:cvInputType="number"
-                app:cvTitle="@string/phone_number" />
+                app:cvTitle="@string/phone_number"
+                app:necessarySymbol="visible" />
+
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cvHint="@string/hint_e_mail"
+                app:cvInputType="text"
+                app:cvTitle="@string/e_mail"
+                app:necessarySymbol="visible" />
+
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_we_chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cvHint="@string/hint_we_chat_number"
+                app:cvInputType="text"
+                app:cvTitle="@string/we_chat"
+                app:necessarySymbol="visible" />
+
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_zalo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cvHint="@string/hint_zalo"
+                app:cvInputType="text"
+                app:cvTitle="@string/zalo"
+                app:necessarySymbol="visible" />
+
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_facebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cvHint="@string/hint_facebook"
+                app:cvInputType="text"
+                app:cvTitle="@string/facebook"
+                app:necessarySymbol="visible" />
+
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_whats_app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cvHint="@string/hint_whats_app"
+                app:cvInputType="text"
+                app:cvTitle="@string/whats_app"
+                app:necessarySymbol="visible" />
+
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_telegram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cvHint="@string/hint_telegram"
+                app:cvInputType="text"
+                app:cvTitle="@string/telegram"
+                app:necessarySymbol="visible" />
+
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                app:cvEnableVerificationCode="true"
+                app:cvHint="@string/hint_verification_code"
+                app:cvInputType="number"
+                app:cvTitle="@string/verification_code"
+                app:necessarySymbol="visible" />
 
             <LinearLayout
                 android:id="@+id/block_sms_valid_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal">
 
                 <org.cxct.sportlottery.ui.login.LoginEditText
@@ -163,12 +234,12 @@
                     app:cvEnableVerificationCode="false"
                     app:cvHint="@string/hint_verification_code_by_sms"
                     app:cvInputType="number"
-                    app:cvTitle="@string/verification_code_by_sms" />
+                    app:cvTitle="@string/verification_code_by_sms"
+                    app:necessarySymbol="visible"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_marginStart="5dp"
                     android:background="@color/transparent"
                     android:gravity="center"
@@ -179,90 +250,14 @@
                         android:id="@+id/btn_send_sms"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@drawable/effect_ripple_rectangle_blue_light"
-                        android:letterSpacing="0.1"
-                        android:minWidth="0dp"
-                        android:minHeight="0dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
+                        android:background="@drawable/btn_send_sms"
                         android:text="@string/get_verification_code"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                 </LinearLayout>
 
             </LinearLayout>
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_mail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                app:cvHint="@string/hint_e_mail"
-                app:cvInputType="text"
-                app:cvTitle="@string/e_mail" />
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_we_chat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                app:cvHint="@string/hint_we_chat_number"
-                app:cvInputType="text"
-                app:cvTitle="@string/we_chat" />
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_zalo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                app:cvHint="@string/hint_zalo"
-                app:cvInputType="text"
-                app:cvTitle="@string/zalo" />
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_facebook"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                app:cvHint="@string/hint_facebook"
-                app:cvInputType="text"
-                app:cvTitle="@string/facebook" />
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_whats_app"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                app:cvHint="@string/hint_whats_app"
-                app:cvInputType="text"
-                app:cvTitle="@string/whats_app" />
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_telegram"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                app:cvHint="@string/hint_telegram"
-                app:cvInputType="text"
-                app:cvTitle="@string/telegram" />
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_verification_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
-                app:cvEnableVerificationCode="true"
-                app:cvHint="@string/hint_verification_code"
-                app:cvInputType="number"
-                app:cvTitle="@string/verification_code" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -298,8 +293,6 @@
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
                 android:layout_marginBottom="6dp"
                 android:background="@drawable/bg_radius_20_button_dusk"
                 android:text="@string/btn_register"

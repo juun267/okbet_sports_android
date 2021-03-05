@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Order" />
+
+        <variable
+            name="clickListener"
+            type="org.cxct.sportlottery.ui.profileCenter.otherBetRecord.ItemClickListener" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_marginVertical="0.5dp"
+        android:onClick="@{() -> clickListener.onClick(data)}"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:id="@+id/tv_datetime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/gray6"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
+            app:date="@{data.statDate}"
+            tools:text="2021-02-25" />
+
+        <TextView
+            android:id="@+id/tv_play_cate_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@{data.betCount.toString()}"
+            android:textColor="@color/gray6"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
+            tools:text="999" />
+
+
+        <TextView
+            android:id="@+id/tv_bet_total_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textColor="@color/gray6"
+            android:textSize="@dimen/textSize12sp"
+            app:moneyFormat="@{data.betAmount}"
+            tools:text="999,999,9.000" />
+
+        <TextView
+            android:id="@+id/tv_win_lose_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:textSize="@dimen/textSize12sp"
+            app:moneyColor="@{data.netAmount}"
+            app:profitFormat="@{data.netAmount}"
+            tools:text="+1,060.00"
+            tools:textColor="@color/green" />
+
+    </LinearLayout>
+
+</layout>

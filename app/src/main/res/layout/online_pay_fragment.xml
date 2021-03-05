@@ -35,6 +35,7 @@
             app:cardElevation="0dp">
 
             <LinearLayout
+                android:id="@+id/ll_pay_gap"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center"
@@ -58,15 +59,22 @@
                     android:layout_marginBottom="15dp"
                     android:background="@color/bright_gray" />
 
+                <ImageView
+                    android:id="@+id/iv_gap_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_bank_default" />
 
-                <Spinner
-                    android:id="@+id/sp_pay_gap"
+                <TextView
+                    android:id="@+id/txv_pay_gap"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:textColor="@color/colorDarkBlack"
+                    android:gravity="center_vertical|left"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -113,16 +121,23 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     android:background="@color/bright_gray" />
+                
+                <ImageView
+                    android:id="@+id/iv_bank_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_bank_default" />
 
-
-                <Spinner
-                    android:id="@+id/sp_pay_bank"
+                <TextView
+                    android:id="@+id/txv_pay_bank"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:textColor="@color/colorDarkBlack"
+                    android:gravity="center_vertical|left"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView

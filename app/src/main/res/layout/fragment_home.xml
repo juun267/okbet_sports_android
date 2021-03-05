@@ -2,12 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.game.HomeFragment">
 
     <data>
+
         <variable
             name="mainViewModel"
-            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+            type="org.cxct.sportlottery.ui.main.MainViewModel" />
+
+        <variable
+            name="gameViewModel"
+            type="org.cxct.sportlottery.ui.game.GameViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -82,7 +87,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="@{mainViewModel.allFootballCount.toString()}"
+                            android:text="@{gameViewModel.allFootballCount.toString()}"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize22sp"
                             app:layout_constraintBottom_toBottomOf="@id/label_football"
@@ -155,7 +160,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="@{mainViewModel.allBasketballCount.toString()}"
+                            android:text="@{gameViewModel.allBasketballCount.toString()}"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize22sp"
                             app:layout_constraintBottom_toBottomOf="@id/label_basketball"
@@ -187,38 +192,38 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_game_soon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:cvCount="@{mainViewModel.asStartCount.toString()}"
+                                app:cvCount="@{gameViewModel.asStartCount.toString()}"
                                 app:cvIcon="@drawable/ic_game_soon"
                                 app:cvTitle="@string/game_soon" />
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_tennis"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="6dp"
-                                app:cvCount="@{mainViewModel.allTennisCount.toString()}"
+                                app:cvCount="@{gameViewModel.allTennisCount.toString()}"
                                 app:cvIcon="@drawable/ic_tennis"
                                 app:cvTitle="@string/tennis" />
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_badminton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="6dp"
-                                app:cvCount="@{mainViewModel.allBadmintonCount.toString()}"
+                                app:cvCount="@{gameViewModel.allBadmintonCount.toString()}"
                                 app:cvIcon="@drawable/ic_badminton"
                                 app:cvTitle="@string/badminton" />
 
-                            <org.cxct.sportlottery.ui.home.HomeGameCard
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_volleyball"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="6dp"
-                                app:cvCount="@{mainViewModel.allVolleyballCount.toString()}"
+                                app:cvCount="@{gameViewModel.allVolleyballCount.toString()}"
                                 app:cvIcon="@drawable/ic_volleyball"
                                 app:cvTitle="@string/volleyball" />
 
@@ -228,7 +233,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <org.cxct.sportlottery.ui.home.HomeGameTable
+                <org.cxct.sportlottery.ui.game.home.HomeGameTable
                     android:id="@+id/drawer_in_play"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

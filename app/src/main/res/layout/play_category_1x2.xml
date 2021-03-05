@@ -116,4 +116,19 @@
         app:topText="2"
         tools:bottomText="13.5" />
 
+    <TextView
+        android:id="@+id/x12_score_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/holo_orange_light"
+        android:paddingStart="15dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="4dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintTop_toBottomOf="@id/x12_bet_1"
+        tools:text="6-3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

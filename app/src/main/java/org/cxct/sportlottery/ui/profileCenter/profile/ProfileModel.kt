@@ -12,15 +12,17 @@ import org.cxct.sportlottery.repository.AvatarRepository
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 
 class ProfileModel(
     private val androidContext: Context,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    private val avatarRepository: AvatarRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    private val avatarRepository: AvatarRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
 

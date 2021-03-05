@@ -4,12 +4,9 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import androidx.lifecycle.Observer
-import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.SERVICE_SEND_DATA
-import org.cxct.sportlottery.service.SERVICE_TOKEN
-import org.cxct.sportlottery.service.SERVICE_USER_ID
+import org.cxct.sportlottery.service.*
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
 import kotlin.reflect.KClass
 
@@ -28,6 +25,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             Timber.e(">>> onServiceConnected")
             val binder = service as BackService.MyBinder //透過Binder調用Service內的方法
             backService = binder.service
+
+            binder.connect(
+                viewModel.loginRepository.token,
+                viewModel.loginRepository.userId,
+                viewModel.loginRepository.platformId
+            )
+
             isServiceBound = true
         }
 
@@ -40,18 +44,22 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.loginRepository.isLogin.observe(this, Observer {
-            when (it) {
-                true -> bindService()
-                false -> unBindService()
-            }
-        })
-
-        subscribeBroadCastReceiver()
+        receiver.sysMaintenance.observe(this) {
+            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStart() {
+        super.onStart()
+
+        subscribeBroadCastReceiver()
+        bindService()
+    }
+
+    override fun onStop() {
+        super.onStop()
 
         removeBroadCastReceiver()
         unBindService()
@@ -59,11 +67,8 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     private fun bindService() {
         if (isServiceBound) return
-        if (checkServiceRunning()) return
 
         val serviceIntent = Intent(this, BackService::class.java)
-        serviceIntent.putExtra(SERVICE_TOKEN, viewModel.loginRepository.token)
-        serviceIntent.putExtra(SERVICE_USER_ID, viewModel.loginRepository.userId)
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
         isServiceBound = true
     }

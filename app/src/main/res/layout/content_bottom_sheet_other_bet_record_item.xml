@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="org.cxct.sportlottery.ui.profileCenter.otherBetRecord.SheetData" />
+
+    </data>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:background="@{item.isChecked ? @color/blue2 : @color/white}"
+        android:paddingVertical="12dp"
+        android:text="@{item.showName}"
+        android:checked="@{item.isChecked}"
+        android:button="@null"
+        android:textColor="@color/textColorDark"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="注單狀態" />
+
+</layout>

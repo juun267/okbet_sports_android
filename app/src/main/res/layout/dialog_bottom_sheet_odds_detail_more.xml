@@ -5,7 +5,7 @@
     <data>
         <variable
             name="mainViewModel"
-            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+            type="org.cxct.sportlottery.ui.main.MainViewModel" />
     </data>
 
     <LinearLayout
@@ -37,7 +37,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_more"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/content_odds_detail_more"/>
 
 
     </LinearLayout>

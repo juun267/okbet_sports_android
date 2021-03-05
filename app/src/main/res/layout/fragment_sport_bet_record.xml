@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profileCenter.sportRecord.SportBetRecordFragment">
+
+    <org.cxct.sportlottery.ui.component.DateRangeSearchView
+        android:id="@+id/date_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/date_search_bar" >
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/status_selector"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:defaultStatusText="@string/all_bet_status" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="15dp"
+            android:background="@color/gray11"/>
+
+        <LinearLayout
+            android:id="@+id/ll_champion"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/btn_today"
+            app:layout_constraintStart_toStartOf="@+id/btn_today"
+            app:layout_constraintTop_toBottomOf="@+id/btn_today">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/btn_champion"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/champion_play"
+                android:textColor="@color/textColorDark" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="horizontal"
+        android:paddingVertical="4dp"
+        app:layout_constraintBottom_toTopOf="@id/rv_bet_record"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_status">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/order_number"
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/bet_type"
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/total_bet_money"
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/status"
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bet_record"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/gray11"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/layout_total"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:listitem="@layout/item_bet_record_result" />
+
+    <include
+        android:id="@+id/layout_total"
+        layout="@layout/view_total_record"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_scroll_to_top"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/bg_circle_gray6_alpha50"
+        android:padding="14dp"
+        android:src="@drawable/ic_scroll_to_top"
+        app:layout_constraintBottom_toTopOf="@+id/layout_total"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

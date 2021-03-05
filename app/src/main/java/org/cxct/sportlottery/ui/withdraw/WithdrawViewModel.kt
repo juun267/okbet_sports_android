@@ -17,11 +17,8 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.MoneyRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
@@ -32,8 +29,9 @@ class WithdrawViewModel(
     private val moneyRepository: MoneyRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
 
     private val _loading = MutableLiveData<Boolean>()
@@ -198,7 +196,7 @@ class WithdrawViewModel(
             fullName = fullName,
             id = id,
             userId = userId,
-            uwType = uwType, //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+            uwType = uwType,
             bankCode = bankCode
         )
     }
@@ -271,7 +269,6 @@ class WithdrawViewModel(
         return true
     }
 
-    //TODO Dean : bank delete check
     private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
@@ -335,7 +332,7 @@ class WithdrawViewModel(
                 rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney,
                 _userMoney.value,
                 ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount.toLong())).toDouble()
-            ) -> {// TODO Dean : 根據config獲取 但只有最小沒有最大
+            ) -> {
                 androidContext.getString(R.string.error_withdraw_amount)
             }
             else -> {

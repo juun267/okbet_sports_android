@@ -16,15 +16,18 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
-import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
+import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
-import org.cxct.sportlottery.ui.home.MainActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
+import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
@@ -38,7 +41,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity : BaseNoticeActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -160,7 +163,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
         //額度轉換
         btn_account_transfer.setOnClickListener {
-            //TODO 額度轉換
+            startActivity(Intent(this, MoneyTransferActivity::class.java))
         }
 
         //提款設置
@@ -168,9 +171,14 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             viewModel.settingCheckPermissions()
         }
 
-        //投注記錄
-        btn_bet_record.setOnClickListener {
+        //體育投注記錄
+        btn_sport_bet_record.setOnClickListener {
             startActivity(Intent(this, BetRecordActivity::class.java))
+        }
+
+        //其他投注記錄
+        btn_other_bet_record.setOnClickListener {
+            startActivity(Intent(this, OtherBetRecordActivity::class.java))
         }
 
         //資金明細
@@ -192,12 +200,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
                 ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
         }
 
-        //代理加盟
-        //7610 確認移除代理加盟
-        /*btn_agent.setOnClickListener {
-            //TODO 代理加盟
-        }*/
-
         //幫助中心
         btn_help_center.setOnClickListener {
             startActivity(Intent(this, HelpCenterActivity::class.java))
@@ -205,7 +207,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
         //建議反饋
         btn_feedback.setOnClickListener {
-            //TODO 建議反饋
+            startActivity(Intent(this, FeedbackMainActivity::class.java))
         }
     }
 

@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.util
 
 import androidx.databinding.BindingAdapter
-import org.cxct.sportlottery.ui.home.HomeGameCard
+import org.cxct.sportlottery.ui.game.home.HomeGameCard
 
 /**
  * 自定義物件的屬性，要使用 data binding 給值，要在此添加方法

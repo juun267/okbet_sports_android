@@ -9,4 +9,6 @@ data class Sport(
     val num: Int,
     @Json(name = "items")
     val items: List<Item>
-)
+) {
+    var isSelect = false
+}
