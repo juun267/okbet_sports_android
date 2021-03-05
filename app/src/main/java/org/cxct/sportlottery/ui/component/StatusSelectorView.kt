@@ -3,8 +3,11 @@ package org.cxct.sportlottery.ui.component
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.constraintlayout.widget.ConstraintSet
@@ -12,11 +15,14 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.content_bottom_sheet_other_bet_record_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
+
+    private val allPlatTag = "ALL_PLAT"
 
     companion object {
         const val STYLE_NULL = -99
@@ -27,7 +33,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
     val bottomSheetView: View by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    var selectedText: String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
+    var selectedText: String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText) ?:""
         get() = tv_selected.text.toString()
         set(value) {
             field = value
@@ -48,6 +54,16 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             if (value != null) tv_selected.setTextColor(ContextCompat.getColor(context, value))
         }
 
+    private var sheetAdapter: StatusSheetAdapter ?= null
+
+    var dataList = sheetAdapter?.dataList
+        get() = sheetAdapter?.dataList
+        set(value) {
+            field = value
+            sheetAdapter?.dataList = value ?: listOf()
+            sheetAdapter?.notifyDataSetChanged()
+        }
+
     var isShowAllCheckBoxView: Boolean? = false
         get() = bottomSheetView.checkbox_select_all.isVisible
         set(value) {
@@ -60,7 +76,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         val view = LayoutInflater.from(context).inflate(R.layout.view_status_selector, this, false)
         addView(view)
 
-        try {
+//        try {
             setButtonSheet(typedArray)
 
             view?.apply {
@@ -84,14 +100,11 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             }
 
-            this.setOnClickListener {
-                bottomSheet.show()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            typedArray.recycle()
-        }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        } finally {
+//            typedArray.recycle()
+//        }
 
     }
 
@@ -124,11 +137,109 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             sheet_tv_close.setOnClickListener {
                 bottomSheet.dismiss()
             }
+
+
+
+            sheetAdapter = StatusSheetAdapter(null, StatusSheetAdapter.ItemCheckedListener { isChecked, data ->
+                if (isChecked) {
+                    selectedText = data.showName
+                    selectedTag = data.code
+                    dismiss()
+                }
+            })
+
+            sheet_rv_more.adapter = sheetAdapter
+
         }
 
         bottomSheet.setContentView(bottomSheetView)
-
     }
+
 }
 
 
+
+data class StatusSheetData(val code: String?, val showName: String?) {
+    var isChecked = false
+}
+
+class StatusSheetAdapter (private val defaultCheckedCode: String?, private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var mNowCheckedPos:Int? = null
+    var dataList = listOf<StatusSheetData>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return ItemViewHolder.from(parent)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        when (holder) {
+            is ItemViewHolder -> {
+                val data = dataList[position]
+
+                setSingleChecked(holder.itemView.checkbox, position)
+
+                holder.bind(data)
+            }
+        }
+    }
+
+    private fun setSingleChecked(checkbox: CheckBox, position: Int) {
+        val data = dataList[position]
+
+        if ((data.code == defaultCheckedCode || data.code == null) && mNowCheckedPos == null) {
+            data.isChecked = true
+            mNowCheckedPos = position
+        }
+
+        checkbox.setOnClickListener {
+            val previousPosition = mNowCheckedPos
+
+            if (previousPosition != null) {
+                dataList[previousPosition].isChecked = false
+                notifyItemChanged(previousPosition)
+            }
+
+            mNowCheckedPos = position
+            checkbox.isChecked = true
+            data.isChecked = true
+            checkedListener.onChecked(checkbox.isChecked, data)
+
+            notifyItemChanged(position)
+        }
+    }
+
+    class ItemViewHolder private constructor(val view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(data: StatusSheetData) {
+            itemView.apply {
+                checkbox.isChecked = data.isChecked
+                checkbox.text = data.showName
+                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.blue2) else ContextCompat.getColor(checkbox.context, R.color.white))
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): RecyclerView.ViewHolder {
+                val binding = LayoutInflater.from(parent.context).inflate(R.layout.custom_bottom_sheet_item, parent, false)
+                return ItemViewHolder(binding)
+            }
+        }
+
+    }
+
+    class ItemCheckedListener(val checkedListener: (isChecked: Boolean, data: StatusSheetData) -> Unit) {
+        fun onChecked(isChecked: Boolean, data: StatusSheetData) = checkedListener(isChecked, data)
+    }
+
+
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+
+}

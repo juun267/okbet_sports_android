@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -18,6 +18,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.finance.data.*
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
@@ -25,7 +26,6 @@ import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TimeUtil
-import java.util.*
 
 const val pageSize = 20
 
@@ -33,8 +33,11 @@ class FinanceViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+
+    val loading: LiveData<Boolean> //使用者餘額
+        get() = _loading
 
     val userMoney: LiveData<Double?>
         get() = _userMoney
@@ -47,21 +50,6 @@ class FinanceViewModel(
 
     val recordList: LiveData<List<Pair<String, Int>>>
         get() = _recordList
-
-    val recordCalendarRange: LiveData<Pair<Calendar, Calendar>>
-        get() = _recordCalendarRange
-
-    val recordCalendarStartDate: LiveData<RechargeTime>
-        get() = _recordCalendarStartDate
-
-    val recordCalendarEndDate: LiveData<RechargeTime>
-        get() = _recordCalendarEndDate
-
-    val rechargeStateList: LiveData<List<RechargeState>>
-        get() = _rechargeStateList
-
-    val rechargeChannelList: LiveData<List<RechargeChannel>>
-        get() = _rechargeChannelList
 
     val recordType: LiveData<String>
         get() = _recordType
@@ -81,6 +69,7 @@ class FinanceViewModel(
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
+    private val _loading = MutableLiveData<Boolean>()
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userMoney = MutableLiveData<Double?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
@@ -89,20 +78,57 @@ class FinanceViewModel(
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
 
-    private val _recordCalendarRange = MutableLiveData<Pair<Calendar, Calendar>>()
-    private val _recordCalendarStartDate = MutableLiveData<RechargeTime>()
-    private val _recordCalendarEndDate = MutableLiveData<RechargeTime>()
+    val rechargeStateList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
+        when (it) {
+            androidContext.getString(R.string.recharge_state_processing) -> {
+                StatusSheetData(Status.PROCESSING.code.toString(), it)
+            }
+            androidContext.getString(R.string.recharge_state_success) -> {
+                StatusSheetData(Status.SUCCESS.code.toString(), it)
 
-    private val _rechargeStateList = MutableLiveData<List<RechargeState>>()
-    private val _rechargeChannelList = MutableLiveData<List<RechargeChannel>>()
+            }
+            androidContext.getString(R.string.recharge_state_failed) -> {
+                StatusSheetData(Status.FAILED.code.toString(), it)
+            }
+            else -> {
+                StatusSheetData(null, it).apply { isChecked = true }
+            }
+        }
+    }
+
+
+    val rechargeChannelList = androidContext.resources.getStringArray(R.array.recharge_channel_array).map {
+        when (it) {
+            androidContext.getString(R.string.recharge_channel_online) -> {
+                StatusSheetData(RechType.ONLINE_PAYMENT.type, it)
+            }
+            androidContext.getString(R.string.recharge_channel_bank) -> {
+                StatusSheetData(RechType.BANK_TRANSFER.type, it)
+            }
+            androidContext.getString(R.string.recharge_channel_alipay) -> {
+                StatusSheetData(RechType.ALIPAY.type, it)
+            }
+            androidContext.getString(R.string.recharge_channel_weixin) -> {
+                StatusSheetData(RechType.WEIXIN.type, it)
+            }
+            androidContext.getString(R.string.recharge_channel_cft) -> {
+                StatusSheetData(RechType.CFT.type, it)
+            }
+            androidContext.getString(R.string.recharge_channel_admin) -> {
+                StatusSheetData(RechType.ADMIN_ADD_MONEY.type, it)
+            }
+            else -> {
+                StatusSheetData(null, it).apply { isChecked = true }
+            }
+        }
+    }
+
 
     private val _withdrawStateList = MutableLiveData<List<WithdrawState>>()
     private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
 
-    private val _withdrawLogDetail =
-        MutableLiveData<org.cxct.sportlottery.network.withdraw.list.Row>()
-    private val _rechargeLogDetail =
-        MutableLiveData<Row>()
+    private val _withdrawLogDetail = MutableLiveData<org.cxct.sportlottery.network.withdraw.list.Row>()
+    private val _rechargeLogDetail = MutableLiveData<Row>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
@@ -110,63 +136,6 @@ class FinanceViewModel(
 
     fun setRecordType(recordType: String) {
         _recordType.postValue(recordType)
-    }
-
-    fun setRecordTimeRange(dateSelectedType: DateSelectedType? = null, start: Calendar, end: Calendar? = null) {
-
-        if (end != null) {
-            setRecordStartTime(start)
-            setRecordEndTime(end)
-        } else {
-            when (dateSelectedType) {
-                DateSelectedType.START -> {
-                    setRecordStartTime(start)
-                }
-                DateSelectedType.END -> {
-                    setRecordEndTime(start)
-                }
-            }
-        }
-    }
-
-    private fun setRecordStartTime(start: Calendar) {
-        val startDateStr = TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd")
-        val startDate =
-            RechargeTime(
-                startDateStr,
-                TimeUtil.getDayDateTimeRangeParams(startDateStr)
-            )
-        _recordCalendarStartDate.postValue(startDate)
-    }
-
-    private fun setRecordEndTime(end: Calendar) {
-        val endDateStr = TimeUtil.timeFormat(end.timeInMillis, "yyyy-MM-dd")
-        val endDate =
-            RechargeTime(
-                endDateStr,
-                TimeUtil.getDayDateTimeRangeParams(endDateStr)
-            )
-        _recordCalendarEndDate.postValue(endDate)
-    }
-
-    fun setRechargeState(position: Int) {
-        val list = _rechargeStateList.value
-
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
-
-        _rechargeStateList.postValue(list ?: listOf())
-    }
-
-    fun setRechargeChannel(position: Int) {
-        val list = _rechargeChannelList.value
-
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
-
-        _rechargeChannelList.postValue(list ?: listOf())
     }
 
     fun getMoney() {
@@ -191,73 +160,16 @@ class FinanceViewModel(
         _recordList.postValue(recordList)
     }
 
-    fun getCalendarRange() {
-        val calendarToday = TimeUtil.getTodayEndTimeCalendar()
-        val calendarPastMonth = TimeUtil.getTodayEndTimeCalendar()
-        calendarPastMonth.add(Calendar.DATE, -30)
-
-        _recordCalendarRange.postValue(calendarPastMonth to calendarToday)
+    private fun loading() {
+        _loading.postValue(true)
     }
 
-    fun getRechargeState() {
-        val rechargeStateList =
-            androidContext.resources.getStringArray(R.array.recharge_state_array)
-
-        val list = rechargeStateList.map {
-            when (it) {
-                androidContext.getString(R.string.recharge_state_processing) -> {
-                    RechargeState(Status.PROCESSING.code, it)
-                }
-                androidContext.getString(R.string.recharge_state_success) -> {
-                    RechargeState(Status.SUCCESS.code, it)
-
-                }
-                androidContext.getString(R.string.recharge_state_failed) -> {
-                    RechargeState(Status.FAILED.code, it)
-                }
-                else -> {
-                    RechargeState(null, it).apply { isSelected = true }
-                }
-            }
-        }
-
-        _rechargeStateList.postValue(list)
+    private fun hideLoading() {
+        _loading.postValue(false)
     }
 
-    fun getRechargeChannel() {
-        val rechargeChannelList =
-            androidContext.resources.getStringArray(R.array.recharge_channel_array)
-
-        val list = rechargeChannelList.map {
-            when (it) {
-                androidContext.getString(R.string.recharge_channel_online) -> {
-                    RechargeChannel(RechType.ONLINE_PAYMENT.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_bank) -> {
-                    RechargeChannel(RechType.BANK_TRANSFER.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_alipay) -> {
-                    RechargeChannel(RechType.ALIPAY.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_weixin) -> {
-                    RechargeChannel(RechType.WEIXIN.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_cft) -> {
-                    RechargeChannel(RechType.CFT.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_admin) -> {
-                    RechargeChannel(RechType.ADMIN_ADD_MONEY.type, it)
-                }
-                else -> {
-                    RechargeChannel(null, it).apply { isSelected = true }
-                }
-            }
-        }
-
-        _rechargeChannelList.postValue(list)
-    }
-
-    fun getUserRechargeList(isFirstFetch: Boolean) {
+    fun getUserRechargeList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
+        loading()
         when {
             isFirstFetch -> {
                 _isFinalPage.postValue(false)
@@ -270,16 +182,13 @@ class FinanceViewModel(
             }
         }
 
-        val rechType = _rechargeChannelList.value?.find {
-            it.isSelected
-        }?.type
-
-        val status = _rechargeStateList.value?.find {
-            it.isSelected
+        val rechType = rechargeChannelList.find {
+            it.isChecked
         }?.code
 
-        val startTime = _recordCalendarStartDate.value?.timeRangeParams?.startTime
-        val endTime = _recordCalendarEndDate.value?.timeRangeParams?.endTime
+        val status = rechargeStateList.find {
+            it.isChecked
+        }?.code?.toIntOrNull()
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -350,8 +259,7 @@ class FinanceViewModel(
     }
 
     fun getWithdrawState() {
-        val withdrawStateList =
-            androidContext.resources.getStringArray(R.array.withdraw_state_array)
+        val withdrawStateList = androidContext.resources.getStringArray(R.array.withdraw_state_array)
 
         val list = withdrawStateList.map {
             when (it) {
@@ -374,8 +282,7 @@ class FinanceViewModel(
     }
 
     fun getWithdrawType() {
-        val withdrawTypeList =
-            androidContext.resources.getStringArray(R.array.withdraw_type_array)
+        val withdrawTypeList = androidContext.resources.getStringArray(R.array.withdraw_type_array)
 
         val list = withdrawTypeList.map {
             when (it) {
@@ -394,7 +301,7 @@ class FinanceViewModel(
         _withdrawTypeList.postValue(list)
     }
 
-    fun getUserWithdrawList(isFirstFetch: Boolean) {
+    fun getUserWithdrawList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
         when {
             isFirstFetch -> {
                 _isFinalPage.postValue(false)
@@ -415,20 +322,15 @@ class FinanceViewModel(
             it.isSelected
         }?.type
 
-        val startTime = _recordCalendarStartDate.value?.timeRangeParams?.startTime
-        val endTime = _recordCalendarEndDate.value?.timeRangeParams?.endTime
-
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getWithdrawList(
-                    WithdrawListRequest(
-                        checkStatus = checkStatus,
-                        uwType = uwType,
-                        startTime = startTime,
-                        endTime = endTime,
+                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(
+                    checkStatus = checkStatus,
+                    uwType = uwType,
+                    startTime = startTime,
+                    endTime = endTime,
 
-                        )
-                )
+                    ))
             }
 
             result?.rows?.map {
@@ -446,15 +348,13 @@ class FinanceViewModel(
                 }
 
                 it.applyTime?.let { nonNullApTime ->
-                    it.withdrawDateAndTime =
-                        TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd HH:mm:ss")
+                    it.withdrawDateAndTime = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd HH:mm:ss")
                     it.withdrawDate = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd")
                     it.withdrawTime = TimeUtil.timeFormat(nonNullApTime, "HH:mm:ss")
                 }
 
                 it.operatorTime?.let { nonNullOpTime ->
-                    it.operatorDateAndTime =
-                        TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
+                    it.operatorDateAndTime = TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
                 it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)

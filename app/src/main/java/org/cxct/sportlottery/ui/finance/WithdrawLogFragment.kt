@@ -22,7 +22,6 @@ import java.util.*
 
 
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
-    private lateinit var calendarBottomSheet: BottomSheetDialog
     private lateinit var withdrawStateBottomSheet: BottomSheetDialog
     private lateinit var withdrawTypeBottomSheet: BottomSheetDialog
     private val logDetailDialog by lazy {
@@ -43,39 +42,21 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
-            setupCalendarBottomSheet(container)
             setupWithdrawStateBottomSheet(container)
             setupWithdrawTypeBottomSheet(container)
-            setupDateRangeSelector(this)
-            setupWithdrawStateSelector(this)
-            setupWithdrawTypeSelector(this)
+//            setupWithdrawStateSelector(this)
+//            setupWithdrawTypeSelector(this)
             setupListColumn(this)
             setupWithdrawLogList(this)
             setupSwipeRefreshLayout(this)
             setupSearch(this)
+            initOnclick(this)
         }
     }
 
-    private fun setupCalendarBottomSheet(container: ViewGroup?) {
-        val bottomSheetView =
-            layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar, container, false)
-
-        calendarBottomSheet = BottomSheetDialog(this.requireContext())
-        calendarBottomSheet.setContentView(bottomSheetView)
-        calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
-                calendarBottomSheet.dismiss()
-
-                viewModel.setRecordTimeRange(dateSelectedType, startDate)
-            }
-
-            override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
-                calendarBottomSheet.dismiss()
-
-                viewModel.setRecordTimeRange(null, startDate, endDate)
-            }
-        })
+    private fun initOnclick(view: View?) {
     }
+
 
     private fun setupWithdrawStateBottomSheet(container: ViewGroup?) {
         val bottomSheetView =
@@ -104,20 +85,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     }
 
 
-    private fun setupDateRangeSelector(view: View) {
-        view.date_range_selector.ll_start_date.setOnClickListener {
-            calendarBottomSheet.apply {
-                calendar.setDateSelectedType(DateSelectedType.START)
-                show()
-            }
-        }
-        view.date_range_selector.ll_end_date.setOnClickListener {
-            calendarBottomSheet.apply {
-                calendar.setDateSelectedType(DateSelectedType.END)
-                show()
-            }
-        }
-    }
+/*
 
     private fun setupWithdrawStateSelector(view: View) {
         view.order_status_selector.ll_start_date.setOnClickListener {
@@ -130,6 +98,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             withdrawTypeBottomSheet.show()
         }
     }
+*/
 
     private fun setupListColumn(view: View) {
         view.rech_log_recharge_amount.text = getString(R.string.withdraw_log_withdraw_amount)
@@ -170,18 +139,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.recordCalendarRange.observe(this.viewLifecycleOwner, Observer {
-            calendarBottomSheet.calendar.setSelectableDateRange(it.first, it.second)
-        })
-
-        viewModel.recordCalendarStartDate.observe(this.viewLifecycleOwner, Observer {
-            date_range_selector.tv_start_date.text = it.date
-        })
-
-        viewModel.recordCalendarEndDate.observe(this.viewLifecycleOwner, Observer {
-            date_range_selector.tv_end_date.text = it.date
-        })
-
         viewModel.withdrawStateList.observe(this.viewLifecycleOwner, Observer {
             val textList = it.map { withdrawState -> withdrawState.state }
 
@@ -189,9 +146,12 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
             }
 
+//            selector_order_status.setAdapter()
+/*
             order_status_selector.tv_start_date.text = it.find { withdrawState ->
                 withdrawState.isSelected
             }?.state
+            */
         })
 
         viewModel.withdrawTypeList.observe(this.viewLifecycleOwner, Observer {
@@ -200,10 +160,11 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             withdrawTypeBottomSheet.rech_list.apply {
                 adapter = ArrayAdapter(context, R.layout.itemview_simple_list_center, textList)
             }
-
+/*
             order_status_selector.tv_end_date.text = it.find { withdrawType ->
                 withdrawType.isSelected
             }?.channel
+            */
         })
 
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner, Observer {
@@ -231,7 +192,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             withdrawLogAdapter.isFinalPage = it
         })
 
-        viewModel.getCalendarRange()
         viewModel.getWithdrawState()
         viewModel.getWithdrawType()
         viewModel.getUserWithdrawList(true)

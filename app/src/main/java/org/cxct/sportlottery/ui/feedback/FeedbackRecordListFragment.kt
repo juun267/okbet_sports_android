@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_feedback_record_list.tv_start_dat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.TimeUtil
-import java.text.SimpleDateFormat
 import java.util.*
 
 class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
@@ -131,8 +130,8 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
         calendarBottomSheet.setContentView(bottomSheetView)
         calendarBottomSheet.calendar.setSelectableDateRange(
-            TimeUtil. getDateInCalendar(30).first,
-            TimeUtil.getDateInCalendar(30).second
+            TimeUtil. getCalendarForDates(30).first,
+            TimeUtil.getCalendarForDates(30).second
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(
