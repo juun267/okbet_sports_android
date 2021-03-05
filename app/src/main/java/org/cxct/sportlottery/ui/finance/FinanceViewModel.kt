@@ -54,11 +54,36 @@ class FinanceViewModel(
     val recordType: LiveData<String>
         get() = _recordType
 
-    val withdrawStateList: LiveData<List<WithdrawState>>
-        get() = _withdrawStateList
+    val withdrawStateList = androidContext.resources.getStringArray(R.array.withdraw_state_array).map {
+        when (it) {
+            androidContext.getString(R.string.withdraw_log_state_processing) -> {
+                StatusSheetData(CheckStatus.PROCESSING.code.toString(), it)
+            }
+            androidContext.getString(R.string.withdraw_log_state_pass) -> {
+                StatusSheetData(CheckStatus.PASS.code.toString(), it)
+            }
+            androidContext.getString(R.string.withdraw_log_state_un_pass) -> {
+                StatusSheetData(CheckStatus.UN_PASS.code.toString(), it)
+            }
+            else -> {
+                StatusSheetData(null, it).apply { isChecked = true }
+            }
+        }
+    }
 
-    val withdrawTypeList: LiveData<List<WithdrawType>>
-        get() = _withdrawTypeList
+    val withdrawTypeList = androidContext.resources.getStringArray(R.array.withdraw_type_array).map {
+        when (it) {
+            androidContext.getString(R.string.withdraw_log_type_bank_trans) -> {
+                StatusSheetData(UWType.BANK_TRANSFER.type, it)
+            }
+            androidContext.getString(R.string.withdraw_log_type_admin) -> {
+                StatusSheetData(UWType.ADMIN_SUB_MONEY.type, it)
+            }
+            else -> {
+                StatusSheetData(null, it).apply { isChecked = true }
+            }
+        }
+    }
 
     val withdrawLogDetail: LiveData<org.cxct.sportlottery.network.withdraw.list.Row>
         get() = _withdrawLogDetail
@@ -122,10 +147,6 @@ class FinanceViewModel(
             }
         }
     }
-
-
-    private val _withdrawStateList = MutableLiveData<List<WithdrawState>>()
-    private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
 
     private val _withdrawLogDetail = MutableLiveData<org.cxct.sportlottery.network.withdraw.list.Row>()
     private val _rechargeLogDetail = MutableLiveData<Row>()
@@ -238,69 +259,6 @@ class FinanceViewModel(
         }
     }
 
-    fun setWithdrawState(position: Int) {
-        val list = _withdrawStateList.value
-
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
-
-        _withdrawStateList.postValue(list ?: listOf())
-    }
-
-    fun setWithdrawType(position: Int) {
-        val list = _withdrawTypeList.value
-
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
-
-        _withdrawTypeList.postValue(list ?: listOf())
-    }
-
-    fun getWithdrawState() {
-        val withdrawStateList = androidContext.resources.getStringArray(R.array.withdraw_state_array)
-
-        val list = withdrawStateList.map {
-            when (it) {
-                androidContext.getString(R.string.withdraw_log_state_processing) -> {
-                    WithdrawState(CheckStatus.PROCESSING.code, it)
-                }
-                androidContext.getString(R.string.withdraw_log_state_pass) -> {
-                    WithdrawState(CheckStatus.PASS.code, it)
-                }
-                androidContext.getString(R.string.withdraw_log_state_un_pass) -> {
-                    WithdrawState(CheckStatus.UN_PASS.code, it)
-                }
-                else -> {
-                    WithdrawState(null, it).apply { isSelected = true }
-                }
-            }
-        }
-
-        _withdrawStateList.postValue(list)
-    }
-
-    fun getWithdrawType() {
-        val withdrawTypeList = androidContext.resources.getStringArray(R.array.withdraw_type_array)
-
-        val list = withdrawTypeList.map {
-            when (it) {
-                androidContext.getString(R.string.withdraw_log_type_bank_trans) -> {
-                    WithdrawType(UWType.BANK_TRANSFER.type, it)
-                }
-                androidContext.getString(R.string.withdraw_log_type_admin) -> {
-                    WithdrawType(UWType.ADMIN_SUB_MONEY.type, it)
-                }
-                else -> {
-                    WithdrawType(null, it).apply { isSelected = true }
-                }
-            }
-        }
-
-        _withdrawTypeList.postValue(list)
-    }
-
     fun getUserWithdrawList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
         when {
             isFirstFetch -> {
@@ -314,13 +272,13 @@ class FinanceViewModel(
             }
         }
 
-        val checkStatus = _withdrawStateList.value?.find {
-            it.isSelected
-        }?.code
+        val checkStatus = withdrawStateList.find {
+            it.isChecked
+        }?.code?.toIntOrNull()
 
-        val uwType = _withdrawTypeList.value?.find {
-            it.isSelected
-        }?.type
+        val uwType = withdrawTypeList.find {
+            it.isChecked
+        }?.code
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {

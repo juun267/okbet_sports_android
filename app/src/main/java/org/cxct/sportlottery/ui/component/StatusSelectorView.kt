@@ -76,7 +76,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         val view = LayoutInflater.from(context).inflate(R.layout.view_status_selector, this, false)
         addView(view)
 
-//        try {
+        try {
             setButtonSheet(typedArray)
 
             view?.apply {
@@ -100,11 +100,11 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             }
 
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        } finally {
-//            typedArray.recycle()
-//        }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            typedArray.recycle()
+        }
 
     }
 

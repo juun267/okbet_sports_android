@@ -23,8 +23,6 @@ import java.util.*
 
 
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
-    private lateinit var rechargeStateBottomSheet: BottomSheetDialog
-    private lateinit var rechargeChannelBottomSheet: BottomSheetDialog
     private val logDetailDialog by lazy {
         RechargeLogDetailDialog()
     }
@@ -43,10 +41,8 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
-//            setupRechargeStateBottomSheet(container)
-//            setupRechargeChannelBottomSheet(container)
-            this.selector_order_status.dataList = viewModel.rechargeChannelList
-            this.selector_method_status.dataList = viewModel.rechargeStateList
+            this.selector_method_status.dataList = viewModel.rechargeChannelList
+            this.selector_order_status.dataList = viewModel.rechargeStateList
             setupListColumn(this)
             setupRechargeLogList(this)
             setupSwipeRefreshLayout(this)

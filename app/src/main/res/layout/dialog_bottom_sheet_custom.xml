@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="207dp"
+    android:layout_height="wrap_content"
+    android:maxHeight="207dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:layout_gravity="bottom"
     android:orientation="vertical">
@@ -66,7 +67,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sheet_tv_title"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="10"
+        tools:itemCount="4"
         tools:listitem="@layout/content_bottom_sheet_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
