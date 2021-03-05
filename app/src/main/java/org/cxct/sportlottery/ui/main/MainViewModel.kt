@@ -31,11 +31,7 @@ class MainViewModel(
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin.apply {
-            if (this.value == false && !loginRepository.isCheckToken) {
-                checkToken()
-            }
-        }
+        loginRepository.isLogin
     }
 
     val token = loginRepository.token
@@ -69,14 +65,6 @@ class MainViewModel(
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
-
-    private fun checkToken() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.checkToken()
-            }
-        }
-    }
 
     fun logout() {
         viewModelScope.launch {

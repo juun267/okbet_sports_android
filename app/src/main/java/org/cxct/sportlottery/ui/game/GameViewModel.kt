@@ -55,11 +55,7 @@ class GameViewModel(
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin.apply {
-            if (this.value == false && !loginRepository.isCheckToken) {
-                checkToken()
-            }
-        }
+        loginRepository.isLogin
     }
 
     val token = loginRepository.token
@@ -225,14 +221,6 @@ class GameViewModel(
         }
         listWithOutOutright.forEach {
             removeBetInfoItem(it)
-        }
-    }
-
-    private fun checkToken() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.checkToken()
-            }
         }
     }
 
