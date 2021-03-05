@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_other_bet_record_detail.*
@@ -13,10 +14,15 @@ import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
+import org.cxct.sportlottery.util.setProfitFormat
 
 class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
+
+
+    private val args: OtherBetRecordDetailFragmentArgs by navArgs()
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
@@ -45,7 +51,7 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        viewModel.querySecondOrders()
+        viewModel.querySecondOrders(args.todayDate)
         return inflater.inflate(R.layout.fragment_other_bet_record_detail, container, false)
     }
 
@@ -87,7 +93,7 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
 
                 layout_total.apply {
                     tv_total_number.text = (totalCount ?: 0).toString()
-                    tv_total_bet_profit.setMoneyFormat(totalWin)
+                    tv_total_bet_profit.setProfitFormat(totalWin)
                     tv_total_bet_profit.setMoneyColor(totalWin ?: 0.0)
                 }
 

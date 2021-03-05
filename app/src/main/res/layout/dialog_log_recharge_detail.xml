@@ -130,13 +130,39 @@
             app:layout_constraintStart_toEndOf="@id/log_detail_status_subtitle"
             tools:text="处理中" />
 
+        <TextView
+            android:id="@+id/log_detail_reason_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:textSize="14sp"
+            android:text="@string/log_detail_reason"
+            android:textColor="@color/textGray"
+            app:layout_constraintEnd_toEndOf="@+id/log_detail_status_subtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/log_detail_status_subtitle" />
+
+        <TextView
+            android:id="@+id/log_detail_reason"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="14sp"
+            android:gravity="start"
+            app:layout_constraintBaseline_toBaselineOf="@id/log_detail_reason_subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/log_detail_reason_subtitle"
+            tools:text="请求第三方接口失败请求第三方接口失败请求第三方接口失败" />
+
         <View
             android:id="@+id/log_detail_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="17dp"
             android:background="@color/light_gray"
-            app:layout_constraintTop_toBottomOf="@id/log_detail_status_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/log_detail_reason" />
 
         <Button
             android:id="@+id/log_detail_confirm"
@@ -144,7 +170,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/btn_confirm"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/main"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/log_detail_divider" />
 

@@ -63,7 +63,9 @@ data class Row(
     @Json(name = "userId")
     val userId: Double,
     @Json(name = "userName")
-    val userName: String
+    val userName: String,
+    @Json(name = "reason")
+    val reason: String?
 ) {
     var rechDateAndTime: String? = null
     var rechDateStr: String? = null

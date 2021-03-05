@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_info_center.*
+import kotlinx.android.synthetic.main.item_finance_no_data.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
@@ -86,8 +87,10 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             } else {
                 if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
                     image_no_message.visibility = View.VISIBLE
+                    tv_no_data.visibility = View.GONE
                 } else {
                     image_no_message.visibility = View.GONE
+                    tv_no_data.visibility = View.VISIBLE
                     adapter?.data = userMsgList//重新載入
                 }
             }
@@ -105,8 +108,10 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             } else {
                 if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
                     image_no_message.visibility = View.VISIBLE
+                    tv_no_data.visibility = View.GONE
                 } else {
                     image_no_message.visibility = View.GONE
+                    tv_no_data.visibility = View.VISIBLE
                     adapter?.data = userMsgList//重新載入
                 }
             }

@@ -41,6 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
+            android:divider="@drawable/divider_straight"
+            android:showDividers="middle"
             android:orientation="vertical">
 
             <LinearLayout
@@ -86,11 +88,6 @@
                     android:src="@drawable/ic_arrow_right_gray" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
 
             <LinearLayout
                 android:id="@+id/btn_nickname"
@@ -140,11 +137,6 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
-
             <LinearLayout
                 android:id="@+id/btn_pwd_setting"
                 android:layout_width="match_parent"
@@ -179,11 +171,6 @@
                     android:src="@drawable/ic_arrow_right_gray" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -223,11 +210,6 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -266,12 +248,6 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
-
-
             <LinearLayout
                 android:id="@+id/ll_real_name"
                 android:layout_width="match_parent"
@@ -300,7 +276,7 @@
                     android:id="@+id/tv_real_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="end"
@@ -318,11 +294,6 @@
                     android:src="@drawable/ic_arrow_right_gray" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
 
             <!--  QQ號碼  -->
             <LinearLayout
@@ -377,12 +348,8 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                
             </LinearLayout>
-
 
             <!--  郵箱  -->
             <LinearLayout
@@ -437,12 +404,8 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                
             </LinearLayout>
-
 
             <!--  手機號碼  -->
             <LinearLayout
@@ -497,12 +460,8 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                
             </LinearLayout>
-
 
             <!--  微信  -->
             <LinearLayout
@@ -557,12 +516,8 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                
             </LinearLayout>
-
 
         </LinearLayout>
 

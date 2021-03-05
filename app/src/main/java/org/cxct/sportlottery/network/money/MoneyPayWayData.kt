@@ -16,3 +16,14 @@ data class MoneyPayWayData(
     @Json(name = "onlineType")
     var onlineType: Int //在线充值类型：1-网银在线充值、2-支付宝在线充值、3-微信在线充值、4-qq在线充值、5-出款、6、信用卡在线充值、7-百度钱包、8-京东钱包
 )
+
+enum class OnlineType(val type : Int) {
+    ONLINE(1),
+    ALIPAY(2),
+    WEIXIN(3),
+    QQ(4),
+    DISPENSING(5),
+    ONLINE_CREDITCARD(6),
+    BAIDU_WALLET(7),
+    TOKYO_WALLET(8)
+}

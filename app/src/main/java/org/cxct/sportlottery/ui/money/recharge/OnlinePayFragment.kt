@@ -12,8 +12,10 @@ import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
+import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
 import kotlin.math.abs
@@ -79,6 +81,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         } else {
             cv_pay_bank.visibility = View.VISIBLE
         }
+
+        tv_pay_gap_subtitle.text =
+            if (mMoneyPayWay?.onlineType == OnlineType.ONLINE.type) getString(R.string.title_pay_channel)
+            else getString(R.string.title_pay_gap)
 
         et_recharge_online_amount.setHint(getAmountLimitHint())
 

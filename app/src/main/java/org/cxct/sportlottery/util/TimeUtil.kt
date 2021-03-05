@@ -38,7 +38,11 @@ object TimeUtil {
 
     fun stampToDateHMSTimeZone(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-        return simpleDateFormat.format(Date(time)) + " (" + TimeZone.getDefault().getDisplayName(true, TimeZone.SHORT) + ")"
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
+        val currentLocalTime = calendar.time
+        val timeZoneFormat = SimpleDateFormat("Z")
+        val timeZoneGTM = timeZoneFormat.format(currentLocalTime)
+        return simpleDateFormat.format(Date(time)) + " (GMT" + timeZoneGTM + ")"
     }
 
     @JvmStatic

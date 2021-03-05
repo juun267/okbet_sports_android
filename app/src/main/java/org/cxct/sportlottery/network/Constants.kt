@@ -91,11 +91,12 @@ object Constants {
     const val INDEX_LOGOUT = "/api/front/index/logout"
     const val INDEX_CONFIG = "/api/front/index/config.json" //获取配置信息
     const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
-    const val INDEX_REGISTER = "api/front/index/register" //注册用户
+    const val INDEX_REGISTER = "/api/front/index/register" //注册用户
     const val INDEX_SEND_SMS = "/api/front/index/sendSms" //发送验证码
     const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
+    const val INDEX_PROMOTENOTICE = "/api/front/index/promotenotice" //遊客未登入的時候用
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
@@ -111,7 +112,7 @@ object Constants {
     const val MESSAGE_LIST = "/api/front/message/list"
 
     //odds
-    const val MATCH_ODDS_LIST = "/api/front/match/odds/list"
+    const val MATCH_ODDS_LIST = "/api/front/match/odds/simple/list"
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
 
     //sport

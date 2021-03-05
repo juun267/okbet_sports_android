@@ -42,10 +42,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 class GameViewModel(
@@ -58,11 +55,7 @@ class GameViewModel(
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin.apply {
-            if (this.value == false && !loginRepository.isCheckToken) {
-                checkToken()
-            }
-        }
+        loginRepository.isLogin
     }
 
     val token = loginRepository.token
@@ -216,8 +209,6 @@ class GameViewModel(
         if (boolean) {
             //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
             cleanOutrightBetOrder()
-            //組成串關注單
-            getBetInfoListForParlay(false)
         }
     }
 
@@ -230,14 +221,6 @@ class GameViewModel(
         }
         listWithOutOutright.forEach {
             removeBetInfoItem(it)
-        }
-    }
-
-    private fun checkToken() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.checkToken()
-            }
         }
     }
 
@@ -254,13 +237,23 @@ class GameViewModel(
 
     //獲取系統公告
     fun getAnnouncement() {
-        val messageType = "1"
+
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.messageService.getMessageList(messageType)
+                when (userInfo.value?.testFlag) {
+                    null -> {
+                        val typeList = arrayOf(1)
+                        OneBoSportApi.messageService.getPromoteNotice(typeList)
+                    }
+                    else -> {
+                        val messageType = "1"
+                        OneBoSportApi.messageService.getMessageList(messageType)
+                    }
+                }
             }?.let { result -> _messageListResult.postValue(result) }
         }
     }
+
 
     //獲取體育菜單
     fun getSportMenu() {
@@ -286,6 +279,21 @@ class GameViewModel(
             result?.let {
                 if (it.sportMenuData != null)
                     initSportMenuSelectedState(it.sportMenuData)
+                it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.today?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.early?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.parlay?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
+                    item.sortNum
+                }
                 _sportMenuResult.postValue(it)
             }
         }
@@ -892,14 +900,20 @@ class GameViewModel(
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                        newItem.status.let { newStatus -> it.matchOdd.status = newStatus }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
-        getBetInfoListForParlay(true)
 
+        val sendRequest = betInfoRepository.betList.find {
+            it.matchOdd.status == 1 || it.matchOdd.status == 2
+        }
+        if (sendRequest == null)
+            getBetInfoListForParlay(true)
+        else Timber.e("不執行 betInfo request")
     }
 
     fun updateBetInfoList(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
@@ -909,13 +923,19 @@ class GameViewModel(
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                        newItem.status?.let { newStatus -> it.matchOdd.status = newStatus }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
-        getBetInfoListForParlay(true)
+        val sendRequest = betInfoRepository.betList.find {
+            it.matchOdd.status == 1 || it.matchOdd.status == 2
+        }
+        if (sendRequest == null)
+            getBetInfoListForParlay(true)
+        else Timber.e("不執行 betInfo request")
 
     }
 
