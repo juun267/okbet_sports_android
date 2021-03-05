@@ -37,6 +37,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/white"
                         android:orientation="vertical">
 
                         <!-- toolBar -->
@@ -48,11 +49,13 @@
                         <!-- 遊戲類別列表 -->
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/tabLayout"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="56dp"
                             android:background="@android:color/white"
-                            app:tabGravity="fill"
+                            app:tabGravity="start"
                             app:tabIndicatorHeight="0dp"
+                            app:tabMaxWidth="0dp"
+                            app:tabMinWidth="60dp"
                             app:tabMode="fixed">
 
                             <com.google.android.material.tabs.TabItem
