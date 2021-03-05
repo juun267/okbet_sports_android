@@ -18,6 +18,6 @@ interface MessageService {
 
     @GET(INDEX_PROMOTENOTICE)
     suspend fun getGuestMessageList(
-        @Query("messageType") messageType: String,
+        @Query("typeList") typeList: Array<Int>,
     ): Response<MessageListResult>
 }
