@@ -173,9 +173,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            //登入就去刷新彈窗公告
-            if (it)
-                getMsgDialog()
+            //登入/登出刷新彈窗公告
+            getMsgDialog()
         })
 
         viewModel.errorResultToken.observe(this, Observer {
@@ -207,9 +206,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     //用戶登入公告訊息彈窗
     private fun setNewsDialog(messageListResult: MessageListResult) {
-        //登出、遊客登入，不顯示登入彈窗公告
-        val isNormalLogin = viewModel.userInfo.value?.testFlag == TestFlag.NORMAL.index
-        if (isNormalLogin && !messageListResult.rows.isNullOrEmpty())
+        //未登入、遊客登入都要顯示彈窗
+        if (!messageListResult.rows.isNullOrEmpty())
             NewsDialog(this, messageListResult.rows).show(supportFragmentManager, null)
     }
 

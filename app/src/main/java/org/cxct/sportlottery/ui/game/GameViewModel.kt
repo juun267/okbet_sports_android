@@ -42,10 +42,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 class GameViewModel(
@@ -252,13 +249,23 @@ class GameViewModel(
 
     //獲取系統公告
     fun getAnnouncement() {
-        val messageType = "1"
+
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.messageService.getMessageList(messageType)
+                when (userInfo.value?.testFlag) {
+                    null -> {
+                        val typeList = arrayOf(1)
+                        OneBoSportApi.messageService.getGuestMessageList(typeList)
+                    }
+                    else -> {
+                        val messageType = "1"
+                        OneBoSportApi.messageService.getMessageList(messageType)
+                    }
+                }
             }?.let { result -> _messageListResult.postValue(result) }
         }
     }
+
 
     //獲取體育菜單
     fun getSportMenu() {
