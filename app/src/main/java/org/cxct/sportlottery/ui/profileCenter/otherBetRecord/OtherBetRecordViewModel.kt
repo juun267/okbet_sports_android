@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.util.TimeUtil
 
 class OtherBetRecordViewModel(
     private val androidContext: Context,
@@ -23,7 +24,6 @@ class OtherBetRecordViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-
 
     val allPlatTag = "ALL_PLAT"
 
@@ -76,7 +76,7 @@ class OtherBetRecordViewModel(
         }
     }
 
-    fun queryFirstOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
+    fun queryFirstOrders(page: Int? = 1, startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime, endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime, firmType: String ?= null) {
         loading()
 
         if (page == 1) {
@@ -105,6 +105,10 @@ class OtherBetRecordViewModel(
         }
     }
 
+    fun querySecondOrders(today: String ?= null) {
+        querySecondOrders(startTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).startTime },
+                          endTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime })
+    }
 
     fun querySecondOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
         loading()
