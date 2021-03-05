@@ -22,8 +22,6 @@ import org.cxct.sportlottery.R
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
 
-    private val allPlatTag = "ALL_PLAT"
-
     companion object {
         const val STYLE_NULL = -99
     }
@@ -33,7 +31,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
     val bottomSheetView: View by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    var selectedText: String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText) ?:""
+    var selectedText: String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
         get() = tv_selected.text.toString()
         set(value) {
             field = value
