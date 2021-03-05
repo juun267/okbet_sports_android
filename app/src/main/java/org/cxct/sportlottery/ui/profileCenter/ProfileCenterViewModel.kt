@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.util.TextUtil
 import timber.log.Timber
 import java.util.*
 
@@ -18,7 +20,8 @@ class ProfileCenterViewModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
+    betInfoRepository: BetInfoRepository,
+    private val avatarRepository: AvatarRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
@@ -44,6 +47,8 @@ class ProfileCenterViewModel(
     private var _needToBindBankCard = MutableLiveData<Boolean>()
     val needToBindBankCard: LiveData<Boolean>
         get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+
+    val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
 
     fun getMoney() {
         viewModelScope.launch {
@@ -137,6 +142,14 @@ class ProfileCenterViewModel(
                 OneBoSportApi.bankService.getBankMy()
             }?.let { result ->
                 _needToBindBankCard.value = result.bankCardList.isNullOrEmpty()
+            }
+        }
+    }
+
+    fun uploadImage(uploadImgRequest: UploadImgRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                avatarRepository.uploadImage(uploadImgRequest)
             }
         }
     }
