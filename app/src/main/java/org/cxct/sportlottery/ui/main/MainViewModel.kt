@@ -91,13 +91,12 @@ class MainViewModel(
 
     //獲取系統公告
     fun getMarquee() {
-
         viewModelScope.launch {
             doNetwork(androidContext) {
                 when (userInfo.value?.testFlag) {
                     null -> {
                         val typeList = arrayOf(2, 3)
-                        OneBoSportApi.messageService.getGuestMessageList(typeList)
+                        OneBoSportApi.messageService.getPromoteNotice(typeList)
                     }
                     else -> {
                         val messageType = "1"
@@ -111,13 +110,12 @@ class MainViewModel(
     }
 
     fun getMsgDialog() {
-
         viewModelScope.launch {
             doNetwork(androidContext) {
                 when (userInfo.value?.testFlag) {
                     null -> {
-                        var typeList = arrayOf(2, 3)
-                        OneBoSportApi.messageService.getGuestMessageList(typeList)
+                        val typeList = arrayOf(2, 3)
+                        OneBoSportApi.messageService.getPromoteNotice(typeList)
                     }
                     else -> {
                         val messageType = "2"

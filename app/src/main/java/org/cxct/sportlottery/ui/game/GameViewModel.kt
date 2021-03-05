@@ -255,7 +255,7 @@ class GameViewModel(
                 when (userInfo.value?.testFlag) {
                     null -> {
                         val typeList = arrayOf(1)
-                        OneBoSportApi.messageService.getGuestMessageList(typeList)
+                        OneBoSportApi.messageService.getPromoteNotice(typeList)
                     }
                     else -> {
                         val messageType = "1"

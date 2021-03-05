@@ -17,7 +17,7 @@ interface MessageService {
     ): Response<MessageListResult>
 
     @GET(INDEX_PROMOTENOTICE)
-    suspend fun getGuestMessageList(
+    suspend fun getPromoteNotice(
         @Query("typeList") typeList: Array<Int>,
     ): Response<MessageListResult>
 }
