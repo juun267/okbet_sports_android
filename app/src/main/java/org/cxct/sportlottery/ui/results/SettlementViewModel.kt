@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.results
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
-import org.cxct.sportlottery.network.matchresult.list.Row
+import org.cxct.sportlottery.network.matchresult.list.MatchResultList
 import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
@@ -32,8 +33,6 @@ class SettlementViewModel(
         get() = _matchResultListResult
     val gameResultDetailResult: LiveData<SettlementRvData>
         get() = _gameResultDetailResult
-    val matchResultList: LiveData<List<Row>>
-        get() = _matchResultList
     val outRightListResult: LiveData<OutrightResultListResult>
         get() = _outRightListResult
     val outRightList: LiveData<List<org.cxct.sportlottery.network.outright.Row>>
@@ -41,9 +40,15 @@ class SettlementViewModel(
 
     private val _matchResultListResult = MutableLiveData<MatchResultListResult>()
     private var _gameResultDetailResult = MutableLiveData<SettlementRvData>(SettlementRvData(-1, -1, mutableMapOf()))
-    private val _matchResultList = MutableLiveData<List<Row>>()
+
     private var _outRightListResult = MutableLiveData<OutrightResultListResult>()
     private val _outRightList = MutableLiveData<List<org.cxct.sportlottery.network.outright.Row>>()
+
+
+    private var matchResultReformatted = mutableListOf<MatchResultData>() //重構後的資料結構
+    private val _filteredMatchResult = MutableLiveData<List<MatchResultData>>() //過濾後的資料
+    val filteredMatchResult: LiveData<List<MatchResultData>>
+        get() = _filteredMatchResult
 
     private var dataType = SettleType.MATCH
 
@@ -52,6 +57,7 @@ class SettlementViewModel(
 
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
+    @Deprecated("重構, 使用新方法getMatchResultList")
     fun getSettlementData(gameType: String, pagingParams: PagingParams?, timeRangeParams: TimeRangeParams) {
         dataType = SettleType.MATCH
         requestListener.requestIng(true)
@@ -72,7 +78,61 @@ class SettlementViewModel(
         }
     }
 
+    fun getMatchResultList(gameType: String, pagingParams: PagingParams?, timeRangeParams: TimeRangeParams) {
+        dataType = SettleType.MATCH
+        requestListener.requestIng(true)
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                settlementRepository.resultList(
+                    pagingParams = pagingParams,
+                    timeRangeParams = timeRangeParams,
+                    gameType = gameType
+                )
+            }?.let { result ->
+                reformatMatchResultData(result.matchResultList).let {
+                    matchResultReformatted = it
+                    //TODO Dean : review 過濾資料
+                    _filteredMatchResult.value = it
+                }
+            }
+
+            filterResult()
+            requestListener.requestIng(false)
+            reSetDetailStatus()
+        }
+    }
+
+    private fun reformatMatchResultData(matchResultList: List<MatchResultList>?): MutableList<MatchResultData> {
+        val matchResultData = mutableListOf<MatchResultData>()
+        matchResultList?.let { resultList ->
+            resultList.forEach { matchResultList ->
+                matchResultData.add(MatchResultData(ListType.TITLE, titleData = matchResultList.league))
+                matchResultList.list.forEach { match ->
+                    matchResultData.add(MatchResultData(ListType.MATCH, matchData = match))
+                }
+            }
+        }
+        return matchResultData
+        Log.e("Dean", "matchResultData = $matchResultData")
+    }
+
     fun getSettlementDetailData(settleRvPosition: Int, gameResultRvPosition: Int, matchId: String) {
+        requestListener.requestIng(true)
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                settlementRepository.resultPlayList(matchId)
+            }?.let { result ->
+                _gameResultDetailResult.postValue(_gameResultDetailResult.value?.apply {
+                    this.settleRvPosition = settleRvPosition
+                    this.gameResultRvPosition = gameResultRvPosition
+                    this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
+                })
+            }
+            requestListener.requestIng(false)
+        }
+    }
+
+    fun getSettlementDetailData(matchId: String) {
         requestListener.requestIng(true)
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -127,9 +187,9 @@ class SettlementViewModel(
     private fun filterResult() {
         when (dataType) {
             SettleType.MATCH -> {
-                _matchResultList.postValue(_matchResultListResult.value?.rows?.filterIndexed { index, row ->
+                /*_matchResultList.postValue(_matchResultListResult.value?.matchResultList?.filterIndexed { index, row ->
                     gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.toLowerCase().contains(gameKeyWord) || filterTeamNameByKeyWord(row, gameKeyWord))
-                })
+                })*/
             }
             SettleType.OUTRIGHT -> {
                 _outRightList.postValue(_outRightListResult.value?.rows?.filterIndexed { index, row ->
@@ -140,8 +200,8 @@ class SettlementViewModel(
     }
 
     @SuppressLint("DefaultLocale")
-    private fun filterTeamNameByKeyWord(row: Row, keyWord: String): Boolean {
-        row.list.forEach { match ->
+    private fun filterTeamNameByKeyWord(matchResultList: MatchResultList, keyWord: String): Boolean {
+        matchResultList.list.forEach { match ->
             if (match.matchInfo.homeName.toLowerCase().contains(keyWord.toLowerCase())) {
                 return true
             }

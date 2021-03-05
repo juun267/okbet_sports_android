@@ -10,14 +10,14 @@ import kotlinx.android.synthetic.main.content_settlement_out_right_rv.view.*
 import kotlinx.android.synthetic.main.content_settlement_rv.view.*
 import org.cxct.sportlottery.databinding.ContentSettlementOutRightRvBinding
 import org.cxct.sportlottery.databinding.ContentSettlementRvBinding
-import org.cxct.sportlottery.network.matchresult.list.Row
+import org.cxct.sportlottery.network.matchresult.list.MatchResultList
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SettlementRvAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var mDataList = listOf<Row>()
+    var mDataList = listOf<MatchResultList>()
         set(value) {
             field = value
 

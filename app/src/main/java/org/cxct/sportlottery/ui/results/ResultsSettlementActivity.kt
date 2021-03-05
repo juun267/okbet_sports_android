@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.matchresult.list.Row
+import org.cxct.sportlottery.network.matchresult.list.MatchResultList
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,6 +43,12 @@ class ResultsSettlementActivity :
     private val settlementDateRvAdapter by lazy {
         SettlementDateRvAdapter()
     }
+
+    //refactor
+    private val matchResultRvAdapter by lazy {
+        MatchResultRvAdapter()
+    }
+
     private var gameType = ""
     private val selectNameList = mutableListOf<String>()
     private var timeRangeParams = setupTimeApiFormat(0) //預設為當日
@@ -75,6 +82,9 @@ class ResultsSettlementActivity :
     private fun setupAdapter() {
         rv_results.adapter = settlementRvAdapter
         rv_date.adapter = settlementDateRvAdapter
+
+        //refactor
+        refactor_rv.adapter = matchResultRvAdapter
     }
 
     private fun initEvent() {
@@ -100,7 +110,9 @@ class ResultsSettlementActivity :
         }
 
         btn_refresh.setOnClickListener {
-            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+            //TODO Dean : 重構 review 後刪除
+//            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+            settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
         }
     }
 
@@ -113,9 +125,9 @@ class ResultsSettlementActivity :
         settlementViewModel.apply {
             //獲取賽果資料,更新聯賽列表
             matchResultListResult.observe(this@ResultsSettlementActivity) {
-                setSettleRvData(it.rows)
+                setSettleRvData(it.matchResultList)
 
-                bottomSheetLeagueItemDataList = it.rows?.map { rows ->
+                bottomSheetLeagueItemDataList = it.matchResultList?.map { rows ->
                     LeagueItemData(null, rows.league.name, true)
                 }?.toMutableList<LeagueItemData>() ?: mutableListOf()
 
@@ -136,10 +148,15 @@ class ResultsSettlementActivity :
                 setupLeagueList(bottomSheetLeagueItemDataList)
             }
 
-            //過濾後賽果資料
+            /*//過濾後賽果資料
             matchResultList.observe(this@ResultsSettlementActivity) {
                 setSettleRvData(it)
-            }
+            }*/
+            //過濾後賽果資料
+            filteredMatchResult.observe(this@ResultsSettlementActivity, Observer {
+                matchResultRvAdapter.gameType = gameType
+                matchResultRvAdapter.rvDataList = it
+            })
 
             //過濾後冠軍資料
             outRightList.observe(this@ResultsSettlementActivity) {
@@ -163,11 +180,9 @@ class ResultsSettlementActivity :
                     else -> {
                         settleType = SettleType.MATCH
                         timeRangeParams = setupTimeApiFormat(date)
-                        settlementViewModel.getSettlementData(
-                            gameType,
-                            null,
-                            timeRangeParams
-                        )
+                        //TODO Dean : 重構 review 後刪除
+//                        settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+                        settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
                     }
                 }
             }
@@ -177,7 +192,9 @@ class ResultsSettlementActivity :
     private fun initSettleGameTypeBottomSheet() {
         tv_game_type.text = getString(GameType.values()[0].string)
         gameType = GameType.values()[0].key
-        settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+        //TODO Dean : 重構 review 後刪除
+//        settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+        settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
     }
 
     private fun setupSettleGameTypeBottomSheet() {
@@ -196,7 +213,9 @@ class ResultsSettlementActivity :
                     this@ResultsSettlementActivity.tv_game_type.text = select.name
                     when (settleType) {
                         SettleType.MATCH -> {
-                            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+                            //TODO Dean : 重構 review 後刪除
+//                            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+                            settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
                         }
                         SettleType.OUTRIGHT -> {
                             settlementViewModel.getOutrightResultList(gameType)
@@ -304,7 +323,7 @@ class ResultsSettlementActivity :
      * 設置賽果資料
      * result : MatchResultListResult.row: List<Row>
      */
-    private fun setSettleRvData(result: List<Row>?) {
+    private fun setSettleRvData(result: List<MatchResultList>?) {
         settlementRvAdapter.gameType = gameType
         settlementRvAdapter.settleType = settleType
         settlementRvAdapter.mDataList = result ?: listOf()
