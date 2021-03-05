@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
@@ -33,6 +34,8 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -885,38 +888,135 @@ class GameViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
-    fun updateBetInfoListByOddChange(newList: List<org.cxct.sportlottery.network.odds.list.Odd>) {
+    private val _updateOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>()
+    val updateOddList: LiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>
+        get() = _updateOddList
 
-        newList.forEach { newItem ->
-            betInfoRepository.betList.forEach {
-                try {
-                    if (newItem.id == it.matchOdd.oddsId) {
-                        newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+//    private val _updateMatchOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>()
+//    val updateMatchOddList: LiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>
+//        get() = _updateMatchOddList
+
+    fun updateOdd(it: OddsChangeEvent) {
+        val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+        for ((_, value) in it.odds) {
+            newList.addAll(value)
+        }
+        val status = newList.find { odd ->
+            odd.status == BetStatus.LOCKED.code || odd.status == BetStatus.DEACTIVATED.code
+        }
+        if (status == null) {
+            updateBetInfoListByOddChange(newList)
+        } else {
+            updateOddStatus(newList)
+            val list: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+            it.odds.forEach { map ->
+                val value = map.value
+                value.forEach { odd ->
+                    val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
+                        odd.id,
+                        odd.odds,
+                        odd.producerId,
+                        odd.spread,
+                        odd.status,
+                    )
+                    newOdd.oddState = odd.oddState
+                    list.add(newOdd)
                 }
             }
+            _updateOddList.postValue(list)
         }
-        getBetInfoListForParlay(true)
-
     }
 
-    fun updateBetInfoList(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
-
+    private fun updateOddStatus(newList: List<org.cxct.sportlottery.network.odds.list.Odd>) {
         newList.forEach { newItem ->
             betInfoRepository.betList.forEach {
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                        newItem.status.let { newStatus -> it.matchOdd.status = newStatus }
+
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
-        getBetInfoListForParlay(true)
+    }
 
+    private fun updateBetInfoListByOddChange(newList: List<org.cxct.sportlottery.network.odds.list.Odd>) {
+        updateOddStatus(newList)
+        val sendRequest = betInfoRepository.betList.find {
+            it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code
+        }
+        if (sendRequest == null)
+            getBetInfoListForParlay(true)
+        else Timber.e("不執行 betInfo request")
+    }
+
+    fun updateMatchOdd(it: MatchOddsChangeEvent){
+        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
+            mutableListOf()
+        for ((key, value) in it.odds) {
+            value.odds?.forEach { odd ->
+                odd?.let { o ->
+                    newList.add(o)
+                }
+            }
+        }
+        val status = newList.find { odd ->
+            odd.status == BetStatus.LOCKED.code || odd.status == BetStatus.DEACTIVATED.code
+        }
+        if (status == null) {
+            updateBetInfoListByMatchOddChange(newList)
+        } else {
+            updateMatchOddStatus(newList)
+            val list: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+            it.odds.forEach { map ->
+                val value = map.value
+                value.odds?.forEach { odd ->
+                    val newOdd = odd?.status?.let { status ->
+                        org.cxct.sportlottery.network.odds.list.Odd(
+                            odd.id,
+                            odd.odds,
+                            odd.producerId,
+                            odd.spread,
+                            status
+                        )
+                    }
+                    odd?.oddState?.let { oStatus ->
+                        newOdd?.oddState = oStatus
+                    }
+
+                    newOdd?.let { l -> list.add(l) }
+                }
+            }
+            _updateOddList.postValue(list)
+        }
+    }
+
+    private fun updateMatchOddStatus(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>){
+        newList.forEach { newItem ->
+            betInfoRepository.betList.forEach {
+                try {
+                    if (newItem.id == it.matchOdd.oddsId) {
+                        newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
+                        newItem.status?.let { newStatus -> it.matchOdd.status = newStatus }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private fun updateBetInfoListByMatchOddChange(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
+        updateMatchOddStatus(newList)
+        val sendRequest = betInfoRepository.betList.find {
+            it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code
+        }
+        if (sendRequest == null)
+            getBetInfoListForParlay(true)
+        else Timber.e("不執行 betInfo request")
     }
 
     fun getBetInfoList(oddsList: List<Odd>) {

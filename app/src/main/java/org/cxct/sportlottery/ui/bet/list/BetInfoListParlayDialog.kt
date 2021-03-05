@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -36,7 +38,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
-        BetInfoListParlayAdapter.OnTotalQuotaListener {
+    BetInfoListParlayAdapter.OnTotalQuotaListener {
 
 
     companion object {
@@ -142,8 +144,21 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, Observer {
-            matchOddAdapter.updatedBetInfoList = it
+        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, {
+            val updatedBetInfoList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+            it.forEach { odd ->
+                val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
+                    odd.oddsId,
+                    odd.odds,
+                    odd.producerId,
+                    odd.spread,
+                    odd.status,
+                )
+                newOdd.oddState = odd.oddState
+                updatedBetInfoList.add(newOdd)
+            }
+
+            matchOddAdapter.updatedBetInfoList = updatedBetInfoList
         })
 
         viewModel.matchOddList.observe(this.viewLifecycleOwner, Observer {
@@ -196,29 +211,88 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
+        viewModel.updateOddList.observe(this.viewLifecycleOwner, {
+                matchOddAdapter.updatedBetInfoList = it
+
+        })
+
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> =
-                mutableListOf()
-            for ((key, value) in it.odds) {
-                newList.addAll(value)
-            }
-
-            viewModel.updateBetInfoListByOddChange(newList)
+            viewModel.updateOdd(it)
+//            val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+//            for ((_, value) in it.odds) {
+//                newList.addAll(value)
+//            }
+//            val status = newList.find { odd ->
+//                odd.status == BetStatus.LOCKED.code || odd.status == BetStatus.DEACTIVATED.code
+//            }
+//            if(status == null) {
+//                viewModel.updateBetInfoListByOddChange(newList)
+//            }else{
+//                viewModel.updateOddStatus(newList)
+//
+//                val list :MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+//                it.odds.forEach { map ->
+//                    val value = map.value
+//                    value.forEach { odd ->
+//                        val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
+//                            odd.id,
+//                            odd.odds,
+//                            odd.producerId,
+//                            odd.spread,
+//                            odd.status,
+//                        )
+//                        newOdd.oddState = odd.oddState
+//                        list.add(newOdd)
+//                    }
+//                }
+//                matchOddAdapter.updatedBetInfoList = list
+//                changeBetButtonClickable(false)
+//            }
         })
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                mutableListOf()
-            for ((key, value) in it.odds) {
-                value.odds?.forEach { odd ->
-                    odd?.let { o ->
-                        newList.add(o)
-                    }
-                }
-            }
-            viewModel.updateBetInfoList(newList)
+            viewModel.updateMatchOdd(it)
+//            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
+//                mutableListOf()
+//            for ((key, value) in it.odds) {
+//                value.odds?.forEach { odd ->
+//                    odd?.let { o ->
+//                        newList.add(o)
+//                    }
+//                }
+//            }
+//            val status = newList.find { odd ->
+//                odd.status == BetStatus.LOCKED.code || odd.status == BetStatus.DEACTIVATED.code
+//            }
+//            if (status == null) {
+//                viewModel.updateBetInfoList(newList)
+//            } else {
+//                val list: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+//                it.odds.forEach { map ->
+//                    val value = map.value
+//                    value.odds?.forEach { odd ->
+//                        val newOdd = odd?.status?.let { status ->
+//                            org.cxct.sportlottery.network.odds.list.Odd(
+//                                odd.id,
+//                                odd.odds,
+//                                odd.producerId,
+//                                odd.spread,
+//                                status
+//                            )
+//                        }
+//                        odd?.oddState?.let { oStatus ->
+//                            newOdd?.oddState = oStatus
+//                        }
+//
+//                        newOdd?.let { l -> list.add(l) }
+//                    }
+//                }
+//                matchOddAdapter.updatedBetInfoList = list
+//                changeBetButtonClickable(false)
+//            }
+
         })
 
         receiver.globalStop.observe(viewLifecycleOwner, Observer {
@@ -301,8 +375,12 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             !it.sendOutStatus
         }
 
+        parlayOdd?.sendOutStatus?.let { changeBetButtonClickable(it) }
+    }
+
+    private fun changeBetButtonClickable(boolean: Boolean) {
         tv_bet.apply {
-            isClickable = if (parlayOdd?.sendOutStatus == false) {
+            isClickable = if (!boolean) {
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
                 false

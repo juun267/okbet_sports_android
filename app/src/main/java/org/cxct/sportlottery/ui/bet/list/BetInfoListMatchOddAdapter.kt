@@ -12,6 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoMatchOddItemBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.util.TextUtil
@@ -27,21 +28,21 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             notifyDataSetChanged()
         }
 
-    var updatedBetInfoList: MutableList<MatchOdd> = mutableListOf()
+    var updatedBetInfoList: MutableList<Odd> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
 
-    private fun updateItemDataFromSocket(matchOdd: MatchOdd, updatedBetInfoList: MutableList<MatchOdd>) {
+    private fun updateItemDataFromSocket(matchOdd: MatchOdd, updatedBetInfoList: MutableList<Odd>) {
         for (newItem in updatedBetInfoList) {
             //null check後還是會crash 先以不crash為主
             try {
-                newItem.oddsId.let {
+                newItem.id.let {
                     if (it == matchOdd.oddsId) {
                         matchOdd.oddState = getOddState(matchOdd.odds, newItem)
-                        newItem.odds.let { odds -> matchOdd.odds = odds }
+                        newItem.odds?.let { odds -> matchOdd.odds = odds }
                         newItem.status.let { status -> matchOdd.status = status }
                     }
                 }
@@ -52,7 +53,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
     }
 
 
-    private fun getOddState(oldItemOdd: Double, it: MatchOdd): Int {
+    private fun getOddState(oldItemOdd: Double, it: Odd): Int {
         val newOdd = it.odds ?: 0.0
         return when {
             newOdd == oldItemOdd -> OddState.SAME.state
