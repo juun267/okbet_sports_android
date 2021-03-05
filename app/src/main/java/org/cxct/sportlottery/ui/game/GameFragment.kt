@@ -237,6 +237,10 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         matchOdd.matchInfo?.homeScore = it.matchStatusCO?.homeScore
                         matchOdd.matchInfo?.awayScore = it.matchStatusCO?.awayScore
                         matchOdd.matchInfo?.statusName = it.matchStatusCO?.statusName
+
+                        it.matchStatusList?.let { matchStatusList ->
+                            matchOdd.matchStatusList = matchStatusList
+                        }
                     }
                 }
             }
