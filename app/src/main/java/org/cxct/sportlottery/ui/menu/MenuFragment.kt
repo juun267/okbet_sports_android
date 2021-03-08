@@ -109,18 +109,18 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_version_update)
         }
 
-        menu_sign_out.setOnClickListener {
+        btn_sign_out.setOnClickListener {
             viewModel.logout()
             context?.run {
                 MainActivity.reStart(this)
             }
-            mDownMenuListener?.onClick(menu_sign_out)
+            mDownMenuListener?.onClick(btn_sign_out)
         }
 
     }
 
     private fun setupSelectLanguage() {
-        tv_language.text = when (LanguageManager.getSelectLanguage(tv_language.context)) {
+        btn_change_language.text = when (LanguageManager.getSelectLanguage(btn_change_language.context)) {
             LanguageManager.Language.ZH -> getString(R.string.language_cn)
             LanguageManager.Language.ZHT -> getString(R.string.language_zht)
             LanguageManager.Language.VI -> getString(R.string.language_vi)
