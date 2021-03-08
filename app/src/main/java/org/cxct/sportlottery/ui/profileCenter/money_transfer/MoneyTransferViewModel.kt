@@ -20,6 +20,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.util.TimeUtil
 
 class MoneyTransferViewModel(
     private val androidContext: Context,
@@ -217,7 +218,12 @@ class MoneyTransferViewModel(
     private var nowPage = 1
     val recordDataList = mutableListOf<Row>()
 
-    fun queryTransfers(page: Int? = 1) {
+    fun queryTransfers(page: Int? = 1,
+                       startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime,
+                       endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime,
+                       status: String ?= null,
+                       firmTypeIn: String ?= null,
+                       firmTypeOut: String ?= null) {
         loading()
         if (page == 1) {
             nowPage = 1
@@ -225,7 +231,7 @@ class MoneyTransferViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE))
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, firmTypeIn, firmTypeOut, status?.toIntOrNull()))
             }?.let { result ->
                 hideLoading()
                 isLoading = false
