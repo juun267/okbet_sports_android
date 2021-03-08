@@ -259,7 +259,10 @@ class FinanceViewModel(
         }
     }
 
-    fun getUserWithdrawList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
+    fun getUserWithdrawList(isFirstFetch: Boolean,
+                            startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+                            endTime: String? = TimeUtil.getDefaultTimeStamp().endTime
+    ) {
         when {
             isFirstFetch -> {
                 _isFinalPage.postValue(false)

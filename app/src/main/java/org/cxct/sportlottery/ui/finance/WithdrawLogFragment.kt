@@ -50,7 +50,10 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
-    private fun initOnclick(view: View?) {
+    private fun initOnclick(view: View) {
+        view.date_range_selector.setOnClickSearchListener {
+            viewModel.getUserWithdrawList(false, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
+        }
     }
 
 

@@ -81,7 +81,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupSearch(view: View) {
         view.date_range_selector.setOnClickSearchListener {
-            viewModel.getUserRechargeList(true)
+            viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
         }
     }
 
