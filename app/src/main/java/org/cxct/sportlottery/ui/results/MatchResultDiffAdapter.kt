@@ -1,22 +1,27 @@
 package org.cxct.sportlottery.ui.results
 
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.RotateDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_result_match.view.*
 import kotlinx.android.synthetic.main.item_match_result_title.view.*
 import kotlinx.android.synthetic.main.item_match_result_title.view.tv_type
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.finance.pageSize
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MatchResultRvAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var rvDataList: List<MatchResultData> = mutableListOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickListener) : ListAdapter<MatchResultData, RecyclerView.ViewHolder>(MatchResultDiffCallBack()) {
     var gameType: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -27,24 +32,22 @@ class MatchResultRvAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return rvDataList.size
-    }
-
     override fun getItemViewType(position: Int): Int {
-        return rvDataList[position].dataType.ordinal
+        return getItem(position).dataType.ordinal
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val rvDataList = getItem(holder.adapterPosition)
+
         when (holder) {
             is MatchTitleViewHolder -> {
                 holder.apply {
-                    bind(holder, gameType, rvDataList, position)
+                    bind(holder, gameType, rvDataList, matchItemClickListener)
                 }
             }
             is MatchViewHolder -> {
                 holder.apply {
-                    bind(gameType, rvDataList, position)
+                    bind(gameType, rvDataList)
                 }
             }
         }
@@ -59,23 +62,22 @@ class MatchResultRvAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        fun bind(holder: RecyclerView.ViewHolder, gameType: String, dataList: List<MatchResultData>, position: Int) {
-            val data = dataList[position]
-            setupData(holder.itemView, gameType, dataList, position)
+        fun bind(holder: RecyclerView.ViewHolder, gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
+            setupData(itemView, gameType, item)
+            setupEvent(itemView, matchItemClickListener)
             holder.apply {
                 itemView.apply {
-                    tv_type.text = data.titleData?.name
+                    tv_type.text = item.titleData?.name
                 }
             }
         }
 
-        private fun setupData(itemView: View, gameType: String, dataList: List<MatchResultData>, position: Int) {
+        private fun setupData(itemView: View, gameType: String, item: MatchResultData) {
             itemView.apply {
-                if (position == 0)
+                if (adapterPosition == 0)
                     view_margin_bottom.visibility = View.GONE
 
-                val data = dataList[position]
-                tv_type.text = data.titleData?.name
+                tv_type.text = item.titleData?.name
                 when (gameType) {
                     GameType.FT.key -> { //上半場, 全場
                         tv_first_half.visibility = View.VISIBLE
@@ -118,6 +120,18 @@ class MatchResultRvAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }*/
             }
         }
+
+        private fun setupEvent(itemView: View, matchItemClickListener: MatchItemClickListener) {
+            itemView.setOnClickListener {
+                matchItemClickListener.leagueTitleClick(adapterPosition)
+                rotateTitleBlock(itemView.block_type)
+            }
+        }
+
+        private fun rotateTitleBlock(block: View) {
+            val drawable = block.background
+            ((drawable as LayerDrawable).getDrawable(1) as RotateDrawable).level += 10000
+        }
     }
 
     class MatchViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -129,9 +143,9 @@ class MatchResultRvAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        fun bind(gameType: String, dataList: List<MatchResultData>, position: Int) {
+        fun bind(gameType: String, item: MatchResultData) {
             setupViewType(itemView, gameType)
-            setupResultItem(itemView, dataList, position)
+            setupResultItem(itemView, item)
         }
 
         private fun setupViewType(itemView: View, gameType: String) {
@@ -160,11 +174,11 @@ class MatchResultRvAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        private fun setupResultItem(itemView: View, dataList: List<MatchResultData>, position: Int) {
+        private fun setupResultItem(itemView: View, item: MatchResultData) {
             itemView.apply {
-                val data = dataList[position]
-                val matchStatusList = data.matchData?.matchStatusList
-                val matchInfo = data.matchData?.matchInfo
+
+                val matchStatusList = item.matchData?.matchStatusList
+                val matchInfo = item.matchData?.matchInfo
 
                 matchInfo?.let {
                     tv_home_name.text = matchInfo.homeName
@@ -207,5 +221,20 @@ class MatchResultRvAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
+}
+
+class MatchResultDiffCallBack : DiffUtil.ItemCallback<MatchResultData>() {
+    override fun areItemsTheSame(oldItem: MatchResultData, newItem: MatchResultData): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(oldItem: MatchResultData, newItem: MatchResultData): Boolean {
+        return oldItem == newItem
+    }
+
+}
+
+class MatchItemClickListener(private val titleClick: (titlePosition: Int) -> Unit) {
+    fun leagueTitleClick(titlePosition: Int) = titleClick.invoke(titlePosition)
 }
 

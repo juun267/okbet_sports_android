@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.results
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,8 +46,11 @@ class ResultsSettlementActivity :
     }
 
     //refactor
-    private val matchResultRvAdapter by lazy {
-        MatchResultRvAdapter()
+    private val matchResultDiffAdapter by lazy {
+        MatchResultDiffAdapter(MatchItemClickListener {
+            Log.e("Dean", "ItemClickListener")
+            viewModel.clickLeagueExpand(it)
+        })
     }
 
     private var gameType = ""
@@ -84,7 +88,7 @@ class ResultsSettlementActivity :
         rv_date.adapter = settlementDateRvAdapter
 
         //refactor
-        refactor_rv.adapter = matchResultRvAdapter
+        refactor_rv.adapter = matchResultDiffAdapter
     }
 
     private fun initEvent() {
@@ -153,9 +157,9 @@ class ResultsSettlementActivity :
                 setSettleRvData(it)
             }*/
             //過濾後賽果資料
-            filteredMatchResult.observe(this@ResultsSettlementActivity, Observer {
-                matchResultRvAdapter.gameType = gameType
-                matchResultRvAdapter.rvDataList = it
+            showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
+                matchResultDiffAdapter.gameType = gameType
+                matchResultDiffAdapter.submitList(it)
             })
 
             //過濾後冠軍資料

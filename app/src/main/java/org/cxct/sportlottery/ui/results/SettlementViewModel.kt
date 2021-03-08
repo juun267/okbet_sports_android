@@ -46,9 +46,9 @@ class SettlementViewModel(
 
 
     private var matchResultReformatted = mutableListOf<MatchResultData>() //重構後的資料結構
-    private val _filteredMatchResult = MutableLiveData<List<MatchResultData>>() //過濾後的資料
-    val filteredMatchResult: LiveData<List<MatchResultData>>
-        get() = _filteredMatchResult
+    private val _showMatchResultData = MutableLiveData<List<MatchResultData>>() //過濾後的資料
+    val showMatchResultData: LiveData<List<MatchResultData>>
+        get() = _showMatchResultData
 
     private var dataType = SettleType.MATCH
 
@@ -92,7 +92,7 @@ class SettlementViewModel(
                 reformatMatchResultData(result.matchResultList).let {
                     matchResultReformatted = it
                     //TODO Dean : review 過濾資料
-                    _filteredMatchResult.value = it
+                    _showMatchResultData.value = filterMatchResultData(it)
                 }
             }
 
@@ -114,6 +114,41 @@ class SettlementViewModel(
         }
         return matchResultData
         Log.e("Dean", "matchResultData = $matchResultData")
+    }
+
+    private fun filterMatchResultData(matchResultList: List<MatchResultData>?): List<MatchResultData> {
+        val filteredData = mutableListOf<MatchResultData>()
+        var showMatch: Boolean = false
+        matchResultList?.apply {
+            forEach {
+                when (it.dataType) {
+                    ListType.TITLE -> {
+                        filteredData.add(it)
+                        showMatch = it.titleExpanded
+                    }
+                    ListType.MATCH -> {
+                        if (showMatch) {
+                            filteredData.add(it)
+                        }
+                    }
+                    ListType.DETAIL -> {
+
+                    }
+                }
+            }
+        }
+        return filteredData
+    }
+
+    fun clickLeagueExpand(expandPosition: Int) {
+        Log.e("Dean", "clickExpandData = $expandPosition")
+        val clickedItem = showMatchResultData.value?.get(expandPosition)
+        val showData = showMatchResultData.value?.toMutableList()
+        val addData = mutableListOf<MatchResultData>()
+        Log.e("Dean", "clickedItem = $clickedItem , addData = $addData")
+
+        matchResultReformatted.find { it == clickedItem }?.let { it.titleExpanded = !(it.titleExpanded) }
+        _showMatchResultData.value = filterMatchResultData(matchResultReformatted)
     }
 
     fun getSettlementDetailData(settleRvPosition: Int, gameResultRvPosition: Int, matchId: String) {
