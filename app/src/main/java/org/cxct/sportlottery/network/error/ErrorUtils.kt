@@ -26,7 +26,6 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
-import org.cxct.sportlottery.network.Constants.MESSAGE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
@@ -156,10 +155,6 @@ object ErrorUtils {
                     (url.contains(INDEX_CHECK_EXIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return CheckAccountResult(it.code, it.msg, it.success) as T
-                    }
-                    (url.contains(MESSAGE_LIST)) -> {
-                        @Suppress("UNCHECKED_CAST")
-                        return MessageListResult(it.code, it.msg, null, it.success, null) as T
                     }
                     (url.contains(INDEX_PROMOTENOTICE)) -> {
                         @Suppress("UNCHECKED_CAST")

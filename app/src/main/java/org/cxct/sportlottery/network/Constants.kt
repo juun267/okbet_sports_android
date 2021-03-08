@@ -108,9 +108,6 @@ object Constants {
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"
     const val MATCH_RESULT_PLAY_LIST = "/api/front/match/result/play/list"
 
-    //message
-    const val MESSAGE_LIST = "/api/front/message/list"
-
     //odds
     const val MATCH_ODDS_LIST = "/api/front/match/odds/simple/list"
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
