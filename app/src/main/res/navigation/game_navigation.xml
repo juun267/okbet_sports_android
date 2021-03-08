@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="org.cxct.sportlottery.ui.game.GameV3Fragment"
+        android:name="org.cxct.sportlottery.ui.game.GameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game">
         <argument
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameV3Fragment"
-        android:name="org.cxct.sportlottery.ui.game.GameV3Fragment"
+        android:name="org.cxct.sportlottery.ui.game.v3.GameV3Fragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game">
         <argument

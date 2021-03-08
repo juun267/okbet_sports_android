@@ -46,7 +46,7 @@ import timber.log.Timber
  * create an instance of this fragment.
  */
 class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
-    private val args: GameV3FragmentArgs by navArgs()
+    private val args: GameFragmentArgs by navArgs()
     private val scope = CoroutineScope(Dispatchers.Default)
 
     private val gameTypeAdapter by lazy {
