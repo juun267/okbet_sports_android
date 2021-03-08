@@ -47,7 +47,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
             is MatchViewHolder -> {
                 holder.apply {
-                    bind(gameType, rvDataList)
+                    bind(gameType, rvDataList, matchItemClickListener)
                 }
             }
         }
@@ -146,9 +146,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
-        fun bind(gameType: String, item: MatchResultData) {
+        fun bind(gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
             setupViewType(itemView, gameType)
             setupResultItem(itemView, item)
+            setupEvent(itemView, matchItemClickListener)
         }
 
         private fun setupViewType(itemView: View, gameType: String) {
@@ -223,6 +224,14 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 }*/
             }
         }
+
+        private fun setupEvent(itemView: View, matchItemClickListener: MatchItemClickListener) {
+            itemView.apply {
+                ll_game_detail.setOnClickListener {
+                    matchItemClickListener.matchClick(adapterPosition)
+                }
+            }
+        }
     }
 }
 
@@ -237,7 +246,7 @@ class MatchResultDiffCallBack : DiffUtil.ItemCallback<MatchResultData>() {
 
 }
 
-class MatchItemClickListener(private val titleClick: (titlePosition: Int) -> Unit) {
+class MatchItemClickListener(private val titleClick: (titlePosition: Int) -> Unit, private val matchClick: (matchClick: Int) -> Unit) {
     fun leagueTitleClick(titlePosition: Int) = titleClick.invoke(titlePosition)
+    fun matchClick(matchPosition: Int) = matchClick.invoke(matchPosition)
 }
-

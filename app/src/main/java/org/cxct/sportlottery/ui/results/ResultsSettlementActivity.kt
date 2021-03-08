@@ -47,10 +47,14 @@ class ResultsSettlementActivity :
 
     //refactor
     private val matchResultDiffAdapter by lazy {
-        MatchResultDiffAdapter(MatchItemClickListener {
-            Log.e("Dean", "ItemClickListener")
-            viewModel.clickLeagueExpand(it)
-        })
+        MatchResultDiffAdapter(MatchItemClickListener(
+            titleClick = {
+                Log.e("Dean", "ItemClickListener")
+                viewModel.clickResultItem(it)
+            }, matchClick = {
+                viewModel.clickResultItem(it)
+            })
+        )
     }
 
     private var gameType = ""

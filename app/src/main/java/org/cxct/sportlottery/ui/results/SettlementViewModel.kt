@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultList
+import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
 import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
@@ -92,7 +93,7 @@ class SettlementViewModel(
                 reformatMatchResultData(result.matchResultList).let {
                     matchResultReformatted = it
                     //TODO Dean : review 過濾資料
-                    _showMatchResultData.value = filterMatchResultData(it)
+                    filterMatchResultData(it)
                 }
             }
 
@@ -113,12 +114,12 @@ class SettlementViewModel(
             }
         }
         return matchResultData
-        Log.e("Dean", "matchResultData = $matchResultData")
     }
 
-    private fun filterMatchResultData(matchResultList: List<MatchResultData>?): List<MatchResultData> {
+    private fun filterMatchResultData(matchResultList: List<MatchResultData>?) {
         val filteredData = mutableListOf<MatchResultData>()
         var showMatch: Boolean = false
+        var showDetail = false
         matchResultList?.apply {
             forEach {
                 when (it.dataType) {
@@ -129,28 +130,64 @@ class SettlementViewModel(
                     ListType.MATCH -> {
                         if (showMatch) {
                             filteredData.add(it)
+                            showDetail = it.matchExpanded
                         }
                     }
                     ListType.DETAIL -> {
-
+                        if (showDetail) {
+                            filteredData.add(it)
+                        }
                     }
                 }
             }
         }
-        return filteredData
+        _showMatchResultData.value = filteredData
     }
 
-    fun clickLeagueExpand(expandPosition: Int) {
+    fun clickResultItem(expandPosition: Int) {
         Log.e("Dean", "clickExpandData = $expandPosition")
         val clickedItem = showMatchResultData.value?.get(expandPosition)
         val showData = showMatchResultData.value?.toMutableList()
         val addData = mutableListOf<MatchResultData>()
         Log.e("Dean", "clickedItem = $clickedItem , addData = $addData")
 
-        matchResultReformatted.find { it == clickedItem }?.let { it.titleExpanded = !(it.titleExpanded) }
-        _showMatchResultData.value = filterMatchResultData(matchResultReformatted)
+        when (clickedItem?.dataType) {
+            ListType.TITLE -> {
+                clickLeagueExpand(clickedItem)
+            }
+            ListType.MATCH -> {
+                clickMatchExpand(clickedItem, expandPosition)
+            }
+            else -> {
+                /*do nothing*/
+            }
+        }
     }
 
+    private fun clickLeagueExpand(clickedItem: MatchResultData) {
+        matchResultReformatted.find { it == clickedItem }?.let { it.titleExpanded = !(it.titleExpanded) }
+        filterMatchResultData(matchResultReformatted)
+    }
+
+    private fun clickMatchExpand(clickedItem: MatchResultData, expandPosition: Int) {
+        matchResultReformatted.find { it == clickedItem }?.let { it.matchExpanded = !(it.matchExpanded) }
+        clickedItem.matchData?.matchInfo?.id?.let { getMatchDetail(it, expandPosition) }
+    }
+
+    private fun getMatchDetail(matchId: String, expandPosition: Int) {
+        requestListener.requestIng(true)
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                settlementRepository.resultPlayList(matchId)
+            }?.let { result ->
+                result.matchResultPlayList?.asReversed()?.forEach { matchResultReformatted.add(expandPosition + 1, MatchResultData(ListType.DETAIL, matchDetailData = it)) }
+                filterMatchResultData(matchResultReformatted)
+            }
+            requestListener.requestIng(false)
+        }
+    }
+
+    @Deprecated("棄用,改使用getMatchDetail")
     fun getSettlementDetailData(settleRvPosition: Int, gameResultRvPosition: Int, matchId: String) {
         requestListener.requestIng(true)
         viewModelScope.launch {
@@ -167,21 +204,6 @@ class SettlementViewModel(
         }
     }
 
-    fun getSettlementDetailData(matchId: String) {
-        requestListener.requestIng(true)
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                settlementRepository.resultPlayList(matchId)
-            }?.let { result ->
-                _gameResultDetailResult.postValue(_gameResultDetailResult.value?.apply {
-                    this.settleRvPosition = settleRvPosition
-                    this.gameResultRvPosition = gameResultRvPosition
-                    this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
-                })
-            }
-            requestListener.requestIng(false)
-        }
-    }
 
     fun getOutrightResultList(gameType: String) {
         dataType = SettleType.OUTRIGHT
