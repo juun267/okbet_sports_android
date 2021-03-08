@@ -96,7 +96,7 @@ object Constants {
     const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
-    const val INDEX_PROMOTENOTICE = "/api/front/index/promotenotice" //遊客未登入的時候用
+    const val INDEX_PROMOTENOTICE = "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"

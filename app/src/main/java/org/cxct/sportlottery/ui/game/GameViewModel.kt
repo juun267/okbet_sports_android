@@ -237,19 +237,10 @@ class GameViewModel(
 
     //獲取系統公告
     fun getAnnouncement() {
-
         viewModelScope.launch {
             doNetwork(androidContext) {
-                when (userInfo.value?.testFlag) {
-                    null -> {
-                        val typeList = arrayOf(1)
-                        OneBoSportApi.messageService.getPromoteNotice(typeList)
-                    }
-                    else -> {
-                        val messageType = "1"
-                        OneBoSportApi.messageService.getMessageList(messageType)
-                    }
-                }
+                val typeList = arrayOf(1)
+                OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result -> _messageListResult.postValue(result) }
         }
     }
