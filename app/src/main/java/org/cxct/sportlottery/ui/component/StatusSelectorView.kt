@@ -126,6 +126,8 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         }
     }
 
+    var itemSelectedListener: (()->Unit)? = null
+
     private fun setButtonSheet(typedArray: TypedArray) {
 
         bottomSheetView.apply {
@@ -142,6 +144,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                 if (isChecked) {
                     selectedText = data.showName
                     selectedTag = data.code
+                    itemSelectedListener?.invoke()
                     dismiss()
                 }
             })

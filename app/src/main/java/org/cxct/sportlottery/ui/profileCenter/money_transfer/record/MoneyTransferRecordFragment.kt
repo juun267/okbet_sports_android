@@ -42,7 +42,9 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         rv_record.adapter = rvAdapter
         rv_record.addOnScrollListener(recyclerViewOnScrollListener)
 
-//        selector_in_plat.datalist //TODO Cheryl: 重構
+        selector_out_plat.dataList = viewModel.getOutPlatNameList()
+        selector_in_plat.dataList = viewModel.getInPlatNameList()
+        selector_transfer_status.dataList = viewModel.statusList
     }
 
     private fun initOnclick() {
@@ -55,6 +57,16 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
                 status = selector_transfer_status.selectedTag
             )
         }
+/*
+        selector_out_plat.itemSelectedListener = {
+            selector_in_plat.dataList = viewModel.getInPlatNameList(selector_out_plat.selectedText)
+        }
+
+        selector_in_plat.itemSelectedListener = {
+            selector_out_plat.dataList = viewModel.getInPlatNameList(selector_in_plat.selectedText)
+        }
+*/
+
     }
 
 

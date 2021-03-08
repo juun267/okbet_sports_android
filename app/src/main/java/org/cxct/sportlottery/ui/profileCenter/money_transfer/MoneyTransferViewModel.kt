@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,9 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.component.StatusSheetData
+import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.SheetData
 import org.cxct.sportlottery.util.TimeUtil
 
 class MoneyTransferViewModel(
@@ -45,6 +49,42 @@ class MoneyTransferViewModel(
         "OGPLUS" to androidContext.getString(R.string.third_game_ogplus),
         "CR" to androidContext.getString(R.string.third_game_cr),
     )
+
+    val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
+        when (it) {
+            androidContext.getString(R.string.recharge_state_processing) -> {
+                StatusSheetData(Status.PROCESSING.code.toString(), it)
+            }
+            androidContext.getString(R.string.recharge_state_success) -> {
+                StatusSheetData(Status.SUCCESS.code.toString(), it)
+
+            }
+            androidContext.getString(R.string.recharge_state_failed) -> {
+                StatusSheetData(Status.FAILED.code.toString(), it)
+            }
+            else -> {
+                StatusSheetData(null, it).apply { isChecked = true }
+            }
+        }
+    }
+
+    private val inPlatRecordList by lazy {
+        mutableListOf<StatusSheetData>().apply {
+            this.add(StatusSheetData(null, androidContext.getString(R.string.all_in_plat)))
+            inPlatDataList.forEach {
+                this.add(StatusSheetData(it.code, it.showName))
+            }
+        }
+    }
+
+    private val outPlatRecordList by lazy {
+        mutableListOf<StatusSheetData>().apply {
+            this.add(StatusSheetData(null, androidContext.getString(R.string.all_out_plat)))
+            outPlatDataList.forEach {
+                this.add(StatusSheetData(it.code, it.showName))
+            }
+        }
+    }
 
     val isPlatSwitched: LiveData<Boolean>
         get() = _isPlatSwitched
@@ -113,9 +153,6 @@ class MoneyTransferViewModel(
         _isPlatSwitched.value = isSwitched
     }
 
-//    var selectedOutPlatCode = "CG"
-//    var selectedInPlatCode: String ?= null
-
     private val resultList = mutableListOf<GameData>()
     var outPlatDataList = mutableListOf<GameData>()
     var inPlatDataList = mutableListOf<GameDataInPlat>()
@@ -143,6 +180,14 @@ class MoneyTransferViewModel(
                 }
             }
         }
+    }
+
+    fun getInPlatNameList(selectedOutPlatName: String?= null): List<StatusSheetData> {
+        return inPlatRecordList.filter { it.showName != selectedOutPlatName }
+    }
+
+    fun getOutPlatNameList(selectedInPlatName: String?= null): List<StatusSheetData> {
+        return outPlatRecordList.filter { it.showName != selectedInPlatName }
     }
 
     var defaultOutPlat = "CG"
@@ -224,6 +269,9 @@ class MoneyTransferViewModel(
                        status: String ?= null,
                        firmTypeIn: String ?= null,
                        firmTypeOut: String ?= null) {
+
+        Log.e(">>>", "in = $firmTypeIn, out = $firmTypeOut, status = $status")
+
         loading()
         if (page == 1) {
             nowPage = 1
