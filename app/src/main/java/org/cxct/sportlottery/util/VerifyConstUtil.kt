@@ -9,7 +9,7 @@ object VerifyConstUtil {
     private const val VIETNAM_WORD = "àáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ"
     private const val ENGLISH_WORD = "a-zA-Z"
     private const val SYMBOL = "!#\$%&'*+-/=?^_`{|}~"
-    private const val EMAIL_REGEX = "[$ENGLISH_WORD]([.]?[_$ENGLISH_WORD$NUMBER$SYMBOL]+)+@[-$ENGLISH_WORD$NUMBER]+[.][-$ENGLISH_WORD$NUMBER]+([.]?[-$NUMBER$ENGLISH_WORD])+"
+    private const val EMAIL_REGEX = "([_$ENGLISH_WORD$NUMBER$SYMBOL]+)+@[-$ENGLISH_WORD$NUMBER]+[.][-$ENGLISH_WORD$NUMBER]+([.]?[-$NUMBER$ENGLISH_WORD])+"
 
     //是否為越南文文字
     private fun isValidVietnamWord(inputStr: CharSequence): Boolean {
@@ -38,7 +38,7 @@ object VerifyConstUtil {
     }
 
     fun verifyAccount(account: CharSequence): Boolean {
-        return Pattern.matches("(?=.*[$NUMBER])(?=.*[$ENGLISH_WORD])([_$ENGLISH_WORD$NUMBER]+){4,16}$", account)
+        return Pattern.matches("([_$ENGLISH_WORD$NUMBER]+){4,16}$", account)
     }
 
     fun verifyCombinationAccount(account: CharSequence): Boolean {

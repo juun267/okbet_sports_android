@@ -196,7 +196,7 @@ class WithdrawViewModel(
             fullName = fullName,
             id = id,
             userId = userId,
-            uwType = uwType, //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
+            uwType = uwType,
             bankCode = bankCode
         )
     }
@@ -279,7 +279,7 @@ class WithdrawViewModel(
         _createNameErrorMsg.value = when {
             createName.isEmpty() -> androidContext.getString(R.string.error_create_name_empty)
             !VerifyConstUtil.verifyCreateName(createName) -> {
-                androidContext.getString(R.string.error_create_name)
+                androidContext.getString(R.string.error_incompatible_format)
             }
             else -> ""
         }
@@ -315,11 +315,13 @@ class WithdrawViewModel(
         }
     }
 
-    fun checkWithdrawAmount(withdrawAmount: String) {
+    fun checkWithdrawAmount(inputAmount: String) {
+        var withdrawAmount = inputAmount
         val needShowBalanceMax = getWithdrawAmountLimit().isBalanceMax
         _withdrawAmountMsg.value = when {
             withdrawAmount.isEmpty() -> {
-                androidContext.getString(R.string.error_withdraw_amount_empty)
+                withdrawAmount = "0"
+                androidContext.getString(R.string.error_input_empty)
             }
             needShowBalanceMax && withdrawAmount.toDouble() > getWithdrawAmountLimit().max -> {
                 androidContext.getString(R.string.error_withdraw_amount_bigger_than_balance)
@@ -343,7 +345,8 @@ class WithdrawViewModel(
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
-            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min, limit.max)
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min, limit.max
+        )
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {

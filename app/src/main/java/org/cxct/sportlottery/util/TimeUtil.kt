@@ -39,7 +39,11 @@ object TimeUtil {
 
     fun stampToDateHMSTimeZone(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-        return simpleDateFormat.format(Date(time)) + " (" + TimeZone.getDefault().getDisplayName(true, TimeZone.SHORT) + ")"
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
+        val currentLocalTime = calendar.time
+        val timeZoneFormat = SimpleDateFormat("Z")
+        val timeZoneGTM = timeZoneFormat.format(currentLocalTime)
+        return simpleDateFormat.format(Date(time)) + " (GMT" + timeZoneGTM + ")"
     }
 
     @JvmStatic
@@ -87,8 +91,10 @@ object TimeUtil {
 
         val minusDay = ymdFormat.format(getDateInCalendar(7).first.time)
         val today = ymdFormat.format(getDateInCalendar(7).second.time)
+
         val startTimeStamp = ymdhmsFormat.parse("$minusDay 00:00:00")?.time
         val endTimeStamp = ymdhmsFormat.parse("$today 23:59:59")?.time
+        
         return object : TimeRangeParams {
             override val startTime: String
                 get() = startTimeStamp.toString()

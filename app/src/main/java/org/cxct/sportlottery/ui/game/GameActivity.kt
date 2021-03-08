@@ -78,6 +78,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         refreshTabLayout(null)
         initObserve()
 
+        queryData()
+
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
         if (mSplashViewModel.isNeedGetHost())
             mSplashViewModel.getHost()
@@ -277,7 +279,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            queryData()
             updateUiWithLogin(it)
         })
 
@@ -327,10 +328,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.openOutrightDetail.observe(this, Observer {
             getAppBarLayout().setExpanded(true, true)
             addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
-        })
-
-        viewModel.errorResultToken.observe(this, Observer {
-            viewModel.logout()
         })
 
         viewModel.userInfo.observe(this, Observer {

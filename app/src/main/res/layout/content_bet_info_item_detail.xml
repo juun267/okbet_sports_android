@@ -60,7 +60,6 @@
                 android:layout_height="16dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-
                 android:src="@drawable/ic_bet_delete" />
 
 

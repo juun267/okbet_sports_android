@@ -14,8 +14,10 @@ import kotlinx.android.synthetic.main.fragment_other_bet_record.iv_scroll_to_top
 import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
+import org.cxct.sportlottery.util.setProfitFormat
 
 class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
@@ -57,7 +59,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     private val rvAdapter by lazy {
         OtherBetRecordAdapter(ItemClickListener {
             it.let { data ->
-                findNavController().navigate(OtherBetRecordFragmentDirections.actionOtherBetRecordFragmentToOtherBetRecordDetailFragment())
+                findNavController().navigate(OtherBetRecordFragmentDirections.actionOtherBetRecordFragmentToOtherBetRecordDetailFragment(TimeUtil.timeStampToDay(data.statDate)))
             }
         })
     }
@@ -138,7 +140,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
 
                 layout_total.apply {
                     tv_total_number.text = (totalCount ?: 0).toString()
-                    tv_total_bet_profit.setMoneyFormat(totalWin)
+                    tv_total_bet_profit.setProfitFormat(totalWin)
                     tv_total_bet_profit.setMoneyColor(totalWin ?: 0.0)
                 }
 

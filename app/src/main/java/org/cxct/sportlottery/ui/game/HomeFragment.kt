@@ -37,6 +37,8 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
 
         initEvent()
         initObserve()
+
+        queryData()
     }
 
     private fun initEvent() {
@@ -66,12 +68,6 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                queryData()
-            }
-        })
-
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
             drawer_in_play.setCount(it.matchPreloadData?.num?.toString())
             drawer_in_play.setRvGameData(it.matchPreloadData)

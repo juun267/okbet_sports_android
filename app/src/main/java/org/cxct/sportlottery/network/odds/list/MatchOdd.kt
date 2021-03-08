@@ -5,6 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
@@ -17,4 +18,5 @@ data class MatchOdd(
 ) {
     var isExpand = false
     var leagueTime: Int? = null
+    var matchStatusList: List<MatchStatus> = listOf()
 }

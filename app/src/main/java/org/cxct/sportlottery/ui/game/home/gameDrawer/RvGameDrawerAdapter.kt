@@ -59,8 +59,7 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.itemView.apply {
             team1.text = data.match?.homeName
             team2.text = data.match?.awayName
-            tv_time.text = TimeUtil.timeFormat(data.match?.startTime, "dd/MM hh:mm")
-
+            tv_time.text = TimeUtil.timeFormat(data.match?.startTime, "yyyy-MM-dd HH:mm")
             line_bottom.visibility = if (data.isShowBottomLine) View.VISIBLE else View.INVISIBLE
 
             setOnClickListener {

@@ -446,7 +446,7 @@
                     android:gravity="start|center_vertical"
                     android:singleLine="true"
                     android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="2020-13-25 19:35:35 (GMT+8)" />
 
                 <ImageView

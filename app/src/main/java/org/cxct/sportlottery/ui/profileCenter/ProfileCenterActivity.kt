@@ -7,10 +7,13 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
@@ -27,20 +30,59 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivi
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
+import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
+import timber.log.Timber
+import java.io.File
+import java.io.FileNotFoundException
 
-class ProfileCenterActivity :
-    BaseNoticeActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity : BaseNoticeActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+
+    private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
+        override fun onResult(result: MutableList<LocalMedia>?) {
+            try {
+                // 图片选择结果回调
+                // LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+
+                val media = result?.firstOrNull() //這裡應當只會有一張圖片
+                val path = when {
+                    media?.isCompressed == true -> media.compressPath
+                    media?.isCut == true -> media.cutPath
+                    else -> media?.path
+                }
+
+                val file = File(path!!)
+                if (file.exists())
+                    uploadImg(file)
+                else
+                    throw FileNotFoundException()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtil.showToastInCenter(this@ProfileCenterActivity, getString(R.string.error_reading_file))
+            }
+        }
+
+        override fun onCancel() {
+            Timber.i("PictureSelector Cancel")
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
 
         setupBackButton()
+        setupHeadButton()
         setupEditNickname()
         setupBalance()
         setupRechargeButton()
@@ -55,6 +97,12 @@ class ProfileCenterActivity :
     private fun setupBackButton() {
         btn_back.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun setupHeadButton() {
+        iv_head.setOnClickListener {
+            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
         }
     }
 
@@ -115,7 +163,6 @@ class ProfileCenterActivity :
 
         //額度轉換
         btn_account_transfer.setOnClickListener {
-            //TODO 額度轉換
             startActivity(Intent(this, MoneyTransferActivity::class.java))
         }
 
@@ -153,12 +200,6 @@ class ProfileCenterActivity :
                 ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
         }
 
-        //代理加盟
-        //7610 確認移除代理加盟
-        /*btn_agent.setOnClickListener {
-            //TODO 代理加盟
-        }*/
-
         //幫助中心
         btn_help_center.setOnClickListener {
             startActivity(Intent(this, HelpCenterActivity::class.java))
@@ -166,7 +207,6 @@ class ProfileCenterActivity :
 
         //建議反饋
         btn_feedback.setOnClickListener {
-            //TODO 建議反饋
             startActivity(Intent(this, FeedbackMainActivity::class.java))
         }
     }
@@ -237,6 +277,13 @@ class ProfileCenterActivity :
                 startActivity(Intent(this, BankActivity::class.java))
             }
         })
+
+        viewModel.editIconUrlResult.observe(this, Observer {
+            if (it?.success == true)
+                ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
+            else
+                ToastUtil.showToastInCenter(this, it?.msg)
+        })
     }
 
     private fun initSocketObserver() {
@@ -251,7 +298,6 @@ class ProfileCenterActivity :
 
     @SuppressLint("SetTextI18n")
     private fun updateUI(userInfo: UserInfo?) {
-
         Glide.with(this)
             .load(userInfo?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
@@ -267,4 +313,11 @@ class ProfileCenterActivity :
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
     }
+
+    private fun uploadImg(file: File) {
+        val userId = viewModel.userInfo.value?.userId.toString()
+        val uploadImgRequest = UploadImgRequest(userId, file)
+        viewModel.uploadImage(uploadImgRequest)
+    }
+
 }

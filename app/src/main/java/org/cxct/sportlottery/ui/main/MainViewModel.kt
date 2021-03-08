@@ -31,11 +31,7 @@ class MainViewModel(
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin.apply {
-            if (this.value == false && !loginRepository.isCheckToken) {
-                checkToken()
-            }
-        }
+        loginRepository.isLogin
     }
 
     val token = loginRepository.token
@@ -70,14 +66,6 @@ class MainViewModel(
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
 
-    private fun checkToken() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.checkToken()
-            }
-        }
-    }
-
     fun logout() {
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -85,28 +73,45 @@ class MainViewModel(
             }.apply {
                 loginRepository.clear()
                 betInfoRepository.clear()
-                //TODO change timber to actual logout ui to da
-                Timber.d("logout result is ${this?.success} ${this?.code} ${this?.msg}")
             }
         }
     }
 
     //獲取系統公告
     fun getMarquee() {
-        val messageType = "1"
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.messageService.getMessageList(messageType)
-            }?.let { result -> _messageListResult.postValue(result) }
+                when (userInfo.value?.testFlag) {
+                    null -> {
+                        val typeList = arrayOf(2, 3)
+                        OneBoSportApi.messageService.getPromoteNotice(typeList)
+                    }
+                    else -> {
+                        val messageType = "1"
+                        OneBoSportApi.messageService.getMessageList(messageType)
+                    }
+                }
+            }?.let { result ->
+                _messageListResult.postValue(result)
+            }
         }
     }
 
     fun getMsgDialog() {
-        val messageType = "2"
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.messageService.getMessageList(messageType)
-            }?.let { result -> _messageDialogResult.postValue(result) }
+                //TODO simon test 記錄問題：當前手動登出後 call getPromoteNotice() 得到的資料，跟登出狀態下 重啟 App call getPromoteNotice() 得到的資料會不相同，之後 review
+                if (isLogin.value == true) {
+                    val messageType = "2"
+                    OneBoSportApi.messageService.getMessageList(messageType)
+                } else {
+                    val typeList = arrayOf(2, 3)
+                    OneBoSportApi.messageService.getPromoteNotice(typeList)
+
+                }
+            }?.let { result ->
+                _messageDialogResult.postValue(result)
+            }
         }
     }
 
@@ -145,7 +150,7 @@ class MainViewModel(
                 val homeCatePageList = createHomeGameList(result.t)
                 _homeCatePageDataList.postValue(homeCatePageList)
             } else {
-                //TODO simon test 獲取第三方遊戲配置失敗
+                Timber.e("獲取第三方遊戲配置失敗")
             }
         }
     }
@@ -196,7 +201,8 @@ class MainViewModel(
             gameFirmList.sortBy { it.sort }
 
             var isTabHasNoGameCount = 0 //在第二層中的tab，裡面的第三層game是否為空
-            val singlePageList = mutableListOf<GameItemData>() //某些第三方遊戲只有兩層資料結構，所以需要獨立創建 singlePageList
+            val singlePageList =
+                mutableListOf<GameItemData>() //某些第三方遊戲只有兩層資料結構，所以需要獨立創建 singlePageList
             gameFirmList.forEach { gameFirm ->
                 //3. 第三層 game 按鈕
                 val pageList = createThirdGamePage(thirdGameData, gameFirm)
@@ -220,7 +226,10 @@ class MainViewModel(
         return homeGameList
     }
 
-    private fun createThirdGamePage(thirdGameData: ThirdGameData?, gameFirm: GameFirmValues): MutableList<GameItemData> {
+    private fun createThirdGamePage(
+        thirdGameData: ThirdGameData?,
+        gameFirm: GameFirmValues
+    ): MutableList<GameItemData> {
         val pageList = mutableListOf<GameItemData>()
         thirdGameData?.thirdDictMap?.get(gameFirm.firmCode)?.forEach { thirdDict ->
             if (thirdDict?.gameCode == null)

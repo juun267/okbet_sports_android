@@ -65,14 +65,14 @@ class BetRecordViewModel(
         }.toMutableList()
     }
 
-    fun searchBetRecord(isChampionChecked: Boolean?= false, startDate: String ?= TimeUtil.getDefaultTimeStamp().startTime, endDate: String ?= TimeUtil.getDefaultTimeStamp().endTime) {
+    fun searchBetRecord(isChampionChecked: Boolean?= false, startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime, endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime) {
         if (betStatusList.none { it.isChecked }) {
             _statusSearchEnable.value = false
         } else {
             _statusSearchEnable.value = true
             val statusList = selectedStatusList.map { it.code }
             val championOnly = if (isChampionChecked == true) 1 else 0
-            mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusList, startTime = startDate, endTime = endDate, page = 1, pageSize = PAGE_SIZE)
+            mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusList, startTime = startTime, endTime = endTime, page = 1, pageSize = PAGE_SIZE)
             mBetListRequest?.let { getBetList(it) }
         }
     }
