@@ -74,8 +74,11 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
         private fun setupData(itemView: View, gameType: String, item: MatchResultData) {
             itemView.apply {
-                if (adapterPosition == 0)
+                if (adapterPosition == 0) {
                     view_margin_bottom.visibility = View.GONE
+                } else {
+                    view_margin_bottom.visibility = View.VISIBLE
+                }
 
                 tv_type.text = item.titleData?.name
                 when (gameType) {
