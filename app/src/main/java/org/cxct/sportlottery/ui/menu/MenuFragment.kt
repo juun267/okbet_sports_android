@@ -41,11 +41,18 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupCloseBtn()
         initObserve()
         initSocketObserver()
         initEvent()
         setupSelectLanguage()
         setupVersion()
+    }
+
+    private fun setupCloseBtn() {
+        btn_close.setOnClickListener {
+            mDownMenuListener?.onClick(btn_close)
+        }
     }
 
     private fun getMoney() {
