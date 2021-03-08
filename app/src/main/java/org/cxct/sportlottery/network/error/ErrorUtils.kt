@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
@@ -157,6 +158,10 @@ object ErrorUtils {
                         return CheckAccountResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(MESSAGE_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MessageListResult(it.code, it.msg, null, it.success, null) as T
+                    }
+                    (url.contains(INDEX_PROMOTENOTICE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MessageListResult(it.code, it.msg, null, it.success, null) as T
                     }

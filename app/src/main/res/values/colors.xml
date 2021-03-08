@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- ========== color guideline ========== -->
+    <color name="colorBlueLight">#4A91F7</color>
+    <color name="colorBlue">#3880E5</color>
+    <color name="colorBlueDark">#1F4780</color>
+
+    <color name="colorOrangeLight">#FF9E3C</color>
+    <color name="colorOrange">#FF8000</color>
+
+    <color name="colorRed">#E44438</color>
+    <color name="colorRedDark">#B73A20</color>
+
+    <color name="colorGreen">#08DC6E</color>
+
+    <color name="colorWhite">#FCFCFC</color>
+    <color name="colorWhite1">#F3F4F5</color>
+    <color name="colorWhite2">#F2F2F2</color>
+    <color name="colorWhite3">#EDF4FF</color>
+    <color name="colorWhite4">#EDEDED</color>
+    <color name="colorWhite5">#EBEBEB</color>
+    <color name="colorWhite6">#E2E2E2</color>
+    <color name="colorWhite7">#DFEAF8</color>
+
+    <color name="colorSilverLight">#CCCCCC</color>
+    <color name="colorSilver">#BCBCBC</color>
+    <color name="colorSilverDirk">#B4B4B4</color>
+
+    <color name="colorGrayLight">#999999</color>
+    <color name="colorGray">#666666</color>
+    <color name="colorGrayDark">#404040</color>
+
+    <color name="colorBlockLight">#333333</color>
+    <color name="colorBlock">#000000</color>
+    <!-- ======================================= -->
+
+
+    <!-- TODO 以下顏色棄用，待之後 UI 更新，慢慢替換移除-->
     <color name="colorPrimary">#00496B</color>
     <color name="colorPrimaryDark">#2b3b4b</color>
     <color name="colorAccent">#0073A8</color>

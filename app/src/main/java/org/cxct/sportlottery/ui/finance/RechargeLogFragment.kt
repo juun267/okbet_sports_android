@@ -83,9 +83,12 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         rechargeStateBottomSheet = BottomSheetDialog(this.requireContext())
         rechargeStateBottomSheet.setContentView(bottomSheetView)
+        rechargeStateBottomSheet.tv_close.setOnClickListener {
+            rechargeStateBottomSheet.dismiss()
+        }
+
         rechargeStateBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
             rechargeStateBottomSheet.dismiss()
-
             viewModel.setRechargeState(position)
         }
     }
@@ -96,9 +99,11 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         rechargeChannelBottomSheet = BottomSheetDialog(this.requireContext())
         rechargeChannelBottomSheet.setContentView(bottomSheetView)
+        rechargeChannelBottomSheet.tv_close.setOnClickListener {
+            rechargeChannelBottomSheet.dismiss()
+        }
         rechargeChannelBottomSheet.rech_list.setOnItemClickListener { _, _, position, _ ->
             rechargeChannelBottomSheet.dismiss()
-
             viewModel.setRechargeChannel(position)
         }
     }

@@ -40,7 +40,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         get() = _isLogin
 
     private val _isLogin = MutableLiveData<Boolean>().apply {
-        value = sharedPref.getBoolean(KEY_IS_LOGIN, false) && isCheckToken
+        value = sharedPref.getBoolean(KEY_IS_LOGIN, false)
     }
 
     var platformId

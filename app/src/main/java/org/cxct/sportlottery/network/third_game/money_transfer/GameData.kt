@@ -10,13 +10,13 @@ import kotlinx.android.parcel.Parcelize
 @JsonClass(generateAdapter = true)
 data class GameData(
     @Json(name = "money")
-    val money: Long ?= null,
+    val money: Double? = null,
     @Json(name = "remark")
-    val remark: String ?= null,
+    val remark: String? = null,
     @Json(name = "transRemaining")
-    val transRemaining: String ?= null
-): Parcelable {
+    val transRemaining: String? = null,
+) : Parcelable {
     var showName: String = ""
-    var code: String ?= null
+    var code: String? = null
     var isChecked: Boolean = false
 }

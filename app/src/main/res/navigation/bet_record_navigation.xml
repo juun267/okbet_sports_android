@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/betRecordResultFragment"
-        android:name="org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordResultFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.sportRecord.SportBetRecordFragment"
         android:label="fragment_bet_record_result"
-        tools:layout="@layout/fragment_bet_record_result" >
+        tools:layout="@layout/fragment_sport_bet_record" >
     </fragment>
 
 </navigation>

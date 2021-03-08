@@ -54,16 +54,17 @@
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="15dp"
-        android:background="@drawable/bg_square_shape_4dp_menu_blue"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/selector_blue_gray"
         android:gravity="center"
         android:maxWidth="100dp"
         android:text="@string/one_key_recovery"
-        android:textColor="@color/white"
+        android:textColor="@color/selector_text_effect_whie_gray"
         android:textSize="@dimen/textSize16sp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/textView2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

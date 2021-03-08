@@ -104,7 +104,13 @@ class GameResultRvAdapter() : RecyclerView.Adapter<ResultItemViewHolder>() {
             data.matchStatusList.let {
                 tv_first_half_score.text = firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                 tv_second_half_score.text = secondHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
-                tv_end_game_score.text = endGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                tv_end_game_score.text = endGame?.let { filteredItem ->
+                    if(filteredItem.homeScore.toString().length == 3 || filteredItem.awayScore.toString().length == 3){
+                        "${filteredItem.homeScore}-${filteredItem.awayScore}"
+                    }else{
+                        "${filteredItem.homeScore} - ${filteredItem.awayScore}"
+                    }
+                }
                 tv_full_game_score.text = fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
             }
 

@@ -35,9 +35,6 @@
         <action
             android:id="@+id/action_gameFragment_to_game2Fragment"
             app:destination="@id/game2Fragment" />
-        <action
-            android:id="@+id/action_gameFragment_to_betListDialog"
-            app:destination="@id/betListDialog" />
     </fragment>
     <fragment
         android:id="@+id/game2Fragment"
@@ -63,13 +60,6 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
-        <action
-            android:id="@+id/action_game2Fragment_to_betListDialog"
-            app:destination="@id/betListDialog" />
     </fragment>
-    <fragment
-        android:id="@+id/betListDialog"
-        android:name="org.cxct.sportlottery.ui.game.BetListDialog"
-        android:label="dialog_bet_list"
-        tools:layout="@layout/dialog_bet_list" />
+
 </navigation>

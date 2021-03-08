@@ -11,5 +11,7 @@ data class MatchStatusChangeEvent(
     @Json(name = "eventType")
     override val eventType: String = EventType.MATCH_STATUS_CHANGE.value,
     @Json(name = "matchStatusCO")
-    val matchStatusCO: MatchStatusCO?
-): ServiceEventType
+    val matchStatusCO: MatchStatusCO?,
+    @Json(name = "matchStatusList")
+    val matchStatusList: List<MatchStatus>?
+) : ServiceEventType

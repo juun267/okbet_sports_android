@@ -18,6 +18,7 @@ import androidx.annotation.IntDef
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
@@ -45,6 +46,8 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             btn_withdraw_all.visibility = if (value) View.VISIBLE else View.GONE
         }
 
+    private var inputType: Int = 0
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
         addView(view)
@@ -62,25 +65,26 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             }
             view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
 
-            val inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
+            inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
             view.tv_start.visibility = typedArray.getInt(R.styleable.CustomView_necessarySymbol, 0x00000008) //預設隱藏 需要再打開
             view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
-            view.btn_clear.visibility = if (inputType == 0x00000081) View.GONE else View.VISIBLE
+            view.btn_clear.visibility = View.GONE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             typedArray.recycle()
         }
-
+        afterTextChanged { }
         setupFocus()
         setupEye()
         setupClear()
         setupVerificationCode()
         setError(null)
         setupKeyBoardPressDown()
+
     }
 
     private fun setupFocus() {
@@ -143,9 +147,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         tv_error.text = value
         if (tv_error.text.isNullOrEmpty()) {
             tv_error.visibility = View.INVISIBLE
+            (tv_error.layoutParams as LayoutParams).setMargins(0, 0, 0, 0)
             block_editText.isActivated = false
         } else {
             tv_error.visibility = View.VISIBLE
+            (tv_error.layoutParams as LayoutParams).setMargins(0, 4.dp, 0, 10.dp)
             block_editText.isActivated = true
         }
     }
@@ -159,7 +165,12 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
-        et_input.afterTextChanged { afterTextChanged.invoke(it) }
+        et_input.afterTextChanged {
+            if (inputType != 0x00000081) {
+                clearIsShow = it.isNotEmpty()
+            }
+            afterTextChanged.invoke(it)
+        }
     }
 
     fun getAllButton(clickGetAll: (EditText) -> Unit) {
