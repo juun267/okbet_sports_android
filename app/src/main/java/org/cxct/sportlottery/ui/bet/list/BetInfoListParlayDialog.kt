@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_bet_info_item_action.*
 import kotlinx.android.synthetic.main.content_bet_info_item_action.tv_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
+import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
+import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.tv_money
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
@@ -67,7 +69,8 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
-        getData()
+        getParlayList()
+        getMoney()
     }
 
 
@@ -128,6 +131,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun observeData() {
+
+        viewModel.userMoney.observe(this.viewLifecycleOwner, {
+            it?.let { money -> setMoney(money) }
+        })
+
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { it ->
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
@@ -213,6 +221,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
         })
 
+        receiver.userMoney.observe(viewLifecycleOwner, {
+            it?.let { money -> setMoney(money) }
+        })
+
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             viewModel.updateOdd(it)
@@ -247,8 +259,18 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     }
 
 
-    private fun getData() {
+    private fun getParlayList() {
         viewModel.getBetInfoListForParlay(false)
+    }
+
+
+    private fun getMoney(){
+        viewModel.getMoney()
+    }
+
+
+    private fun setMoney(money: Double) {
+        tv_money.text = getString(R.string.bet_info_current_money, TextUtil.formatMoney(money))
     }
 
 
@@ -305,6 +327,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
         parlayOdd?.sendOutStatus?.let { changeBetButtonClickable(it) }
     }
+
 
     private fun changeBetButtonClickable(boolean: Boolean) {
         tv_bet.apply {

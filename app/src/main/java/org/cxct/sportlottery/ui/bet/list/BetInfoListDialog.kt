@@ -21,7 +21,9 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.TextUtil
 
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     BetInfoListAdapter.OnItemClickListener {
@@ -46,17 +48,12 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
         binding.apply {
             gameViewModel = this@BetInfoListDialog.viewModel
             lifecycleOwner = this@BetInfoListDialog.viewLifecycleOwner
         }
-
         return binding.root
     }
 
@@ -66,6 +63,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         initUI()
         observeData()
         initSocketObserver()
+        getMoney()
     }
 
 
@@ -90,6 +88,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun observeData() {
+
+        viewModel.userMoney.observe(this.viewLifecycleOwner, {
+            it?.let { money -> setMoney(money) }
+        })
+
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
             if (it.size == 0) {
                 dismiss()
@@ -127,6 +130,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun initSocketObserver() {
+
+        receiver.userMoney.observe(viewLifecycleOwner, {
+            it?.let { money -> setMoney(money) }
+        })
 
         receiver.oddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
@@ -191,6 +198,16 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
+    private fun getMoney() {
+        viewModel.getMoney()
+    }
+
+
+    private fun setMoney(money: Double) {
+        tv_money.text = getString(R.string.bet_info_current_money, TextUtil.formatMoney(money))
+    }
+
+
     override fun onDeleteClick(position: Int) {
         //mock模式下 因為回傳內容都一樣 所以不會移除
         viewModel.removeBetInfoItem(betInfoListAdapter.betInfoList[position].matchOdd.oddsId)
@@ -223,7 +240,13 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         dismiss()
     }
 
+
     override fun onRegisterClick() {
         context?.startActivity(Intent(context, RegisterActivity::class.java))
     }
+
+
+
+
+
 }
