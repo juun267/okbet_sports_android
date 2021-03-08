@@ -239,7 +239,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 navController.navigate(action)
             }
             R.id.gameFragment -> {
-                val action = GameFragmentDirections.actionGameFragmentToGameFragment(matchType)
+                val action = GameV3FragmentDirections.actionGameFragmentToGameFragment(matchType)
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 navController.navigate(action, navOptions)
             }
