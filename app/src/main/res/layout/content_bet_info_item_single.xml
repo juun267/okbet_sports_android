@@ -18,7 +18,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/colorWhite"
         android:orientation="vertical">
 
         <include
@@ -58,7 +58,7 @@
                         android:maxLength="18"
                         android:paddingStart="10dp"
                         android:textColor="@color/main_dark"
-                        android:textColorHint="#cccccc"
+                        android:textColorHint="@color/colorSilverLight"
                         android:textSize="@dimen/textSize14sp"
                         tools:hint="限额：20,000.00"
                         tools:ignore="RtlSymmetry" />
@@ -82,7 +82,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="9dp"
-                android:textColor="#B73A20"
+                android:textColor="@color/colorRedDark"
                 android:visibility="gone"
                 tools:text="投注额大于下注限额" />
 
@@ -92,12 +92,12 @@
             android:id="@+id/tv_close_warning"
             android:layout_width="match_parent"
             android:layout_height="28dp"
-            android:background="#E44438"
+            android:background="@color/colorRed"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:text="@string/bet_info_list_game_closed"
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize13sp"
             android:visibility="gone"
             app:drawableStartCompat="@drawable/ic_warning_white"
@@ -106,7 +106,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#ebebeb" />
+            android:background="@color/colorWhite5" />
 
         <include
             android:id="@+id/bet_info_action"

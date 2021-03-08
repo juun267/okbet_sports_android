@@ -154,9 +154,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             tv_close_warning.visibility = View.GONE
             tv_odds.apply {
                 setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.transparent))
-                /* colors 定義好後改 #FF8000 */
-//                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
-                setTextColor(Color.parseColor("#FF8000"))
+                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorOrange))
             }
         }, CHANGING_ITEM_BG_COLOR_DURATION)
 

@@ -55,7 +55,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="43dp"
-                        android:background="#FCFCFC">
+                        android:background="@color/colorWhite">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
                             android:gravity="center"
                             android:textStyle="bold"
                             tools:text="余额:6,245,710.000"
-                            android:textColor="#08DC6E"
+                            android:textColor="@color/colorGreen"
                             android:textSize="@dimen/textSize14sp" />
 
                         <ImageView
@@ -90,7 +90,7 @@
                             android:paddingVertical="14dp"
                             android:paddingHorizontal="15dp"
                             android:src="@drawable/ic_close"
-                            app:tint="#999999" />
+                            app:tint="@color/colorGrayLight" />
 
 
                     </RelativeLayout>
@@ -98,7 +98,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E2E2E2"/>
+                        android:background="@color/colorWhite6"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_bet_list"

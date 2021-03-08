@@ -109,8 +109,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.etBet.setTextColor(
                 if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.main_dark)
-//                else ContextCompat.getColor(binding.root.context, R.color.orangeRed)
-                else Color.parseColor("#B73A20")
+                else ContextCompat.getColor(binding.root.context, R.color.colorRedDark)
             )
             return sendOutStatus
         }

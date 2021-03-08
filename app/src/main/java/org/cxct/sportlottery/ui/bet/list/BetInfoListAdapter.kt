@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Handler
 import android.text.Editable
 import android.text.TextUtils
@@ -122,7 +121,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = true
                     background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
+                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorWhite))
                 }
             } else {
                 val quota = it.toLong()
@@ -149,17 +148,16 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 binding.tvErrorMessage.visibility = if (inputError) View.VISIBLE else View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (inputError) 0.dp else 11.dp
                 binding.etBet.setTextColor(
-//                    if (inputError) ContextCompat.getColor(binding.root.context, R.color.orangeRed) else ContextCompat.getColor(binding.root.context, R.color.main_dark)
-                    if (inputError) Color.parseColor("#B73A20") else ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                    if (inputError) ContextCompat.getColor(binding.root.context, R.color.colorRedDark) else ContextCompat.getColor(binding.root.context, R.color.main_dark)
                 )
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = if (inputError) {
-                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_5_button_unselected)
+                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_unselected)
                         setTextColor(ContextCompat.getColor(binding.root.context, R.color.bright_gray))
                         false
                     } else {
                         background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange)
-                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
+                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorWhite))
                         true
                     }
                 }
@@ -270,7 +268,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         View.GONE,
                         View.VISIBLE,
                         R.string.bet_info_list_game_closed,
-                        R.drawable.bg_radius_5_button_unselected,
+                        R.drawable.bg_radius_4_button_unselected,
                         R.color.bright_gray,
                         false
                     )
@@ -282,7 +280,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         View.GONE,
                         R.string.bet_info_list_bet,
                         R.drawable.bg_radius_4_button_orange,
-                        R.color.white,
+                        R.color.colorWhite,
                         true
                     )
                     setChangeOdds(
@@ -367,7 +365,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 changeColorByOdds(tv_bet, tv_close_warning)
                 tv_odds.apply {
                     setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
+                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
                     text = TextUtil.formatForOdd(matchOdd.odds)
                 }
             }
@@ -375,8 +373,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             OddState.SMALLER.state -> {
                 changeColorByOdds(tv_bet, tv_close_warning)
                 tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.green))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
+                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.colorGreen))
+                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
                     text = TextUtil.formatForOdd(matchOdd.odds)
                 }
             }
@@ -386,7 +384,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             when (error) {
                 true -> {
                     tv_bet.apply {
-                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_5_button_unselected)
+                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_unselected)
                         setTextColor(ContextCompat.getColor(tv_bet.context, R.color.bright_gray))
                         isClickable = false
                     }
@@ -394,7 +392,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 false -> {
                     tv_bet.apply {
                         background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orange)
-                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.white))
+                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
                         isClickable = true
                     }
                 }
@@ -402,9 +400,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             tv_close_warning.visibility = View.GONE
             tv_odds.apply {
                 setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.transparent))
-                /* colors 定義好後改 #FF8000 */
-//                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
-                setTextColor(Color.parseColor("#FF8000"))
+                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorOrange))
             }
         }, CHANGING_ITEM_BG_COLOR_DURATION)
 

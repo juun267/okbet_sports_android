@@ -305,7 +305,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     override fun onOddChange() {
         if (tv_bet.isClickable) {
             tv_bet.apply {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected_red)
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected_red)
                 setTextColor(ContextCompat.getColor(tv_bet.context, R.color.white))
                 text = getString(R.string.bet_info_list_odds_change)
             }
@@ -332,7 +332,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private fun changeBetButtonClickable(boolean: Boolean) {
         tv_bet.apply {
             isClickable = if (!boolean) {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected)
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
                 false
             } else {

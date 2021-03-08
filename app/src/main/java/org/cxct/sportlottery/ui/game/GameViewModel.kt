@@ -953,7 +953,7 @@ class GameViewModel(
             getBetInfoListForParlay(true)
         else Timber.e("不執行 betInfo request")
     }
-    }
+
 
     private fun updateBetInfoListByOddChange(newList: List<org.cxct.sportlottery.network.odds.list.Odd>) {
         updateOddStatus(newList)
