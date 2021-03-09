@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -81,16 +82,8 @@ class MainViewModel(
     fun getMarquee() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                when (userInfo.value?.testFlag) {
-                    null -> {
-                        val typeList = arrayOf(2, 3)
-                        OneBoSportApi.messageService.getPromoteNotice(typeList)
-                    }
-                    else -> {
-                        val messageType = "1"
-                        OneBoSportApi.messageService.getMessageList(messageType)
-                    }
-                }
+                val typeList = arrayOf(1)
+                OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result ->
                 _messageListResult.postValue(result)
             }
@@ -100,15 +93,8 @@ class MainViewModel(
     fun getMsgDialog() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                //TODO simon test 記錄問題：當前手動登出後 call getPromoteNotice() 得到的資料，跟登出狀態下 重啟 App call getPromoteNotice() 得到的資料會不相同，之後 review
-                if (isLogin.value == true) {
-                    val messageType = "2"
-                    OneBoSportApi.messageService.getMessageList(messageType)
-                } else {
-                    val typeList = arrayOf(2, 3)
-                    OneBoSportApi.messageService.getPromoteNotice(typeList)
-
-                }
+                val typeList = arrayOf(2, 3)
+                OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result ->
                 _messageDialogResult.postValue(result)
             }

@@ -16,7 +16,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:letterSpacing="0.1"
         android:text="@string/bet_info_list_bet_quota"
-        android:textColor="@color/colorBlockLight"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/bet_info_list_rmb"
-        android:textColor="@color/colorBlockLight"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_bet_name" />
@@ -53,7 +53,7 @@
         android:layout_marginTop="2dp"
         android:text="@string/bet_info_list_win_quota"
         android:letterSpacing="0.1"
-        android:textColor="@color/colorBlockLight"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="@+id/tv_bet_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_bet_name" />
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bet_info_list_rmb"
-        android:textColor="@color/colorBlockLight"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="@+id/tv_bet_rmb"
         app:layout_constraintTop_toTopOf="@+id/tv_win_name" />

@@ -92,4 +92,7 @@
             <enum name="at_start" value="5" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="GameFilterRow" />
+
 </resources>
