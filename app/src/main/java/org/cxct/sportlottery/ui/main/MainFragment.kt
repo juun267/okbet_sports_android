@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.view_message.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -89,37 +90,36 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initTab() {
         tab_sport.setOnClickListener {
-            selectTab(tab_sport)
             scrollToTabPosition(tab_sport)
+            appbar_layout.setExpanded(false)
         }
 
         tab_lottery.setOnClickListener {
-            selectTab(tab_lottery)
             scrollToTabPosition(tab_lottery)
+            appbar_layout.setExpanded(false)
         }
 
         tab_live.setOnClickListener {
-            selectTab(tab_live)
             scrollToTabPosition(tab_live)
+            appbar_layout.setExpanded(false)
         }
 
         tab_poker.setOnClickListener {
-            selectTab(tab_poker)
             scrollToTabPosition(tab_poker)
+            appbar_layout.setExpanded(false)
         }
 
         tab_slot.setOnClickListener {
-            selectTab(tab_slot)
             scrollToTabPosition(tab_slot)
+            appbar_layout.setExpanded(false)
         }
 
         tab_fishing.setOnClickListener {
-            selectTab(tab_fishing)
             scrollToTabPosition(tab_fishing)
+            appbar_layout.setExpanded(false)
         }
 
-
-        tab_sport.performClick() //default select
+        selectTab(tab_sport) //default select
     }
 
     private fun selectTab(select: View) {
@@ -129,8 +129,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         tab_poker.isSelected = tab_poker == select
         tab_slot.isSelected = tab_slot == select
         tab_fishing.isSelected = tab_fishing == select
-
-        appbar_layout.setExpanded(false)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -308,7 +306,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NONE -> {}
+            EnterThirdGameResult.ResultType.NONE -> {
+            }
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE)
             viewModel.clearThirdGame()
