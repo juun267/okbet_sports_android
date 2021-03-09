@@ -30,7 +30,7 @@
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tool_bar_height"
-                android:background="@drawable/bg_gradient_dark"
+                android:background="@color/colorWhite"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_scrollFlags="scroll|enterAlways">
@@ -54,7 +54,7 @@
                     android:gravity="center"
                     android:minWidth="48dp"
                     android:text="@string/btn_login"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlackLight"
                     android:visibility="@{mainViewModel.isLogin? View.GONE : View.VISIBLE }" />
 
                 <View
@@ -62,7 +62,7 @@
                     android:layout_height="18dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@android:color/white"
+                    android:background="@color/colorBlackLight"
                     android:visibility="@{mainViewModel.isLogin ? View.GONE : View.VISIBLE }" />
 
                 <Button
@@ -74,8 +74,22 @@
                     android:gravity="center"
                     android:minWidth="48dp"
                     android:text="@string/btn_register"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorBlackLight"
                     android:visibility="@{mainViewModel.isLogin ? View.GONE : View.VISIBLE }" />
+
+                <TextView
+                    android:id="@+id/btn_notice"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/bg_circle_white"
+                    android:backgroundTint="@color/colorBlue"
+                    android:gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSize14sp"
+                    android:visibility="gone"
+                    tools:text="N"
+                    tools:visibility="visible" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/iv_head"
