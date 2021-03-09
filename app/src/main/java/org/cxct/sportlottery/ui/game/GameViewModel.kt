@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -1051,19 +1052,6 @@ class GameViewModel(
             result?.success?.let {
                 if (it) {
                     betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
-                } else {
-                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoRepository.betInfoList.value?.let { list ->
-                            for (i in list.indices) {
-                                betInfoRepository.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
-                                    odd =
-                                        value.odds.find { v -> if (v == null) return@find false else v.id == it }
-                                    odd?.isSelect = false
-                                }
-                            }
-                        }
-                    }
                 }
                 _betInfoResult.postValue(Event(result))
             }
@@ -1133,20 +1121,6 @@ class GameViewModel(
                         betInfoRepository.betList.addAll(newBetList)
                     }
                     betInfoRepository._betInfoList.postValue(newBetList)
-
-                } else {
-                    oddsDetailResult.value?.oddsDetailData?.matchOdd?.odds?.forEach { (_, value) ->
-                        var odd: org.cxct.sportlottery.network.odds.detail.Odd?
-                        betInfoRepository.betInfoList.value?.let { list ->
-                            for (i in list.indices) {
-                                betInfoRepository.betInfoList.value?.get(i)?.matchOdd?.oddsId?.let {
-                                    odd =
-                                        value.odds.find { v -> if (v == null) return@find false else v.id == it }
-                                    odd?.isSelect = false
-                                }
-                            }
-                        }
-                    }
                 }
             }
             _betInfoResult.postValue(Event(result))
@@ -1155,7 +1129,6 @@ class GameViewModel(
 
     fun removeBetInfoItem(oddId: String?) {
         betInfoRepository.removeItem(oddId)
-        betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
     }
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
