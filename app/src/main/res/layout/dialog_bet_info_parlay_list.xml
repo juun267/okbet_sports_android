@@ -130,7 +130,7 @@
                                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                                     android:letterSpacing="0.086"
                                     android:text="@string/bet_info_parlay_list"
-                                    android:textColor="@color/colorBlockLight"
+                                    android:textColor="@color/colorBlackLight"
                                     android:textSize="@dimen/textSize12sp" />
 
                                 <ImageView
