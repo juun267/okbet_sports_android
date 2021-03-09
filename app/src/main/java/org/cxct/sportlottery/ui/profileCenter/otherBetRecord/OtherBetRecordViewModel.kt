@@ -13,17 +13,15 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Ot
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OrderData
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
 class OtherBetRecordViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val allPlatTag = "ALL_PLAT"
 
@@ -67,8 +65,8 @@ class OtherBetRecordViewModel(
 
                 val resultList = mutableListOf<SheetData>()
                 resultList.add(SheetData(allPlatTag, androidContext.getString(R.string.all_plat_type)))
-                for ((key, value) in result.t?.gameFirmMap?: mapOf()) {
-                        resultList.add(SheetData(value.firmType, value.firmShowName))
+                for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
+                    resultList.add(SheetData(value.firmType, value.firmShowName))
                 }
 
                 _thirdGamesResult.value = resultList.distinct()
@@ -76,7 +74,7 @@ class OtherBetRecordViewModel(
         }
     }
 
-    fun queryFirstOrders(page: Int? = 1, startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime, endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime, firmType: String ?= null) {
+    fun queryFirstOrders(page: Int? = 1, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime, firmType: String? = null) {
         loading()
 
         if (page == 1) {
@@ -84,14 +82,16 @@ class OtherBetRecordViewModel(
             recordDataList.clear()
         }
 
-        val filter = { firm: String? -> if(firm == allPlatTag) null else firm}
+        val filter = { firm: String? -> if (firm == allPlatTag) null else firm }
 
         viewModelScope.launch {
             doNetwork(androidContext) {
-                recordRequest = OtherBetHistoryRequest(page, PAGE_SIZE,
-                                           startTime = startTime,
-                                           endTime = endTime,
-                                           firmType = filter(firmType))
+                recordRequest = OtherBetHistoryRequest(
+                    page, PAGE_SIZE,
+                    startTime = startTime,
+                    endTime = endTime,
+                    firmType = filter(firmType)
+                )
 
                 recordRequest.let { OneBoSportApi.thirdGameService.queryFirstOrders(it) }
 
@@ -105,12 +105,12 @@ class OtherBetRecordViewModel(
         }
     }
 
-    fun querySecondOrders(today: String ?= null) {
+    fun querySecondOrders(today: String? = null) {
         querySecondOrders(startTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).startTime },
-                          endTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime })
+            endTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime })
     }
 
-    fun querySecondOrders(page: Int? = 1, startTime: String ?= null, endTime: String ?= null, firmType: String ?= null) {
+    fun querySecondOrders(page: Int? = 1, startTime: String? = null, endTime: String? = null, firmType: String? = null) {
         loading()
         if (page == 1) {
             nowPage = 1
@@ -118,10 +118,12 @@ class OtherBetRecordViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                recordRequest = OtherBetHistoryRequest(page, PAGE_SIZE,
-                                                       startTime = startTime,
-                                                       endTime = endTime,
-                                                       firmType = firmType)
+                recordRequest = OtherBetHistoryRequest(
+                    page, PAGE_SIZE,
+                    startTime = startTime,
+                    endTime = endTime,
+                    firmType = firmType
+                )
 
                 recordRequest.let { OneBoSportApi.thirdGameService.querySecondOrders(it) }
 
@@ -140,7 +142,7 @@ class OtherBetRecordViewModel(
         if (!isLoading && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 isLoading = true
-                recordRequest?.let { queryFirstOrders(++nowPage, it.startTime, it.endTime, it.firmType ) }
+                recordRequest?.let { queryFirstOrders(++nowPage, it.startTime, it.endTime, it.firmType) }
             }
         }
     }
@@ -149,10 +151,11 @@ class OtherBetRecordViewModel(
         if (!isLoading && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 isLoading = true
-                recordRequest?.let { querySecondOrders(++nowPage, it.startTime, it.endTime, it.firmType ) }
+                recordRequest?.let { querySecondOrders(++nowPage, it.startTime, it.endTime, it.firmType) }
             }
         }
     }
+
     private fun loading() {
         _loading.postValue(true)
     }

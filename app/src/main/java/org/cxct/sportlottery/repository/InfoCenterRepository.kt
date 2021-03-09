@@ -79,4 +79,8 @@ class InfoCenterRepository {
 
         _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
     }
+
+    fun clear() {
+        _unreadNoticeList.postValue(listOf())
+    }
 }

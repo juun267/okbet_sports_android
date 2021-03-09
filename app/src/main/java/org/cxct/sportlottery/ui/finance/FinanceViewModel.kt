@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -15,11 +14,9 @@ import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.component.StatusSheetData
-import org.cxct.sportlottery.ui.finance.data.*
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
@@ -33,8 +30,7 @@ class FinanceViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val loading: LiveData<Boolean> //使用者餘額
         get() = _loading
@@ -259,9 +255,10 @@ class FinanceViewModel(
         }
     }
 
-    fun getUserWithdrawList(isFirstFetch: Boolean,
-                            startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
-                            endTime: String? = TimeUtil.getDefaultTimeStamp().endTime
+    fun getUserWithdrawList(
+        isFirstFetch: Boolean,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime
     ) {
         when {
             isFirstFetch -> {
@@ -285,13 +282,14 @@ class FinanceViewModel(
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(
-                    checkStatus = checkStatus,
-                    uwType = uwType,
-                    startTime = startTime,
-                    endTime = endTime,
-
-                    ))
+                OneBoSportApi.withdrawService.getWithdrawList(
+                    WithdrawListRequest(
+                        checkStatus = checkStatus,
+                        uwType = uwType,
+                        startTime = startTime,
+                        endTime = endTime
+                    )
+                )
             }
 
             result?.rows?.map {

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_light"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context=".ui.menu.MenuFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_dark"
+        android:background="@color/colorWhite1"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,28 +37,41 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="16dp"
             android:ellipsize="marquee"
             android:singleLine="true"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_money"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toTopOf="@+id/iv_head"
             tools:text="Player001" />
 
         <TextView
             android:id="@+id/tv_money"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="￥0.00"
-            android:textColor="@color/pumpkinOrange"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/effect_ripple_circle_blue_light"
+            android:contentDescription="@null"
+            android:padding="11dp"
+            android:src="@drawable/ic_close_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,63 +89,70 @@
                 android:id="@+id/menu_profile_center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_profile_center"
                 app:cvTitle="@string/profile_center" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_member_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_member_level"
                 app:cvTitle="@string/member_level" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_game_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_game_settlement"
                 app:cvTitle="@string/game_settlement" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_version_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_version_update"
                 app:cvTitle="@string/version_update" />
-
-            <org.cxct.sportlottery.ui.menu.MenuItem
-                android:id="@+id/menu_sign_out"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_logout"
-                app:cvTitle="@string/sign_out" />
 
         </LinearLayout>
 
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/btn_change_language"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="15dp"
         android:paddingTop="15dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="15dp">
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_sign_out"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_language_set" />
+            android:layout_marginBottom="26dp"
+            android:background="@drawable/bg_radius_19_button_white"
+            android:minHeight="38dp"
+            android:text="@string/sign_out"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_version" />
 
         <TextView
-            android:id="@+id/tv_language"
+            android:id="@+id/btn_change_language"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
-            android:layout_weight="1"
+            android:drawablePadding="7dp"
             android:text="@string/language_cn"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize12sp" />
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp"
+            app:drawableStartCompat="@drawable/ic_language_set"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_version"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_version"
@@ -141,9 +161,12 @@
             android:layout_marginEnd="5dp"
             android:gravity="end"
             android:text="@string/label_version"
-            android:textColor="@color/textGrayLight"
-            android:textSize="@dimen/textSize12sp" />
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_change_language" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

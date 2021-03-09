@@ -10,11 +10,11 @@ import kotlinx.android.synthetic.main.activity_money_recharge.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 
-class MoneyRechargeActivity : BaseNoticeActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     companion object {
         const val RechargeViewLog = "rechargeViewLog"

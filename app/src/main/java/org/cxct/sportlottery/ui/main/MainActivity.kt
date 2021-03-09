@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityMainBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -46,21 +45,15 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private val mSplashViewModel: SplashViewModel by viewModel()
 
-    private lateinit var mainBinding: ActivityMainBinding
-
     private val navController by lazy { findNavController(R.id.main_container) }
 
     private var mNewsDialog: NewsDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        mainBinding.apply {
-            mainViewModel = this@MainActivity.viewModel
-            lifecycleOwner = this@MainActivity
-        }
-
+        setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
         initBottomNav()
@@ -174,8 +167,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            //登入/登出刷新彈窗公告
-            getMsgDialog()
+            getMsgDialog() //登入/登出刷新彈窗公告
+            updateUiWithLogin(it)
         })
 
         viewModel.errorResultToken.observe(this, Observer {
@@ -197,6 +190,20 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         })
     }
 
+    private fun updateUiWithLogin(isLogin: Boolean) {
+        if (isLogin) {
+            btn_login.visibility = View.GONE
+            btn_register.visibility = View.GONE
+            toolbar_divider.visibility = View.GONE
+            iv_head.visibility = View.VISIBLE
+        } else {
+            btn_login.visibility = View.VISIBLE
+            btn_register.visibility = View.VISIBLE
+            toolbar_divider.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
+        }
+    }
+
     //彈窗圖
     private fun setPopImage(popImageList: List<ImageData>) {
         if (isPopImageDialog) {
@@ -209,7 +216,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     private fun setNewsDialog(messageListResult: MessageListResult) {
         //未登入、遊客登入都要顯示彈窗
         if (!messageListResult.rows.isNullOrEmpty() &&
-            mNewsDialog?.isVisible != true) {
+            mNewsDialog?.isVisible != true
+        ) {
             mNewsDialog = NewsDialog(this, messageListResult.rows)
             mNewsDialog?.show(supportFragmentManager, null)
         }
