@@ -23,7 +23,10 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     fun setupNoticeButton(noticeButton: TextView) {
         mNoticeButton = noticeButton
         mNoticeButton?.setOnClickListener {
-            startActivity(Intent(this, InfoCenterActivity::class.java))
+            startActivity(
+                Intent(this, InfoCenterActivity::class.java)
+                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+            )
         }
     }
 

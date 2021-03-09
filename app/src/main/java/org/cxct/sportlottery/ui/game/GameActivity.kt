@@ -11,7 +11,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
@@ -19,7 +18,6 @@ import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityGameBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -39,9 +37,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private val mSplashViewModel: SplashViewModel by viewModel()
-
-    private lateinit var mainBinding: ActivityGameBinding
-
     private val mMarqueeAdapter = MarqueeAdapter()
 
     enum class Page {
@@ -283,7 +278,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             val matchId = it[2] ?: ""
             val oddsType = "EU"
 
-            getAppBarLayout().setExpanded(true, true)
+            app_bar_layout.setExpanded(true, true)
 
             addFragment(
                 OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
@@ -305,13 +300,13 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.openGameDetail.observe(this, Observer {
-            getAppBarLayout().setExpanded(true, true)
+            app_bar_layout.setExpanded(true, true)
             addFragment(GameDetailFragment.newInstance(it.second, it.first), Page.ODDS)
 
         })
 
         viewModel.openOutrightDetail.observe(this, Observer {
-            getAppBarLayout().setExpanded(true, true)
+            app_bar_layout.setExpanded(true, true)
             addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
         })
 
@@ -372,10 +367,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun getSportMenu() {
         loading()
         viewModel.getSportMenu()
-    }
-
-    fun getAppBarLayout(): AppBarLayout {
-        return mainBinding.appBarLayout
     }
 
     private fun popAllFragment() {
