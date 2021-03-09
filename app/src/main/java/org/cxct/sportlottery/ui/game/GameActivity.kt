@@ -55,6 +55,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
+        setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
         initRvMarquee()

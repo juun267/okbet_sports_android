@@ -4,9 +4,9 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_other_bet_record.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
-class BetRecordActivity : BaseNoticeActivity<BetRecordViewModel>(BetRecordViewModel::class) {
+class BetRecordActivity : BaseOddButtonActivity<BetRecordViewModel>(BetRecordViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bet_record)

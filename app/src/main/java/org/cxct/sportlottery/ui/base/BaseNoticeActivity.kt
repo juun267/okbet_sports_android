@@ -16,6 +16,18 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initNoticeObserve()
+    }
+
+    //有 child activity 給定 notice button 顯示
+    fun setupNoticeButton(noticeButton: TextView) {
+        mNoticeButton = noticeButton
+        mNoticeButton?.setOnClickListener {
+            startActivity(Intent(this, InfoCenterActivity::class.java))
+        }
+    }
+
+    private fun initNoticeObserve() {
         viewModel.infoCenterRepository.unreadNoticeList.observe(this, Observer {
             updateNoticeButton(it.size)
         })
@@ -25,13 +37,6 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
                 viewModel.setUserNoticeList(list)
             }
         })
-    }
-
-    fun setNoticeButton(noticeButton: TextView) {
-        mNoticeButton = noticeButton
-        mNoticeButton?.setOnClickListener {
-            startActivity(Intent(this@BaseNoticeActivity, InfoCenterActivity::class.java))
-        }
     }
 
     private fun updateNoticeButton(noticeCount: Int) {

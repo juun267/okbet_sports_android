@@ -10,7 +10,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
@@ -19,8 +19,8 @@ class ProfileCenterViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    private val infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token

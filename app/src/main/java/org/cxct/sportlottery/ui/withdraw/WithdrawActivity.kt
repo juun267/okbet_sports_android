@@ -3,9 +3,9 @@ package org.cxct.sportlottery.ui.withdraw
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_setting_password.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
-class WithdrawActivity : BaseNoticeActivity<WithdrawViewModel>(WithdrawViewModel::class) {
+class WithdrawActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
     companion object {
         const val navigateKey = "NAVIGATE_FROM"

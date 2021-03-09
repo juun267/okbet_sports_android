@@ -53,6 +53,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
         initBottomNav()
@@ -62,8 +63,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
         if (mSplashViewModel.isNeedGetHost())
             mSplashViewModel.getHost()
-
-        setNoticeButton(btn_notice)
     }
 
     override fun onBackPressed() {
