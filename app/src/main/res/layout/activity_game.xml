@@ -4,6 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.game.GameActivity">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="gameViewModel"
+            type="org.cxct.sportlottery.ui.game.GameViewModel" />
+    </data>
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
