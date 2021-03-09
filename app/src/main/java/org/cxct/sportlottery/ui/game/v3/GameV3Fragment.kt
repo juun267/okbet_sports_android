@@ -7,29 +7,18 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameV3FragmentArgs by navArgs()
-
-    private val sportTypeAdapter by lazy {
-        SportTypeAdapter().apply {
-            sportTypeListener = SportTypeListener {
-                viewModel.getGameHallList(args.matchType, it)
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,24 +26,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     ): View? {
 
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
-            setupSportTypeRow(this)
             setupGameFilterRow(this)
-        }
-    }
-
-    private fun setupSportTypeRow(view: View) {
-        view.sport_type_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            this.adapter = sportTypeAdapter
-
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
-            )
         }
     }
 
@@ -92,6 +64,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
 
+            sportTypeListener = SportTypeListener {
+                viewModel.getGameHallList(args.matchType, it)
+            }
+
             gameTypeListener = GameTypeListener {
                 //TODO add 滾球賽事
                 viewModel.getGameHallList(args.matchType, it)
@@ -107,44 +83,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    val sportTypeList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
-
-                    updateSportTypeRow(sportTypeList)
-                    updateGameFilterRow(sportTypeList)
+                    game_filter_row.sportList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
                 }
 
                 MatchType.TODAY -> {
-                    val sportTypeList = it?.sportMenuData?.menu?.today?.items ?: listOf()
-
-                    updateSportTypeRow(sportTypeList)
-                    updateGameFilterRow(sportTypeList)
+                    game_filter_row.sportList = it?.sportMenuData?.menu?.today?.items ?: listOf()
                 }
 
                 MatchType.EARLY -> {
-                    val sportTypeList = it?.sportMenuData?.menu?.early?.items ?: listOf()
-
-                    updateSportTypeRow(sportTypeList)
-                    updateGameFilterRow(sportTypeList)
+                    game_filter_row.sportList = it?.sportMenuData?.menu?.early?.items ?: listOf()
                 }
 
                 MatchType.PARLAY -> {
-                    val sportTypeList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
-
-                    updateSportTypeRow(sportTypeList)
-                    updateGameFilterRow(sportTypeList)
+                    game_filter_row.sportList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
                 }
 
                 MatchType.OUTRIGHT -> {
-                    val sportTypeList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
-
-                    updateSportTypeRow(sportTypeList)
-                    updateGameFilterRow(sportTypeList)
+                    game_filter_row.sportList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
                 }
-                MatchType.AT_START -> {
-                    val sportTypeList = it?.sportMenuData?.atStart?.items ?: listOf()
 
-                    updateSportTypeRow(sportTypeList)
-                    updateGameFilterRow(sportTypeList)
+                MatchType.AT_START -> {
+                    game_filter_row.sportList = it?.sportMenuData?.atStart?.items ?: listOf()
                 }
             }
         })
@@ -159,13 +118,5 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.getGameHallList(args.matchType, true)
         loading()
-    }
-
-    private fun updateSportTypeRow(itemList: List<Item>) {
-        sportTypeAdapter.data = itemList
-    }
-
-    private fun updateGameFilterRow(itemList: List<Item>) {
-        game_filter_row.sportType = itemList.find { sportType -> sportType.isSelected }?.name
     }
 }
