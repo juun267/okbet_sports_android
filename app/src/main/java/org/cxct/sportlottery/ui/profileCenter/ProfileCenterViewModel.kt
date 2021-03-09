@@ -10,10 +10,8 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.util.TextUtil
-import timber.log.Timber
-import java.util.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
     private val androidContext: Context,
@@ -71,6 +69,7 @@ class ProfileCenterViewModel(
             }.apply {
                 loginRepository.clear()
                 betInfoRepository.clear()
+                infoCenterRepository.clear()
             }
         }
     }

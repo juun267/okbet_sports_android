@@ -25,7 +25,7 @@ import timber.log.Timber
 
 class MainViewModel(
     private val androidContext: Context,
-    private val userInfoRepository: UserInfoRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
@@ -74,6 +74,7 @@ class MainViewModel(
             }.apply {
                 loginRepository.clear()
                 betInfoRepository.clear()
+                infoCenterRepository.clear()
             }
         }
     }
