@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home.news
+package org.cxct.sportlottery.ui.main.news
 
 import android.content.Context
 import android.content.res.Resources

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home.news
+package org.cxct.sportlottery.ui.main.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
