@@ -30,8 +30,8 @@
     <color name="colorGray">#666666</color>
     <color name="colorGrayDark">#404040</color>
 
-    <color name="colorBlockLight">#333333</color>
-    <color name="colorBlock">#000000</color>
+    <color name="colorBlackLight">#333333</color>
+    <color name="colorBlack">#000000</color>
     <!-- ======================================= -->
 
 
