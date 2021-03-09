@@ -75,4 +75,8 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="AppSearchView" parent="Widget.AppCompat.Light.SearchView">
+        <item name="android:textSize">@dimen/textSize13sp</item>
+    </style>
+
 </resources>
