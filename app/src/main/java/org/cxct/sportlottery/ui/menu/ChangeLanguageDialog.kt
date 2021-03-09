@@ -23,6 +23,10 @@ class ChangeLanguageDialog : BottomSheetDialogFragment() {
 
     private fun initEvent(rootView: View?) {
         rootView?.apply {
+            btn_close?.setOnClickListener {
+                dismiss()
+            }
+
             btn_chinese?.setOnClickListener {
                 selectLanguage(LanguageManager.Language.ZH)
             }
