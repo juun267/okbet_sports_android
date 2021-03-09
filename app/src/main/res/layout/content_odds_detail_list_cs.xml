@@ -37,8 +37,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="和局"
-                android:textColor="#999999"
-                android:textSize="14sp" />
+                android:textColor="@color/colorGrayLight"
+                android:textSize="@dimen/textSize14sp" />
 
             <TextView
                 android:id="@+id/tv_away_name"

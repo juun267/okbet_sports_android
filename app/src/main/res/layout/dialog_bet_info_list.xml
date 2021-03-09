@@ -20,14 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
+            app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/line_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
+            app:layout_constraintGuide_percent="0.95" />
 
 
         <RelativeLayout
@@ -54,29 +54,51 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@color/colorPrimaryDark">
-
+                        android:layout_height="43dp"
+                        android:background="@color/colorWhite">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/activity_vertical_margin"
                             android:gravity="center"
                             android:text="@string/bet_info_list_title"
-                            android:textColor="@color/white"
+                            android:letterSpacing="0.1"
+                            android:textStyle="bold"
+                            android:textColor="#000000"
                             android:textSize="@dimen/textSize16sp" />
+
+                        <TextView
+                            android:letterSpacing="0.1"
+                            android:id="@+id/tv_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@+id/iv_close"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            tools:text="余额:6,245,710.000"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="@dimen/textSize14sp" />
 
                         <ImageView
                             android:id="@+id/iv_close"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="43dp"
+                            android:layout_height="43dp"
                             android:layout_alignParentEnd="true"
-                            android:padding="12.5dp"
-                            android:src="@drawable/ic_close" />
+                            android:paddingVertical="14dp"
+                            android:paddingHorizontal="15dp"
+                            android:src="@drawable/ic_close"
+                            app:tint="@color/colorGrayLight" />
 
 
                     </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorWhite6"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_bet_list"

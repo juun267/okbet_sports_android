@@ -21,8 +21,8 @@
     <dimen name="textSize30sp">30dp</dimen>
     <dimen name="textSize34sp">34dp</dimen>
 
-    <dimen name="activity_horizontal_margin">15dp</dimen>
-    <dimen name="activity_vertical_margin">15dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="recyclerview_item_dec_spec">5dp</dimen>
     <dimen name="recyclerview_item_dec_spec_bet_info_list">6dp</dimen>

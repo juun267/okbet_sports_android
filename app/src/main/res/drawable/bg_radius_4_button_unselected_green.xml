@@ -3,8 +3,8 @@
     android:color="?android:colorControlHighlight">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="5dp" />
-            <solid android:color="@color/button_focus" />
+            <corners android:radius="4dp" />
+            <solid android:color="@color/colorGreen" />
         </shape>
     </item>
 </ripple>
