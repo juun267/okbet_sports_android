@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:textColor="@color/colorBlockLight"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize15sp"
                     android:text="@{gameViewModel.oddsDetailResult.oddsDetailData.league.name}"
                     tools:text="英格兰超级联赛" />
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.0088"
-                    android:textColor="@color/colorBlockLight"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="纽卡斯尔  v  切尔西" />
 
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:letterSpacing="0.1"
-                    android:textColor="@color/colorBlockLight"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="2020-11-21 08:30" />
 
@@ -110,7 +110,7 @@
                 android:paddingEnd="10dp"
                 android:text="更多"
                 android:textStyle="bold"
-                android:textColor="@color/colorBlockLight"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="12sp"
                 app:drawableEndCompat="@drawable/ic_arrow_down_dark_mini" />
 
