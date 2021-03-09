@@ -91,6 +91,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     return true
                 }
             }
+
+            gameTypeListener = GameTypeListener {
+                //TODO add 滾球賽事
+                viewModel.getGameHallList(args.matchType, it)
+            }
         }
     }
 
@@ -146,6 +151,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.curPlayType.observe(viewLifecycleOwner, Observer {
             game_filter_row.playType = it
+        })
+
+        viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
+            game_filter_row.dateList = it
         })
 
         viewModel.getGameHallList(args.matchType, true)
