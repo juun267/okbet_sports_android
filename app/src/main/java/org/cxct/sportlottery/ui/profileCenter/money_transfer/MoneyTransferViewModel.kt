@@ -16,18 +16,14 @@ import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRe
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class MoneyTransferViewModel(
     private val androidContext: Context,
-    private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -145,7 +141,7 @@ class MoneyTransferViewModel(
     }
 
     var defaultOutPlat = "CG"
-    var defaultInPlat : String? = null
+    var defaultInPlat: String? = null
 
     fun setPlatDataList() {
         outPlatDataList.clear()
@@ -230,7 +226,7 @@ class MoneyTransferViewModel(
                 hideLoading()
                 isLoading = false
                 recordDataList.addAll(result.rows as List<Row>)
-                isLastPage = (recordDataList.size >= (result.total ?:0))
+                isLastPage = (recordDataList.size >= (result.total ?: 0))
                 _queryTransfersResult.value = result
             }
         }

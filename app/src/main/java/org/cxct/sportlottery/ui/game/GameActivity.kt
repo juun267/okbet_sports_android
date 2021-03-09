@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.game
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,7 +29,6 @@ import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -40,15 +37,6 @@ import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
-
-    companion object {
-        //切換語系，activity 要重啟才會生效
-        fun reStart(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        }
-    }
 
     private val mSplashViewModel: SplashViewModel by viewModel()
 
@@ -66,13 +54,9 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
+        setContentView(R.layout.activity_game)
 
-        mainBinding.apply {
-            gameViewModel = this@GameActivity.viewModel
-            lifecycleOwner = this@GameActivity
-        }
-
+        setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
         initRvMarquee()
