@@ -27,6 +27,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
             setupGameFilterRow(this)
+            setupGameListView(this)
         }
     }
 
@@ -75,6 +76,25 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun setupGameListView(view: View) {
+        view.game_list_view.apply {
+            matchType = when (args.matchType) {
+                MatchType.IN_PLAY -> GameFilterRow.IN_PLAY
+                MatchType.TODAY -> GameFilterRow.TODAY
+                MatchType.EARLY -> GameFilterRow.EARLY
+                MatchType.PARLAY -> GameFilterRow.PARLAY
+                MatchType.OUTRIGHT -> GameFilterRow.OUTRIGHT
+                MatchType.AT_START -> GameFilterRow.AT_START
+            }
+
+            leagueOddListener = LeagueOddListener {
+                //TODO open live and play type page
+                it.matchInfo?.id
+            }
+        }
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -114,6 +134,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
             game_filter_row.dateList = it
+        })
+
+        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            if (it != null && it.success) {
+                game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
+            }
         })
 
         viewModel.getGameHallList(args.matchType, true)
