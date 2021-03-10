@@ -31,6 +31,7 @@
         android:ellipsize="end"
         android:textColor="@color/colorBlock"
         android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/country_border"
         app:layout_constraintStart_toEndOf="@id/country_arrow"
         app:layout_constraintTop_toTopOf="@id/country_border"
