@@ -50,6 +50,10 @@ class MoneyTransferViewModel(
         "CR" to androidContext.getString(R.string.third_game_cr),
     )
 
+    private val resultList = mutableListOf<GameData>()
+    var outPlatDataList = mutableListOf<GameData>()
+    var inPlatDataList = mutableListOf<GameDataInPlat>()
+
     val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
         when (it) {
             androidContext.getString(R.string.recharge_state_processing) -> {
@@ -80,13 +84,14 @@ class MoneyTransferViewModel(
     private val outPlatRecordList by lazy {
         mutableListOf<StatusSheetData>().apply {
             this.add(StatusSheetData(null, androidContext.getString(R.string.all_out_plat)))
+            Log.e(">>>", "list size = ${outPlatDataList.size}")
             outPlatDataList.forEach {
                 this.add(StatusSheetData(it.code, it.showName))
             }
         }
     }
 
-    val isPlatSwitched: LiveData<Boolean>
+    val isPlatSwitched: LiveData<Boolean?>
         get() = _isPlatSwitched
 
     val allBalanceResultList: LiveData<List<GameData>>
@@ -118,7 +123,7 @@ class MoneyTransferViewModel(
 
 
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
-    private val _isPlatSwitched = MutableLiveData<Boolean>().apply { this.value = false }
+    private val _isPlatSwitched = MutableLiveData<Boolean?>()
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
@@ -149,13 +154,12 @@ class MoneyTransferViewModel(
         _toolbarName.value = name
     }
 
-    fun setIsPlatSwitched(isSwitched: Boolean) {
-        _isPlatSwitched.value = isSwitched
+    fun setIsPlatSwitched(isSwitched: Boolean?) {
+        isSwitched.let {
+            _isPlatSwitched.value = it
+        }
     }
 
-    private val resultList = mutableListOf<GameData>()
-    var outPlatDataList = mutableListOf<GameData>()
-    var inPlatDataList = mutableListOf<GameDataInPlat>()
     fun getAllBalance() {
         loading()
         viewModelScope.launch {
@@ -211,6 +215,7 @@ class MoneyTransferViewModel(
             outPlatDataList.add(inPlatData)
         }
 
+        Log.e(">>>", "outPlatDataList size = ${outPlatDataList.size}")
         inPlatDataList.add(0, GameDataInPlat().apply {
             isChecked = false
             code = "CG"
@@ -269,8 +274,6 @@ class MoneyTransferViewModel(
                        status: String ?= null,
                        firmTypeIn: String ?= null,
                        firmTypeOut: String ?= null) {
-
-        Log.e(">>>", "in = $firmTypeIn, out = $firmTypeOut, status = $status")
 
         loading()
         if (page == 1) {

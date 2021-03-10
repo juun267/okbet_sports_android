@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.content_bottom_sheet_other_bet_record_item
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
+import java.util.*
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
 
@@ -39,7 +40,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         }
 
     var selectedTag: String? = ""
-        get() = tv_selected.tag.toString()
+        get() = Objects.toString(tv_selected.tag.toString(), "")
         set(value) {
             field = value
             tv_selected.tag = value

@@ -25,6 +25,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewModel.getAllBalance()
         viewModel.queryTransfers()
         viewModel.setToolbarName(getString(R.string.record_conversion))
         return inflater.inflate(R.layout.fragment_money_transfer_record, container, false)
@@ -41,9 +42,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private fun initView() {
         rv_record.adapter = rvAdapter
         rv_record.addOnScrollListener(recyclerViewOnScrollListener)
-
-        selector_out_plat.dataList = viewModel.getOutPlatNameList()
-        selector_in_plat.dataList = viewModel.getInPlatNameList()
         selector_transfer_status.dataList = viewModel.statusList
     }
 
@@ -57,16 +55,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
                 status = selector_transfer_status.selectedTag
             )
         }
-/*
-        selector_out_plat.itemSelectedListener = {
-            selector_in_plat.dataList = viewModel.getInPlatNameList(selector_out_plat.selectedText)
-        }
-
-        selector_in_plat.itemSelectedListener = {
-            selector_out_plat.dataList = viewModel.getInPlatNameList(selector_in_plat.selectedText)
-        }
-*/
-
     }
 
 
@@ -74,6 +62,11 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
             rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+        }
+
+        viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
+            selector_out_plat.dataList = viewModel.getOutPlatNameList()
+            selector_in_plat.dataList = viewModel.getInPlatNameList()
         }
     }
 
