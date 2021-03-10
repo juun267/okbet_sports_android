@@ -128,12 +128,15 @@ class SettlementViewModel(
                         showMatch = it.titleExpanded
                     }
                     ListType.MATCH -> {
+                        Log.e("Dean", "showMatch before= $showMatch , showDetail = $showDetail")
                         if (showMatch) {
                             filteredData.add(it)
                             showDetail = it.matchExpanded
                         }
+                        Log.e("Dean", "showMatch after= $showMatch , showDetail = $showDetail")
                     }
-                    ListType.DETAIL -> {
+                    ListType.FIRST_ITEM_FT, ListType.FIRST_ITEM_BK, ListType.FIRST_ITEM_TN, ListType.FIRST_ITEM_BM, ListType.FIRST_ITEM_VB, ListType.DETAIL -> {
+                        Log.e("Dean", "FirstItem showDetail = $showDetail")
                         if (showDetail) {
                             filteredData.add(it)
                         }
@@ -144,7 +147,7 @@ class SettlementViewModel(
         _showMatchResultData.value = filteredData
     }
 
-    fun clickResultItem(expandPosition: Int) {
+    fun clickResultItem(gameType: String? = null, expandPosition: Int) {
         Log.e("Dean", "clickExpandData = $expandPosition")
         val clickedItem = showMatchResultData.value?.get(expandPosition)
         val showData = showMatchResultData.value?.toMutableList()
@@ -156,7 +159,7 @@ class SettlementViewModel(
                 clickLeagueExpand(clickedItem)
             }
             ListType.MATCH -> {
-                clickMatchExpand(clickedItem, expandPosition)
+                clickMatchExpand(gameType ?: "", clickedItem)
             }
             else -> {
                 /*do nothing*/
@@ -165,25 +168,52 @@ class SettlementViewModel(
     }
 
     private fun clickLeagueExpand(clickedItem: MatchResultData) {
+        Log.e("Dean", "check clickedItem = $clickedItem")
         matchResultReformatted.find { it == clickedItem }?.let { it.titleExpanded = !(it.titleExpanded) }
         filterMatchResultData(matchResultReformatted)
     }
 
-    private fun clickMatchExpand(clickedItem: MatchResultData, expandPosition: Int) {
+    private fun clickMatchExpand(gameType: String, clickedItem: MatchResultData) {
         matchResultReformatted.find { it == clickedItem }?.let { it.matchExpanded = !(it.matchExpanded) }
-        clickedItem.matchData?.matchInfo?.id?.let { getMatchDetail(it, expandPosition) }
+        val listType = getFirstItemListType(gameType)
+        val clickedIndex = matchResultReformatted.indexOf(clickedItem)
+
+        //若資料已存在則不再一次請求資料
+        if (clickedItem.matchExpanded && if (clickedIndex + 1 < matchResultReformatted.size) matchResultReformatted.get(clickedIndex + 1).dataType != listType else true) {
+            clickedItem.matchData?.matchInfo?.id?.let { getMatchDetail(it, clickedItem, gameType) }
+        } else {
+            filterMatchResultData(matchResultReformatted)
+        }
     }
 
-    private fun getMatchDetail(matchId: String, expandPosition: Int) {
+    private fun getMatchDetail(matchId: String, clickedItem: MatchResultData, gameType: String) {
         requestListener.requestIng(true)
         viewModelScope.launch {
             doNetwork(androidContext) {
                 settlementRepository.resultPlayList(matchId)
             }?.let { result ->
-                result.matchResultPlayList?.asReversed()?.forEach { matchResultReformatted.add(expandPosition + 1, MatchResultData(ListType.DETAIL, matchDetailData = it)) }
-                filterMatchResultData(matchResultReformatted)
+                makeUpMatchDetailData(result.matchResultPlayList, clickedItem, gameType)
             }
             requestListener.requestIng(false)
+        }
+    }
+
+    private fun makeUpMatchDetailData(matchResultPlayList: List<MatchResultPlayList>? = null, clickedItem: MatchResultData, gameType: String) {
+        val listType = getFirstItemListType(gameType)
+        val clickedIndex = matchResultReformatted.indexOf(clickedItem)
+        matchResultPlayList?.asReversed()?.forEach { matchResultReformatted.add(clickedIndex + 1, MatchResultData(ListType.DETAIL, matchDetailData = it)) }
+        matchResultReformatted.add(clickedIndex + 1, MatchResultData(listType, matchData = clickedItem.matchData))
+        filterMatchResultData(matchResultReformatted)
+    }
+
+    private fun getFirstItemListType(gameType: String): ListType {
+        return when (gameType) {
+            GameType.FT.key -> ListType.FIRST_ITEM_FT
+            GameType.BK.key -> ListType.FIRST_ITEM_BK
+            GameType.TN.key -> ListType.FIRST_ITEM_TN
+            GameType.BM.key -> ListType.FIRST_ITEM_BM
+            GameType.VB.key -> ListType.FIRST_ITEM_VB
+            else -> ListType.DETAIL
         }
     }
 

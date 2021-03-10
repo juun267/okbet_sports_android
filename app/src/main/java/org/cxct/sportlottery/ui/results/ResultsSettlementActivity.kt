@@ -50,9 +50,9 @@ class ResultsSettlementActivity :
         MatchResultDiffAdapter(MatchItemClickListener(
             titleClick = {
                 Log.e("Dean", "ItemClickListener")
-                viewModel.clickResultItem(it)
+                viewModel.clickResultItem(expandPosition = it)
             }, matchClick = {
-                viewModel.clickResultItem(it)
+                viewModel.clickResultItem(gameType, it)
             })
         )
     }
@@ -162,6 +162,8 @@ class ResultsSettlementActivity :
             }*/
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
+                Log.e("Dean", "showMatchResultData observe gameType = $gameType")
+                Log.e("Dean", "showMatchResultData observe List = $it")
                 matchResultDiffAdapter.gameType = gameType
                 matchResultDiffAdapter.submitList(it)
             })

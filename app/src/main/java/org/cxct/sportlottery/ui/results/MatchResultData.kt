@@ -17,4 +17,4 @@ data class MatchResultData(
     var matchExpanded: Boolean = false
 }
 
-enum class ListType { TITLE, MATCH, DETAIL }
+enum class ListType { TITLE, MATCH, DETAIL, FIRST_ITEM_FT, FIRST_ITEM_BK, FIRST_ITEM_TN, FIRST_ITEM_BM, FIRST_ITEM_VB }
