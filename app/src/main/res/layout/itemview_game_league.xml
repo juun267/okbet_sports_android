@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/league_border"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorWhite2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/league_arrow"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_arrow_down_dark"
+        app:layout_constraintBottom_toBottomOf="@id/league_border"
+        app:layout_constraintStart_toStartOf="@id/league_border"
+        app:layout_constraintTop_toTopOf="@id/league_border" />
+
+    <TextView
+        android:id="@+id/league_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:textColor="@color/colorBlockLight"
+        android:textSize="@dimen/textSize16sp"
+        app:layout_constraintBottom_toBottomOf="@id/league_border"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_count"
+        app:layout_constraintStart_toEndOf="@id/league_arrow"
+        app:layout_constraintTop_toTopOf="@id/league_border"
+        tools:text="洪都拉斯國際聯賽" />
+
+    <TextView
+        android:id="@+id/league_odd_count"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:textColor="@color/colorBlockLight"
+        android:textSize="@dimen/textSize15sp"
+        app:layout_constraintBottom_toBottomOf="@id/league_border"
+        app:layout_constraintEnd_toEndOf="@id/league_border"
+        app:layout_constraintTop_toTopOf="@id/league_border"
+        tools:text="1" />
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/league_odd_expand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/league_border"
+        tools:el_expanded="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/league_odd_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="1"
+            tools:listitem="@layout/itemview_game_match_odd" />
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
