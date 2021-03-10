@@ -44,6 +44,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             backClickListener = View.OnClickListener {
                 //TODO add back logic to view model
+
+                if (view.game_filter_row.league != null) {
+                    view.game_filter_row.league = null
+
+                    view.game_filter_row.matchType = when (args.matchType) {
+                        MatchType.IN_PLAY -> GameFilterRow.IN_PLAY
+                        MatchType.TODAY -> GameFilterRow.TODAY
+                        MatchType.EARLY -> GameFilterRow.EARLY
+                        MatchType.PARLAY -> GameFilterRow.PARLAY
+                        MatchType.OUTRIGHT -> GameFilterRow.OUTRIGHT
+                        MatchType.AT_START -> GameFilterRow.AT_START
+                    }
+
+                    viewModel.getGameHallList(args.matchType, true)
+                }
             }
 
             ouHDPClickListener = View.OnClickListener {
@@ -85,6 +100,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 MatchType.PARLAY -> GameFilterRow.PARLAY
                 MatchType.OUTRIGHT -> GameFilterRow.OUTRIGHT
                 MatchType.AT_START -> GameFilterRow.AT_START
+            }
+
+            countryLeagueListener = CountryLeagueListener {
+                view.game_filter_row.league = it
+
+                viewModel.getLeagueOddsList(args.matchType, it.id)
             }
 
             leagueOddListener = LeagueOddListener {
@@ -136,6 +157,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            if (it != null && it.success) {
+                game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
+            }
+        })
+
+        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
                 game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
             }
