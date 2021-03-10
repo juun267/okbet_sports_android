@@ -46,11 +46,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             notifyDataSetChanged()
         }
 
-    /*private const val FIRST_FT = */
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-//        Log.e("Dean", "viewType = $viewType, ListType.FIRST_ITEM.ordinal = ${ListType.FIRST_ITEM.ordinal}")
-        Log.e("Dean", "gameType = $gameType , GameType.FT.key = ${GameType.FT.key}")
 
         return when (viewType) {
             ListType.TITLE.ordinal -> MatchTitleViewHolder.from(parent)
@@ -66,7 +62,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     }
 
     override fun getItemViewType(position: Int): Int {
-        Log.e("Dean", "getItem(position).dataType = ${getItem(position).dataType}")
         return getItem(position).dataType.ordinal
     }
 

@@ -13,6 +13,7 @@ data class MatchResultData(
     val matchData: Match? = null,
     val matchDetailData: MatchResultPlayList? = null
 ) {
+    var leagueShow: Boolean = false //聯賽過濾顯示, 顯示:true , 不顯示:false
     var titleExpanded: Boolean = false
     var matchExpanded: Boolean = false
 }

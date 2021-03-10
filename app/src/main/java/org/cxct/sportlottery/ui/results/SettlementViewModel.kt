@@ -9,10 +9,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
+import org.cxct.sportlottery.network.matchresult.list.MatchInfo
 import org.cxct.sportlottery.network.matchresult.list.MatchResultList
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
-import org.cxct.sportlottery.network.matchresult.playlist.RvPosition
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -30,8 +29,6 @@ class SettlementViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    val matchResultListResult: LiveData<MatchResultListResult>
-        get() = _matchResultListResult
     val gameResultDetailResult: LiveData<SettlementRvData>
         get() = _gameResultDetailResult
     val outRightListResult: LiveData<OutrightResultListResult>
@@ -39,7 +36,6 @@ class SettlementViewModel(
     val outRightList: LiveData<List<org.cxct.sportlottery.network.outright.Row>>
         get() = _outRightList
 
-    private val _matchResultListResult = MutableLiveData<MatchResultListResult>()
     private var _gameResultDetailResult = MutableLiveData<SettlementRvData>(SettlementRvData(-1, -1, mutableMapOf()))
 
     private var _outRightListResult = MutableLiveData<OutrightResultListResult>()
@@ -51,33 +47,16 @@ class SettlementViewModel(
     val showMatchResultData: LiveData<List<MatchResultData>>
         get() = _showMatchResultData
 
+    private val _leagueFilterList = MutableLiveData<MutableList<LeagueItemData>>() //聯賽過濾器的清單
+    val leagueFilterList: LiveData<MutableList<LeagueItemData>>
+        get() = _leagueFilterList
+
     private var dataType = SettleType.MATCH
 
-    private var gameLeagueSet = mutableSetOf<Int>()
+    private var gameLeagueSet = mutableSetOf<String>()
     private var gameKeyWord = ""
 
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
-
-    @Deprecated("重構, 使用新方法getMatchResultList")
-    fun getSettlementData(gameType: String, pagingParams: PagingParams?, timeRangeParams: TimeRangeParams) {
-        dataType = SettleType.MATCH
-        requestListener.requestIng(true)
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                settlementRepository.resultList(
-                    pagingParams = pagingParams,
-                    timeRangeParams = timeRangeParams,
-                    gameType = gameType
-                )
-            }?.let { result ->
-                _matchResultListResult.postValue(result)
-            }
-
-            filterResult()
-            requestListener.requestIng(false)
-            reSetDetailStatus()
-        }
-    }
 
     fun getMatchResultList(gameType: String, pagingParams: PagingParams?, timeRangeParams: TimeRangeParams) {
         dataType = SettleType.MATCH
@@ -93,14 +72,23 @@ class SettlementViewModel(
                 reformatMatchResultData(result.matchResultList).let {
                     matchResultReformatted = it
                     //TODO Dean : review 過濾資料
-                    filterMatchResultData(it)
+                    //獲取賽果資料後,更新聯賽列表
+                    setupLeagueFilterList(it)
+                    //過濾資料
+                    filterToShowMatchResult()
                 }
             }
-
-            filterResult()
             requestListener.requestIng(false)
-            reSetDetailStatus()
+//            reSetDetailStatus()
         }
+    }
+
+    private fun setupLeagueFilterList(matchResultData: List<MatchResultData>) {
+        _leagueFilterList.value = matchResultData.filter {
+            it.dataType == ListType.TITLE
+        }.map { rows ->
+            LeagueItemData(null, rows.titleData?.name ?: "", true)
+        }.toMutableList()
     }
 
     private fun reformatMatchResultData(matchResultList: List<MatchResultList>?): MutableList<MatchResultData> {
@@ -116,43 +104,42 @@ class SettlementViewModel(
         return matchResultData
     }
 
-    private fun filterMatchResultData(matchResultList: List<MatchResultData>?) {
-        val filteredData = mutableListOf<MatchResultData>()
+    private fun setupExpandData(matchResultList: List<MatchResultData>?) {
+        val expandData = mutableListOf<MatchResultData>()
         var showMatch: Boolean = false
         var showDetail = false
+        var nowLeague: MatchResultData? = null
         matchResultList?.apply {
             forEach {
                 when (it.dataType) {
                     ListType.TITLE -> {
-                        filteredData.add(it)
-                        showMatch = it.titleExpanded
+                        nowLeague = it
+                        showMatch = if (it.leagueShow) {
+                            expandData.add(it)
+                            it.titleExpanded
+                        } else {
+                            false
+                        }
                     }
                     ListType.MATCH -> {
-                        Log.e("Dean", "showMatch before= $showMatch , showDetail = $showDetail")
-                        if (showMatch) {
-                            filteredData.add(it)
+                        if (nowLeague?.leagueShow == true && showMatch) {
+                            expandData.add(it)
                             showDetail = it.matchExpanded
                         }
-                        Log.e("Dean", "showMatch after= $showMatch , showDetail = $showDetail")
                     }
                     ListType.FIRST_ITEM_FT, ListType.FIRST_ITEM_BK, ListType.FIRST_ITEM_TN, ListType.FIRST_ITEM_BM, ListType.FIRST_ITEM_VB, ListType.DETAIL -> {
-                        Log.e("Dean", "FirstItem showDetail = $showDetail")
                         if (showDetail) {
-                            filteredData.add(it)
+                            expandData.add(it)
                         }
                     }
                 }
             }
         }
-        _showMatchResultData.value = filteredData
+        _showMatchResultData.value = expandData
     }
 
     fun clickResultItem(gameType: String? = null, expandPosition: Int) {
-        Log.e("Dean", "clickExpandData = $expandPosition")
         val clickedItem = showMatchResultData.value?.get(expandPosition)
-        val showData = showMatchResultData.value?.toMutableList()
-        val addData = mutableListOf<MatchResultData>()
-        Log.e("Dean", "clickedItem = $clickedItem , addData = $addData")
 
         when (clickedItem?.dataType) {
             ListType.TITLE -> {
@@ -168,9 +155,8 @@ class SettlementViewModel(
     }
 
     private fun clickLeagueExpand(clickedItem: MatchResultData) {
-        Log.e("Dean", "check clickedItem = $clickedItem")
         matchResultReformatted.find { it == clickedItem }?.let { it.titleExpanded = !(it.titleExpanded) }
-        filterMatchResultData(matchResultReformatted)
+        filterToShowMatchResult()
     }
 
     private fun clickMatchExpand(gameType: String, clickedItem: MatchResultData) {
@@ -182,7 +168,7 @@ class SettlementViewModel(
         if (clickedItem.matchExpanded && if (clickedIndex + 1 < matchResultReformatted.size) matchResultReformatted.get(clickedIndex + 1).dataType != listType else true) {
             clickedItem.matchData?.matchInfo?.id?.let { getMatchDetail(it, clickedItem, gameType) }
         } else {
-            filterMatchResultData(matchResultReformatted)
+            filterToShowMatchResult()
         }
     }
 
@@ -203,7 +189,7 @@ class SettlementViewModel(
         val clickedIndex = matchResultReformatted.indexOf(clickedItem)
         matchResultPlayList?.asReversed()?.forEach { matchResultReformatted.add(clickedIndex + 1, MatchResultData(ListType.DETAIL, matchDetailData = it)) }
         matchResultReformatted.add(clickedIndex + 1, MatchResultData(listType, matchData = clickedItem.matchData))
-        filterMatchResultData(matchResultReformatted)
+        filterToShowMatchResult()
     }
 
     private fun getFirstItemListType(gameType: String): ListType {
@@ -217,24 +203,6 @@ class SettlementViewModel(
         }
     }
 
-    @Deprecated("棄用,改使用getMatchDetail")
-    fun getSettlementDetailData(settleRvPosition: Int, gameResultRvPosition: Int, matchId: String) {
-        requestListener.requestIng(true)
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                settlementRepository.resultPlayList(matchId)
-            }?.let { result ->
-                _gameResultDetailResult.postValue(_gameResultDetailResult.value?.apply {
-                    this.settleRvPosition = settleRvPosition
-                    this.gameResultRvPosition = gameResultRvPosition
-                    this.settlementRvMap[RvPosition(settleRvPosition, gameResultRvPosition)] = result
-                })
-            }
-            requestListener.requestIng(false)
-        }
-    }
-
-
     fun getOutrightResultList(gameType: String) {
         dataType = SettleType.OUTRIGHT
         requestListener.requestIng(true)
@@ -245,18 +213,18 @@ class SettlementViewModel(
                 _outRightListResult.postValue(result)
             }
 
-            filterResult()
+//            filterResult() //TODO Dean : review
             requestListener.requestIng(false)
-            reSetDetailStatus()
+//            reSetDetailStatus() //TODO Dean : review
         }
     }
 
     /**
      * 設置聯盟篩選條件
      */
-    fun setLeagueFilter(gameLeaguePosition: MutableSet<Int>) {
+    fun setLeagueFilter(gameLeaguePosition: MutableSet<String>) {
         gameLeagueSet = gameLeaguePosition
-        filterResult()
+        filterToShowMatchResult()
     }
 
     /**
@@ -264,7 +232,7 @@ class SettlementViewModel(
      */
     fun setKeyWordFilter(keyWord: String) {
         gameKeyWord = keyWord
-        filterResult()
+        filterToShowMatchResult()
     }
 
     /**
@@ -272,37 +240,54 @@ class SettlementViewModel(
      */
     @SuppressLint("DefaultLocale")
     private fun filterResult() {
+        var nowLeagueItem: MatchResultData? = null
         when (dataType) {
             SettleType.MATCH -> {
-                /*_matchResultList.postValue(_matchResultListResult.value?.matchResultList?.filterIndexed { index, row ->
+                matchResultReformatted.forEachIndexed { index, matchResultData ->
+                    when (matchResultData.dataType) {
+                        ListType.TITLE -> {
+                            nowLeagueItem = matchResultData
+                            matchResultData.leagueShow = gameLeagueSet.contains(matchResultData.titleData?.name) &&
+                                    (gameKeyWord.isEmpty() || (matchResultData.titleData?.name?.toLowerCase()?.contains(gameKeyWord) == true))
+
+                        }
+                        ListType.MATCH -> {
+                            if (filterTeamNameByKeyWord(matchResultData.matchData?.matchInfo, gameKeyWord)) {
+                                nowLeagueItem?.leagueShow = true
+                            }
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+                /*_matchResultListResult.value?.matchResultList?.filterIndexed { index, row ->
                     gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.toLowerCase().contains(gameKeyWord) || filterTeamNameByKeyWord(row, gameKeyWord))
-                })*/
+                }*/
             }
             SettleType.OUTRIGHT -> {
-                _outRightList.postValue(_outRightListResult.value?.rows?.filterIndexed { index, row ->
+                /*_outRightList.postValue(_outRightListResult.value?.rows?.filterIndexed { index, row ->
                     gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.season.name.toLowerCase().contains(gameKeyWord))
-                })
+                })*/
             }
         }
+    }
+
+    private fun filterToShowMatchResult() {
+        filterResult()
+        setupExpandData(matchResultReformatted)
     }
 
     @SuppressLint("DefaultLocale")
-    private fun filterTeamNameByKeyWord(matchResultList: MatchResultList, keyWord: String): Boolean {
-        matchResultList.list.forEach { match ->
-            if (match.matchInfo.homeName.toLowerCase().contains(keyWord.toLowerCase())) {
-                return true
-            }
-            if (match.matchInfo.awayName.toLowerCase().contains(keyWord.toLowerCase())) {
-                return true
-            }
+    private fun filterTeamNameByKeyWord(matchInfo: MatchInfo?, keyWord: String): Boolean {
+        if (keyWord.isEmpty())
+            return false
+        if (matchInfo?.homeName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true) {
+            return true
+        }
+        if (matchInfo?.awayName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true) {
+            return true
         }
         return false
-    }
-
-    /**
-     * 重新獲取聯賽資料時須要清空內部比賽詳情點選狀態及資料
-     */
-    private fun reSetDetailStatus() {
-        _gameResultDetailResult.value = SettlementRvData(-1, -1, mutableMapOf())  //要清空聯賽列表中比賽詳情的點選狀態
     }
 }
