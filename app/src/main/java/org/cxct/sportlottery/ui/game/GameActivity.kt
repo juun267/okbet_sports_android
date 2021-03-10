@@ -30,22 +30,15 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
-import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.MetricsUtil
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
-    private val mSplashViewModel: SplashViewModel by viewModel()
-    private val mMarqueeAdapter = MarqueeAdapter()
+    private val mMarqueeAdapter by lazy { MarqueeAdapter() }
+    private val mNavController by lazy { findNavController(R.id.game_container) }
+    private var mCloseOddsDetail = true
 
-    enum class Page {
-        ODDS_DETAIL, ODDS, OUTRIGHT
-    }
-
-    private val navController by lazy { findNavController(R.id.game_container) }
-
-    private var closeOddsDetail = true
+    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +52,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         initObserve()
 
         queryData()
-
-        //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
-        if (mSplashViewModel.isNeedGetHost())
-            mSplashViewModel.getHost()
     }
 
     override fun onResume() {
@@ -167,14 +156,14 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
-                if (closeOddsDetail) {
+                if (mCloseOddsDetail) {
                     popAllFragment()
                 }
                 viewModel.isParlayPage(tab?.position == 4)
 
                 when (tab?.position) {
                     0 -> {
-                        navController.popBackStack(R.id.homeFragment, false)
+                        mNavController.popBackStack(R.id.homeFragment, false)
                     }
                     1 -> {
                         navGameFragment(MatchType.IN_PLAY)
@@ -203,7 +192,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     val tabView = tabLayout.getTabAt(0)?.customView
                     tabView?.tv_title?.isSelected = true
                     tabView?.tv_number?.isSelected = true
-                    navController.popBackStack(R.id.homeFragment, false)
+                    mNavController.popBackStack(R.id.homeFragment, false)
                 }
             }
         })
@@ -213,21 +202,21 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.sportMenuSelectFirstItem(matchType)
 
-        when (navController.currentDestination?.id) {
+        when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
-                navController.navigate(action)
+                mNavController.navigate(action)
             }
             R.id.gameV3Fragment -> {
                 val action = GameV3FragmentDirections.actionGameFragmentToGameFragment(matchType)
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                navController.navigate(action, navOptions)
+                mNavController.navigate(action, navOptions)
             }
             R.id.game2Fragment -> {
                 val action =
                     GameDetailFragmentDirections.actionGame2FragmentToGameFragment(matchType)
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                navController.navigate(action, navOptions)
+                mNavController.navigate(action, navOptions)
             }
         }
     }
@@ -249,7 +238,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
 
     override fun onBackPressed() {
-        if (navController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
+        if (mNavController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
             tabLayout.getTabAt(0)?.select()
             return
         }
@@ -386,7 +375,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         val fragment: Fragment? = supportFragmentManager.findFragmentByTag(Page.ODDS_DETAIL.name)
         if (fragment != null) {
-            closeOddsDetail = false
+            mCloseOddsDetail = false
             (fragment as OddsDetailFragment).refreshData(
                 gameType,
                 matchId,
@@ -403,7 +392,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
             MatchType.AT_START.postValue -> toAtStart()
         }
-        closeOddsDetail = true
+        mCloseOddsDetail = true
     }
 
     private fun nonSelectTab() {
