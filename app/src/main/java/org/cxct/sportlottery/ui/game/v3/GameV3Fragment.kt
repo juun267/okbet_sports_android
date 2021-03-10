@@ -58,6 +58,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
 
                     viewModel.getGameHallList(args.matchType, true)
+                    loading()
                 }
             }
 
@@ -106,6 +107,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 view.game_filter_row.league = it
 
                 viewModel.getLeagueOddsList(args.matchType, it.id)
+                loading()
             }
 
             leagueOddListener = LeagueOddListener {
@@ -119,8 +121,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
-            hideLoading()
-
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
                     game_filter_row.sportList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
@@ -157,18 +157,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
             }
         })
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
             if (it != null && it.success) {
                 game_list_view.countryList = it.rows ?: listOf()
             }
