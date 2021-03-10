@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GridItemDecoration
 import org.cxct.sportlottery.util.OddButtonHighLight
 import org.cxct.sportlottery.util.TextUtil
 import java.util.*
@@ -64,7 +66,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     enum class GameType(val value: String, val layout: Int, val type: Int) {
-        //        HDP("HDP", R.layout.content_odds_detail_list_group_item, 0),//让球
         HDP("HDP", R.layout.content_odds_detail_list_hdp, 0),//让球
         OU("O/U", R.layout.content_odds_detail_list_two_sides, 1),//大小
         OU_1ST("O/U-1ST", R.layout.content_odds_detail_list_two_sides, 2),//大/小-上半场
@@ -316,7 +317,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             when (viewType) {
                 GameType.HDP.type -> forHDP(oddsDetail)
-//                GameType.HDP.type -> groupItem(oddsDetail, 2)
                 GameType.W3.type -> groupItem(oddsDetail, 3)
 
                 GameType.OU.type,
@@ -403,7 +403,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                         odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
 
-                        OddButtonHighLight.set(tvOdds, odd)
+                        OddButtonHighLight.set(tvOdds, null, odd)
 
                         when (odd.status) {
                             BetStatus.ACTIVATED.code -> {
@@ -503,6 +503,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet.apply {
                 adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = GridLayoutManager(itemView.context, 2)
+                if(itemDecorationCount==0) {
+                    addItemDecoration(
+                        GridItemDecoration(
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
+                            ContextCompat.getColor(itemView.context, R.color.colorWhite6),
+                            false
+                        )
+                    )
+                }
             }
         }
 

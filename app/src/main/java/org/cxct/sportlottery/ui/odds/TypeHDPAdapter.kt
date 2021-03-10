@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
@@ -33,12 +32,8 @@ class TypeHDPAdapter (
 
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
-
-        private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
-
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId)
-            tvSpread.text = odd.spread
+            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_END)
         }
     }
 

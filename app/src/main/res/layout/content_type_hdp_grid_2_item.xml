@@ -6,7 +6,7 @@
     android:layout_marginStart="7.5dp"
     android:layout_marginEnd="7.5dp"
     android:layout_marginBottom="10dp"
-    tools:ignore="SpUsage,RtlSymmetry">
+    tools:ignore="SpUsage,RtlSymmetry,RelativeOverlap,ContentDescription">
 
     <TextView
         android:id="@+id/tv_odds"
@@ -26,7 +26,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:gravity="center"
-        android:textColor="@color/colorRedDark"
+        android:textColor="@color/selector_game_spread"
         android:textSize="@dimen/textSize14sp"
         tools:text="1/1.5" />
 
