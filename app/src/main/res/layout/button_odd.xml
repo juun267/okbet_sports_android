@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/odd_hdp_top_text"
         tools:text="1.067"
-        tools:textColor="@color/colorBlock" />
+        tools:textColor="@color/colorBlack" />
 
     <TextView
         android:id="@+id/odd_ou_type"
@@ -70,7 +70,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/odd_ou_top_text"
         tools:text="1.067"
-        tools:textColor="@color/colorBlock" />
+        tools:textColor="@color/colorBlack" />
 
     <TextView
         android:id="@+id/odd_1x2_top_text"
@@ -96,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/odd_1x2_top_text"
         tools:text="1.067"
-        tools:textColor="@color/colorBlock" />
+        tools:textColor="@color/colorBlack" />
 
     <ImageView
         android:id="@+id/odd_lock"
