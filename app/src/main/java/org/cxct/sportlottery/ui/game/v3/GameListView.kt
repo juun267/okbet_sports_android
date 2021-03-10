@@ -11,7 +11,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.lang.Exception
 
 class GameListView @JvmOverloads constructor(
