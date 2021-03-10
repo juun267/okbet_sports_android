@@ -92,7 +92,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 it.matchInfo?.id
             }
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -139,6 +138,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
             if (it != null && it.success) {
                 game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
+            }
+        })
+
+        viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+            if (it != null && it.success) {
+                game_list_view.countryList = it.rows ?: listOf()
             }
         })
 

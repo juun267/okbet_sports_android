@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/country_border"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/colorWhite3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/country_arrow"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_arrow_down_dark"
+        app:layout_constraintBottom_toBottomOf="@id/country_border"
+        app:layout_constraintStart_toStartOf="@id/country_border"
+        app:layout_constraintTop_toTopOf="@id/country_border" />
+
+    <TextView
+        android:id="@+id/country_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:ellipsize="end"
+        android:textColor="@color/colorBlock"
+        android:textSize="@dimen/textSize16sp"
+        app:layout_constraintBottom_toBottomOf="@id/country_border"
+        app:layout_constraintStart_toEndOf="@id/country_arrow"
+        app:layout_constraintTop_toTopOf="@id/country_border"
+        tools:text="英格兰" />
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/country_league_expand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/country_border"
+        tools:el_expanded="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/league_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="1"
+            tools:listitem="@layout/itemview_country_league" />
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
