@@ -31,6 +31,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
         if (odd.spread.isNullOrEmpty()) {
             tvOdds.gravity = Gravity.CENTER
+            tvOdds.setPadding(0,0,0,0)
         } else {
             if (tvSpread != null) {
                 tvSpread.text = odd.spread
