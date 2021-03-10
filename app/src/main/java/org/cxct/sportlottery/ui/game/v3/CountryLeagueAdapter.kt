@@ -33,6 +33,7 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
 
         fun bind(item: League) {
             itemView.country_league_name.text = item.name
+            itemView.country_league_odd_count.text = item.num.toString()
         }
 
         companion object {

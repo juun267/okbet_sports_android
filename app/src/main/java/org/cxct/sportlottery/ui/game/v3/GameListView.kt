@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.view_game_list.view.*
 import org.cxct.sportlottery.R
@@ -99,10 +100,7 @@ class GameListView @JvmOverloads constructor(
             this.adapter = countryAdapter
 
             this.addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
+                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
             )
         }
     }
@@ -115,10 +113,7 @@ class GameListView @JvmOverloads constructor(
             this.adapter = leagueAdapter
 
             this.addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
+                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
             )
         }
     }

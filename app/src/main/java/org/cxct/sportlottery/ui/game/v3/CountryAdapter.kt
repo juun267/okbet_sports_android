@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.v3
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
@@ -21,23 +22,7 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent).apply {
-            setupLeagueList(this)
-        }
-    }
-
-    private fun setupLeagueList(viewHolder: ViewHolder) {
-        viewHolder.itemView.league_list.apply {
-            this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-            this.addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
-            )
-        }
+        return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -62,9 +47,18 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
         }
 
         private fun setupLeagueList(item: Row) {
-            itemView.league_list.adapter = countryLeagueAdapter.apply {
-                data = item.list
+            itemView.league_list.apply {
+                this.layoutManager =
+                    SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+                adapter = countryLeagueAdapter
+
+                this.addItemDecoration(
+                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                )
             }
+
+            countryLeagueAdapter.data = item.list
         }
 
         private fun setupCountryExpand(item: Row) {
