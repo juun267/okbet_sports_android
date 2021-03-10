@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:ellipsize="end"
-        android:textColor="@color/colorBlock"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/country_border"
