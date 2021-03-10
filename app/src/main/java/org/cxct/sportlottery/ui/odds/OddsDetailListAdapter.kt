@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GridItemDecoration
 import org.cxct.sportlottery.util.OddButtonHighLight
+import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 import java.util.*
 import kotlin.collections.ArrayList
@@ -369,7 +370,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet.apply {
                 adapter = TypeOneListAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
-
+                if(itemDecorationCount==0) {
+                    addItemDecoration(
+                        SpaceItemDecoration(
+                            context,
+                            R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                        )
+                    )
+                }
             }
         }
 
