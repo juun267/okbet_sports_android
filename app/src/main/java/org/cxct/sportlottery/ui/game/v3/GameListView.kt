@@ -44,6 +44,15 @@ class GameListView @JvmOverloads constructor(
             }
         }
 
+    var countryLeagueListener: CountryLeagueListener? = null
+        set(value) {
+            field = value
+
+            field?.let {
+                countryAdapter.countryLeagueListener = it
+            }
+        }
+
     var leagueOddList: List<LeagueOdd>? = null
         set(value) {
             field = value
@@ -132,10 +141,16 @@ class GameListView @JvmOverloads constructor(
     }
 
     private fun updateCountry(countryList: List<Row>) {
+        game_list_league_list.visibility = View.GONE
+        game_list_country_list.visibility = View.VISIBLE
+
         countryAdapter.data = countryList
     }
 
     private fun updateLeagueOdd(leagueOddList: List<LeagueOdd>) {
+        game_list_country_list.visibility = View.GONE
+        game_list_league_list.visibility = View.VISIBLE
+
         leagueAdapter.data = leagueOddList
     }
 }

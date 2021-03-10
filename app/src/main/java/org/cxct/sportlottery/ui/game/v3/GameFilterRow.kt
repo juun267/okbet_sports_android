@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.row_game_filter.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -33,6 +34,15 @@ class GameFilterRow @JvmOverloads constructor(
 
             field?.let {
                 updateMatchType(it)
+            }
+        }
+
+    var league: League? = null
+        set(value) {
+            field = value
+
+            field?.let {
+                updateLeagueFilter(it)
             }
         }
 
@@ -184,10 +194,14 @@ class GameFilterRow @JvmOverloads constructor(
             View.GONE
         }
 
-        game_filter_search.visibility = if (type == IN_PLAY) {
-            View.GONE
-        } else {
-            View.VISIBLE
+        game_filter_search.apply {
+            visibility = if (type == IN_PLAY) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
+            queryHint = resources.getString(R.string.game_filter_row_search_hint)
         }
 
         game_filter_game.visibility = if (type == EARLY || type == PARLAY) {
@@ -203,6 +217,13 @@ class GameFilterRow @JvmOverloads constructor(
         }
 
         game_filter_sport_type.isSelected = (type != IN_PLAY)
+    }
+
+    private fun updateLeagueFilter(league: League) {
+        game_filter_game.visibility = View.GONE
+        game_filter_type_list.visibility = View.GONE
+        game_filter_search.queryHint =
+            resources.getString(R.string.game_filter_row_search_hint_league)
     }
 
     private fun updatePlayType(type: PlayType) {
