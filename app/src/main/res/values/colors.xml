@@ -30,8 +30,12 @@
     <color name="colorGray">#666666</color>
     <color name="colorGrayDark">#404040</color>
 
-    <color name="colorBlockLight">#333333</color>
-    <color name="colorBlock">#000000</color>
+    <color name="colorBlackLight">#333333</color>
+    <color name="colorBlack">#000000</color>
+
+    <!-- //== 以下不在 v3 color guideline 定義內，但有使用==//-->
+    <color name="blue7">#35485C</color>
+
     <!-- ======================================= -->
 
 
@@ -155,7 +159,6 @@
     <color name="blue4">#dae2eb</color>
     <color name="blue5">#4d7fde</color>
     <color name="blue6">#25588d</color>
-    <color name="blue7">#35485c</color>
 
 
     <color name="date_select_orange">#F98B00</color>

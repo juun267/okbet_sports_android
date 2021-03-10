@@ -7,16 +7,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class FeedbackViewModel(
     private val androidContext: Context,
     private val feedbackRepository: FeedbackRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     //API回傳成功
     val viewStatus: LiveData<FeedBackBaseResult>

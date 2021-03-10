@@ -4,7 +4,9 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import org.cxct.sportlottery.service.*
+import androidx.lifecycle.Observer
+import org.cxct.sportlottery.service.BackService
+import org.cxct.sportlottery.service.SERVICE_SEND_DATA
 import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
@@ -43,12 +45,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        receiver.sysMaintenance.observe(this) {
+        receiver.sysMaintenance.observe(this, Observer {
             startActivity(Intent(this, MaintenanceActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             })
-        }
+        })
     }
 
     override fun onStart() {

@@ -11,13 +11,12 @@ import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 
-class SettingPasswordActivity :
-    BaseNoticeActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
+class SettingPasswordActivity : BaseOddButtonActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
     companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }
@@ -169,10 +168,10 @@ class SettingPasswordActivity :
             et_new_password.setHint(getString(R.string.hint_register_password))
         } else {
 
-            if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW){
+            if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW) {
                 et_current_password.setTitle(getString(R.string.current_login_password))
                 et_current_password.setHint(getString(R.string.hint_current_login_password))
-            }else{
+            } else {
                 et_current_password.setTitle(getString(R.string.current_withdrawal_password))
                 getString(R.string.hint_current_withdrawal_password)
             }

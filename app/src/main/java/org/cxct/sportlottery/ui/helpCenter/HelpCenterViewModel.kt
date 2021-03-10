@@ -1,15 +1,13 @@
 package org.cxct.sportlottery.ui.helpCenter
 
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class HelpCenterViewModel(
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     val token = loginRepository.token
 }

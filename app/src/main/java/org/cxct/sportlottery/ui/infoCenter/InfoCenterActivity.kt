@@ -11,13 +11,18 @@ import kotlinx.android.synthetic.main.item_finance_no_data.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
-const val BEEN_READ = 0
-const val YET_READ = 1
-
 class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
+    companion object {
+        const val KEY_READ_PAGE = "key-read-page"
+        const val BEEN_READ = 0
+        const val YET_READ = 1
+    }
+
+    private val mDefaultShowPage by lazy { intent.getIntExtra(KEY_READ_PAGE, BEEN_READ) }
+
     var adapter: InfoCenterAdapter? = null
-    private var nowLoading: Boolean = false
+    private var mNowLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +54,12 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             viewModel.getMsgCount(InfoCenterViewModel.DataType.READED)//已讀資料筆數
             viewModel.getUserMsgList(true, 0, InfoCenterViewModel.DataType.UNREAD)//未讀
         }
-        letterTabStatus(BEEN_READ)
+
+        //default show page
+        if (mDefaultShowPage == BEEN_READ)
+            btn_readed_letters.performClick()
+        else
+            btn_unread_letters.performClick()
     }
 
     private fun letterTabStatus(status: Int) {
@@ -85,7 +95,7 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             if (adapter?.data?.isNotEmpty() == true) {
                 adapter?.addData(userMsgList)//上拉加載
             } else {
-                if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
+                if ((it.size == 0 || it.isNullOrEmpty()) && !mNowLoading) {
                     image_no_message.visibility = View.VISIBLE
                     tv_no_data.visibility = View.GONE
                 } else {
@@ -106,7 +116,7 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             if (adapter?.data?.isNotEmpty() == true) {
                 adapter?.addData(userMsgList)//上拉加載
             } else {
-                if ((it.size == 0 || it.isNullOrEmpty()) && !nowLoading) {
+                if ((it.size == 0 || it.isNullOrEmpty()) && !mNowLoading) {
                     image_no_message.visibility = View.VISIBLE
                     tv_no_data.visibility = View.GONE
                 } else {
@@ -124,10 +134,10 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
         //Loading
         viewModel.isLoading.observe(this@InfoCenterActivity, Observer {
             if (it) {
-                nowLoading = it
+                mNowLoading = it
                 loading()
             } else {
-                nowLoading = it
+                mNowLoading = it
                 hideLoading()
             }
 

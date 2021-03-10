@@ -11,9 +11,8 @@ import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
 data class BetListRequestState(var hasStatus: Boolean, var hasStartDate: Boolean, var hasEndDate: Boolean)
@@ -22,9 +21,8 @@ data class BetListRequestState(var hasStatus: Boolean, var hasStartDate: Boolean
 class BetRecordViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository,
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     private val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 to "赢半", 4 to "全输", 5 to "输半", 6 to "和", 7 to "已取消")
 
@@ -54,8 +52,8 @@ class BetRecordViewModel(
     private val _selectedBetStatus = MutableLiveData<String?>()
 
     private var mBetListRequest: BetListRequest? = null
-    private val selectedStatusList : List<SheetData>
-            get() = betStatusList.filter { it.isChecked }
+    private val selectedStatusList: List<SheetData>
+        get() = betStatusList.filter { it.isChecked }
 
     val betStatusList by lazy {
         statusNameMap.map {
@@ -65,7 +63,7 @@ class BetRecordViewModel(
         }.toMutableList()
     }
 
-    fun searchBetRecord(isChampionChecked: Boolean?= false, startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime, endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime) {
+    fun searchBetRecord(isChampionChecked: Boolean? = false, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
         if (betStatusList.none { it.isChecked }) {
             _statusSearchEnable.value = false
         } else {
@@ -92,7 +90,7 @@ class BetRecordViewModel(
         }
     }
 
-    fun isAllCbChecked() : Boolean {
+    fun isAllCbChecked(): Boolean {
         return (selectedStatusList.size == statusNameMap.size)
     }
 
@@ -118,7 +116,8 @@ class BetRecordViewModel(
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loading()
                 mBetListRequest?.let {
-                    mBetListRequest = BetListRequest(championOnly = it.championOnly, statusList = it.statusList, startTime = it.startTime, endTime = it.endTime, page = it.page?.plus(1), pageSize = PAGE_SIZE)
+                    mBetListRequest =
+                        BetListRequest(championOnly = it.championOnly, statusList = it.statusList, startTime = it.startTime, endTime = it.endTime, page = it.page?.plus(1), pageSize = PAGE_SIZE)
                     getBetList(mBetListRequest!!)
                 }
             }
