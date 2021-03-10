@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/rl_content"
@@ -54,7 +53,7 @@
             android:layout_toStartOf="@+id/tv_odds"
             android:gravity="center"
             android:textColor="@color/text_spread"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
     </RelativeLayout>
 

@@ -279,9 +279,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 itemView.visibility = View.VISIBLE
             } else {
                 param.bottomMargin = 0
-                itemView.visibility = View.GONE
                 param.height = 0
                 param.width = 0
+                itemView.visibility = View.GONE
             }
             itemView.layoutParams = param
         }
@@ -289,6 +289,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
         private val llItem = itemView.findViewById<LinearLayout>(R.id.ll_item)
         private val ivArrowUp = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
+        private val vLine = itemView.findViewById<View>(R.id.v_line)
 
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
 
@@ -307,8 +308,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             if (oddsDetail.isExpand) {
                 ivArrowUp.animate().rotation(180f).setDuration(200).start()
+                vLine.visibility = View.VISIBLE
             } else {
                 ivArrowUp.animate().rotation(0f).setDuration(200).start()
+                vLine.visibility = View.GONE
             }
 
 
@@ -354,8 +357,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         setVisibility(false)
                     }
                 } catch (e: Exception) {
-                    // 目前api會回傳空陣列 無法比對
-                    // https://sports.cxct.org/api/front/playcate/type/list
+                    setVisibility(true)
                 }
 
             }
@@ -373,7 +375,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun cs(oddsDetail: OddsDetailListData) {
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
             itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
             itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
 

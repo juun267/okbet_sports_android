@@ -48,7 +48,7 @@
     </style>
 
     <style name="TabTextSize">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/textSize14sp</item>
     </style>
 
     <style name="MyDialogStyle">
