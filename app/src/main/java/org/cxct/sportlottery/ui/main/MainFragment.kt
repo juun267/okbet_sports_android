@@ -90,31 +90,37 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initTab() {
         tab_sport.setOnClickListener {
+            selectTab(tab_sport)
             scrollToTabPosition(tab_sport)
             appbar_layout.setExpanded(false)
         }
 
         tab_lottery.setOnClickListener {
+            selectTab(tab_lottery)
             scrollToTabPosition(tab_lottery)
             appbar_layout.setExpanded(false)
         }
 
         tab_live.setOnClickListener {
+            selectTab(tab_live)
             scrollToTabPosition(tab_live)
             appbar_layout.setExpanded(false)
         }
 
         tab_poker.setOnClickListener {
+            selectTab(tab_poker)
             scrollToTabPosition(tab_poker)
             appbar_layout.setExpanded(false)
         }
 
         tab_slot.setOnClickListener {
+            selectTab(tab_slot)
             scrollToTabPosition(tab_slot)
             appbar_layout.setExpanded(false)
         }
 
         tab_fishing.setOnClickListener {
+            selectTab(tab_fishing)
             scrollToTabPosition(tab_fishing)
             appbar_layout.setExpanded(false)
         }
@@ -133,14 +139,14 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initScrollView() {
-        scroll_view.setOnTouchListener { v, event ->
+        scroll_view.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_MOVE -> mLastAction = Action.IS_SCROLL
             }
             false // Do not consume events
         }
 
-        scroll_view.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { view, scrollX, scrollY, oldScrollX, oldScrollY ->
+        scroll_view.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
             if (mLastAction == Action.IS_SCROLL) {
                 when (scrollY) {
                     in 0 until label_lottery.top -> {
@@ -168,7 +174,8 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         //為了讓滑動切換 tab 效果能到最後一項，需動態變更 over_scroll_view 高度，來補足滑動距離
         scroll_view.post {
             val distanceY = over_scroll_view.bottom - label_fishing.top
-            val paddingHeight = scroll_view.height - distanceY - tab_layout.height
+            val paddingHeight = scroll_view.height - distanceY
+
             if (paddingHeight > 0)
                 over_scroll_view.minimumHeight = paddingHeight
         }
