@@ -77,9 +77,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                         }
                         onOddClickListener.getBetInfoList(odd)
                     } else {
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            onOddClickListener.removeBetInfoItem(odd)
-                        }, 200)
+                        onOddClickListener.removeBetInfoItem(odd)
                     }
                 }
 

@@ -422,9 +422,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                         }
                                         onOddClickListener.getBetInfoList(odd)
                                     } else {
-                                        Handler().postDelayed({//讓ripple效果呈現出來
-                                            onOddClickListener.removeBetInfoItem(odd)
-                                        }, 200)
+                                        onOddClickListener.removeBetInfoItem(odd)
                                     }
                                 }
                             }
@@ -503,7 +501,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet.apply {
                 adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = GridLayoutManager(itemView.context, 2)
-                if(itemDecorationCount==0) {
+                if (itemDecorationCount == 0) {
                     addItemDecoration(
                         GridItemDecoration(
                             itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
