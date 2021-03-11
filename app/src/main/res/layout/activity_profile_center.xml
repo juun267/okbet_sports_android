@@ -686,8 +686,10 @@
             android:background="@drawable/bg_radius_19_button_white"
             android:minHeight="40dp"
             android:text="@string/sign_out"
+            android:textStyle="bold"
             android:textColor="@color/gray4"
             android:textSize="@dimen/textSize14sp"
+            style="?android:attr/borderlessButtonStyle"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
