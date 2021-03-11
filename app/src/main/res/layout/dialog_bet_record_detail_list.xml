@@ -230,6 +230,7 @@
                             tools:text="投注项目 - 3串4" />
 
                         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
                             android:id="@+id/rv_detail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -34,15 +34,16 @@
     </RelativeLayout>
 
     <ScrollView
+         android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@color/colorWhite"
             android:divider="@drawable/divider_straight"
-            android:showDividers="middle"
+            android:showDividers="middle|end"
             android:orientation="vertical">
 
             <LinearLayout
@@ -515,7 +516,6 @@
 
                 </LinearLayout>
 
-                
             </LinearLayout>
 
         </LinearLayout>

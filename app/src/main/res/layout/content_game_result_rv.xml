@@ -195,6 +195,7 @@
             tools:el_expanded="true">
 
             <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
                 android:id="@+id/rv_time_line_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

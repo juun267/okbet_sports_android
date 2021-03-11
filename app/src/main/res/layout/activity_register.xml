@@ -49,6 +49,7 @@
         app:layout_constraintTop_toBottomOf="@id/block_padding" />
 
     <ScrollView
+         android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingTop="12dp"

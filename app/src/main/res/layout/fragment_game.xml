@@ -19,6 +19,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
                 android:id="@+id/hall_game_type_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
                 app:layout_constraintTop_toBottomOf="@id/hall_game_type_list" />
 
             <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
                 android:id="@+id/hall_date_list"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
@@ -48,6 +50,7 @@
                 tools:listitem="@layout/itemview_game_date" />
 
             <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
                 android:id="@+id/hall_odds_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,6 +61,7 @@
                 tools:listitem="@layout/itemview_league_odd" />
 
             <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
                 android:id="@+id/hall_league_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,6 +71,7 @@
                 app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
 
             <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
                 android:id="@+id/hall_outright_season_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

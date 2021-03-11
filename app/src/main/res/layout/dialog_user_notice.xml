@@ -45,6 +45,7 @@
             app:layout_constraintTop_toTopOf="@id/tv_title" />
 
         <ScrollView
+         android:overScrollMode="never"
             android:id="@+id/sv_block_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

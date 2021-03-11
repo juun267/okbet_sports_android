@@ -134,6 +134,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
         android:id="@+id/rv_date"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -150,6 +151,7 @@
         tools:listitem="@layout/settlement_date_item" />
 
     <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
         android:id="@+id/rv_results"
         android:layout_width="match_parent"
         android:layout_height="0dp"
