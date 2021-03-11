@@ -79,6 +79,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 MatchType.AT_START -> GameFilterRow.AT_START
             }
 
+            isSearchViewVisible = (args.matchType != MatchType.IN_PLAY)
+
+            searchHint = getString(R.string.game_filter_row_search_hint)
+
             backClickListener = View.OnClickListener {
                 //TODO add back logic to view model
             }

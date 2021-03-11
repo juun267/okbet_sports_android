@@ -47,6 +47,26 @@ class GameFilterRow @JvmOverloads constructor(
             game_filter_sport_type.text = sportName
         }
 
+    var isSearchViewVisible: Boolean? = null
+        set(value) {
+            field = value
+
+            field?.let {
+                game_filter_search.visibility = if (it) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+        }
+
+    var searchHint: String? = null
+        set(value) {
+            field = value
+
+            game_filter_search.queryHint = field
+        }
+
     var backClickListener: OnClickListener? = null
         set(value) {
             field = value
@@ -109,16 +129,6 @@ class GameFilterRow @JvmOverloads constructor(
             View.VISIBLE
         } else {
             View.GONE
-        }
-
-        game_filter_search.apply {
-            visibility = if (type == IN_PLAY) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
-
-            queryHint = resources.getString(R.string.game_filter_row_search_hint)
         }
 
         game_filter_sport_type.isSelected = (type != IN_PLAY)
