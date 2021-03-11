@@ -21,63 +21,57 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
         }
 
     var leagueOddListener: LeagueOddListener? = null
-        set(value) {
-            field = value
-
-            field?.let {
-                leagueOddAdapter.leagueOddListener = it
-            }
-        }
-
-    private val leagueOddAdapter by lazy {
-        LeagueOddAdapter()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent).apply {
-            setupLeagueOddList(this)
-        }
-    }
-
-    private fun setupLeagueOddList(viewHolder: ViewHolder) {
-        viewHolder.itemView.league_odd_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-            this.adapter = leagueOddAdapter
-
-            addItemDecoration(
-                ItemNonLastDecoration(
-                    ContextCompat.getDrawable(context, R.drawable.divider_straight)
-                )
-            )
-        }
+        return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, leagueOddAdapter)
+        holder.bind(item, leagueOddListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val leagueOddAdapter by lazy {
+            LeagueOddAdapter()
+        }
 
-        fun bind(item: LeagueOdd, leagueOddAdapter: LeagueOddAdapter) {
+        fun bind(item: LeagueOdd, leagueOddListener: LeagueOddListener?) {
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupMatchOddList(item, leagueOddAdapter)
-            setupMatchOddExpand(item)
+            setupLeagueOddList(item, leagueOddListener)
+            setupLeagueOddExpand(item)
         }
 
-        private fun setupMatchOddList(item: LeagueOdd, leagueOddAdapter: LeagueOddAdapter) {
-            leagueOddAdapter.data = item.matchOdds
+        private fun setupLeagueOddList(item: LeagueOdd, leagueOddListener: LeagueOddListener?) {
+            itemView.league_odd_list.apply {
+                this.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+                adapter = leagueOddAdapter
+
+                addItemDecoration(
+                    ItemNonLastDecoration(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.divider_straight
+                        )
+                    )
+                )
+            }
+
+            leagueOddAdapter.apply {
+                data = item.matchOdds
+                this.leagueOddListener = leagueOddListener
+            }
         }
 
-        private fun setupMatchOddExpand(item: LeagueOdd) {
+        private fun setupLeagueOddExpand(item: LeagueOdd) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand

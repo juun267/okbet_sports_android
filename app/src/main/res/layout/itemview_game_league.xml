@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/league_border"
@@ -31,6 +31,7 @@
         android:layout_marginEnd="10dp"
         android:ellipsize="end"
         android:textColor="@color/colorBlackLight"
+        android:singleLine="true"
         android:textSize="@dimen/textSize16sp"
         app:layout_constraintBottom_toBottomOf="@id/league_border"
         app:layout_constraintEnd_toStartOf="@id/league_odd_count"
@@ -47,6 +48,7 @@
         android:gravity="center"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/league_border"
         app:layout_constraintEnd_toEndOf="@id/league_border"
         app:layout_constraintTop_toTopOf="@id/league_border"
@@ -66,7 +68,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             tools:itemCount="1"
-            tools:listitem="@layout/itemview_game_match_odd" />
+            tools:listitem="@layout/itemview_game_league_odd" />
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 

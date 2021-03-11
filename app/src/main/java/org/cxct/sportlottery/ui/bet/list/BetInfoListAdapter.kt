@@ -120,7 +120,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = 11.dp
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = true
-                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange)
+                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
                     setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorWhite))
                 }
             } else {
@@ -156,7 +156,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         setTextColor(ContextCompat.getColor(binding.root.context, R.color.bright_gray))
                         false
                     } else {
-                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange)
+                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
                         setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorWhite))
                         true
                     }
@@ -279,7 +279,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         View.VISIBLE,
                         View.GONE,
                         R.string.bet_info_list_bet,
-                        R.drawable.bg_radius_4_button_orange,
+                        R.drawable.bg_radius_4_button_orangelight,
                         R.color.colorWhite,
                         true
                     )
@@ -391,7 +391,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 }
                 false -> {
                     tv_bet.apply {
-                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orange)
+                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orangelight)
                         setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
                         isClickable = true
                     }

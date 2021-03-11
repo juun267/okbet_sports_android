@@ -137,7 +137,7 @@
                     android:layout_alignTop="@+id/tv_odds"
                     android:layout_alignEnd="@+id/tv_odds"
                     android:layout_alignBottom="@+id/tv_odds"
-                    android:background="@drawable/bg_radius_5_button_disable"
+                    android:background="@drawable/bg_radius_4_button_disable"
                     android:paddingStart="24dp"
                     android:paddingEnd="24dp"
                     android:src="@drawable/ic_lock_odd"

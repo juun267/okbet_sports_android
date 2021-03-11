@@ -9,6 +9,55 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
 
+    <org.cxct.sportlottery.ui.component.DateRangeSearchView
+        android:id="@+id/date_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/date_search_bar">
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/selector_out_plat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:defaultStatusText="@string/all_out_plat" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="15dp"
+            android:background="@color/gray11" />
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/selector_in_plat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:defaultStatusText="@string/all_in_plat" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="15dp"
+            android:background="@color/gray11" />
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/selector_transfer_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:defaultStatusText="@string/all_transfer_status" />
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
@@ -24,12 +73,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:gravity="center"
+            android:maxLines="1"
             android:text="@string/time"
-            android:textColor="@color/gray4" />
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -37,32 +86,32 @@
             android:layout_weight="2"
             android:gravity="center"
             android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:text="@string/money"
-            android:textColor="@color/gray4" />
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:gravity="center"
+            android:maxLines="1"
             android:text="@string/transfer_platform"
-            android:textColor="@color/gray4" />
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:maxLines="1"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:gravity="center"
+            android:maxLines="1"
             android:text="@string/status"
-            android:textColor="@color/gray4" />
+            android:textColor="@color/gray4"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
     </LinearLayout>
 
 
@@ -71,9 +120,9 @@
         android:id="@+id/rv_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="2"
-        tools:listitem="@layout/item_money_transfer_history"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        tools:listitem="@layout/item_money_transfer_history" />
 
 </LinearLayout>
 

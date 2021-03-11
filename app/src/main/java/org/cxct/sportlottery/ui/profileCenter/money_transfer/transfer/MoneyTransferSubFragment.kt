@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +62,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        viewModel.setIsPlatSwitched(null)
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
         viewModel.defaultInPlat = gameDataArg.gameData.code
@@ -94,13 +96,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         val rotateAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate)
 
         iv_spin.setOnClickListener {
-
+            viewModel.setIsPlatSwitched(!(viewModel.isPlatSwitched.value?:false))
             iv_spin.startAnimation(rotateAnimation)
-
-            viewModel.isPlatSwitched.value?.let {
-                viewModel.setIsPlatSwitched(!it)
-            }
-
         }
 
         layout_balance.btn_refresh.setOnClickListener {
@@ -148,6 +145,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
 
         viewModel.isPlatSwitched.observe(viewLifecycleOwner) {
+
+            if (it == null) return@observe
 
             val outAccountText = out_account.getText()
             val inAccountText = in_account.getText()

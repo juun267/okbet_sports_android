@@ -1,13 +1,12 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.content.res.ColorStateList
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,8 +17,9 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GridItemDecoration
+import org.cxct.sportlottery.util.OddButtonHighLight
 import org.cxct.sportlottery.util.TextUtil
 import java.util.*
 import kotlin.collections.ArrayList
@@ -66,7 +66,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     enum class GameType(val value: String, val layout: Int, val type: Int) {
-        HDP("HDP", R.layout.content_odds_detail_list_group_item, 0),//让球
+        HDP("HDP", R.layout.content_odds_detail_list_hdp, 0),//让球
         OU("O/U", R.layout.content_odds_detail_list_two_sides, 1),//大小
         OU_1ST("O/U-1ST", R.layout.content_odds_detail_list_two_sides, 2),//大/小-上半场
         OU_2ST("O/U-2ST", R.layout.content_odds_detail_list_two_sides, 3),//大/小-下半场
@@ -316,7 +316,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
             when (viewType) {
-                GameType.HDP.type -> groupItem(oddsDetail, 2)
+                GameType.HDP.type -> forHDP(oddsDetail)
                 GameType.W3.type -> groupItem(oddsDetail, 3)
 
                 GameType.OU.type,
@@ -327,7 +327,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.C_OU.type,
                 GameType.C_OE.type,
                 GameType.OU_I_OT.type,
-                GameType.OU_SEG.type-> twoSides(oddsDetail)
+                GameType.OU_SEG.type -> twoSides(oddsDetail)
 
                 GameType.CS.type -> cs(oddsDetail)
 
@@ -403,7 +403,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                         odd.odds?.let { odds -> tvOdds.text = TextUtil.formatForOdd(odds) }
 
-                        setHighlight(tvOdds, odd)
+                        OddButtonHighLight.set(tvOdds, null, odd)
 
                         when (odd.status) {
                             BetStatus.ACTIVATED.code -> {
@@ -475,6 +475,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
+        private fun forHDP(oddsDetail: OddsDetailListData) {
+            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
+            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
+            itemView.findViewById<RelativeLayout>(R.id.rl_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+
+            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet.apply {
+                adapter = TypeHDPAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
+                layoutManager = GridLayoutManager(itemView.context, 2)
+            }
+        }
+
         private fun groupItem(oddsDetail: OddsDetailListData, groupItemCount: Int) {
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -490,39 +503,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet.apply {
                 adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = GridLayoutManager(itemView.context, 2)
-            }
-        }
-
-    }
-
-
-    private fun setHighlight(textView: TextView, odd: Odd) {
-        when (odd.oddState) {
-            OddState.LARGER.state -> {
-                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-            }
-            OddState.SMALLER.state -> {
-                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-            }
-        }
-
-        Handler().postDelayed(
-            {
-                when (odd.isSelect) {
-                    true -> {
-                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
-                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-                    }
-                    false -> {
-                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
-                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
-                    }
+                if(itemDecorationCount==0) {
+                    addItemDecoration(
+                        GridItemDecoration(
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
+                            ContextCompat.getColor(itemView.context, R.color.colorWhite6),
+                            false
+                        )
+                    )
                 }
-            }, CHANGING_ITEM_BG_COLOR_DURATION
-        )
-    }
+            }
+        }
 
+    }
 
 }

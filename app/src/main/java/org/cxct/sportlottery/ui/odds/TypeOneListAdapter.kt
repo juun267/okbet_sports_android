@@ -34,7 +34,7 @@ class TypeOneListAdapter(
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(originOdd: Odd) {
-            setData(originOdd, onOddClickListener, betInfoList, curMatchId)
+            setData(originOdd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_NULL)
         }
     }
 
