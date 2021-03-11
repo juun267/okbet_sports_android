@@ -30,6 +30,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private val gameTypeAdapter by lazy {
+        GameTypeAdapter().apply {
+            gameTypeListener = GameTypeListener {
+                //TODO add 滾球賽事
+                viewModel.getGameHallList(args.matchType, it)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +47,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
             setupSportTypeList(this)
             setupGameFilterRow(this)
+            setupGameRow(this)
             setupGameListView(this)
         }
     }
@@ -107,12 +117,48 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     return true
                 }
             }
+        }
+    }
 
-            gameTypeListener = GameTypeListener {
-                //TODO add 滾球賽事
-                viewModel.getGameHallList(args.matchType, it)
+    private fun setupGameRow(view: View) {
+        view.game_filter_type_list.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            this.adapter = gameTypeAdapter
+
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec
+                )
+            )
+        }
+
+        view.game_filter_game.visibility =
+            if (args.matchType == MatchType.EARLY || args.matchType == MatchType.PARLAY || args.matchType == MatchType.OUTRIGHT) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+        view.game_filter_game.text = when (args.matchType) {
+            MatchType.EARLY, MatchType.PARLAY -> {
+                resources.getString(R.string.date_row_league)
+            }
+            MatchType.OUTRIGHT -> {
+                resources.getString(R.string.outright_row_entrance)
+            }
+            else -> {
+                null
             }
         }
+
+        view.game_filter_type_list.visibility =
+            if (args.matchType == MatchType.EARLY || args.matchType == MatchType.PARLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
 
     private fun setupGameListView(view: View) {
@@ -183,7 +229,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
-            game_filter_row.dateList = it
+            gameTypeAdapter.data = it
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
