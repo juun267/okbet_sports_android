@@ -25,6 +25,8 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewModel.getAllBalance()
+        viewModel.queryTransfers()
         viewModel.setToolbarName(getString(R.string.record_conversion))
         return inflater.inflate(R.layout.fragment_money_transfer_record, container, false)
     }
@@ -33,18 +35,38 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        initOnclick()
         initObserver()
     }
-
 
     private fun initView() {
         rv_record.adapter = rvAdapter
         rv_record.addOnScrollListener(recyclerViewOnScrollListener)
+        selector_transfer_status.dataList = viewModel.statusList
     }
+
+    private fun initOnclick() {
+        date_search_bar.setOnClickSearchListener {
+            viewModel.queryTransfers(
+                startTime = date_search_bar.startTime.toString(),
+                endTime = date_search_bar.endTime.toString(),
+                firmTypeIn = selector_in_plat.selectedTag,
+                firmTypeOut = selector_out_plat.selectedTag,
+                status = selector_transfer_status.selectedTag
+            )
+        }
+    }
+
+
 
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
             rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+        }
+
+        viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
+            selector_out_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.OUT_PLAT, it)
+            selector_in_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.IN_PLAT, it)
         }
     }
 

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.appbar_finance.*
@@ -31,6 +32,9 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
                 }
                 getString(R.string.record_withdrawal) -> {
                     navRechargeWithdrawFragment(it)
+                }
+                getString(R.string.record_conversion) -> {
+                    navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToMoneyTransferRecordFragment())
                 }
             }
         })
@@ -80,4 +84,5 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
             }
         }
     }
+
 }
