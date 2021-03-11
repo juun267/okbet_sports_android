@@ -17,7 +17,7 @@ class TypeOneListAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_fg_lg_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
     }
 
 
@@ -34,7 +34,7 @@ class TypeOneListAdapter(
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(originOdd: Odd) {
-            setData(originOdd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_NULL)
+            setData(originOdd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_CENTER)
         }
     }
 

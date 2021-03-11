@@ -383,8 +383,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun cs(oddsDetail: OddsDetailListData) {
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
-            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
 
             val homeList: MutableList<Odd> = mutableListOf()
             val drawList = ArrayList<Odd>()
@@ -470,16 +468,40 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
                 adapter = TypeCSAdapter(homeList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
+                if(itemDecorationCount==0) {
+                    addItemDecoration(
+                        SpaceItemDecoration(
+                            context,
+                            R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                        )
+                    )
+                }
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_draw).apply {
                 adapter = TypeCSAdapter(drawList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
+                if(itemDecorationCount==0) {
+                    addItemDecoration(
+                        SpaceItemDecoration(
+                            context,
+                            R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                        )
+                    )
+                }
             }
 
             itemView.findViewById<RecyclerView>(R.id.rv_away).apply {
                 adapter = TypeCSAdapter(awayList, onOddClickListener, betInfoList, curMatchId)
                 layoutManager = LinearLayoutManager(itemView.context)
+                if(itemDecorationCount==0) {
+                    addItemDecoration(
+                        SpaceItemDecoration(
+                            context,
+                            R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                        )
+                    )
+                }
             }
         }
 

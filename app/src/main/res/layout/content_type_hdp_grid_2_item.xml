@@ -44,6 +44,6 @@
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:src="@drawable/ic_lock_odd"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>
