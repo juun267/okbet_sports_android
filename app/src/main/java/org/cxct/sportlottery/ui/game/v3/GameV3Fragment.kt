@@ -49,6 +49,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private val outrightCountryAdapter by lazy {
+        OutrightCountryAdapter().apply {
+            outrightCountryLeagueListener = OutrightCountryLeagueListener {
+            }
+        }
+    }
+
     private val leagueAdapter by lazy {
         LeagueAdapter().apply {
             leagueOddListener = LeagueOddListener {
@@ -256,6 +263,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             hideLoading()
             if (it != null && it.success) {
                 game_list.adapter = countryAdapter.apply {
+                    data = it.rows ?: listOf()
+                }
+            }
+        })
+
+        viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
+            if (it != null && it.success) {
+                game_list.adapter = outrightCountryAdapter.apply {
                     data = it.rows ?: listOf()
                 }
             }
