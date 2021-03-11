@@ -29,7 +29,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -55,7 +55,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_home_vs"
                 app:layout_constraintTop_toTopOf="@id/tv_home_name"
@@ -76,7 +76,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="1-0" />
 
             <TextView
@@ -88,7 +88,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
             <TextView
@@ -100,7 +100,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
             <TextView
@@ -112,7 +112,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
         </LinearLayout>
     </LinearLayout>
@@ -136,8 +136,8 @@
 
             <ImageView
                 android:id="@+id/iv_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/ic_more" />
 
@@ -147,6 +147,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toStartOf="@+id/line2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
