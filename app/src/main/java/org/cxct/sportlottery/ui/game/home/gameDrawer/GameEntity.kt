@@ -6,6 +6,6 @@ class GameEntity(
     val itemType: ItemType,
     val code: String?,
     val name: String?,
-    val match: Match? = null,
-    val isShowBottomLine: Boolean = false
+    val num: Int,
+    val match: Match? = null
 )

@@ -48,16 +48,19 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
         homeGameDrawerAdapter.setOnSelectItemListener(onSelectItemListener)
     }
 
+    fun setOnSelectFooterListener(onSelectFooterListener: OnSelectItemListener<GameEntity>?) {
+        homeGameDrawerAdapter.setOnSelectFooterListener(onSelectFooterListener)
+    }
+
     fun setRvGameData(matchPreloadData: MatchPreloadData?) {
         val gameDataList = mutableListOf<GameEntity>()
         matchPreloadData?.datas?.forEach { data ->
-            val headerEntity = GameEntity(ItemType.HEADER, data.code, data.name)
+            val headerEntity = GameEntity(ItemType.HEADER, data.code, data.name, data.num)
             gameDataList.add(headerEntity)
 
             data.matchs.forEachIndexed { index, match ->
-                val itemEntity = GameEntity(
-                    ItemType.ITEM, data.code, data.name, match, index != data.matchs.lastIndex
-                )
+                val itemType = if (index == data.matchs.lastIndex) ItemType.FOOTER else ItemType.ITEM
+                val itemEntity = GameEntity(itemType, data.code, data.name, data.num, match)
                 gameDataList.add(itemEntity)
             }
         }

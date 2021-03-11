@@ -82,6 +82,12 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.getOddsDetail(select)
                 }
             })
+            drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
+                override fun onClick(select: GameEntity) {
+                    scroll_view.smoothScrollTo(0, 0)
+                    viewModel.getGameHallList(MatchType.IN_PLAY, select.code)
+                }
+            })
         })
     }
 

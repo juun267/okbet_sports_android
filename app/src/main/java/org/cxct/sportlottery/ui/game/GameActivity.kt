@@ -276,12 +276,16 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.matchTypeCardForParlay.observe(this, Observer {
+            app_bar_layout.setExpanded(true, false)
             when (it) {
                 MatchType.PARLAY -> {
                     tabLayout.getTabAt(4)?.select()
                 }
                 MatchType.AT_START -> {
                     toAtStart()
+                }
+                MatchType.IN_PLAY -> {
+                    tabLayout.getTabAt(1)?.select()
                 }
                 else -> {
                 }

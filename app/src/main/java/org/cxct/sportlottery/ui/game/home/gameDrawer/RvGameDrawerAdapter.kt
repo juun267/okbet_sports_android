@@ -8,11 +8,11 @@ import kotlinx.android.synthetic.main.home_game_rv_header.view.*
 import kotlinx.android.synthetic.main.home_game_rv_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.util.TimeUtil
 
 class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mOnSelectItemListener: OnSelectItemListener<GameEntity>? = null
+    private var mOnSelectFooterListener: OnSelectItemListener<GameEntity>? = null
     private var mDataList: MutableList<GameEntity> = mutableListOf()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -59,12 +59,29 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.itemView.apply {
             team1.text = data.match?.homeName
             team2.text = data.match?.awayName
-            tv_time.text = TimeUtil.timeFormat(data.match?.startTime, "yyyy-MM-dd HH:mm")
-            line_bottom.visibility = if (data.isShowBottomLine) View.VISIBLE else View.INVISIBLE
 
-            setOnClickListener {
+            //TODO simon test tv_time 要改掉
+            tv_time.text = "HH:mm:ss"
+            if (data.itemType == ItemType.FOOTER) {
+                line_item.visibility = View.GONE
+                card_footer.visibility = View.VISIBLE
+                line_footer.visibility = View.VISIBLE
+            } else {
+                line_item.visibility = View.VISIBLE
+                card_footer.visibility = View.GONE
+                line_footer.visibility = View.GONE
+            }
+
+            tv_footer_title.text = String.format(context.getString(R.string.label_all_something_in_play), data.name)
+            tv_footer_count.text = data.num.toString()
+
+            card_item.setOnClickListener {
                 if (data.match != null)
                     mOnSelectItemListener?.onClick(data)
+            }
+
+            card_footer.setOnClickListener {
+                mOnSelectFooterListener?.onClick(data)
             }
         }
     }
@@ -73,9 +90,13 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mOnSelectItemListener = onSelectItemListener
     }
 
+    fun setOnSelectFooterListener(onSelectFooterListener: OnSelectItemListener<GameEntity>?) {
+        mOnSelectFooterListener = onSelectFooterListener
+    }
+
     fun setData(dataList: MutableList<GameEntity>?) {
         mDataList = dataList ?: mutableListOf()
-        notifyDataSetChanged()//更新資料
+        notifyDataSetChanged()
     }
 
 
