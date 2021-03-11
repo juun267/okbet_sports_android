@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.results
 
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.RotateDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,14 +21,8 @@ import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.ll_g
 import kotlinx.android.synthetic.main.content_game_detail_result_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tn_rv.view.*
 import kotlinx.android.synthetic.main.item_match_result_match.view.*
-import kotlinx.android.synthetic.main.item_match_result_match.view.ll_game_detail
 import kotlinx.android.synthetic.main.item_match_result_match.view.tv_away_name
-import kotlinx.android.synthetic.main.item_match_result_match.view.tv_end_game_score
-import kotlinx.android.synthetic.main.item_match_result_match.view.tv_first_half_score
-import kotlinx.android.synthetic.main.item_match_result_match.view.tv_full_game_score
 import kotlinx.android.synthetic.main.item_match_result_match.view.tv_home_name
-import kotlinx.android.synthetic.main.item_match_result_match.view.tv_second_half_score
-import kotlinx.android.synthetic.main.item_match_result_match.view.tv_time
 import kotlinx.android.synthetic.main.item_match_result_title.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.matchresult.list.Match
@@ -123,16 +115,13 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
         fun bind(gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
             setupData(itemView, gameType, item)
-            setupEvent(itemView, matchItemClickListener)
+            setupEvent(itemView, item, matchItemClickListener)
         }
 
         private fun setupData(itemView: View, gameType: String, item: MatchResultData) {
             itemView.apply {
-                if (adapterPosition == 0) {
-                    view_margin_bottom.visibility = View.GONE
-                } else {
-                    view_margin_bottom.visibility = View.VISIBLE
-                }
+
+                titleArrowRotate(itemView, item)
 
                 tv_type.text = item.titleData?.name
                 when (gameType) {
@@ -159,16 +148,21 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
-        private fun setupEvent(itemView: View, matchItemClickListener: MatchItemClickListener) {
+        private fun setupEvent(itemView: View, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
             itemView.setOnClickListener {
                 matchItemClickListener.leagueTitleClick(adapterPosition)
-                rotateTitleBlock(itemView.block_type)
+                titleArrowRotate(itemView, item)
             }
         }
 
-        private fun rotateTitleBlock(block: View) {
-            val drawable = block.background
-            ((drawable as LayerDrawable).getDrawable(1) as RotateDrawable).level += 10000
+        private fun titleArrowRotate(itemView: View, item: MatchResultData) {
+            itemView.apply {
+                if (item.titleExpanded) {
+                    iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_dark))
+                } else {
+                    iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_down_dark))
+                }
+            }
         }
     }
 
@@ -285,7 +279,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     class FtDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                Log.e("Dean", "viewHolder show = FtDetailFirstItemViewHolder")
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view = layoutInflater.inflate(R.layout.content_game_detail_result_ft_rv, viewGroup, false)
                 return FtDetailFirstItemViewHolder(view)
@@ -397,7 +390,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     class TnDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                Log.e("Dean", "viewHolder show = TnDetailFirstItemViewHolder")
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view = layoutInflater.inflate(R.layout.content_game_detail_result_tn_rv, viewGroup, false)
                 return TnDetailFirstItemViewHolder(view)

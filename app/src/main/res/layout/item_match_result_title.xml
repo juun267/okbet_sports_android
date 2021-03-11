@@ -3,19 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <View
-        android:id="@+id/view_margin_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@color/transparent" />
+    android:divider="@drawable/divider_color_white6"
+    android:orientation="vertical"
+    android:showDividers="end">
 
     <LinearLayout
         android:id="@+id/block_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/expandable_results_settlement"
+        android:background="@color/colorWhite3"
         android:orientation="horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp">
@@ -24,8 +20,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingStart="30dp">
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_arrow_down_dark" />
 
             <TextView
                 android:id="@+id/tv_type"
@@ -35,7 +38,7 @@
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize16sp"
                 tools:text="Miền Bắc" />
 
@@ -55,7 +58,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/first_half_game"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/first_half_game" />
 
@@ -67,7 +70,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/second_half_game"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/second_half_game" />
 
@@ -79,7 +82,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/full_game"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/full_game" />
 
@@ -91,7 +94,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/game_result"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/game_result" />
 
