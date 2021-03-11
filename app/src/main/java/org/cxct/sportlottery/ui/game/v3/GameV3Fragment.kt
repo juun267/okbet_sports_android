@@ -161,7 +161,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             countryLeagueListener = CountryLeagueListener {
-                //TODO open game v3 detail page
+                viewModel.getLeagueOddsList(args.matchType, it.id)
             }
 
             leagueOddListener = LeagueOddListener {
@@ -236,13 +236,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
-            hideLoading()
-            if (it != null && it.success) {
-                game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
-            }
-        })
-
-        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
             if (it != null && it.success) {
                 game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
