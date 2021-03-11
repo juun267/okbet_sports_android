@@ -67,25 +67,6 @@ class MoneyTransferViewModel(
         }
     }
 
-    private val inPlatRecordList by lazy {
-        mutableListOf<StatusSheetData>().apply {
-            this.add(StatusSheetData(null, androidContext.getString(R.string.all_in_plat)))
-            inPlatDataList.forEach {
-                this.add(StatusSheetData(it.code, it.showName))
-            }
-        }
-    }
-
-    private val outPlatRecordList by lazy {
-        mutableListOf<StatusSheetData>().apply {
-            this.add(StatusSheetData(null, androidContext.getString(R.string.all_out_plat)))
-            Log.e(">>>", "list size = ${outPlatDataList.size}")
-            outPlatDataList.forEach {
-                this.add(StatusSheetData(it.code, it.showName))
-            }
-        }
-    }
-
     val isPlatSwitched: LiveData<Boolean?>
         get() = _isPlatSwitched
 
@@ -181,12 +162,20 @@ class MoneyTransferViewModel(
         }
     }
 
-    fun getInPlatNameList(selectedOutPlatName: String?= null): List<StatusSheetData> {
-        return inPlatRecordList.filter { it.showName != selectedOutPlatName }
+    enum class PLAT {
+        IN_PLAT, OUT_PLAT
     }
 
-    fun getOutPlatNameList(selectedInPlatName: String?= null): List<StatusSheetData> {
-        return outPlatRecordList.filter { it.showName != selectedInPlatName }
+    fun getRecordPlatNameList(plat: PLAT, list: List<GameData>): MutableList<StatusSheetData> {
+        val recordList = mutableListOf<StatusSheetData>()
+        recordList.apply {
+            val item = if (plat == PLAT.IN_PLAT) R.string.all_in_plat else R.string.all_out_plat
+            recordList.add(StatusSheetData(null, androidContext.getString(item)))
+            list.forEach {
+                this.add(StatusSheetData(it.code, it.showName))
+            }
+        }
+        return recordList
     }
 
     var defaultOutPlat = "CG"
@@ -210,7 +199,6 @@ class MoneyTransferViewModel(
             outPlatDataList.add(inPlatData)
         }
 
-        Log.e(">>>", "outPlatDataList size = ${outPlatDataList.size}")
         inPlatDataList.add(0, GameDataInPlat().apply {
             isChecked = false
             code = "CG"
@@ -296,7 +284,6 @@ class MoneyTransferViewModel(
             }
         }
     }
-
 
     fun getThirdGames() {
         loading()

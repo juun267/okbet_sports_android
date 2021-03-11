@@ -65,8 +65,8 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
-            selector_out_plat.dataList = viewModel.getOutPlatNameList()
-            selector_in_plat.dataList = viewModel.getInPlatNameList()
+            selector_out_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.OUT_PLAT, it)
+            selector_in_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.IN_PLAT, it)
         }
     }
 
