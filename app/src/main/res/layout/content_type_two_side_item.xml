@@ -19,9 +19,11 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/rl_odds"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
-            tools:text="大" />
+             />
 
 
         <RelativeLayout
