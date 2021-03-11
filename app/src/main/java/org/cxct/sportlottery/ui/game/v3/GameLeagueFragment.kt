@@ -63,12 +63,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it != null && it.success) {
 
-                game_league_filter_row.sportName = it.oddsListData?.sport?.name
+            it.getContentIfNotHandled()?.let { oddsListResult ->
+                if (oddsListResult.success) {
 
-                leagueAdapter.data = it.oddsListData?.leagueOdds ?: listOf()
+                    game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
+
+                    leagueAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                }
             }
+
         })
     }
 
