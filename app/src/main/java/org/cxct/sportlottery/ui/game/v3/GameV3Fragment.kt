@@ -173,33 +173,51 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    sportTypeAdapter.data = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
-                    game_filter_row.sportList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
+                    val itemList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
+
+                    sportTypeAdapter.data = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
                 }
 
                 MatchType.TODAY -> {
-                    sportTypeAdapter.data = it?.sportMenuData?.menu?.today?.items ?: listOf()
-                    game_filter_row.sportList = it?.sportMenuData?.menu?.today?.items ?: listOf()
+                    val itemList = it?.sportMenuData?.menu?.today?.items ?: listOf()
+
+                    sportTypeAdapter.data = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
                 }
 
                 MatchType.EARLY -> {
-                    sportTypeAdapter.data = it?.sportMenuData?.menu?.early?.items ?: listOf()
-                    game_filter_row.sportList = it?.sportMenuData?.menu?.early?.items ?: listOf()
+                    val itemList = it?.sportMenuData?.menu?.early?.items ?: listOf()
+
+                    sportTypeAdapter.data = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
                 }
 
                 MatchType.PARLAY -> {
-                    sportTypeAdapter.data = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
-                    game_filter_row.sportList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
+                    val itemList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
+
+                    sportTypeAdapter.data = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
                 }
 
                 MatchType.OUTRIGHT -> {
-                    sportTypeAdapter.data = it?.sportMenuData?.menu?.outright?.items ?: listOf()
-                    game_filter_row.sportList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
+                    val itemList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
+
+                    sportTypeAdapter.data = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
                 }
 
                 MatchType.AT_START -> {
-                    sportTypeAdapter.data = it?.sportMenuData?.atStart?.items ?: listOf()
-                    game_filter_row.sportList = it?.sportMenuData?.atStart?.items ?: listOf()
+                    val itemList = it?.sportMenuData?.atStart?.items ?: listOf()
+
+                    sportTypeAdapter.data = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
                 }
             }
         })

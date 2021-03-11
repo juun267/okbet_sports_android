@@ -8,7 +8,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.row_game_filter.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.sport.Item
 import java.lang.Exception
 
 class GameFilterRow @JvmOverloads constructor(
@@ -42,13 +41,10 @@ class GameFilterRow @JvmOverloads constructor(
             }
         }
 
-    var sportList: List<Item>? = null
+    var sportName: String? = null
         set(value) {
             field = value
-
-            field?.let {
-                updateSportType(it)
-            }
+            game_filter_sport_type.text = sportName
         }
 
     var backClickListener: OnClickListener? = null
@@ -131,9 +127,5 @@ class GameFilterRow @JvmOverloads constructor(
     private fun updatePlayType(type: PlayType) {
         game_filter_1x2.isSelected = (type == PlayType.X12)
         game_filter_ou.isSelected = (type == PlayType.OU_HDP)
-    }
-
-    private fun updateSportType(itemList: List<Item>) {
-        game_filter_sport_type.text = itemList.find { sportType -> sportType.isSelected }?.name
     }
 }
