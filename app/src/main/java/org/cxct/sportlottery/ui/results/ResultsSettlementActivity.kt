@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.results
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.BaseAdapter
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
@@ -37,9 +35,6 @@ class ResultsSettlementActivity :
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
     private val settlementViewModel: SettlementViewModel by viewModel()
-    private val settlementRvAdapter by lazy {
-        SettlementRvAdapter()
-    }
     private val settlementDateRvAdapter by lazy {
         SettlementDateRvAdapter()
     }
@@ -62,7 +57,6 @@ class ResultsSettlementActivity :
 
     private var gameType = ""
 
-    //    private val selectNameList = mutableListOf<String>()
     private var timeRangeParams = setupTimeApiFormat(0) //預設為當日
     private var leagueSelectedSet: MutableSet<String> = mutableSetOf()
 
@@ -92,10 +86,7 @@ class ResultsSettlementActivity :
     }
 
     private fun setupAdapter() {
-        rv_results.adapter = settlementRvAdapter
         rv_date.adapter = settlementDateRvAdapter
-
-        //refactor
         refactor_rv.adapter = matchResultDiffAdapter
     }
 
@@ -122,9 +113,10 @@ class ResultsSettlementActivity :
         }
 
         btn_refresh.setOnClickListener {
-            //TODO Dean : 重構 review 後刪除
-//            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
-            settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
+            when (settleType) {
+                SettleType.OUTRIGHT -> settlementViewModel.getOutrightResultList(gameType)
+                SettleType.MATCH -> settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
+            }
         }
     }
 
@@ -135,11 +127,6 @@ class ResultsSettlementActivity :
 
     private fun observeData() {
         settlementViewModel.apply {
-            //比賽詳情
-            gameResultDetailResult.observe(this@ResultsSettlementActivity) {
-                settlementRvAdapter.mGameDetail = it //set Game Detail Data
-            }
-
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
                 matchResultDiffAdapter.gameType = gameType
@@ -158,11 +145,6 @@ class ResultsSettlementActivity :
             })
 
             //過濾後冠軍資料
-            outRightList.observe(this@ResultsSettlementActivity) {
-                setSettleRvOutRightData(it)
-            }
-
-            //過濾後冠軍資料
             showOutrightData.observe(this@ResultsSettlementActivity, Observer {
                 outrightResultDiffAdapter.submitList(it)
             })
@@ -178,10 +160,7 @@ class ResultsSettlementActivity :
                 //0:今日, 1:明天, 2:後天 ... 7:冠軍
                 when (date) {
                     7 -> {
-                        //TODO Dean : 冠軍尚未重構, 暫時用舊的資料結構
-
                         refactor_rv.adapter = outrightResultDiffAdapter
-
                         refactor_rv.scrollToPosition(0)
                         settleType = SettleType.OUTRIGHT
                         settlementViewModel.getOutrightResultList(gameType)
@@ -316,15 +295,6 @@ class ResultsSettlementActivity :
             })
             checkbox_select_all.performClick() //預設為聯盟全選
         }
-    }
-
-    /**
-     * 設置賽果冠軍資料
-     * result : OutRightListResult.row: List<Row>
-     */
-    private fun setSettleRvOutRightData(result: List<org.cxct.sportlottery.network.outright.Row>?) {
-        settlementRvAdapter.settleType = settleType
-        settlementRvAdapter.mOutRightDatList = result ?: listOf()
     }
 
     /**

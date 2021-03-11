@@ -149,19 +149,6 @@
         tools:listitem="@layout/settlement_date_item" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_results"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/background"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_date"
-        tools:listitem="@layout/content_settlement_rv" />
-
-    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/refactor_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"

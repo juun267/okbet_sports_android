@@ -11,9 +11,7 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.MatchInfo
 import org.cxct.sportlottery.network.matchresult.list.MatchResultList
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
-import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
-import org.cxct.sportlottery.network.outright.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -28,18 +26,6 @@ class SettlementViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-
-    val gameResultDetailResult: LiveData<SettlementRvData>
-        get() = _gameResultDetailResult
-
-    val outRightList: LiveData<List<Row>>
-        get() = _outRightList
-
-    private var _gameResultDetailResult = MutableLiveData<SettlementRvData>(SettlementRvData(-1, -1, mutableMapOf()))
-
-    private var _outRightListResult: OutrightResultListResult? = null
-    private val _outRightList = MutableLiveData<List<Row>>()
-
 
     private var matchResultReformatted = mutableListOf<MatchResultData>() //重構後的資料結構
     private val _showMatchResultData = MutableLiveData<List<MatchResultData>>() //過濾後的資料
@@ -250,7 +236,6 @@ class SettlementViewModel(
             doNetwork(androidContext) {
                 settlementRepository.resultOutRightList(gameType = gameType)
             }?.let { result ->
-                _outRightListResult = result
                 //重組資料結構
                 reformatOutrightResultData(result).let {
                     outrightDataReformatted = it
