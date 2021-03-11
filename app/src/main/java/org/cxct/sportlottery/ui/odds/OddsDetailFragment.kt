@@ -28,13 +28,15 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
 
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     Animation.AnimationListener, OnOddClickListener {
 
 
     companion object {
+
+        const val TIME_LENGTH = 5
+
         const val GAME_TYPE = "gameType"
         const val TYPE_NAME = "typeName"//leagueName
         const val MATCH_ID = "matchId"
@@ -144,7 +146,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun initUI() {
 
-        tv_type_name.text = typeName
+//        tv_type_name.text = typeName
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
@@ -202,7 +204,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     if (result.rows.isNotEmpty()) {
                         for (row in result.rows) {
                             dataBinding.tabCat.addTab(
-                                dataBinding.tabCat.newTab().setText(row.name),
+                                dataBinding.tabCat.newTab().setText("   ${row.name}   "),
                                 false
                             )
                         }
@@ -215,14 +217,25 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
+                val strTime = TimeUtil.stampToDate(time.toLong())
+                val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
+                val startPosition = strTime.length - TIME_LENGTH
+                val endPosition = strTime.length
+                val style = SpannableStringBuilder(strTime)
+                style.setSpan(
+                    ForegroundColorSpan(color),
+                    startPosition,
+                    endPosition,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                dataBinding.tvTime.text = style
             }
 
             it?.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                 it.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                     val strVerse = getString(R.string.verse_)
                     val strMatch = "$home${strVerse}$away"
-                    val color = ContextCompat.getColor(requireContext(), R.color.text_focus)
+                    val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
                     val startPosition = strMatch.indexOf(strVerse)
                     val endPosition = startPosition + strVerse.length
                     val style = SpannableStringBuilder(strMatch)
@@ -239,10 +252,11 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                 }
             }
+
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            if(it.size>0) {
+            if (it.size > 0) {
                 oddsDetailListAdapter?.oddsDetailDataList?.clear()
                 oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
                 oddsDetailListAdapter?.notifyDataSetChanged()
@@ -299,7 +313,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     fun refreshData(gameType: String?, matchId: String?, typeName: String?) {
         this.gameType = gameType
         this.matchId = matchId
-        tv_type_name.text = typeName
+//        tv_type_name.text = typeName
         getData()
     }
 
@@ -372,7 +386,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onDestroy() {
         super.onDestroy()
-        if(matchId?.let { viewModel.checkInBetInfo(it)} == false){
+        if (matchId?.let { viewModel.checkInBetInfo(it) } == false) {
             service.unSubscribeEventChannel(matchId)
         }
         viewModel.removeOddsDetailPageValue()

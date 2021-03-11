@@ -28,9 +28,10 @@
     <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
 
     <!--common-->
+    <string name="verse_lower">vs</string>
     <string name="verse">VS</string>
     <string name="error">错误</string>
-    <string name="verse_">&#160;&#160;vs&#160;&#160;</string>
+    <string name="verse_">&#160;&#160;v&#160;&#160;</string>
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="error_input_empty">此栏位为必填栏位</string>
@@ -660,4 +661,7 @@
     <string name="total_profit_and_loss">总盈亏：</string>
     <string name="game_name">游戏名</string>
     <string name="all_bet_status">全部注单状态</string>
+    <string name="all_out_plat">全部转出</string>
+    <string name="all_in_plat">全部转入</string>
+    <string name="all_transfer_status">全部状态</string>
 </resources>

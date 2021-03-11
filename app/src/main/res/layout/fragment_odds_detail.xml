@@ -17,22 +17,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
+        android:background="@color/colorWhite1"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/main">
+            android:layout_height="50dp"
+            android:background="@color/colorWhite">
 
             <LinearLayout
                 android:id="@+id/ll_type_name"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:onClick="@{() -> view.back()}"
                 android:orientation="horizontal">
@@ -40,45 +40,34 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_back_white_small" />
+                    android:src="@drawable/ic_arrow_left" />
 
                 <TextView
-                    android:id="@+id/tv_type_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/text_focus"
-                    android:textSize="14sp"
-                    tools:text="足球" />
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize15sp"
+                    android:text="@{gameViewModel.oddsDetailResult.oddsDetailData.league.name}"
+                    tools:text="英格兰超级联赛" />
 
 
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@+id/ll_type_name"
-                android:gravity="center"
-                android:text="@{gameViewModel.oddsDetailResult.oddsDetailData.league.name}"
-                android:textColor="@color/white"
-                android:textSize="14sp"/>
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/main_dark"
-            android:minHeight="48dp">
+            android:background="@color/colorWhite2"
+            android:minHeight="50dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@+id/tv_more"
                 android:orientation="vertical"
                 android:paddingTop="4dp"
@@ -88,18 +77,20 @@
                     android:id="@+id/tv_match"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    tools:text="纽卡斯尔  VS  切尔西" />
+                    android:letterSpacing="0.0088"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="纽卡斯尔  v  切尔西" />
 
 
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:layout_marginTop="2dp"
+                    android:letterSpacing="0.1"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="2020-11-21 08:30" />
 
 
@@ -111,16 +102,17 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:background="@drawable/bg_radius_5_main_sombre"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_radius_4_button_white_white6"
                 android:drawablePadding="4dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="更多"
-                android:textColor="@color/text_faint"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="12sp"
-                app:drawableEndCompat="@drawable/ic_arrow_down_white_alpha5" />
+                app:drawableEndCompat="@drawable/ic_arrow_down_dark_mini" />
 
         </RelativeLayout>
 
@@ -128,29 +120,32 @@
             android:id="@+id/tab_cat"
             style="@style/TabTextSize"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
+            android:layout_height="44dp"
+            android:background="@color/colorWhite"
             android:clipToPadding="false"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
             app:tabIndicator="@drawable/tab_indicator"
-            app:tabIndicatorColor="@color/text_focus"
-            app:tabIndicatorHeight="2dp"
+            app:tabIndicatorColor="@color/colorBlue"
             app:tabMinWidth="0dp"
             app:tabMode="scrollable"
-            app:tabPaddingEnd="10dp"
-            app:tabPaddingStart="10dp"
-            app:tabRippleColor="@color/tab_ripple"
-            app:tabSelectedTextColor="@color/text_focus"
-            app:tabTextColor="@color/text_tab_default" />
+            app:tabPaddingEnd="3dp"
+            app:tabPaddingStart="3dp"
+            app:tabIndicatorHeight="44dp"
+            app:tabRippleColor="@color/transparent"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="@color/colorWhite"
+            app:tabTextColor="@color/colorGray" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
             android:clipToPadding="false"
-            android:paddingTop="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             tools:listitem="@layout/content_odds_detail_list_item" />
 
     </LinearLayout>

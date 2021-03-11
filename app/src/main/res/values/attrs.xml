@@ -95,4 +95,8 @@
 
     <declare-styleable name="GameFilterRow" />
 
+    <declare-styleable name="GameListView" />
+
+    <declare-styleable name="OddButton" />
+
 </resources>

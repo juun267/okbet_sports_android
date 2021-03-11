@@ -63,7 +63,6 @@ class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(Mone
             my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
         }
         cb_record.setCheckedChange(cb_change) {
-            viewModel.queryTransfers()
             my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
         }
     }
