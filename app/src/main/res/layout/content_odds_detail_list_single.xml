@@ -2,8 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_radius_5_colorwhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="SpUsage">
 
     <include layout="@layout/content_odds_detail_list_item" />
 
@@ -24,11 +26,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_toStartOf="@+id/tv_vs"
+            android:layout_toStartOf="@+id/tv_draw"
             android:letterSpacing="0.0088"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize14sp"
-            tools:text="皇家马德里" />
+            tools:text="皇家马德里"/>
 
         <TextView
             android:id="@+id/tv_away_name"
@@ -37,7 +39,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:layout_toEndOf="@+id/tv_vs"
+            android:layout_toEndOf="@+id/tv_draw"
             android:gravity="end"
             android:letterSpacing="0.0088"
             android:textColor="@color/colorBlack"
@@ -45,15 +47,14 @@
             tools:text="利物浦" />
 
         <TextView
-            android:id="@+id/tv_vs"
+            android:id="@+id/tv_draw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:letterSpacing="0.0088"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize14sp"
-            android:text="@string/verse_lower"
-            tools:text="vs" />
+            tools:text="和局" />
 
 
     </RelativeLayout>
@@ -66,6 +67,10 @@
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        tools:itemCount="3"
+        tools:listitem="@layout/content_type_single_grid_3_item"
         android:nestedScrollingEnabled="false" />
 
 </LinearLayout>
