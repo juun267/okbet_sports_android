@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -35,6 +37,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             gameTypeListener = GameTypeListener {
                 //TODO add 滾球賽事
                 viewModel.getGameHallList(args.matchType, it)
+            }
+        }
+    }
+
+    private val countryAdapter by lazy {
+        CountryAdapter().apply {
+            countryLeagueListener = CountryLeagueListener {
+                viewModel.getLeagueOddsList(args.matchType, it.id)
+            }
+        }
+    }
+
+    private val leagueAdapter by lazy {
+        LeagueAdapter().apply {
+            leagueOddListener = LeagueOddListener {
+                //TODO open live and play type page
+                it.matchInfo?.id
             }
         }
     }
@@ -150,24 +169,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun setupGameListView(view: View) {
-        view.game_list_view.apply {
-            matchType = when (args.matchType) {
-                MatchType.IN_PLAY -> GameFilterRow.IN_PLAY
-                MatchType.TODAY -> GameFilterRow.TODAY
-                MatchType.EARLY -> GameFilterRow.EARLY
-                MatchType.PARLAY -> GameFilterRow.PARLAY
-                MatchType.OUTRIGHT -> GameFilterRow.OUTRIGHT
-                MatchType.AT_START -> GameFilterRow.AT_START
-            }
+        view.game_list.apply {
+            this.layoutManager =
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
-            countryLeagueListener = CountryLeagueListener {
-                viewModel.getLeagueOddsList(args.matchType, it.id)
-            }
-
-            leagueOddListener = LeagueOddListener {
-                //TODO open live and play type page
-                it.matchInfo?.id
-            }
+            this.addItemDecoration(
+                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+            )
         }
     }
 
@@ -228,7 +236,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.curPlayType.observe(viewLifecycleOwner, Observer {
             game_filter_row.playType = it
-            game_list_view.playType = it
+            leagueAdapter.playType = it
         })
 
         viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
@@ -238,14 +246,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
             if (it != null && it.success) {
-                game_list_view.leagueOddList = it.oddsListData?.leagueOdds ?: listOf()
+                game_list.adapter = leagueAdapter.apply {
+                    data = it.oddsListData?.leagueOdds ?: listOf()
+                }
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
             if (it != null && it.success) {
-                game_list_view.countryList = it.rows ?: listOf()
+                game_list.adapter = countryAdapter.apply {
+                    data = it.rows ?: listOf()
+                }
             }
         })
 

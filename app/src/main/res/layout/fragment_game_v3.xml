@@ -55,11 +55,13 @@
             tools:itemCount="1"
             tools:listitem="@layout/itemview_game_type2" />
 
-        <org.cxct.sportlottery.ui.game.v3.GameListView
-            android:id="@+id/game_list_view"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/game_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/game_filter_type_list" />
+            app:layout_constraintTop_toBottomOf="@id/game_filter_type_list"
+            tools:itemCount="1"
+            tools:listitem="@layout/itemview_game_league" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
