@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/sport_type_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,6 +124,7 @@
         app:layout_constraintTop_toBottomOf="@id/game_filter_back_row" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/game_filter_type_list"
         android:layout_width="match_parent"
         android:layout_height="44dp"

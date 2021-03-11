@@ -65,6 +65,7 @@
             android:showDividers="middle">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/rv_home"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
                 android:paddingBottom="5dp" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/rv_draw"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -85,6 +87,7 @@
                 android:paddingBottom="5dp" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/rv_away"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

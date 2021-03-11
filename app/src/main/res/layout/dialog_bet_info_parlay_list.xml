@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SpUsage,ContentDescription">
+    tools:ignore="SpUsage,ContentDescription,RelativeOverlap">
 
     <data>
 
@@ -101,7 +101,8 @@
                     <androidx.core.widget.NestedScrollView
                         android:id="@+id/scroll_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never">
 
                         <LinearLayout
                             android:id="@+id/linear"
@@ -113,6 +114,7 @@
                                 android:id="@+id/rv_match_odd_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:overScrollMode="never"
                                 tools:itemCount="2"
                                 tools:listitem="@layout/content_bet_info_item_detail" />
 
@@ -171,6 +173,8 @@
                                         android:id="@+id/rv_parlay_list"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:overScrollMode="never"
+                                        tools:ignore="TooDeepLayout"
                                         tools:itemCount="2"
                                         tools:listitem="@layout/content_bet_info_parlay_item" />
 

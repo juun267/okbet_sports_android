@@ -63,32 +63,32 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/activity_vertical_margin"
                             android:gravity="center"
-                            android:text="@string/bet_info_list_title"
                             android:letterSpacing="0.1"
-                            android:textStyle="bold"
+                            android:text="@string/bet_info_list_title"
                             android:textColor="#000000"
-                            android:textSize="@dimen/textSize16sp" />
+                            android:textSize="@dimen/textSize16sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:letterSpacing="0.1"
                             android:id="@+id/tv_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toStartOf="@+id/iv_close"
                             android:gravity="center"
-                            android:textStyle="bold"
-                            tools:text="余额:6,245,710.000"
+                            android:letterSpacing="0.1"
                             android:textColor="@color/colorGreen"
-                            android:textSize="@dimen/textSize14sp" />
+                            android:textSize="@dimen/textSize14sp"
+                            android:textStyle="bold"
+                            tools:text="余额:6,245,710.000" />
 
                         <ImageView
                             android:id="@+id/iv_close"
                             android:layout_width="43dp"
                             android:layout_height="43dp"
                             android:layout_alignParentEnd="true"
-                            android:paddingVertical="14dp"
                             android:paddingHorizontal="15dp"
+                            android:paddingVertical="14dp"
                             android:src="@drawable/ic_close"
                             app:tint="@color/colorGrayLight" />
 
@@ -98,12 +98,13 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/colorWhite6"/>
+                        android:background="@color/colorWhite6" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_bet_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:overScrollMode="never"
                         tools:itemCount="1"
                         tools:listitem="@layout/content_bet_info_item_single" />
 

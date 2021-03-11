@@ -146,6 +146,7 @@
             android:clipToPadding="false"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
+            android:overScrollMode="never"
             tools:listitem="@layout/content_odds_detail_list_item" />
 
     </LinearLayout>
