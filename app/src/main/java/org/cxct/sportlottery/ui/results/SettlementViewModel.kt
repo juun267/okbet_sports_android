@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.results
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -46,6 +45,12 @@ class SettlementViewModel(
     private val _showMatchResultData = MutableLiveData<List<MatchResultData>>() //過濾後的資料
     val showMatchResultData: LiveData<List<MatchResultData>>
         get() = _showMatchResultData
+
+    //冠軍重構資料結構
+    private var outrightDataReformatted = mutableListOf<OutrightResultData>()
+    private val _showOutrightData = MutableLiveData<List<OutrightResultData>>()
+    val showOutrightData: LiveData<List<OutrightResultData>>
+        get() = _showOutrightData
 
     private val _leagueFilterList = MutableLiveData<MutableList<LeagueItemData>>() //聯賽過濾器的清單
     val leagueFilterList: LiveData<MutableList<LeagueItemData>>
@@ -138,6 +143,32 @@ class SettlementViewModel(
         _showMatchResultData.value = expandData
     }
 
+    private fun setupExpandOutrightData(outrightResultData: MutableList<OutrightResultData>) {
+        val showData = mutableListOf<OutrightResultData>()
+        var showOutright = false
+        var nowSeason: OutrightResultData? = null
+
+        outrightResultData.forEach {
+            when (it.dataType) {
+                OutrightType.TITLE -> {
+                    nowSeason = it
+                    showOutright = if (it.seasonShow) {
+                        showData.add(it)
+                        it.seasonExpanded
+                    } else {
+                        false
+                    }
+                }
+                OutrightType.OUTRIGHT -> {
+                    if (nowSeason?.seasonShow == true && showOutright) {
+                        showData.add(it)
+                    }
+                }
+            }
+        }
+        _showOutrightData.value = showData
+    }
+
     fun clickResultItem(gameType: String? = null, expandPosition: Int) {
         val clickedItem = showMatchResultData.value?.get(expandPosition)
 
@@ -170,6 +201,15 @@ class SettlementViewModel(
         } else {
             filterToShowMatchResult()
         }
+    }
+
+    fun clickOutrightItem(clickedItem: OutrightResultData) {
+        clickSeasonExpand(clickedItem)
+    }
+
+    private fun clickSeasonExpand(clickedItem: OutrightResultData) {
+        outrightDataReformatted.find { it == clickedItem }?.let { it.seasonExpanded = !(it.seasonExpanded) }
+        filterToShowOutrightResult()
     }
 
     private fun getMatchDetail(matchId: String, clickedItem: MatchResultData, gameType: String) {
@@ -211,16 +251,36 @@ class SettlementViewModel(
                 settlementRepository.resultOutRightList(gameType = gameType)
             }?.let { result ->
                 _outRightListResult = result
-                //更新聯賽篩選清單
-                result.rows?.let { setupOutrightLeagueFilterList(it) }
+                //重組資料結構
+                reformatOutrightResultData(result).let {
+                    outrightDataReformatted = it
+                    //更新聯賽篩選清單
+                    setupOutrightLeagueFilterList(it)
+                    //過濾冠軍資料
+                    filterToShowOutrightResult()
+                }
             }
             requestListener.requestIng(false)
         }
     }
 
-    private fun setupOutrightLeagueFilterList(rows: List<Row>) {
-        _leagueFilterList.value = rows.map { row ->
-            LeagueItemData(null, row.season.name, true)
+    private fun reformatOutrightResultData(result: OutrightResultListResult): MutableList<OutrightResultData> {
+        val dataList = result.rows
+        val reformatDataList: MutableList<OutrightResultData> = mutableListOf()
+        dataList?.forEach { data ->
+            reformatDataList.add(OutrightResultData(OutrightType.TITLE, seasonData = data.season))
+            data.resultList.forEach { outright ->
+                reformatDataList.add(OutrightResultData(OutrightType.OUTRIGHT, seasonData = data.season, outrightData = outright))
+            }
+        }
+        return reformatDataList
+    }
+
+    private fun setupOutrightLeagueFilterList(outrightDataList: MutableList<OutrightResultData>) {
+        _leagueFilterList.value = outrightDataList.filter {
+            it.dataType == OutrightType.TITLE
+        }.map { outright ->
+            LeagueItemData(null, outright.seasonData?.name ?: "", true)
         }.toMutableList()
     }
 
@@ -229,7 +289,10 @@ class SettlementViewModel(
      */
     fun setLeagueFilter(gameLeaguePosition: MutableSet<String>) {
         gameLeagueSet = gameLeaguePosition
-        filterToShowMatchResult()
+        when (dataType) {
+            SettleType.MATCH -> filterToShowMatchResult()
+            SettleType.OUTRIGHT -> filterToShowOutrightResult()
+        }
     }
 
     /**
@@ -237,7 +300,10 @@ class SettlementViewModel(
      */
     fun setKeyWordFilter(keyWord: String) {
         gameKeyWord = keyWord
-        filterToShowMatchResult()
+        when (dataType) {
+            SettleType.MATCH -> filterToShowMatchResult()
+            SettleType.OUTRIGHT -> filterToShowOutrightResult()
+        }
     }
 
     /**
@@ -246,6 +312,7 @@ class SettlementViewModel(
     @SuppressLint("DefaultLocale")
     private fun filterResult() {
         var nowLeagueItem: MatchResultData? = null
+        var nowOutrightItem: OutrightResultData? = null
         when (dataType) {
             SettleType.MATCH -> {
                 matchResultReformatted.forEachIndexed { index, matchResultData ->
@@ -268,8 +335,19 @@ class SettlementViewModel(
                 }
             }
             SettleType.OUTRIGHT -> {
-                _outRightList.value = _outRightListResult?.rows?.filterIndexed { _, row ->
-                    gameLeagueSet.contains(row.season.name) && (gameKeyWord.isEmpty() || row.season.name.toLowerCase().contains(gameKeyWord))
+                outrightDataReformatted.forEach { outrightResultData ->
+                    when (outrightResultData.dataType) {
+                        OutrightType.TITLE -> {
+                            nowOutrightItem = outrightResultData
+                            outrightResultData.seasonShow = gameLeagueSet.contains(outrightResultData.seasonData?.name) &&
+                                    (gameKeyWord.isEmpty() || (outrightResultData.seasonData?.name?.toLowerCase()?.contains(gameKeyWord) == true))
+                        }
+                        OutrightType.OUTRIGHT -> {
+                            if (filterOutrightByKeyWord(outrightResultData, gameKeyWord)) {
+                                nowOutrightItem?.seasonShow = true
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -280,16 +358,36 @@ class SettlementViewModel(
         setupExpandData(matchResultReformatted)
     }
 
+    private fun filterToShowOutrightResult() {
+        filterResult()
+        setupExpandOutrightData(outrightDataReformatted)
+    }
+
     @SuppressLint("DefaultLocale")
-    private fun filterTeamNameByKeyWord(matchInfo: MatchInfo?, keyWord: String): Boolean {
+    private fun filterOutrightByKeyWord(outrightResultData: OutrightResultData, keyWord: String): Boolean {
+        val result = outrightResultData.outrightData
         if (keyWord.isEmpty())
             return false
-        if (matchInfo?.homeName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true) {
+        if (outrightResultData.seasonData?.name?.toLowerCase()?.contains(keyWord.toLowerCase()) == true ||
+            result?.playName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true ||
+            result?.playCateName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true
+        )
             return true
-        }
-        if (matchInfo?.awayName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true) {
-            return true
-        }
+
         return false
     }
+
+}
+
+@SuppressLint("DefaultLocale")
+private fun filterTeamNameByKeyWord(matchInfo: MatchInfo?, keyWord: String): Boolean {
+    if (keyWord.isEmpty())
+        return false
+    if (matchInfo?.homeName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true) {
+        return true
+    }
+    if (matchInfo?.awayName?.toLowerCase()?.contains(keyWord.toLowerCase()) == true) {
+        return true
+    }
+    return false
 }

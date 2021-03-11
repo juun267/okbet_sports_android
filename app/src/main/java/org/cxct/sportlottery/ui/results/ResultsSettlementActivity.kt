@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.results
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +53,11 @@ class ResultsSettlementActivity :
                 viewModel.clickResultItem(gameType, it)
             })
         )
+    }
+    private val outrightResultDiffAdapter by lazy {
+        OutrightResultDiffAdapter(OutrightItemClickListener {
+            viewModel.clickOutrightItem(it)
+        })
     }
 
     private var gameType = ""
@@ -134,16 +140,6 @@ class ResultsSettlementActivity :
                 settlementRvAdapter.mGameDetail = it //set Game Detail Data
             }
 
-            //獲取冠軍資料,更新聯賽列表
-            /*outRightListResult.observe(this@ResultsSettlementActivity) {
-                *//*leagueSelectedSet.clear()
-                bottomSheetLeagueItemDataList = it.rows?.map { rows ->
-                    leagueSelectedSet.add(rows.season.name)
-                    LeagueItemData(null, rows.season.name, true)
-                }?.toMutableList<LeagueItemData>() ?: mutableListOf()
-                setLeagueFilter(leagueSelectedSet)*//*
-            }*/
-
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
                 matchResultDiffAdapter.gameType = gameType
@@ -165,6 +161,11 @@ class ResultsSettlementActivity :
             outRightList.observe(this@ResultsSettlementActivity) {
                 setSettleRvOutRightData(it)
             }
+
+            //過濾後冠軍資料
+            showOutrightData.observe(this@ResultsSettlementActivity, Observer {
+                outrightResultDiffAdapter.submitList(it)
+            })
         }
     }
 
@@ -178,19 +179,16 @@ class ResultsSettlementActivity :
                 when (date) {
                     7 -> {
                         //TODO Dean : 冠軍尚未重構, 暫時用舊的資料結構
-                        rv_results.visibility = View.VISIBLE
-                        refactor_rv.visibility = View.GONE
+
+                        refactor_rv.adapter = outrightResultDiffAdapter
 
                         refactor_rv.scrollToPosition(0)
                         settleType = SettleType.OUTRIGHT
                         settlementViewModel.getOutrightResultList(gameType)
                     }
                     else -> {
-                        //冠軍重構後可刪除
-                        refactor_rv.visibility = View.VISIBLE
-                        rv_results.visibility = View.GONE
+                        refactor_rv.adapter = matchResultDiffAdapter
                         refactor_rv.scrollToPosition(0)
-
                         settleType = SettleType.MATCH
                         timeRangeParams = setupTimeApiFormat(date)
                         settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
