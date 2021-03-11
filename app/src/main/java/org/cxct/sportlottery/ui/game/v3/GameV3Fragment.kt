@@ -81,22 +81,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             backClickListener = View.OnClickListener {
                 //TODO add back logic to view model
-
-                if (view.game_filter_row.league != null) {
-                    view.game_filter_row.league = null
-
-                    view.game_filter_row.matchType = when (args.matchType) {
-                        MatchType.IN_PLAY -> GameFilterRow.IN_PLAY
-                        MatchType.TODAY -> GameFilterRow.TODAY
-                        MatchType.EARLY -> GameFilterRow.EARLY
-                        MatchType.PARLAY -> GameFilterRow.PARLAY
-                        MatchType.OUTRIGHT -> GameFilterRow.OUTRIGHT
-                        MatchType.AT_START -> GameFilterRow.AT_START
-                    }
-
-                    viewModel.getGameHallList(args.matchType, true)
-                    loading()
-                }
             }
 
             ouHDPClickListener = View.OnClickListener {
@@ -173,10 +157,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             countryLeagueListener = CountryLeagueListener {
-                view.game_filter_row.league = it
-
-                viewModel.getLeagueOddsList(args.matchType, it.id)
-                loading()
+                //TODO open game v3 detail page
             }
 
             leagueOddListener = LeagueOddListener {
