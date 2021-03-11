@@ -101,13 +101,6 @@ class GameFilterRow @JvmOverloads constructor(
             game_filter_search.setOnQueryTextListener(field)
         }
 
-    var sportTypeListener: SportTypeListener? = null
-        set(value) {
-            field = value
-
-            sportTypeAdapter.sportTypeListener = field
-        }
-
     var gameTypeListener: GameTypeListener? = null
         set(value) {
             field = value
@@ -119,17 +112,12 @@ class GameFilterRow @JvmOverloads constructor(
         GameTypeAdapter()
     }
 
-    private val sportTypeAdapter by lazy {
-        SportTypeAdapter()
-    }
-
     init {
         init(attrs)
     }
 
     private fun init(attrs: AttributeSet?) {
         inflate(context, R.layout.row_game_filter, this).apply {
-            setupSportTypeList(this)
             setupGameTypeList(this)
         }
 
@@ -140,22 +128,6 @@ class GameFilterRow @JvmOverloads constructor(
             e.printStackTrace()
         } finally {
             typedArray.recycle()
-        }
-    }
-
-    private fun setupSportTypeList(view: View) {
-        view.sport_type_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            this.adapter = sportTypeAdapter
-
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
-            )
         }
     }
 
@@ -236,8 +208,6 @@ class GameFilterRow @JvmOverloads constructor(
     }
 
     private fun updateSportType(itemList: List<Item>) {
-        sportTypeAdapter.data = itemList
         game_filter_sport_type.text = itemList.find { sportType -> sportType.isSelected }?.name
     }
-
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import org.cxct.sportlottery.R
@@ -14,11 +15,20 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameV3FragmentArgs by navArgs()
+
+    private val sportTypeAdapter by lazy {
+        SportTypeAdapter().apply {
+            sportTypeListener = SportTypeListener {
+                viewModel.getGameHallList(args.matchType, it)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +36,25 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     ): View? {
 
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
+            setupSportTypeList(this)
             setupGameFilterRow(this)
             setupGameListView(this)
+        }
+    }
+
+    private fun setupSportTypeList(view: View) {
+        view.sport_type_list.apply {
+            this.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            this.adapter = sportTypeAdapter
+
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec
+                )
+            )
         }
     }
 
@@ -81,10 +108,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
 
-            sportTypeListener = SportTypeListener {
-                viewModel.getGameHallList(args.matchType, it)
-            }
-
             gameTypeListener = GameTypeListener {
                 //TODO add 滾球賽事
                 viewModel.getGameHallList(args.matchType, it)
@@ -123,26 +146,32 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
+                    sportTypeAdapter.data = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
                     game_filter_row.sportList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
                 }
 
                 MatchType.TODAY -> {
+                    sportTypeAdapter.data = it?.sportMenuData?.menu?.today?.items ?: listOf()
                     game_filter_row.sportList = it?.sportMenuData?.menu?.today?.items ?: listOf()
                 }
 
                 MatchType.EARLY -> {
+                    sportTypeAdapter.data = it?.sportMenuData?.menu?.early?.items ?: listOf()
                     game_filter_row.sportList = it?.sportMenuData?.menu?.early?.items ?: listOf()
                 }
 
                 MatchType.PARLAY -> {
+                    sportTypeAdapter.data = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
                     game_filter_row.sportList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
                 }
 
                 MatchType.OUTRIGHT -> {
+                    sportTypeAdapter.data = it?.sportMenuData?.menu?.outright?.items ?: listOf()
                     game_filter_row.sportList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
                 }
 
                 MatchType.AT_START -> {
+                    sportTypeAdapter.data = it?.sportMenuData?.atStart?.items ?: listOf()
                     game_filter_row.sportList = it?.sportMenuData?.atStart?.items ?: listOf()
                 }
             }
