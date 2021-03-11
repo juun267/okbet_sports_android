@@ -660,4 +660,7 @@
     <string name="total_profit_and_loss">总盈亏：</string>
     <string name="game_name">游戏名</string>
     <string name="all_bet_status">全部注单状态</string>
+    <string name="all_out_plat">全部转出</string>
+    <string name="all_in_plat">全部转入</string>
+    <string name="all_transfer_status">全部状态</string>
 </resources>

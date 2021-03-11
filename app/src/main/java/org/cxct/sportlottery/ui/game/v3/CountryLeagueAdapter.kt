@@ -4,19 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_game_league_odd.view.*
+import kotlinx.android.synthetic.main.itemview_country_league.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.league.League
 
-class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
+class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolder>() {
 
-    var data = listOf<MatchOdd>()
+    var data = listOf<League>()
         set(value) {
             field = value
+
             notifyDataSetChanged()
         }
-
-    var leagueOddListener: LeagueOddListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -25,33 +24,26 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, leagueOddListener)
+        holder.bind(item)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
-            itemView.game_name_home.text = item.matchInfo?.homeName
-            itemView.game_name_away.text = item.matchInfo?.awayName
 
-            itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
-            }
+        fun bind(item: League) {
+            itemView.country_league_name.text = item.name
+            itemView.country_league_odd_count.text = item.num.toString()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_league_odd, parent, false)
+                    .inflate(R.layout.itemview_country_league, parent, false)
 
                 return ViewHolder(view)
             }
         }
     }
-}
-
-class LeagueOddListener(val clickListener: (item: MatchOdd) -> Unit) {
-    fun onClickLive(item: MatchOdd) = clickListener(item)
 }
