@@ -4,12 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.view_game_list.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.lang.Exception
 
 class GameListView @JvmOverloads constructor(
@@ -34,6 +35,15 @@ class GameListView @JvmOverloads constructor(
             }
         }
 
+    var countryList: List<Row>? = null
+        set(value) {
+            field = value
+
+            field?.let {
+                updateCountry(it)
+            }
+        }
+
     var leagueOddList: List<LeagueOdd>? = null
         set(value) {
             field = value
@@ -52,6 +62,10 @@ class GameListView @JvmOverloads constructor(
             }
         }
 
+    private val countryAdapter by lazy {
+        CountryAdapter()
+    }
+
     private val leagueAdapter by lazy {
         LeagueAdapter()
     }
@@ -62,16 +76,31 @@ class GameListView @JvmOverloads constructor(
 
     private fun init(attrs: AttributeSet?) {
         inflate(context, R.layout.view_game_list, this).apply {
+            setupCountryList(this)
             setupLeagueList(this)
         }
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.GameListView)
 
         try {
+
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             typedArray.recycle()
+        }
+    }
+
+    private fun setupCountryList(view: View) {
+        view.game_list_country_list.apply {
+            this.layoutManager =
+                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+            this.adapter = countryAdapter
+
+            this.addItemDecoration(
+                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+            )
         }
     }
 
@@ -83,10 +112,7 @@ class GameListView @JvmOverloads constructor(
             this.adapter = leagueAdapter
 
             this.addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
+                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
             )
         }
     }
@@ -97,6 +123,16 @@ class GameListView @JvmOverloads constructor(
         } else {
             View.GONE
         }
+
+        game_list_country_list.visibility = if (type == TODAY || type == EARLY || type == PARLAY) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun updateCountry(countryList: List<Row>) {
+        countryAdapter.data = countryList
     }
 
     private fun updateLeagueOdd(leagueOddList: List<LeagueOdd>) {

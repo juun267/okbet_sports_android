@@ -13,5 +13,5 @@ data class Row(
     @Json(name = "num")
     val num: Int
 ) {
-    var isExpand = true
+    var isExpand = false
 }
