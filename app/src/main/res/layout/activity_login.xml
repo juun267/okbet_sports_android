@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/effect_ripple_fillet_6dp_red"
+        android:background="@null"
         android:clickable="true"
         android:focusable="true"
         android:padding="4dp"

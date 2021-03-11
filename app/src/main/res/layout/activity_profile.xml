@@ -19,8 +19,8 @@
             android:layout_width="@dimen/tool_bar_height"
             android:layout_height="@dimen/tool_bar_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/effect_ripple_circle_blue_light"
             android:contentDescription="@null"
+            android:background="@null"
             android:src="@drawable/ic_back" />
 
         <TextView
@@ -49,7 +49,6 @@
                 android:id="@+id/btn_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_gray"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
@@ -95,7 +94,6 @@
                 android:id="@+id/btn_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_gray"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
@@ -143,7 +141,6 @@
                 android:id="@+id/btn_pwd_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_gray"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">

@@ -52,7 +52,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="4dp"
-                android:background="@drawable/effect_ripple_circle_blue_light"
+                android:background="@null"
                 android:contentDescription="@null"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_edit_button" />
@@ -109,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/effect_ripple_circle_blue_light"
+                    android:background="@null"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_profile_center_refresh" />
 
@@ -190,7 +190,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:elevation="5dp"
                         android:orientation="horizontal">
@@ -223,7 +223,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -272,7 +272,7 @@
                         android:id="@+id/btn_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -308,7 +308,7 @@
                         android:id="@+id/btn_account_transfer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -343,7 +343,7 @@
                         android:id="@+id/btn_withdrawal_setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -378,7 +378,7 @@
                         android:id="@+id/btn_sport_bet_record"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -413,7 +413,7 @@
                         android:id="@+id/btn_other_bet_record"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -448,7 +448,7 @@
                         android:id="@+id/btn_fund_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -490,7 +490,7 @@
                         android:id="@+id/btn_news_center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -525,7 +525,7 @@
                         android:id="@+id/btn_promotion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -603,7 +603,7 @@
                         android:id="@+id/btn_help_center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
@@ -638,7 +638,7 @@
                         android:id="@+id/btn_feedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/effect_ripple_rectangle_gray"
+                        android:background="@null"
                         android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
