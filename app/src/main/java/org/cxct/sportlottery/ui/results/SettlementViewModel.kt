@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.matchresult.list.MatchResultList
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
 import org.cxct.sportlottery.network.matchresult.playlist.SettlementRvData
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
+import org.cxct.sportlottery.network.outright.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -31,15 +32,14 @@ class SettlementViewModel(
 
     val gameResultDetailResult: LiveData<SettlementRvData>
         get() = _gameResultDetailResult
-    val outRightListResult: LiveData<OutrightResultListResult>
-        get() = _outRightListResult
-    val outRightList: LiveData<List<org.cxct.sportlottery.network.outright.Row>>
+
+    val outRightList: LiveData<List<Row>>
         get() = _outRightList
 
     private var _gameResultDetailResult = MutableLiveData<SettlementRvData>(SettlementRvData(-1, -1, mutableMapOf()))
 
-    private var _outRightListResult = MutableLiveData<OutrightResultListResult>()
-    private val _outRightList = MutableLiveData<List<org.cxct.sportlottery.network.outright.Row>>()
+    private var _outRightListResult: OutrightResultListResult? = null
+    private val _outRightList = MutableLiveData<List<Row>>()
 
 
     private var matchResultReformatted = mutableListOf<MatchResultData>() //重構後的資料結構
@@ -53,6 +53,7 @@ class SettlementViewModel(
 
     private var dataType = SettleType.MATCH
 
+    //filter condition
     private var gameLeagueSet = mutableSetOf<String>()
     private var gameKeyWord = ""
 
@@ -79,7 +80,6 @@ class SettlementViewModel(
                 }
             }
             requestListener.requestIng(false)
-//            reSetDetailStatus()
         }
     }
 
@@ -210,13 +210,18 @@ class SettlementViewModel(
             doNetwork(androidContext) {
                 settlementRepository.resultOutRightList(gameType = gameType)
             }?.let { result ->
-                _outRightListResult.postValue(result)
+                _outRightListResult = result
+                //更新聯賽篩選清單
+                result.rows?.let { setupOutrightLeagueFilterList(it) }
             }
-
-//            filterResult() //TODO Dean : review
             requestListener.requestIng(false)
-//            reSetDetailStatus() //TODO Dean : review
         }
+    }
+
+    private fun setupOutrightLeagueFilterList(rows: List<Row>) {
+        _leagueFilterList.value = rows.map { row ->
+            LeagueItemData(null, row.season.name, true)
+        }.toMutableList()
     }
 
     /**
@@ -261,14 +266,11 @@ class SettlementViewModel(
                         }
                     }
                 }
-                /*_matchResultListResult.value?.matchResultList?.filterIndexed { index, row ->
-                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.league.name.toLowerCase().contains(gameKeyWord) || filterTeamNameByKeyWord(row, gameKeyWord))
-                }*/
             }
             SettleType.OUTRIGHT -> {
-                /*_outRightList.postValue(_outRightListResult.value?.rows?.filterIndexed { index, row ->
-                    gameLeagueSet.contains(index) && (gameKeyWord.isEmpty() || row.season.name.toLowerCase().contains(gameKeyWord))
-                })*/
+                _outRightList.value = _outRightListResult?.rows?.filterIndexed { _, row ->
+                    gameLeagueSet.contains(row.season.name) && (gameKeyWord.isEmpty() || row.season.name.toLowerCase().contains(gameKeyWord))
+                }
             }
         }
     }

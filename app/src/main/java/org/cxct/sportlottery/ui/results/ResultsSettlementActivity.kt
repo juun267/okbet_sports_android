@@ -135,12 +135,14 @@ class ResultsSettlementActivity :
             }
 
             //獲取冠軍資料,更新聯賽列表
-            outRightListResult.observe(this@ResultsSettlementActivity) {
+            /*outRightListResult.observe(this@ResultsSettlementActivity) {
+                *//*leagueSelectedSet.clear()
                 bottomSheetLeagueItemDataList = it.rows?.map { rows ->
+                    leagueSelectedSet.add(rows.season.name)
                     LeagueItemData(null, rows.season.name, true)
                 }?.toMutableList<LeagueItemData>() ?: mutableListOf()
-
-            }
+                setLeagueFilter(leagueSelectedSet)*//*
+            }*/
 
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
@@ -150,6 +152,7 @@ class ResultsSettlementActivity :
 
             //更新聯賽列表
             leagueFilterList.observe(this@ResultsSettlementActivity, Observer {
+                leagueSelectedSet.clear()
                 bottomSheetLeagueItemDataList = it
                 setupLeagueList(it)
                 it.forEach { data ->
@@ -174,10 +177,20 @@ class ResultsSettlementActivity :
                 //0:今日, 1:明天, 2:後天 ... 7:冠軍
                 when (date) {
                     7 -> {
+                        //TODO Dean : 冠軍尚未重構, 暫時用舊的資料結構
+                        rv_results.visibility = View.VISIBLE
+                        refactor_rv.visibility = View.GONE
+
+                        refactor_rv.scrollToPosition(0)
                         settleType = SettleType.OUTRIGHT
                         settlementViewModel.getOutrightResultList(gameType)
                     }
                     else -> {
+                        //冠軍重構後可刪除
+                        refactor_rv.visibility = View.VISIBLE
+                        rv_results.visibility = View.GONE
+                        refactor_rv.scrollToPosition(0)
+
                         settleType = SettleType.MATCH
                         timeRangeParams = setupTimeApiFormat(date)
                         settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
