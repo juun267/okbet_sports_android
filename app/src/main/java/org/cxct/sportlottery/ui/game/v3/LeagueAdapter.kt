@@ -9,12 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_game_league.view.*
 import kotlinx.android.synthetic.main.itemview_game_league.view.league_odd_count
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.util.ItemNonLastDecoration
 
 class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
     var data = listOf<LeagueOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var playType: PlayType = PlayType.OU_HDP
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -29,7 +36,7 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, leagueOddListener)
+        holder.bind(item, playType, leagueOddListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -40,15 +47,19 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
             LeagueOddAdapter()
         }
 
-        fun bind(item: LeagueOdd, leagueOddListener: LeagueOddListener?) {
+        fun bind(item: LeagueOdd, playType: PlayType, leagueOddListener: LeagueOddListener?) {
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupLeagueOddList(item, leagueOddListener)
+            setupLeagueOddList(item, playType, leagueOddListener)
             setupLeagueOddExpand(item)
         }
 
-        private fun setupLeagueOddList(item: LeagueOdd, leagueOddListener: LeagueOddListener?) {
+        private fun setupLeagueOddList(
+            item: LeagueOdd,
+            playType: PlayType,
+            leagueOddListener: LeagueOddListener?
+        ) {
             itemView.league_odd_list.apply {
                 this.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -67,6 +78,7 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
             leagueOddAdapter.apply {
                 data = item.matchOdds
+                this.playType = playType
                 this.leagueOddListener = leagueOddListener
             }
         }

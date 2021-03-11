@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.view_game_list.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -34,6 +35,16 @@ class GameListView @JvmOverloads constructor(
                 updateMatchType(it)
             }
         }
+
+    var playType: PlayType? = null
+        set(value) {
+            field = value
+
+            field?.let {
+                updatePlayType(it)
+            }
+        }
+
 
     var countryList: List<Row>? = null
         set(value) {
@@ -137,6 +148,14 @@ class GameListView @JvmOverloads constructor(
             View.VISIBLE
         } else {
             View.GONE
+        }
+    }
+
+    private fun updatePlayType(type: PlayType) {
+        leagueAdapter.playType = if (matchType == IN_PLAY) {
+            type
+        } else {
+            PlayType.OU_HDP
         }
     }
 

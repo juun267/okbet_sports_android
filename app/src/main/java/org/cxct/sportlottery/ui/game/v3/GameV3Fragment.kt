@@ -150,6 +150,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.curPlayType.observe(viewLifecycleOwner, Observer {
             game_filter_row.playType = it
+            game_list_view.playType = it
         })
 
         viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
