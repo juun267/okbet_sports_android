@@ -10,7 +10,8 @@
         android:id="@+id/iv_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_circle_blue"
+        android:background="@drawable/bg_circle_white"
+        android:backgroundTint="@color/blue7"
         android:padding="10dp"
         android:src="@drawable/ic_soccer"/>
 

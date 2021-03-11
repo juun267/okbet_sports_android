@@ -60,6 +60,13 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
             }
         }
 
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        }
+
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.apply {
                 layout_balance.tv_account_balance.text = TextUtil.format(it)

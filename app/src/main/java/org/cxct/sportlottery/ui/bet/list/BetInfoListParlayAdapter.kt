@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -100,15 +101,15 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             }
             onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())
 
-            (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (sendOutStatus) 10.dp else 0.dp
+            (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (sendOutStatus) 9.dp else 0.dp
 
             binding.tvErrorMessage.visibility = if (sendOutStatus) View.GONE else View.VISIBLE
 
-            binding.etBet.setBackgroundResource(if (sendOutStatus) R.drawable.effect_select_bet_edit_text else R.drawable.bg_radius_5_edittext_error)
+            binding.etBet.setBackgroundResource(if (sendOutStatus) R.drawable.effect_select_bet_edit_text else R.drawable.bg_radius_4_edittext_error)
 
             binding.etBet.setTextColor(
                 if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.main_dark)
-                else ContextCompat.getColor(binding.root.context, R.color.orangeRed)
+                else ContextCompat.getColor(binding.root.context, R.color.colorRedDark)
             )
             return sendOutStatus
         }
@@ -132,7 +133,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
 
-            binding.tvParlayOdds.text = String.format(binding.root.context.getString(R.string.bet_info_list_odd), TextUtil.formatForOdd(parlayOdd.odds))
+            binding.tvParlayOdds.text = TextUtil.formatForOdd(parlayOdd.odds)
 
             binding.tvParlayOdds.visibility = if (position == 0) View.VISIBLE else View.GONE
 

@@ -13,18 +13,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile.btn_back
-import kotlinx.android.synthetic.main.activity_profile.ll_e_mail
-import kotlinx.android.synthetic.main.activity_profile.ll_phone_number
-import kotlinx.android.synthetic.main.activity_profile.ll_qq_number
-import kotlinx.android.synthetic.main.activity_profile.ll_wechat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
@@ -34,12 +29,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class ProfileActivity : BaseNoticeActivity<ProfileModel>(ProfileModel::class) {
-
-    companion object {
-        private val ENABLE_SWITCH = "1"
-        private val UNABLE_SWITCH = "0"
-    }
+class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class) {
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {

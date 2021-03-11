@@ -1,15 +1,16 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.appbar_finance.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity.Companion.RechargeViewLog
 
 
-class FinanceActivity : BaseNoticeActivity<FinanceViewModel>(FinanceViewModel::class) {
+class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel::class) {
 
     private val navController by lazy {
         findNavController(R.id.financeFragment)
@@ -31,6 +32,9 @@ class FinanceActivity : BaseNoticeActivity<FinanceViewModel>(FinanceViewModel::c
                 }
                 getString(R.string.record_withdrawal) -> {
                     navRechargeWithdrawFragment(it)
+                }
+                getString(R.string.record_conversion) -> {
+                    navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToMoneyTransferRecordFragment())
                 }
             }
         })
@@ -80,4 +84,5 @@ class FinanceActivity : BaseNoticeActivity<FinanceViewModel>(FinanceViewModel::c
             }
         }
     }
+
 }

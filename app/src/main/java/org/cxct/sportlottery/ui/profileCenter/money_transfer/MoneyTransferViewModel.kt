@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -16,18 +17,17 @@ import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRe
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.component.StatusSheetData
+import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class MoneyTransferViewModel(
     private val androidContext: Context,
-    private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    betInfoRepository: BetInfoRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -45,7 +45,29 @@ class MoneyTransferViewModel(
         "CR" to androidContext.getString(R.string.third_game_cr),
     )
 
-    val isPlatSwitched: LiveData<Boolean>
+    private val resultList = mutableListOf<GameData>()
+    var outPlatDataList = mutableListOf<GameData>()
+    var inPlatDataList = mutableListOf<GameDataInPlat>()
+
+    val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
+        when (it) {
+            androidContext.getString(R.string.recharge_state_processing) -> {
+                StatusSheetData(Status.PROCESSING.code.toString(), it)
+            }
+            androidContext.getString(R.string.recharge_state_success) -> {
+                StatusSheetData(Status.SUCCESS.code.toString(), it)
+
+            }
+            androidContext.getString(R.string.recharge_state_failed) -> {
+                StatusSheetData(Status.FAILED.code.toString(), it)
+            }
+            else -> {
+                StatusSheetData(null, it).apply { isChecked = true }
+            }
+        }
+    }
+
+    val isPlatSwitched: LiveData<Boolean?>
         get() = _isPlatSwitched
 
     val allBalanceResultList: LiveData<List<GameData>>
@@ -77,7 +99,7 @@ class MoneyTransferViewModel(
 
 
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
-    private val _isPlatSwitched = MutableLiveData<Boolean>().apply { this.value = false }
+    private val _isPlatSwitched = MutableLiveData<Boolean?>()
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
@@ -108,16 +130,12 @@ class MoneyTransferViewModel(
         _toolbarName.value = name
     }
 
-    fun setIsPlatSwitched(isSwitched: Boolean) {
-        _isPlatSwitched.value = isSwitched
+    fun setIsPlatSwitched(isSwitched: Boolean?) {
+        isSwitched.let {
+            _isPlatSwitched.value = it
+        }
     }
 
-//    var selectedOutPlatCode = "CG"
-//    var selectedInPlatCode: String ?= null
-
-    private val resultList = mutableListOf<GameData>()
-    var outPlatDataList = mutableListOf<GameData>()
-    var inPlatDataList = mutableListOf<GameDataInPlat>()
     fun getAllBalance() {
         loading()
         viewModelScope.launch {
@@ -144,8 +162,24 @@ class MoneyTransferViewModel(
         }
     }
 
+    enum class PLAT {
+        IN_PLAT, OUT_PLAT
+    }
+
+    fun getRecordPlatNameList(plat: PLAT, list: List<GameData>): MutableList<StatusSheetData> {
+        val recordList = mutableListOf<StatusSheetData>()
+        recordList.apply {
+            val item = if (plat == PLAT.IN_PLAT) R.string.all_in_plat else R.string.all_out_plat
+            recordList.add(StatusSheetData(null, androidContext.getString(item)))
+            list.forEach {
+                this.add(StatusSheetData(it.code, it.showName))
+            }
+        }
+        return recordList
+    }
+
     var defaultOutPlat = "CG"
-    var defaultInPlat : String? = null
+    var defaultInPlat: String? = null
 
     fun setPlatDataList() {
         outPlatDataList.clear()
@@ -217,7 +251,13 @@ class MoneyTransferViewModel(
     private var nowPage = 1
     val recordDataList = mutableListOf<Row>()
 
-    fun queryTransfers(page: Int? = 1) {
+    fun queryTransfers(page: Int? = 1,
+                       startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime,
+                       endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime,
+                       status: String ?= null,
+                       firmTypeIn: String ?= null,
+                       firmTypeOut: String ?= null) {
+
         loading()
         if (page == 1) {
             nowPage = 1
@@ -225,12 +265,12 @@ class MoneyTransferViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE))
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, firmTypeIn, firmTypeOut, status?.toIntOrNull()))
             }?.let { result ->
                 hideLoading()
                 isLoading = false
                 recordDataList.addAll(result.rows as List<Row>)
-                isLastPage = (recordDataList.size >= (result.total ?:0))
+                isLastPage = (recordDataList.size >= (result.total ?: 0))
                 _queryTransfersResult.value = result
             }
         }
@@ -244,7 +284,6 @@ class MoneyTransferViewModel(
             }
         }
     }
-
 
     fun getThirdGames() {
         loading()

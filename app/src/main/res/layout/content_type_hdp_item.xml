@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    tools:ignore="SpUsage, UselessParent, ContentDescription">
 
     <RelativeLayout
         android:id="@+id/rl_content"
@@ -30,21 +31,6 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
-        <ImageView
-            android:id="@+id/iv_disable_cover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tv_odds"
-            android:layout_alignTop="@+id/tv_odds"
-            android:layout_alignEnd="@+id/tv_odds"
-            android:layout_alignBottom="@+id/tv_odds"
-            android:background="@drawable/bg_radius_5_button_disable"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:src="@drawable/ic_lock_odd"
-            android:visibility="gone" />
-
-
         <TextView
             android:id="@+id/tv_spread"
             android:layout_width="wrap_content"
@@ -53,8 +39,23 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/tv_odds"
             android:gravity="center"
-            android:textColor="@color/text_spread"
-            android:textSize="14sp" />
+            android:textColor="@color/selector_game_spread"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:id="@+id/iv_disable_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tv_odds"
+            android:layout_alignTop="@+id/tv_odds"
+            android:layout_alignEnd="@+id/tv_odds"
+            android:layout_alignBottom="@+id/tv_odds"
+            android:background="@drawable/bg_radius_4_button_disable"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:src="@drawable/ic_lock_odd"
+            android:visibility="gone" />
+
 
     </RelativeLayout>
 

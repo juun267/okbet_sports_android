@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.game
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,7 +11,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
@@ -21,16 +18,15 @@ import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityGameBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
+import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -40,19 +36,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
-    companion object {
-        //切換語系，activity 要重啟才會生效
-        fun reStart(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        }
-    }
-
     private val mSplashViewModel: SplashViewModel by viewModel()
-
-    private lateinit var mainBinding: ActivityGameBinding
-
     private val mMarqueeAdapter = MarqueeAdapter()
 
     enum class Page {
@@ -65,13 +49,9 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_game)
+        setContentView(R.layout.activity_game)
 
-        mainBinding.apply {
-            gameViewModel = this@GameActivity.viewModel
-            lifecycleOwner = this@GameActivity
-        }
-
+        setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
         initRvMarquee()
@@ -238,8 +218,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
                 navController.navigate(action)
             }
-            R.id.gameFragment -> {
-                val action = GameFragmentDirections.actionGameFragmentToGameFragment(matchType)
+            R.id.gameV3Fragment -> {
+                val action = GameV3FragmentDirections.actionGameFragmentToGameFragment(matchType)
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 navController.navigate(action, navOptions)
             }
@@ -298,7 +278,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             val matchId = it[2] ?: ""
             val oddsType = "EU"
 
-            getAppBarLayout().setExpanded(true, true)
+            app_bar_layout.setExpanded(true, true)
 
             addFragment(
                 OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
@@ -320,13 +300,13 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.openGameDetail.observe(this, Observer {
-            getAppBarLayout().setExpanded(true, true)
+            app_bar_layout.setExpanded(true, true)
             addFragment(GameDetailFragment.newInstance(it.second, it.first), Page.ODDS)
 
         })
 
         viewModel.openOutrightDetail.observe(this, Observer {
-            getAppBarLayout().setExpanded(true, true)
+            app_bar_layout.setExpanded(true, true)
             addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
         })
 
@@ -387,10 +367,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun getSportMenu() {
         loading()
         viewModel.getSportMenu()
-    }
-
-    fun getAppBarLayout(): AppBarLayout {
-        return mainBinding.appBarLayout
     }
 
     private fun popAllFragment() {

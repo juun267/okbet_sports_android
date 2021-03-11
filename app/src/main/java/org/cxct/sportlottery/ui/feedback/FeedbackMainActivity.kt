@@ -1,11 +1,12 @@
 package org.cxct.sportlottery.ui.feedback
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_feedback_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
-class FeedbackMainActivity : BaseNoticeActivity<FeedbackViewModel>(FeedbackViewModel::class) {
+class FeedbackMainActivity : BaseOddButtonActivity<FeedbackViewModel>(FeedbackViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,7 +24,7 @@ class FeedbackMainActivity : BaseNoticeActivity<FeedbackViewModel>(FeedbackViewM
     }
 
     private fun initLiveData() {
-        viewModel.isLoading.observe(this@FeedbackMainActivity,{
+        viewModel.isLoading.observe(this@FeedbackMainActivity, Observer {
             if (it)
                 loading()
             else

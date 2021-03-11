@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_bet_info_item_action.*
 import kotlinx.android.synthetic.main.content_bet_info_item_action.tv_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
+import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
+import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.tv_money
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
@@ -36,7 +38,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
-        BetInfoListParlayAdapter.OnTotalQuotaListener {
+    BetInfoListParlayAdapter.OnTotalQuotaListener {
 
 
     companion object {
@@ -67,7 +69,8 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
-        getData()
+        getParlayList()
+        getMoney()
     }
 
 
@@ -128,6 +131,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun observeData() {
+
+        viewModel.userMoney.observe(this.viewLifecycleOwner, {
+            it?.let { money -> setMoney(money) }
+        })
+
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { it ->
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
@@ -142,8 +150,20 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, Observer {
-            matchOddAdapter.updatedBetInfoList = it
+        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, {
+            val updatedBetInfoList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
+            it.forEach { odd ->
+                val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
+                    odd.oddsId,
+                    odd.odds,
+                    odd.producerId,
+                    odd.spread,
+                    odd.status,
+                )
+                newOdd.oddState = odd.oddState
+                updatedBetInfoList.add(newOdd)
+            }
+            matchOddAdapter.updatedBetInfoList = updatedBetInfoList
         })
 
         viewModel.matchOddList.observe(this.viewLifecycleOwner, Observer {
@@ -196,29 +216,23 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
+        viewModel.updateOddList.observe(this.viewLifecycleOwner, {
+                matchOddAdapter.updatedBetInfoList = it
+
+        })
+
+        receiver.userMoney.observe(viewLifecycleOwner, {
+            it?.let { money -> setMoney(money) }
+        })
+
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> =
-                mutableListOf()
-            for ((key, value) in it.odds) {
-                newList.addAll(value)
-            }
-
-            viewModel.updateBetInfoListByOddChange(newList)
+            viewModel.updateOdd(it)
         })
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                mutableListOf()
-            for ((key, value) in it.odds) {
-                value.odds?.forEach { odd ->
-                    odd?.let { o ->
-                        newList.add(o)
-                    }
-                }
-            }
-            viewModel.updateBetInfoList(newList)
+            viewModel.updateMatchOdd(it)
         })
 
         receiver.globalStop.observe(viewLifecycleOwner, Observer {
@@ -245,8 +259,18 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     }
 
 
-    private fun getData() {
+    private fun getParlayList() {
         viewModel.getBetInfoListForParlay(false)
+    }
+
+
+    private fun getMoney(){
+        viewModel.getMoney()
+    }
+
+
+    private fun setMoney(money: Double) {
+        tv_money.text = getString(R.string.bet_info_current_money, TextUtil.formatMoney(money))
     }
 
 
@@ -281,7 +305,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     override fun onOddChange() {
         if (tv_bet.isClickable) {
             tv_bet.apply {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected_red)
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected_red)
                 setTextColor(ContextCompat.getColor(tv_bet.context, R.color.white))
                 text = getString(R.string.bet_info_list_odds_change)
             }
@@ -301,13 +325,18 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             !it.sendOutStatus
         }
 
+        parlayOdd?.sendOutStatus?.let { changeBetButtonClickable(it) }
+    }
+
+
+    private fun changeBetButtonClickable(boolean: Boolean) {
         tv_bet.apply {
-            isClickable = if (parlayOdd?.sendOutStatus == false) {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_unselected)
+            isClickable = if (!boolean) {
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
                 false
             } else {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_5_button_pumkinorange)
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_orangelight)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 true
             }
