@@ -94,6 +94,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         SINGLE_1ST("1X2-1ST", R.layout.content_odds_detail_list_single, 27),//独赢-上半場
         SINGLE_2ST("1X2-2ST", R.layout.content_odds_detail_list_single, 28),//独赢-下半場
         SINGLE_OU("1X2-O/U", R.layout.content_odds_detail_list_one, 29),//独赢大/小
+        SINGLE_OT("1X2-INCL-OT", R.layout.content_odds_detail_list_one, 30),//独赢(含加时)
+        SINGLE_SEG("1X2-SEG1", R.layout.content_odds_detail_list_single, 31),//独赢-第X节
+
 
     }
 
@@ -163,6 +166,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             checkKey(type, GameType.SINGLE_OU.value) -> return GameType.SINGLE_OU.type
 
+            type == GameType.SINGLE_OT.value -> return GameType.SINGLE_OT.type
+
+            checkKey(type, GameType.SINGLE_SEG.value) -> return GameType.SINGLE_SEG.type
+
             else -> {
                 return -1
             }
@@ -206,6 +213,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.SINGLE_1ST.type -> layout = GameType.SINGLE_1ST.layout
             GameType.SINGLE_2ST.type -> layout = GameType.SINGLE_2ST.layout
             GameType.SINGLE_OU.type -> layout = GameType.SINGLE_OU.layout
+            GameType.SINGLE_OT.type -> layout = GameType.SINGLE_OT.layout
+            GameType.SINGLE_SEG.type -> layout = GameType.SINGLE_SEG.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -342,10 +351,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 GameType.CS.type -> forCS(oddsDetail)
 
+                GameType.SINGLE_SEG.type,
+                GameType.SINGLE_1ST.type,
                 GameType.SINGLE_1ST.type,
                 GameType.SINGLE_2ST.type,
                 GameType.SINGLE.type -> forSingle(oddsDetail)
 
+                GameType.SINGLE_OT.type,
                 GameType.SINGLE_OU.type,
                 GameType.FG.type,
                 GameType.LG.type,
