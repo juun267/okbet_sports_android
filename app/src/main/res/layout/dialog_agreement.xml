@@ -17,18 +17,28 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:text="@string/btn_agreement"
-            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite6"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintBottom_toTopOf="@id/scroll_view"/>
+
+
         <ScrollView
+            android:id="@+id/scroll_view"
          android:overScrollMode="never"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,19 +62,23 @@
 
         </ScrollView>
 
-        <Button
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite6"
+            app:layout_constraintTop_toBottomOf="@+id/scroll_view"
+            app:layout_constraintBottom_toTopOf="@+id/btn_confirm"/>
+
+
+        <TextView
             android:id="@+id/btn_confirm"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_radius_5_button_dusk"
-            android:minWidth="135dp"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:gravity="center"
             android:text="@string/btn_confirm"
-            android:textColor="@android:color/white"
+            android:textStyle="bold"
             android:textSize="@dimen/textSize14sp"
+            android:textColor="@color/colorBlueDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

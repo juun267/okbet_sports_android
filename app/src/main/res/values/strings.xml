@@ -39,7 +39,7 @@
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
-    <string name="btn_confirm">确认</string>
+    <string name="btn_confirm">确定</string>
     <string name="btn_determine">确定</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_retry">重试</string>
