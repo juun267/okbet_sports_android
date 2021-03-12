@@ -502,26 +502,12 @@
                         android:layout_marginTop="6dp">
 
                         <TextView
+                            android:id="@+id/tv_requirement_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/next_level_tips"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/currency_symbol"
-                            android:textColor="@color/colorGray"
-                            android:textSize="@dimen/textSize12sp" />
-
-                        <TextView
-                            android:id="@+id/tv_requirement_amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorGray"
-                            android:textSize="@dimen/textSize12sp"
-                            tools:text="500.00" />
                     </LinearLayout>
                 </LinearLayout>
                 <!--  Vip Level Description  -->

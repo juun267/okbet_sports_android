@@ -139,12 +139,12 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
         }
         val growthRequirement = getUpgradeGrowthRequirement(userInfo.userLevelId)
         val userGrowth = userInfo.growth?.toInt() ?: 0
-        val nextLevelRequirement = (growthRequirement - userGrowth).let { if (it < 0) 0 else it }
+        val nextLevelRequirement = (growthRequirement - userGrowth).let { if (it < 0) 0 else it }.toLong()
         pb_user_growth.apply {
             max = growthRequirement
             progress = userGrowth
         }
-        tv_requirement_amount.text = TextUtil.format(nextLevelRequirement.toDouble())
+        tv_requirement_amount.text = String.format(getString(R.string.next_level_tips), nextLevelRequirement)
     }
 
     private fun verifyMaxLevel(levelId: Int): Boolean {
