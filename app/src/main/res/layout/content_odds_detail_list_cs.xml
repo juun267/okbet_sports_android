@@ -1,9 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_radius_5_colorwhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,SpUsage">
 
     <include layout="@layout/content_odds_detail_list_item" />
 
@@ -11,7 +13,7 @@
         android:id="@+id/v_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorWhite6"/>
+        android:background="@color/colorWhite6" />
 
     <LinearLayout
         android:id="@+id/ll_content"
@@ -21,45 +23,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#EEEEEE"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_home_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="主隊"
-                android:textColor="@color/textColorDark"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="和局"
-                android:textColor="@color/colorGrayLight"
-                android:textSize="@dimen/textSize14sp" />
-
-            <TextView
-                android:id="@+id/tv_away_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="客隊"
-                android:textColor="@color/text_brownish_gray"
-                android:textSize="14sp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
             android:divider="@drawable/divider_straight"
             android:orientation="horizontal"
             android:showDividers="middle">
@@ -70,10 +35,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/colorWhite6"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                tools:listitem="@layout/content_type_cs_item" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:overScrollMode="never"
@@ -81,10 +46,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/colorWhite6"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                tools:listitem="@layout/content_type_cs_item" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:overScrollMode="never"
@@ -92,22 +57,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/colorWhite6"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                tools:listitem="@layout/content_type_cs_item" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/background" />
+            android:background="@color/colorWhite6" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:gravity="center_vertical|end">
+            android:layout_height="61dp">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.91" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -115,18 +86,25 @@
                 android:layout_marginEnd="15dp"
                 android:gravity="center"
                 android:text="其他比分"
-                android:textColor="@color/text_brownish_gray"
-                android:textSize="14sp" />
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/rl_odds"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText,SpUsage" />
 
             <RelativeLayout
+                android:id="@+id/rl_odds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/activity_vertical_margin">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/tv_odds"
                     style="@style/OddsButton"
-                    android:layout_width="56dp"
+                    android:layout_width="65dp"
                     android:layout_height="50dp" />
 
                 <ImageView
@@ -139,14 +117,16 @@
                     android:layout_alignBottom="@+id/tv_odds"
                     android:background="@drawable/bg_radius_4_button_disable"
                     android:paddingStart="24dp"
+                    android:paddingTop="12dp"
                     android:paddingEnd="24dp"
+                    android:paddingBottom="12dp"
                     android:src="@drawable/ic_lock_odd"
                     android:visibility="gone" />
 
             </RelativeLayout>
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

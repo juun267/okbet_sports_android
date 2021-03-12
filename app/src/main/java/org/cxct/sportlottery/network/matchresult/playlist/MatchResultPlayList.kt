@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Row(
+data class MatchResultPlayList(
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "playCateCode")

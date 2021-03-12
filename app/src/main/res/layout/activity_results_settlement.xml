@@ -158,13 +158,14 @@
         app:srlEnableLoadMore="true"
         app:srlEnablePureScrollMode="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_results"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/content_settlement_rv" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/refactor_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_match_result_title" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

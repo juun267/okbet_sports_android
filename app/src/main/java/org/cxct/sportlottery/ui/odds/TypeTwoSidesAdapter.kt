@@ -17,7 +17,7 @@ class TypeTwoSidesAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_ou_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_two_side_item, parent, false))
     }
 
 
@@ -33,7 +33,10 @@ class TypeTwoSidesAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM)
+            setData(
+                odd, onOddClickListener, betInfoList, curMatchId,
+                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM
+            )
         }
     }
 
