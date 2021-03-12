@@ -20,6 +20,8 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var countryLeagueListener: CountryLeagueListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -27,7 +29,7 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, countryLeagueListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -38,14 +40,14 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
             CountryLeagueAdapter()
         }
 
-        fun bind(item: Row) {
+        fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_name.text = item.name
 
-            setupLeagueList(item)
+            setupLeagueList(item, countryLeagueListener)
             setupCountryExpand(item)
         }
 
-        private fun setupLeagueList(item: Row) {
+        private fun setupLeagueList(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.league_list.apply {
                 this.layoutManager =
                     SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
@@ -57,7 +59,10 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
                 )
             }
 
-            countryLeagueAdapter.data = item.list
+            countryLeagueAdapter.apply {
+                this.countryLeagueListener = countryLeagueListener
+                data = item.list
+            }
         }
 
         private fun setupCountryExpand(item: Row) {

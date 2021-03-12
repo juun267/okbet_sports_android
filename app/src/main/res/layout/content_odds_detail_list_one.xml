@@ -13,10 +13,10 @@
         android:background="@color/colorWhite6"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/rv_bet"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:clipToPadding="false"
+        android:background="@color/colorWhite6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"/>

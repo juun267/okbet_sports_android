@@ -136,6 +136,7 @@
         app:layout_constraintTop_toBottomOf="@id/rech_log_column">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/rvlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

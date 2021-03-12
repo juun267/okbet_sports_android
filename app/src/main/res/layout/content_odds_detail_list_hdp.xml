@@ -60,9 +60,11 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/rv_bet"
-        android:paddingEnd="2.5dp"
-        android:paddingStart="2.5dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false" />

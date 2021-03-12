@@ -138,9 +138,11 @@ class GameDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it != null && it.success) {
-                setupOddsUpperBar(it)
-                setupMatchOddList(it)
+            it.getContentIfNotHandled()?.let { oddsListResult ->
+                if (oddsListResult.success) {
+                    setupOddsUpperBar(oddsListResult)
+                    setupMatchOddList(oddsListResult)
+                }
             }
         })
 

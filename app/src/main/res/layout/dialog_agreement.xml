@@ -29,6 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
+            android:overScrollMode="never"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingStart="10dp"

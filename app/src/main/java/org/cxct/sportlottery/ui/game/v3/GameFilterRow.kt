@@ -5,13 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.row_game_filter.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.game.data.Date
-import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.lang.Exception
 
 class GameFilterRow @JvmOverloads constructor(
@@ -45,22 +41,30 @@ class GameFilterRow @JvmOverloads constructor(
             }
         }
 
-    var sportList: List<Item>? = null
+    var sportName: String? = null
+        set(value) {
+            field = value
+            game_filter_sport_type.text = sportName
+        }
+
+    var isSearchViewVisible: Boolean? = null
         set(value) {
             field = value
 
             field?.let {
-                updateSportType(it)
+                game_filter_search.visibility = if (it) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             }
         }
 
-    var dateList: List<Date>? = null
+    var searchHint: String? = null
         set(value) {
             field = value
 
-            field?.let {
-                updateGameType(it)
-            }
+            game_filter_search.queryHint = field
         }
 
     var backClickListener: OnClickListener? = null
@@ -91,36 +95,13 @@ class GameFilterRow @JvmOverloads constructor(
             game_filter_search.setOnQueryTextListener(field)
         }
 
-    var sportTypeListener: SportTypeListener? = null
-        set(value) {
-            field = value
-
-            sportTypeAdapter.sportTypeListener = field
-        }
-
-    var gameTypeListener: GameTypeListener? = null
-        set(value) {
-            field = value
-
-            gameTypeAdapter.gameTypeListener = field
-        }
-
-    private val gameTypeAdapter by lazy {
-        GameTypeAdapter()
-    }
-
-    private val sportTypeAdapter by lazy {
-        SportTypeAdapter()
-    }
-
     init {
         init(attrs)
     }
 
     private fun init(attrs: AttributeSet?) {
         inflate(context, R.layout.row_game_filter, this).apply {
-            setupSportTypeList(this)
-            setupGameTypeList(this)
+            this.game_filter_sport_type.isSelected = true
         }
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.GameFilterRow)
@@ -132,38 +113,6 @@ class GameFilterRow @JvmOverloads constructor(
             typedArray.recycle()
         }
     }
-
-    private fun setupSportTypeList(view: View) {
-        view.sport_type_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            this.adapter = sportTypeAdapter
-
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
-            )
-        }
-    }
-
-    private fun setupGameTypeList(view: View) {
-        view.game_filter_type_list.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            this.adapter = gameTypeAdapter
-
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec
-                )
-            )
-        }
-    }
-
 
     private fun updateMatchType(type: Int) {
         game_filter_inplay.visibility = if (type == IN_PLAY) {
@@ -184,24 +133,6 @@ class GameFilterRow @JvmOverloads constructor(
             View.GONE
         }
 
-        game_filter_search.visibility = if (type == IN_PLAY) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-
-        game_filter_game.visibility = if (type == EARLY || type == PARLAY) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        game_filter_type_list.visibility = if (type == EARLY || type == PARLAY) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
         game_filter_sport_type.isSelected = (type != IN_PLAY)
     }
 
@@ -209,14 +140,4 @@ class GameFilterRow @JvmOverloads constructor(
         game_filter_1x2.isSelected = (type == PlayType.X12)
         game_filter_ou.isSelected = (type == PlayType.OU_HDP)
     }
-
-    private fun updateGameType(dateList: List<Date>) {
-        gameTypeAdapter.data = dateList
-    }
-
-    private fun updateSportType(itemList: List<Item>) {
-        sportTypeAdapter.data = itemList
-        game_filter_sport_type.text = itemList.find { sportType -> sportType.isSelected }?.name
-    }
-
 }
