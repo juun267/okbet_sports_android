@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider_light_gray"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:showDividers="beginning">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider_light_gray"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/textGray"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="2019-09-20 08:00" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textGray"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_winner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/textSize14sp"
+            tools:text="Bodo/Glimt" />
+
+
+    </LinearLayout>
+</LinearLayout>
