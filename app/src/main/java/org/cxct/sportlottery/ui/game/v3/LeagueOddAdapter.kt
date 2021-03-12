@@ -202,7 +202,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 playType = PlayType.X12
 
                 visibility = if (oddList1X2 == null || oddList1X2.size < 2) {
-                    View.INVISIBLE
+                    View.GONE
                 } else {
                     View.VISIBLE
                 }
@@ -220,7 +220,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 playType = PlayType.X12
 
                 visibility = if (oddList1X2 == null || oddList1X2.size < 3) {
-                    View.INVISIBLE
+                    View.GONE
                 } else {
                     View.VISIBLE
                 }
@@ -238,7 +238,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 playType = PlayType.X12
 
                 visibility = if (oddList1X2 == null || oddList1X2.size < 2) {
-                    View.INVISIBLE
+                    View.GONE
                 } else {
                     View.VISIBLE
                 }
