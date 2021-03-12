@@ -21,5 +21,5 @@ data class Order(
     @Json(name = "userCount")
     val userCount: Int?,
     @Json(name = "validBetAmount")
-    val validBetAmount: Int?
+    val validBetAmount: Double?
 )
