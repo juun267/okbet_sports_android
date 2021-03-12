@@ -62,6 +62,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         private fun setupMatchInfo(item: MatchOdd) {
+            itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
+
             itemView.game_name_home.text = item.matchInfo?.homeName
             itemView.game_name_away.text = item.matchInfo?.awayName
         }
@@ -191,6 +193,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         private fun setupMatchInfo(item: MatchOdd) {
+            itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
+
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
             itemView.game_name_away_1x2.text = item.matchInfo?.awayName
         }
