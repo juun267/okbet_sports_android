@@ -125,9 +125,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            matchOddListener?.onBet(item, ouOddString, it)
-                        }, 100)
+                        matchOddListener?.onBet(item, ouOddString, it)
                     }
                     setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
@@ -140,9 +138,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            matchOddListener?.onBet(item, ouOddString, it)
-                        }, 100)
+                        matchOddListener?.onBet(item, ouOddString, it)
                     }
                     setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
@@ -155,9 +151,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            matchOddListener?.onBet(item, hdpOddString, it)
-                        }, 100)
+                        matchOddListener?.onBet(item, hdpOddString, it)
                     }
                     setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
@@ -170,9 +164,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     bet_top_text.text = it.spread
                     it.odds?.let { odd -> bet_bottom_text.text = TextUtil.formatForOdd(odd) }
                     setOnClickListener { _ ->
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            matchOddListener?.onBet(item, hdpOddString, it)
-                        }, 100)
+                        matchOddListener?.onBet(item, hdpOddString, it)
                     }
                     setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
@@ -243,9 +235,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            matchOddListener?.onBet(item, odd1X2String, it)
-                        }, 100)
+                        matchOddListener?.onBet(item, odd1X2String, it)
                     }
                 }
             }
@@ -257,9 +247,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            matchOddListener?.onBet(item, odd1X2String, it)
-                        }, 100)
+                        matchOddListener?.onBet(item, odd1X2String, it)
                     }
                 }
             }
@@ -271,9 +259,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setStatus(it.odds?.isNaN() ?: true, it.status)
                     setHighlight(it.oddState)
                     setOnClickListener { _ ->
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            matchOddListener?.onBet(item, odd1X2String, it)
-                        }, 100)
+                        matchOddListener?.onBet(item, odd1X2String, it)
                     }
                 }
             }

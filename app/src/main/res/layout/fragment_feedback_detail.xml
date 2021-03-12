@@ -6,20 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.feedback.FeedbackDetailFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_content"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="5"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:orientation="vertical"
-        tools:listitem="@layout/content_feedback_record_detail_rv_right"
-        tools:visibility="visible"
-        />
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
+            android:id="@+id/rv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="5"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:orientation="vertical"
+            tools:listitem="@layout/content_feedback_record_detail_rv_right"
+            tools:visibility="visible"
+            />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

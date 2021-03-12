@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:ignore="SpUsage, UselessParent, ContentDescription">
 
     <RelativeLayout
         android:id="@+id/rl_content"
@@ -18,8 +19,8 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_toStartOf="@+id/tv_spread"
             android:textColor="@color/textColorDark"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="大" />
+            android:textSize="@dimen/textSize14sp" />
+
 
         <TextView
             android:id="@+id/tv_odds"
@@ -28,22 +29,7 @@
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            tools:text="1.52" />
-
-        <ImageView
-            android:id="@+id/iv_disable_cover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tv_odds"
-            android:layout_alignTop="@+id/tv_odds"
-            android:layout_alignEnd="@+id/tv_odds"
-            android:layout_alignBottom="@+id/tv_odds"
-            android:background="@drawable/bg_radius_5_button_disable"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:src="@drawable/ic_lock_odd"
-            android:visibility="gone" />
+            android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
         <TextView
             android:id="@+id/tv_spread"
@@ -53,8 +39,25 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/tv_odds"
             android:gravity="center"
-            android:textColor="@color/text_spread"
+            android:textColor="@color/selector_game_spread"
             android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:id="@+id/iv_disable_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tv_odds"
+            android:layout_alignTop="@+id/tv_odds"
+            android:layout_alignEnd="@+id/tv_odds"
+            android:layout_alignBottom="@+id/tv_odds"
+            android:background="@drawable/bg_radius_4_button_disable"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:src="@drawable/ic_lock_odd"
+            android:visibility="gone" />
+
 
     </RelativeLayout>
 

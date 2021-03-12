@@ -1,33 +1,47 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.content.res.ColorStateList
 import android.os.Handler
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
+import org.cxct.sportlottery.util.OddButtonHighLight
+
+
+const val BUTTON_SPREAD_TYPE_CENTER: Int = 0
+const val BUTTON_SPREAD_TYPE_END: Int = 1
+const val BUTTON_SPREAD_TYPE_BOTTOM: Int = 2
 
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val vCover = itemView.findViewById<View>(R.id.iv_disable_cover)
     private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
+    private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
 
-    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?) {
+    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?, spreadType: Int) {
 
-        setHighlight(tvOdds, odd)
+        setData(odd)
 
-        tvName.text = odd.name
-        odd.odds?.let { odds ->
-            tvOdds.text = TextUtil.formatForOdd(odds)
+        OddButtonHighLight.set(tvOdds, tvSpread, odd)
+
+        when (spreadType) {
+            BUTTON_SPREAD_TYPE_CENTER -> {
+                tvOdds.gravity = Gravity.CENTER
+                tvOdds.setPadding(0,0,0,0)
+            }
+            BUTTON_SPREAD_TYPE_END -> {
+                tvOdds.gravity = Gravity.END or Gravity.CENTER_VERTICAL
+            }
+            BUTTON_SPREAD_TYPE_BOTTOM -> {
+                tvOdds.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            }
         }
 
         when (odd.status) {
@@ -37,9 +51,11 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvOdds.isEnabled = true
 
                 val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
+
                 odd.isSelect = select
 
                 tvOdds.isSelected = odd.isSelect ?: false
+                tvSpread?.let { it.isSelected = odd.isSelect ?: false }
                 tvOdds.setOnClickListener {
                     if (odd.isSelect != true) {
                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
@@ -47,11 +63,10 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                         }
                         onOddClickListener.getBetInfoList(odd)
                     } else {
-                        Handler().postDelayed({//讓ripple效果呈現出來
-                            onOddClickListener.removeBetInfoItem(odd)
-                        }, 200)
+                        onOddClickListener.removeBetInfoItem(odd)
                     }
                 }
+
             }
 
             BetStatus.LOCKED.code -> {
@@ -71,32 +86,18 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         }
     }
 
-    private fun setHighlight(textView: TextView, odd: Odd) {
-        when (odd.oddState) {
-            OddState.LARGER.state -> {
-                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.green))
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-            }
-            OddState.SMALLER.state -> {
-                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.red))
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-            }
+
+    private fun setData(odd: Odd){
+        if (tvSpread != null && !odd.spread.isNullOrEmpty()) {
+            tvSpread.text = odd.spread
         }
 
-        Handler().postDelayed(
-            {
-                when (odd.isSelect) {
-                    true -> {
-                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_focus))
-                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.white))
-                    }
-                    false -> {
-                        textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(textView.context, R.color.button_unfocus))
-                        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.color_select_text_odds))
-                    }
-                }
-            }, CHANGING_ITEM_BG_COLOR_DURATION
-        )
-    }
+        if (tvName != null && !odd.name.isNullOrEmpty()) {
+            tvName.text = odd.name
+        }
 
+        odd.odds?.let { odds ->
+            tvOdds.text = TextUtil.formatForOdd(odds)
+        }
+    }
 }

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
@@ -34,7 +35,10 @@ class TypeCSAdapter(
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId)
+            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM)
+
+            //波坦玩法在顯示上面 spread 位置內容用 name 取代
+            itemView.findViewById<TextView>(R.id.tv_spread).text = odd.name
         }
     }
 

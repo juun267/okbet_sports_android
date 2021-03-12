@@ -26,16 +26,17 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
 
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     Animation.AnimationListener, OnOddClickListener {
 
 
     companion object {
+
+        const val TIME_LENGTH = 5
+
         const val GAME_TYPE = "gameType"
         const val TYPE_NAME = "typeName"//leagueName
         const val MATCH_ID = "matchId"
@@ -218,7 +219,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                 val strTime = TimeUtil.stampToDate(time.toLong())
                 val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
-                val startPosition = strTime.length - 5
+                val startPosition = strTime.length - TIME_LENGTH
                 val endPosition = strTime.length
                 val style = SpannableStringBuilder(strTime)
                 style.setSpan(

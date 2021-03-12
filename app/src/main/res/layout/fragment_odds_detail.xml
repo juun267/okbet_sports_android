@@ -103,7 +103,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/bg_radius_4_button_colorwhite_colorwhite6"
+                android:background="@drawable/bg_radius_4_button_white_white6"
                 android:drawablePadding="4dp"
                 android:gravity="center"
                 android:paddingStart="10dp"
@@ -137,16 +137,28 @@
             app:tabSelectedTextColor="@color/colorWhite"
             app:tabTextColor="@color/colorGray" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_detail"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:clipToPadding="false"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            tools:listitem="@layout/content_odds_detail_list_item" />
+            app:srlDragRate="0.3"
+            app:srlEnableLoadMore="true"
+            app:srlEnablePureScrollMode="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:clipToPadding="false"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:overScrollMode="never"
+                tools:listitem="@layout/content_odds_detail_list_item" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
     </LinearLayout>
 

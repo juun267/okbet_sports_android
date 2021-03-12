@@ -63,6 +63,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/league_odd_sub_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -77,6 +78,7 @@
         tools:layout_constraintVertical_bias="0"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/outright_odd_sub_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
