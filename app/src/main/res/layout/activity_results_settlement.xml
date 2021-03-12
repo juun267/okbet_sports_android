@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -148,18 +147,27 @@
         app:layout_constraintTop_toBottomOf="@+id/linear_filter"
         tools:listitem="@layout/settlement_date_item" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/refactor_rv"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_date"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/refactor_rv"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_match_result_title" />
 
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

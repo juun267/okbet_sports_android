@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:srlDragRate="0.3"
+    app:srlEnableLoadMore="true"
+    app:srlEnablePureScrollMode="true"
     tools:context=".ui.game.v3.GameV3Fragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite">
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sport_type_list"
@@ -29,7 +38,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/sport_type_list"
             tools:layout="@layout/row_game_filter" />
-
         <TextView
             android:id="@+id/game_filter_game"
             android:layout_width="match_parent"
@@ -60,7 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/game_filter_type_list" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</androidx.core.widget.NestedScrollView>
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

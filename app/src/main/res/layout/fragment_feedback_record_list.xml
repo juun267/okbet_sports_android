@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F3F4F5"
     android:orientation="vertical"
     tools:context=".ui.feedback.FeedbackRecordListFragment">
@@ -218,16 +219,28 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_pay_type"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:visibility="visible"
-        tools:itemCount="5"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:orientation="vertical"
-        tools:listitem="@layout/content_feedback_record_list_rv"
-        tools:visibility="visible" />
+        android:layout_height="match_parent"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
+            android:id="@+id/rv_pay_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:visibility="visible"
+            tools:itemCount="5"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:orientation="vertical"
+            tools:listitem="@layout/content_feedback_record_list_rv"
+            tools:visibility="visible" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
 </LinearLayout>

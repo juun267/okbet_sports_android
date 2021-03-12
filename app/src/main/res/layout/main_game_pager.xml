@@ -7,6 +7,7 @@
     tools:context=".ui.main.MainGamePager">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/alignLeftRv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

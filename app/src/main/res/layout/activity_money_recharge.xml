@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/gray11"
+    android:orientation="vertical"
     tools:context=".ui.money.recharge.MoneyRechargeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -98,18 +98,18 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/block_tab">
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F3F4F5">
+            android:background="@color/colorWhite1"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -117,28 +117,29 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_pay_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="15dp"
-                        android:clipToPadding="false"
-                        android:visibility="gone"
-                        tools:itemCount="5"
-                        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        tools:listitem="@layout/content_money_pay_type_rv"
-                        tools:spanCount="2"
-                        tools:visibility="visible" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_pay_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="15dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:visibility="gone"
+                    tools:itemCount="5"
+                    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/content_money_pay_type_rv"
+                    tools:spanCount="2"
+                    tools:visibility="visible" />
 
-                    <FrameLayout
-                        android:id="@+id/fl_pay_type_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+                <FrameLayout
+                    android:id="@+id/fl_pay_type_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
 
                 <!--                TODO Bill 這裡沒綁定銀行卡UI還沒出圖-->
@@ -174,7 +175,8 @@
 
         </ScrollView>
 
-    </LinearLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
 
 </LinearLayout>
