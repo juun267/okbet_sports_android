@@ -52,6 +52,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val outrightCountryAdapter by lazy {
         OutrightCountryAdapter().apply {
             outrightCountryLeagueListener = OutrightCountryLeagueListener {
+                viewModel.getOutrightOddsList(it.id)
             }
         }
     }

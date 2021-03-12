@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.game.v3.GameLeagueFragment
+import org.cxct.sportlottery.ui.game.v3.GameOutrightFragment
 import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -307,7 +308,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.openOutrightDetail.observe(this, Observer {
             app_bar_layout.setExpanded(true, true)
-            addFragment(OutrightDetailFragment.newInstance(it.second, it.first), Page.OUTRIGHT)
+            addFragment(GameOutrightFragment(), Page.OUTRIGHT)
         })
 
         viewModel.userInfo.observe(this, Observer {
