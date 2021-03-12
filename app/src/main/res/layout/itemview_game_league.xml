@@ -30,8 +30,8 @@
         android:layout_marginStart="6dp"
         android:layout_marginEnd="10dp"
         android:ellipsize="end"
-        android:textColor="@color/colorBlackLight"
         android:singleLine="true"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize16sp"
         app:layout_constraintBottom_toBottomOf="@id/league_border"
         app:layout_constraintEnd_toStartOf="@id/league_odd_count"
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             tools:itemCount="1"
-            tools:listitem="@layout/itemview_game_league_odd" />
+            tools:listitem="@layout/itemview_game_league_odd_hdp_ou" />
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
