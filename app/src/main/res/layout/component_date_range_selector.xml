@@ -39,7 +39,7 @@
         android:layout_marginEnd="9dp"
         android:text="@string/finance_log_selector_until"
         android:textColor="@color/colorGrayDark"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_start_date"
         app:layout_constraintEnd_toStartOf="@id/ll_end_date"
         app:layout_constraintStart_toEndOf="@id/ll_start_date" />

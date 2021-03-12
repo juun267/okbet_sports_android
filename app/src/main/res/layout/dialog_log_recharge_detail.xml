@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="40dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
@@ -40,7 +40,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/log_detail_trans_num_sub"
             android:textColor="@color/colorGrayDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider" />
 
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/log_detail_trans_num_subtitle"
             app:layout_constraintStart_toEndOf="@id/log_detail_trans_num_subtitle"
             tools:text="10201223151804075637" />
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/log_detail_time_subtitle"
             app:layout_constraintStart_toEndOf="@id/log_detail_time_subtitle"
             tools:text="2020-12-12 19:58:22" />
@@ -91,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/log_detail_type_subtitle"
             app:layout_constraintStart_toEndOf="@id/log_detail_type_subtitle"
             tools:text="充值" />
@@ -112,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/log_detail_amount_subtitle"
             app:layout_constraintStart_toEndOf="@id/log_detail_amount_subtitle"
             tools:text="1,000,000.00" />
@@ -133,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/log_detail_status_subtitle"
             app:layout_constraintStart_toEndOf="@id/log_detail_status_subtitle"
             tools:text="处理中" />
@@ -145,7 +145,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:gravity="end"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             android:text="@string/log_detail_reason"
             android:textColor="@color/colorGrayDark"
             app:layout_constraintEnd_toEndOf="@+id/log_detail_status_subtitle"
@@ -157,7 +157,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:layout_marginEnd="16dp"
+            android:textSize="@dimen/textSize14sp"
             android:gravity="start"
             app:layout_constraintBaseline_toBaselineOf="@id/log_detail_reason_subtitle"
             app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +180,8 @@
             android:layout_height="44dp"
             android:text="@string/btn_confirm"
             android:textColor="@color/colorBlueDark"
-            android:textSize="16sp"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/log_detail_divider" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/tv_selected"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:ellipsize="end"
         android:gravity="center"
@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toStartOf="@+id/img_arrow"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constrainedWidth="true"
         tools:text="全部订单状态123123123" />
 
     <ImageView

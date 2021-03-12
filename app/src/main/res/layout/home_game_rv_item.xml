@@ -13,7 +13,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:textColor="@color/textColorDark"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="皇家馬德里" />
@@ -38,7 +38,7 @@
         android:ellipsize="marquee"
         android:singleLine="true"
         android:textColor="@color/textColorDark"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toStartOf="@id/home_list_arrow"
         app:layout_constraintStart_toEndOf="@id/label_vs"
         app:layout_constraintTop_toTopOf="@id/team1"

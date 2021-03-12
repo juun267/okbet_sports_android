@@ -15,33 +15,41 @@
         <TextView
             android:id="@+id/wd_log_detail_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:layout_height="44dp"
             android:gravity="center"
             android:padding="9dp"
             android:text="@string/log_detail_title"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSize16sp"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_title"
+            app:layout_constraintBottom_toTopOf="@id/wd_log_detail_trans_num_subtitle"/>
 
         <TextView
             android:id="@+id/wd_log_detail_trans_num_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="14dp"
             android:text="@string/log_detail_trans_num_sub"
             android:textColor="@color/colorGrayDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_title" />
+            app:layout_constraintTop_toBottomOf="@id/divider" />
 
         <TextView
             android:id="@+id/wd_log_detail_trans_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_trans_num_subtitle"
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_trans_num_subtitle"
             tools:text="10201223151804075637" />
@@ -62,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_time_subtitle"
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_time_subtitle"
             tools:text="2020-12-12 19:58:22" />
@@ -83,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_amount_subtitle"
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_amount_subtitle"
             tools:text="1,000,000.00" />
@@ -104,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_handle_fee_subtitle"
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_handle_fee_subtitle"
             tools:text="-50 RMB" />
@@ -125,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_status_subtitle"
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_status_subtitle"
             tools:text="处理中" />
@@ -146,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_review_time_subtitle"
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_review_time_subtitle"
             tools:text="2020-12-12 19:58:22" />
@@ -160,7 +168,7 @@
             android:gravity="end"
             android:text="@string/log_detail_reason"
             android:textColor="@color/colorGrayDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintEnd_toEndOf="@+id/wd_log_detail_review_time_subtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_review_time_subtitle" />
@@ -171,7 +179,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textColor="@color/textColorDark"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_reason_subtitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/wd_log_detail_reason_subtitle"
@@ -181,7 +189,7 @@
             android:id="@+id/log_detail_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="14dp"
             android:background="@color/light_gray"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_reason_subtitle" />
 
@@ -189,10 +197,11 @@
             android:id="@+id/log_detail_confirm"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="44dp"
             android:text="@string/btn_confirm"
-            android:textColor="@color/main"
-            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlueDark"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintTop_toBottomOf="@id/log_detail_divider" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
