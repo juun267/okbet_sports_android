@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
     tools:context=".ui.profileCenter.sportRecord.SportBetRecordFragment">
 
     <org.cxct.sportlottery.ui.component.DateRangeSearchView
@@ -17,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/date_search_bar" >
+        app:layout_constraintTop_toBottomOf="@id/date_search_bar">
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/status_selector"
@@ -30,27 +31,27 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="15dp"
-            android:background="@color/gray11"/>
+            android:background="@color/gray11" />
 
         <LinearLayout
             android:id="@+id/ll_champion"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="horizontal"
-            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/btn_today"
             app:layout_constraintStart_toStartOf="@+id/btn_today"
             app:layout_constraintTop_toBottomOf="@+id/btn_today">
 
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/btn_champion"
-                android:clickable="false"
-                android:focusable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"/>
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +67,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray"
+        android:background="@color/colorWhite3"
         android:orientation="horizontal"
         android:paddingVertical="4dp"
         app:layout_constraintBottom_toTopOf="@id/rv_bet_record"
@@ -121,14 +122,14 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
         android:id="@+id/rv_bet_record"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/gray11"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/layout_total"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:itemCount="5"
         tools:listitem="@layout/item_bet_record_result" />
 
     <include
@@ -136,9 +137,9 @@
         layout="@layout/view_total_record"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/iv_scroll_to_top"
