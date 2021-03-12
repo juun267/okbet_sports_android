@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_blue"
+    android:background="@color/colorWhite1"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
@@ -62,7 +62,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray11"
+        android:background="@color/colorWhite3"
         android:orientation="horizontal"
         android:paddingVertical="4dp"
         app:layout_constraintEnd_toEndOf="parent"
