@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.home
+package org.cxct.sportlottery.ui.game.home.gameTable
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,13 +11,10 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
-import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
-import org.cxct.sportlottery.ui.game.home.gameDrawer.ItemType
-import org.cxct.sportlottery.ui.game.home.gameDrawer.RvGameDrawerAdapter
 
 class HomeGameTable @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
-    private val homeGameDrawerAdapter = RvGameDrawerAdapter()
+    private val homeGameDrawerAdapter = RvGameTableAdapter()
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.home_game_table, this, false)
@@ -36,6 +33,10 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
         } finally {
             typedArray.recycle()
         }
+    }
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        homeGameDrawerAdapter.stopAllTimer()
     }
 
     fun setTitle(title: String?) {
@@ -78,7 +79,4 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
         homeGameDrawerAdapter.setMatchClockData(matchClockCO)
     }
 
-    fun release() {
-        homeGameDrawerAdapter.stopAllTimer()
-    }
 }

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game
+package org.cxct.sportlottery.ui.game.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
 
 
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -48,7 +49,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onDestroy() {
         super.onDestroy()
         unSubscribeAllHallChannel()
-        drawer_in_play.release()
     }
 
     private fun initEvent() {

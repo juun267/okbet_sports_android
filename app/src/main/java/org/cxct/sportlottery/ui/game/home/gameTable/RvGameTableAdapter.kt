@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.home.gameDrawer
+package org.cxct.sportlottery.ui.game.home.gameTable
 
 import android.os.Handler
 import android.os.Looper
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.home_game_rv_header.view.*
-import kotlinx.android.synthetic.main.home_game_rv_item.view.*
+import kotlinx.android.synthetic.main.home_game_table_header.view.*
+import kotlinx.android.synthetic.main.home_game_table_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mOnSelectItemListener: OnSelectItemListener<GameEntity>? = null
     private var mOnSelectFooterListener: OnSelectItemListener<GameEntity>? = null
@@ -25,12 +25,12 @@ class RvGameDrawerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.HEADER.ordinal -> {
-                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_rv_header, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_header, viewGroup, false)
                 HeaderViewHolder(layout)
             }
 
             else -> {
-                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_rv_item, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_item, viewGroup, false)
                 ItemViewHolder(layout)
             }
         }

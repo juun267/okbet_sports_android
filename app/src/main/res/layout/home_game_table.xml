@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/fillet_5dp_white"
     android:orientation="vertical"
-    tools:context=".ui.game.home.HomeGameTable">
+    tools:context=".ui.game.home.gameTable.HomeGameTable">
 
     <LinearLayout
         android:id="@+id/titleBar"
@@ -50,6 +50,6 @@
         android:layout_height="wrap_content"
         tools:itemCount="3"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/home_game_rv_item" />
+        tools:listitem="@layout/home_game_table_item" />
 
 </LinearLayout>

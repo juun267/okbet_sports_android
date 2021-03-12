@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.home.gameDrawer
+package org.cxct.sportlottery.ui.game.home.gameTable
 
 import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.game.HomeFragment">
+    tools:context=".ui.game.home.HomeFragment">
 
     <data>
         <variable
@@ -222,7 +222,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <org.cxct.sportlottery.ui.game.home.HomeGameTable
+            <org.cxct.sportlottery.ui.game.home.gameTable.HomeGameTable
                 android:id="@+id/drawer_in_play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
