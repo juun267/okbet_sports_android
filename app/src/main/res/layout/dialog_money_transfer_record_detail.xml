@@ -10,19 +10,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/colorWhite">
 
         <TextView
             android:id="@+id/log_detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:padding="9dp"
             android:text="@string/log_detail_title"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
             android:textSize="16sp"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray"
+            app:layout_constraintTop_toBottomOf="@id/log_detail_title"
+            app:layout_constraintBottom_toTopOf="@id/log_detail_trans_num_subtitle"/>
 
         <TextView
             android:id="@+id/log_detail_trans_num_subtitle"
@@ -34,7 +42,7 @@
             android:textColor="@color/textGray"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/log_detail_title" />
+            app:layout_constraintTop_toBottomOf="@id/divider" />
 
         <TextView
             android:id="@+id/tv_order_number"
@@ -191,7 +199,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/btn_confirm"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorBlueDark"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/log_detail_divider" />
 
