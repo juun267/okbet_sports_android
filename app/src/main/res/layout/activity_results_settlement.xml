@@ -21,9 +21,12 @@
 
             <ImageView
                 android:id="@+id/btn_toolbar_back"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_marginStart="14dp"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:paddingStart="14dp"
+                android:paddingTop="18dp"
+                android:paddingEnd="22dp"
+                android:paddingBottom="18dp"
                 android:src="@drawable/ic_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
