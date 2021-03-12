@@ -52,16 +52,10 @@ class MoneyTransferAdapter (private val clickListener: ItemClickListener) : List
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
                 holder.bind(data.gameData, clickListener)
-                showDivider(position, holder)
             }
 
             is NoDataViewHolder -> {}
         }
-    }
-
-    private fun showDivider(position: Int, holder: ItemViewHolder) {
-        if (position == itemCount - 1) holder.binding.divider.visibility = View.GONE
-        else holder.binding.divider.visibility = View.VISIBLE
     }
 
     override fun getItemViewType(position: Int): Int {
