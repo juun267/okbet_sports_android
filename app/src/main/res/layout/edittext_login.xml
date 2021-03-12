@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/gray4"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 app:autoSizeMaxTextSize="13dp"
                 app:autoSizeMinTextSize="6dp"
@@ -52,7 +52,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/bright_gray" />
+                android:background="@color/colorWhite6" />
 
             <EditText
                 android:id="@+id/et_input"
@@ -62,8 +62,8 @@
                 android:autofillHints="no"
                 android:background="@null"
                 android:inputType="text"
-                android:textColor="@color/gray4"
-                android:textColorHint="@color/bright_gray"
+                android:textColor="@color/colorBlackLight"
+                android:textColorHint="@color/colorSilverLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:hint="@string/please_input_account" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:text="@string/withdraw_all"
-                android:textColor="@color/blue3"
+                android:textColor="@color/colorBlueDark"
                 android:textSize="@dimen/textSize13sp" />
 
             <ImageView

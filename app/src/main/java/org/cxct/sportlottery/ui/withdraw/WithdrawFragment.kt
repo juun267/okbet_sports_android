@@ -80,10 +80,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         }
 
-        btn_reset.setOnClickListener {
-            clearEvent()
-        }
-
         et_withdrawal_amount.getAllButton {
             it.setText(viewModel.getWithdrawAmountLimit().max.toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
@@ -249,9 +245,9 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
             tvBank?.text = data.bankName
             ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
             if (position == selectedPosition)
-                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
-                llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
             llSelectBankCard?.setOnClickListener {
                 if (selectedPosition != position) {
                     //                data.isSelected = !data.isSelected
