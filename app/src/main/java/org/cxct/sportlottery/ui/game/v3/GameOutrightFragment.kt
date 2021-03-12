@@ -64,19 +64,24 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        try {
 
-        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it != null && it.success) {
-                val matchOdd = it.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
+            viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+                if (it != null && it.success) {
+                    val matchOdd = it.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
-                outright_filter_row.sportName = it.outrightOddsListData?.sport?.name
+                    outright_filter_row.sportName = it.outrightOddsListData?.sport?.name
 
-                outright_league_name.text =
-                    it.outrightOddsListData?.leagueOdds?.get(0)?.league?.name ?: ""
+                    outright_league_name.text =
+                        it.outrightOddsListData?.leagueOdds?.get(0)?.league?.name ?: ""
 
-                outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
-            }
-        })
+                    outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
+                }
+            })
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun backEvent() {
