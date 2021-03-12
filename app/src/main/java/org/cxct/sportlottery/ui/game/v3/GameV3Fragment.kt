@@ -28,6 +28,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         SportTypeAdapter().apply {
             sportTypeListener = SportTypeListener {
                 viewModel.getGameHallList(args.matchType, it)
+                loading()
             }
         }
     }
@@ -37,6 +38,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             gameTypeListener = GameTypeListener {
                 //TODO add 滾球賽事
                 viewModel.getGameHallList(args.matchType, it)
+                loading()
             }
         }
     }
