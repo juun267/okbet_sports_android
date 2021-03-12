@@ -78,7 +78,7 @@ class GameResultDetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     override fun getItemCount(): Int {
-        return ((mDetailData?.rows?.size ?: 0) + (if (!mDataList.isNullOrEmpty()) 1 else 0))
+        return ((mDetailData?.matchResultPlayList?.size ?: 0) + (if (!mDataList.isNullOrEmpty()) 1 else 0))
     }
 
     @SuppressLint("SetTextI18n")
@@ -421,7 +421,7 @@ class DetailItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun setupDetailItem(detailData: MatchResultPlayListResult?, position: Int) {
         itemView.apply {
-            val data = detailData?.rows?.get(position)
+            val data = detailData?.matchResultPlayList?.get(position)
             tv_play_cate_name.text = "${data?.playCateName} ${data?.spread}"
             tv_play_name.text = data?.playName
         }

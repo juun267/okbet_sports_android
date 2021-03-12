@@ -7,7 +7,7 @@ import org.cxct.sportlottery.network.matchresult.list.League
 import org.cxct.sportlottery.network.matchresult.list.Match
 
 @JsonClass(generateAdapter = true)
-data class Row(
+data class MatchResultList(
     @Json(name = "league")
     val league: League,
     @Json(name = "list")

@@ -8,5 +8,5 @@ data class OddsDetailListData(
     var name: String, //大/小
     var oddArrayList: List<Odd>, //odds[]
 ) {
-    var isExpand: Boolean = false
+    var isExpand: Boolean = true
 }

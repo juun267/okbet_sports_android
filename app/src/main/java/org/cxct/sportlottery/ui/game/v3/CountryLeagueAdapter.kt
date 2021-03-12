@@ -17,6 +17,8 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
             notifyDataSetChanged()
         }
 
+    var countryLeagueListener: CountryLeagueListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -24,16 +26,20 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item)
+        holder.bind(item, countryLeagueListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: League) {
+        fun bind(item: League, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_league_name.text = item.name
             itemView.country_league_odd_count.text = item.num.toString()
+
+            itemView.setOnClickListener {
+                countryLeagueListener?.onClick(item)
+            }
         }
 
         companion object {
@@ -46,4 +52,8 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
             }
         }
     }
+}
+
+class CountryLeagueListener(val clickListener: (item: League) -> Unit) {
+    fun onClick(item: League) = clickListener(item)
 }

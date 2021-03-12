@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/match_row_1x2"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorWhite3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/match_status_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/match_row_1x2"
+        app:layout_constraintStart_toStartOf="@id/match_row_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_row_1x2"
+        tools:text="下半場" />
+
+    <TextView
+        android:id="@+id/match_time_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/match_row_1x2"
+        app:layout_constraintStart_toEndOf="@id/match_status_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_row_1x2"
+        tools:text="90:31" />
+
+    <View
+        android:id="@+id/match_play_type_block_1x2"
+        android:layout_width="46dp"
+        android:layout_height="30dp"
+        android:background="@color/colorBlueLight"
+        app:layout_constraintBottom_toBottomOf="@id/match_row_1x2"
+        app:layout_constraintEnd_toEndOf="@id/match_row_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_row_1x2" />
+
+    <TextView
+        android:id="@+id/match_play_type_count_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/match_play_type_block_1x2"
+        app:layout_constraintEnd_toStartOf="@id/match_play_type_arrow_1x2"
+        app:layout_constraintStart_toStartOf="@id/match_play_type_block_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_play_type_block_1x2"
+        tools:text="54" />
+
+    <ImageView
+        android:id="@+id/match_play_type_arrow_1x2"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_arrow_right_white"
+        app:layout_constraintBottom_toBottomOf="@id/match_play_type_block_1x2"
+        app:layout_constraintEnd_toEndOf="@id/match_play_type_block_1x2"
+        app:layout_constraintStart_toEndOf="@id/match_play_type_count_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_play_type_block_1x2" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trianglecopy"
+        app:layout_constraintBottom_toBottomOf="@id/match_play_type_block_1x2"
+        app:layout_constraintEnd_toEndOf="@id/match_play_type_block_1x2"
+        app:layout_constraintStart_toStartOf="@id/match_play_type_block_1x2" />
+
+    <ImageView
+        android:id="@+id/match_live_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/ic_iconlivegame"
+        app:layout_constraintBottom_toBottomOf="@id/match_row_1x2"
+        app:layout_constraintEnd_toStartOf="@id/match_play_type_block_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_row_1x2" />
+
+    <View
+        android:id="@+id/match_odd_block_1x2"
+        android:layout_width="match_parent"
+        android:layout_height="174dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@id/match_row_1x2" />
+
+    <TextView
+        android:id="@+id/game_score_home_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="22dp"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/match_odd_block_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_odd_block_1x2"
+        tools:text="0" />
+
+    <TextView
+        android:id="@+id/game_name_home_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/textSize15sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/game_score_home_1x2"
+        app:layout_constraintStart_toEndOf="@id/game_score_home_1x2"
+        tools:text="皇家马德里" />
+
+    <TextView
+        android:id="@+id/game_score_away_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/match_odd_block_1x2"
+        app:layout_constraintStart_toStartOf="@id/match_odd_block_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_odd_block_1x2"
+        tools:text="0" />
+
+    <TextView
+        android:id="@+id/game_name_away_1x2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/textSize15sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/game_score_away_1x2"
+        app:layout_constraintStart_toEndOf="@id/game_score_away_1x2"
+        tools:text="利物浦" />
+
+    <org.cxct.sportlottery.ui.game.v3.OddButton
+        android:id="@+id/match_odd_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/match_odd_block_1x2"
+        app:layout_constraintStart_toStartOf="@id/match_odd_block_1x2" />
+
+    <org.cxct.sportlottery.ui.game.v3.OddButton
+        android:id="@+id/match_odd_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/match_odd_block_1x2"
+        app:layout_constraintEnd_toEndOf="@id/match_odd_block_1x2"
+        app:layout_constraintStart_toStartOf="@id/match_odd_block_1x2" />
+
+
+    <org.cxct.sportlottery.ui.game.v3.OddButton
+        android:id="@+id/match_odd_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/match_odd_block_1x2"
+        app:layout_constraintEnd_toEndOf="@id/match_odd_block_1x2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

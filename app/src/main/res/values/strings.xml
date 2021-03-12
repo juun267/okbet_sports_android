@@ -369,6 +369,7 @@
     <string name="match_type_row_btn_double">1 X 2</string>
     <string name="match_type_row_btn_bs">让球 ＆ 大小</string>
     <string name="game_filter_row_search_hint">请输入联赛名称</string>
+    <string name="game_filter_row_search_hint_league">请输入球队名</string>
     <string name="date_row_league">赛事</string>
     <string name="date_row_other">其他早盘</string>
     <string name="date_row_all">所有赛事</string>

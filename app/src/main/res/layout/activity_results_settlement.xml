@@ -143,23 +143,23 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/rv_results"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_filter"
         tools:listitem="@layout/settlement_date_item" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_results"
+        android:id="@+id/refactor_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/background"
+        android:background="@color/white"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_date"
-        tools:listitem="@layout/content_settlement_rv" />
+        tools:listitem="@layout/item_match_result_title" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
