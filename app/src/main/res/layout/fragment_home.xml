@@ -216,6 +216,62 @@
                             app:cvIcon="@drawable/ic_game_volleyball"
                             app:cvTitle="@string/volleyball" />
 
+                        <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                            android:id="@+id/card_lottery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            app:cvIcon="@drawable/ic_game_lottery"
+                            app:cvTitle="@string/lottery" />
+
+                        <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                            android:id="@+id/card_live"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            app:cvIcon="@drawable/ic_game_live"
+                            app:cvTitle="@string/live" />
+
+                        <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                            android:id="@+id/card_poker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            app:cvIcon="@drawable/ic_game_poker"
+                            app:cvTitle="@string/poker" />
+
+                        <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                            android:id="@+id/card_slot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            app:cvIcon="@drawable/ic_game_slot"
+                            app:cvTitle="@string/slot" />
+
+                        <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                            android:id="@+id/card_fishing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            app:cvIcon="@drawable/ic_game_fishing"
+                            app:cvTitle="@string/fishing" />
+
+                        <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                            android:id="@+id/card_game_result"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            app:cvIcon="@drawable/ic_game_match_result"
+                            app:cvTitle="@string/game_result" />
+
+                        <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                            android:id="@+id/card_update"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            app:cvIcon="@drawable/ic_game_update"
+                            app:cvTitle="@string/version_update" />
+
                     </LinearLayout>
 
                 </HorizontalScrollView>

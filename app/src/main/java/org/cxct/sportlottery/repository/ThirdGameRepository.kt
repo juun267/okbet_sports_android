@@ -13,9 +13,17 @@ import timber.log.Timber
 
 class ThirdGameRepository {
 
+    private val _goToThirdGamePage = MutableLiveData<ThirdGameCategory?>()
+    val goToThirdGamePage: LiveData<ThirdGameCategory?>
+        get() = _goToThirdGamePage
+
     private val _homeCatePageDataList = MutableLiveData<List<GameCateData>>()
     val gameCateDataList: LiveData<List<GameCateData>>
         get() = _homeCatePageDataList
+
+    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
+        _goToThirdGamePage.postValue(catePage)
+    }
 
     suspend fun getThirdGame(): Response<ThirdGamesResult> {
         val response = OneBoSportApi.thirdGameService.getThirdGames()

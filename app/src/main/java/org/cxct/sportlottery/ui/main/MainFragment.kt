@@ -49,7 +49,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     //電子遊戲 點擊事件特別處理
     private var mOnSelectThirdGameDzListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
         override fun onClick(select: ThirdDictValues?) {
-            goToNextFragment(select?.gameCategory, select?.firmCode)
+            goToMainMoreFragment(select?.gameCategory, select?.firmCode)
         }
     }
 
@@ -173,11 +173,15 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         //為了讓滑動切換 tab 效果能到最後一項，需動態變更 over_scroll_view 高度，來補足滑動距離
         scroll_view.post {
-            val distanceY = over_scroll_view.bottom - label_fishing.top
-            val paddingHeight = scroll_view.height - distanceY
+            try {
+                val distanceY = over_scroll_view.bottom - label_fishing.top
+                val paddingHeight = scroll_view.height - distanceY
 
-            if (paddingHeight > 0)
-                over_scroll_view.minimumHeight = paddingHeight
+                if (paddingHeight > 0)
+                    over_scroll_view.minimumHeight = paddingHeight
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -462,19 +466,19 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setMoreButtons() {
         label_live.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.LIVE.name)
+            goToMainMoreFragment(ThirdGameCategory.LIVE.name)
         }
 
         label_poker.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.QP.name)
+            goToMainMoreFragment(ThirdGameCategory.QP.name)
         }
 
         label_slot.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.DZ.name)
+            goToMainMoreFragment(ThirdGameCategory.DZ.name)
         }
 
         label_fishing.setOnMoreClickListener {
-            goToNextFragment(ThirdGameCategory.BY.name)
+            goToMainMoreFragment(ThirdGameCategory.BY.name)
         }
     }
 
@@ -484,7 +488,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun goToNextFragment(cateCode: String?, firmCode: String? = null) {
+    private fun goToMainMoreFragment(cateCode: String?, firmCode: String? = null) {
         val action = MainFragmentDirections.actionMainFragmentToMainMoreFragment(cateCode ?: "", firmCode ?: "")
         findNavController().navigate(action)
     }

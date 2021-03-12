@@ -44,6 +44,7 @@ import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -57,7 +58,8 @@ class GameViewModel(
     private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    private val thirdGameRepository: ThirdGameRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -208,6 +210,7 @@ class GameViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
+    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -1283,5 +1286,9 @@ class GameViewModel(
             else -> {
             }
         }
+    }
+
+    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
+        thirdGameRepository.setGoToThirdGamePage(catePage)
     }
 }

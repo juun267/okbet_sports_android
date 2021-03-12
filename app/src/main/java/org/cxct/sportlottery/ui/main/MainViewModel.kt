@@ -27,7 +27,7 @@ class MainViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    val thirdGameRepository: ThirdGameRepository
+    private val thirdGameRepository: ThirdGameRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -59,6 +59,7 @@ class MainViewModel(
         get() = _popImageList
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+    val goToThirdGamePage by lazy { thirdGameRepository.goToThirdGamePage }
 
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
@@ -206,6 +207,10 @@ class MainViewModel(
                 errorMsg = null
             )
         )
+    }
+
+    fun clearThirdGameCatePage() {
+        thirdGameRepository.setGoToThirdGamePage(null)
     }
 
     private suspend fun autoTransfer(gameData: ThirdDictValues) {
