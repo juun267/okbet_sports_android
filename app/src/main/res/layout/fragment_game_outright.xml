@@ -58,12 +58,23 @@
         app:layout_constraintStart_toEndOf="@id/outright_league_date"
         tools:text="23:00" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/outright_league_odd_list"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/outright_info_block"
-        tools:itemCount="3"
-        tools:listitem="@layout/itemview_outright_oddv3" />
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/outright_league_odd_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            tools:itemCount="3"
+            tools:listitem="@layout/itemview_outright_oddv3" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
