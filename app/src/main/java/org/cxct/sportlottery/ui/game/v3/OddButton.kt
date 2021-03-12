@@ -117,6 +117,12 @@ class OddButton @JvmOverloads constructor(
         } else {
             View.GONE
         }
+
+        odd_outright_text.visibility = if (playType == PlayType.OUTRIGHT) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun setupOUType(ouType: OUType) {
