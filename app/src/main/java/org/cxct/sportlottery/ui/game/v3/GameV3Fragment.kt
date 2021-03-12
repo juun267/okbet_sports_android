@@ -281,9 +281,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             })
 
-            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
-                //TODO add not history ui
-            })
+//            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+//                //TODO add not history ui
+//            })
 
             viewModel.getGameHallList(args.matchType, true)
             loading()
