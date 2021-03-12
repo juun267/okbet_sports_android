@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.game.home.gameDrawer
 
 import org.cxct.sportlottery.network.match.Match
+import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 
 class GameEntity(
     val itemType: ItemType,
@@ -8,4 +10,7 @@ class GameEntity(
     val name: String?,
     val num: Int,
     val match: Match? = null
-)
+) {
+    var matchStatusCO: MatchStatusCO? = null
+    var matchClockCO: MatchClockCO? = null
+}

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- ========== color guideline ========== -->
+
     <color name="colorBlueLight">#4A91F7</color>
     <color name="colorBlue">#3880E5</color>
     <color name="colorBlueDark">#1F4780</color>

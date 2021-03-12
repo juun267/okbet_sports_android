@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.match.MatchPreloadData
+import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
 import org.cxct.sportlottery.ui.game.home.gameDrawer.ItemType
 import org.cxct.sportlottery.ui.game.home.gameDrawer.RvGameDrawerAdapter
@@ -68,4 +70,15 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
         homeGameDrawerAdapter.setData(gameDataList)
     }
 
+    fun setMatchStatusData(matchStatusCO: MatchStatusCO?) {
+        homeGameDrawerAdapter.setMatchStatusData(matchStatusCO)
+    }
+
+    fun setMatchClockData(matchClockCO: MatchClockCO?) {
+        homeGameDrawerAdapter.setMatchClockData(matchClockCO)
+    }
+
+    fun release() {
+        homeGameDrawerAdapter.stopAllTimer()
+    }
 }

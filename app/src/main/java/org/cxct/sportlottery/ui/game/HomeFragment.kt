@@ -10,14 +10,17 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.network.match.Match
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
 
 
-class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
+class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
+    private val mSubscribeMatchMap = mutableMapOf<String, Match>() //<code, Match>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +40,15 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
 
         initEvent()
         initObserve()
+        observeSocketData()
 
         queryData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unSubscribeAllHallChannel()
+        drawer_in_play.release()
     }
 
     private fun initEvent() {
@@ -67,8 +77,33 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun subscribeHallChannel(code: String, match: Match) {
+        //訂閱賽事並記錄到訂閱清單裡面
+        mSubscribeMatchMap[code] = match
+        service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match.id)
+    }
+
+    private fun unSubscribeAllHallChannel() {
+        //離開畫面時取消訂閱所有賽事
+        mSubscribeMatchMap.forEach {
+            val code = it.key
+            val matchId = it.value.id
+            service.unSubscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, matchId)
+        }
+        mSubscribeMatchMap.clear()
+    }
+
     private fun initObserve() {
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
+            unSubscribeAllHallChannel() //先清除之前訂閱項目
+
+            //訂閱所有滾球賽事
+            it.matchPreloadData?.datas?.forEach { data ->
+                data.matchs.forEach { match ->
+                    subscribeHallChannel(data.code, match)
+                }
+            }
+
             drawer_in_play.setCount(it.matchPreloadData?.num?.toString())
             drawer_in_play.setRvGameData(it.matchPreloadData)
             drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
@@ -88,6 +123,16 @@ class HomeFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.getGameHallList(MatchType.IN_PLAY, select.code)
                 }
             })
+        })
+    }
+
+    private fun observeSocketData() {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            drawer_in_play.setMatchStatusData(it?.matchStatusCO)
+        })
+
+        receiver.matchClock.observe(viewLifecycleOwner, Observer {
+            drawer_in_play.setMatchClockData(it?.matchClockCO)
         })
     }
 

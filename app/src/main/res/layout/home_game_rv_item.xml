@@ -16,7 +16,7 @@
         android:paddingBottom="10dp">
 
         <TextView
-            android:id="@+id/tv_count1"
+            android:id="@+id/tv_score1"
             android:layout_width="62dp"
             android:layout_height="wrap_content"
             android:paddingStart="18dp"
@@ -28,7 +28,7 @@
             tools:text="0" />
 
         <TextView
-            android:id="@+id/tv_count2"
+            android:id="@+id/tv_score2"
             android:layout_width="62dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -37,7 +37,7 @@
             android:textColor="@color/colorRedDark"
             android:textSize="@dimen/textSize18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_count1"
+            app:layout_constraintTop_toBottomOf="@id/tv_score1"
             tools:text="0" />
 
         <TextView
@@ -48,8 +48,8 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize15sp"
             app:layout_constraintEnd_toStartOf="@id/block_time"
-            app:layout_constraintStart_toEndOf="@id/tv_count1"
-            app:layout_constraintTop_toTopOf="@id/tv_count1"
+            app:layout_constraintStart_toEndOf="@id/tv_score1"
+            app:layout_constraintTop_toTopOf="@id/tv_score1"
             tools:text="皇家馬德里" />
 
         <TextView
@@ -60,8 +60,8 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize15sp"
             app:layout_constraintEnd_toStartOf="@id/block_time"
-            app:layout_constraintStart_toEndOf="@id/tv_count2"
-            app:layout_constraintTop_toTopOf="@id/tv_count2"
+            app:layout_constraintStart_toEndOf="@id/tv_score2"
+            app:layout_constraintTop_toTopOf="@id/tv_score2"
             tools:text="利物浦" />
 
         <LinearLayout
@@ -71,9 +71,9 @@
             android:layout_marginEnd="14dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/tv_count2"
+            app:layout_constraintBottom_toBottomOf="@id/tv_score2"
             app:layout_constraintEnd_toStartOf="@id/home_list_arrow"
-            app:layout_constraintTop_toTopOf="@id/tv_count1">
+            app:layout_constraintTop_toTopOf="@id/tv_score1">
 
             <TextView
                 android:id="@+id/tv_session"
@@ -103,9 +103,9 @@
             android:layout_marginEnd="14dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_arrow_right_black"
-            app:layout_constraintBottom_toBottomOf="@id/tv_count2"
+            app:layout_constraintBottom_toBottomOf="@id/tv_score2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_count1" />
+            app:layout_constraintTop_toTopOf="@id/tv_score1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
