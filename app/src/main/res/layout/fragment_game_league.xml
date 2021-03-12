@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".ui.game.v3.GameLeagueFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/game_list_league_list"
+    <org.cxct.sportlottery.ui.game.v3.GameFilterRow
+        android:id="@+id/game_league_filter_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/game_league_odd_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/game_league_filter_row"
+        tools:itemCount="2"
         tools:listitem="@layout/itemview_game_league" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/game_list_country_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="1"
-        tools:listitem="@layout/itemview_country" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,17 +21,11 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     BetInfoListAdapter.OnItemClickListener {
-
-
-    companion object {
-        val TAG = BetInfoListDialog::class.java.simpleName
-    }
 
 
     private lateinit var binding: DialogBetInfoListBinding

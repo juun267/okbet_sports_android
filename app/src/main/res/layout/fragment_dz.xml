@@ -36,6 +36,7 @@
         tools:listitem="@layout/content_dz_game_tab" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/rv_dz"
         android:layout_width="match_parent"
         android:layout_height="0dp"
