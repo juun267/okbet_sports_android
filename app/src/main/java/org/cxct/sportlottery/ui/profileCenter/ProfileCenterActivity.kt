@@ -81,7 +81,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
 
-        setupBackButton()
         setupHeadButton()
         setupEditNickname()
         setupBalance()
@@ -92,12 +91,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         getUserInfo()
         initObserve()
         initSocketObserver()
-    }
-
-    private fun setupBackButton() {
-        btn_back.setOnClickListener {
-            finish()
-        }
     }
 
     private fun setupHeadButton() {
