@@ -546,7 +546,7 @@ class GameViewModel(
                         }
                     }
 
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "yyyy-MM-dd")
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
                     matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
                 }
 

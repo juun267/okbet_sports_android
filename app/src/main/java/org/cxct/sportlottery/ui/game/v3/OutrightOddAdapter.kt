@@ -4,10 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_subtitlev3.view.*
 import kotlinx.android.synthetic.main.itemview_outright_oddv3.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.util.TextUtil
 
 class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
@@ -54,6 +57,18 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(item: Odd) {
             itemView.outright_odd_name.text = item.spread
+
+            itemView.outright_odd_btn.apply {
+                playType = PlayType.OUTRIGHT
+
+                visibility = if (item.odds == null) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
+
+                odd_outright_text.text = item.odds?.let { TextUtil.formatForOdd(it) }
+            }
         }
 
         companion object {
