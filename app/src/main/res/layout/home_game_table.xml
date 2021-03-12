@@ -30,7 +30,7 @@
             android:layout_height="24dp"
             android:background="@drawable/home_count_ball"
             android:gravity="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize12sp"
             tools:text="21" />
 

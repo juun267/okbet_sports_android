@@ -32,7 +32,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
 
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
 
@@ -247,7 +247,7 @@
             android:background="@drawable/bg_5dp_radius_button_blue3"
             android:gravity="center"
             android:text="@string/btn_submit"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp" />
 
     </LinearLayout>

@@ -114,7 +114,7 @@
         android:layout_marginBottom="6dp"
         android:background="@drawable/bg_radius_20_button_dusk"
         android:text="@string/btn_login"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize16sp"
         app:layout_constraintBottom_toTopOf="@id/block_sign_up"
         app:layout_constraintEnd_toEndOf="parent"

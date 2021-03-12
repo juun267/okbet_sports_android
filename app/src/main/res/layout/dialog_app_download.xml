@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="26dp"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
     tools:context=".ui.splash.AppDownloadDialog">

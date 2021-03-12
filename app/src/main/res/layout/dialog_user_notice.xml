@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="26dp"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.game.UserNoticeDialog">
@@ -25,7 +25,7 @@
             android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:minHeight="40dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

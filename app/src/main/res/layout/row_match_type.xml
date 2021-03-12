@@ -46,7 +46,7 @@
         android:id="@+id/row_sport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/row_match_type"
@@ -69,7 +69,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:textColor="@android:color/white" />
+        tools:textColor="@color/colorWhite" />
 
     <Button
         android:id="@+id/row_ou"

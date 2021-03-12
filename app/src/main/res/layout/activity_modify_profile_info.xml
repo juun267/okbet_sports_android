@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/change_nickname"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp" />
 
     </RelativeLayout>
@@ -152,7 +152,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="10dp"
-                android:background="@android:color/white"
+                android:background="@color/colorWhite"
                 android:gravity="center"
                 android:minWidth="80dp"
                 android:orientation="horizontal">
@@ -211,7 +211,7 @@
         android:minWidth="135dp"
         android:minHeight="36dp"
         android:text="@string/btn_confirm"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize14sp" />
 
 </LinearLayout>
