@@ -496,21 +496,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/next_level_tips"
-                        android:textColor="@color/textGray"
+                        android:textColor="@color/colorGrayDark"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/currency_symbol"
-                        android:textColor="@color/textGray"
+                        android:textColor="@color/colorGrayDark"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
                         android:id="@+id/tv_requirement_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textGray"
+                        android:textColor="@color/colorGrayDark"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="500.00" />
                 </LinearLayout>

@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             android:textSize="@dimen/textSize12sp"
             tools:text="2020-12-12 19:58:00" />
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             android:textSize="@dimen/textSize12sp"
             tools:text="@string/feedback_content_description" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             android:textSize="@dimen/textSize12sp"
             tools:text="@string/status" />
 

@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:layout_margin="26dp"
     app:cardBackgroundColor="@color/colorWhite"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="4dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.common.CustomAlertDialog">
 
@@ -69,7 +69,7 @@
         <LinearLayout
             android:id="@+id/block_bottom_bar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +80,7 @@
                 android:id="@+id/btn_negative"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
                 android:minWidth="135dp"
@@ -93,7 +93,7 @@
                 android:id="@+id/btn_positive"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
                 android:minWidth="135dp"

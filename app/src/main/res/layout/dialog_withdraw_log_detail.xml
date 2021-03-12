@@ -31,7 +31,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/log_detail_trans_num_sub"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_title" />
@@ -53,7 +53,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:text="@string/log_detail_time_sub"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_trans_num_subtitle" />
 
@@ -74,7 +74,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:text="@string/log_detail_amount_sub"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_time_subtitle" />
 
@@ -95,7 +95,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:text="@string/log_detail_handle_fee"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_amount_subtitle" />
 
@@ -116,7 +116,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:text="@string/log_detail_status_sub"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_handle_fee_subtitle" />
 
@@ -137,7 +137,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:text="@string/log_detail_review_time"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
 
@@ -159,7 +159,7 @@
             android:layout_marginTop="10dp"
             android:gravity="end"
             android:text="@string/log_detail_reason"
-            android:textColor="@color/textGray"
+            android:textColor="@color/colorGrayDark"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/wd_log_detail_review_time_subtitle"
             app:layout_constraintStart_toStartOf="parent"
