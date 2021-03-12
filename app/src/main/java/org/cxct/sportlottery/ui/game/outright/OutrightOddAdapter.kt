@@ -108,9 +108,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 item.odds?.let { odd -> outright_bet.text = TextUtil.formatForOdd(odd) }
                 isSelected = item.isSelected ?: false
                 outright_bet.setOnClickListener {
-                    Handler().postDelayed({//讓ripple效果呈現出來
-                        outrightOddListener?.onClick(item)
-                    }, 100)
+                    outrightOddListener?.onClick(item)
                 }
                 setHighlight(outright_bet, item.oddState)
                 setStatus(outright_bet, bet_lock_img, item.odds.toString().isEmpty(), item.status)

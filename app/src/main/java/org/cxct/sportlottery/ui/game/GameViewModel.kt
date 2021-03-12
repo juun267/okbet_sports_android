@@ -85,7 +85,7 @@ class GameViewModel(
     val oddsListGameHallResult: LiveData<OddsListResult?>
         get() = _oddsListGameHallResult
 
-    val oddsListResult: LiveData<OddsListResult?>
+    val oddsListResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListResult
 
     val leagueListResult: LiveData<LeagueListResult?>
@@ -128,7 +128,7 @@ class GameViewModel(
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListGameHallResult = MutableLiveData<OddsListResult?>()
-    private val _oddsListResult = MutableLiveData<OddsListResult?>()
+    private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<LeagueListResult?>()
     private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult?>()
     private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult?>()
@@ -600,7 +600,7 @@ class GameViewModel(
     ) {
         val isOutright = mathType == MatchType.OUTRIGHT
         val result =
-            if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value
+            if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value?.peekContent()
         val match =
             result?.oddsListData?.leagueOdds?.find { leagueOdd ->
                 leagueOdd.matchOdds.contains(
@@ -645,7 +645,7 @@ class GameViewModel(
         if (mathType == MatchType.IN_PLAY) {
             _oddsListGameHallResult.value = result
         } else {
-            _oddsListResult.value = result
+            _oddsListResult.value = Event(result)
         }
     }
 
@@ -689,7 +689,7 @@ class GameViewModel(
     }
 
     fun updateMatchOddExpandDetail(matchOdd: MatchOdd) {
-        val result = _oddsListResult.value
+        val result = _oddsListResult.value?.peekContent()
 
         result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach {
@@ -697,7 +697,7 @@ class GameViewModel(
             }
         }
 
-        _oddsListResult.postValue(result)
+        _oddsListResult.postValue(Event(result))
     }
 
 
@@ -733,8 +733,10 @@ class GameViewModel(
             }
 
             if (leagueIdList != null) {
-                result?.oddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)?.isExpand = true
-                _oddsListResult.postValue(result)
+                if (result?.oddsListData?.leagueOdds?.isNotEmpty() == true) {
+                    result.oddsListData.leagueOdds[0].isExpand = true
+                }
+                _oddsListResult.postValue(Event(result))
             } else {
                 _oddsListGameHallResult.postValue(result)
             }

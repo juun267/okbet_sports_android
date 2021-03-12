@@ -374,9 +374,9 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
             checkbox.text = data.name
             checkbox.isChecked = data.isSelected
             if (data.isSelected)
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 data.isSelected = isChecked
                 ll_game_league_item.isSelected = isChecked
@@ -418,9 +418,9 @@ class SettlementGameTypeAdapter(private val context: Context, private val dataLi
         view.apply {
             tv_game_type.text = data.name
             if (position == selectedPosition)
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
             ll_game_type_item.setOnClickListener {
                 if (selectedPosition != position) {
                     //                data.isSelected = !data.isSelected

@@ -10,14 +10,15 @@
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:background="@color/gray"
+        android:background="@color/colorWhite2"
         android:gravity="center">
         <TextView
             android:id="@+id/tv_game_type_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/game_type"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorBlackLight"
+            android:textStyle="bold"
             android:textSize="@dimen/textSize16sp"
             />
     </LinearLayout>

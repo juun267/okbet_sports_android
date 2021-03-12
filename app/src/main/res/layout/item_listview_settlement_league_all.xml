@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorWhite2"
+    android:orientation="horizontal"
     android:paddingVertical="4dp"
     android:paddingStart="20dp"
-    android:paddingEnd="20dp"
-    android:background="@color/gray"
-    android:orientation="horizontal">
+    android:paddingEnd="20dp">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/checkbox_select_all"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/select_all_league"
-            android:buttonTint="@color/blue3"
-            android:textSize="@dimen/textSize16sp"
-            android:textColor="@color/textColorDark"
-            android:paddingStart="16dp"
-            android:paddingEnd="4dp"
-            />
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkbox_select_all"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:buttonTint="@color/colorBlackLight"
+        android:paddingStart="16dp"
+        android:paddingEnd="4dp"
+        android:text="@string/select_all_league"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_cancel_selections"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="@dimen/textSize14sp"
-            android:text="@string/select_cancel"
-            android:textColor="@color/lightGray" />
+    <TextView
+        android:id="@+id/tv_cancel_selections"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/select_cancel"
+        android:textColor="@color/colorGrayLight"
+        android:textSize="@dimen/textSize14sp" />
 
 
 </LinearLayout>

@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:divider="@drawable/divider_light_gray"
+    android:background="@color/colorWhite"
+    android:divider="@drawable/divider_color_white6"
     android:orientation="vertical"
     android:showDividers="middle|end">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divider_light_gray"
+        android:divider="@drawable/divider_color_white6"
         android:orientation="horizontal"
-        android:showDividers="middle|end">
+        android:showDividers="middle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -27,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -40,9 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
                 android:layout_marginEnd="7dp"
-                android:text="@string/verse"
-                android:textColor="@color/lightGray"
-                android:textSize="12sp"
+                android:text="@string/verse_"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize13sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tv_home_name"
                 app:layout_constraintEnd_toStartOf="@id/tv_away_name"
                 app:layout_constraintStart_toEndOf="@+id/tv_home_name" />
@@ -53,18 +54,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_home_vs"
                 app:layout_constraintTop_toTopOf="@id/tv_home_name"
                 tools:text="赫尔辛格" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- <View
-             android:layout_width="1dp"
-             android:layout_height="match_parent"
-             android:background="@color/light_gray" />-->
 
         <LinearLayout
             android:layout_width="0dp"
@@ -79,8 +75,8 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorWhiteGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="1-0" />
 
             <TextView
@@ -91,8 +87,8 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorWhiteGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
             <TextView
@@ -103,8 +99,8 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorWhiteGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
             <TextView
@@ -115,8 +111,8 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorWhiteGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
         </LinearLayout>
     </LinearLayout>
@@ -124,9 +120,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divider_light_gray"
+        android:divider="@drawable/divider_color_white6"
         android:orientation="horizontal"
-        android:showDividers="middle|end">
+        android:showDividers="middle">
 
         <LinearLayout
             android:id="@+id/ll_game_detail"
@@ -140,8 +136,8 @@
 
             <ImageView
                 android:id="@+id/iv_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:layout_marginEnd="5dp"
                 android:src="@drawable/ic_more" />
 
@@ -150,7 +146,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@color/colorWhiteGray"
+                android:text="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toStartOf="@+id/line2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

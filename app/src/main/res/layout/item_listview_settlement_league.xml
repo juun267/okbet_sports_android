@@ -5,23 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:addStatesFromChildren="true"
-    android:state_activated="true"
     android:enabled="true"
     android:orientation="horizontal"
-    android:paddingStart="20dp">
+    android:paddingStart="20dp"
+    android:state_activated="true">
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:buttonTint="@color/blue3"
+        android:buttonTint="@color/colorBlackLight"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:paddingEnd="20dp"
         android:paddingBottom="16dp"
-        android:textColor="@color/textColorDark"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         tools:text="@string/league" />
 

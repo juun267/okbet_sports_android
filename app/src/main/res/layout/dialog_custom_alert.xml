@@ -33,6 +33,7 @@
             tools:text="標題" />
 
         <ScrollView
+            android:overScrollMode="never"
             android:id="@+id/sv_block_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
