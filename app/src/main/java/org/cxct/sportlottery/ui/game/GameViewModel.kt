@@ -728,7 +728,9 @@ class GameViewModel(
             }
 
             if (leagueIdList != null) {
-                result?.oddsListData?.leagueOdds?.get(0)?.isExpand = true
+                if (result?.oddsListData?.leagueOdds?.isNotEmpty() == true) {
+                    result.oddsListData.leagueOdds[0].isExpand = true
+                }
                 _oddsListResult.postValue(Event(result))
             } else {
                 _oddsListGameHallResult.postValue(result)
