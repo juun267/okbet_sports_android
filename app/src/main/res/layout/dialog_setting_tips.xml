@@ -24,7 +24,6 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
                 android:orientation="horizontal"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,11 +33,13 @@
                 <TextView
                     android:id="@+id/txv_title"
                     android:layout_width="0dp"
+                    android:layout_marginStart="15dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/withdraw_setting"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
                     android:textSize="@dimen/textSize16sp" />
 
                 <ImageView
@@ -48,7 +49,6 @@
                     android:src="@drawable/ic_close" />
 
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/tv_tips"
@@ -72,7 +72,6 @@
                 android:id="@+id/tv_go_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
