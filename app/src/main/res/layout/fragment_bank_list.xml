@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical"
+    app:srlDragRate="0.3"
+    app:srlEnableLoadMore="true"
+    app:srlEnablePureScrollMode="true"
     tools:context=".ui.withdraw.BankListFragment">
 
-    <TextView
-        android:id="@+id/tv_no_bank_card"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:text="@string/bind_credit_card_not_yet"
-        android:textColor="@color/textColorDark"
-        android:textSize="@dimen/textSize14sp" />
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite1"
+        android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
-        android:id="@+id/rv_bank_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="5"
-        tools:listitem="@layout/content_rv_bank_list_edit"
-        tools:orientation="vertical" />
+        <TextView
+            android:id="@+id/tv_no_bank_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/bind_credit_card_not_yet"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/textSize14sp" />
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bank_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/content_rv_bank_list_edit"
+            tools:orientation="vertical" />
+
+    </LinearLayout>
+
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

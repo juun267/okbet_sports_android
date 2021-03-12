@@ -100,13 +100,24 @@
                         android:layout_height="1dp"
                         android:background="@color/colorWhite6" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_bet_list"
+                    <com.scwang.smart.refresh.layout.SmartRefreshLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:overScrollMode="never"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/content_bet_info_item_single" />
+                        app:srlDragRate="0.3"
+                        app:srlEnableLoadMore="true"
+                        app:srlEnablePureScrollMode="true">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_bet_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/content_bet_info_item_single" />
+
+                    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
                 </LinearLayout>
 

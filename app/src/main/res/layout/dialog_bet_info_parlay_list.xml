@@ -98,103 +98,114 @@
                         android:layout_height="1dp"
                         android:background="@color/colorWhite6" />
 
-                    <androidx.core.widget.NestedScrollView
-                        android:id="@+id/scroll_view"
+                    <com.scwang.smart.refresh.layout.SmartRefreshLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:overScrollMode="never">
+                        app:srlDragRate="0.3"
+                        app:srlEnableLoadMore="true"
+                        app:srlEnablePureScrollMode="true">
 
-                        <LinearLayout
-                            android:id="@+id/linear"
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/scroll_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:overScrollMode="never">
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_match_odd_list"
+                            <LinearLayout
+                                android:id="@+id/linear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:overScrollMode="never"
-                                tools:itemCount="2"
-                                tools:listitem="@layout/content_bet_info_item_detail" />
+                                android:orientation="vertical">
 
-                            <RelativeLayout
-                                android:id="@+id/rl_expandable"
-                                android:layout_width="match_parent"
-                                android:layout_height="28dp"
-                                android:background="@color/colorWhite3">
-
-                                <TextView
-                                    android:id="@+id/tv_sub_title"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                                    android:letterSpacing="0.086"
-                                    android:text="@string/bet_info_parlay_list"
-                                    android:textColor="@color/colorBlackLight"
-                                    android:textSize="@dimen/textSize12sp" />
-
-                                <ImageView
-                                    android:id="@+id/tv_to_game_rule"
-                                    android:layout_width="14dp"
-                                    android:layout_height="14dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="6dp"
-                                    android:layout_toEndOf="@+id/tv_sub_title"
-                                    android:src="@drawable/ic_rule_blue" />
-
-                                <ImageView
-                                    android:id="@+id/iv_arrow_up"
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                                    android:src="@drawable/ic_arrow_down_dark" />
-
-                            </RelativeLayout>
-
-                            <net.cachapa.expandablelayout.ExpandableLayout
-                                android:id="@+id/el_expandable_area"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:el_duration="500"
-                                app:el_expanded="true"
-                                app:el_parallax="0.5"
-                                tools:el_expanded="true">
-
-                                <LinearLayout
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rv_match_odd_list"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical">
+                                    android:overScrollMode="never"
+                                    tools:itemCount="2"
+                                    tools:listitem="@layout/content_bet_info_item_detail" />
 
-                                    <androidx.recyclerview.widget.RecyclerView
-                                        android:id="@+id/rv_parlay_list"
+                                <RelativeLayout
+                                    android:id="@+id/rl_expandable"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="28dp"
+                                    android:background="@color/colorWhite3">
+
+                                    <TextView
+                                        android:id="@+id/tv_sub_title"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                                        android:letterSpacing="0.086"
+                                        android:text="@string/bet_info_parlay_list"
+                                        android:textColor="@color/colorBlackLight"
+                                        android:textSize="@dimen/textSize12sp" />
+
+                                    <ImageView
+                                        android:id="@+id/tv_to_game_rule"
+                                        android:layout_width="14dp"
+                                        android:layout_height="14dp"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginStart="6dp"
+                                        android:layout_toEndOf="@+id/tv_sub_title"
+                                        android:src="@drawable/ic_rule_blue" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_arrow_up"
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                                        android:src="@drawable/ic_arrow_down_dark" />
+
+                                </RelativeLayout>
+
+                                <net.cachapa.expandablelayout.ExpandableLayout
+                                    android:id="@+id/el_expandable_area"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:el_duration="500"
+                                    app:el_expanded="true"
+                                    app:el_parallax="0.5"
+                                    tools:el_expanded="true">
+
+                                    <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:overScrollMode="never"
-                                        tools:ignore="TooDeepLayout"
-                                        tools:itemCount="2"
-                                        tools:listitem="@layout/content_bet_info_parlay_item" />
+                                        android:orientation="vertical">
 
-                                    <View
-                                        android:layout_width="match_parent"
-                                        android:layout_height="1dp"
-                                        android:background="@color/light_gray" />
+                                        <androidx.recyclerview.widget.RecyclerView
+                                            android:id="@+id/rv_parlay_list"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:overScrollMode="never"
+                                            tools:ignore="TooDeepLayout"
+                                            tools:itemCount="2"
+                                            tools:listitem="@layout/content_bet_info_parlay_item" />
 
-                                    <include
-                                        android:id="@+id/bet_info_action"
-                                        layout="@layout/content_bet_info_item_action" />
+                                        <View
+                                            android:layout_width="match_parent"
+                                            android:layout_height="1dp"
+                                            android:background="@color/light_gray" />
 
-                                </LinearLayout>
+                                        <include
+                                            android:id="@+id/bet_info_action"
+                                            layout="@layout/content_bet_info_item_action" />
 
-                            </net.cachapa.expandablelayout.ExpandableLayout>
+                                    </LinearLayout>
+
+                                </net.cachapa.expandablelayout.ExpandableLayout>
 
 
-                        </LinearLayout>
+                            </LinearLayout>
 
-                    </androidx.core.widget.NestedScrollView>
+                        </androidx.core.widget.NestedScrollView>
+
+                    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
                 </LinearLayout>
 
