@@ -67,19 +67,27 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         try {
 
             viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
-                if (it != null && it.success) {
-                    val matchOdd = it.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
-                    outright_filter_row.sportName = it.outrightOddsListData?.sport?.name ?: ""
+                it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+                    if (outrightOddsListResult.success) {
+                        val matchOdd =
+                            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
+                                0
+                            )
 
-                    outright_league_name.text =
-                        it.outrightOddsListData?.leagueOdds?.get(0)?.league?.name ?: ""
+                        outright_filter_row.sportName =
+                            outrightOddsListResult.outrightOddsListData?.sport?.name ?: ""
 
-                    outright_league_date.text = matchOdd?.startDate ?: ""
+                        outright_league_name.text =
+                            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
+                                ?: ""
 
-                    outright_league_time.text = matchOdd?.startTime ?: ""
+                        outright_league_date.text = matchOdd?.startDate ?: ""
 
-                    outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
+                        outright_league_time.text = matchOdd?.startTime ?: ""
+
+                        outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
+                    }
                 }
             })
 

@@ -118,8 +118,10 @@ class OutrightDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun initObserver() {
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it != null && it.success) {
-                setupOutrightOddList(it)
+            it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+                if (outrightOddsListResult.success) {
+                    setupOutrightOddList(outrightOddsListResult)
+                }
             }
         })
 
