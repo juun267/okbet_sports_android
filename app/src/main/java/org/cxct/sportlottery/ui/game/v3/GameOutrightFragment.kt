@@ -70,10 +70,14 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 if (it != null && it.success) {
                     val matchOdd = it.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
-                    outright_filter_row.sportName = it.outrightOddsListData?.sport?.name
+                    outright_filter_row.sportName = it.outrightOddsListData?.sport?.name ?: ""
 
                     outright_league_name.text =
                         it.outrightOddsListData?.leagueOdds?.get(0)?.league?.name ?: ""
+
+                    outright_league_date.text = matchOdd?.startDate ?: ""
+
+                    outright_league_time.text = matchOdd?.startTime ?: ""
 
                     outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
                 }
