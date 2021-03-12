@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite1"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".ui.game.v3.GameOutrightFragment">
 
     <org.cxct.sportlottery.ui.game.v3.GameFilterRow

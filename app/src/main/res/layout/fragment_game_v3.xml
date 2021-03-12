@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sport_type_list"
@@ -47,6 +47,7 @@
             android:id="@+id/game_filter_type_list"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            android:background="@color/colorWhite"
             android:paddingStart="10dp"
             android:paddingTop="6dp"
             android:paddingEnd="10dp"

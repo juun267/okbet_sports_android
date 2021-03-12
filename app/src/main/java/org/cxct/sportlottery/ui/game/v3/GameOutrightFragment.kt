@@ -105,8 +105,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onResume() {
         super.onResume()
 
-        requireView().isFocusableInTouchMode = true
-        requireView().requestFocus()
         requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
                 backEvent()
