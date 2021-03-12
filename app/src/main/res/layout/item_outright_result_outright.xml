@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:divider="@drawable/divider_light_gray"
+    android:background="@color/colorWhite"
+    android:divider="@drawable/divider_color_white6"
     android:gravity="center"
     android:orientation="vertical"
-    android:showDividers="beginning">
+    android:showDividers="end">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divider_light_gray"
+        android:divider="@drawable/divider_color_white6"
         android:gravity="center"
         android:orientation="horizontal"
         android:showDividers="middle">
@@ -31,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/textGray"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="2019-09-20 08:00" />
 
@@ -39,7 +40,7 @@
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textGray"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -52,7 +53,7 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorGrayDark"
             android:textSize="@dimen/textSize14sp"
             tools:text="Bodo/Glimt" />
 
