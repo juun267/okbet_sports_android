@@ -16,6 +16,9 @@ import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.user.info.UserInfoData
+import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_BET_ID
+import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_RECHARGE_ID
+import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.util.TextUtil
 
@@ -60,6 +63,9 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
             })
             //會員層級成長值
             userLevelGrowthResult.observe(this@VipActivity, Observer {
+                it.config?.growthConfigs?.let { growthConfigs ->
+                    setupGrowthHint(growthConfigs)
+                }
                 setupBannerData()
             })
             //第三方遊戲列表
@@ -83,7 +89,10 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
         banner_vip_level.setPageTransformer(Transformer.Default)
 
         //第三方遊戲反水選擇列
-        sv_third_games.setAdapter(thirdGameAdapter)
+        sv_third_games.apply {
+            selectedTextColor = R.color.colorBlack
+            setAdapter(thirdGameAdapter)
+        }
 
         //第三方遊戲反水列表
         rv_third_rebates.adapter = thirdRebatesAdapter
@@ -97,7 +106,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun initEvent() {
-        iv_logo.setOnClickListener {
+        btn_toolbar_back.setOnClickListener {
             finish()
         }
     }
@@ -153,7 +162,6 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     private fun setupViewByUserInfo(userInfo: UserInfoData) {
         userInfo.let { user ->
             tv_greet.text = user.nickName
-            tv_user_amount.text = user.growth.toString()
         }
     }
 
@@ -175,6 +183,14 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
                 textView.requestLayout()
             }
         }
+    }
+
+    private fun setupGrowthHint(growthConfigs: List<GrowthConfig>) {
+        val rechargeGrowthHint = growthConfigs.find { it.id == GROWTH_CONFIG_RECHARGE_ID }?.growth
+        val betGrowthHint = growthConfigs.find { it.id == GROWTH_CONFIG_BET_ID }?.growth
+
+        tv_hint_recharge_growth.text = String.format(getString(R.string.hint_recharge_growth), rechargeGrowthHint)
+        tv_hint_bet_growth.text = String.format(getString(R.string.hint_bet_growth), betGrowthHint)
     }
 
     private fun setupBannerData() {
@@ -255,7 +271,7 @@ class ThirdGameAdapter(private val context: Context, private val selectedListene
             val itemChecked = dataCheckedList[position]
             itemView.apply {
                 checkbox_item.text = data.firmName
-                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.blue2) else ContextCompat.getDrawable(context, R.color.white)
+                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.colorWhite6) else ContextCompat.getDrawable(context, android.R.color.white)
                 checkbox_item.setOnClickListener {
                     if (selectedPosition != position) {
                         selectedListener.onSelected(data)
