@@ -28,7 +28,7 @@
     <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
 
     <!--common-->
-    <string name="verse_lower">vs</string>
+    <string name="verse_lower">&#160;&#160;vs&#160;&#160;</string>
     <string name="verse">VS</string>
     <string name="error">错误</string>
     <string name="verse_">&#160;&#160;v&#160;&#160;</string>
