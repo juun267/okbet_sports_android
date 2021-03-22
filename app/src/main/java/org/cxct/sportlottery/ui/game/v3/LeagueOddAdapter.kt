@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.util.TextUtil
 
 class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -54,7 +55,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setupMatchInfo(item)
 
-            setupOddButton(item)
+            setupOddButton(item, leagueOddListener)
 
             itemView.match_live.setOnClickListener {
                 leagueOddListener?.onClickLive(item)
@@ -68,7 +69,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.game_name_away.text = item.matchInfo?.awayName
         }
 
-        private fun setupOddButton(item: MatchOdd) {
+        private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
             val oddListHDP = item.odds[PlayType.HDP.code]
             val oddListOU = item.odds[PlayType.OU.code]
 
@@ -93,6 +94,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     oddListHDP[0].odds?.let { TextUtil.formatForOdd(it) }
                 }
+
+                setOnClickListener {
+                    if (oddListHDP != null && oddListHDP.size >= 2) {
+                        leagueOddListener?.onClickBet(item, PlayType.HDP.code, oddListHDP[0])
+                    }
+                }
             }
 
             itemView.match_odd_hdp_away.apply {
@@ -115,6 +122,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     ""
                 } else {
                     oddListHDP[1].odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddListHDP != null && oddListHDP.size >= 2) {
+                        leagueOddListener?.onClickBet(item, PlayType.HDP.code, oddListHDP[1])
+                    }
                 }
             }
 
@@ -141,6 +154,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     oddListOU[0].odds?.let { TextUtil.formatForOdd(it) }
                 }
+
+                setOnClickListener {
+                    if (oddListOU != null && oddListOU.size >= 2) {
+                        leagueOddListener?.onClickBet(item, PlayType.OU.code, oddListOU[0])
+                    }
+                }
             }
 
             itemView.match_odd_ou_away.apply {
@@ -166,6 +185,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     oddListOU[1].odds?.let { TextUtil.formatForOdd(it) }
                 }
+
+                setOnClickListener {
+                    if (oddListOU != null && oddListOU.size >= 2) {
+                        leagueOddListener?.onClickBet(item, PlayType.OU.code, oddListOU[1])
+                    }
+                }
             }
         }
 
@@ -185,7 +210,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setupMatchInfo(item)
 
-            setupOddButton(item)
+            setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
                 leagueOddListener?.onClickLive(item)
@@ -199,7 +224,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.game_name_away_1x2.text = item.matchInfo?.awayName
         }
 
-        private fun setupOddButton(item: MatchOdd) {
+        private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
             val oddList1X2 = item.odds[PlayType.X12.code]
 
             itemView.match_odd_1.apply {
@@ -218,6 +243,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     oddList1X2[0].odds?.let { TextUtil.formatForOdd(it) }
                 }
+
+                setOnClickListener {
+                    if (oddList1X2 != null && oddList1X2.size >= 2) {
+                        leagueOddListener?.onClickBet(item, PlayType.X12.code, oddList1X2[0])
+                    }
+                }
             }
 
             itemView.match_odd_x.apply {
@@ -235,6 +266,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     ""
                 } else {
                     oddList1X2[1].odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddList1X2 != null && oddList1X2.size >= 3) {
+                        leagueOddListener?.onClickBet(item, PlayType.X12.code, oddList1X2[1])
+                    }
                 }
             }
 
@@ -256,6 +293,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     oddList1X2[2].odds?.let { TextUtil.formatForOdd(it) }
                 }
+
+                setOnClickListener {
+                    if (oddList1X2 != null && oddList1X2.size == 2) {
+                        leagueOddListener?.onClickBet(item, PlayType.X12.code, oddList1X2[1])
+                    } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                        leagueOddListener?.onClickBet(item, PlayType.X12.code, oddList1X2[2])
+                    }
+                }
             }
         }
 
@@ -271,6 +316,11 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class LeagueOddListener(val clickListenerLive: (item: MatchOdd) -> Unit) {
+class LeagueOddListener(
+    val clickListenerLive: (item: MatchOdd) -> Unit,
+    val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
+) {
     fun onClickLive(item: MatchOdd) = clickListenerLive(item)
+    fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
+        clickListenerBet(matchOdd, oddString, odd)
 }
