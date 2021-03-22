@@ -14,7 +14,7 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@drawable/bg_gradient_dark"
+        android:background="@color/colorBlue"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_scrollFlags="scroll|enterAlways">
@@ -434,7 +434,6 @@
                     android:id="@+id/banner_vip_level"
                     android:layout_width="match_parent"
                     android:layout_height="134dp"
-                    android:overScrollMode="never"
                     app:isAutoPlay="false"
                     app:isClipChildrenMode="true"
                     app:isHandLoop="false"
@@ -505,21 +504,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/next_level_tips"
-                            android:textColor="@color/textGray"
+                            android:textColor="@color/colorGrayDark"
                             android:textSize="@dimen/textSize12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/currency_symbol"
-                            android:textColor="@color/textGray"
+                            android:textColor="@color/colorGrayDark"
                             android:textSize="@dimen/textSize12sp" />
 
                         <TextView
                             android:id="@+id/tv_requirement_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/textGray"
+                            android:textColor="@color/colorGrayDark"
                             android:textSize="@dimen/textSize12sp"
                             tools:text="500.00" />
                     </LinearLayout>

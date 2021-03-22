@@ -101,7 +101,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
-                    android:textColor="@color/textGray"
+                    android:textColor="@color/colorGrayDark"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="2019-09-20 08:00" />
 

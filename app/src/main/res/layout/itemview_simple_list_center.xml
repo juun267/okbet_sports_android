@@ -7,5 +7,5 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:textColor="@color/textColorDark"
-    android:textSize="14sp"
+    android:textSize="@dimen/textSize14sp"
     tools:text="@string/recharge_state_all" />

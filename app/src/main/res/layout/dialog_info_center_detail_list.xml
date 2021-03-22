@@ -30,30 +30,30 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/colorWhite">
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
-                    android:orientation="horizontal"
+                <TextView
+                    android:id="@+id/txv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:padding="8dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="工商银行停用通知" />
 
-                    <TextView
-                        android:id="@+id/txv_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/textSize16sp"
-                        tools:text="工商银行停用通知" />
 
-                </LinearLayout>
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorWhite6"
+                    app:layout_constraintTop_toBottomOf="@+id/txv_title" />
 
                 <TextView
                     android:id="@+id/txv_detail"
@@ -63,7 +63,7 @@
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
                     tools:text="公告假文：人护是仍现升诗时坐价一！有孩维样的师中院？大倒发机，说广的西家时，种常的形小质到不功片统业，友年度器量居味静，告作头这城思没师王保，心有作况业后去，了选下步，到去般分想后史位当步那已；家前的…" />
 
                 <View
@@ -77,10 +77,11 @@
                     android:id="@+id/info_center_detail_confirm"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="44dp"
+                    android:textColor="@color/colorBlueDark"
+                    android:textStyle="bold"
                     android:text="@string/btn_confirm"
-                    android:textColor="@color/blue3"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize14sp"
                     app:layout_constraintTop_toBottomOf="@id/info_center_detail_divider" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

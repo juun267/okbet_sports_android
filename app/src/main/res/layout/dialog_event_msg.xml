@@ -54,7 +54,7 @@
                 android:layout_marginStart="5dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:overScrollMode="never"
+            android:overScrollMode="never"
                 android:id="@+id/rv_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
