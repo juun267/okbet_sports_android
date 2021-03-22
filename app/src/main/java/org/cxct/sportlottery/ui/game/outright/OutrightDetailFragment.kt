@@ -147,10 +147,10 @@ class OutrightDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
                 originOdds.forEach { originOdd ->
                     val updateOdd = socketOdds?.find { socketOdd ->
-                        originOdd.id == socketOdd.id
+                        originOdd?.id == socketOdd.id
                     }
 
-                    val originOddValue = originOdd.odds
+                    val originOddValue = originOdd?.odds
                     val updateOddValue = updateOdd?.odds
 
                     originOddValue?.let {
