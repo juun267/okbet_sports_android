@@ -83,6 +83,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddListHDP?.get(0)?.isSelected ?: false
+
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
                 } else {
@@ -111,6 +113,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     View.VISIBLE
                 }
+
+                isSelected = oddListHDP?.get(1)?.isSelected ?: false
 
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
@@ -143,6 +147,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddListOU?.get(0)?.isSelected ?: false
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
@@ -173,6 +179,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     View.VISIBLE
                 }
+
+                isSelected = oddListOU?.get(1)?.isSelected ?: false
 
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
@@ -236,6 +244,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddList1X2?.get(0)?.isSelected ?: false
+
                 odd_1x2_top_text.text = "1"
 
                 odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 2) {
@@ -260,6 +270,12 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[1].isSelected ?: false
+                } else {
+                    false
+                }
+
                 odd_1x2_top_text.text = "X"
 
                 odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 3) {
@@ -282,6 +298,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.GONE
                 } else {
                     View.VISIBLE
+                }
+
+                isSelected = if (oddList1X2 != null && oddList1X2.size == 2) {
+                    oddList1X2[1].isSelected ?: false
+                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[2].isSelected ?: false
+                } else {
+                    false
                 }
 
                 odd_1x2_top_text.text = "2"
