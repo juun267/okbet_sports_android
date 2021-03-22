@@ -148,6 +148,7 @@
     <string name="home_tab_outright">冠军</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
+    <string name="label_all_something_in_play">所有 %s 滚球</string>
 
 
     <string name="champion">冠军</string>

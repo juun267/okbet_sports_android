@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="98dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/fillet_4dp_home_game_item_dark"
+    android:background="@drawable/fillet_4dp_home_game_item"
     tools:context=".ui.game.home.HomeGameCard">
 
     <ImageView

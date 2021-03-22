@@ -6,18 +6,18 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Match(
-    @Json(name = "awayName")
-    val awayName: String,
-    @Json(name = "endTime")
-    val endTime: String?,
-    @Json(name = "homeName")
-    val homeName: String,
     @Json(name = "id")
     val id: String,
-    @Json(name = "playCateNum")
-    val playCateNum: Int?,
+    @Json(name = "homeName")
+    val homeName: String, //主队名称
+    @Json(name = "awayName")
+    val awayName: String, //客队名称
     @Json(name = "startTime")
-    val startTime: Long,
+    val startTime: Long?, //赛事或赛季开始时间
+    @Json(name = "endTime")
+    val endTime: Long?, //赛事或赛季结束时间
+    @Json(name = "playCateNum")
+    val playCateNum: Int?, //该赛事之全部可投注玩法类数量
     @Json(name = "status")
-    val status: Int
+    val status: Int //赛事状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 )
