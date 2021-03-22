@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/fillet_5dp_white"
     android:orientation="vertical"
-    tools:context=".ui.game.home.HomeGameTable">
+    tools:context=".ui.game.home.HomeGameTable"
+    tools:ignore="SpUsage">
 
     <LinearLayout
         android:id="@+id/titleBar"
@@ -37,10 +38,10 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
         android:id="@+id/rv_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         tools:itemCount="3"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/home_game_rv_item" />

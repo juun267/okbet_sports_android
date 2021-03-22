@@ -30,7 +30,7 @@
             android:showDividers="middle">
 
             <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
+                android:overScrollMode="never"
                 android:id="@+id/rv_home"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 tools:listitem="@layout/content_type_cs_item" />
 
             <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
+                android:overScrollMode="never"
                 android:id="@+id/rv_draw"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 tools:listitem="@layout/content_type_cs_item" />
 
             <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
+                android:overScrollMode="never"
                 android:id="@+id/rv_away"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

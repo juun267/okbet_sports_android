@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.network.matchresult.list.Row
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,16 +34,30 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
     private val settlementViewModel: SettlementViewModel by viewModel()
-    private val settlementRvAdapter by lazy {
-        SettlementRvAdapter()
-    }
     private val settlementDateRvAdapter by lazy {
         SettlementDateRvAdapter()
     }
+
+    //refactor
+    private val matchResultDiffAdapter by lazy {
+        MatchResultDiffAdapter(MatchItemClickListener(
+            titleClick = {
+                viewModel.clickResultItem(expandPosition = it)
+            }, matchClick = {
+                viewModel.clickResultItem(gameType, it)
+            })
+        )
+    }
+    private val outrightResultDiffAdapter by lazy {
+        OutrightResultDiffAdapter(OutrightItemClickListener {
+            viewModel.clickOutrightItem(it)
+        })
+    }
+
     private var gameType = ""
-    private val selectNameList = mutableListOf<String>()
+
     private var timeRangeParams = setupTimeApiFormat(0) //預設為當日
-    private var leagueSelectedSet: MutableSet<Int> = mutableSetOf()
+    private var leagueSelectedSet: MutableSet<String> = mutableSetOf()
 
     private var settleType = SettleType.MATCH
 
@@ -72,8 +85,8 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     }
 
     private fun setupAdapter() {
-        rv_results.adapter = settlementRvAdapter
         rv_date.adapter = settlementDateRvAdapter
+        refactor_rv.adapter = matchResultDiffAdapter
     }
 
     private fun initEvent() {
@@ -99,7 +112,10 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
         }
 
         btn_refresh.setOnClickListener {
-            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+            when (settleType) {
+                SettleType.OUTRIGHT -> settlementViewModel.getOutrightResultList(gameType)
+                SettleType.MATCH -> settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
+            }
         }
     }
 
@@ -110,40 +126,27 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
 
     private fun observeData() {
         settlementViewModel.apply {
-            //獲取賽果資料,更新聯賽列表
-            matchResultListResult.observe(this@ResultsSettlementActivity) {
-                setSettleRvData(it.rows)
-
-                bottomSheetLeagueItemDataList = it.rows?.map { rows ->
-                    LeagueItemData(null, rows.league.name, true)
-                }?.toMutableList<LeagueItemData>() ?: mutableListOf()
-
-                setupLeagueList(bottomSheetLeagueItemDataList)
-            }
-
-            //比賽詳情
-            gameResultDetailResult.observe(this@ResultsSettlementActivity) {
-                settlementRvAdapter.mGameDetail = it //set Game Detail Data
-            }
-
-            //獲取冠軍資料,更新聯賽列表
-            outRightListResult.observe(this@ResultsSettlementActivity) {
-                bottomSheetLeagueItemDataList = it.rows?.map { rows ->
-                    LeagueItemData(null, rows.season.name, true)
-                }?.toMutableList<LeagueItemData>() ?: mutableListOf()
-
-                setupLeagueList(bottomSheetLeagueItemDataList)
-            }
-
             //過濾後賽果資料
-            matchResultList.observe(this@ResultsSettlementActivity) {
-                setSettleRvData(it)
-            }
+            showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
+                matchResultDiffAdapter.gameType = gameType
+                matchResultDiffAdapter.submitList(it)
+            })
+
+            //更新聯賽列表
+            leagueFilterList.observe(this@ResultsSettlementActivity, Observer {
+                leagueSelectedSet.clear()
+                bottomSheetLeagueItemDataList = it
+                setupLeagueList(it)
+                it.forEach { data ->
+                    leagueSelectedSet.add(data.name)
+                }
+                setLeagueFilter(leagueSelectedSet)
+            })
 
             //過濾後冠軍資料
-            outRightList.observe(this@ResultsSettlementActivity) {
-                setSettleRvOutRightData(it)
-            }
+            showOutrightData.observe(this@ResultsSettlementActivity, Observer {
+                outrightResultDiffAdapter.submitList(it)
+            })
         }
     }
 
@@ -156,17 +159,17 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                 //0:今日, 1:明天, 2:後天 ... 7:冠軍
                 when (date) {
                     7 -> {
+                        refactor_rv.adapter = outrightResultDiffAdapter
+                        refactor_rv.scrollToPosition(0)
                         settleType = SettleType.OUTRIGHT
                         settlementViewModel.getOutrightResultList(gameType)
                     }
                     else -> {
+                        refactor_rv.adapter = matchResultDiffAdapter
+                        refactor_rv.scrollToPosition(0)
                         settleType = SettleType.MATCH
                         timeRangeParams = setupTimeApiFormat(date)
-                        settlementViewModel.getSettlementData(
-                            gameType,
-                            null,
-                            timeRangeParams
-                        )
+                        settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
                     }
                 }
             }
@@ -176,7 +179,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     private fun initSettleGameTypeBottomSheet() {
         tv_game_type.text = getString(GameType.values()[0].string)
         gameType = GameType.values()[0].key
-        settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+        settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
     }
 
     private fun setupSettleGameTypeBottomSheet() {
@@ -195,7 +198,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                     this@ResultsSettlementActivity.tv_game_type.text = select.name
                     when (settleType) {
                         SettleType.MATCH -> {
-                            settlementViewModel.getSettlementData(gameType, null, timeRangeParams)
+                            settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
                         }
                         SettleType.OUTRIGHT -> {
                             settlementViewModel.getOutrightResultList(gameType)
@@ -237,16 +240,13 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
 
         //全選按鈕
         cbAll.setOnClickListener {
-            selectNameList.clear()
             bottomSheetLeagueItemDataList.forEachIndexed { index, it ->
                 it.isSelected = cbAll.isChecked
 
                 if (it.isSelected) {
-                    selectNameList.add(it.name)
-                    leagueSelectedSet.add(index)
+                    leagueSelectedSet.add(it.name)
                 } else {
-                    selectNameList.remove(it.name)
-                    leagueSelectedSet.remove(index)
+                    leagueSelectedSet.remove(it.name)
                 }
             }
             settlementViewModel.setLeagueFilter(leagueSelectedSet)
@@ -256,7 +256,6 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
         //取消選擇
         val tvCancel = settlementLeagueBottomSheet.layout_all.tv_cancel_selections
         tvCancel.setOnClickListener {
-            selectNameList.clear()
             cbAll.isChecked = false
 
             bottomSheetLeagueItemDataList.forEach {
@@ -280,11 +279,9 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                 OnSelectItemWithPositionListener<LeagueItemData> {
                 override fun onClick(select: LeagueItemData, position: Int) {
                     if (select.isSelected) {
-                        selectNameList.add(select.name)
-                        leagueSelectedSet.add(position)
+                        leagueSelectedSet.add(select.name)
                     } else {
-                        selectNameList.remove(select.name)
-                        leagueSelectedSet.remove(position)
+                        leagueSelectedSet.remove(select.name)
                     }
                     settlementViewModel.setLeagueFilter(leagueSelectedSet)
                     //判斷全選按鈕是否需選取
@@ -297,34 +294,6 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
             })
             checkbox_select_all.performClick() //預設為聯盟全選
         }
-    }
-
-    /**
-     * 設置賽果資料
-     * result : MatchResultListResult.row: List<Row>
-     */
-    private fun setSettleRvData(result: List<Row>?) {
-        settlementRvAdapter.gameType = gameType
-        settlementRvAdapter.settleType = settleType
-        settlementRvAdapter.mDataList = result ?: listOf()
-        settlementRvAdapter.mSettlementRvListener = object :
-            SettlementRvAdapter.SettlementRvListener {
-            override fun getGameResultDetail(
-                settleRvPosition: Int, gameResultRvPosition: Int, matchId: String
-            ) {
-                settlementViewModel.getSettlementDetailData(settleRvPosition = settleRvPosition, gameResultRvPosition = gameResultRvPosition, matchId = matchId)
-            }
-
-        }
-    }
-
-    /**
-     * 設置賽果冠軍資料
-     * result : OutRightListResult.row: List<Row>
-     */
-    private fun setSettleRvOutRightData(result: List<org.cxct.sportlottery.network.outright.Row>?) {
-        settlementRvAdapter.settleType = settleType
-        settlementRvAdapter.mOutRightDatList = result ?: listOf()
     }
 
     /**
@@ -405,9 +374,9 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
             checkbox.text = data.name
             checkbox.isChecked = data.isSelected
             if (data.isSelected)
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 data.isSelected = isChecked
                 ll_game_league_item.isSelected = isChecked
@@ -449,9 +418,9 @@ class SettlementGameTypeAdapter(private val context: Context, private val dataLi
         view.apply {
             tv_game_type.text = data.name
             if (position == selectedPosition)
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
             ll_game_type_item.setOnClickListener {
                 if (selectedPosition != position) {
                     //                data.isSelected = !data.isSelected

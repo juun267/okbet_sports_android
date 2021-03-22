@@ -34,7 +34,7 @@
     </RelativeLayout>
 
     <ScrollView
-         android:overScrollMode="never"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

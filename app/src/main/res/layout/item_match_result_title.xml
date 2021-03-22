@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider_color_white6"
+    android:orientation="vertical"
+    android:showDividers="end">
+
+    <LinearLayout
+        android:id="@+id/block_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite3"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_arrow_down_dark" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:maxLines="1"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="Miền Bắc" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_first_half"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/first_half_game"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="@string/first_half_game" />
+
+            <TextView
+                android:id="@+id/tv_second_half"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/second_half_game"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="@string/second_half_game" />
+
+            <TextView
+                android:id="@+id/tv_full_game"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/full_game"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="@string/full_game" />
+
+            <TextView
+                android:id="@+id/tv_end_game"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/game_result"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="@string/game_result" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

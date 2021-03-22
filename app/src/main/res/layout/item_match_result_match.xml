@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:divider="@drawable/divider_color_white6"
+    android:orientation="vertical"
+    android:showDividers="middle|end">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider_color_white6"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="域堡" />
+
+            <TextView
+                android:id="@+id/tv_home_vs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:text="@string/verse_"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize13sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_home_name"
+                app:layout_constraintEnd_toStartOf="@id/tv_away_name"
+                app:layout_constraintStart_toEndOf="@+id/tv_home_name" />
+
+            <TextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_home_vs"
+                app:layout_constraintTop_toTopOf="@id/tv_home_name"
+                tools:text="赫尔辛格" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_first_half_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
+                tools:text="1-0" />
+
+            <TextView
+                android:id="@+id/tv_second_half_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
+                tools:text="3-0" />
+
+            <TextView
+                android:id="@+id/tv_full_game_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
+                tools:text="3-0" />
+
+            <TextView
+                android:id="@+id/tv_end_game_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize13sp"
+                tools:text="3-0" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider_color_white6"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:id="@+id/ll_game_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+            <ImageView
+                android:id="@+id/iv_switch"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_more" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
+                app:layout_constraintEnd_toStartOf="@+id/line2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="15/12 01:00" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/line2"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+</LinearLayout>

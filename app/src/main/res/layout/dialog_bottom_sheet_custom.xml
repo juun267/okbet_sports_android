@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
+        android:overScrollMode="never"
         android:id="@+id/sheet_rv_more"
         android:layout_width="match_parent"
         android:layout_height="167dp"

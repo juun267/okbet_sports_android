@@ -62,10 +62,10 @@
         tools:el_expanded="true">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
             android:id="@+id/league_odd_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             android:nestedScrollingEnabled="false"
             tools:itemCount="1"
             tools:listitem="@layout/itemview_game_league_odd_hdp_ou" />
