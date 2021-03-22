@@ -30,11 +30,12 @@
                 android:paddingEnd="20dp"
                 android:text="@string/bottom_sheet_close"
                 android:textColor="@color/bottom_sheet_top_bar_close_text"
-                android:textSize="14sp" />
+                android:textSize="@dimen/textSize14sp" />
 
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/rv_more"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

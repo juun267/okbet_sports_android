@@ -39,7 +39,7 @@
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@color/colorWhite"
                     android:orientation="horizontal"
                     android:padding="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,8 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/bet_detail"
-                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize16sp" />
 
                     <ImageView
@@ -62,7 +63,15 @@
                         android:src="@drawable/ic_close" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorWhite6"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintBottom_toTopOf="@id/refresh"/>
+
                 <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                    android:id="@+id/refresh"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     app:srlDragRate="0.3"

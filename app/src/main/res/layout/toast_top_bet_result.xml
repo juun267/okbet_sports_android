@@ -22,7 +22,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/activity_vertical_margin"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/textSize16sp" />
 
     </RelativeLayout>
 

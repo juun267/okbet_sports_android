@@ -18,6 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="2020-10-29"
-        tools:textColor="@android:color/white" />
+        tools:textColor="@color/colorWhite" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

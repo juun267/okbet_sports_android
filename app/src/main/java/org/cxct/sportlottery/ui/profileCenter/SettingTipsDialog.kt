@@ -49,9 +49,6 @@ class SettingTipsDialog(private val androidContext: Context, private val dialogL
     }
 
     fun initButton() {
-        img_close.setOnClickListener {
-            dismiss()
-        }
         tv_go_setting.setOnClickListener {
             dialogListener.goSettingPage()
             dismiss()
