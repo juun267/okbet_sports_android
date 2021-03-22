@@ -31,7 +31,7 @@
             app:autoSizeMinTextSize="2dp"
             app:autoSizeTextType="uniform"
             android:textColor="@color/colorDarkBlack"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             tools:text="AG平台余额"
             android:text="@{data.showName}"
             android:layout_marginStart="16dp"
@@ -49,7 +49,7 @@
             android:maxLines="1"
             app:moneyFormat="@{data.money}"
             android:textColor="@color/colorDarkBlack"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageView2"
@@ -74,12 +74,10 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"
-            android:layout_margin="8dp"
+            android:background="@color/colorWhite6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

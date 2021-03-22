@@ -107,7 +107,7 @@
         android:background="@drawable/bg_5dp_radius_button_blue3"
         android:gravity="center"
         android:text="@string/btn_submit"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize16sp" />
 
 

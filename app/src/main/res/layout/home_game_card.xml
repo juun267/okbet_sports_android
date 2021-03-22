@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="98dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/fillet_4dp_home_game_item_dark"
+    android:background="@drawable/fillet_4dp_home_game_item"
     tools:context=".ui.game.home.HomeGameCard">
 
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:text="@string/basketball"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title"

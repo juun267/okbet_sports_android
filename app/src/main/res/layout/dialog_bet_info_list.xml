@@ -117,15 +117,11 @@
 
                     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-
-
                 </LinearLayout>
-
 
             </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

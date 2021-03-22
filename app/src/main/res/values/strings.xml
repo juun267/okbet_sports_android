@@ -28,7 +28,7 @@
     <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
 
     <!--common-->
-    <string name="verse_lower">vs</string>
+    <string name="verse_lower">&#160;&#160;vs&#160;&#160;</string>
     <string name="verse">VS</string>
     <string name="error">错误</string>
     <string name="verse_">&#160;&#160;v&#160;&#160;</string>
@@ -39,7 +39,7 @@
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
-    <string name="btn_confirm">确认</string>
+    <string name="btn_confirm">确定</string>
     <string name="btn_determine">确定</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_retry">重试</string>
@@ -148,6 +148,7 @@
     <string name="home_tab_outright">冠军</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
+    <string name="label_all_something_in_play">所有 %s 滚球</string>
 
 
     <string name="champion">冠军</string>
@@ -179,7 +180,7 @@
     <string name="next_level_requirement">距离下一等级：</string>
     <string name="title_rebates_selector_form">各类别游戏层级福利</string>
     <string name="member_name_level_one">普通会员</string>
-    <string name="next_level_tips">還需存款約</string>
+    <string name="next_level_tips">还需成长值约 %1$s 点</string>
     <string name="level_requirement_unit">入款或流水</string>
     <string name="growth">成长值</string>
     <string name="level_one">VIP1</string>
@@ -189,10 +190,13 @@
     <string name="level_five">VIP5</string>
     <string name="level_six">VIP6</string>
     <string name="unlimited">无上限</string>
+    <string name="select_plat">选择平台</string>
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="rebates_rate">返水$1%s数</string>
     <string name="daily_rebates">单日最大返水</string>
+    <string name="hint_recharge_growth">充值 1 元可获得 %1$s 点成长值</string>
+    <string name="hint_bet_growth">投注 1 元可获得 %1$s 点成长值</string>
 
     <!--  HelpCenter  -->
     <string name="contact_us">联络我们</string>
@@ -274,7 +278,7 @@
     <!-- Setting password page-->
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
-    <string name="current_login_password">当前登录密码</string>
+    <string name="current_login_password">当前密码</string>
     <string name="current_withdrawal_password">当前提款密码</string>
     <string name="hint_current_login_password">请输入登录密码</string>
     <string name="hint_current_withdrawal_password">请输入提款密码</string>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_blue"
+    android:background="@color/colorWhite1"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@id/layout_balance"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
+            android:overScrollMode="never"
         android:id="@+id/rv_plat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="15dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/selector_blue_gray"
+        android:background="@drawable/bg_radius_20_button_dusk"
         android:gravity="center"
         android:maxWidth="100dp"
         android:text="@string/one_key_recovery"

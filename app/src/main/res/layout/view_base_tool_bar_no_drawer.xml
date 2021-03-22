@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_gradient_dark"
+            android:background="@color/colorBlue"
             android:orientation="horizontal">
 
             <ImageView

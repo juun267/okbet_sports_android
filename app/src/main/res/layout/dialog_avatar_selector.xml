@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.profile.AvatarSelectorDialog">
 
@@ -21,7 +21,7 @@
         android:id="@+id/btn_choose_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/effect_ripple_rectangle_gray"
+        android:background="@null"
         android:gravity="center"
         android:padding="15dp"
         android:text="@string/choose_a_photo_from_the_album"
@@ -32,7 +32,7 @@
         android:id="@+id/btn_take_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/effect_ripple_rectangle_gray"
+        android:background="@null"
         android:gravity="center"
         android:padding="15dp"
         android:text="@string/take_a_picture"

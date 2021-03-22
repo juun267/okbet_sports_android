@@ -1,26 +1,16 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.archit.calendardaterangepicker.customviews.CalendarListener
-import com.archit.calendardaterangepicker.customviews.DateSelectedType
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
-import kotlinx.android.synthetic.main.component_date_range_selector.view.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import java.util.*
-
 
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     private val logDetailDialog by lazy {
