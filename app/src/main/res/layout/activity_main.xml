@@ -35,7 +35,9 @@
                 android:layout_gravity="bottom"
                 android:background="@color/colorWhite"
                 app:labelVisibilityMode="labeled"
-                app:menu="@menu/bottom_navigation_menu" />
+                app:menu="@menu/bottom_navigation_menu"
+                app:itemIconTint="@color/selector_blue_silver"
+                app:itemTextColor="@color/selector_blue_silver"/>
 
         </LinearLayout>
 
