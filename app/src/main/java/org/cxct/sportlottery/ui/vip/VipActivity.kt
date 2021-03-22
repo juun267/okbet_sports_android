@@ -153,7 +153,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     private fun setupViewByUserInfo(userInfo: UserInfoData) {
         userInfo.let { user ->
             tv_greet.text = user.nickName
-            tv_user_amount.text = user.growth.toString()
+            tv_user_amount.text = user.growth?.toDouble()?.let { TextUtil.formatMoney(it) }
         }
     }
 
