@@ -166,7 +166,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
         private fun componentStatusByOdds(
             betVisible: Int, warningVisible: Int, warningString: Int,
-            betTextBg: Int, betTextColor: Int, clickable: Boolean
+            betTextBg: Int, betTextColor: Int, clickable: Boolean,
+            moreTextBg: Int, moreTextColor: Int, moreClickable: Boolean
         ) {
             binding.llBet.visibility = betVisible
             binding.tvCloseWarning.apply {
@@ -178,6 +179,13 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 setTextColor(ContextCompat.getColor(binding.root.context, betTextColor))
                 isClickable = clickable
             }
+
+            binding.betInfoAction.tv_add_more.apply {
+                background = ContextCompat.getDrawable(binding.root.context, moreTextBg)
+                setTextColor(ContextCompat.getColor(binding.root.context, moreTextColor))
+                isClickable = moreClickable
+            }
+
         }
 
         fun bind(mBetInfoList: BetInfoListData, position: Int) {
@@ -201,9 +209,9 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     }
                     else -> {
                         matchOdd.spread.apply {
-                            if(isEmpty()){
+                            if (isEmpty()) {
                                 tvOddsSpread.visibility = View.GONE
-                            }else{
+                            } else {
                                 tvOddsSpread.visibility = View.VISIBLE
                                 tvOddsSpread.text = this
                             }
@@ -219,10 +227,11 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(mBetInfoList) }
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
-            val strVerse = context.getString(R.string.verse_)
+            val strVerse = context.getString(R.string.verse_lower)
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
 
             binding.betInfoDetail.tvMatch.text = strMatch
+
             binding.betInfoDetail.tvName.text = if (matchOdd.inplay == INPLAY) context.getString(R.string.bet_info_in_play) + matchOdd.playCateName else matchOdd.playCateName
 
             binding.etBet.setText(mBetInfoList.input)
@@ -265,23 +274,29 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             when (matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
                     componentStatusByOdds(
-                        View.GONE,
-                        View.VISIBLE,
-                        R.string.bet_info_list_game_closed,
-                        R.drawable.bg_radius_4_button_unselected,
-                        R.color.bright_gray,
-                        false
+                        betVisible = View.GONE,
+                        warningVisible = View.VISIBLE,
+                        warningString = R.string.bet_info_list_game_closed,
+                        betTextBg = R.drawable.bg_radius_4_button_unselected,
+                        betTextColor = R.color.colorWhite,
+                        clickable = false,
+                        moreTextBg = R.drawable.bg_radius_4_button_unselected,
+                        moreTextColor = R.color.colorWhite,
+                        moreClickable = false
                     )
                 }
 
                 BetStatus.ACTIVATED.code -> {
                     componentStatusByOdds(
-                        View.VISIBLE,
-                        View.GONE,
-                        R.string.bet_info_list_bet,
-                        R.drawable.bg_radius_4_button_orangelight,
-                        R.color.colorWhite,
-                        true
+                        betVisible = View.VISIBLE,
+                        warningVisible = View.GONE,
+                        warningString = R.string.bet_info_list_bet,
+                        betTextBg = R.drawable.bg_radius_4_button_orangelight,
+                        betTextColor = R.color.colorWhite,
+                        clickable = true,
+                        moreTextBg = R.drawable.bg_radius_4_button_colorwhite6,
+                        moreTextColor = R.color.colorGray,
+                        moreClickable = true
                     )
                     setChangeOdds(
                         binding.betInfoAction.tv_bet,
