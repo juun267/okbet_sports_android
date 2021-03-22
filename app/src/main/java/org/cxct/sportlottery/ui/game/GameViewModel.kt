@@ -744,8 +744,8 @@ class GameViewModel(
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.odds.forEach { map ->
                         map.value.forEach { odd ->
-                            odd.isSelected = betInfoRepository.betInfoList.value?.any {
-                                it.matchOdd.oddsId == odd.id
+                            odd?.isSelected = betInfoRepository.betInfoList.value?.any {
+                                it.matchOdd.oddsId == odd?.id
                             }
                         }
                     }

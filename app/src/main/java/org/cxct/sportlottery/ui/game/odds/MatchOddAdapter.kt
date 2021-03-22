@@ -32,7 +32,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
             data.forEach { matchOdd ->
                 matchOdd.odds.forEach { map ->
                     map.value.forEach { odd ->
-                        odd.isSelected = value?.any { it.matchOdd.oddsId == odd.id } ?: false
+                        odd?.isSelected = value?.any { it.matchOdd.oddsId == odd?.id } ?: false
                     }
                 }
             }
