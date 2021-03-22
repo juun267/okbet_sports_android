@@ -91,7 +91,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             binding.matchOdd = matchOdd
             binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(matchOdd.odds)
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
-            val strVerse = context.getString(R.string.verse_)
+            val strVerse = context.getString(R.string.verse_lower)
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
             binding.betInfoDetail.tvMatch.text = strMatch
             (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp

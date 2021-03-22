@@ -19,7 +19,7 @@
         android:paddingEnd="20dp"
         tools:text="@string/title"
         android:textColor="@color/gray6"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,7 @@
         android:paddingEnd="20dp"
         android:text="@string/bottom_sheet_close"
         android:textColor="@color/bottom_sheet_top_bar_close_text"
-        android:textSize="14sp"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry" />

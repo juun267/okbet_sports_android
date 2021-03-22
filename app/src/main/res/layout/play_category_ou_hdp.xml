@@ -14,7 +14,7 @@
         android:paddingTop="4dp"
         android:paddingEnd="15dp"
         android:paddingBottom="4dp"
-        android:textColor="@color/textGray"
+        android:textColor="@color/colorGrayDark"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="下半場" />
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="34dp"
         android:text="@string/ou_hdp_hdp_title"
-        android:textColor="@color/textGray"
+        android:textColor="@color/colorGrayDark"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="@id/ou_hdp_game_state"
         app:layout_constraintEnd_toEndOf="parent"

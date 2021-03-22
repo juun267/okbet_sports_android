@@ -43,7 +43,8 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
-import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -57,7 +58,8 @@ class GameViewModel(
     private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    private val thirdGameRepository: ThirdGameRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -208,6 +210,7 @@ class GameViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
+    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -344,13 +347,15 @@ class GameViewModel(
         }
     }
 
-    fun getGameHallList(matchType: MatchType, sportType: SportType?) {
-        sportType?.let {
-            _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
-                it.isSelected = (it.code == sportType.code)
-            }
+    fun getGameHallList(matchType: MatchType, sportCode: String?) {
+        _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
+            it.isSelected = it.code == sportCode
         }
         _matchTypeCardForParlay.postValue(matchType)
+    }
+
+    fun getGameHallList(matchType: MatchType, sportType: SportType) {
+        getGameHallList(matchType, sportType.code)
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
@@ -987,7 +992,7 @@ class GameViewModel(
         else Timber.e("不執行 betInfo request")
     }
 
-    fun updateMatchOdd(it: MatchOddsChangeEvent){
+    fun updateMatchOdd(it: MatchOddsChangeEvent) {
         val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
             mutableListOf()
         for ((key, value) in it.odds) {
@@ -1028,7 +1033,7 @@ class GameViewModel(
         }
     }
 
-    private fun updateMatchOddStatus(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>){
+    private fun updateMatchOddStatus(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         newList.forEach { newItem ->
             betInfoRepository.betList.forEach {
                 try {
@@ -1308,5 +1313,9 @@ class GameViewModel(
             else -> {
             }
         }
+    }
+
+    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
+        thirdGameRepository.setGoToThirdGamePage(catePage)
     }
 }

@@ -3,25 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_game_detail_first_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divider_color_white6"
         android:orientation="vertical"
-        android:showDividers="middle|end"
         android:visibility="gone"
         tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/divider_color_white6"
-            android:orientation="horizontal"
-            android:showDividers="middle">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -38,10 +33,16 @@
                     android:layout_height="match_parent"
                     android:gravity="start"
                     android:text="@string/game_yellow_card"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/textSize14sp"
                     tools:text="@string/game_yellow_card" />
             </LinearLayout>
+
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/light_gray" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -58,8 +59,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize14sp"
                     tools:text="0 - 1" />
 
                 <TextView
@@ -68,19 +69,22 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize14sp"
                     tools:text="0 - 1" />
             </LinearLayout>
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/divider_color_white6"
-            android:orientation="horizontal"
-            android:showDividers="middle">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -97,10 +101,16 @@
                     android:layout_height="match_parent"
                     android:gravity="start"
                     android:text="@string/game_corner_kick"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/textSize14sp"
                     tools:text="@string/game_corner_kick" />
             </LinearLayout>
+
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/light_gray" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -117,8 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize14sp"
                     tools:text="0 - 1" />
 
                 <TextView
@@ -127,10 +137,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize14sp"
                     tools:text="0 - 1" />
             </LinearLayout>
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray" />
     </LinearLayout>
 </LinearLayout>

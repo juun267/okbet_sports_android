@@ -4,31 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/colorBackground"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".ui.vip.VipActivity">
 
     <!-- toolBar -->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@drawable/bg_gradient_dark"
+        android:background="@color/colorWhite"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_scrollFlags="scroll|enterAlways">
 
         <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_toolbar_back"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:scaleType="fitStart"
-            android:src="@drawable/ic_logo" />
-    </LinearLayout>
+            android:layout_centerVertical="true"
+            android:paddingStart="14dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="22dp"
+            android:paddingBottom="18dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/colorBlackLight" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:letterSpacing="0.1"
+            android:text="@string/member_level"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize16sp" />
+    </RelativeLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
@@ -38,9 +49,9 @@
         app:srlEnablePureScrollMode="true">
 
         <androidx.core.widget.NestedScrollView
-            android:overScrollMode="never"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,8 +68,8 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_vip_top_background"
                         android:paddingStart="40dp"
-                        android:paddingTop="24dp"
-                        android:paddingEnd="30dp"
+                        android:paddingTop="20dp"
+                        android:paddingEnd="32dp"
                         android:paddingBottom="10dp">
                         <!--招呼語-->
                         <LinearLayout
@@ -68,14 +79,13 @@
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toTopOf="@id/ll_level"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed">
+                            app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/greet"
-                                android:textColor="@color/blue7"
+                                android:textColor="@color/colorGrayDark"
                                 android:textSize="@dimen/textSize16sp"
                                 android:textStyle="bold" />
 
@@ -83,7 +93,7 @@
                                 android:id="@+id/tv_greet"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/blue7"
+                                android:textColor="@color/colorGrayDark"
                                 android:textSize="@dimen/textSize16sp"
                                 android:textStyle="bold"
                                 tools:text="Jason0921" />
@@ -94,18 +104,17 @@
                             android:id="@+id/ll_level"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="6dp"
                             android:orientation="horizontal"
-                            app:layout_constraintBottom_toTopOf="@id/ll_amount"
+                            app:layout_constraintBottom_toTopOf="@id/tv_hint_recharge_growth"
                             app:layout_constraintStart_toStartOf="@id/ll_greet"
-                            app:layout_constraintTop_toBottomOf="@id/ll_greet"
-                            app:layout_constraintVertical_chainStyle="packed">
+                            app:layout_constraintTop_toBottomOf="@id/ll_greet">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/now_level"
-                                android:textColor="@color/main"
+                                android:textColor="@color/colorBlueDark"
                                 android:textSize="@dimen/textSize14sp"
                                 android:textStyle="bold" />
 
@@ -114,45 +123,37 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/member_name_level_one"
-                                android:textColor="@color/main"
+                                android:textColor="@color/colorBlueDark"
                                 android:textSize="@dimen/textSize14sp"
                                 android:textStyle="bold"
                                 tools:text="@string/member_name_level_one" />
 
                         </LinearLayout>
                         <!--存款-->
-                        <LinearLayout
-                            android:id="@+id/ll_amount"
+                        <TextView
+                            android:id="@+id/tv_hint_recharge_growth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:layout_marginBottom="20dp"
-                            android:orientation="horizontal"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize12sp"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_hint_bet_growth"
+                            app:layout_constraintStart_toStartOf="@+id/ll_greet"
+                            app:layout_constraintTop_toBottomOf="@+id/ll_level"
+                            tools:text="@string/hint_recharge_growth" />
+
+                        <TextView
+                            android:id="@+id/tv_hint_bet_growth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="18dp"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="@id/ll_greet"
-                            app:layout_constraintTop_toBottomOf="@id/ll_level"
-                            app:layout_constraintVertical_chainStyle="packed">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/member_amount"
-                                android:textSize="@dimen/textSize12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/currency_symbol"
-                                android:textSize="@dimen/textSize12sp" />
-
-                            <TextView
-                                android:id="@+id/tv_user_amount"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/textSize12sp"
-                                tools:text="0.00" />
-
-                        </LinearLayout>
+                            app:layout_constraintTop_toBottomOf="@id/tv_hint_recharge_growth"
+                            tools:text="@string/hint_bet_growth" />
 
                         <ImageView
                             android:id="@+id/iv_vip"
@@ -170,7 +171,7 @@
                         android:layout_below="@id/cl_user"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="-16dp"
-                        app:cardBackgroundColor="@color/blue7"
+                        app:cardBackgroundColor="@color/colorBlue"
                         app:cardCornerRadius="16dp">
 
                         <TextView
@@ -181,7 +182,7 @@
                             android:paddingEnd="32dp"
                             android:paddingBottom="6dp"
                             android:text="@string/member_level"
-                            android:textColor="@color/white"
+                            android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize14sp" />
                     </androidx.cardview.widget.CardView>
 
@@ -317,7 +318,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="8dp"
                                 android:layout_weight="1"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/gate_level1"
                                 app:layout_constraintStart_toStartOf="parent" />
@@ -326,7 +327,7 @@
                                 android:id="@+id/gate_level1"
                                 android:layout_width="2dp"
                                 android:layout_height="8dp"
-                                android:background="@color/background"
+                                android:background="@color/colorBackground"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/value_level2"
                                 app:layout_constraintStart_toEndOf="@id/value_level1" />
@@ -336,7 +337,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="8dp"
                                 android:layout_weight="1"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/gate_level2"
                                 app:layout_constraintStart_toEndOf="@id/gate_level1" />
@@ -345,7 +346,7 @@
                                 android:id="@+id/gate_level2"
                                 android:layout_width="2dp"
                                 android:layout_height="8dp"
-                                android:background="@color/background"
+                                android:background="@color/colorBackground"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/value_level3"
                                 app:layout_constraintStart_toEndOf="@id/value_level2" />
@@ -355,7 +356,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="8dp"
                                 android:layout_weight="1"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/gate_level3"
                                 app:layout_constraintStart_toEndOf="@id/gate_level2" />
@@ -364,7 +365,7 @@
                                 android:id="@+id/gate_level3"
                                 android:layout_width="2dp"
                                 android:layout_height="8dp"
-                                android:background="@color/background"
+                                android:background="@color/colorBackground"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/value_level4"
                                 app:layout_constraintStart_toEndOf="@id/value_level3" />
@@ -374,7 +375,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="8dp"
                                 android:layout_weight="1"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/gate_level4"
                                 app:layout_constraintStart_toEndOf="@id/gate_level3" />
@@ -383,7 +384,7 @@
                                 android:id="@+id/gate_level4"
                                 android:layout_width="2dp"
                                 android:layout_height="8dp"
-                                android:background="@color/background"
+                                android:background="@color/colorBackground"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/value_level5"
                                 app:layout_constraintStart_toEndOf="@id/value_level4" />
@@ -393,7 +394,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="8dp"
                                 android:layout_weight="1"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/gate_level5"
                                 app:layout_constraintStart_toEndOf="@id/gate_level4" />
@@ -402,7 +403,7 @@
                                 android:id="@+id/gate_level5"
                                 android:layout_width="2dp"
                                 android:layout_height="8dp"
-                                android:background="@color/background"
+                                android:background="@color/colorBackground"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/value_level6"
                                 app:layout_constraintStart_toEndOf="@id/value_level5" />
@@ -412,7 +413,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="8dp"
                                 android:layout_weight="1"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="@id/gate_level6"
                                 app:layout_constraintStart_toEndOf="@id/gate_level5" />
@@ -422,7 +423,7 @@
                                 android:layout_width="2dp"
                                 android:layout_height="8dp"
                                 android:layout_marginEnd="20dp"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/value_level6" />
@@ -434,7 +435,6 @@
                     android:id="@+id/banner_vip_level"
                     android:layout_width="match_parent"
                     android:layout_height="134dp"
-                    android:overScrollMode="never"
                     app:isAutoPlay="false"
                     app:isClipChildrenMode="true"
                     app:isHandLoop="false"
@@ -453,7 +453,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/next_level_requirement"
-                        android:textColor="@color/blue7"
+                        android:textColor="@color/colorBlueDark"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold" />
 
@@ -461,7 +461,7 @@
                         android:id="@+id/tv_next_level_tips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/blue7"
+                        android:textColor="@color/colorBlueDark"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         tools:text="VIP2 白银会员" />
@@ -479,7 +479,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:text="@string/growth"
-                        android:textColor="@color/main"
+                        android:textColor="@color/colorGrayDark"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold" />
 
@@ -502,26 +502,12 @@
                         android:layout_marginTop="6dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/next_level_tips"
-                            android:textColor="@color/textGray"
-                            android:textSize="@dimen/textSize12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/currency_symbol"
-                            android:textColor="@color/textGray"
-                            android:textSize="@dimen/textSize12sp" />
-
-                        <TextView
                             android:id="@+id/tv_requirement_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/textGray"
-                            android:textSize="@dimen/textSize12sp"
-                            tools:text="500.00" />
+                            android:text="@string/next_level_tips"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize12sp" />
                     </LinearLayout>
                 </LinearLayout>
                 <!--  Vip Level Description  -->
@@ -551,7 +537,7 @@
                                 android:layout_marginTop="14dp"
                                 android:layout_marginBottom="14dp"
                                 android:text="@string/title_rebates_selector_form"
-                                android:textColor="@color/main"
+                                android:textColor="@color/colorBlueDark"
                                 android:textSize="@dimen/textSize13sp"
                                 android:textStyle="bold" />
 
@@ -561,7 +547,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="12dp"
                                 android:layout_marginBottom="12dp"
-                                android:background="@color/bright_gray2" />
+                                android:background="@color/colorWhite6" />
 
                             <org.cxct.sportlottery.ui.component.StatusSelectorView
                                 android:id="@+id/sv_third_games"
@@ -569,7 +555,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="8dp"
-                                app:defaultBottomSheetTitleText=""
+                                app:defaultBottomSheetTitleText="@string/select_plat"
                                 app:horizontalChainStyle="spread_inside" />
                         </LinearLayout>
 
@@ -599,10 +585,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-
-
 
 </LinearLayout>

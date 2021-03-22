@@ -5,45 +5,52 @@
     android:layout_height="wrap_content"
     android:background="@drawable/fillet_5dp_white"
     android:orientation="vertical"
-    tools:ignore="SpUsage"
-    tools:context=".ui.game.home.HomeGameTable">
+    tools:context=".ui.game.home.gameTable.HomeGameTable">
 
     <LinearLayout
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="14dp"
             android:layout_weight="1"
-            android:textColor="@color/textColorDark"
-            android:textSize="@dimen/textSize16sp"
+            android:textColor="@color/colorBlueDark"
+            android:textSize="@dimen/textSize18sp"
+            android:textStyle="bold"
             tools:text="@string/home_tab_in_play" />
 
         <TextView
             android:id="@+id/tv_count"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_margin="10dp"
             android:background="@drawable/home_count_ball"
             android:gravity="center"
+            android:minWidth="28dp"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize17sp"
             tools:text="21" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorWhite6" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
         android:id="@+id/rv_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         tools:itemCount="3"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/home_game_rv_item" />
+        tools:listitem="@layout/home_game_table_item" />
 
 </LinearLayout>

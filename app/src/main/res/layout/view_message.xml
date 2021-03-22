@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="20dp"
-    android:background="@color/white">
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:background="@color/colorWhite">
 
     <ImageView
         android:id="@+id/iv_broadcast_icon"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginStart="12dp"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_iconmessage"
+        android:src="@drawable/ic_speak"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
