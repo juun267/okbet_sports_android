@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
+import java.math.RoundingMode
 import kotlin.math.min
 
 class WithdrawViewModel(
@@ -366,7 +367,7 @@ class WithdrawViewModel(
     }
 
     fun getBalanceMaxLimit(): Double {
-        return ArithUtil.div((userMoney.value ?: 0.0), ((uwBankType?.detailList?.first()?.feeRate?.plus(1) ?: 1.0)), 3)
+        return ArithUtil.div((userMoney.value ?: 0.0), ((uwBankType?.detailList?.first()?.feeRate?.plus(1) ?: 1.0)), 3, RoundingMode.FLOOR)
     }
 
     fun getWithdrawRate(withdrawAmount: Double? = 0.0) {
