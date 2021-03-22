@@ -38,7 +38,7 @@ class OddButton @JvmOverloads constructor(
             }
         }
 
-    var betStatus: BetStatus? = null
+    var betStatus: Int? = null
         set(value) {
             field = value
 
@@ -46,7 +46,6 @@ class OddButton @JvmOverloads constructor(
                 setupBetStatus(it)
             }
         }
-
 
     var oddStatus: OddState? = null
         set(value) {
@@ -136,9 +135,15 @@ class OddButton @JvmOverloads constructor(
         }
     }
 
-    private fun setupBetStatus(betStatus: BetStatus) {
+    private fun setupBetStatus(betStatus: Int) {
+        visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
         odd_lock.visibility =
-            if (betStatus == BetStatus.LOCKED || betStatus == BetStatus.DEACTIVATED) {
+            if (betStatus == BetStatus.LOCKED.code) {
                 View.VISIBLE
             } else {
                 View.GONE
