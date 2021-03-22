@@ -16,8 +16,10 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.vip.VipActivity"></activity>
-        <activity android:name=".ui.game.GameActivity" />
+        <activity android:name=".ui.vip.VipActivity"/>
+        <activity
+            android:name=".ui.game.GameActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.feedback.FeedbackMainActivity"
             android:screenOrientation="portrait"
