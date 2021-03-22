@@ -271,6 +271,6 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class LeagueOddListener(val clickListener: (item: MatchOdd) -> Unit) {
-    fun onClickLive(item: MatchOdd) = clickListener(item)
+class LeagueOddListener(val clickListenerLive: (item: MatchOdd) -> Unit) {
+    fun onClickLive(item: MatchOdd) = clickListenerLive(item)
 }
