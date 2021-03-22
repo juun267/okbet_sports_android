@@ -28,7 +28,7 @@
     <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
 
     <!--common-->
-    <string name="verse_lower">vs</string>
+    <string name="verse_lower">&#160;&#160;vs&#160;&#160;</string>
     <string name="verse">VS</string>
     <string name="error">错误</string>
     <string name="verse_">&#160;&#160;v&#160;&#160;</string>
@@ -39,7 +39,7 @@
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
-    <string name="btn_confirm">确认</string>
+    <string name="btn_confirm">确定</string>
     <string name="btn_determine">确定</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_retry">重试</string>
@@ -277,7 +277,7 @@
     <!-- Setting password page-->
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
-    <string name="current_login_password">当前登录密码</string>
+    <string name="current_login_password">当前密码</string>
     <string name="current_withdrawal_password">当前提款密码</string>
     <string name="hint_current_login_password">请输入登录密码</string>
     <string name="hint_current_withdrawal_password">请输入提款密码</string>

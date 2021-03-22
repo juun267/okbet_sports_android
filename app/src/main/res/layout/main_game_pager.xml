@@ -7,10 +7,10 @@
     tools:context=".ui.main.MainGamePager">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
         android:id="@+id/alignLeftRv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_arrow_right"
         app:layout_constraintStart_toEndOf="@id/btn_arrow_left"

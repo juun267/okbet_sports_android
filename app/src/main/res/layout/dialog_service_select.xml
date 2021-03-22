@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@color/colorWhite"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -29,7 +29,7 @@
                 android:id="@+id/top_bar1"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:background="@color/colorPrimaryDark" />
+                android:background="@color/colorBlue" />
 
             <ImageView
                 android:layout_width="62dp"
@@ -47,7 +47,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_radius_5_button_dusk"
                 android:text="@string/online_service1"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
@@ -64,7 +64,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@color/colorWhite"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -72,7 +72,7 @@
                 android:id="@+id/top_bar2"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:background="@color/colorPrimaryDark" />
+                android:background="@color/colorBlue" />
 
             <ImageView
                 android:layout_width="62dp"
@@ -90,7 +90,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_radius_5_button_dusk"
                 android:text="@string/online_service2"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
