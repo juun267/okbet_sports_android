@@ -6,6 +6,9 @@
         <item name="colorPrimaryDark">@color/colorBlueDark</item>
         <item name="colorAccent">@color/colorBlueLight</item>
 
+        <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
+
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
     </style>
 

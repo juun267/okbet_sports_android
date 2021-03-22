@@ -8,7 +8,6 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,8 +24,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@color/colorWhite1"
                 app:navGraph="@navigation/main_navigation"
                 tools:layout="@layout/fragment_main" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorWhite6" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav_view"
@@ -34,10 +39,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/colorWhite"
-                app:labelVisibilityMode="labeled"
-                app:menu="@menu/bottom_navigation_menu"
+                android:elevation="0dp"
                 app:itemIconTint="@color/selector_blue_silver"
-                app:itemTextColor="@color/selector_blue_silver"/>
+                app:itemTextColor="@color/selector_blue_silver"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_navigation_menu" />
 
         </LinearLayout>
 
