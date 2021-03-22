@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -227,7 +228,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             putString("matchId", betInfoList.matchOdd.matchId)
             putString("matchType", betInfoList.matchType?.postValue)
         }
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, GameActivity::class.java).apply {
             putExtras(bundle)
         }
         context?.startActivity(intent)
