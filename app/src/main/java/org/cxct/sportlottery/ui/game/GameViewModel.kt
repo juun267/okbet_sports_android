@@ -727,6 +727,18 @@ class GameViewModel(
                 )
             }
 
+            result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { map ->
+                        map.value.forEach { odd ->
+                            odd.isSelected = betInfoRepository.betInfoList.value?.any {
+                                it.matchOdd.oddsId == odd.id
+                            }
+                        }
+                    }
+                }
+            }
+
             if (leagueIdList != null) {
                 if (result?.oddsListData?.leagueOdds?.isNotEmpty() == true) {
                     result.oddsListData.leagueOdds[0].isExpand = true
