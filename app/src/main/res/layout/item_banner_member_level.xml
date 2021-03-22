@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/level_one"
-            android:textColor="@color/main"
+            android:textColor="@color/colorBlueDark"
             android:textSize="@dimen/textSize26sp"
             android:textStyle="bold" />
 
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/member_name_level_one"
-            android:textColor="@color/main"
+            android:textColor="@color/colorBlueDark"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/growth_requirement"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_value"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorGray"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
