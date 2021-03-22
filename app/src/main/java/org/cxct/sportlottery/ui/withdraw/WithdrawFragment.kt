@@ -139,9 +139,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         //資金設定
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
             if (et_withdrawal_amount.getText().isEmpty()) {
-                viewModel.getWithdrawRate(0)
+                viewModel.getWithdrawRate()
             } else {
-                viewModel.getWithdrawRate(et_withdrawal_amount.getText().toLong())
+                viewModel.getWithdrawRate(et_withdrawal_amount.getText().toDouble())
             }
             viewModel.getWithdrawHint()
         })

@@ -87,4 +87,25 @@ object ArithUtil {
         return b1.divide(b2, scale, roundMode).toDouble()
     }
 
+    /**
+     * 小數大於比較
+     */
+    fun biggerThan(paramsS: Double, paramsO: Double?): Boolean {
+        val decimalSubject = BigDecimal(paramsS)
+        val decimalObject = BigDecimal(paramsO ?: 0.0)
+        return decimalSubject > decimalObject
+    }
+
+    fun noBiggerThan(paramsS: Double, paramsO: Double?): Boolean {
+        val decimalSubject = BigDecimal(paramsS)
+        val decimalObject = BigDecimal(paramsO ?: 0.0)
+        return decimalSubject <= decimalObject
+    }
+
+    fun smallerThan(paramsS: Double, paramsO: Double?): Boolean {
+        val decimalSubject = BigDecimal(paramsS)
+        val decimalObject = BigDecimal(paramsO ?: 0.0)
+        return decimalSubject < decimalObject
+    }
+
 }
