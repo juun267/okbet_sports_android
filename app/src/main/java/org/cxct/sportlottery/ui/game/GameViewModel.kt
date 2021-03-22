@@ -520,6 +520,19 @@ class GameViewModel(
                     )
                 }
 
+                result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd.isSelected =
+                                    betInfoRepository.betInfoList.value?.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd.id
+                                    }
+                            }
+                        }
+                    }
+                }
+
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
                     it.odds.forEach { mapSubTitleOdd ->
