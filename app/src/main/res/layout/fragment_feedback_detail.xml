@@ -18,20 +18,17 @@
         app:srlEnablePureScrollMode="true">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
             android:id="@+id/rv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             tools:itemCount="5"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:orientation="vertical"
             tools:listitem="@layout/content_feedback_record_detail_rv_right"
-            tools:visibility="visible"
-            />
+            tools:orientation="vertical"
+            tools:visibility="visible" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -72,11 +69,9 @@
             android:background="@drawable/bg_5dp_radius_button_blue3"
             android:gravity="center"
             android:text="@string/btn_submit"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp" />
 
-
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
