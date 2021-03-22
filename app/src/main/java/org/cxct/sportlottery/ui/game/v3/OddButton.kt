@@ -148,6 +148,8 @@ class OddButton @JvmOverloads constructor(
             } else {
                 View.GONE
             }
+
+        isEnabled = (betStatus == BetStatus.ACTIVATED.code)
     }
 
     private fun setupOddState(oddState: OddState) {
