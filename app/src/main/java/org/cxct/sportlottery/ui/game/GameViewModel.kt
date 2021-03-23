@@ -20,9 +20,12 @@ import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -44,6 +47,7 @@ import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
+import org.cxct.sportlottery.ui.odds.MoreGameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -1283,5 +1287,50 @@ class GameViewModel(
             else -> {
             }
         }
+    }
+
+    fun getGameCard(): MutableList<MatchInfo> {
+        val list: LiveData<List<*>?> = oddsDetailMoreList
+        val matchOddList: MutableList<MatchInfo> = mutableListOf()
+        //後續再重構較好的資料判別方式
+        list.value?.indices?.let {
+            for (i in it) {
+                list.value?.let { value ->
+                    val m: Any?
+                    when (value[i]) {
+                        is Match -> {
+                            m = (value[i] as Match)
+                            m.apply {
+                                matchOddList.add(
+                                    MatchInfo(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum ?: 0, m.startTime.toString(), m.status)
+                                )
+                            }
+                        }
+                        is MatchOdd -> {
+                            m = (value[i] as MatchOdd).matchInfo
+                            m?.apply {
+                                matchOddList.add(
+                                    MatchInfo(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status).apply {
+                                        awayScore = m.awayScore
+                                        homeScore = m.homeScore
+                                    })
+                            }
+                        }
+                        is MatchInfo -> {
+                            m = (value[i] as MatchInfo)
+                            m.apply {
+                                matchOddList.add(
+                                    MatchInfo(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status).apply {
+                                        awayScore = m.awayScore
+                                        homeScore = m.homeScore
+                                    })
+                            }
+                        }
+                        else -> { }
+                    }
+                }
+            }
+        }
+        return matchOddList
     }
 }

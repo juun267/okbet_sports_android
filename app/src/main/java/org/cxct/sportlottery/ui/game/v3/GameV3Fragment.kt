@@ -63,7 +63,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         LeagueAdapter().apply {
             leagueOddListener = LeagueOddListener {
                 //TODO open live and play type page
-                it.matchInfo?.id
+                viewModel.getOddsDetail(it.matchInfo?.id)
             }
         }
     }
