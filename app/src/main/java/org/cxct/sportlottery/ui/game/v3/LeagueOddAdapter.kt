@@ -67,6 +67,9 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             itemView.game_name_home.text = item.matchInfo?.homeName
             itemView.game_name_away.text = item.matchInfo?.awayName
+
+            itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
+            itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
         }
 
         private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
