@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_setting_password.*
+import kotlinx.android.synthetic.main.activity_withdraw.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 

@@ -15,10 +15,10 @@
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="@dimen/tool_bar_height"
-            android:layout_height="@dimen/tool_bar_height"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:background="@null"
+            android:background="@android:color/transparent"
             android:contentDescription="@null"
             android:src="@drawable/ic_back" />
 
@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/withdraw_setting"
-            android:textColor="@color/colorWhite"
+            android:letterSpacing="0.1"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/textSize16sp" />
 
     </RelativeLayout>

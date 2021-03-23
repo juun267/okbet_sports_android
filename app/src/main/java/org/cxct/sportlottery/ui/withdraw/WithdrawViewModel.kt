@@ -13,8 +13,10 @@ import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
-import org.cxct.sportlottery.network.bank.my.BankMyResult
+import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
+import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -25,6 +27,7 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
+import java.math.RoundingMode
 import kotlin.math.min
 
 class WithdrawViewModel(
@@ -46,9 +49,9 @@ class WithdrawViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
-    val bankCardList: LiveData<BankMyResult>
+    val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList
-    private var _bankCardList = MutableLiveData<BankMyResult>()
+    private var _bankCardList = MutableLiveData<List<BankCardList>>()
 
     val bankAddResult: LiveData<BankAddResult>
         get() = _bankAddResult
@@ -103,12 +106,28 @@ class WithdrawViewModel(
         get() = _withdrawAmountHint
     private var _withdrawAmountHint = MutableLiveData<String>()
 
+    val existBankCard: LiveData<Boolean>
+        get() = _existBankCard
+    private var _existBankCard = MutableLiveData<Boolean>()
+
+    val existCryptoCard: LiveData<Boolean>
+        get() = _existCryptoCard
+    private var _existCryptoCard = MutableLiveData<Boolean>()
+
     //銀行卡是否可以繼續增加
     val addBankCardSwitch: LiveData<Boolean>
         get() = _addBankCardSwitch
     private var _addBankCardSwitch = MutableLiveData<Boolean>()
 
-    data class WithdrawAmountLimit(val min: Long, val max: Long, val isBalanceMax: Boolean)
+    private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
+
+    private var dealType: TransferType = TransferType.BANK
+
+    data class WithdrawAmountLimit(val min: Double, val max: Double, val isBalanceMax: Boolean)
+
+    fun setDealType(type: TransferType) {
+        dealType = type
+    }
 
     fun addWithdraw(bankCardId: Long, applyMoney: String, withdrawPwd: String) {
         checkWithdrawAmount(applyMoney)
@@ -149,7 +168,14 @@ class WithdrawViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.bankService.getBankMy()
             }?.let { result ->
-                _bankCardList.value = result
+                val bankCardList = mutableListOf<BankCardList>()
+                result.bankCardList?.forEach { bankCard ->
+                    if (bankCard.uwType == dealType.type)
+                        bankCardList.add(bankCard)
+                }
+                _existBankCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
+                _existCryptoCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
+                _bankCardList.value = bankCardList
                 hideLoading()
             }
         }
@@ -232,7 +258,10 @@ class WithdrawViewModel(
             doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }?.let { result ->
-                result.rechCfg?.let { _rechargeConfigs.value = it }
+                result.rechCfg?.let {
+                    uwBankType = it.uwTypes.first { config -> config.type == TransferType.BANK.type }
+                    _rechargeConfigs.value = it
+                }
                 hideLoading()
             }
         }
@@ -330,10 +359,10 @@ class WithdrawViewModel(
             }
             !VerifyConstUtil.verifyWithdrawAmount(
                 withdrawAmount,
-                rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 100,
-                rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney,
+                uwBankType?.detailList?.first()?.minWithdrawMoney,
+                uwBankType?.detailList?.first()?.maxWithdrawMoney,
                 _userMoney.value,
-                ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount.toLong())).toDouble()
+                ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount.toDouble())).toDouble()
             ) -> {
                 androidContext.getString(R.string.error_withdraw_amount)
             }
@@ -341,7 +370,7 @@ class WithdrawViewModel(
                 ""
             }
         }
-        getWithdrawRate(withdrawAmount.toLong())
+        getWithdrawRate(withdrawAmount.toDouble())
     }
 
     fun getWithdrawHint() {
@@ -353,33 +382,45 @@ class WithdrawViewModel(
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
         //用戶可提取最小金額
-        val minLimit = rechargeConfigs.value?.withdrawCfg?.withDrawBalanceLimit ?: 0
+        val minLimit = uwBankType?.detailList?.first()?.minWithdrawMoney ?: 0.0
         //提取金額不得超過 餘額-手續費
         val balanceMaxLimit = getBalanceMaxLimit()
         //用戶可提取最大金額
-        val configMaxLimit = rechargeConfigs.value?.withdrawCfg?.maxWithdrawMoney?.toDouble()
+        val configMaxLimit = uwBankType?.detailList?.first()?.maxWithdrawMoney
         val maxLimit = if (configMaxLimit == null) balanceMaxLimit else min(balanceMaxLimit, configMaxLimit)
-        return WithdrawAmountLimit(minLimit, maxLimit.toLong(), balanceMaxLimit < (configMaxLimit ?: 0.0))
+        return WithdrawAmountLimit(minLimit, maxLimit, balanceMaxLimit < (configMaxLimit ?: 0.0))
     }
 
     fun getBalanceMaxLimit(): Double {
-        return ArithUtil.div((userMoney.value ?: 0.0), ((rechargeConfigs.value?.withdrawCfg?.wdRate?.plus(1) ?: 1.0)), 3)
+        return ArithUtil.div((userMoney.value ?: 0.0), ((uwBankType?.detailList?.first()?.feeRate?.plus(1) ?: 1.0)), 3, RoundingMode.FLOOR)
     }
 
-    fun getWithdrawRate(withdrawAmount: Long) {
-        _withdrawRateHint.value = String.format(
-            androidContext.getString(R.string.withdraw_handling_fee_hint),
-            ArithUtil.toMoneyFormat(rechargeConfigs.value?.withdrawCfg?.wdRate?.times(100)),
-            ArithUtil.toMoneyFormat((rechargeConfigs.value?.withdrawCfg?.wdRate)?.times(withdrawAmount))
-        )
+    fun getWithdrawRate(withdrawAmount: Double? = 0.0) {
+        _withdrawRateHint.value = when (dealType) {
+            TransferType.BANK -> {
+                String.format(
+                    androidContext.getString(R.string.withdraw_handling_fee_hint),
+                    ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
+                    ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
+                )
+            }
+            TransferType.CRYPTO -> {
+                //TODO Dean : 虛擬幣資料待串接
+                String.format(
+                    androidContext.getString(R.string.withdraw_crypto_fee_hint),
+                    ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
+                    ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
+                )
+            }
+        }
     }
 
     /**
      * 判斷當前銀行卡數量是否超出銀行卡綁定上限
      */
     fun checkBankCardCount() {
-        val bankCardCountLimit = rechargeConfigs.value?.withdrawCfg?.uwTypeCfg?.get(0)?.countLimit
-        val bankCardCount = bankCardList.value?.bankCardList?.size
+        val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
+        val bankCardCount = bankCardList.value?.size
         _addBankCardSwitch.value = when {
             bankCardCountLimit == null -> true
             bankCardCount == null -> true

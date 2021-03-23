@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
@@ -57,10 +58,15 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initView() {
+        initTab()
         et_withdrawal_amount.apply {
             clearIsShow = false
             getAllIsShow = true
         }
+    }
+
+    private fun initTab() {
+        selectDealType(TransferType.BANK)
     }
 
     private fun initEvent() {
@@ -68,8 +74,42 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         setupTextChangeEvent()
     }
 
+    private fun selectDealType(type: TransferType) {
+        viewModel.setDealType(type)
+        setupDealView(type)
+        viewModel.getBankCardList()
+    }
+
+    private fun setupDealView(type: TransferType) {
+        when (type) {
+            TransferType.BANK -> {
+                tab_bank_card.isSelected = true
+                tab_crypto.isSelected = false
+
+                tv_channel_select.text = getString(R.string.select_bank)
+                et_withdrawal_amount.setTitle(getString(R.string.withdraw_amount))
+            }
+            TransferType.CRYPTO -> {
+                tab_bank_card.isSelected = false
+                tab_crypto.isSelected = true
+
+                tv_channel_select.text = getString(R.string.currency_protocol)
+                et_withdrawal_amount.setTitle(getString(R.string.withdraw_number))
+            }
+        }
+    }
 
     private fun setupClickEvent() {
+        tab_bank_card.setOnClickListener {
+            if (!it.isSelected)
+                selectDealType(TransferType.BANK)
+        }
+
+        tab_crypto.setOnClickListener {
+            if (!it.isSelected)
+                selectDealType(TransferType.CRYPTO)
+        }
+
         ll_select_bank.setOnClickListener {
             bankCardBottomSheet.show()
         }
@@ -78,10 +118,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             modifyFinish()
             withdrawBankCardData?.let { viewModel.addWithdraw(it.id.toLong(), et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
 
-        }
-
-        btn_reset.setOnClickListener {
-            clearEvent()
         }
 
         et_withdrawal_amount.getAllButton {
@@ -131,21 +167,33 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
 
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
-            it.bankCardList?.let { list ->
-                val iniData = it.bankCardList[0]
-                withdrawBankCardData = iniData
-                tv_select_bank_card.text = getBankCardTailNo(iniData)
-                iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(iniData.bankName))
-                initSelectBankCardBottomSheet(view, list.toMutableList())
-            }
+            val iniData = it[0]
+            withdrawBankCardData = iniData
+            tv_select_bank_card.text = getBankCardTailNo(iniData)
+            iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(iniData.bankName))
+            initSelectBankCardBottomSheet(view, it.toMutableList())
+        })
+
+        viewModel.existBankCard.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                tab_bank_card.visibility = View.VISIBLE
+            else
+                tab_bank_card.visibility = View.GONE
+        })
+
+        viewModel.existCryptoCard.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                tab_crypto.visibility = View.VISIBLE
+            else
+                tab_crypto.visibility = View.GONE
         })
 
         //資金設定
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
             if (et_withdrawal_amount.getText().isEmpty()) {
-                viewModel.getWithdrawRate(0)
+                viewModel.getWithdrawRate()
             } else {
-                viewModel.getWithdrawRate(et_withdrawal_amount.getText().toLong())
+                viewModel.getWithdrawRate(et_withdrawal_amount.getText().toDouble())
             }
             viewModel.getWithdrawHint()
         })
@@ -249,9 +297,9 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
             tvBank?.text = data.bankName
             ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
             if (position == selectedPosition)
-                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
+                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
-                llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
             llSelectBankCard?.setOnClickListener {
                 if (selectedPosition != position) {
                     //                data.isSelected = !data.isSelected
