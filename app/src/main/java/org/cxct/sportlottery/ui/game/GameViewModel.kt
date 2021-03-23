@@ -1331,7 +1331,7 @@ class GameViewModel(
                             m = (value[i] as Match)
                             m.apply {
                                 matchOddList.add(
-                                    MatchInfo(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum ?: 0, m.startTime.toString(), m.status)
+                                    MatchInfo(m.awayName, m.endTime.toString(), m.homeName, m.id, m.playCateNum ?: 0, m.startTime.toString(), m.status)
                                 )
                             }
                         }
