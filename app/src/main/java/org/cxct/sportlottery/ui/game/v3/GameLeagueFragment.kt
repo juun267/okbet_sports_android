@@ -18,7 +18,20 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 
 
+private const val ARG_SPORT_TYPE = "sportType"
+
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+
+    companion object {
+        fun newInstance(sportType: String) =
+            GameLeagueFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_SPORT_TYPE, sportType)
+                }
+            }
+    }
+
+    private var sportType: String? = null
 
     private val leagueAdapter by lazy {
         LeagueAdapter().apply {
@@ -31,6 +44,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
                 }
             )
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            sportType = it.getString(ARG_SPORT_TYPE)
         }
     }
 
