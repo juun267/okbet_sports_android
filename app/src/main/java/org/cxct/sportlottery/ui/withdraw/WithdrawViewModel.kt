@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
+import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
@@ -110,7 +111,7 @@ class WithdrawViewModel(
         get() = _addBankCardSwitch
     private var _addBankCardSwitch = MutableLiveData<Boolean>()
 
-    private val uwBankType by lazy { rechargeConfigs.value?.uwTypes?.first { it.type == TransferType.BANK.type } }
+    private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
     data class WithdrawAmountLimit(val min: Double, val max: Double, val isBalanceMax: Boolean)
 
@@ -236,7 +237,10 @@ class WithdrawViewModel(
             doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }?.let { result ->
-                result.rechCfg?.let { _rechargeConfigs.value = it }
+                result.rechCfg?.let {
+                    uwBankType = it.uwTypes.first { config -> config.type == TransferType.BANK.type }
+                    _rechargeConfigs.value = it
+                }
                 hideLoading()
             }
         }
@@ -374,7 +378,7 @@ class WithdrawViewModel(
         _withdrawRateHint.value = String.format(
             androidContext.getString(R.string.withdraw_handling_fee_hint),
             ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
-            ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0 ))
+            ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
         )
     }
 
