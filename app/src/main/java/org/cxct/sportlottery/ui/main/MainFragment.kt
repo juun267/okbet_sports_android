@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.util.JumpUtil
 
 
@@ -484,7 +485,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupUpdate() {
         btn_update.setOnClickListener {
-            JumpUtil.toExternalWeb(btn_update.context, sConfigData?.mobileAppDownUrl)
+            startActivity(Intent(activity, VersionUpdateActivity::class.java))
         }
     }
 
