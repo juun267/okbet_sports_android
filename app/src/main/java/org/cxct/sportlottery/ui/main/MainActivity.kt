@@ -192,14 +192,12 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.goToThirdGamePage.observe(this, Observer {
-            when {
-                it == ThirdGameCategory.MAIN -> {
-                    iv_logo.performClick() //跳轉到首頁
-                    viewModel.clearThirdGameCatePage()
-                }
-                it != null -> {
-                    goToMainMoreFragment(it.name)
-                    viewModel.clearThirdGameCatePage()
+            it.getContentIfNotHandled().let { cate ->
+                when {
+                    cate == ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
+                    cate != null -> goToMainMoreFragment(cate.name)
+                    else -> {
+                    }
                 }
             }
         })

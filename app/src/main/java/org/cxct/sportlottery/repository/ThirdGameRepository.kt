@@ -8,13 +8,14 @@ import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 import timber.log.Timber
 
 class ThirdGameRepository {
 
-    private val _goToThirdGamePage = MutableLiveData<ThirdGameCategory?>()
-    val goToThirdGamePage: LiveData<ThirdGameCategory?>
+    private val _goToThirdGamePage = MutableLiveData<Event<ThirdGameCategory?>>()
+    val goToThirdGamePage: LiveData<Event<ThirdGameCategory?>>
         get() = _goToThirdGamePage
 
     private val _homeCatePageDataList = MutableLiveData<List<GameCateData>>()
@@ -22,7 +23,7 @@ class ThirdGameRepository {
         get() = _homeCatePageDataList
 
     fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
-        _goToThirdGamePage.postValue(catePage)
+        _goToThirdGamePage.postValue(Event(catePage))
     }
 
     suspend fun getThirdGame(): Response<ThirdGamesResult> {
