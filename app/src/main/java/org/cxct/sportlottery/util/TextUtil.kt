@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import androidx.core.graphics.drawable.toDrawable
 import java.text.DecimalFormat
 
 object TextUtil {
@@ -13,9 +14,13 @@ object TextUtil {
     }
 
     fun formatMoney(double: Double): String {
-        ArithUtil.toMoneyFormat(double).toDouble()
         val df = DecimalFormat("###,###,###,##0.000")
         return df.format(ArithUtil.toMoneyFormat(double).toDouble())
+    }
+
+    fun formatMoney(int: Int): String {
+        val df = DecimalFormat("###,###,###,##0.000")
+        return df.format(ArithUtil.toMoneyFormat(int.toDouble()).toDouble())
     }
 
     fun formatForOdd(any: Any):String{
