@@ -133,6 +133,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onViewCreated(view, savedInstanceState)
         try {
             initObserve()
+            initSocketReceiver()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -155,6 +156,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueAdapter.data = it
             })
         })
+    }
+
+    private fun initSocketReceiver() {
+        //TODO add socket event
     }
 
     private fun backEvent() {
