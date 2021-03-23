@@ -70,7 +70,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            tabLayout.getTabAt(0)?.select()
+           finish()
         }
 
         //頭像 當 側邊欄 開/關
