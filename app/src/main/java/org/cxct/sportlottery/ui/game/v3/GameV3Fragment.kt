@@ -339,6 +339,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initSocketReceiver() {
+        //TODO add socket event
     }
 
     override fun onDestroy() {
