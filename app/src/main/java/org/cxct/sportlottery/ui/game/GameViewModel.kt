@@ -82,19 +82,19 @@ class GameViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
-    val oddsListGameHallResult: LiveData<OddsListResult?>
+    val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
 
     val oddsListResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListResult
 
-    val leagueListResult: LiveData<LeagueListResult?>
+    val leagueListResult: LiveData<Event<LeagueListResult?>>
         get() = _leagueListResult
 
-    val outrightSeasonListResult: LiveData<OutrightSeasonListResult?>
+    val outrightSeasonListResult: LiveData<Event<OutrightSeasonListResult?>>
         get() = _outrightSeasonListResult
 
-    val outrightOddsListResult: LiveData<OutrightOddsListResult?>
+    val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
 
     val curPlayType: LiveData<PlayType>
@@ -127,11 +127,11 @@ class GameViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
-    private val _oddsListGameHallResult = MutableLiveData<OddsListResult?>()
+    private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
-    private val _leagueListResult = MutableLiveData<LeagueListResult?>()
-    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult?>()
-    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult?>()
+    private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
+    private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
+    private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -551,11 +551,11 @@ class GameViewModel(
                         }
                     }
 
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "yyyy-MM-dd")
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
                     matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
                 }
 
-                _outrightOddsListResult.postValue(result)
+                _outrightOddsListResult.postValue(Event(result))
             }
 
             _openOutrightDetail.postValue(it to leagueId)
@@ -563,7 +563,7 @@ class GameViewModel(
     }
 
     fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
-        val result = _outrightOddsListResult.value
+        val result = _outrightOddsListResult.value?.peekContent()
 
         val list =
             result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
@@ -589,7 +589,7 @@ class GameViewModel(
             winner.id?.let { removeBetInfoItem(it) }
         }
 
-        _outrightOddsListResult.postValue(result)
+        _outrightOddsListResult.postValue(Event(result))
     }
 
     //TODO Dean : 重構，整理、提取程式碼
@@ -600,7 +600,7 @@ class GameViewModel(
     ) {
         val isOutright = mathType == MatchType.OUTRIGHT
         val result =
-            if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value?.peekContent()
+            if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value?.peekContent() else _oddsListResult.value?.peekContent()
         val match =
             result?.oddsListData?.leagueOdds?.find { leagueOdd ->
                 leagueOdd.matchOdds.contains(
@@ -643,7 +643,7 @@ class GameViewModel(
         }
 
         if (mathType == MatchType.IN_PLAY) {
-            _oddsListGameHallResult.value = result
+            _oddsListGameHallResult.value = Event(result)
         } else {
             _oddsListResult.value = Event(result)
         }
@@ -702,7 +702,7 @@ class GameViewModel(
 
 
     fun updateMatchOddExpandInPlay(matchOdd: MatchOdd) {
-        val result = _oddsListGameHallResult.value
+        val result = _oddsListGameHallResult.value?.peekContent()
 
         result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach {
@@ -710,7 +710,7 @@ class GameViewModel(
             }
         }
 
-        _oddsListGameHallResult.postValue(result)
+        _oddsListGameHallResult.postValue(Event(result))
     }
 
     private fun getOddsList(
@@ -738,7 +738,7 @@ class GameViewModel(
                 }
                 _oddsListResult.postValue(Event(result))
             } else {
-                _oddsListGameHallResult.postValue(result)
+                _oddsListGameHallResult.postValue(Event(result))
             }
         }
     }
@@ -759,7 +759,7 @@ class GameViewModel(
                     )
                 )
             }
-            _leagueListResult.postValue(result)
+            _leagueListResult.postValue(Event(result))
         }
     }
 
@@ -771,7 +771,7 @@ class GameViewModel(
                 )
             }
 
-            _outrightSeasonListResult.postValue(result)
+            _outrightSeasonListResult.postValue(Event(result))
         }
     }
 

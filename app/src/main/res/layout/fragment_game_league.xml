@@ -15,13 +15,23 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/game_league_odd_list"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:overScrollMode="never"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/game_league_filter_row"
-        tools:itemCount="2"
-        tools:listitem="@layout/itemview_game_league" />
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/game_league_odd_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            tools:itemCount="2"
+            tools:listitem="@layout/itemview_game_league" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

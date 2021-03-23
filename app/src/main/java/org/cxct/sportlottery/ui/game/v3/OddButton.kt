@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_odd.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -28,6 +29,14 @@ class OddButton @JvmOverloads constructor(
             }
         }
 
+    var ouType: OUType? = null
+        set(value) {
+            field = value
+
+            field?.let {
+                setupOUType(it)
+            }
+        }
 
     var betStatus: BetStatus? = null
         set(value) {
@@ -107,6 +116,23 @@ class OddButton @JvmOverloads constructor(
             View.VISIBLE
         } else {
             View.GONE
+        }
+
+        odd_outright_text.visibility = if (playType == PlayType.OUTRIGHT) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun setupOUType(ouType: OUType) {
+        odd_ou_type.text = when (ouType) {
+            OUType.O_TYPE -> {
+                resources.getString(R.string.odd_button_ou_o)
+            }
+            OUType.U_TYPE -> {
+                resources.getString(R.string.odd_button_ou_u)
+            }
         }
     }
 
