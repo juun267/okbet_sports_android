@@ -61,7 +61,6 @@ class FeedbackViewModel(
         get() = _isFinalPage
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
 
-    //    val typeMap = mapOf(0 to "充值问题", 1 to "提款问题", 2 to "其他问题", 3 to "提交建议", 4 to "我要投诉", 5 to "客服反馈", 6 to "玩家回复")
     val statusList = listOf(SheetData(allStatusTag, androidContext.getString(R.string.all_status)), SheetData("0", androidContext.getString(R.string.feedback_wait_for_reply)), SheetData("1", androidContext.getString(R.string.feedback_already_reply)))
 
     companion object {
