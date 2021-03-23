@@ -333,11 +333,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         tv_bet.apply {
             isClickable = if (!boolean) {
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected)
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.bright_gray))
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite6))
                 false
             } else {
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_orangelight)
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite6))
                 true
             }
         }

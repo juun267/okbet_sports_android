@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_odds_detail_more.*
 import org.cxct.sportlottery.R
@@ -76,7 +75,7 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<GameViewModel>(GameViewMo
                             m = (value[i] as Match)
                             m.apply {
                                 if (m.id != matchId) {
-                                    matchOddList.add(MoreGameEntity(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime.toString(), m.status))
+                                    matchOddList.add(MoreGameEntity(m.awayName, m.endTime.toString(), m.homeName, m.id, m.playCateNum, m.startTime.toString(), m.status))
                                 }
                             }
                         }

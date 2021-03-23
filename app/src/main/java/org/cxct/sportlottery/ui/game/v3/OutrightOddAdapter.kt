@@ -4,10 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_subtitlev3.view.*
 import kotlinx.android.synthetic.main.itemview_outright_oddv3.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.util.TextUtil
 
 class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
@@ -19,6 +22,8 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
+
+    var outrightOddListener: OutrightOddListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position]) {
@@ -42,7 +47,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is OddViewHolder -> {
                 val item = data[position] as Odd
-                holder.bind(item)
+                holder.bind(item, outrightOddListener)
             }
         }
 
@@ -52,8 +57,28 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class OddViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Odd) {
+        fun bind(item: Odd, outrightOddListener: OutrightOddListener?) {
             itemView.outright_odd_name.text = item.spread
+
+            itemView.outright_odd_btn.apply {
+                playType = PlayType.OUTRIGHT
+
+                visibility = if (item.odds == null) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
+
+                isSelected = item.isSelected ?: false
+
+                betStatus = item.status
+
+                odd_outright_text.text = item.odds?.let { TextUtil.formatForOdd(it) }
+
+                setOnClickListener {
+                    outrightOddListener?.onClickBet(item)
+                }
+            }
         }
 
         companion object {
@@ -84,5 +109,8 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
+}
 
+class OutrightOddListener(val clickListenerBet: (odd: Odd) -> Unit) {
+    fun onClickBet(odd: Odd) = clickListenerBet(odd)
 }

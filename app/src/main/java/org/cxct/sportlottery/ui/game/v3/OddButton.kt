@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_odd.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -28,8 +29,16 @@ class OddButton @JvmOverloads constructor(
             }
         }
 
+    var ouType: OUType? = null
+        set(value) {
+            field = value
 
-    var betStatus: BetStatus? = null
+            field?.let {
+                setupOUType(it)
+            }
+        }
+
+    var betStatus: Int? = null
         set(value) {
             field = value
 
@@ -37,7 +46,6 @@ class OddButton @JvmOverloads constructor(
                 setupBetStatus(it)
             }
         }
-
 
     var oddStatus: OddState? = null
         set(value) {
@@ -108,15 +116,40 @@ class OddButton @JvmOverloads constructor(
         } else {
             View.GONE
         }
+
+        odd_outright_text.visibility = if (playType == PlayType.OUTRIGHT) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
-    private fun setupBetStatus(betStatus: BetStatus) {
+    private fun setupOUType(ouType: OUType) {
+        odd_ou_type.text = when (ouType) {
+            OUType.O_TYPE -> {
+                resources.getString(R.string.odd_button_ou_o)
+            }
+            OUType.U_TYPE -> {
+                resources.getString(R.string.odd_button_ou_u)
+            }
+        }
+    }
+
+    private fun setupBetStatus(betStatus: Int) {
+        visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
         odd_lock.visibility =
-            if (betStatus == BetStatus.LOCKED || betStatus == BetStatus.DEACTIVATED) {
+            if (betStatus == BetStatus.LOCKED.code) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
+
+        isEnabled = (betStatus == BetStatus.ACTIVATED.code)
     }
 
     private fun setupOddState(oddState: OddState) {

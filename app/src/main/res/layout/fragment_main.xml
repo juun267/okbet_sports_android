@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="125dp"
                     app:AutoPlayTime="3000"
-                    app:layout_constraintBottom_toTopOf="@id/ll_announce"
+                    app:layout_constraintBottom_toTopOf="@id/layout_announce"
                     app:layout_constraintDimensionRatio="w,375:125"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -63,38 +63,15 @@
                     app:layout_constraintTop_toTopOf="@id/xBanner" />
 
                 <!-- 公告輪播跑馬燈 -->
-                <LinearLayout
-                    android:id="@+id/ll_announce"
+                <include
+                    android:id="@+id/layout_announce"
+                    layout="@layout/view_message"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:background="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/xBanner">
-
-                    <ImageView
-                        android:id="@+id/iv_broadcast_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_announce" />
-
-                    <org.cxct.sportlottery.ui.common.AutoScrollRecyclerView
-                        android:id="@+id/rv_marquee"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clipChildren="false"
-                        app:speed_dp_sec="60dp"
-                        tools:itemCount="1"
-                        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/content_marquee" />
-
-                </LinearLayout>
+                    app:layout_constraintTop_toBottomOf="@id/xBanner" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -115,7 +92,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <View
@@ -334,5 +311,3 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-
