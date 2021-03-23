@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.util
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -127,3 +130,16 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
     this.setTextColor(ContextCompat.getColor(context, color))
 }
 
+fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            textAmount.invoke(count)
+        }
+    })
+}

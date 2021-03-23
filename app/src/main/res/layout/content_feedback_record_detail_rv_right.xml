@@ -4,75 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:orientation="horizontal"
     android:padding="15dp"
     tools:context=".ui.feedback.record.FeedbackListDetailAdapter">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_gravity="right"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:minHeight="80dp"
+        android:background="@drawable/bg_rectangle_4dp_blue"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/bg_feedback_dialog_right"
-            android:minWidth="100dp"
-            android:maxWidth="150dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/feedback_triangle_blue"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txv_reply"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="35dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="10dp"
             android:background="@null"
             android:textColor="#4a5e73"
             android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toTopOf="@+id/txv_reply_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="怎么没有办法投注?下单后没有反应下单后没有反应下单后没有反应" />
+            tools:text="怎么没有办法投注?下单后没有反应" />
 
         <TextView
             android:id="@+id/txv_reply_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginStart="130dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="5dp"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txv_reply"
             tools:text="提交时间:2021-02-16 13:34:43" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/lay_head"
-        android:layout_width="44dp"
+
+    <ImageView
+        android:id="@+id/img_pic"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:layout_marginStart="5dp"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/img_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_account_service" />
-
-    </LinearLayout>
-
+        android:src="@drawable/ic_account_service" />
 
 </LinearLayout>
