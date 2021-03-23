@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.feedback
+package org.cxct.sportlottery.ui.feedback.record
 
 import android.content.Context
 import android.view.LayoutInflater

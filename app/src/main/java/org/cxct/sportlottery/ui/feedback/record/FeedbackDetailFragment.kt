@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.feedback
+package org.cxct.sportlottery.ui.feedback.record
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,13 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_feedback_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 
 
 class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
-
-    private val navController by lazy {
-        view?.findNavController()
-    }
 
     val adapter by lazy {
         viewModel.userID?.let { FeedbackListDetailAdapter(it) }
@@ -26,6 +23,8 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.showToolbar(false)
+        viewModel.fbQueryDetail()
         return inflater.inflate(R.layout.fragment_feedback_detail, container, false)
     }
 
@@ -33,7 +32,6 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initDataLive()
-        initData()
         initButton()
     }
 
@@ -41,7 +39,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         btn_submit.setOnClickListener {
             if (!et_content.text.isNullOrEmpty()){
                 viewModel.fbReply(et_content.text.toString())
-                navController?.navigate(R.id.action_feedbackDetailFragment_to_feedbackRecordListFragment)
+                view?.findNavController()?.navigate(R.id.action_feedbackDetailFragment_to_feedbackRecordListFragment)
             }
         }
     }
@@ -59,11 +57,4 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         })
     }
 
-    private fun initData() {
-        getDetailData()
-    }
-
-    private fun getDetailData() {
-        viewModel.fbQueryDetail()
-    }
 }
