@@ -13,7 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
+import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MoneyManager
@@ -34,6 +37,15 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
+
+    private val protocolAdapter by lazy {
+        ProtocolAdapter(requireContext(), OnSelectProtocol {
+            sv_protocol.apply {
+                setCryptoProtocol(it)
+                dismiss()
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,6 +102,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initView() {
+        changeTransferType(TransferType.BANK)
+        showHideTab()
+        sv_protocol.setAdapter(protocolAdapter)
+
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
@@ -97,6 +113,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         et_withdrawal_password.eyeVisibility = View.GONE
 
+    }
+
+    private fun showHideTab() {
+        if (mBankCardStatus) {
+            block_transfer_type.visibility = View.GONE
+        } else {
+            block_transfer_type.visibility = View.VISIBLE
+        }
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -169,6 +193,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupClickEvent() {
+        tabClickEvent()
+
         item_bank_selector.setOnClickListener {
             mBankSelectorBottomSheetDialog.show()
         }
@@ -187,10 +213,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             )
         }
 
-        btn_reset.setOnClickListener {
-            resetAll()
-        }
-
         btn_delete_bank.setOnClickListener {
             modifyFinish()
             val passwordDialog = WithdrawPassWordDialog(requireContext(), WithdrawPasswordDialogListener {
@@ -200,6 +222,52 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 show()
             }
         }
+    }
+
+    private fun tabClickEvent() {
+        if (!mBankCardStatus) {
+            tab_bank_card.setOnClickListener {
+                changeTransferType(TransferType.BANK)
+            }
+            tab_crypto.setOnClickListener {
+                changeTransferType(TransferType.CRYPTO)
+            }
+        }
+    }
+
+    private fun changeTransferType(type: TransferType) {
+        changeTab(type)
+        changeInputField(type)
+    }
+
+    private fun changeTab(type: TransferType) {
+        when (type) {
+            TransferType.BANK -> {
+                tab_bank_card.isSelected = true
+                tab_crypto.isSelected = false
+            }
+            TransferType.CRYPTO -> {
+                tab_bank_card.isSelected = false
+                tab_crypto.isSelected = true
+            }
+        }
+    }
+
+    private fun changeInputField(type: TransferType) {
+        when (type) {
+            TransferType.BANK -> {
+                block_bank_card_input.visibility = View.VISIBLE
+                block_crypto_input.visibility = View.GONE
+            }
+            TransferType.CRYPTO -> {
+                block_bank_card_input.visibility = View.GONE
+                block_crypto_input.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun setCryptoProtocol(protocol: MoneyRechCfg.DetailList) {
+        sv_protocol.selectedText = protocol.contract
     }
 
     private fun setupObserve() {
@@ -217,6 +285,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
+
+            val protocolList = rechCfgData.uwTypes.find { it.type == TransferType.CRYPTO.type }?.detailList
+            protocolList?.let { list ->
+                protocolAdapter.dataList = list
+                setCryptoProtocol(list.first())
+            }
         })
 
         viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
@@ -275,20 +349,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearBankCardFragmentStatus()
-    }
-
-    private fun resetAll() {
-        et_create_name.setText("")
-        et_bank_card_number.setText("")
-        et_network_point.setText("")
-        et_withdrawal_password.setText("")
-        modifyFinish()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() {
-        }
     }
 }
 
@@ -368,4 +428,78 @@ class ListViewHolder {
 
 class BankSelectorAdapterListener(private val selectListener: (item: MoneyRechCfg.Bank) -> Unit) {
     fun onSelect(item: MoneyRechCfg.Bank) = selectListener(item)
+}
+
+//虛擬幣 協議/渠道選擇
+class ProtocolAdapter(private val context: Context, private val selectedListener: OnSelectProtocol) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        var dataCheckedList = mutableListOf<Boolean>()
+        var selectedPosition = 0
+    }
+
+    var dataList = listOf<MoneyRechCfg.DetailList>()
+        set(value) {
+            field = value
+            dataCheckedList = MutableList(value.size) { it == 0 }
+            notifyDataSetChanged()
+        }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return ThirdGamesItemViewHolder.form(parent)
+    }
+
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ThirdGamesItemViewHolder -> {
+                holder.bind(this, dataList, position, selectedListener)
+            }
+        }
+    }
+
+    class ThirdGamesItemViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, dataList: List<MoneyRechCfg.DetailList>, position: Int, selectedListener: OnSelectProtocol) {
+            val data = dataList[position]
+            val itemChecked = dataCheckedList[position]
+            itemView.apply {
+                checkbox_item.text = data.contract
+                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.colorWhite6) else ContextCompat.getDrawable(context, android.R.color.white)
+                checkbox_item.setOnClickListener {
+                    if (selectedPosition != position) {
+                        selectedListener.onSelected(data)
+                        itemChecked(adapter, position)
+                    }
+                }
+            }
+        }
+
+        private fun itemChecked(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, checkIndex: Int) {
+            dataCheckedList[selectedPosition] = false
+            dataCheckedList[checkIndex] = true
+            adapter.apply {
+                notifyItemChanged(selectedPosition)
+                notifyItemChanged(checkIndex)
+            }
+            selectedPosition = checkIndex
+        }
+
+        companion object {
+            fun form(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+                val inflater = LayoutInflater.from(viewGroup.context)
+                val view = inflater.inflate(R.layout.content_common_bottom_sheet_item, viewGroup, false)
+                return ThirdGamesItemViewHolder(view)
+            }
+        }
+    }
+
+}
+
+class OnSelectProtocol(val selectedListener: (protocol: MoneyRechCfg.DetailList) -> Unit) {
+    fun onSelected(protocol: MoneyRechCfg.DetailList) = selectedListener(protocol)
 }
