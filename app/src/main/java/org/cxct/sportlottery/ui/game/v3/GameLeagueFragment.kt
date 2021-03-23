@@ -132,27 +132,29 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
-
-            viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
-
-                it.getContentIfNotHandled()?.let { oddsListResult ->
-                    if (oddsListResult.success) {
-
-                        game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
-
-                        leagueAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
-                    }
-                }
-
-            })
-
-            viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
-                leagueAdapter.data = it
-            })
+            initObserve()
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun initObserve() {
+        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+
+            it.getContentIfNotHandled()?.let { oddsListResult ->
+                if (oddsListResult.success) {
+
+                    game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
+
+                    leagueAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                }
+            }
+
+            viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
+                leagueAdapter.data = it
+            })
+        })
     }
 
     private fun backEvent() {
