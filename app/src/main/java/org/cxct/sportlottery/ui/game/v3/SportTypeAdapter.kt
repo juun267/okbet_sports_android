@@ -8,10 +8,22 @@ import kotlinx.android.synthetic.main.itemview_sport_type.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 
-class SportTypeAdapter : RecyclerView.Adapter<SportTypeAdapter.ViewHolder>() {
+class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var data = listOf<Item>()
+    enum class ItemType {
+        SPORT, THIRD_GAME
+    }
+
+    var dataSport = listOf<Item>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var dataThirdGame = listOf<GameCateData>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -19,19 +31,33 @@ class SportTypeAdapter : RecyclerView.Adapter<SportTypeAdapter.ViewHolder>() {
 
     var sportTypeListener: SportTypeListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+    override fun getItemViewType(position: Int): Int = when {
+        (position < dataSport.size) -> ItemType.SPORT.ordinal
+        else -> ItemType.THIRD_GAME.ordinal
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when (viewType) {
+            ItemType.SPORT.ordinal -> ViewHolderSport.from(parent)
+            else -> ViewHolderThirdGame.from(parent)
+        }
 
-        holder.bind(item, sportTypeListener)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolderSport -> {
+                val item = dataSport[position]
+                holder.bind(item, sportTypeListener)
+            }
+            is ViewHolderThirdGame -> {
+                val item = dataThirdGame[position - dataSport.size]
+                holder.bind(item)
+            }
+        }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = dataSport.size + dataThirdGame.size
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolderSport private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Item, sportTypeListener: SportTypeListener?) {
 
@@ -69,12 +95,53 @@ class SportTypeAdapter : RecyclerView.Adapter<SportTypeAdapter.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.itemview_sport_type, parent, false)
 
-                return ViewHolder(view)
+                return ViewHolderSport(view)
+            }
+        }
+    }
+
+    class ViewHolderThirdGame private constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+
+        fun bind(item: GameCateData) {
+            when (item.categoryThird) {
+                ThirdGameCategory.CGCP -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconlottery)
+                    itemView.sport_type_text.text = itemView.context.getString(R.string.lottery)
+                }
+                ThirdGameCategory.LIVE -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconlivecasino)
+                    itemView.sport_type_text.text = itemView.context.getString(R.string.live)
+                }
+                ThirdGameCategory.QP -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconpoker)
+                    itemView.sport_type_text.text = itemView.context.getString(R.string.poker)
+                }
+                ThirdGameCategory.DZ -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconslotgame)
+                    itemView.sport_type_text.text = itemView.context.getString(R.string.slot)
+                }
+                ThirdGameCategory.BY -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconfishing)
+                    itemView.sport_type_text.text = itemView.context.getString(R.string.fishing)
+                }
+                else -> {
+                }
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolderThirdGame {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_sport_type, parent, false)
+
+                return ViewHolderThirdGame(view)
             }
         }
     }
