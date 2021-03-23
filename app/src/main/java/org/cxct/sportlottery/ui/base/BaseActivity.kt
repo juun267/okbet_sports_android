@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -30,10 +29,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var loadingView: View? = null
 
     private var floatButtonView: View? = null
-
-    private val mReceiver by lazy {
-        ServiceBroadcastReceiver()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +46,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun showDialogLogout(message: String) {
         val dialog = CustomAlertDialog(this)
         dialog.setMessage(message)
-        dialog.setPositiveClickListener {
+        dialog.setPositiveClickListener(View.OnClickListener {
             MainActivity.reStart(this)
             dialog.dismiss()
-        }
+        })
         dialog.setNegativeButtonText(null)
         dialog.show()
     }

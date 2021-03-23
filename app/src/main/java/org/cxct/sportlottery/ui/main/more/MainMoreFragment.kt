@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main.next
+package org.cxct.sportlottery.ui.main.more
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_main_more.*
-import kotlinx.android.synthetic.main.main_more_cate_tab.view.*
+import kotlinx.android.synthetic.main.main_tab.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -60,7 +60,7 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->
             try {
                 val tabCate = gameCateFilterList[position].categoryThird
-                tab.setCustomView(R.layout.main_more_cate_tab)
+                tab.setCustomView(R.layout.main_tab)
                 tab.customView?.apply {
                     this.iv_icon.setImageResource(tabCate.iconRes)
                     this.tv_title.text = tabCate.title

@@ -7,7 +7,7 @@
     android:background="@drawable/bg_square_shape_6dp_gray_stroke"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.main.next.RvDZAdapter">
+    tools:context=".ui.main.more.RvDZAdapter">
 
     <ImageView
         android:id="@+id/iv_image"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:gravity="center"
-        android:textColor="@color/gray15"
+        android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize14sp"
         tools:text="game name" />
 

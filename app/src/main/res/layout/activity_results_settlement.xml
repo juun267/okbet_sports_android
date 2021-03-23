@@ -80,7 +80,7 @@
                 android:maxLines="1"
                 android:textColor="@color/textColorDark"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="@string/football" />
+                tools:text="@string/soccer" />
 
         </LinearLayout>
 
