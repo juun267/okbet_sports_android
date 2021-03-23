@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -44,6 +45,30 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
                 }
             )
+
+            itemExpandListener = ItemExpandListener {
+                when (it.isExpand) {
+                    true -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+
+                    false -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.unSubscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -140,5 +165,21 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
             false
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        leagueAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        sportType,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
+        }
     }
 }
