@@ -11,11 +11,12 @@ enum class ThirdGameCategory(@DrawableRes val iconRes: Int, var title: String? =
     DZ(R.drawable.selector_main_tab_slot), //電子
     BY(R.drawable.selector_main_tab_fishing), //捕魚
 
+    MAIN(-1), //首頁
     UNKNOWN(-1); //未知
 
     companion object {
         fun getCategory(cateCode: String?): ThirdGameCategory {
-            return when(cateCode) {
+            return when (cateCode) {
                 LOCAL_SP.name -> LOCAL_SP
                 CGCP.name -> CGCP
                 QP.name -> QP

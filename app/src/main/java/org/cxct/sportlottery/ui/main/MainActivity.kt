@@ -22,8 +22,9 @@ import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.news.NewsDialog
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
+import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -191,9 +192,15 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.goToThirdGamePage.observe(this, Observer {
-            if (it != null) {
-                goToMainMoreFragment(it.name)
-                viewModel.clearThirdGameCatePage()
+            when {
+                it == ThirdGameCategory.MAIN -> {
+                    iv_logo.performClick() //跳轉到首頁
+                    viewModel.clearThirdGameCatePage()
+                }
+                it != null -> {
+                    goToMainMoreFragment(it.name)
+                    viewModel.clearThirdGameCatePage()
+                }
             }
         })
     }
