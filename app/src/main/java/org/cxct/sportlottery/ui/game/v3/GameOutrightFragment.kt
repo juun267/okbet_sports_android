@@ -14,11 +14,29 @@ import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 
 
+private const val ARG_SPORT_TYPE = "sportType"
+private const val ARG_EVENT_ID = "eventId"
+
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+
+    companion object {
+        fun newInstance(sportType: String, eventId: String) =
+            GameOutrightFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_SPORT_TYPE, sportType)
+                    putString(ARG_EVENT_ID, eventId)
+                }
+            }
+    }
+
+    private var sportType: String? = null
+
+    private var eventId: String? = null
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
@@ -26,6 +44,17 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 viewModel.updateOutrightOddsSelectedState(it)
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            sportType = it.getString(ARG_SPORT_TYPE)
+            eventId = it.getString(ARG_EVENT_ID)
+        }
+
+        service.subscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 
     override fun onCreateView(
@@ -128,5 +157,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
             false
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        service.unSubscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 }
