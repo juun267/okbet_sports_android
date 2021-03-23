@@ -4,13 +4,28 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_title_third_rebates_form.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.vip.thirdRebates.Debate
+import org.cxct.sportlottery.ui.vip.ThirdRebatesAdapter.Companion.FORM_EVEN_BACKGROUND_RES
+import org.cxct.sportlottery.ui.vip.ThirdRebatesAdapter.Companion.FORM_ODD_BACKGROUND_RES
+import org.cxct.sportlottery.ui.vip.ThirdRebatesAdapter.Companion.FORM_TITLE_BACKGROUND_RES
 
 class ThirdRebatesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        @ColorRes
+        const val FORM_TITLE_BACKGROUND_RES = R.color.colorWhite7
+
+        @ColorRes
+        const val FORM_EVEN_BACKGROUND_RES = R.color.colorWhite1
+
+        @ColorRes
+        const val FORM_ODD_BACKGROUND_RES = R.color.colorWhite3
+    }
 
     enum class ItemType { TITLE, CONTENT, TAIL }
 
@@ -89,12 +104,12 @@ class TitleViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
 
     fun bind(itemData: Debate) {
         itemView.apply {
-            ContextCompat.getColorStateList(context, R.color.form_background_title).let {
+            ContextCompat.getColorStateList(context, FORM_TITLE_BACKGROUND_RES).let {
                 title_top_left.backgroundTintList = it
                 title_top_center.backgroundTintList = it
                 title_top_right.backgroundTintList = it
             }
-            ContextCompat.getColorStateList(context, R.color.form_background_even).let {
+            ContextCompat.getColorStateList(context, FORM_EVEN_BACKGROUND_RES).let {
                 ll_bet_range.backgroundTintList = it
                 tv_rebates_rate.backgroundTintList = it
                 tv_rebates.backgroundTintList = it
@@ -121,9 +136,9 @@ class ContentViewHolder private constructor(itemView: View) : RecyclerView.ViewH
         itemView.apply {
             val backgroundColor =
                 if (itemData.levelIndex % 2 == 0) {
-                    ContextCompat.getColorStateList(context, R.color.form_background_even)
+                    ContextCompat.getColorStateList(context, FORM_EVEN_BACKGROUND_RES)
                 } else {
-                    ContextCompat.getColorStateList(context, R.color.form_background_odd)
+                    ContextCompat.getColorStateList(context, FORM_ODD_BACKGROUND_RES)
                 }
 
             backgroundColor.let {
@@ -148,9 +163,9 @@ class TailViewHolder private constructor(itemView: View) : RecyclerView.ViewHold
         itemView.apply {
             val backgroundColor =
                 if (itemData.levelIndex % 2 == 0) {
-                    ContextCompat.getColorStateList(context, R.color.form_background_even)
+                    ContextCompat.getColorStateList(context, FORM_EVEN_BACKGROUND_RES)
                 } else {
-                    ContextCompat.getColorStateList(context, R.color.form_background_odd)
+                    ContextCompat.getColorStateList(context, FORM_ODD_BACKGROUND_RES)
                 }
             backgroundColor.let {
                 ll_bet_range.backgroundTintList = it

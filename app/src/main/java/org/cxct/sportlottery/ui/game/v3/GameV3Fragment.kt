@@ -256,34 +256,43 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
-                if (it != null && it.success) {
-                    game_list.adapter = leagueAdapter.apply {
-                        data = it.oddsListData?.leagueOdds ?: listOf()
+
+                it.getContentIfNotHandled()?.let { oddsListResult ->
+                    if (oddsListResult.success) {
+                        game_list.adapter = leagueAdapter.apply {
+                            data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                        }
                     }
                 }
             })
 
             viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
-                if (it != null && it.success) {
-                    game_list.adapter = countryAdapter.apply {
-                        data = it.rows ?: listOf()
+
+                it.getContentIfNotHandled()?.let { leagueListResult ->
+                    if (leagueListResult.success) {
+                        game_list.adapter = countryAdapter.apply {
+                            data = leagueListResult.rows ?: listOf()
+                        }
                     }
                 }
             })
 
             viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
-                if (it != null && it.success) {
-                    game_list.adapter = outrightCountryAdapter.apply {
-                        data = it.rows ?: listOf()
+
+                it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
+                    if (outrightSeasonListResult.success) {
+                        game_list.adapter = outrightCountryAdapter.apply {
+                            data = outrightSeasonListResult.rows ?: listOf()
+                        }
                     }
                 }
             })
 
-            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
-                //TODO add not history ui
-            })
+//            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+//                //TODO add not history ui
+//            })
 
             viewModel.getGameHallList(args.matchType, true)
             loading()

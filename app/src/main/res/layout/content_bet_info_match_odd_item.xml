@@ -37,7 +37,7 @@
             android:paddingStart="10dp"
             android:text="@string/bet_info_list_game_closed"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize14sp"
             android:visibility="gone"
             app:drawableStartCompat="@drawable/ic_warning_white"
             tools:ignore="RtlSymmetry" />

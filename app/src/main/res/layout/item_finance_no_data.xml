@@ -11,7 +11,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:text="@string/finance_list_no_more"
-        android:textColor="@color/textGray"
+        android:textColor="@color/colorGrayDark"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -53,9 +53,9 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
 
     private fun updateOddButton(visible: Boolean, count: Int?) {
         if (visible) {
-            rl_bet_float_button?.visibility = View.VISIBLE
+            ll_bet_float_button?.visibility = View.VISIBLE
         } else {
-            rl_bet_float_button?.visibility = View.GONE
+            ll_bet_float_button?.visibility = View.GONE
         }
 
         count?.let {
@@ -77,8 +77,8 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         val contentView: ViewGroup = window.decorView.findViewById(android.R.id.content)
         floatButtonView = LayoutInflater.from(this)
             .inflate(R.layout.layout_bet_info_list_float_button, contentView, false).apply {
-                this.rl_bet_float_button.visibility = View.GONE
-                this.rl_bet_float_button.setOnClickListener {
+                this.ll_bet_float_button.visibility = View.GONE
+                this.ll_bet_float_button.setOnClickListener {
                     oddListDialog?.show(
                         supportFragmentManager,
                         BaseOddButtonActivity::class.java.simpleName

@@ -461,22 +461,28 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
-            if (it != null && it.success) {
-                setupGameHallList(it)
+            it.getContentIfNotHandled()?.let { oddsListResult ->
+                if (oddsListResult.success) {
+                    setupGameHallList(oddsListResult)
+                }
             }
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
-            if (it != null && it.success) {
-                setupGameHallList(it)
+            it.getContentIfNotHandled()?.let { leagueListResult ->
+                if (leagueListResult.success) {
+                    setupGameHallList(leagueListResult)
+                }
             }
         })
 
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
-            if (it != null && it.success) {
-                setupGameHallList(it)
+            it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
+                if (outrightSeasonListResult.success) {
+                    setupGameHallList(outrightSeasonListResult)
+                }
             }
         })
 

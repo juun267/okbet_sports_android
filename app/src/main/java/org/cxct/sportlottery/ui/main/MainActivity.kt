@@ -20,9 +20,10 @@ import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.news.NewsDialog
+import org.cxct.sportlottery.ui.main.next.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -188,6 +189,13 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.messageDialogResult.observe(this, Observer {
             setNewsDialog(it)
         })
+
+        viewModel.goToThirdGamePage.observe(this, Observer {
+            if (it != null) {
+                goToMainMoreFragment(it.name)
+                viewModel.clearThirdGameCatePage()
+            }
+        })
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
@@ -231,4 +239,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             .into(iv_head)
     }
 
+    private fun goToMainMoreFragment(cateCode: String?, firmCode: String? = null) {
+        val bundle = MainMoreFragmentArgs(cateCode ?: "", firmCode ?: "").toBundle()
+        navController.navigate(R.id.mainMoreFragment, bundle)
+    }
 }

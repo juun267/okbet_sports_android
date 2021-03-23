@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="26dp"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.game.UserNoticeDialog">
@@ -25,7 +25,7 @@
             android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:minHeight="40dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
             android:id="@+id/btn_close"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="@drawable/effect_ripple_circle_blue_light"
+            android:background="@null"
             android:contentDescription="@null"
             android:scaleType="centerInside"
             android:src="@drawable/ic_close"
@@ -45,7 +45,7 @@
             app:layout_constraintTop_toTopOf="@id/tv_title" />
 
         <ScrollView
-            android:overScrollMode="never"
+         android:overScrollMode="never"
             android:id="@+id/sv_block_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/effect_ripple_rectangle_gray"
+            android:background="@null"
             android:minWidth="135dp"
             android:minHeight="36dp"
             android:text="@string/btn_determine"
