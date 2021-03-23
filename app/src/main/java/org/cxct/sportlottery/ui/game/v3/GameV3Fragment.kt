@@ -31,6 +31,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 viewModel.getGameHallList(args.matchType, it)
                 loading()
             }
+
+            thirdGameListener = ThirdGameListener {
+                viewModel.setGoToThirdGamePage(it)
+                activity?.finish()
+            }
         }
     }
 

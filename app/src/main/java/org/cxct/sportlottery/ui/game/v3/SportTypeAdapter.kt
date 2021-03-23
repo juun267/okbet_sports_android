@@ -31,6 +31,8 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var sportTypeListener: SportTypeListener? = null
 
+    var thirdGameListener: ThirdGameListener? = null
+
     override fun getItemViewType(position: Int): Int = when {
         (position < dataSport.size) -> ItemType.SPORT.ordinal
         else -> ItemType.THIRD_GAME.ordinal
@@ -50,7 +52,7 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is ViewHolderThirdGame -> {
                 val item = dataThirdGame[position - dataSport.size]
-                holder.bind(item)
+                holder.bind(item, thirdGameListener)
             }
         }
     }
@@ -108,7 +110,7 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ViewHolderThirdGame private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: GameCateData) {
+        fun bind(item: GameCateData, thirdGameListener: ThirdGameListener?) {
             when (item.categoryThird) {
                 ThirdGameCategory.CGCP -> {
                     itemView.sport_type_img.setImageResource(R.drawable.ic_sportbookiconlottery)
@@ -133,6 +135,10 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 else -> {
                 }
             }
+
+            itemView.setOnClickListener {
+                thirdGameListener?.onClick(item.categoryThird)
+            }
         }
 
         companion object {
@@ -149,4 +155,8 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 class SportTypeListener(val clickListener: (item: Item) -> Unit) {
     fun onClick(item: Item) = clickListener(item)
+}
+
+class ThirdGameListener(val clickListener: (thirdGameCategory: ThirdGameCategory) -> Unit) {
+    fun onClick(thirdGameCategory: ThirdGameCategory) = clickListener(thirdGameCategory)
 }
