@@ -302,7 +302,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.openOutrightDetail.observe(this, Observer {
             app_bar_layout.setExpanded(true, true)
-            addFragment(GameOutrightFragment(), Page.OUTRIGHT)
+            addFragment(GameOutrightFragment.newInstance(it.first, it.second), Page.OUTRIGHT)
         })
 
         viewModel.userInfo.observe(this, Observer {
