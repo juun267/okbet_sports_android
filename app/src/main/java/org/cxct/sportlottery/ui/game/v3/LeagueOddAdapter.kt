@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.util.TextUtil
 
 class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -54,7 +55,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setupMatchInfo(item)
 
-            setupOddButton(item)
+            setupOddButton(item, leagueOddListener)
 
             itemView.match_live.setOnClickListener {
                 leagueOddListener?.onClickLive(item)
@@ -68,7 +69,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.game_name_away.text = item.matchInfo?.awayName
         }
 
-        private fun setupOddButton(item: MatchOdd) {
+        private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
             val oddListHDP = item.odds[PlayType.HDP.code]
             val oddListOU = item.odds[PlayType.OU.code]
 
@@ -82,16 +83,28 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddListHDP?.get(0)?.isSelected ?: false
+
+                betStatus = oddListHDP?.get(0)?.status
+
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
                 } else {
-                    oddListHDP[0].spread
+                    oddListHDP[0]?.spread
                 }
 
                 odd_hdp_bottom_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
                 } else {
-                    oddListHDP[0].odds?.let { TextUtil.formatForOdd(it) }
+                    oddListHDP[0]?.odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddListHDP != null && oddListHDP.size >= 2) {
+                        oddListHDP[0]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                        }
+                    }
                 }
             }
 
@@ -105,16 +118,28 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddListHDP?.get(1)?.isSelected ?: false
+
+                betStatus = oddListHDP?.get(1)?.status
+
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
                 } else {
-                    oddListHDP[1].spread
+                    oddListHDP[1]?.spread
                 }
 
                 odd_hdp_bottom_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
                 } else {
-                    oddListHDP[1].odds?.let { TextUtil.formatForOdd(it) }
+                    oddListHDP[1]?.odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddListHDP != null && oddListHDP.size >= 2) {
+                        oddListHDP[1]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                        }
+                    }
                 }
             }
 
@@ -130,16 +155,28 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddListOU?.get(0)?.isSelected ?: false
+
+                betStatus = oddListOU?.get(0)?.status
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
-                    oddListOU[0].spread
+                    oddListOU[0]?.spread
                 }
 
                 odd_ou_bottom_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
-                    oddListOU[0].odds?.let { TextUtil.formatForOdd(it) }
+                    oddListOU[0]?.odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddListOU != null && oddListOU.size >= 2) {
+                        oddListOU[0]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                        }
+                    }
                 }
             }
 
@@ -155,16 +192,28 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddListOU?.get(1)?.isSelected ?: false
+
+                betStatus = oddListOU?.get(1)?.status
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
-                    oddListOU[1].spread
+                    oddListOU[1]?.spread
                 }
 
                 odd_ou_bottom_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
-                    oddListOU[1].odds?.let { TextUtil.formatForOdd(it) }
+                    oddListOU[1]?.odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddListOU != null && oddListOU.size >= 2) {
+                        oddListOU[1]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                        }
+                    }
                 }
             }
         }
@@ -185,7 +234,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setupMatchInfo(item)
 
-            setupOddButton(item)
+            setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
                 leagueOddListener?.onClickLive(item)
@@ -199,7 +248,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.game_name_away_1x2.text = item.matchInfo?.awayName
         }
 
-        private fun setupOddButton(item: MatchOdd) {
+        private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
             val oddList1X2 = item.odds[PlayType.X12.code]
 
             itemView.match_odd_1.apply {
@@ -211,12 +260,24 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = oddList1X2?.get(0)?.isSelected ?: false
+
+                betStatus = oddList1X2?.get(0)?.status
+
                 odd_1x2_top_text.text = "1"
 
                 odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 2) {
                     ""
                 } else {
-                    oddList1X2[0].odds?.let { TextUtil.formatForOdd(it) }
+                    oddList1X2[0]?.odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddList1X2 != null && oddList1X2.size >= 2) {
+                        oddList1X2[0]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                        }
+                    }
                 }
             }
 
@@ -229,12 +290,32 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[1]?.isSelected ?: false
+                } else {
+                    false
+                }
+
+                betStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[1]?.status
+                } else {
+                    null
+                }
+
                 odd_1x2_top_text.text = "X"
 
                 odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 3) {
                     ""
                 } else {
-                    oddList1X2[1].odds?.let { TextUtil.formatForOdd(it) }
+                    oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddList1X2 != null && oddList1X2.size >= 3) {
+                        oddList1X2[1]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                        }
+                    }
                 }
             }
 
@@ -247,14 +328,42 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     View.VISIBLE
                 }
 
+                isSelected = if (oddList1X2 != null && oddList1X2.size == 2) {
+                    oddList1X2[1]?.isSelected ?: false
+                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[2]?.isSelected ?: false
+                } else {
+                    false
+                }
+
+                betStatus = if (oddList1X2 != null && oddList1X2.size == 2) {
+                    oddList1X2[1]?.status
+                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[2]?.status
+                } else {
+                    null
+                }
+
                 odd_1x2_top_text.text = "2"
 
                 odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 2) {
                     ""
                 } else if (oddList1X2.size == 2) {
-                    oddList1X2[1].odds?.let { TextUtil.formatForOdd(it) }
+                    oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
                 } else {
-                    oddList1X2[2].odds?.let { TextUtil.formatForOdd(it) }
+                    oddList1X2[2]?.odds?.let { TextUtil.formatForOdd(it) }
+                }
+
+                setOnClickListener {
+                    if (oddList1X2 != null && oddList1X2.size == 2) {
+                        oddList1X2[1]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                        }
+                    } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                        oddList1X2[2]?.let { odd ->
+                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                        }
+                    }
                 }
             }
         }
@@ -271,6 +380,11 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class LeagueOddListener(val clickListener: (item: MatchOdd) -> Unit) {
-    fun onClickLive(item: MatchOdd) = clickListener(item)
+class LeagueOddListener(
+    val clickListenerLive: (item: MatchOdd) -> Unit,
+    val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
+) {
+    fun onClickLive(item: MatchOdd) = clickListenerLive(item)
+    fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
+        clickListenerBet(matchOdd, oddString, odd)
 }

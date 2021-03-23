@@ -21,7 +21,17 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val leagueAdapter by lazy {
-        LeagueAdapter()
+        LeagueAdapter().apply {
+            leagueOddListener = LeagueOddListener(
+                { matchOdd ->
+                    //TODO open live and play type page
+                    matchOdd.matchInfo?.id
+                },
+                { matchOdd, oddString, odd ->
+                    viewModel.updateMatchBetList(matchOdd, oddString, odd)
+                }
+            )
+        }
     }
 
     override fun onCreateView(

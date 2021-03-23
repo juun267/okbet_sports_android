@@ -525,6 +525,19 @@ class GameViewModel(
                     )
                 }
 
+                result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected =
+                                    betInfoRepository.betInfoList.value?.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd?.id
+                                    }
+                            }
+                        }
+                    }
+                }
+
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
                     it.odds.forEach { mapSubTitleOdd ->
@@ -547,7 +560,7 @@ class GameViewModel(
 
                         //add odd
                         mapSubTitleOdd.value.forEach { odd ->
-                            matchOdd.displayList.add(odd)
+                            odd?.let { it1 -> matchOdd.displayList.add(it1) }
                         }
                     }
 
@@ -730,6 +743,18 @@ class GameViewModel(
                         endTime = timeRangeParams?.endTime
                     )
                 )
+            }
+
+            result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { map ->
+                        map.value.forEach { odd ->
+                            odd?.isSelected = betInfoRepository.betInfoList.value?.any {
+                                it.matchOdd.oddsId == odd?.id
+                            }
+                        }
+                    }
+                }
             }
 
             if (leagueIdList != null) {

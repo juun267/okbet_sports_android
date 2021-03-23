@@ -21,7 +21,11 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val outrightOddAdapter by lazy {
-        OutrightOddAdapter()
+        OutrightOddAdapter().apply {
+            outrightOddListener = OutrightOddListener {
+                viewModel.updateOutrightOddsSelectedState(it)
+            }
+        }
     }
 
     override fun onCreateView(

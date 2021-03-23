@@ -188,10 +188,10 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                         originOdds.forEach { originOdd ->
                             val updateOdd = socketOdds?.find { socketOdd ->
-                                originOdd.id == socketOdd.id
+                                originOdd?.id == socketOdd.id
                             }
 
-                            val originOddValue = originOdd.odds
+                            val originOddValue = originOdd?.odds
                             val updateOddValue = updateOdd?.odds
 
                             originOddValue?.let {
@@ -290,7 +290,7 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 matchOdd.odds.values.forEach { odds ->
                     odds.forEach { odd ->
 
-                        odd.status = betStatus.code
+                        odd?.status = betStatus.code
                     }
                 }
             }
@@ -305,7 +305,7 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueOdd.matchOdds.forEach { matchOdd ->
                 matchOdd.odds.values.forEach { odds ->
                     val updateOdd = odds.find { odd ->
-                        odd.producerId == stopProducerId
+                        odd?.producerId == stopProducerId
                     }
 
                     updateOdd?.status = betStatus.code
