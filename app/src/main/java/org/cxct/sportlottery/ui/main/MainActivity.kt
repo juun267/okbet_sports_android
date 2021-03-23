@@ -23,7 +23,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.news.NewsDialog
-import org.cxct.sportlottery.ui.main.next.MainMoreFragmentArgs
+import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel

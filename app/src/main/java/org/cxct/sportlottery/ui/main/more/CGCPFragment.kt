@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main.next
+package org.cxct.sportlottery.ui.main.more
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.util.JumpUtil
 
-class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainViewModel>(MainViewModel::class)  {
+class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_cgcp, container, false)
     }
@@ -50,7 +50,8 @@ class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NONE -> {}
+            EnterThirdGameResult.ResultType.NONE -> {
+            }
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE)
             viewModel.clearThirdGame()
