@@ -43,13 +43,11 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
 
     private fun initButton() {
         btn_readed_letters.setOnClickListener {
-            letterTabStatus(BEEN_READ)
             adapter?.data = mutableListOf()//清空資料
             viewModel.getUserMsgList(true, 0, InfoCenterViewModel.DataType.READED)//已讀
             viewModel.getMsgCount(InfoCenterViewModel.DataType.UNREAD)//未讀資料比數
         }
         btn_unread_letters.setOnClickListener {
-            letterTabStatus(YET_READ)
             adapter?.data = mutableListOf()//清空資料
             viewModel.getMsgCount(InfoCenterViewModel.DataType.READED)//已讀資料筆數
             viewModel.getUserMsgList(true, 0, InfoCenterViewModel.DataType.UNREAD)//未讀
@@ -60,27 +58,6 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
             btn_readed_letters.performClick()
         else
             btn_unread_letters.performClick()
-    }
-
-    private fun letterTabStatus(status: Int) {
-        when (status) {
-            BEEN_READ -> {
-                btn_readed_letters.isSelected = true
-                btn_unread_letters.isSelected = false
-                btn_readed_letters.setTextColor(ContextCompat.getColor(this, R.color.pumpkinOrange))
-                v_been_read_indicator.visibility = View.VISIBLE
-                btn_unread_letters.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                v_yet_read_indicator.visibility = View.GONE
-            }
-            YET_READ -> {
-                btn_readed_letters.isSelected = false
-                btn_unread_letters.isSelected = true
-                btn_readed_letters.setTextColor(ContextCompat.getColor(this, R.color.gray3))
-                v_been_read_indicator.visibility = View.GONE
-                btn_unread_letters.setTextColor(ContextCompat.getColor(this, R.color.pumpkinOrange))
-                v_yet_read_indicator.visibility = View.VISIBLE
-            }
-        }
     }
 
     private fun initData() {

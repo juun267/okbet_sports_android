@@ -1,9 +1,8 @@
-package org.cxct.sportlottery.ui.feedback
+package org.cxct.sportlottery.ui.feedback.record
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R

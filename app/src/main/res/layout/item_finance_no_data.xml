@@ -8,11 +8,11 @@
         android:id="@+id/tv_no_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="14dp"
         android:gravity="center"
         android:text="@string/finance_list_no_more"
-        android:textColor="@color/colorGrayDark"
-        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize12sp"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

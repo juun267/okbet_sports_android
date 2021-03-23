@@ -1,31 +1,41 @@
 package org.cxct.sportlottery.ui.feedback
 
 import android.content.Context
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.SheetData
+import org.cxct.sportlottery.util.TimeUtil
 
 class FeedbackViewModel(
     private val androidContext: Context,
     private val feedbackRepository: FeedbackRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
+    betInfoRepository: BetInfoRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
+    val allStatusTag = "ALL_STATUS"
+
     //API回傳成功
-    val viewStatus: LiveData<FeedBackBaseResult>
-        get() = _viewStatus
-    private var _viewStatus = MutableLiveData<FeedBackBaseResult>()
+    val feedBackBaseResult: LiveData<FeedBackBaseResult>
+        get() = _feedBackBaseResult
+    private var _feedBackBaseResult = MutableLiveData<FeedBackBaseResult>()
 
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
     private var _isLoading = MutableLiveData<Boolean>()
+
+    val isShowToolbar: LiveData<Int>
+        get() = _isShowToolbar
+    private var _isShowToolbar = MutableLiveData<Int>().apply { this.value = View.VISIBLE }
 
     //意見反饋清單
     val feedbackList: LiveData<MutableList<FeedBackRows>?>
@@ -51,25 +61,24 @@ class FeedbackViewModel(
         get() = _isFinalPage
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
 
-    //Bottomsheet Data
-    val typeMap = mapOf(0 to "充值问题",1 to "提款问题",2 to "其他问题",3 to "提交建议",4 to "我要投诉",5 to "客服反馈",6 to "玩家回复")
-    val statusMap = mapOf(0 to "待反馈",1 to "已反馈")
+//    val typeMap = mapOf(0 to "充值问题", 1 to "提款问题", 2 to "其他问题", 3 to "提交建议", 4 to "我要投诉", 5 to "客服反馈", 6 to "玩家回复")
+    val statusList = listOf(SheetData(allStatusTag, androidContext.getString(R.string.all_status)), SheetData("0", androidContext.getString(R.string.feedback_wait_for_reply)), SheetData("1", androidContext.getString(R.string.feedback_already_reply)), )
 
-    //API Input
-    var feedbackListRequest = FeedbackListRequest()
-
+    companion object {
+        private const val PAGE_SIZE = 20 //預設每次載入20筆資料
+    }
 
     private var mNextRequestPage = 1//未讀
-    private val pageSize = 20 //預設每次載入20筆資料
     private var mIsGettingData = false //判斷請求任務是否進行中
     private var mNeedMoreLoading = false //資料判斷滑到底是否需要繼續加載
 
 
     //API
-    fun getFbQueryList(
-        isReload: Boolean,
-        currentTotalCount: Int
-    ) {
+    fun getFbQueryList(startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+                       endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+                       status: String? = null,
+                       isReload: Boolean,
+                       currentTotalCount: Int) {
         _isLoading.value = true
         if (mIsGettingData) {
             _isLoading.value = false
@@ -78,7 +87,6 @@ class FeedbackViewModel(
         mIsGettingData = true
 
         var mCurrentTotalCount = currentTotalCount
-
         viewModelScope.launch {
 
             if (isReload) {//重新載入
@@ -88,24 +96,23 @@ class FeedbackViewModel(
                 mNeedMoreLoading = true
                 mNextRequestPage = 1
             }
-            if(mNeedMoreLoading){
+
+            val filter = { firm: String? -> if (firm == allStatusTag) null else firm?.toIntOrNull() }
+
+            if (mNeedMoreLoading) {
                 _isLoading.value = true
                 val result = doNetwork(androidContext) {
-                    feedbackListRequest.page = mNextRequestPage
-                    feedbackListRequest.pageSize = pageSize
+                    val feedbackListRequest =
+                        FeedbackListRequest(pageSize = PAGE_SIZE, page = mNextRequestPage, startTime = startTime, endTime = endTime, status = filter(status))
                     feedbackRepository.getFbQueryList(feedbackListRequest)
                 }
                 //判斷是不是可以再加載
-                mNeedMoreLoading =
-                    (mCurrentTotalCount + (result?.rows?.size
-                        ?: 0)) < result?.total ?: 0
+                mNeedMoreLoading = (mCurrentTotalCount + (result?.rows?.size ?: 0)) < result?.total ?: 0
                 mNextRequestPage++
 
-                if (result?.rows?.size ?: 0 > 0)
-                    _feedbackList.value = result?.rows
+                if (result?.rows?.size ?: 0 > 0) _feedbackList.value = result?.rows
 
-                if(!mNeedMoreLoading)
-                    _isFinalPage.postValue(true)
+                if (!mNeedMoreLoading) _isFinalPage.postValue(true)
             }
             _isLoading.value = false
         }
@@ -113,11 +120,13 @@ class FeedbackViewModel(
     }
 
     fun fbSave(content: String) { //目前只確定使用者會傳意見
+        _isLoading.value = true
+        val feedbackSaveRequest = FeedbackSaveRequest(content, 3, 0)
         viewModelScope.launch {
-            _isLoading.value = true
-            var feedbackSaveRequest = FeedbackSaveRequest(content, 3, 0)
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 feedbackRepository.fbSave(feedbackSaveRequest)
+            }?.let { result ->
+                _feedBackBaseResult.value = result
             }
             _isLoading.value = false
         }
@@ -126,8 +135,8 @@ class FeedbackViewModel(
     fun fbReply(content: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            var feedbackReplyRequest = FeedbackReplyRequest(content, feedbackCode.toString(), 0, 6)
-            val result = doNetwork(androidContext) {
+            val feedbackReplyRequest = FeedbackReplyRequest(content, feedbackCode.toString(), 0, 6)
+            doNetwork(androidContext) {
                 feedbackRepository.fbReply(feedbackReplyRequest)
             }
             _isLoading.value = false
@@ -137,13 +146,11 @@ class FeedbackViewModel(
     fun fbQueryDetail() {
         viewModelScope.launch {
             _isLoading.value = true
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 feedbackRepository.fbQueryDetail(dataID.toString())
+            }.let { result ->
+                if (result?.rows?.size ?: 0 > 0) _feedbackDetail.value = result?.rows
             }
-
-            if (result?.rows?.size ?: 0 > 0)
-                _feedbackDetail.value = result?.rows
-
             _isLoading.value = false
         }
     }
@@ -156,4 +163,11 @@ class FeedbackViewModel(
             userID = result?.userInfoData?.userId
         }
     }
+
+    fun showToolbar(isShow: Boolean) {
+        if (isShow) _isShowToolbar.value = View.VISIBLE
+        else _isShowToolbar.value = View.GONE
+
+    }
+
 }

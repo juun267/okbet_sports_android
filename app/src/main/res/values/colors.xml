@@ -116,7 +116,6 @@
     <color name="tool_bar_background">#00496b</color>
     <color name="tool_bar_text_color">#EAA909</color>
     <color name="back_button_menu">#023851</color>
-    <color name="gray_background_color">#E6E6E6</color>
 
     <!--白色系-->
     <color name="white">#FFFFFF</color>

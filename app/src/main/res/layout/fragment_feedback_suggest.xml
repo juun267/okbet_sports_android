@@ -4,111 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
     android:orientation="vertical"
-    tools:context=".ui.feedback.FeedbackSuggestFragment">
+    tools:context=".ui.feedback.suggest.FeedbackSuggestFragment">
 
-    <!-- Tab bar-->
-    <RelativeLayout
-        android:id="@+id/block_tab"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/main_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/colorWhite"
+        android:layout_marginTop="14dp"
+        android:layout_marginHorizontal="14dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_frame_6dp_white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/btn_sugession"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_left"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="@string/feedback_tabName_problem"
-                android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize16sp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_feedback_banner" />
 
-            <TextView
-                android:id="@+id/btn_record"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_right"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="@string/feedback_tabName_record"
-                android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize16sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="20dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedback_toolbar_title"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/feedback_description"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/feedback_description_money"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_radius_20_button_dusk"
+                    android:gravity="center"
+                    android:text="@string/write_suggestion"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSize16sp" />
+
+
+            </LinearLayout>
         </LinearLayout>
-
-    </RelativeLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:src="@drawable/ic_feedback_banner" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:text="@string/feedback_toolbar_title"
-        android:textColor="@color/textColorDark"
-        android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="35dp"
-        android:text="@string/feedback_description"
-        android:textColor="@color/textColorDark"
-        android:textSize="@dimen/textSize12sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="35dp"
-        android:text="@string/feedback_description_money"
-        android:textColor="#ed4641"
-        android:textSize="@dimen/textSize12sp" />
-
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="35dp"
-        android:background="@drawable/bg_5dp_radius_button_blue3"
-        android:gravity="center"
-        android:text="@string/btn_submit"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize16sp" />
-
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
