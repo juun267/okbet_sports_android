@@ -32,7 +32,21 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     var itemExpandListener: ItemExpandListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent).apply {
+
+            this.itemView.league_odd_list.apply {
+                this.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+                addItemDecoration(
+                    ItemNonLastDecoration(
+                        ContextCompat.getDrawable(
+                            context, R.drawable.divider_straight
+                        )
+                    )
+                )
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -68,25 +82,11 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
             leagueOddListener: LeagueOddListener?
         ) {
             itemView.league_odd_list.apply {
-                this.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-                adapter = leagueOddAdapter
-
-                addItemDecoration(
-                    ItemNonLastDecoration(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.divider_straight
-                        )
-                    )
-                )
-            }
-
-            leagueOddAdapter.apply {
-                data = item.matchOdds
-                this.playType = playType
-                this.leagueOddListener = leagueOddListener
+                adapter = leagueOddAdapter.apply {
+                    data = item.matchOdds
+                    this.playType = playType
+                    this.leagueOddListener = leagueOddListener
+                }
             }
         }
 

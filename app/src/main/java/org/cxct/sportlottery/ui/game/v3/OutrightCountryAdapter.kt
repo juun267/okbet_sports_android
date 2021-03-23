@@ -23,7 +23,17 @@ class OutrightCountryAdapter : RecyclerView.Adapter<OutrightCountryAdapter.ViewH
     var outrightCountryLeagueListener: OutrightCountryLeagueListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent).apply {
+
+            this.itemView.league_list.apply {
+                this.layoutManager =
+                    SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+                this.addItemDecoration(
+                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                )
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -52,19 +62,10 @@ class OutrightCountryAdapter : RecyclerView.Adapter<OutrightCountryAdapter.ViewH
             outrightCountryLeagueListener: OutrightCountryLeagueListener?
         ) {
             itemView.league_list.apply {
-                this.layoutManager =
-                    SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-                adapter = countryLeagueAdapter
-
-                this.addItemDecoration(
-                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                )
-            }
-
-            countryLeagueAdapter.apply {
-                this.outrightCountryLeagueListener = outrightCountryLeagueListener
-                data = item.list
+                adapter = countryLeagueAdapter.apply {
+                    this.outrightCountryLeagueListener = outrightCountryLeagueListener
+                    data = item.list
+                }
             }
         }
 
