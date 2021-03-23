@@ -6,7 +6,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="org.cxct.sportlottery.ui.game.HomeFragment"
+        android:name="org.cxct.sportlottery.ui.game.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action

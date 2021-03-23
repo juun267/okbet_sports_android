@@ -46,8 +46,8 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
-import org.cxct.sportlottery.ui.game.home.gameDrawer.GameEntity
-import org.cxct.sportlottery.ui.odds.MoreGameEntity
+import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -61,7 +61,8 @@ class GameViewModel(
     private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    private val thirdGameRepository: ThirdGameRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -84,19 +85,19 @@ class GameViewModel(
     val matchPreloadToday: LiveData<MatchPreloadResult>
         get() = _matchPreloadToday
 
-    val oddsListGameHallResult: LiveData<OddsListResult?>
+    val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
 
     val oddsListResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListResult
 
-    val leagueListResult: LiveData<LeagueListResult?>
+    val leagueListResult: LiveData<Event<LeagueListResult?>>
         get() = _leagueListResult
 
-    val outrightSeasonListResult: LiveData<OutrightSeasonListResult?>
+    val outrightSeasonListResult: LiveData<Event<OutrightSeasonListResult?>>
         get() = _outrightSeasonListResult
 
-    val outrightOddsListResult: LiveData<OutrightOddsListResult?>
+    val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
 
     val curPlayType: LiveData<PlayType>
@@ -129,11 +130,11 @@ class GameViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
     private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
-    private val _oddsListGameHallResult = MutableLiveData<OddsListResult?>()
+    private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
-    private val _leagueListResult = MutableLiveData<LeagueListResult?>()
-    private val _outrightSeasonListResult = MutableLiveData<OutrightSeasonListResult?>()
-    private val _outrightOddsListResult = MutableLiveData<OutrightOddsListResult?>()
+    private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
+    private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
+    private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -212,6 +213,7 @@ class GameViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
+    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -348,13 +350,15 @@ class GameViewModel(
         }
     }
 
-    fun getGameHallList(matchType: MatchType, sportType: SportType?) {
-        sportType?.let {
-            _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
-                it.isSelected = (it.code == sportType.code)
-            }
+    fun getGameHallList(matchType: MatchType, sportCode: String?) {
+        _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
+            it.isSelected = it.code == sportCode
         }
         _matchTypeCardForParlay.postValue(matchType)
+    }
+
+    fun getGameHallList(matchType: MatchType, sportType: SportType) {
+        getGameHallList(matchType, sportType.code)
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
@@ -524,6 +528,19 @@ class GameViewModel(
                     )
                 }
 
+                result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected =
+                                    betInfoRepository.betInfoList.value?.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd?.id
+                                    }
+                            }
+                        }
+                    }
+                }
+
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
                     it.odds.forEach { mapSubTitleOdd ->
@@ -546,15 +563,15 @@ class GameViewModel(
 
                         //add odd
                         mapSubTitleOdd.value.forEach { odd ->
-                            matchOdd.displayList.add(odd)
+                            odd?.let { it1 -> matchOdd.displayList.add(it1) }
                         }
                     }
 
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "yyyy-MM-dd")
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
                     matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
                 }
 
-                _outrightOddsListResult.postValue(result)
+                _outrightOddsListResult.postValue(Event(result))
             }
 
             _openOutrightDetail.postValue(it to leagueId)
@@ -562,7 +579,7 @@ class GameViewModel(
     }
 
     fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
-        val result = _outrightOddsListResult.value
+        val result = _outrightOddsListResult.value?.peekContent()
 
         val list =
             result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
@@ -588,7 +605,7 @@ class GameViewModel(
             winner.id?.let { removeBetInfoItem(it) }
         }
 
-        _outrightOddsListResult.postValue(result)
+        _outrightOddsListResult.postValue(Event(result))
     }
 
     //TODO Dean : 重構，整理、提取程式碼
@@ -599,7 +616,7 @@ class GameViewModel(
     ) {
         val isOutright = mathType == MatchType.OUTRIGHT
         val result =
-            if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value else _oddsListResult.value?.peekContent()
+            if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value?.peekContent() else _oddsListResult.value?.peekContent()
         val match =
             result?.oddsListData?.leagueOdds?.find { leagueOdd ->
                 leagueOdd.matchOdds.contains(
@@ -642,7 +659,7 @@ class GameViewModel(
         }
 
         if (mathType == MatchType.IN_PLAY) {
-            _oddsListGameHallResult.value = result
+            _oddsListGameHallResult.value = Event(result)
         } else {
             _oddsListResult.value = Event(result)
         }
@@ -701,7 +718,7 @@ class GameViewModel(
 
 
     fun updateMatchOddExpandInPlay(matchOdd: MatchOdd) {
-        val result = _oddsListGameHallResult.value
+        val result = _oddsListGameHallResult.value?.peekContent()
 
         result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach {
@@ -709,7 +726,7 @@ class GameViewModel(
             }
         }
 
-        _oddsListGameHallResult.postValue(result)
+        _oddsListGameHallResult.postValue(Event(result))
     }
 
     private fun getOddsList(
@@ -731,13 +748,25 @@ class GameViewModel(
                 )
             }
 
+            result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.forEach { map ->
+                        map.value.forEach { odd ->
+                            odd?.isSelected = betInfoRepository.betInfoList.value?.any {
+                                it.matchOdd.oddsId == odd?.id
+                            }
+                        }
+                    }
+                }
+            }
+
             if (leagueIdList != null) {
                 if (result?.oddsListData?.leagueOdds?.isNotEmpty() == true) {
                     result.oddsListData.leagueOdds[0].isExpand = true
                 }
                 _oddsListResult.postValue(Event(result))
             } else {
-                _oddsListGameHallResult.postValue(result)
+                _oddsListGameHallResult.postValue(Event(result))
             }
         }
     }
@@ -758,7 +787,7 @@ class GameViewModel(
                     )
                 )
             }
-            _leagueListResult.postValue(result)
+            _leagueListResult.postValue(Event(result))
         }
     }
 
@@ -770,7 +799,7 @@ class GameViewModel(
                 )
             }
 
-            _outrightSeasonListResult.postValue(result)
+            _outrightSeasonListResult.postValue(Event(result))
         }
     }
 
@@ -966,7 +995,7 @@ class GameViewModel(
         else Timber.e("不執行 betInfo request")
     }
 
-    fun updateMatchOdd(it: MatchOddsChangeEvent){
+    fun updateMatchOdd(it: MatchOddsChangeEvent) {
         val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
             mutableListOf()
         for ((key, value) in it.odds) {
@@ -1007,7 +1036,7 @@ class GameViewModel(
         }
     }
 
-    private fun updateMatchOddStatus(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>){
+    private fun updateMatchOddStatus(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         newList.forEach { newItem ->
             betInfoRepository.betList.forEach {
                 try {
@@ -1332,5 +1361,9 @@ class GameViewModel(
             }
         }
         return matchOddList
+    }
+
+    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
+        thirdGameRepository.setGoToThirdGamePage(catePage)
     }
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_background_color"
+    android:background="@color/colorWhite1"
     tools:context=".ui.infoCenter.InfoCenterActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -49,83 +49,75 @@
     <LinearLayout
         android:id="@+id/ll_tab"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlueLight"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/info_center_app_bar_layout">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp">
 
-            <TextView
-                android:id="@+id/btn_readed_letters"
+            <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:ems="5"
-                android:focusable="true"
-                android:gravity="center"
-                android:textColor="@color/pumpkinOrange"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="@string/inbox" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/frame_4dp_white"
+                android:orientation="horizontal">
 
-            <View
-                android:id="@+id/v_been_read_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:background="@color/pumpkinOrange" />
+                <RadioButton
+                    android:id="@+id/btn_readed_letters"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize16sp"
+                    tools:text="@string/inbox" />
 
-        </RelativeLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"/>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="14dp"
-            android:layout_gravity="center"
-            android:background="@color/gray10" />
+                <RadioButton
+                    android:id="@+id/btn_unread_letters"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/withdrawal_password"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize16sp"
+                    tools:text="@string/unread_letters" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            </RadioGroup>
 
-            <TextView
-                android:id="@+id/btn_unread_letters"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:ems="5"
-                android:focusable="true"
-                android:gravity="center"
-                android:textColor="@color/pumpkinOrange"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="@string/unread_letters" />
-
-            <View
-                android:id="@+id/v_yet_read_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:background="@color/pumpkinOrange" />
-
-
-        </RelativeLayout>
-
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorWhite3"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp"
@@ -139,6 +131,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/index"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -147,14 +140,16 @@
             android:layout_weight="3.5"
             android:gravity="center"
             android:text="@string/title"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:gravity="left"
+            android:gravity="center"
             android:text="@string/time"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
 
     </LinearLayout>
@@ -204,7 +199,6 @@
 
 
 
-
     <LinearLayout
         android:id="@+id/image_no_message"
         android:layout_width="match_parent"
@@ -217,7 +211,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_title"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -227,7 +221,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="@string/finance_list_no_record" />
 
     </LinearLayout>

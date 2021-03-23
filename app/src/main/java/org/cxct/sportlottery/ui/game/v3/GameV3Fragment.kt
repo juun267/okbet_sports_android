@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -61,9 +62,39 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter().apply {
-            leagueOddListener = LeagueOddListener {
-                //TODO open live and play type page
-                viewModel.getOddsDetail(it.matchInfo?.id)
+            leagueOddListener = LeagueOddListener(
+                { matchOdd ->
+                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                },
+                { matchOdd, oddString, odd ->
+                    viewModel.updateMatchBetList(matchOdd, oddString, odd)
+                }
+            )
+
+            itemExpandListener = ItemExpandListener {
+                val sportType = sportTypeAdapter.data.find { item -> item.isSelected }?.code
+
+                when (it.isExpand) {
+                    true -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+
+                    false -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.unSubscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -256,34 +287,43 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
-                if (it != null && it.success) {
-                    game_list.adapter = leagueAdapter.apply {
-                        data = it.oddsListData?.leagueOdds ?: listOf()
+
+                it.getContentIfNotHandled()?.let { oddsListResult ->
+                    if (oddsListResult.success) {
+                        game_list.adapter = leagueAdapter.apply {
+                            data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                        }
                     }
                 }
             })
 
             viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
-                if (it != null && it.success) {
-                    game_list.adapter = countryAdapter.apply {
-                        data = it.rows ?: listOf()
+
+                it.getContentIfNotHandled()?.let { leagueListResult ->
+                    if (leagueListResult.success) {
+                        game_list.adapter = countryAdapter.apply {
+                            data = leagueListResult.rows ?: listOf()
+                        }
                     }
                 }
             })
 
             viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
-                if (it != null && it.success) {
-                    game_list.adapter = outrightCountryAdapter.apply {
-                        data = it.rows ?: listOf()
+
+                it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
+                    if (outrightSeasonListResult.success) {
+                        game_list.adapter = outrightCountryAdapter.apply {
+                            data = outrightSeasonListResult.rows ?: listOf()
+                        }
                     }
                 }
             })
 
-            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
-                //TODO add not history ui
-            })
+//            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+//                //TODO add not history ui
+//            })
 
             viewModel.getGameHallList(args.matchType, true)
             loading()
@@ -292,4 +332,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             e.printStackTrace()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val sportType = sportTypeAdapter.data.find { item -> item.isSelected }?.code
+
+        leagueAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        sportType,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
+        }
+    }
+
 }

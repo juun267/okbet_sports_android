@@ -118,8 +118,10 @@ class OutrightDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun initObserver() {
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it != null && it.success) {
-                setupOutrightOddList(it)
+            it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+                if (outrightOddsListResult.success) {
+                    setupOutrightOddList(outrightOddsListResult)
+                }
             }
         })
 
@@ -145,10 +147,10 @@ class OutrightDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
                 originOdds.forEach { originOdd ->
                     val updateOdd = socketOdds?.find { socketOdd ->
-                        originOdd.id == socketOdd.id
+                        originOdd?.id == socketOdd.id
                     }
 
-                    val originOddValue = originOdd.odds
+                    val originOddValue = originOdd?.odds
                     val updateOddValue = updateOdd?.odds
 
                     originOddValue?.let {

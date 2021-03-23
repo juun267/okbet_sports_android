@@ -101,6 +101,20 @@
         tools:text="1.067"
         tools:textColor="@color/colorBlack" />
 
+    <TextView
+        android:id="@+id/odd_outright_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/selector_button_odd_bottom_text"
+        android:textSize="@dimen/textSize15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1.067"
+        tools:textColor="@color/colorBlack" />
+
     <ImageView
         android:id="@+id/odd_lock"
         android:layout_width="match_parent"

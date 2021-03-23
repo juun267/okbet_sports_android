@@ -148,6 +148,7 @@
     <string name="home_tab_outright">冠军</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
+    <string name="label_all_something_in_play">所有 %s 滚球</string>
 
 
     <string name="champion">冠军</string>
@@ -301,7 +302,7 @@
     <string name="update_new">更新</string>
 
     <!--  information center  -->
-    <string name="inbox">已读邮件 (%1$d)</string>
+    <string name="inbox">收件箱 (%1$d)</string>
     <string name="unread_letters">未读邮件 (%1$d)</string>
     <string name="index">序号</string>
     <string name="title">标题</string>
@@ -382,6 +383,8 @@
     <string name="detail_outright_upper_bar_title">冠军</string>
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
+    <string name="odd_button_ou_o">大</string>
+    <string name="odd_button_ou_u">小</string>
 
     <string name="total_bet_amount">总投注额：</string>
     <string name="win_lose">赢 / 输 (RMB)</string>
@@ -588,6 +591,7 @@
     <string name="feedback_description_money">如果建议被采用或者Bug经核实，最高奖励人民币3000元(或其他的等值币种)。</string>
     <string name="feedback_submit_enter">提交建议</string>
     <string name="feedback_submit">确认送出</string>
+    <string name="feedback_submit_succeed">反馈提交成功</string>
     <string name="feedback_hint">请输入反馈内容..</string>
     <string name="all_type">全部类型</string>
     <string name="all_status">全部状态</string>
@@ -606,6 +610,8 @@
     <string name="feedback_type_service_reply">客服反馈</string>
     <string name="feedback_type_user_reply">玩家回复</string>
     <string name="feedback_type_draw_suggestion">开奖网信息反馈</string>
+    <string name="feedback_wait_for_reply">待反馈</string>
+    <string name="feedback_already_reply">已反馈</string>
 
 
     <string name="one_key_recovery">一键回收</string>
@@ -667,4 +673,6 @@
     <string name="all_out_plat">全部转出</string>
     <string name="all_in_plat">全部转入</string>
     <string name="all_transfer_status">全部状态</string>
+    <string name="write_suggestion">填写建议</string>
+
 </resources>

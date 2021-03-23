@@ -13,15 +13,71 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 
 
+private const val ARG_SPORT_TYPE = "sportType"
+
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
+    companion object {
+        fun newInstance(sportType: String) =
+            GameLeagueFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_SPORT_TYPE, sportType)
+                }
+            }
+    }
+
+    private var sportType: String? = null
+
     private val leagueAdapter by lazy {
-        LeagueAdapter()
+        LeagueAdapter().apply {
+            leagueOddListener = LeagueOddListener(
+                { matchOdd ->
+                    //TODO open live and play type page
+                    matchOdd.matchInfo?.id
+                },
+                { matchOdd, oddString, odd ->
+                    viewModel.updateMatchBetList(matchOdd, oddString, odd)
+                }
+            )
+
+            itemExpandListener = ItemExpandListener {
+                when (it.isExpand) {
+                    true -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+
+                    false -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.unSubscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            sportType = it.getString(ARG_SPORT_TYPE)
+        }
     }
 
     override fun onCreateView(
@@ -109,5 +165,21 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
             false
         })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        leagueAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        sportType,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
+        }
     }
 }
