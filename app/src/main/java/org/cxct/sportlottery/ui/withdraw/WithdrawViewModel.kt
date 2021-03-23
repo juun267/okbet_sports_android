@@ -13,7 +13,7 @@ import org.cxct.sportlottery.network.bank.add.BankAddRequest
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
-import org.cxct.sportlottery.network.bank.my.BankMyResult
+import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
@@ -49,9 +49,9 @@ class WithdrawViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
-    val bankCardList: LiveData<BankMyResult>
+    val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList
-    private var _bankCardList = MutableLiveData<BankMyResult>()
+    private var _bankCardList = MutableLiveData<List<BankCardList>>()
 
     val bankAddResult: LiveData<BankAddResult>
         get() = _bankAddResult
@@ -106,6 +106,14 @@ class WithdrawViewModel(
         get() = _withdrawAmountHint
     private var _withdrawAmountHint = MutableLiveData<String>()
 
+    val existBankCard: LiveData<Boolean>
+        get() = _existBankCard
+    private var _existBankCard = MutableLiveData<Boolean>()
+
+    val existCryptoCard: LiveData<Boolean>
+        get() = _existCryptoCard
+    private var _existCryptoCard = MutableLiveData<Boolean>()
+
     //銀行卡是否可以繼續增加
     val addBankCardSwitch: LiveData<Boolean>
         get() = _addBankCardSwitch
@@ -113,7 +121,13 @@ class WithdrawViewModel(
 
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
+    private var dealType: TransferType = TransferType.BANK
+
     data class WithdrawAmountLimit(val min: Double, val max: Double, val isBalanceMax: Boolean)
+
+    fun setDealType(type: TransferType) {
+        dealType = type
+    }
 
     fun addWithdraw(bankCardId: Long, applyMoney: String, withdrawPwd: String) {
         checkWithdrawAmount(applyMoney)
@@ -154,7 +168,14 @@ class WithdrawViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.bankService.getBankMy()
             }?.let { result ->
-                _bankCardList.value = result
+                val bankCardList = mutableListOf<BankCardList>()
+                result.bankCardList?.forEach { bankCard ->
+                    if (bankCard.uwType == dealType.type)
+                        bankCardList.add(bankCard)
+                }
+                _existBankCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
+                _existCryptoCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
+                _bankCardList.value = bankCardList
                 hideLoading()
             }
         }
@@ -375,11 +396,23 @@ class WithdrawViewModel(
     }
 
     fun getWithdrawRate(withdrawAmount: Double? = 0.0) {
-        _withdrawRateHint.value = String.format(
-            androidContext.getString(R.string.withdraw_handling_fee_hint),
-            ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
-            ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
-        )
+        _withdrawRateHint.value = when (dealType) {
+            TransferType.BANK -> {
+                String.format(
+                    androidContext.getString(R.string.withdraw_handling_fee_hint),
+                    ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
+                    ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
+                )
+            }
+            TransferType.CRYPTO -> {
+                //TODO Dean : 虛擬幣資料待串接
+                String.format(
+                    androidContext.getString(R.string.withdraw_crypto_fee_hint),
+                    ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
+                    ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
+                )
+            }
+        }
     }
 
     /**
@@ -387,7 +420,7 @@ class WithdrawViewModel(
      */
     fun checkBankCardCount() {
         val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
-        val bankCardCount = bankCardList.value?.bankCardList?.size
+        val bankCardCount = bankCardList.value?.size
         _addBankCardSwitch.value = when {
             bankCardCountLimit == null -> true
             bankCardCount == null -> true

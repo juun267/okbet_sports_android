@@ -10,6 +10,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorBlueLight"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/tab_bank_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_select_money_tab_left"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/bank_card"
+            android:textColor="@color/color_select_money_tab_text"
+            android:textSize="@dimen/textSize14sp" />
+
+        <TextView
+            android:id="@+id/tab_crypto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_select_money_tab_right"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/crypto"
+            android:textColor="@color/color_select_money_tab_text"
+            android:textSize="@dimen/textSize14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="start|center_vertical"
         android:orientation="horizontal"
@@ -65,6 +102,7 @@
             android:paddingEnd="10dp">
 
             <TextView
+                android:id="@+id/tv_channel_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"

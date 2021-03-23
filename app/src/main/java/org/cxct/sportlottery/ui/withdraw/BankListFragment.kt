@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
@@ -69,8 +68,8 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             mBankListAdapter.fullName = it?.fullName ?: ""
         })
 
-        viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
-            it.bankCardList.let { data ->
+        viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer { bankCardList ->
+            bankCardList.let { data ->
                 mBankListAdapter.bankList = data ?: listOf()
                 if (!data.isNullOrEmpty()) {
                     tv_no_bank_card.visibility = View.GONE
