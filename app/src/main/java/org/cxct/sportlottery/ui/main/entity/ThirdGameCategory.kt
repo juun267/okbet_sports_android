@@ -4,12 +4,12 @@ import androidx.annotation.DrawableRes
 import org.cxct.sportlottery.R
 
 enum class ThirdGameCategory(@DrawableRes val iconRes: Int, var title: String? = null) {
-    LOCAL_SP(R.drawable.ic_sport), //體育
-    CGCP(R.drawable.ic_cp), //CG遊戲
-    LIVE(R.drawable.ic_live), //真人
-    QP(R.drawable.ic_qp), //棋牌
-    DZ(R.drawable.ic_dz), //電子
-    BY(R.drawable.ic_by), //捕魚
+    LOCAL_SP(R.drawable.selector_main_tab_sport), //體育
+    CGCP(R.drawable.selector_main_tab_lottery), //CG遊戲
+    LIVE(R.drawable.selector_main_tab_live), //真人
+    QP(R.drawable.selector_main_tab_poker), //棋牌
+    DZ(R.drawable.selector_main_tab_slot), //電子
+    BY(R.drawable.selector_main_tab_fishing), //捕魚
 
     UNKNOWN(-1); //未知
 
