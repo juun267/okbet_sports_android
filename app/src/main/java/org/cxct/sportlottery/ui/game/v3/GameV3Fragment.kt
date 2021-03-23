@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -70,6 +71,32 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
                 }
             )
+
+            itemExpandListener = ItemExpandListener {
+                val sportType = sportTypeAdapter.data.find { item -> item.isSelected }?.code
+
+                when (it.isExpand) {
+                    true -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+
+                    false -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.unSubscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -306,4 +333,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             e.printStackTrace()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val sportType = sportTypeAdapter.data.find { item -> item.isSelected }?.code
+
+        leagueAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        sportType,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
+        }
+    }
+
 }
