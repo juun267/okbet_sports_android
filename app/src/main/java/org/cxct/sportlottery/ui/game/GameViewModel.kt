@@ -1337,6 +1337,11 @@ class GameViewModel(
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> {
 
                 val searchResult = _leagueListResult.value?.peekContent()?.rows?.filter {
+
+                    it.searchList = it.list.filter { league ->
+                        league.name.trim().toLowerCase().contains(searchText.trim().toLowerCase())
+                    }
+
                     it.list.any { league ->
                         league.name.trim().toLowerCase().contains(searchText.trim().toLowerCase())
                     }
@@ -1348,6 +1353,12 @@ class GameViewModel(
 
                 val searchResult =
                     _outrightSeasonListResult.value?.peekContent()?.rows?.filter {
+
+                        it.searchList = it.list.filter { season ->
+                            season.name.trim().toLowerCase()
+                                .contains(searchText.trim().toLowerCase())
+                        }
+
                         it.list.any { season ->
                             season.name.trim().toLowerCase()
                                 .contains(searchText.trim().toLowerCase())

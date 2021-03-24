@@ -64,7 +64,12 @@ class OutrightCountryAdapter : RecyclerView.Adapter<OutrightCountryAdapter.ViewH
             itemView.league_list.apply {
                 adapter = countryLeagueAdapter.apply {
                     this.outrightCountryLeagueListener = outrightCountryLeagueListener
-                    data = item.list
+
+                    data = if (item.searchList.isNotEmpty()) {
+                        item.searchList
+                    } else {
+                        item.list
+                    }
                 }
             }
         }

@@ -61,7 +61,12 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.ViewHolder>() {
             itemView.league_list.apply {
                 adapter = countryLeagueAdapter.apply {
                     this.countryLeagueListener = countryLeagueListener
-                    data = item.list
+
+                    data = if (item.searchList.isNotEmpty()) {
+                        item.searchList
+                    } else {
+                        item.list
+                    }
                 }
             }
         }

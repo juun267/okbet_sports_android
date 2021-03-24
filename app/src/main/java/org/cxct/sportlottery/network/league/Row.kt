@@ -14,4 +14,5 @@ data class Row(
     val num: Int
 ) {
     var isExpand = true
+    var searchList = listOf<League>()
 }
