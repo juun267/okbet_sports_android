@@ -38,6 +38,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
 
+    private var transferType: TransferType = TransferType.BANK
+
     private val protocolAdapter by lazy {
         ProtocolAdapter(requireContext(), OnSelectProtocol {
             sv_protocol.apply {
@@ -102,7 +104,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun initView() {
-        changeTransferType(TransferType.BANK)
+        changeTransferType(transferType)
         showHideTab()
         sv_protocol.setAdapter(protocolAdapter)
 
@@ -169,6 +171,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             //開戶網點
             setupClearButtonVisibility(et_network_point) { checkNetWorkPoint(it) }
 
+            //錢包地址
+            setupClearButtonVisibility(et_wallet) { checkWalletAddress(it) }
+
             //提款密碼
             setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
         }
@@ -201,16 +206,32 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         btn_submit.setOnClickListener {
             modifyFinish()
-            viewModel.addBankCard(
-                bankName = tv_bank_name.text.toString(),
-                subAddress = et_network_point.getText(),
-                cardNo = et_bank_card_number.getText(),
-                fundPwd = et_withdrawal_password.getText(),
-                fullName = et_create_name.getText(),
-                id = args.editBankCard?.id?.toString(),
-                uwType = "bank", //TODO Dean : 目前只有銀行一種, 還沒有UI可以做選擇, 先暫時寫死.
-                bankCode = args.editBankCard?.bankCode.toString()
-            )
+            viewModel.apply {
+                when (transferType) {
+                    TransferType.BANK -> {
+                        addBankCard(
+                            bankName = tv_bank_name.text.toString(),
+                            subAddress = et_network_point.getText(),
+                            cardNo = et_bank_card_number.getText(),
+                            fundPwd = et_withdrawal_password.getText(),
+                            fullName = et_create_name.getText(),
+                            id = args.editBankCard?.id?.toString(),
+                            uwType = transferType.type,
+                            bankCode = args.editBankCard?.bankCode.toString()
+                        )
+                    }
+                    TransferType.CRYPTO -> {
+                        addBankCard(
+                            bankName = sv_protocol.selectedText ?: "",
+                            cardNo = et_wallet.getText(),
+                            fundPwd = et_withdrawal_password.getText(),
+                            id = args.editBankCard?.id?.toString(),
+                            uwType = transferType.type,
+                        )
+                    }
+                }
+
+            }
         }
 
         btn_delete_bank.setOnClickListener {
@@ -227,10 +248,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun tabClickEvent() {
         if (!mBankCardStatus) {
             tab_bank_card.setOnClickListener {
-                changeTransferType(TransferType.BANK)
+                transferType = TransferType.BANK
+                changeTransferType(transferType)
             }
             tab_crypto.setOnClickListener {
-                changeTransferType(TransferType.CRYPTO)
+                transferType = TransferType.CRYPTO
+                changeTransferType(transferType)
             }
         }
     }
@@ -338,6 +361,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         //開戶網點
         viewModel.networkPointMsg.observe(this.viewLifecycleOwner, Observer {
             et_network_point.setError(it ?: "")
+        })
+
+        //錢包地址
+        viewModel.walletAddressMsg.observe(this.viewLifecycleOwner, Observer {
+            et_wallet.setError(it ?: "")
         })
 
         //提款密碼

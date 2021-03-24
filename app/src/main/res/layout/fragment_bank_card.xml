@@ -193,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cvHint="@string/please_enter_wallet_address"
-                    app:cvInputType="number"
+                    app:cvInputType="text"
                     app:cvTitle="@string/wallet_address"
                     app:cvTitleTextStyle="bold" />
             </LinearLayout>

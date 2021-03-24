@@ -101,6 +101,11 @@ class WithdrawViewModel(
         get() = _withdrawRateHint
     private var _withdrawRateHint = MutableLiveData<String>()
 
+    //提款手續費提示
+    val walletAddressMsg: LiveData<String>
+        get() = _walletAddressMsg
+    private var _walletAddressMsg = MutableLiveData<String>()
+
     //提款金額提示
     val withdrawAmountHint: LiveData<String>
         get() = _withdrawAmountHint
@@ -181,9 +186,8 @@ class WithdrawViewModel(
         }
     }
 
-    fun addBankCard(bankName: String, subAddress: String, cardNo: String, fundPwd: String, fullName: String, id: String?, uwType: String, bankCode: String) {
-        checkInputBankCardData(fullName, cardNo, subAddress, fundPwd)
-        if (checkBankCardData()) {
+    fun addBankCard(bankName: String, subAddress: String? = null, cardNo: String, fundPwd: String, fullName: String? = null, id: String?, uwType: String, bankCode: String? = null) {
+        if (checkInputBankCardData(fullName, cardNo, subAddress, fundPwd, uwType)) {
             viewModelScope.launch {
                 loading()
                 doNetwork(androidContext) {
@@ -197,24 +201,35 @@ class WithdrawViewModel(
         }
     }
 
-    private fun checkInputBankCardData(fullName: String, cardNo: String, subAddress: String, withdrawPassword: String) {
-        checkCreateName(fullName)
-        checkBankCardNumber(cardNo)
-        checkNetWorkPoint(subAddress)
-        checkWithdrawPassword(withdrawPassword)
-
+    private fun checkInputBankCardData(fullName: String?, cardNo: String, subAddress: String?, withdrawPassword: String, uwType: String): Boolean {
+        return when (uwType) {
+            TransferType.BANK.type -> {
+                checkCreateName(fullName ?: "")
+                checkBankCardNumber(cardNo)
+                checkNetWorkPoint(subAddress ?: "")
+                checkWithdrawPassword(withdrawPassword)
+                checkBankCardData()
+            }
+            TransferType.CRYPTO.type -> {
+                //TODO Dean : 判斷錢包地址
+                checkWalletAddress(cardNo)
+                checkWithdrawPassword(withdrawPassword)
+                checkCryptoCardData()
+            }
+            else -> false
+        }
     }
 
     private fun createBankAddRequest(
         bankName: String,
-        subAddress: String,
+        subAddress: String?,
         cardNo: String,
         fundPwd: String,
-        fullName: String,
+        fullName: String?,
         id: String?,
-        userId: String,
+        userId: String?,
         uwType: String,
-        bankCode: String
+        bankCode: String?
     ): BankAddRequest {
         return BankAddRequest(
             bankName = bankName,
@@ -300,6 +315,14 @@ class WithdrawViewModel(
         return true
     }
 
+    private fun checkCryptoCardData(): Boolean {
+        if (walletAddressMsg.value != "")
+            return false
+        if (withdrawPasswordMsg.value != "")
+            return false
+        return true
+    }
+
     private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
@@ -332,6 +355,13 @@ class WithdrawViewModel(
             !VerifyConstUtil.verifyNetworkPoint(networkPoint) -> {
                 androidContext.getString(R.string.error_network_point)
             }
+            else -> ""
+        }
+    }
+
+    fun checkWalletAddress(walletAddress: String) {
+        _walletAddressMsg.value = when {
+            walletAddress.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
             else -> ""
         }
     }
