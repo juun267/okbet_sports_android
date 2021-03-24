@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.SheetData
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 class FeedbackViewModel(
@@ -24,9 +25,9 @@ class FeedbackViewModel(
     val allStatusTag = "ALL_STATUS"
 
     //API回傳成功
-    val feedBackBaseResult: LiveData<FeedBackBaseResult?>
+    val feedBackBaseResult: LiveData<Event<FeedBackBaseResult>>
         get() = _feedBackBaseResult
-    private var _feedBackBaseResult = MutableLiveData<FeedBackBaseResult?>()
+    private var _feedBackBaseResult = MutableLiveData<Event<FeedBackBaseResult>>()
 
     //Loading
     val isLoading: LiveData<Boolean>
@@ -78,7 +79,7 @@ class FeedbackViewModel(
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
         status: String? = null,
         isReload: Boolean,
-        currentTotalCount: Int,
+        currentTotalCount: Int
     ) {
         _isLoading.value = true
         if (mIsGettingData) {
@@ -127,14 +128,10 @@ class FeedbackViewModel(
             doNetwork(androidContext) {
                 feedbackRepository.fbSave(feedbackSaveRequest)
             }?.let { result ->
-                _feedBackBaseResult.value = result
+                _feedBackBaseResult.value = Event(result)
             }
             _isLoading.value = false
         }
-    }
-
-    fun clearFeedBackResult() {
-        _feedBackBaseResult.value = null
     }
 
     fun fbReply(content: String) {

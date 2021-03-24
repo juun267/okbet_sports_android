@@ -66,9 +66,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
     private fun initDataLive() {
         viewModel.feedbackDetail.observe(viewLifecycleOwner,  {
             et_content.text.clear()
-//            val listData = it ?: return@Observer
             adapter?.data = it ?: mutableListOf()
-            Log.e(">>>", "adapter?.itemCount = ${adapter?.itemCount}, it = ${it?.size}")
             rv_content.scrollToPosition((adapter?.itemCount ?: 0)-1)
         })
     }
