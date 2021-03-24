@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="org.cxct.sportlottery.ui.main.next.RvBYAdapter">
+    tools:context="org.cxct.sportlottery.ui.main.more.RvBYAdapter">
 
     <ImageView
         android:id="@+id/iv_bg"
@@ -41,7 +41,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray3"
+        android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintEnd_toEndOf="@id/iv_logo"
         app:layout_constraintStart_toStartOf="@id/iv_logo"

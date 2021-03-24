@@ -10,7 +10,7 @@ data class SettlementFilter(
 )
 
 enum class GameType(val key: String, @StringRes val string: Int) {
-    FT("FT", R.string.football),
+    FT("FT", R.string.soccer),
     BK("BK", R.string.basketball),
     TN("TN", R.string.tennis),
     BM("BM", R.string.badminton),

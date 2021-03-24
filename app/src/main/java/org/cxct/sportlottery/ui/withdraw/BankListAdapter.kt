@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_rv_bank_list_edit.view.*
 import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
+import kotlinx.android.synthetic.main.content_rv_bank_list_new_no_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.repository.sConfigData
@@ -14,7 +15,7 @@ import org.cxct.sportlottery.util.TimeUtil.stampToDateHMS
 
 class BankListAdapter(private val mBankListClickListener: BankListClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    enum class CardType { EDIT, ADD }
+    enum class CardType { EDIT, ADD, NO_CARD_ADD }
 
     var bankList = listOf<BankCardList>()
         set(value) {
@@ -36,6 +37,9 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
+            CardType.NO_CARD_ADD.ordinal -> {
+                NoCardAddViewHolder.from(parent)
+            }
             CardType.ADD.ordinal -> {
                 LastViewHolder.from(parent)
             }
@@ -54,10 +58,16 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == bankList.size && addSwitch) {
-            CardType.ADD.ordinal
-        } else {
-            CardType.EDIT.ordinal
+        return when {
+            bankList.isEmpty() -> {
+                CardType.NO_CARD_ADD.ordinal
+            }
+            position == bankList.size && addSwitch -> {
+                CardType.ADD.ordinal
+            }
+            else -> {
+                CardType.EDIT.ordinal
+            }
         }
     }
 
@@ -117,6 +127,24 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 val view = layoutInflater.inflate(R.layout.content_rv_bank_list_new, parent, false)
 
                 return LastViewHolder(view)
+            }
+        }
+    }
+
+    class NoCardAddViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(mBankListClickListener: BankListClickListener) {
+            itemView.cv_add_no_card.setOnClickListener {
+                mBankListClickListener.onAdd()
+            }
+
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): NoCardAddViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.content_rv_bank_list_new_no_card, parent, false)
+
+                return NoCardAddViewHolder(view)
             }
         }
     }

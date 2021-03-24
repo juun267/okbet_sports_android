@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="15dp">
+    android:padding="15dp"
+    tools:context=".ui.feedback.record.FeedbackListDetailAdapter">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"

@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.util
 
+import org.cxct.sportlottery.util.ArithUtil.biggerThan
+import org.cxct.sportlottery.util.ArithUtil.noBiggerThan
 import java.util.regex.Pattern
 import kotlin.math.min
 
@@ -81,21 +83,22 @@ object VerifyConstUtil {
     }
 
     //提款金額 //最低與最高同步後台設定值, 最高限制:餘額最大金額,限制提款最大金額 取小者
-    fun verifyWithdrawAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?, userMoney: Double?, fee: Double): Boolean {
+    fun verifyWithdrawAmount(withdrawAmount: CharSequence, minAmount: Double?, maxAmount: Double?, userMoney: Double?, fee: Double): Boolean {
+        val withdrawAmountDouble = withdrawAmount.toString().toDouble()
         val balanceMax = userMoney?.minus(fee) //餘額的最大金額 = 餘額 - 手續費
         //餘額最大金額,限制提款最大金額 取小者
         val maxLimit = when {
             maxAmount == null -> {
-                balanceMax?.toLong()
+                balanceMax
             }
             balanceMax == null -> {
                 maxAmount
             }
             else -> {
-                min(maxAmount, balanceMax.toLong())
+                min(maxAmount, balanceMax)
             }
         }
-        return (withdrawAmount.toString().toLong().let { it in minAmount until ((maxLimit ?: it) + 1) })
+        return biggerThan(withdrawAmountDouble, minAmount) && noBiggerThan(withdrawAmountDouble, maxLimit)
     }
 
     //充值金額
