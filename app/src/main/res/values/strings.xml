@@ -164,6 +164,14 @@
     <string name="saturday">星期六</string>
     <string name="sunday">星期日</string>
 
+    <!-- NewsDialog -->
+    <string name="game_announcement">游戏公告</string>
+    <string name="member_benefits">会员福利</string>
+    <string name="transfer_notes">转账须知</string>
+    <string name="best_recommend">劲爆推荐</string>
+    <string name="navigation_web">导航网</string>
+    <string name="other">其他</string>
+
     <!-- MenuFragment -->
     <string name="profile_center">个人中心</string>
     <string name="member_level">会员层级</string>

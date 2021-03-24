@@ -233,7 +233,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         if (!messageListResult.rows.isNullOrEmpty() &&
             mNewsDialog?.isVisible != true
         ) {
-            mNewsDialog = NewsDialog(this, messageListResult.rows)
+            mNewsDialog = NewsDialog(messageListResult.rows)
             mNewsDialog?.show(supportFragmentManager, null)
         }
     }

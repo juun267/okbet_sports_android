@@ -1,59 +1,54 @@
 package org.cxct.sportlottery.ui.main.news
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_news_tab.view.*
 import org.cxct.sportlottery.R
 
-class NewsAdapter(width: Int, private val clickListener: ItemClickListener) :
-    RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(val context: Context?, val clickListener: ItemClickListener) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     private var mSelectedPosition = 0
-
-    val data = mutableListOf("游戏公告", "会员福利", "转账须知", "劲爆推荐", "导航网", "其他")
-
-    private val tabWidth = width
+    private val mDataList = mutableListOf(
+        context?.getString(R.string.game_announcement),
+        context?.getString(R.string.member_benefits),
+        context?.getString(R.string.transfer_notes),
+        context?.getString(R.string.best_recommend),
+        context?.getString(R.string.navigation_web),
+        context?.getString(R.string.other)
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent, tabWidth)
+        val view = LayoutInflater.from(context).inflate(R.layout.content_news_tab, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
-        holder.bind(item)
-        holder.itemView.isSelected = mSelectedPosition == position //選中改變背景
-        holder.txvTab.setOnClickListener {
-            if (position != mSelectedPosition) {
-                mSelectedPosition = position
-                notifyDataSetChanged()
-                clickListener.onClick(position + 1)
-            }
+        try {
+            val data = mDataList[position]
+            holder.bind(data)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = mDataList.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txvTab: TextView = itemView.findViewById(R.id.txv_tab)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(data: String?) {
+            itemView.apply {
+                txv_tab.text = data
+                txv_tab.setOnClickListener {
+                    if (layoutPosition != mSelectedPosition) {
+                        mSelectedPosition = layoutPosition
+                        notifyDataSetChanged()
+                        clickListener.onClick(layoutPosition + 1)
+                    }
+                }
 
-        fun bind(item: String) {
-            txvTab.text = item
-
-        }
-
-        companion object {
-            fun from(parent: ViewGroup, width: Int): ViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.content_news_tab, parent, false)
-
-                view.layoutParams.width = width
-                return ViewHolder(view)
+                itemView.isSelected = mSelectedPosition == layoutPosition //選中改變背景
             }
         }
     }
