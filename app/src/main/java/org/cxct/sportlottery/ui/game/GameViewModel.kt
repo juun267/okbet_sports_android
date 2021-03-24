@@ -482,7 +482,7 @@ class GameViewModel(
                     )
 
 
-                    _openGameDetail.postValue(it to leagueId)
+                    _openGameDetail.postValue(matchType.postValue to it)
                 }
             }
 
@@ -499,7 +499,7 @@ class GameViewModel(
                         leagueIdList
                     )
 
-                    _openGameDetail.postValue(it to leagueId)
+                    _openGameDetail.postValue(matchType.postValue to it)
                 }
             }
 
@@ -516,7 +516,7 @@ class GameViewModel(
                         leagueIdList
                     )
 
-                    _openGameDetail.postValue(it to leagueId)
+                    _openGameDetail.postValue(matchType.postValue to it)
                 }
             }
             else -> {

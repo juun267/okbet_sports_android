@@ -8,13 +8,15 @@ import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.itemview_game_league_odd_1x2.view.*
 import kotlinx.android.synthetic.main.itemview_game_league_odd_hdp_ou.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.util.TextUtil
 
-class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LeagueOddAdapter(private val matchType: MatchType) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
         set(value) {

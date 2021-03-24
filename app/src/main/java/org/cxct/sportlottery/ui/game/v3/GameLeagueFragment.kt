@@ -15,28 +15,32 @@ import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 
 
+private const val ARG_MATCH_TYPE = "matchType"
 private const val ARG_SPORT_TYPE = "sportType"
 
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     companion object {
-        fun newInstance(sportType: String) =
+        fun newInstance(matchType: String, sportType: String) =
             GameLeagueFragment().apply {
                 arguments = Bundle().apply {
+                    putString(ARG_MATCH_TYPE, matchType)
                     putString(ARG_SPORT_TYPE, sportType)
                 }
             }
     }
 
+    private lateinit var matchType: MatchType
     private var sportType: String? = null
 
     private val leagueAdapter by lazy {
-        LeagueAdapter().apply {
+        LeagueAdapter(matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ->
                     //TODO open live and play type page
@@ -78,6 +82,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         arguments?.let {
             sportType = it.getString(ARG_SPORT_TYPE)
+            matchType = when (it.getString(ARG_MATCH_TYPE)) {
+                MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
+                MatchType.TODAY.postValue -> MatchType.TODAY
+                MatchType.EARLY.postValue -> MatchType.EARLY
+                MatchType.PARLAY.postValue -> MatchType.PARLAY
+                MatchType.OUTRIGHT.postValue -> MatchType.OUTRIGHT
+                else -> MatchType.AT_START
+            }
         }
     }
 
