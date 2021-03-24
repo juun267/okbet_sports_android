@@ -28,7 +28,8 @@ class MainViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val thirdGameRepository: ThirdGameRepository
+    private val thirdGameRepository: ThirdGameRepository,
+    private val withdrawRepository: WithdrawRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -65,6 +66,15 @@ class MainViewModel(
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
+
+    val needToUpdateWithdrawPassword =
+        withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToUpdateWithdrawPassword =
+        withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val needToCompleteProfileInfo =
+        withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val needToBindBankCard =
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
     fun logout() {
         viewModelScope.launch {
@@ -225,4 +235,36 @@ class MainViewModel(
         }
     }
 
+
+    //提款判斷權限
+    fun withdrawCheckPermissions() {
+        viewModelScope.launch {
+            withdrawRepository.withdrawCheckPermissions()
+        }
+    }
+
+    //提款設置判斷權限
+    fun settingCheckPermissions() {
+        viewModelScope.launch {
+            withdrawRepository.settingCheckPermissions()
+        }
+    }
+
+    /**
+     * 判斷個人資訊是否完整, 若不完整需要前往個人資訊頁面完善資料.
+     * complete true: 個人資訊有缺漏, false: 個人資訊完整
+     */
+    fun checkProfileInfoComplete() {
+        viewModelScope.launch {
+            withdrawRepository.checkProfileInfoComplete()
+        }
+    }
+
+    fun checkBankCardPermissions() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkBankCardPermissions()
+            }
+        }
+    }
 }

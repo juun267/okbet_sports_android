@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -74,11 +73,9 @@ class ProfileCenterViewModel(
         }
     }
 
-    //TODO simon test
     //提款判斷權限
     fun withdrawCheckPermissions() {
         viewModelScope.launch {
-            Log.i("simon test", "updatePayPw: ${userInfo.value?.updatePayPw}")
             withdrawRepository.withdrawCheckPermissions()
         }
     }
@@ -95,7 +92,9 @@ class ProfileCenterViewModel(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     fun checkProfileInfoComplete() {
-        withdrawRepository.checkProfileInfoComplete()
+        viewModelScope.launch {
+            withdrawRepository.checkProfileInfoComplete()
+        }
     }
 
     fun checkBankCardPermissions() {

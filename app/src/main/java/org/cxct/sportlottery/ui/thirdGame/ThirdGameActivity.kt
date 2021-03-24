@@ -9,6 +9,10 @@ import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.SettingTipsDialog
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.ToastUtil
 
@@ -40,8 +44,7 @@ open class ThirdGameActivity : WebActivity() {
 
             override fun onCashGet() {
                 if (checkLogin()) {
-                    startActivity(Intent(this@ThirdGameActivity, WithdrawActivity::class.java))
-                    finish()
+                    viewModel.withdrawCheckPermissions()
                 }
             }
         })
@@ -65,6 +68,66 @@ open class ThirdGameActivity : WebActivity() {
     private fun initObserve() {
         viewModel.userInfo.observe(this, Observer {
             mUserInfo = it
+        })
+
+        viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    }).apply {
+                        setTipsTitle(R.string.withdraw_setting)
+                        setTipsContent(R.string.please_setting_withdraw_password)
+                        show(supportFragmentManager, "")
+                    }
+                } else {
+                    viewModel.checkProfileInfoComplete()
+                }
+            }
+        })
+
+        viewModel.needToCompleteProfileInfo.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                        startActivity(Intent(this, ProfileActivity::class.java))
+                    }).apply {
+                        setTipsTitle(R.string.withdraw_setting)
+                        setTipsContent(R.string.please_complete_profile_info)
+                        show(supportFragmentManager, "")
+                    }
+                } else {
+                    viewModel.checkBankCardPermissions()
+                }
+            }
+        })
+
+        viewModel.needToBindBankCard.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                        startActivity(Intent(this, BankActivity::class.java))
+                    }).apply {
+                        setTipsTitle(R.string.withdraw_setting)
+                        setTipsContent(R.string.please_setting_bank_card)
+                        show(supportFragmentManager, "")
+                    }
+                } else {
+                    startActivity(Intent(this, WithdrawActivity::class.java))
+                }
+            }
+        })
+
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    }
+                } else if (!b) {
+                    startActivity(Intent(this, BankActivity::class.java))
+                }
+            }
         })
     }
 }
