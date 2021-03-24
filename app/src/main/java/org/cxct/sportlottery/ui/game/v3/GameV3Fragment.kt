@@ -162,7 +162,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    //TODO add query logic to view model
+                    newText?.let {
+                        viewModel.searchLeague(args.matchType, it)
+                    }
                     return true
                 }
             }
@@ -320,6 +322,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 }
+            })
+
+            viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, Observer {
+                countryAdapter.data = it
+            })
+
+            viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
+                outrightCountryAdapter.data = it
             })
 
 //            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {

@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -97,6 +98,12 @@ class GameViewModel(
     val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
 
+    val countryListSearchResult: LiveData<List<Row>>
+        get() = _countryListSearchResult
+
+    val outrightCountryListSearchResult: LiveData<List<org.cxct.sportlottery.network.outright.season.Row>>
+        get() = _outrightCountryListSearchResult
+
     val curPlayType: LiveData<PlayType>
         get() = _curPlayType
 
@@ -132,6 +139,11 @@ class GameViewModel(
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
+
+    private val _countryListSearchResult = MutableLiveData<List<Row>>()
+    private val _outrightCountryListSearchResult =
+        MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
+
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
@@ -1317,5 +1329,33 @@ class GameViewModel(
 
     fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
         thirdGameRepository.setGoToThirdGamePage(catePage)
+    }
+
+    fun searchLeague(matchType: MatchType, searchText: String) {
+        when (matchType) {
+            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> {
+
+                val searchResult = _leagueListResult.value?.peekContent()?.rows?.filter {
+                    it.list.any { league ->
+                        league.name.trim().toLowerCase().contains(searchText.trim().toLowerCase())
+                    }
+                }
+                _countryListSearchResult.postValue(searchResult ?: listOf())
+            }
+
+            MatchType.OUTRIGHT -> {
+
+                val searchResult =
+                    _outrightSeasonListResult.value?.peekContent()?.rows?.filter {
+                        it.list.any { season ->
+                            season.name.trim().toLowerCase()
+                                .contains(searchText.trim().toLowerCase())
+                        }
+                    }
+                _outrightCountryListSearchResult.postValue(searchResult ?: listOf())
+            }
+            else -> {
+            }
+        }
     }
 }
