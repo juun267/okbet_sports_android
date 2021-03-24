@@ -84,6 +84,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupInitData(view: View) {
         viewModel.clearBankCardFragmentStatus()
 
+        args.editBankCard?.transferType?.let { transferType = it }
+
         val initData = args.editBankCard
         initData?.let {
             view.apply {
@@ -320,6 +322,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             if (result.success) {
                 if (mBankCardStatus) {
                     ToastUtil.showToast(context, getString(R.string.text_bank_card_modify_success))
+                    mNavController.popBackStack()
                 } else {
                     //綁定成功後回至銀行卡列表bank card list
                     showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_add_success)) {

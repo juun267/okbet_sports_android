@@ -103,7 +103,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                     img_edit_bank.apply {
                         visibility = View.VISIBLE
                         setOnClickListener {
-                            mBankListClickListener.onEdit(data)
+                            mBankListClickListener.onBankEdit(data)
                         }
                     }
                 } else {
@@ -132,7 +132,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                     img_edit_bank.apply {
                         visibility = View.VISIBLE
                         setOnClickListener {
-                            mBankListClickListener.onEdit(data)
+                            mBankListClickListener.onCryptoEdit(data)
                         }
                     }
                 } else {
@@ -187,7 +187,8 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 }
 
-class BankListClickListener(private val editListener: (item: BankCardList) -> Unit, private val addListener: () -> Unit) {
-    fun onEdit(item: BankCardList) = editListener(item)
+class BankListClickListener(private val editBankListener: (bankCard: BankCardList) -> Unit, private val editCryptoListener: (cryptoCard: BankCardList) -> Unit, private val addListener: () -> Unit) {
+    fun onBankEdit(bankCard: BankCardList) = editBankListener(bankCard)
+    fun onCryptoEdit(cryptoCard: BankCardList) = editCryptoListener(cryptoCard)
     fun onAdd() = addListener()
 }

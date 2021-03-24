@@ -22,13 +22,22 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private val mBankListAdapter by lazy {
         val navigateFrom = (arguments?.getSerializable(navigateKey) ?: PageFrom.WITHDRAW_SETTING) as PageFrom
-        BankListAdapter(BankListClickListener({
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
-            mNavController.navigate(action)
-        }, {
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, navigateFrom)
-            mNavController.navigate(action)
-        }))
+        BankListAdapter(
+            BankListClickListener(
+                editBankListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
+                    mNavController.navigate(action)
+                },
+                editCryptoListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
+                    mNavController.navigate(action)
+                },
+                addListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, navigateFrom)
+                    mNavController.navigate(action)
+                }
+            )
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
