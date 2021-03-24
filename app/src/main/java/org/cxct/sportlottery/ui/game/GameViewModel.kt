@@ -26,10 +26,7 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.OddsListRequest
-import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
@@ -104,6 +101,9 @@ class GameViewModel(
     val outrightCountryListSearchResult: LiveData<List<org.cxct.sportlottery.network.outright.season.Row>>
         get() = _outrightCountryListSearchResult
 
+    val leagueListSearchResult: LiveData<List<LeagueOdd>>
+        get() = _leagueListSearchResult
+
     val curPlayType: LiveData<PlayType>
         get() = _curPlayType
 
@@ -143,6 +143,7 @@ class GameViewModel(
     private val _countryListSearchResult = MutableLiveData<List<Row>>()
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
+    private val _leagueListSearchResult = MutableLiveData<List<LeagueOdd>>()
 
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
@@ -1357,5 +1358,22 @@ class GameViewModel(
             else -> {
             }
         }
+    }
+
+    fun searchMatch(searchText: String) {
+        val searchResult = _oddsListResult.value?.peekContent()?.oddsListData?.leagueOdds?.filter {
+            it.matchOdds.any { matchOdd ->
+                (matchOdd.matchInfo?.homeName?.trim()?.toLowerCase()?.contains(
+                    searchText.trim().toLowerCase()
+                ) ?: false) ||
+
+                        (matchOdd.matchInfo?.awayName?.trim()?.toLowerCase()?.contains(
+                            searchText.trim().toLowerCase()
+                        ) ?: false)
+
+            }
+        }
+
+        _leagueListSearchResult.postValue(searchResult ?: listOf())
     }
 }
