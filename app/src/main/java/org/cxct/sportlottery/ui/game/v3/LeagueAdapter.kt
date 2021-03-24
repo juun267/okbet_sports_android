@@ -83,7 +83,12 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
         ) {
             itemView.league_odd_list.apply {
                 adapter = leagueOddAdapter.apply {
-                    data = item.matchOdds
+                    data = if (item.searchMatchOdds.isNotEmpty()) {
+                        item.searchMatchOdds
+                    } else {
+                        item.matchOdds
+                    }
+
                     this.playType = playType
                     this.leagueOddListener = leagueOddListener
                 }

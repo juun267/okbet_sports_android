@@ -1373,6 +1373,17 @@ class GameViewModel(
 
     fun searchMatch(searchText: String) {
         val searchResult = _oddsListResult.value?.peekContent()?.oddsListData?.leagueOdds?.filter {
+
+            it.searchMatchOdds = it.matchOdds.filter { matchOdd ->
+                (matchOdd.matchInfo?.homeName?.trim()?.toLowerCase()?.contains(
+                    searchText.trim().toLowerCase()
+                ) ?: false) ||
+
+                        (matchOdd.matchInfo?.awayName?.trim()?.toLowerCase()?.contains(
+                            searchText.trim().toLowerCase()
+                        ) ?: false)
+            }
+
             it.matchOdds.any { matchOdd ->
                 (matchOdd.matchInfo?.homeName?.trim()?.toLowerCase()?.contains(
                     searchText.trim().toLowerCase()
