@@ -49,6 +49,8 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GameViewModel(
     private val androidContext: Context,
@@ -1339,11 +1341,13 @@ class GameViewModel(
                 val searchResult = _leagueListResult.value?.peekContent()?.rows?.filter {
 
                     it.searchList = it.list.filter { league ->
-                        league.name.trim().toLowerCase().contains(searchText.trim().toLowerCase())
+                        league.name.trim().toLowerCase(Locale.ENGLISH)
+                            .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
                     }
 
                     it.list.any { league ->
-                        league.name.trim().toLowerCase().contains(searchText.trim().toLowerCase())
+                        league.name.trim().toLowerCase(Locale.ENGLISH)
+                            .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
                     }
                 }
                 _countryListSearchResult.postValue(searchResult ?: listOf())
@@ -1355,13 +1359,13 @@ class GameViewModel(
                     _outrightSeasonListResult.value?.peekContent()?.rows?.filter {
 
                         it.searchList = it.list.filter { season ->
-                            season.name.trim().toLowerCase()
-                                .contains(searchText.trim().toLowerCase())
+                            season.name.trim().toLowerCase(Locale.ENGLISH)
+                                .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
                         }
 
                         it.list.any { season ->
-                            season.name.trim().toLowerCase()
-                                .contains(searchText.trim().toLowerCase())
+                            season.name.trim().toLowerCase(Locale.ENGLISH)
+                                .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
                         }
                     }
                 _outrightCountryListSearchResult.postValue(searchResult ?: listOf())
@@ -1375,23 +1379,21 @@ class GameViewModel(
         val searchResult = _oddsListResult.value?.peekContent()?.oddsListData?.leagueOdds?.filter {
 
             it.searchMatchOdds = it.matchOdds.filter { matchOdd ->
-                (matchOdd.matchInfo?.homeName?.trim()?.toLowerCase()?.contains(
-                    searchText.trim().toLowerCase()
+                (matchOdd.matchInfo?.homeName?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(
+                    searchText.trim().toLowerCase(Locale.ENGLISH)
                 ) ?: false) ||
 
-                        (matchOdd.matchInfo?.awayName?.trim()?.toLowerCase()?.contains(
-                            searchText.trim().toLowerCase()
-                        ) ?: false)
+                        (matchOdd.matchInfo?.awayName?.trim()?.toLowerCase(Locale.ENGLISH)
+                            ?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) ?: false)
             }
 
             it.matchOdds.any { matchOdd ->
-                (matchOdd.matchInfo?.homeName?.trim()?.toLowerCase()?.contains(
-                    searchText.trim().toLowerCase()
+                (matchOdd.matchInfo?.homeName?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(
+                    searchText.trim().toLowerCase(Locale.ENGLISH)
                 ) ?: false) ||
 
-                        (matchOdd.matchInfo?.awayName?.trim()?.toLowerCase()?.contains(
-                            searchText.trim().toLowerCase()
-                        ) ?: false)
+                        (matchOdd.matchInfo?.awayName?.trim()?.toLowerCase(Locale.ENGLISH)
+                            ?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) ?: false)
 
             }
         }
