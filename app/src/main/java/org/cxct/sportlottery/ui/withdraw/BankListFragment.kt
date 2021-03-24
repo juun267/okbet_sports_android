@@ -85,7 +85,17 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun setupRecyclerView(view: View) {
         view.rv_bank_list.apply {
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return when (mBankListAdapter.bankList.size) {
+                            0 -> 2
+                            else -> 1
+                        }
+                    }
+
+                }
+            }
             adapter = mBankListAdapter
         }
     }
