@@ -140,12 +140,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
                 if (!success) {
-                    val dialog = CustomAlertDialog(requireActivity())
-                    dialog.setTitle(getString(R.string.prompt))
-                    dialog.setMessage(eventResult.msg)
-                    dialog.setNegativeButtonText(null)
-                    dialog.setTextColor(R.color.red2)
-                    dialog.show()
+                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg){}
                 }
             }
         })
@@ -182,21 +177,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { result ->
-                val m: String
-                val color: Int
-                if (result.success) {
-                    m = resources.getString(R.string.bet_info_add_bet_success)
-                    color = R.color.gray6
-                } else {
-                    m = result.msg
-                    color = R.color.red2
-                }
-                val dialog = CustomAlertDialog(requireActivity())
-                dialog.setTitle(getString(R.string.prompt))
-                dialog.setMessage(m)
-                dialog.setNegativeButtonText(null)
-                dialog.setTextColor(color)
-                dialog.show()
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = if (result.success) getString(R.string.bet_info_add_bet_success) else result.msg,
+                    success = result.success
+                ) {}
             }
         })
 
