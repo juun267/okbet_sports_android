@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -173,14 +174,13 @@ class WithdrawViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.bankService.getBankMy()
             }?.let { result ->
-                val bankCardList = mutableListOf<BankCardList>()
+                val cardList = mutableListOf<BankCardList>()
                 result.bankCardList?.forEach { bankCard ->
-                    if (bankCard.uwType == dealType.type)
-                        bankCardList.add(bankCard)
+                    cardList.add(bankCard.apply { transferType = TransferType.values().find { it.type == bankCard.uwType } ?: TransferType.BANK })
                 }
                 _existBankCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
                 _existCryptoCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
-                _bankCardList.value = bankCardList
+                _bankCardList.value = cardList
                 hideLoading()
             }
         }
