@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.row_game_filter.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -302,6 +303,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
+                clearSearchView()
 
                 it.getContentIfNotHandled()?.let { leagueListResult ->
                     if (leagueListResult.success) {
@@ -314,6 +316,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
+                clearSearchView()
 
                 it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                     if (outrightSeasonListResult.success) {
@@ -341,6 +344,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun clearSearchView() {
+        game_filter_row.game_filter_search.apply {
+            setQuery("", false)
+            clearFocus()
         }
     }
 
