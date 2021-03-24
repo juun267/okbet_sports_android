@@ -762,6 +762,14 @@ class GameViewModel(
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
+
+                    matchOdd.matchInfo?.let { matchInfo ->
+                        matchInfo.startDateDisplay =
+                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "MM/dd")
+                        matchOdd.matchInfo.startTimeDisplay =
+                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "HH:mm")
+                    }
+
                     matchOdd.odds.forEach { map ->
                         map.value.forEach { odd ->
                             odd?.isSelected = betInfoRepository.betInfoList.value?.any {
