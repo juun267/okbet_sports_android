@@ -75,9 +75,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun selectDealType(type: TransferType) {
-        viewModel.setDealType(type)
+        viewModel.apply {
+            setDealType(type)
+            getWithdrawRate()
+            getBankCardList()
+        }
         setupDealView(type)
-        viewModel.getBankCardList()
     }
 
     private fun setupDealView(type: TransferType) {
@@ -101,13 +104,17 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     private fun setupClickEvent() {
         tab_bank_card.setOnClickListener {
-            if (!it.isSelected)
+            if (!it.isSelected) {
                 selectDealType(TransferType.BANK)
+                clearEvent()
+            }
         }
 
         tab_crypto.setOnClickListener {
-            if (!it.isSelected)
+            if (!it.isSelected) {
                 selectDealType(TransferType.CRYPTO)
+                clearEvent()
+            }
         }
 
         ll_select_bank.setOnClickListener {
@@ -117,7 +124,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         btn_withdraw.setOnClickListener {
             modifyFinish()
             withdrawBankCardData?.let { viewModel.addWithdraw(it.id.toLong(), et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
-
         }
 
         et_withdrawal_amount.getAllButton {

@@ -171,6 +171,7 @@
         android:paddingEnd="16dp">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/btn_withdraw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
@@ -179,7 +180,6 @@
             app:cardCornerRadius="20dp">
 
             <TextView
-                android:id="@+id/btn_withdraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
