@@ -146,11 +146,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun initUI() {
 
-//        tv_type_name.text = typeName
-
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
+        oddsDetailListAdapter = gameType?.let { OddsDetailListAdapter(this@OddsDetailFragment, it) }
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
