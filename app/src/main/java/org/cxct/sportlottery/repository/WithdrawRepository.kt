@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -22,7 +23,7 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
             return@map null
         }
 
-    val userInfo by lazy { userInfoFlow.asLiveData() }
+//    val userInfo by lazy { userInfoFlow.asLiveData() }
 
     private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>()
     val needToUpdateWithdrawPassword: LiveData<Boolean> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
@@ -41,9 +42,9 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
         get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
     //TODO simon test
-    private fun checkNeedUpdatePassWord(): Boolean? {
-        Log.e("simon test", "updatePayPw: ${userInfo.value?.updatePayPw}")
-        return when (userInfo.value?.updatePayPw) {
+    private suspend fun checkNeedUpdatePassWord(): Boolean? {
+        Log.e("simon test", "updatePayPw: ${userInfoFlow.firstOrNull()?.updatePayPw}")
+        return when (userInfoFlow.firstOrNull()?.updatePayPw) {
             1 -> true
             0 -> false
             else -> null
@@ -51,12 +52,12 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
     }
 
     //提款判斷權限
-    fun withdrawCheckPermissions() {
+    suspend fun withdrawCheckPermissions() {
         this.checkNeedUpdatePassWord()?.let { _needToUpdateWithdrawPassword.value = it }
     }
 
     //提款設置判斷權限
-    fun settingCheckPermissions() {
+    suspend fun settingCheckPermissions() {
         this.checkNeedUpdatePassWord()?.let { _settingNeedToUpdateWithdrawPassword.value = it }
     }
 
@@ -65,18 +66,18 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     fun checkProfileInfoComplete() {
-        var complete = false
-        sConfigData?.apply {
-            if (enableWithdrawFullName == FLAG_OPEN && userInfo.value?.fullName.isNullOrBlank() ||
-                enableWithdrawQQ == FLAG_OPEN && userInfo.value?.qq.isNullOrBlank() ||
-                enableWithdrawEmail == FLAG_OPEN && userInfo.value?.email.isNullOrBlank() ||
-                enableWithdrawPhone == FLAG_OPEN && userInfo.value?.phone.isNullOrBlank() ||
-                enableWithdrawWechat == FLAG_OPEN && userInfo.value?.wechat.isNullOrBlank()
-            ) {
-                complete = true
-            }
-        }
-        _needToCompleteProfileInfo.value = complete
+//        var complete = false
+//        sConfigData?.apply {
+//            if (enableWithdrawFullName == FLAG_OPEN && userInfo.value?.fullName.isNullOrBlank() ||
+//                enableWithdrawQQ == FLAG_OPEN && userInfo.value?.qq.isNullOrBlank() ||
+//                enableWithdrawEmail == FLAG_OPEN && userInfo.value?.email.isNullOrBlank() ||
+//                enableWithdrawPhone == FLAG_OPEN && userInfo.value?.phone.isNullOrBlank() ||
+//                enableWithdrawWechat == FLAG_OPEN && userInfo.value?.wechat.isNullOrBlank()
+//            ) {
+//                complete = true
+//            }
+//        }
+//        _needToCompleteProfileInfo.value = complete
     }
 
     suspend fun checkBankCardPermissions(): Response<BankMyResult> {

@@ -31,10 +31,14 @@ class ProfileCenterViewModel(
     val userMoney: LiveData<String?>
         get() = _userMoney
 
-    val needToUpdateWithdrawPassword= withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToUpdateWithdrawPassword = withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val needToCompleteProfileInfo = withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToBindBankCard = withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+    val needToUpdateWithdrawPassword =
+        withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToUpdateWithdrawPassword =
+        withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val needToCompleteProfileInfo =
+        withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val needToBindBankCard =
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
     val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
 
@@ -73,13 +77,17 @@ class ProfileCenterViewModel(
     //TODO simon test
     //提款判斷權限
     fun withdrawCheckPermissions() {
-        Log.i("simon test", "updatePayPw: ${userInfo.value?.updatePayPw}")
-        withdrawRepository.withdrawCheckPermissions()
+        viewModelScope.launch {
+            Log.i("simon test", "updatePayPw: ${userInfo.value?.updatePayPw}")
+            withdrawRepository.withdrawCheckPermissions()
+        }
     }
 
     //提款設置判斷權限
     fun settingCheckPermissions() {
-        withdrawRepository.settingCheckPermissions()
+        viewModelScope.launch {
+            withdrawRepository.settingCheckPermissions()
+        }
     }
 
     /**
