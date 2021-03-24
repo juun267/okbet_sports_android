@@ -54,6 +54,10 @@ class WithdrawViewModel(
         get() = _bankCardList
     private var _bankCardList = MutableLiveData<List<BankCardList>>()
 
+    val withdrawCardList: LiveData<List<BankCardList>>
+        get() = _withdrawCardList
+    private var _withdrawCardList = MutableLiveData<List<BankCardList>>()
+
     val bankAddResult: LiveData<BankAddResult>
         get() = _bankAddResult
     private var _bankAddResult = MutableLiveData<BankAddResult>()
@@ -178,9 +182,27 @@ class WithdrawViewModel(
                 result.bankCardList?.forEach { bankCard ->
                     cardList.add(bankCard.apply { transferType = TransferType.values().find { it.type == bankCard.uwType } ?: TransferType.BANK })
                 }
+                _bankCardList.value = cardList
+                hideLoading()
+            }
+        }
+    }
+
+    fun getWithdrawCardList() {
+        viewModelScope.launch {
+            loading()
+            doNetwork(androidContext) {
+                OneBoSportApi.bankService.getBankMy()
+            }?.let { result ->
+                val cardList = mutableListOf<BankCardList>()
+                result.bankCardList?.forEach { bankCard ->
+                    Log.e("Dean", "dealType = $dealType")
+                    if (dealType.type == bankCard.uwType)
+                        cardList.add(bankCard)
+                }
                 _existBankCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
                 _existCryptoCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
-                _bankCardList.value = cardList
+                _withdrawCardList.value = cardList
                 hideLoading()
             }
         }

@@ -52,7 +52,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupData() {
         viewModel.apply {
             getMoneyConfigs()
-            getBankCardList()
+            getWithdrawCardList()
             getMoney()
         }
     }
@@ -78,7 +78,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.apply {
             setDealType(type)
             getWithdrawRate()
-            getBankCardList()
+            getWithdrawCardList()
         }
         setupDealView(type)
     }
@@ -172,7 +172,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             viewModel.getWithdrawHint()
         })
 
-        viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawCardList.observe(this.viewLifecycleOwner, Observer {
             val iniData = it.firstOrNull()
             withdrawBankCardData = iniData
             tv_select_bank_card.text = getBankCardTailNo(iniData)
