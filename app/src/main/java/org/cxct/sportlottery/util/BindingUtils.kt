@@ -138,8 +138,12 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
         }
 
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            textAmount.invoke(count)
+        override fun onTextChanged(char: CharSequence, start: Int, before: Int, count: Int) {
+            if (char.trim().isNotEmpty()) {
+                textAmount.invoke(char.length)
+            } else {
+                textAmount.invoke(0)
+            }
         }
     })
 }

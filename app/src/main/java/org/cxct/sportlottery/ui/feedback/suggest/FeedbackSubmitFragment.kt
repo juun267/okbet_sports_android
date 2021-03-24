@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.feedback.suggest
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_feedback_submit.*
@@ -44,7 +41,7 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            if (!et_content.text.isNullOrEmpty()) {
+            if (et_content.text.trim().isNotEmpty()) {
                 viewModel.fbSave(et_content.text.toString())
             } else {
                 ll_error.visibility = View.VISIBLE

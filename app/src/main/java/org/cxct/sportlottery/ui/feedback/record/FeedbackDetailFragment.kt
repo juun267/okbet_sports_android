@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_feedback_detail.*
 import kotlinx.android.synthetic.main.fragment_feedback_detail.et_content
-import kotlinx.android.synthetic.main.fragment_feedback_submit.*
 import kotlinx.android.synthetic.main.view_submit_with_text_count.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
