@@ -56,9 +56,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bank_card, container, false).apply {
 
-            setupTitle()
-
             setupInitData(this)
+
+            setupTitle()
 
         }
     }
@@ -98,10 +98,19 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupTitle() {
-        if (mBankCardStatus) {
-            (activity as BankActivity).changeTitle(getString(R.string.edit_bank_card))
-        } else {
-            (activity as BankActivity).changeTitle(getString(R.string.add_credit_card))
+        when (mBankCardStatus) {
+            true -> {
+                when (transferType) {
+                    TransferType.BANK -> (activity as BankActivity).changeTitle(getString(R.string.edit_bank_card))
+                    TransferType.CRYPTO -> (activity as BankActivity).changeTitle(getString(R.string.edit_crypto_card))
+                }
+            }
+            false -> {
+                when (transferType) {
+                    TransferType.BANK -> (activity as BankActivity).changeTitle(getString(R.string.add_credit_card))
+                    TransferType.CRYPTO -> (activity as BankActivity).changeTitle(getString(R.string.add_crypto_card))
+                }
+            }
         }
     }
 
@@ -262,6 +271,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun changeTransferType(type: TransferType) {
         changeTab(type)
+        setupTitle()
         changeInputField(type)
     }
 
