@@ -88,8 +88,14 @@ object ArithUtil {
     }
 
     /**
-     * 小數大於比較
+     * 小數比較
      */
+    fun noSmallerThan(paramsS: Double, paramsO: Double?): Boolean {
+        val decimalSubject = BigDecimal(paramsS)
+        val decimalObject = BigDecimal(paramsO ?: 0.0)
+        return decimalSubject >= decimalObject
+    }
+
     fun biggerThan(paramsS: Double, paramsO: Double?): Boolean {
         val decimalSubject = BigDecimal(paramsS)
         val decimalObject = BigDecimal(paramsO ?: 0.0)

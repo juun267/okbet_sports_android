@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.util
 
-import org.cxct.sportlottery.util.ArithUtil.biggerThan
 import org.cxct.sportlottery.util.ArithUtil.noBiggerThan
+import org.cxct.sportlottery.util.ArithUtil.noSmallerThan
 import java.util.regex.Pattern
 import kotlin.math.min
 
@@ -98,7 +98,7 @@ object VerifyConstUtil {
                 min(maxAmount, balanceMax)
             }
         }
-        return biggerThan(withdrawAmountDouble, minAmount) && noBiggerThan(withdrawAmountDouble, maxLimit)
+        return noSmallerThan(withdrawAmountDouble, minAmount) && noBiggerThan(withdrawAmountDouble, maxLimit)
     }
 
     //充值金額
