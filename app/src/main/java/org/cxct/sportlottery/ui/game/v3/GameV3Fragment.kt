@@ -348,7 +348,28 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initSocketReceiver() {
-        //TODO add socket event
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            it?.let { matchStatusChangeEvent ->
+                matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+                    matchStatusCO.matchId?.let { matchId ->
+
+                        val leagueOdds = leagueAdapter.data
+
+                        leagueOdds.forEach { leagueOdd ->
+                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == matchId
+                            }
+
+                            updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
+                            updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
+                            updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+                        }
+
+                        leagueAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
     }
 
     override fun onDestroy() {
