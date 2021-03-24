@@ -73,6 +73,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             if (matchType == MatchType.IN_PLAY) {
                 itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
                 itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
+                itemView.match_status.text = item.matchInfo?.statusName
             } else {
                 itemView.match_status.text = item.matchInfo?.startDateDisplay
                 itemView.match_time.text = item.matchInfo?.startTimeDisplay
@@ -260,6 +261,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             if (matchType == MatchType.IN_PLAY) {
                 itemView.game_score_home_1x2.text = (item.matchInfo?.homeScore ?: 0).toString()
                 itemView.game_score_away_1x2.text = (item.matchInfo?.awayScore ?: 0).toString()
+                itemView.match_status_1x2.text = item.matchInfo?.statusName
             }
         }
 
