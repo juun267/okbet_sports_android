@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -139,14 +138,14 @@ class WithdrawViewModel(
         dealType = type
     }
 
-    fun addWithdraw(bankCardId: Long, applyMoney: String, withdrawPwd: String) {
-        checkWithdrawAmount(applyMoney)
+    fun addWithdraw(withdrawCard: BankCardList?, applyMoney: String, withdrawPwd: String) {
+        checkWithdrawAmount(withdrawCard, applyMoney)
         checkWithdrawPassword(withdrawPwd)
         if (checkWithdrawData()) {
             loading()
             viewModelScope.launch {
                 doNetwork(androidContext) {
-                    OneBoSportApi.withdrawService.addWithdraw(getWithdrawAddRequest(bankCardId, applyMoney, withdrawPwd))
+                    OneBoSportApi.withdrawService.addWithdraw(getWithdrawAddRequest(withdrawCard?.id?.toLong() ?: 0, applyMoney, withdrawPwd))
                 }?.let { result ->
                     _withdrawAddResult.value = result
                     hideLoading()
@@ -196,13 +195,13 @@ class WithdrawViewModel(
             }?.let { result ->
                 val cardList = mutableListOf<BankCardList>()
                 result.bankCardList?.forEach { bankCard ->
-                    Log.e("Dean", "dealType = $dealType")
                     if (dealType.type == bankCard.uwType)
                         cardList.add(bankCard)
                 }
                 _existBankCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
                 _existCryptoCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
                 _withdrawCardList.value = cardList
+                getWithdrawRate(cardList.firstOrNull())
                 hideLoading()
             }
         }
@@ -398,7 +397,7 @@ class WithdrawViewModel(
         }
     }
 
-    fun checkWithdrawAmount(inputAmount: String) {
+    fun checkWithdrawAmount(withdrawCard: BankCardList?, inputAmount: String) {
         var withdrawAmount = inputAmount
         val needShowBalanceMax = getWithdrawAmountLimit().isBalanceMax
         _withdrawAmountMsg.value = when {
@@ -422,7 +421,7 @@ class WithdrawViewModel(
                 ""
             }
         }
-        getWithdrawRate(withdrawAmount.toDouble())
+        getWithdrawRate(withdrawCard, withdrawAmount.toDouble())
     }
 
     fun getWithdrawHint() {
@@ -447,7 +446,7 @@ class WithdrawViewModel(
         return ArithUtil.div((userMoney.value ?: 0.0), ((uwBankType?.detailList?.first()?.feeRate?.plus(1) ?: 1.0)), 3, RoundingMode.FLOOR)
     }
 
-    fun getWithdrawRate(withdrawAmount: Double? = 0.0) {
+    fun getWithdrawRate(withdrawCard: BankCardList?, withdrawAmount: Double? = 0.0) {
         _withdrawRateHint.value = when (dealType) {
             TransferType.BANK -> {
                 String.format(
@@ -458,13 +457,27 @@ class WithdrawViewModel(
             }
             TransferType.CRYPTO -> {
                 //TODO Dean : 虛擬幣資料待串接
-                String.format(
-                    androidContext.getString(R.string.withdraw_crypto_fee_hint),
-                    ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
-                    ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
-                )
+                withdrawCard?.let {
+                    val hintData = getCryptoWithdrawHint(it)
+                    String.format(
+                        androidContext.getString(R.string.withdraw_crypto_fee_hint),
+                        hintData?.exchangeRate ?: "",
+                        hintData?.exchangeFee ?: ""
+                    )
+                }
             }
         }
+    }
+
+    data class CryptoWithdrawHint(val exchangeRate: Double, val exchangeFee: Double)
+
+    private fun getCryptoWithdrawHint(withdrawCard: BankCardList): CryptoWithdrawHint? {
+        val config = getCryptoCardConfig(withdrawCard) ?: return null
+        return CryptoWithdrawHint(config.exchangeRate ?: 0.0, config.feeVal ?: 0.0)
+    }
+
+    private fun getCryptoCardConfig(withdrawCard: BankCardList): MoneyRechCfg.DetailList? {
+        return rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == withdrawCard.bankName }
     }
 
     /**

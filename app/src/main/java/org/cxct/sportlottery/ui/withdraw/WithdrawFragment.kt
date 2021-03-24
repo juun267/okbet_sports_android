@@ -77,7 +77,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun selectDealType(type: TransferType) {
         viewModel.apply {
             setDealType(type)
-            getWithdrawRate()
+            getWithdrawRate(withdrawBankCardData)
             getWithdrawCardList()
         }
         setupDealView(type)
@@ -123,7 +123,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
-            withdrawBankCardData?.let { viewModel.addWithdraw(it.id.toLong(), et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
+            withdrawBankCardData?.let { viewModel.addWithdraw(withdrawBankCardData, et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
         }
 
         et_withdrawal_amount.getAllButton {
@@ -135,7 +135,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //提款金額
-            et_withdrawal_amount.afterTextChanged { checkWithdrawAmount(it) }
+            et_withdrawal_amount.afterTextChanged { checkWithdrawAmount(withdrawBankCardData, it) }
 
             //提款密碼
             setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
@@ -200,9 +200,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         //資金設定
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
             if (et_withdrawal_amount.getText().isEmpty()) {
-                viewModel.getWithdrawRate()
+                viewModel.getWithdrawRate(withdrawBankCardData)
             } else {
-                viewModel.getWithdrawRate(et_withdrawal_amount.getText().toDouble())
+                viewModel.getWithdrawRate(withdrawBankCardData, et_withdrawal_amount.getText().toDouble())
             }
             viewModel.getWithdrawHint()
         })
@@ -258,6 +258,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 view.iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(it.bankName))
                 view.tv_select_bank_card.text = getBankCardTailNo(it)
                 withdrawBankCardData = it
+                viewModel.getWithdrawRate(withdrawBankCardData)
                 dismiss()
             })
             lv_bank_item.adapter = bankCardAdapter
