@@ -383,6 +383,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         })
+
+        receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
+            it?.let { matchClockEvent ->
+                matchClockEvent.matchClockCO?.let { matchClockCO ->
+                    matchClockCO.matchId?.let { matchId ->
+
+                        val leagueOdds = leagueAdapter.data
+
+                        leagueOdds.forEach { leagueOdd ->
+                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == matchId
+                            }
+
+                            updateMatchOdd?.leagueTime = matchClockCO.matchTime
+                        }
+
+                        leagueAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
     }
 
     private fun clearSearchView() {

@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.game.v3
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,8 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 class LeagueOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -51,8 +55,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     override fun getItemCount(): Int = data.size
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
 
-    class ViewHolderHdpOu private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        when (holder) {
+            is ViewHolderTimer -> holder.stopTimer()
+        }
+    }
+
+
+    class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
         fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
 
             setupMatchInfo(item, matchType)
@@ -74,6 +86,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
                 itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
                 itemView.match_status.text = item.matchInfo?.statusName
+
+                listener = object : TimerListener {
+                    override fun onTimerUpdate(timeMillis: Long) {
+                        itemView.match_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                    }
+                }
+
+                updateTimer(item.leagueTime ?: 0)
             } else {
                 itemView.match_status.text = item.matchInfo?.startDateDisplay
                 itemView.match_time.text = item.matchInfo?.startTimeDisplay
@@ -240,7 +260,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
     }
 
-    class ViewHolder1x2 private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
         fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
 
             setupMatchInfo(item, matchType)
@@ -262,6 +282,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 itemView.game_score_home_1x2.text = (item.matchInfo?.homeScore ?: 0).toString()
                 itemView.game_score_away_1x2.text = (item.matchInfo?.awayScore ?: 0).toString()
                 itemView.match_status_1x2.text = item.matchInfo?.statusName
+
+                listener = object : TimerListener {
+                    override fun onTimerUpdate(timeMillis: Long) {
+                        itemView.match_time_1x2.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                    }
+                }
+
+                updateTimer(item.leagueTime ?: 0)
             }
         }
 
@@ -393,6 +421,37 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 return ViewHolder1x2(view)
             }
+        }
+    }
+
+    abstract class ViewHolderTimer(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        interface TimerListener {
+            fun onTimerUpdate(timeMillis: Long)
+        }
+
+        protected var listener: TimerListener? = null
+
+        private val timer by lazy { Timer() }
+
+        fun updateTimer(leagueTime: Int) {
+            var timeMillis = leagueTime * 1000L
+
+            Handler(Looper.getMainLooper()).post {
+                listener?.onTimerUpdate(timeMillis)
+            }
+
+            timer.schedule(object : TimerTask() {
+                override fun run() {
+                    timeMillis += 1000
+                    Handler(Looper.getMainLooper()).post {
+                        listener?.onTimerUpdate(timeMillis)
+                    }
+                }
+            }, 1000L, 1000L)
+        }
+
+        fun stopTimer() {
+            timer.cancel()
         }
     }
 }
