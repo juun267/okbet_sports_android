@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.next.SportFragment">
+    tools:context=".ui.main.more.SportFragment">
 
     <ImageView
         android:layout_width="match_parent"
@@ -12,7 +12,6 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/sport_category_bg" />
-
 
     <ImageView
         android:id="@+id/iv_label"
@@ -52,21 +51,21 @@
         <org.cxct.sportlottery.ui.component.IconText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cvIcon="@drawable/ic_soccer"
-            app:cvTitle="@string/soccer" />
-
-        <org.cxct.sportlottery.ui.component.IconText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
             app:cvIcon="@drawable/ic_tennis_icon"
             app:cvTitle="@string/tennis" />
 
         <org.cxct.sportlottery.ui.component.IconText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            app:cvIcon="@drawable/ic_volley_ball"
+            app:cvTitle="@string/volleyball" />
+
+        <org.cxct.sportlottery.ui.component.IconText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:cvIcon="@drawable/ic_badminton_icon"
-            app:cvTitle="@string/soccer" />
+            app:cvTitle="@string/badminton" />
 
     </LinearLayout>
 

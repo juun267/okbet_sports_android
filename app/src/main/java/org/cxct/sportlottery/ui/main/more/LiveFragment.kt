@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main.next
+package org.cxct.sportlottery.ui.main.more
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_dz.*
+import kotlinx.android.synthetic.main.fragment_live.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
@@ -15,10 +15,9 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
-import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.util.JumpUtil
 
-class DZFragment(private val gameCateData: GameCateData, private val defaultSelectFirmCode: String) : BaseFragment<MainViewModel>(MainViewModel::class) {
+class LiveFragment(private val gameCateData: GameCateData) : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
         override fun onClick(select: ThirdDictValues?) {
@@ -28,7 +27,7 @@ class DZFragment(private val gameCateData: GameCateData, private val defaultSele
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_dz, container, false)
+        return inflater.inflate(R.layout.fragment_live, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,29 +38,12 @@ class DZFragment(private val gameCateData: GameCateData, private val defaultSele
     }
 
     private fun initRecycleView() {
-        var defaultSelectPosition = 0
-        var defaultSelectGameList = gameCateData.tabDataList.firstOrNull()?.gameList
-        gameCateData.tabDataList.forEachIndexed { index, gameTabData ->
-            if (gameTabData.gameFirm?.firmCode == defaultSelectFirmCode) {
-                defaultSelectPosition = index
-                defaultSelectGameList = gameTabData.gameList
-            }
-        }
-
-        val rvDZAdapter = RvDZAdapter()
-        rvDZAdapter.setData(defaultSelectGameList)
-        rvDZAdapter.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
-        rv_dz.adapter = rvDZAdapter
-
-        val rvDZTabAdapter = RvDZTabAdapter(defaultSelectPosition)
-        rvDZTabAdapter.setData(gameCateData.tabDataList)
-        rvDZTabAdapter.setOnSelectThirdGameListener(object : OnSelectItemListener<GameTabData?> {
-            override fun onClick(select: GameTabData?) {
-                rvDZAdapter.setData(select?.gameList)
-                rv_tab.smoothToCenter(rvDZTabAdapter.mSelectPosition)
-            }
-        })
-        rv_tab.adapter = rvDZTabAdapter
+        //20200226 紀錄：真人遊戲只會有一個 tab
+        val gameList = gameCateData.tabDataList.firstOrNull()?.gameList
+        val adapter = RvLiveAdapter()
+        adapter.setData(gameList)
+        adapter.setOnSelectThirdGameListener(mOnSelectThirdGameListener)
+        rv_live.adapter = adapter
     }
 
     private fun initObserve() {

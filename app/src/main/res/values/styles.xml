@@ -1,30 +1,15 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorBlue</item>
+        <item name="colorPrimaryDark">@color/colorBlueDark</item>
+        <item name="colorAccent">@color/colorBlueLight</item>
+
+        <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
-    </style>
-
-    <!-- Base application theme. -->
-    <style name="ActionBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
-    </style>
-
-    <style name="CommonTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->

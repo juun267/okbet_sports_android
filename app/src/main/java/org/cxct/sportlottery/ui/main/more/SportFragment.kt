@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main.next
+package org.cxct.sportlottery.ui.main.more
 
 import android.content.Intent
 import android.os.Bundle
