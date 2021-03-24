@@ -7,7 +7,7 @@ import android.os.IBinder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.SERVICE_SEND_DATA
-import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
 import kotlin.reflect.KClass

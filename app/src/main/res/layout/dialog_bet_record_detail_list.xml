@@ -162,7 +162,7 @@
                                 android:id="@+id/tv_bet_total_money"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{String.valueOf(row.totalAmount)}"
+                                android:text="@{TextUtil.formatMoney(row.totalAmount)}"
                                 android:textColor="@color/gray3"
                                 android:textSize="@dimen/textSize14sp"
                                 app:layout_constraintEnd_toStartOf="@+id/guideline"

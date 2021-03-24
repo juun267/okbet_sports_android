@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -29,6 +30,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             sportTypeListener = SportTypeListener {
                 viewModel.getGameHallList(args.matchType, it)
                 loading()
+            }
+
+            thirdGameListener = ThirdGameListener {
+                viewModel.setGoToThirdGamePage(it)
+                activity?.finish()
             }
         }
     }
@@ -70,6 +76,32 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
                 }
             )
+
+            itemExpandListener = ItemExpandListener {
+                val sportType = sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code
+
+                when (it.isExpand) {
+                    true -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+
+                    false -> {
+                        it.matchOdds.forEach { matchOdd ->
+                            service.unSubscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -203,7 +235,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.IN_PLAY -> {
                         val itemList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -211,7 +243,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.TODAY -> {
                         val itemList = it?.sportMenuData?.menu?.today?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -219,7 +251,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.EARLY -> {
                         val itemList = it?.sportMenuData?.menu?.early?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -227,7 +259,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.PARLAY -> {
                         val itemList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -235,7 +267,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.OUTRIGHT -> {
                         val itemList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -243,11 +275,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.AT_START -> {
                         val itemList = it?.sportMenuData?.atStart?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
                 }
+            })
+
+            viewModel.gameCateDataList.observe(this.viewLifecycleOwner, Observer {
+                sportTypeAdapter.dataThirdGame = it
             })
 
             viewModel.curPlayType.observe(viewLifecycleOwner, Observer {
@@ -306,4 +342,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             e.printStackTrace()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val sportType = sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code
+
+        leagueAdapter.data.forEach {
+            if (it.isExpand) {
+                it.matchOdds.forEach { matchOdd ->
+                    service.unSubscribeHallChannel(
+                        sportType,
+                        CateMenuCode.HDP_AND_OU.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
+        }
+    }
+
 }

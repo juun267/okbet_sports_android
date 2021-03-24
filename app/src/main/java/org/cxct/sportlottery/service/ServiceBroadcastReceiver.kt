@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.home.broadcast
+package org.cxct.sportlottery.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -17,7 +17,6 @@ import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
-import org.cxct.sportlottery.service.BackService
 import org.json.JSONArray
 
 open class ServiceBroadcastReceiver : BroadcastReceiver() {

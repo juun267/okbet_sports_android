@@ -119,6 +119,10 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
+
+                //於遊客帳號添加投注項目至注單內後直接註冊正式帳號 因不會走登出流程 所以直接先清出local user info
+                clear()
+
                 isCheckToken = true
                 account = registerRequest.userName //預設存帳號
                 updateLoginData(it.loginData)

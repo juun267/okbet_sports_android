@@ -5,31 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.main.next.MainMoreFragment">
+    tools:context="org.cxct.sportlottery.ui.main.more.MainMoreFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:elevation="1dp"
-        app:tabBackground="@drawable/selector_home_game_tab"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:minHeight="84dp"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"
-        app:tabPaddingBottom="8dp"
+        app:tabPaddingBottom="5dp"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="0dp"
+        app:tabPaddingTop="2dp"
         app:tabRippleColor="@color/transparent">
 
         <!-- 此處僅為預覽示意，實際上 tab 要動態添加 -->
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout="@layout/main_more_cate_tab" />
+            android:layout="@layout/main_tab" />
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="-8dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

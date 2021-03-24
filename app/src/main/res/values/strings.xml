@@ -220,7 +220,7 @@
     <string name="game_result">赛果</string>
     <string name="game_yellow_card">罚牌</string>
     <string name="game_corner_kick">角球</string>
-    <string name="football">足球</string>
+    <string name="soccer">足球</string>
     <string name="basketball">篮球</string>
     <string name="tennis">网球</string>
     <string name="badminton">羽球</string>
@@ -449,6 +449,10 @@
 
 
     <!--  Withdraw  -->
+    <string name="bank_card">银行卡</string>
+    <string name="crypto">虚拟币</string>
+    <string name="currency_protocol">协议/币种</string>
+    <string name="withdraw_number">提款个数</string>
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>
     <string name="currency">RMB</string>
@@ -471,17 +475,20 @@
     <string name="withdraw_setting">提款设置</string>
     <string name="name">姓名</string>
     <string name="tail_number">尾号</string>
-    <string name="bind_start_time">绑定于</string>
-    <string name="bind_credit_card_not_yet">您尚未绑定银行卡</string>
+    <string name="bind_start_time">绑定</string>
+    <string name="bind_credit_card_not_yet">您尚未绑定银行卡/虚拟币</string>
     <string name="select_bank">选择银行</string>
     <string name="withdraw_amount">提款金额</string>
     <string name="withdraw_password">提款密码</string>
     <string name="withdraw_all">全部提取</string>
-    <string name="withdraw_handling_fee_hint">・手续费率：%1$s%% 须支付手续费：%2$s元</string>
+    <string name="withdraw_handling_fee_hint">・手续费率：%1$s%% 须支付手续费：%2$sRMB</string>
+    <string name="withdraw_crypto_fee_hint">・汇率：%1$s% ,需支付手续费：%2$s个USDT</string>
     <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s RMB</string>
     <string name="hint_four_number_password">密码为4个数字</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
+    <string name="add_new">新增</string>
     <string name="add_credit_card">新增银行卡</string>
+    <string name="add_credit_or_virtual">新增银行卡/虚拟币</string>
     <!--  BankCard  -->
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
@@ -656,7 +663,6 @@
     <string name="qp">棋牌</string>
     <string name="dz">电子</string>
     <string name="by">捕鱼</string>
-    <string name="soccer">足球</string>
     <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容， 致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
     <string name="sport_bet_record">体育投注记录</string>
     <string name="other_bet_record">其他投注记录</string>

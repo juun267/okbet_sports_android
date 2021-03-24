@@ -8,7 +8,7 @@
         android:id="@+id/arrow"
         android:right="15dp">
         <rotate
-            android:drawable="@drawable/ic_arrow_dark"
+            android:drawable="@drawable/ic_arrow_gray_up"
             android:fromDegrees="180"
             />
     </item>

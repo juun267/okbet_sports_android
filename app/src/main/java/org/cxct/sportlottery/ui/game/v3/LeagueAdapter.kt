@@ -29,6 +29,8 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
     var leagueOddListener: LeagueOddListener? = null
 
+    var itemExpandListener: ItemExpandListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -36,7 +38,7 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, playType, leagueOddListener)
+        holder.bind(item, playType, leagueOddListener, itemExpandListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -47,12 +49,17 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
             LeagueOddAdapter()
         }
 
-        fun bind(item: LeagueOdd, playType: PlayType, leagueOddListener: LeagueOddListener?) {
+        fun bind(
+            item: LeagueOdd,
+            playType: PlayType,
+            leagueOddListener: LeagueOddListener?,
+            itemExpandListener: ItemExpandListener?
+        ) {
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
             setupLeagueOddList(item, playType, leagueOddListener)
-            setupLeagueOddExpand(item)
+            setupLeagueOddExpand(item, itemExpandListener)
         }
 
         private fun setupLeagueOddList(
@@ -83,12 +90,18 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
             }
         }
 
-        private fun setupLeagueOddExpand(item: LeagueOdd) {
+        private fun setupLeagueOddExpand(item: LeagueOdd, itemExpandListener: ItemExpandListener?) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
+            if (item.isExpand) {
+                itemExpandListener?.onItemExpand(item)
+            }
+
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_expand.setExpanded(item.isExpand, true)
                 updateArrowExpand()
+
+                itemExpandListener?.onItemExpand(item)
             }
         }
 
@@ -109,4 +122,8 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
             }
         }
     }
+}
+
+class ItemExpandListener(val expandListener: (leagueOdd: LeagueOdd) -> Unit) {
+    fun onItemExpand(leagueOdd: LeagueOdd) = expandListener(leagueOdd)
 }

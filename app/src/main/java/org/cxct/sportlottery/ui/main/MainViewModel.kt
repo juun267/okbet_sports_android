@@ -209,10 +209,6 @@ class MainViewModel(
         )
     }
 
-    fun clearThirdGameCatePage() {
-        thirdGameRepository.setGoToThirdGamePage(null)
-    }
-
     private suspend fun autoTransfer(gameData: ThirdDictValues) {
         val result = doNetwork(androidContext) {
             OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)

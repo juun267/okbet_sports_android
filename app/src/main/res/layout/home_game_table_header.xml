@@ -11,4 +11,4 @@
     android:textColor="@color/colorRedDark"
     android:textSize="@dimen/textSize16sp"
     tools:context=".ui.game.home.gameTable.RvGameTableAdapter"
-    tools:text="@string/football" />
+    tools:text="@string/soccer" />

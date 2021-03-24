@@ -1,175 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="196dp"
-    android:background="@drawable/ic_card_background"
-    android:paddingStart="15dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="15dp"
-    android:paddingBottom="12dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:clipToPadding="false"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="16dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="16dp">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
-
-            <ImageView
-                android:id="@+id/iv_bank_icon"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_bank_default"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_bank_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:maxLines="2"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/img_edit_bank"
-                app:layout_constraintStart_toEndOf="@+id/iv_bank_icon"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="農業銀行" />
-
-            <ImageView
-                android:id="@+id/img_edit_bank"
-                android:layout_width="20dp"
-                android:layout_height="0dp"
-                android:src="@drawable/ic_edit_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_card_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/ll_tail_number">
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_title_name"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/name"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp"
-                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_colon1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/colon"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp"
-                app:layout_constraintStart_toEndOf="@+id/tv_title_name"
-                app:layout_constraintTop_toTopOf="@+id/tv_title_name" />
+                <ImageView
+                    android:id="@+id/iv_bank_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_bank_default"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_bank_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:maxLines="2"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/img_edit_bank"
+                    app:layout_constraintStart_toEndOf="@+id/iv_bank_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="農業銀行" />
+
+                <ImageView
+                    android:id="@+id/img_edit_bank"
+                    android:layout_width="18dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_edit_card_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
                 android:gravity="start|center_vertical"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
                 app:layout_constraintStart_toEndOf="@+id/tv_colon1"
                 app:layout_constraintTop_toTopOf="@+id/tv_colon1"
                 tools:text="王明尉" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_title_tail_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/tail_number"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tv_tail_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="1681" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_bind_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="top"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_bind_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/bind_start_time"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tv_bind_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|center_vertical"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="2020-12-12  23:08:43" />
+            </LinearLayout>
+
+
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_tail_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/ll_bind_time">
-
-            <TextView
-                android:id="@+id/tv_title_tail_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tail_number"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp" />
-
-            <TextView
-                android:id="@+id/tv_colon2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/colon"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp" />
-
-            <TextView
-                android:id="@+id/tv_tail_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="1681" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/ll_bind_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="top"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <TextView
-                android:id="@+id/tv_bind_start_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bind_start_time"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp" />
-
-            <TextView
-                android:id="@+id/tv_colon3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/colon"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp" />
-
-            <TextView
-                android:id="@+id/tv_bind_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start|center_vertical"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="2020-12-12  23:08:43" />
-        </LinearLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+
+</androidx.cardview.widget.CardView>
 
