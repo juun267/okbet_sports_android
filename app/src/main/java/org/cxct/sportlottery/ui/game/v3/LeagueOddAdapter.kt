@@ -44,8 +44,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(item, leagueOddListener)
-            is ViewHolder1x2 -> holder.bind(item, leagueOddListener)
+            is ViewHolderHdpOu -> holder.bind(matchType, item, leagueOddListener)
+            is ViewHolder1x2 -> holder.bind(matchType, item, leagueOddListener)
         }
     }
 
@@ -53,9 +53,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
 
     class ViewHolderHdpOu private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
 
-            setupMatchInfo(item)
+            setupMatchInfo(item, matchType)
 
             setupOddButton(item, leagueOddListener)
 
@@ -64,14 +64,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd) {
+        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
             itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home.text = item.matchInfo?.homeName
             itemView.game_name_away.text = item.matchInfo?.awayName
 
-            itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
-            itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
+            if (matchType == MatchType.IN_PLAY) {
+                itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
+                itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
+            }
         }
 
         private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
@@ -235,9 +237,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
 
-            setupMatchInfo(item)
+            setupMatchInfo(item, matchType)
 
             setupOddButton(item, leagueOddListener)
 
@@ -246,14 +248,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd) {
+        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
             itemView.game_name_away_1x2.text = item.matchInfo?.awayName
 
-            itemView.game_score_home_1x2.text = (item.matchInfo?.homeScore ?: 0).toString()
-            itemView.game_score_away_1x2.text = (item.matchInfo?.awayScore ?: 0).toString()
+            if (matchType == MatchType.IN_PLAY) {
+                itemView.game_score_home_1x2.text = (item.matchInfo?.homeScore ?: 0).toString()
+                itemView.game_score_away_1x2.text = (item.matchInfo?.awayScore ?: 0).toString()
+            }
         }
 
         private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
