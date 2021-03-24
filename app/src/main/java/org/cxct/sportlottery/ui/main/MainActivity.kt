@@ -187,8 +187,10 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         })
 
         //公告彈窗
-        viewModel.messageDialogResult.observe(this, Observer {
-            setNewsDialog(it)
+        viewModel.messageDialogResult.observe(this, Observer { it ->
+            it.getContentIfNotHandled()?.let { result ->
+                setNewsDialog(result)
+            }
         })
 
         viewModel.goToThirdGamePage.observe(this, Observer {

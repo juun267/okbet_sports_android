@@ -19,6 +19,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.util.Event
 
 
 class MainViewModel(
@@ -42,8 +43,8 @@ class MainViewModel(
     val messageListResult: LiveData<MessageListResult>
         get() = _messageListResult
 
-    private val _messageDialogResult = MutableLiveData<MessageListResult>()
-    val messageDialogResult: LiveData<MessageListResult>
+    private val _messageDialogResult = MutableLiveData<Event<MessageListResult>>()
+    val messageDialogResult: LiveData<Event<MessageListResult>>
         get() = _messageDialogResult
 
     private val _userMoney = MutableLiveData<Double?>()
@@ -95,7 +96,7 @@ class MainViewModel(
                 val typeList = arrayOf(2, 3)
                 OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result ->
-                _messageDialogResult.postValue(result)
+                _messageDialogResult.postValue(Event(result))
             }
         }
     }
