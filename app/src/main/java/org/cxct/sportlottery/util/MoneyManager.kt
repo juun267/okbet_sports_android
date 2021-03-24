@@ -54,6 +54,7 @@ object MoneyManager {
             MoneyType.WX.code -> R.drawable.ic_wechat_pay
             MoneyType.CTF.code -> R.drawable.ic_tenpay
             MoneyType.ONLINE.code -> R.drawable.ic_online_pay
+            MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -64,6 +65,7 @@ object MoneyManager {
             MoneyType.WX_TYPE.code -> R.drawable.ic_wechat_pay_type
             MoneyType.CTF_TYPE.code -> R.drawable.ic_tenpay_type
             MoneyType.ONLINE_TYPE.code -> R.drawable.ic_online_pay_type
+            MoneyType.CRYPTO_TYPE.code -> R.drawable.ic_crypto_pay
             else -> R.drawable.ic_bank_atm
         }
     }
