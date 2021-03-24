@@ -99,7 +99,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
             fun from(parent: ViewGroup) =
                 NoDataViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_finance_no_data, parent, false)
+                        .inflate(R.layout.item_footer_no_data, parent, false)
                 )
         }
     }
