@@ -212,7 +212,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initObserve() {
         //輪播圖
         viewModel.bannerList.observe(viewLifecycleOwner, Observer {
-            it?.let { list -> setBanner(list) }
+            setBanner(it?: listOf())
         })
 
         //公告跑馬燈
