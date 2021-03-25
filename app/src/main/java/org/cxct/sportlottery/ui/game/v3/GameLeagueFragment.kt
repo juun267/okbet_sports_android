@@ -91,6 +91,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 else -> MatchType.AT_START
             }
         }
+
+        //TODO add subscribe hall channel
     }
 
     override fun onCreateView(

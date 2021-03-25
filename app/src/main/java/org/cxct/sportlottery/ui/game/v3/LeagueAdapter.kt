@@ -100,9 +100,6 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         private fun setupLeagueOddExpand(item: LeagueOdd, itemExpandListener: ItemExpandListener?) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
-            if (item.isExpand) {
-                itemExpandListener?.onItemExpand(item)
-            }
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
