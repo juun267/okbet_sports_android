@@ -26,7 +26,7 @@ class NewsViewPagerAdapter : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(container.context)
-            .inflate(R.layout.content_msg_dialog_viewpager, container, false)
+            .inflate(R.layout.content_news_item_rv, container, false)
 
         try {
             val arrowLeft: ImageView = view.findViewById(R.id.img_arrow_left)

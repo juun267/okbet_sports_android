@@ -9,7 +9,7 @@
     android:layout_marginEnd="7dp"
     android:minWidth="80dp"
     android:minHeight="40dp"
-    tools:context="org.cxct.sportlottery.ui.main.news.NewsAdapter">
+    tools:context="org.cxct.sportlottery.ui.main.news.NewsTabAdapter">
 
     <TextView
         android:id="@+id/txv_tab"
