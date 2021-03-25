@@ -353,9 +353,9 @@
 
     <string name="uncheck">未确认</string>
     <string name="undone">未结算</string>
-    <string name="win_all">全赢</string>
+    <string name="win_all">赢</string>
     <string name="win_half">赢半</string>
-    <string name="lose_all">全输</string>
+    <string name="lose_all">输</string>
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
