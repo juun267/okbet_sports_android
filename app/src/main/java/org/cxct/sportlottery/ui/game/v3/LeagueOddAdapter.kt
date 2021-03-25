@@ -431,7 +431,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         protected var listener: TimerListener? = null
 
-        private val timer by lazy { Timer() }
+        private var timer: Timer? = null
 
         fun updateTimer(leagueTime: Int) {
             var timeMillis = leagueTime * 1000L
@@ -440,7 +440,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 listener?.onTimerUpdate(timeMillis)
             }
 
-            timer.schedule(object : TimerTask() {
+            stopTimer()
+            timer = Timer()
+            timer?.schedule(object : TimerTask() {
                 override fun run() {
                     timeMillis += 1000
                     Handler(Looper.getMainLooper()).post {
@@ -451,7 +453,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         fun stopTimer() {
-            timer.cancel()
+            timer?.cancel()
         }
     }
 }
