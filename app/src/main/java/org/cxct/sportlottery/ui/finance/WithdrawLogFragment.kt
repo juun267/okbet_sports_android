@@ -46,7 +46,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             this.selector_method_status.dataList = viewModel.withdrawTypeList
             setupListColumn(this)
             setupWithdrawLogList(this)
-//            setupSwipeRefreshLayout(this)
             setupSearch(this)
             initOnclick(this)
         }
@@ -70,15 +69,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
             this.adapter = withdrawLogAdapter
             addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
-        }
-    }
-
-    private fun setupSwipeRefreshLayout(view: View) {
-        view.list_swipe_refresh_layout.apply {
-            setOnRefreshListener {
-                viewModel.getUserWithdrawList(false)
-//                this.isRefreshing = false
-            }
         }
     }
 
