@@ -137,7 +137,7 @@ class OddButton @JvmOverloads constructor(
 
     private fun setupBetStatus(betStatus: Int) {
         visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
-            View.GONE
+            View.INVISIBLE
         } else {
             View.VISIBLE
         }
