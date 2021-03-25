@@ -218,6 +218,26 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             tv_hint_withdraw_rate.text = it
         })
 
+        //提款虛擬幣所需餘額
+        viewModel.withdrawCryptoAmountHint.observe(this.viewLifecycleOwner, Observer {
+            tv_hint_withdraw_crypto_amount.visibility = if (it.isEmpty())
+                View.GONE
+            else {
+                tv_hint_withdraw_crypto_amount.text = it
+                View.VISIBLE
+            }
+        })
+
+        //提款虛擬幣手續費
+        viewModel.withdrawCryptoFeeHint.observe(this.viewLifecycleOwner, Observer {
+            tv_hint_withdraw_crypto_fee.visibility = if (it.isEmpty())
+                View.GONE
+            else {
+                tv_hint_withdraw_crypto_fee.text = it
+                View.VISIBLE
+            }
+        })
+
         //提款密碼訊息
         viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer {
             et_withdrawal_password.setError(it ?: "")

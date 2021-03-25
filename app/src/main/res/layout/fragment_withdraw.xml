@@ -152,6 +152,24 @@
             android:text="@string/withdraw_handling_fee_hint"
             android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp" />
+        <!-- 提款虛擬幣所需餘提示 -->
+        <TextView
+            android:id="@+id/tv_hint_withdraw_crypto_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/withdraw_crypto_amount_hint"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/textSize12sp" />
+        <!-- 提款虛擬幣手續費提示 -->
+        <TextView
+            android:id="@+id/tv_hint_withdraw_crypto_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/withdraw_crypto_fee_hint"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/textSize12sp" />
         <!-- 提款密碼 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
             android:id="@+id/et_withdrawal_password"

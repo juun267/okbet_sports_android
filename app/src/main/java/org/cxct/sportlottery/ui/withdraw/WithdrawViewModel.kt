@@ -102,10 +102,20 @@ class WithdrawViewModel(
         get() = _withdrawAmountMsg
     private var _withdrawAmountMsg = MutableLiveData<String>()
 
-    //提款手續費提示
+    //提款手續費(銀行卡)/匯率(虛擬幣)提示
     val withdrawRateHint: LiveData<String>
         get() = _withdrawRateHint
     private var _withdrawRateHint = MutableLiveData<String>()
+
+    //提款虛擬幣所需餘額提示
+    val withdrawCryptoAmountHint: LiveData<String>
+        get() = _withdrawCryptoAmountHint
+    private var _withdrawCryptoAmountHint = MutableLiveData<String>()
+
+    //提款虛擬幣花費手續費
+    val withdrawCryptoFeeHint: LiveData<String>
+        get() = _withdrawCryptoFeeHint
+    private var _withdrawCryptoFeeHint = MutableLiveData<String>()
 
     //提款手續費提示
     val walletAddressMsg: LiveData<String>
@@ -477,9 +487,11 @@ class WithdrawViewModel(
     }
 
     fun getWithdrawRate(withdrawCard: BankCardList?, withdrawAmount: Double? = 0.0) {
-        _withdrawRateHint.value = when (dealType) {
+        when (dealType) {
             TransferType.BANK -> {
-                String.format(
+                _withdrawCryptoAmountHint.value = ""
+                _withdrawCryptoFeeHint.value = ""
+                _withdrawRateHint.value = String.format(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
                     ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
@@ -487,10 +499,19 @@ class WithdrawViewModel(
             }
             TransferType.CRYPTO -> {
                 withdrawCard?.let {
-                    String.format(
+                    val fee = cardConfig?.let { it.exchangeRate?.times(it.feeVal ?: 0.0) } ?: 0.0
+                    val withdrawNeedAmount = if (withdrawAmount != 0.0 && withdrawAmount != null) cardConfig?.let { withdrawAmount.times(it.exchangeRate ?: 0.0).plus(fee) } ?: 0.0 else 0.0
+                    _withdrawCryptoAmountHint.value = String.format(
+                        androidContext.getString(R.string.withdraw_crypto_amount_hint),
+                        ArithUtil.toMoneyFormat(withdrawNeedAmount)
+                    )
+                    _withdrawCryptoFeeHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_fee_hint),
-                        ArithUtil.toMoneyFormat(cardConfig?.exchangeRate),
-                        ArithUtil.toMoneyFormat(cardConfig?.feeVal)
+                        ArithUtil.toMoneyFormat(fee)
+                    )
+                    _withdrawRateHint.value = String.format(
+                        androidContext.getString(R.string.withdraw_crypto_exchange_rate_hint),
+                        ArithUtil.toMoneyFormat(cardConfig?.exchangeRate)
                     )
                 }
             }
