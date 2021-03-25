@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:text="@{data.leagueName}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="超级联赛" />
 
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:text="@{String.format(@string/match_names, data.homeName, data.awayName)}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="(主) 泰拉维  vs  库塔伊西鱼雷 (客)" />
         </LinearLayout>
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:text="@{data.playCateName}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="独赢" />
         </LinearLayout>
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="@{data.playName}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="泰拉雅" />
 
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:text="@{data.spread}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="2" />
 

@@ -7,6 +7,7 @@
     android:background="@color/colorWhite1"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    tools:ignore="spUsage"
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
 
     <org.cxct.sportlottery.ui.component.DateRangeSearchView
@@ -19,7 +20,7 @@
         android:id="@+id/ll_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/colorWhite"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/date_search_bar">
 
@@ -34,7 +35,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="15dp"
-            android:background="@color/gray11" />
+            android:background="@color/colorWhite1" />
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/selector_in_plat"
@@ -47,7 +48,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="15dp"
-            android:background="@color/gray11" />
+            android:background="@color/colorWhite1" />
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/selector_transfer_status"
@@ -67,7 +68,7 @@
         android:paddingVertical="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_bet_status">
+        app:layout_constraintTop_toBottomOf="@id/selector_transfer_status">
 
         <TextView
             android:layout_width="0dp"
@@ -76,7 +77,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/time"
-            android:textColor="@color/gray4"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/colorBlackLight"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -87,7 +89,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/money"
-            android:textColor="@color/gray4"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/colorBlackLight"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -98,7 +101,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/transfer_platform"
-            android:textColor="@color/gray4"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/colorBlackLight"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -109,20 +113,29 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/status"
-            android:textColor="@color/gray4"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/colorBlackLight"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
-        android:id="@+id/rv_record"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/view_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_money_transfer_history" />
+        android:layout_height="match_parent"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_record"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_money_transfer_history" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </LinearLayout>
 

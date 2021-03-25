@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     private val logDetailDialog by lazy {
@@ -35,7 +37,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             this.selector_order_status.dataList = viewModel.rechargeStateList
             setupListColumn(this)
             setupRechargeLogList(this)
-            setupSwipeRefreshLayout(this)
             setupSearch(this)
         }
     }
@@ -50,22 +51,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             this.adapter = rechargeLogAdapter
-
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
-        }
-    }
-
-    private fun setupSwipeRefreshLayout(view: View) {
-        view.list_swipe_refresh_layout.apply {
-            setOnRefreshListener {
-                viewModel.getUserRechargeList(false)
-                this.isRefreshing = false
-            }
+            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
         }
     }
 

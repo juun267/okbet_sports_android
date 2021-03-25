@@ -58,7 +58,7 @@
                 android:id="@+id/rv_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/colorWhite"
                 tools:itemCount="3"
                 tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/content_news_tab"
@@ -79,7 +79,7 @@
             android:id="@+id/vp_msg"
             android:layout_width="wrap_content"
             android:layout_height="250dp"
-            android:background="@color/white" />
+            android:background="@color/colorWhite" />
 
     </LinearLayout>
 

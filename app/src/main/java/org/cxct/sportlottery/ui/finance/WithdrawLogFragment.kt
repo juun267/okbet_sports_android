@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import java.util.*
 
 
@@ -44,7 +46,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             this.selector_method_status.dataList = viewModel.withdrawTypeList
             setupListColumn(this)
             setupWithdrawLogList(this)
-            setupSwipeRefreshLayout(this)
+//            setupSwipeRefreshLayout(this)
             setupSearch(this)
             initOnclick(this)
         }
@@ -67,13 +69,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             this.adapter = withdrawLogAdapter
-
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
+            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
         }
     }
 
@@ -81,7 +77,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         view.list_swipe_refresh_layout.apply {
             setOnRefreshListener {
                 viewModel.getUserWithdrawList(false)
-                this.isRefreshing = false
+//                this.isRefreshing = false
             }
         }
     }

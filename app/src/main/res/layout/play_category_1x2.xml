@@ -14,7 +14,7 @@
         android:paddingTop="4dp"
         android:paddingEnd="15dp"
         android:paddingBottom="4dp"
-        android:textColor="@color/colorGrayDark"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="下半場" />

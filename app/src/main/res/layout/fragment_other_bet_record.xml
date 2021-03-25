@@ -38,9 +38,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_time2"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
 
         <TextView
             android:layout_width="0dp"
@@ -49,9 +48,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_number"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
 
         <TextView
             android:layout_width="0dp"
@@ -60,9 +58,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_money"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
 
         <TextView
             android:layout_width="0dp"
@@ -71,20 +68,29 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/profit_and_loss"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
-        android:id="@+id/rv_record"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/view_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/layout_total"
         app:layout_constraintTop_toBottomOf="@id/linearLayout5"
-        tools:listitem="@layout/item_other_bet_record" />
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_record"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_other_bet_record" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     <ImageView
         android:id="@+id/iv_scroll_to_top"

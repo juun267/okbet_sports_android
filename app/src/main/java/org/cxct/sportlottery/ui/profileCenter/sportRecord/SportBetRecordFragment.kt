@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.sportRecord
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
@@ -158,30 +160,23 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
         })
 
         viewModel.betRecordResult.observe(viewLifecycleOwner, {
-                if (it.success) {
-                    rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
-                    layout_total.apply {
-                        tv_total_number.setMoneyFormat(it.other?.totalAmount?: 0).toString()
-                        tv_total_bet_profit.setProfitFormat(it.other?.win)
-                        tv_total_bet_profit.setMoneyColor(it.other?.win ?: 0.0)
-                    }
-                } else {
-                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            if (it.success) {
+                rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+                layout_total.apply {
+                    tv_total_number.setMoneyFormat(it.other?.totalAmount ?: 0).toString()
+                    tv_total_bet_profit.setProfitFormat(it.other?.win)
+                    tv_total_bet_profit.setMoneyColor(it.other?.win ?: 0.0)
                 }
+            } else {
+                Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
     private fun initRv() {
         rv_bet_record.apply {
             adapter = rvAdapter
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                ).apply {
-                    ContextCompat.getDrawable(context, R.drawable.divider_gray)?.let { this.setDrawable(it) }
-                }
-            )
+            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
             addOnScrollListener(recyclerViewOnScrollListener)
         }
 

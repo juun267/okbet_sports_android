@@ -90,6 +90,7 @@
                 android:ellipsize="end"
                 android:maxWidth="220dp"
                 android:maxLines="1"
+                android:textStyle="bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize20sp"
                 tools:text="87,547,000.000" />
@@ -141,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/user_id_colon"
-            android:textColor="@color/lightGray"
+            android:textColor="@color/colorGrayLight"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintStart_toEndOf="@id/iv_head"
@@ -151,7 +152,7 @@
             android:id="@+id/tv_user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/lightGray"
+            android:textColor="@color/colorGrayLight"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintStart_toEndOf="@id/label_user_id"
             app:layout_constraintTop_toTopOf="@id/label_user_id"
@@ -206,7 +207,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:text="@string/recharge"
-                            android:textColor="@color/colorGrayDark"
+                            android:textColor="@color/colorBlackLight"
                             android:textSize="@dimen/textSize16sp"
                             android:textStyle="bold" />
 
@@ -238,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
                             android:text="@string/withdraw"
-                            android:textColor="@color/colorGrayDark"
+                            android:textColor="@color/colorBlackLight"
                             android:textSize="@dimen/textSize16sp"
                             android:textStyle="bold" />
 
@@ -266,7 +267,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:text="@string/more_service"
-                        android:textColor="@color/gray6"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize14sp" />
 
                     <LinearLayout
@@ -292,7 +294,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/profile_info"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -328,7 +330,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/account_transfer"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -363,7 +365,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/withdraw_setting"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -398,7 +400,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/sport_bet_record"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -433,7 +435,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/other_bet_record"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -468,7 +470,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/fund_detail"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -510,7 +512,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/news_center"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -545,7 +547,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/promotion"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -581,7 +583,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/agent"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -623,7 +625,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/help_center"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -658,7 +660,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_weight="1"
                             android:text="@string/feedback"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize13sp" />
 
                         <ImageView
@@ -689,7 +691,7 @@
             android:backgroundTint="@color/gray"
             android:minHeight="40dp"
             android:text="@string/sign_out"
-            android:textColor="@color/gray4"
+            android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent" />

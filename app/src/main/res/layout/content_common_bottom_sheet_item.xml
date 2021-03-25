@@ -12,7 +12,7 @@
         android:button="@null"
         android:gravity="center"
         android:paddingVertical="12dp"
-        android:textColor="@color/textColorDark"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize12sp"
         android:textStyle="bold"
         tools:text="平台名稱" />
