@@ -263,6 +263,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 view.tv_select_bank_card.text = getBankCardTailNo(it)
                 withdrawBankCardData = it
                 viewModel.getWithdrawRate(withdrawBankCardData)
+                viewModel.getWithdrawHint()
                 dismiss()
             })
             lv_bank_item.adapter = bankCardAdapter
