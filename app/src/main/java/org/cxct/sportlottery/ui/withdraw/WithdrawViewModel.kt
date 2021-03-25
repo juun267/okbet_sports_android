@@ -456,10 +456,19 @@ class WithdrawViewModel(
         val minLimit = cardConfig?.minWithdrawMoney ?: 0.0
         //提取金額不得超過 餘額-手續費
         val balanceMaxLimit = getBalanceMaxLimit()
+        //是否使用餘額作為提取上限
+        val isBalanceMax: Boolean
         //用戶可提取最大金額
-        val configMaxLimit = cardConfig?.maxWithdrawMoney //0 or null : 視為不限制
+        val configMaxLimit: Double?
+        if ((cardConfig?.maxWithdrawMoney == 0.0) || (cardConfig?.maxWithdrawMoney == null)) {
+            configMaxLimit = null
+            isBalanceMax = true
+        } else {
+            configMaxLimit = cardConfig?.maxWithdrawMoney!!
+            isBalanceMax = balanceMaxLimit < configMaxLimit
+        }
         val maxLimit = if (configMaxLimit == null) balanceMaxLimit else min(balanceMaxLimit, configMaxLimit)
-        return WithdrawAmountLimit(minLimit, maxLimit, balanceMaxLimit < (configMaxLimit ?: 0.0))
+        return WithdrawAmountLimit(minLimit, maxLimit, isBalanceMax)
     }
 
     private fun getBalanceMaxLimit(): Double {
