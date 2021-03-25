@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -105,11 +104,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
 
     private fun observeSocketData() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            Log.e(">>>>>", "matchStatusChange")
-        })
-
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
