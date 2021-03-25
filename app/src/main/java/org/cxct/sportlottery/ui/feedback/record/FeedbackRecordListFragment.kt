@@ -31,8 +31,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     val adapter by lazy {
         context?.let {
             FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener { data ->
-//                val host = NavHostFragment.create(R.navigation.feedback_navigation)
-//                parentFragmentManager.beginTransaction().replace(R.id.myNavHostFragment, host).setPrimaryNavigationFragment(host).commit()
                 view?.findNavController()?.navigate(R.id.action_feedbackRecordListFragment_to_feedbackDetailFragment)
                 viewModel.dataID = data.id?.toLong()
                 viewModel.feedbackCode = data.feedbackCode
