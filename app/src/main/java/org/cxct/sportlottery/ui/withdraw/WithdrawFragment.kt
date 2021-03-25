@@ -83,16 +83,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 tab_bank_card.isSelected = true
                 tab_crypto.isSelected = false
 
-                iv_bank_card_icon.visibility = View.VISIBLE
-
                 tv_channel_select.text = getString(R.string.select_bank)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_amount))
             }
             TransferType.CRYPTO -> {
                 tab_bank_card.isSelected = false
                 tab_crypto.isSelected = true
-
-                iv_bank_card_icon.visibility = View.GONE
 
                 tv_channel_select.text = getString(R.string.currency_protocol)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_number))
@@ -306,12 +302,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
         holder.apply {
             /*val viewHolder = ViewHolder()*/
             tvBank?.text = data.bankName
-            if (data.transferType == TransferType.CRYPTO) {
-                ivBankIcon?.visibility = View.GONE
-            } else {
-                ivBankIcon?.visibility = View.VISIBLE
-                ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
-            }
+            ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
             if (position == selectedPosition)
                 this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
