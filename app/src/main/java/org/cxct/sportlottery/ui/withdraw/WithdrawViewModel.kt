@@ -131,7 +131,9 @@ class WithdrawViewModel(
     private var _addBankCardSwitch = MutableLiveData<Boolean>()
 
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
-    private var uwCryptoTypeConfig: MoneyRechCfg.DetailList? = null
+
+    //重構config
+    private var cardConfig: MoneyRechCfg.DetailList? = null
 
     private var dealType: TransferType = TransferType.BANK
 
@@ -142,6 +144,7 @@ class WithdrawViewModel(
 
     fun setDealType(type: TransferType) {
         dealType = type
+        getWithdrawCardList()
     }
 
     fun addWithdraw(withdrawCard: BankCardList?, applyMoney: String, withdrawPwd: String) {
@@ -193,7 +196,7 @@ class WithdrawViewModel(
         }
     }
 
-    fun getWithdrawCardList() {
+    private fun getWithdrawCardList() {
         viewModelScope.launch {
             loading()
             doNetwork(androidContext) {
@@ -239,7 +242,6 @@ class WithdrawViewModel(
                 checkBankCardData()
             }
             TransferType.CRYPTO.type -> {
-                //TODO Dean : 判斷錢包地址
                 checkWalletAddress(cardNo)
                 checkWithdrawPassword(withdrawPassword)
                 checkCryptoCardData()
@@ -304,6 +306,7 @@ class WithdrawViewModel(
                 result.rechCfg?.let {
                     uwBankType = it.uwTypes.first { config -> config.type == TransferType.BANK.type }
                     _rechargeConfigs.value = it
+                    getWithdrawCardList()
                 }
                 hideLoading()
             }
@@ -424,15 +427,6 @@ class WithdrawViewModel(
             ) -> {
                 androidContext.getString(R.string.error_withdraw_amount)
             }
-            /*!VerifyConstUtil.verifyWithdrawAmount(
-                withdrawAmount,
-                uwBankType?.detailList?.first()?.minWithdrawMoney,
-                uwBankType?.detailList?.first()?.maxWithdrawMoney,
-                _userMoney.value,
-                ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount.toDouble())).toDouble()
-            ) -> {
-                androidContext.getString(R.string.error_withdraw_amount)
-            }*/
             else -> {
                 ""
             }
@@ -456,68 +450,70 @@ class WithdrawViewModel(
         }
     }
 
-    //TODO Dean : 重構提款金額上下限
-    //TODO Dean : config取用整合, 不要分bank or crypto
+    //TODO Dean : 重構提款金額上下限, 限制數值為0 or null 時視為不限制
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
         //用戶可提取最小金額
-        val minLimit = uwBankType?.detailList?.first()?.minWithdrawMoney ?: 0.0
+        val minLimit = cardConfig?.minWithdrawMoney ?: 0.0
         //提取金額不得超過 餘額-手續費
         val balanceMaxLimit = getBalanceMaxLimit()
         //用戶可提取最大金額
-        val configMaxLimit = uwBankType?.detailList?.first()?.maxWithdrawMoney //0 or null : 視為不限制
+        val configMaxLimit = cardConfig?.maxWithdrawMoney //0 or null : 視為不限制
         val maxLimit = if (configMaxLimit == null) balanceMaxLimit else min(balanceMaxLimit, configMaxLimit)
         return WithdrawAmountLimit(minLimit, maxLimit, balanceMaxLimit < (configMaxLimit ?: 0.0))
     }
 
-    fun getBalanceMaxLimit(): Double {
+    private fun getBalanceMaxLimit(): Double {
         return when (dealType) {
-            TransferType.BANK -> ArithUtil.div((userMoney.value ?: 0.0), ((uwBankType?.detailList?.first()?.feeRate?.plus(1) ?: 1.0)), 0, RoundingMode.FLOOR)
+            TransferType.BANK -> ArithUtil.div((userMoney.value ?: 0.0), ((cardConfig?.feeRate?.plus(1) ?: 1.0)), 0, RoundingMode.FLOOR)
             TransferType.CRYPTO -> ArithUtil.div(
-                ArithUtil.minus((userMoney.value ?: 0.0), (uwCryptoTypeConfig?.feeVal?.times(uwCryptoTypeConfig?.exchangeRate ?: 0.0))),
-                uwCryptoTypeConfig?.exchangeRate ?: 1.0, 3, RoundingMode.FLOOR
+                ArithUtil.minus((userMoney.value ?: 0.0), (cardConfig?.feeVal?.times(cardConfig?.exchangeRate ?: 0.0))),
+                cardConfig?.exchangeRate ?: 1.0, 3, RoundingMode.FLOOR
             )
         }
     }
 
     fun getWithdrawRate(withdrawCard: BankCardList?, withdrawAmount: Double? = 0.0) {
-        Log.e("Dean", "uwBankType = $uwBankType")
         _withdrawRateHint.value = when (dealType) {
             TransferType.BANK -> {
                 String.format(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
-                    ArithUtil.toMoneyFormat(uwBankType?.detailList?.first()?.feeRate?.times(100)),
-                    ArithUtil.toMoneyFormat((uwBankType?.detailList?.first()?.feeRate)?.times(withdrawAmount ?: 0.0))
+                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
+                    ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
                 )
             }
             TransferType.CRYPTO -> {
-                //TODO Dean : 虛擬幣資料待串接
                 withdrawCard?.let {
-                    val hintData = getCryptoWithdrawHint(it)
                     String.format(
                         androidContext.getString(R.string.withdraw_crypto_fee_hint),
-                        ArithUtil.toMoneyFormat(hintData?.exchangeRate),
-                        ArithUtil.toMoneyFormat(hintData?.exchangeFee)
+                        ArithUtil.toMoneyFormat(cardConfig?.exchangeRate),
+                        ArithUtil.toMoneyFormat(cardConfig?.feeVal)
                     )
                 }
             }
         }
     }
 
-    data class CryptoWithdrawHint(val exchangeRate: Double, val exchangeFee: Double)
-
-    private fun getCryptoWithdrawHint(withdrawCard: BankCardList): CryptoWithdrawHint? {
-        getCryptoCardConfig(withdrawCard)
-        val config = uwCryptoTypeConfig ?: return null
-        return CryptoWithdrawHint(config.exchangeRate ?: 0.0, config.feeVal ?: 0.0)
+    fun setupWithdrawCard(withdrawCard: BankCardList) {
+        getWithdrawCardConfig(withdrawCard)
+        getWithdrawRate(withdrawCard)
+        getWithdrawHint()
     }
 
-    private fun getCryptoCardConfig(withdrawCard: BankCardList) {
-        uwCryptoTypeConfig = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == withdrawCard.bankName }
+    private fun getWithdrawCardConfig(withdrawCard: BankCardList) {
+        cardConfig = when (dealType) {
+            TransferType.BANK -> {
+                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.BANK.type }?.detailList?.first()
+            }
+            TransferType.CRYPTO -> {
+                rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == withdrawCard.bankName }
+            }
+        }
     }
 
     /**
      * 判斷當前銀行卡數量是否超出銀行卡綁定上限
      */
+    //TODO Dean : 重構, 銀行卡限制、虛擬幣卡限制、銀行卡提款方式open、虛擬幣提款方式open
     fun checkBankCardCount() {
         val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
         val bankCardCount = bankCardList.value?.size

@@ -33,9 +33,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_withdraw, container, false).apply {
-
-        }
+        return inflater.inflate(R.layout.fragment_withdraw, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +50,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupData() {
         viewModel.apply {
             getMoneyConfigs()
-            getWithdrawCardList()
             getMoney()
         }
     }
@@ -75,11 +72,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun selectDealType(type: TransferType) {
-        viewModel.apply {
-            setDealType(type)
-            getWithdrawRate(withdrawBankCardData)
-            getWithdrawCardList()
-        }
+        viewModel.setDealType(type)
         setupDealView(type)
     }
 
@@ -262,6 +255,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 view.iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(it.bankName))
                 view.tv_select_bank_card.text = getBankCardTailNo(it)
                 withdrawBankCardData = it
+                viewModel.setupWithdrawCard(it)
                 viewModel.getWithdrawRate(withdrawBankCardData)
                 viewModel.getWithdrawHint()
                 dismiss()
@@ -271,6 +265,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 this.dismiss()
             }
         }
+        bankCardAdapter.initSelectStatus()
     }
 
     private fun getBankCardTailNo(data: BankCardList?): String {
