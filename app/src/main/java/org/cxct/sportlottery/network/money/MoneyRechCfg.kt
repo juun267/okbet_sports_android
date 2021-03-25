@@ -91,7 +91,7 @@ class MoneyRechCfg {
 /**
  * MoneyConfig, uwTypes 提現Type
  */
-enum class TransferType(val type: String?){
+enum class TransferType(val type: String){
     BANK("bankTransfer"), //銀行卡
     CRYPTO("cryptoTransfer") //虛擬幣
 }

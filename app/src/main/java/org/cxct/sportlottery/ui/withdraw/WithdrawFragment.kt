@@ -167,10 +167,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
 
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
-            val iniData = it[0]
+            val iniData = it.firstOrNull()
             withdrawBankCardData = iniData
             tv_select_bank_card.text = getBankCardTailNo(iniData)
-            iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(iniData.bankName))
+            iniData?.bankName?.let { bankName ->
+                iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(bankName))
+            }
+
             initSelectBankCardBottomSheet(view, it.toMutableList())
         })
 
@@ -258,8 +261,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
     }
 
-    private fun getBankCardTailNo(data: BankCardList): String {
-        return String.format(getString(R.string.selected_bank_card), data.bankName, data.cardNo)
+    private fun getBankCardTailNo(data: BankCardList?): String {
+        return String.format(getString(R.string.selected_bank_card), data?.bankName ?: "", data?.cardNo ?: "")
     }
 }
 
