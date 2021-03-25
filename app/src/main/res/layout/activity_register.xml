@@ -125,7 +125,7 @@
                 android:layout_marginBottom="4dp"
                 app:cvEms="4"
                 app:cvHint="@string/hint_withdrawal_pwd"
-                app:cvInputType="numberPassword"
+                app:cvInputType="textPassword"
                 app:cvTitle="@string/withdrawal_pwd"
                 app:necessarySymbol="visible" />
 

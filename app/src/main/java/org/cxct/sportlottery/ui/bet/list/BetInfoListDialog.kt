@@ -16,12 +16,12 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
@@ -98,22 +98,12 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { result ->
-                val m: String
-                val color: Int
-                if (result.success) {
-                    m = resources.getString(R.string.bet_info_add_bet_success)
-                    color = R.color.gray6
-                } else {
-                    m = result.msg
-                    color = R.color.red2
-                }
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = if (result.success) getString(R.string.bet_info_add_bet_success) else result.msg,
+                    success = result.success
+                ) {}
 
-                val dialog = CustomAlertDialog(requireActivity())
-                dialog.setTitle(getString(R.string.prompt))
-                dialog.setMessage(m)
-                dialog.setNegativeButtonText(null)
-                dialog.setTextColor(color)
-                dialog.show()
             }
         })
 
@@ -239,9 +229,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     override fun onRegisterClick() {
         context?.startActivity(Intent(context, RegisterActivity::class.java))
     }
-
-
-
 
 
 }

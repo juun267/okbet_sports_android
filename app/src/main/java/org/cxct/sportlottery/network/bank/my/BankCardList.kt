@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.bank.my
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.money.TransferType
 import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
@@ -27,4 +28,6 @@ data class BankCardList(
     val uwType: String,
     @Json(name = "bankCode")
     val bankCode: String,
-) : Serializable
+) : Serializable {
+    var transferType: TransferType = TransferType.BANK
+}

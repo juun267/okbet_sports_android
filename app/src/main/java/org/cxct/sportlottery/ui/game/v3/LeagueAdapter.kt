@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_game_league.view.*
@@ -33,7 +32,14 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     var itemExpandListener: ItemExpandListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent).apply {
+
+            this.itemView.league_odd_list.apply {
+                this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+                addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_straight)))
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -69,17 +75,16 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
             leagueOddListener: LeagueOddListener?,
         ) {
             itemView.league_odd_list.apply {
-                this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                adapter = leagueOddAdapter.apply {
+                    data = if (item.searchMatchOdds.isNotEmpty()) {
+                        item.searchMatchOdds
+                    } else {
+                        item.matchOdds
+                    }
 
-                adapter = leagueOddAdapter
-
-                addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_straight)))
-            }
-
-            leagueOddAdapter.apply {
-                data = item.matchOdds
-                this.playType = playType
-                this.leagueOddListener = leagueOddListener
+                    this.playType = playType
+                    this.leagueOddListener = leagueOddListener
+                }
             }
         }
 

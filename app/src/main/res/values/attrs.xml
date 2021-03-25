@@ -6,6 +6,12 @@
 
     <declare-styleable name="CustomView">
         <attr name="cvTitle" format="string" />
+        <attr name="cvTitleTextStyle">
+            <flag name="normal" value="0"/>
+            <flag name="bold" value="1"/>
+            <flag name="italic" value="2"/>
+            <flag name="bold_italic" value="3"/>
+        </attr>
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
         <attr name="cvHint" format="string" />

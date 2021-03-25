@@ -50,8 +50,8 @@ class MainViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
-    private val _bannerList = MutableLiveData<List<ImageData>>()
-    val bannerList: LiveData<List<ImageData>>
+    private val _bannerList = MutableLiveData<List<ImageData>?>()
+    val bannerList: LiveData<List<ImageData>?>
         get() = _bannerList
 
     private val _popImageList = MutableLiveData<List<ImageData>>()
