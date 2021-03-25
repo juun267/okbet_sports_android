@@ -23,12 +23,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
+@Suppress("DEPRECATION")
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     Animation.AnimationListener, OnOddClickListener {
 
@@ -109,12 +109,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             if (it == null) return@Observer
             Log.e(">>>>>", "matchStatusChange")
         })
-/*
-        viewModel.matchClock.observe(viewLifecycleOwner, Observer{
-            if (it == null) return@Observer
-            Log.e(">>>>>", "matchClock")
-        })
-*/
 
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
@@ -303,10 +297,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
 
-    fun refreshData(gameType: String?, matchId: String?, typeName: String?) {
+    fun refreshData(gameType: String?, matchId: String?) {
         this.gameType = gameType
         this.matchId = matchId
-//        tv_type_name.text = typeName
         getData()
     }
 
@@ -377,6 +370,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         if (matchId?.let { viewModel.checkInBetInfo(it) } == false) {
@@ -384,4 +378,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
         viewModel.removeOddsDetailPageValue()
     }
+
+
 }
