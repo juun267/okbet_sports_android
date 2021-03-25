@@ -207,7 +207,7 @@ class WithdrawViewModel(
                 val cardList = mutableListOf<BankCardList>()
                 result.bankCardList?.forEach { bankCard ->
                     if (dealType.type == bankCard.uwType)
-                        cardList.add(bankCard)
+                        cardList.add(bankCard.apply { transferType = dealType })
                 }
                 checkTransferTypeExistence(result)
                 _withdrawCardList.value = cardList

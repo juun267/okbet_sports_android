@@ -459,6 +459,7 @@
     <string name="submit">提交</string>
     <string name="reset">重置</string>
     <string name="select_bank_card">选择银行卡</string>
+    <string name="select_crypto_card">选择虚拟币</string>
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount">提款金额格式或数值错误</string>
     <string name="error_withdraw_amount_bigger_than_balance">提款金额大于账号余额</string>

@@ -258,6 +258,11 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 dismiss()
             })
             lv_bank_item.adapter = bankCardAdapter
+
+            bankCardBottomSheet.tv_game_type_title.text = when (bankCardList.firstOrNull()?.transferType) {
+                TransferType.CRYPTO -> getString(R.string.select_crypto_card)
+                else -> getString(R.string.select_bank_card)
+            }
             bankCardBottomSheet.btn_close.setOnClickListener {
                 this.dismiss()
             }
