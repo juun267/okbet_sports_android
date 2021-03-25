@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.login
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -56,6 +57,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
+            view.tv_title.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 0))
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
             typedArray.getInt(R.styleable.CustomView_cvEms, -1).let {
@@ -188,6 +190,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     @IntDef(View.VISIBLE, View.INVISIBLE, View.GONE)
     annotation class Visibility
+
     fun setNecessarySymbolVisibility(@Visibility visibility: Int) {
         tv_start.visibility = visibility
     }
