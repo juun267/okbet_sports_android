@@ -63,7 +63,6 @@
     <string name="desc_no_account">还没有账号？</string>
     <string name="desc_have_account">已有账号？</string>
     <string name="sign_up_know">立即注册</string>
-    <string name="sign_up_now">注册新账户</string>
 
     <!-- Service select dialog -->
     <string name="online_service1">在线客服1</string>
@@ -681,7 +680,7 @@
     <string name="sport_bet_record">体育投注记录</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
-    <string name="visit_first">先去逛逛</string>
+    <string name="visit_first">來去逛逛</string>
     <string name="bet_number">注数</string>
     <string name="bet_money">下注金額</string>
     <string name="profit_and_loss">盈亏</string>
