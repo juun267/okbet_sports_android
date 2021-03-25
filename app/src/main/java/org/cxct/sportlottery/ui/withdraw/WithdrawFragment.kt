@@ -21,6 +21,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
+import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.util.TextUtil
 
 
@@ -249,12 +251,16 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)
             bankCardAdapter = BankCardAdapter(lv_bank_item.context, bankCardList, BankCardAdapterListener {
-                view.iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(it.bankName))
+                val cardIcon = when (it.transferType) {
+                    TransferType.BANK -> getBankIconByBankName(it.bankName)
+                    TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+                }
+                view.iv_bank_card_icon.setImageResource(cardIcon)
+
                 view.tv_select_bank_card.text = getBankCardTailNo(it)
+
                 withdrawBankCardData = it
                 viewModel.setupWithdrawCard(it)
-                viewModel.getWithdrawRate(withdrawBankCardData)
-                viewModel.getWithdrawHint()
                 dismiss()
             })
             lv_bank_item.adapter = bankCardAdapter
@@ -305,16 +311,18 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
 
     private fun setView(holder: ListViewHolder, data: BankCardList, position: Int, listener: BankCardAdapterListener) {
         holder.apply {
-            /*val viewHolder = ViewHolder()*/
             tvBank?.text = data.bankName
-            ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
+            val cardIcon = when (data.transferType) {
+                TransferType.BANK -> getBankIconByBankName(data.bankName)
+                TransferType.CRYPTO -> getCryptoIconByCryptoName(data.transferType.type)
+            }
+            ivBankIcon?.setImageResource(cardIcon)
             if (position == selectedPosition)
                 this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
                 llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
             llSelectBankCard?.setOnClickListener {
                 if (selectedPosition != position) {
-                    //                data.isSelected = !data.isSelected
                     selectedPosition = position
                     notifyDataSetChanged()
                     listener.onClick(data)
