@@ -143,12 +143,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupForgetPasswordButton() {
         btn_forget_password.setOnClickListener {
-            val dialog = CustomAlertDialog(this)
-            dialog.setTitle(getString(R.string.prompt))
-            dialog.setMessage(getString(R.string.desc_forget_password))
-            dialog.setNegativeButtonText(null)
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.show()
+            showPromptDialog(getString(R.string.prompt), getString(R.string.desc_forget_password)){}
         }
     }
 

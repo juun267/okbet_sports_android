@@ -285,12 +285,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             val eventResult = it.peekContent()
             if (eventResult?.success != true) {
-                val dialog = CustomAlertDialog(requireActivity())
-                dialog.setTitle(getString(R.string.prompt))
-                dialog.setMessage(eventResult?.msg ?: getString(R.string.unknown_error))
-                dialog.setNegativeButtonText(null)
-                dialog.setTextColor(R.color.red2)
-                dialog.show()
+                showErrorPromptDialog(getString(R.string.prompt), eventResult?.msg ?: getString(R.string.unknown_error)) {}
             }
         })
 

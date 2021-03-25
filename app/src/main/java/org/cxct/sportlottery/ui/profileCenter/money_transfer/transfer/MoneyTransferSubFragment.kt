@@ -96,7 +96,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         val rotateAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate)
 
         iv_spin.setOnClickListener {
-            viewModel.setIsPlatSwitched(!(viewModel.isPlatSwitched.value?:false))
+            viewModel.setIsPlatSwitched(!(viewModel.isPlatSwitched.value ?: false))
             iv_spin.startAnimation(rotateAnimation)
         }
 
@@ -130,14 +130,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.transferResult.observe(viewLifecycleOwner) {
             it?.apply {
-                    val dialog = CustomAlertDialog(requireActivity()).apply {
-                        setTitle(getString(R.string.prompt))
-                        setMessage(it.msg)
-                        setNegativeButtonText(null)
-                        setTextColor(if (it.success) R.color.gray6 else R.color.red2)
-                    }
-                    dialog.show()
-
+                showPromptDialog(getString(R.string.prompt), it.msg, it.success) {}
                 if (it.success) {
                     view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                 }

@@ -75,13 +75,11 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
 
         viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) {
             it?.apply {
-                val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.prompt))
-                    setMessage(it.msg)
-                    setNegativeButtonText(null)
-                    setTextColor(if (it.success) R.color.gray6 else R.color.red2)
-                }
-                dialog.show()
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = it.msg,
+                    success = it.success
+                ){}
             }
         }
 

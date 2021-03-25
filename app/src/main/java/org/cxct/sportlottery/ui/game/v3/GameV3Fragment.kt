@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.row_game_filter.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -30,6 +31,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             sportTypeListener = SportTypeListener {
                 viewModel.getGameHallList(args.matchType, it)
                 loading()
+            }
+
+            thirdGameListener = ThirdGameListener {
+                viewModel.setGoToThirdGamePage(it)
+                activity?.finish()
             }
         }
     }
@@ -73,7 +79,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             )
 
             itemExpandListener = ItemExpandListener {
-                val sportType = sportTypeAdapter.data.find { item -> item.isSelected }?.code
+                val sportType = sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code
 
                 when (it.isExpand) {
                     true -> {
@@ -162,7 +168,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    //TODO add query logic to view model
+                    newText?.let {
+                        viewModel.searchLeague(args.matchType, it)
+                    }
                     return true
                 }
             }
@@ -230,7 +238,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.IN_PLAY -> {
                         val itemList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -238,7 +246,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.TODAY -> {
                         val itemList = it?.sportMenuData?.menu?.today?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -246,7 +254,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.EARLY -> {
                         val itemList = it?.sportMenuData?.menu?.early?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -254,7 +262,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.PARLAY -> {
                         val itemList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -262,7 +270,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.OUTRIGHT -> {
                         val itemList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
@@ -270,11 +278,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     MatchType.AT_START -> {
                         val itemList = it?.sportMenuData?.atStart?.items ?: listOf()
 
-                        sportTypeAdapter.data = itemList
+                        sportTypeAdapter.dataSport = itemList
                         game_filter_row.sportName =
                             itemList.find { sportType -> sportType.isSelected }?.name
                     }
                 }
+            })
+
+            viewModel.gameCateDataList.observe(this.viewLifecycleOwner, Observer {
+                sportTypeAdapter.dataThirdGame = it
             })
 
             viewModel.curPlayType.observe(viewLifecycleOwner, Observer {
@@ -300,6 +312,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
+                clearSearchView()
 
                 it.getContentIfNotHandled()?.let { leagueListResult ->
                     if (leagueListResult.success) {
@@ -312,6 +325,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
                 hideLoading()
+                clearSearchView()
 
                 it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                     if (outrightSeasonListResult.success) {
@@ -320,6 +334,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 }
+            })
+
+            viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, Observer {
+                countryAdapter.data = it
+            })
+
+            viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
+                outrightCountryAdapter.data = it
             })
 
 //            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
@@ -334,10 +356,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun clearSearchView() {
+        game_filter_row.game_filter_search.apply {
+            setQuery("", false)
+            clearFocus()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
-        val sportType = sportTypeAdapter.data.find { item -> item.isSelected }?.code
+        val sportType = sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code
 
         leagueAdapter.data.forEach {
             if (it.isExpand) {

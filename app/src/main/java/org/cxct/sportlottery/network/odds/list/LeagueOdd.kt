@@ -13,4 +13,5 @@ data class LeagueOdd(
     val matchOdds: MutableList<MatchOdd>
 ) {
     var isExpand = false
+    var searchMatchOdds = listOf<MatchOdd>()
 }
