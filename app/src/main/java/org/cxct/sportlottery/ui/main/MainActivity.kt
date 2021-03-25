@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -230,9 +231,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     //用戶登入公告訊息彈窗
     private fun setNewsDialog(messageListResult: MessageListResult) {
         //未登入、遊客登入都要顯示彈窗
-        if (!messageListResult.rows.isNullOrEmpty() &&
-            mNewsDialog?.isVisible != true
-        ) {
+        if (!messageListResult.rows.isNullOrEmpty()) {
+            mNewsDialog?.dismiss()
             mNewsDialog = NewsDialog(messageListResult.rows)
             mNewsDialog?.show(supportFragmentManager, null)
         }
