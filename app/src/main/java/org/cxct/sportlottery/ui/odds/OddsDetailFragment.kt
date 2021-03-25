@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -23,12 +22,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
+@Suppress("DEPRECATION")
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     Animation.AnimationListener, OnOddClickListener {
 
@@ -105,17 +104,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
 
     private fun observeSocketData() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            Log.e(">>>>>", "matchStatusChange")
-        })
-/*
-        viewModel.matchClock.observe(viewLifecycleOwner, Observer{
-            if (it == null) return@Observer
-            Log.e(">>>>>", "matchClock")
-        })
-*/
-
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
@@ -146,11 +134,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun initUI() {
 
-//        tv_type_name.text = typeName
-
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
+        oddsDetailListAdapter = gameType?.let { OddsDetailListAdapter(this@OddsDetailFragment, it) }
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
@@ -305,10 +291,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
 
-    fun refreshData(gameType: String?, matchId: String?, typeName: String?) {
+    fun refreshData(gameType: String?, matchId: String?) {
         this.gameType = gameType
         this.matchId = matchId
-//        tv_type_name.text = typeName
         getData()
     }
 
@@ -379,6 +364,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         if (matchId?.let { viewModel.checkInBetInfo(it) } == false) {
@@ -386,4 +372,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
         viewModel.removeOddsDetailPageValue()
     }
+
+
 }
