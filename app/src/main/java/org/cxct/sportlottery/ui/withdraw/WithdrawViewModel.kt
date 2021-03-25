@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -15,6 +14,7 @@ import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
@@ -144,7 +144,9 @@ class WithdrawViewModel(
 
     fun setDealType(type: TransferType) {
         dealType = type
-        getWithdrawCardList()
+        if (rechargeConfigs.value?.uwTypes != null) {
+            getWithdrawCardList()
+        }
     }
 
     fun addWithdraw(withdrawCard: BankCardList?, applyMoney: String, withdrawPwd: String) {
@@ -207,8 +209,7 @@ class WithdrawViewModel(
                     if (dealType.type == bankCard.uwType)
                         cardList.add(bankCard.apply { transferType = TransferType.values().find { it.type == bankCard.uwType } ?: TransferType.BANK })
                 }
-                _existBankCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
-                _existCryptoCard.value = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
+                checkTransferTypeExistence(result)
                 _withdrawCardList.value = cardList
                 getWithdrawRate(cardList.firstOrNull())
                 getWithdrawHint()
@@ -308,19 +309,16 @@ class WithdrawViewModel(
                     _rechargeConfigs.value = it
                     getWithdrawCardList()
                 }
-                hideLoading()
             }
         }
     }
 
     fun getMoney() {
-        loading()
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
-            hideLoading()
         }
     }
 
@@ -409,9 +407,7 @@ class WithdrawViewModel(
 
     fun checkWithdrawAmount(withdrawCard: BankCardList?, inputAmount: String) {
         var withdrawAmount = inputAmount
-        val needShowBalanceMax = getWithdrawAmountLimit().isBalanceMax
         val amountLimit = getWithdrawAmountLimit()
-        Log.e("Dean", "amountLimit  min = ${amountLimit.min} , amx = ${amountLimit.max}")
         _withdrawAmountMsg.value = when {
             withdrawAmount.isEmpty() -> {
                 withdrawAmount = "0"
@@ -450,7 +446,6 @@ class WithdrawViewModel(
         }
     }
 
-    //TODO Dean : 重構提款金額上下限, 限制數值為0 or null 時視為不限制
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
         //用戶可提取最小金額
         val minLimit = cardConfig?.minWithdrawMoney ?: 0.0
@@ -517,6 +512,17 @@ class WithdrawViewModel(
                 rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == withdrawCard.bankName }
             }
         }
+    }
+
+    private fun checkTransferTypeExistence(result: BankMyResult) {
+        val bankCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.BANK.type } == true
+        val bankWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+
+        val cryptoCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
+        val cryptoWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
+
+        _existBankCard.value = bankCardExistence && bankWithdrawSwitch
+        _existCryptoCard.value = cryptoCardExistence && cryptoWithdrawSwitch
     }
 
     /**

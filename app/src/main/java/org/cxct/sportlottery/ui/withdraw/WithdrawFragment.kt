@@ -50,7 +50,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupData() {
         viewModel.apply {
             getMoneyConfigs()
-            getMoney()
         }
     }
 
@@ -63,6 +62,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initTab() {
+        tab_bank_card.visibility = View.GONE
+        tab_crypto.visibility = View.GONE
         selectDealType(TransferType.BANK)
     }
 
