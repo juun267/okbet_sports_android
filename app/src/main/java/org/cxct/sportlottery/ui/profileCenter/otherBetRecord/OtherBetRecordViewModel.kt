@@ -76,10 +76,10 @@ class OtherBetRecordViewModel(
                     }
                 }
 
-                val list  = thirdGameList.sortedBy { it.sort }.toList()
-                list.forEach {
+                thirdGameList.sortedBy { it.sort }.forEach {
                     resultList.add(SheetData(it.firmType, it.firmShowName))
                 }
+
                 _thirdGamesResult.value = resultList.distinct()
             }
         }
