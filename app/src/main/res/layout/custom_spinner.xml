@@ -14,7 +14,8 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray4"
+        android:textColor="@color/colorBlackLight"
+        android:textStyle="bold"
         android:textSize="@dimen/textSize13sp"
         tools:text="@string/out_account" />
 
@@ -23,13 +24,13 @@
         android:layout_height="match_parent"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:background="@color/bright_gray2" />
+        android:background="@color/colorWhite6" />
 
     <TextView
         android:id="@+id/tv_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray6"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize13sp"
         tools:text="@string/plat_money" />
 

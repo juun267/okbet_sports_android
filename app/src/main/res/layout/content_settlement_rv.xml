@@ -112,7 +112,7 @@
             android:id="@+id/block_drawer_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             app:el_duration="500"
             app:el_expanded="false"
             app:el_parallax="0.5"

@@ -79,7 +79,7 @@
             android:id="@+id/ep_champion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             app:el_duration="500"
             app:el_expanded="false"
             app:el_parallax="0.5"
@@ -101,7 +101,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
-                    android:textColor="@color/colorGrayDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="2019-09-20 08:00" />
 

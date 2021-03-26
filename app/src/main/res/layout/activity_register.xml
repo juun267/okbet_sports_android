@@ -253,7 +253,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/btn_send_sms"
                         android:text="@string/get_verification_code"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/textSize14sp" />
 
                 </LinearLayout>

@@ -29,7 +29,7 @@
                     android:contentDescription="@null"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_back"
-                    app:tint="@color/white" />
+                    app:tint="@color/colorWhite" />
 
                 <TextView
                     android:id="@+id/tv_toolbar_title"
@@ -38,7 +38,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     tools:text="@string/bet_record"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/colorWhite" />
 
                 <ImageView
                     android:id="@+id/btn_toolbar_menu"
@@ -55,7 +55,7 @@
                 android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white">
+                android:background="@color/colorWhite">
 
                 <fragment
                     android:id="@+id/my_nav_host_fragment"

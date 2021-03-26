@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
-import org.cxct.sportlottery.util.ItemNonLastDecoration
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
 class LeagueAdapter(private val leagueListener: LeagueListener) : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     var data = listOf<Row>()
@@ -54,7 +54,7 @@ class LeagueAdapter(private val leagueListener: LeagueListener) : RecyclerView.A
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 this.adapter = leagueSubAdapter
                 addItemDecoration(
-                    ItemNonLastDecoration(
+                    DividerItemDecorator(
                         ContextCompat.getDrawable(context, R.drawable.divider_straight)
                     )
                 )

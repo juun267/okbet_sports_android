@@ -3,8 +3,8 @@
     <item>
         <rotate android:fromDegrees="45" android:toDegrees="45" android:pivotX="-40%" android:pivotY="87%" >
             <shape android:shape="rectangle" >
-                <stroke android:color="@color/gray11" android:width="10dp"/>
-                <solid android:color="@color/gray11" />
+                <stroke android:color="@color/colorWhite1" android:width="10dp"/>
+                <solid android:color="@color/colorWhite1" />
             </shape>
         </rotate>
     </item>
