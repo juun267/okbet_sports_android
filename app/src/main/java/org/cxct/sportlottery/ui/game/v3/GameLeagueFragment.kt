@@ -23,21 +23,24 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 
 private const val ARG_MATCH_TYPE = "matchType"
 private const val ARG_SPORT_TYPE = "sportType"
+private const val ARG_EVENT_ID = "eventId"
 
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     companion object {
-        fun newInstance(matchType: String, sportType: String) =
+        fun newInstance(matchType: String, sportType: String, eventId: String) =
             GameLeagueFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_MATCH_TYPE, matchType)
                     putString(ARG_SPORT_TYPE, sportType)
+                    putString(ARG_EVENT_ID, eventId)
                 }
             }
     }
 
     private lateinit var matchType: MatchType
     private var sportType: String? = null
+    private var eventId: String? = null
 
     private val leagueAdapter by lazy {
         LeagueAdapter(matchType).apply {
@@ -90,9 +93,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 MatchType.OUTRIGHT.postValue -> MatchType.OUTRIGHT
                 else -> MatchType.AT_START
             }
+            eventId = it.getString(ARG_EVENT_ID)
         }
 
-        //TODO add subscribe hall channel
+        service.subscribeHallChannel(sportType, CateMenuCode.HDP_AND_OU.code, eventId)
     }
 
     override fun onCreateView(
