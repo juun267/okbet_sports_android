@@ -491,7 +491,7 @@ class WithdrawViewModel(
         return when (dealType) {
             TransferType.BANK -> ArithUtil.div((userMoney.value ?: 0.0), ((cardConfig?.feeRate?.plus(1) ?: 1.0)), 0, RoundingMode.FLOOR)
             TransferType.CRYPTO -> ArithUtil.div(
-                ArithUtil.minus((userMoney.value ?: 0.0), (cardConfig?.feeVal?.times(cardConfig?.exchangeRate ?: 0.0))),
+                ArithUtil.minus((userMoney.value), (cardConfig?.feeVal?.times(cardConfig?.exchangeRate ?: 0.0))),
                 cardConfig?.exchangeRate ?: 1.0, 3, RoundingMode.FLOOR
             )
         }

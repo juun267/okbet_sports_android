@@ -91,8 +91,8 @@ object ArithUtil {
     /**
      * 小數運算
      */
-    fun minus(paramsS: Double, paramsO: Double?): Double {
-        val decimalSubject = BigDecimal(paramsS)
+    fun minus(paramsS: Double?, paramsO: Double?): Double {
+        val decimalSubject = BigDecimal(paramsS ?: 0.0)
         val decimalObject = BigDecimal(paramsO ?: 0.0)
         return round((decimalSubject - decimalObject).toDouble(), 3, RoundingMode.FLOOR).toDouble()
     }
