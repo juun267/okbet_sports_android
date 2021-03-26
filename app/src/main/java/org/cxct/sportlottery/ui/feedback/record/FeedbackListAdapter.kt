@@ -108,21 +108,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         fun onClick(feedBackRows: FeedBackRows) = clickListener(feedBackRows)
     }
 
-    fun getMsgType(type: Int): String {
-        return when (type) {
-            0 -> context.getString(R.string.feedback_type_recharge_problem)
-            1 -> context.getString(R.string.feedback_type_withdraw_problem)
-            2 -> context.getString(R.string.feedback_type_other_problem)
-            3 -> context.getString(R.string.feedback_submit_enter)
-            4 -> context.getString(R.string.feedback_type_complaint)
-            5 -> context.getString(R.string.feedback_type_service_reply)
-            6 -> context.getString(R.string.feedback_type_user_reply)
-            10 -> context.getString(R.string.feedback_type_recharge_problem)
-            else -> ""
-        }
-    }
-
-    fun getMsgStatus(status: Int): String {
+    private fun getMsgStatus(status: Int): String {
         return when (status) {
             0 -> context.getString(R.string.feedback_unreplied)
             1 -> context.getString(R.string.feedback_replied)

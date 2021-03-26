@@ -87,6 +87,6 @@
         app:layout_constraintBottom_toBottomOf="@id/row_1x2"
         app:layout_constraintEnd_toStartOf="@id/row_1x2"
         app:layout_constraintTop_toTopOf="@id/row_1x2"
-        tools:textColor="@color/white" />
+        tools:textColor="@color/colorWhite" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

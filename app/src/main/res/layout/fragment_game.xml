@@ -24,7 +24,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
+                android:background="@color/colorWhite"
                 android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     app:layout_constraintTop_toBottomOf="@id/hall_date_list"
-                    android:background="@color/white"
+                    android:background="@color/colorWhite"
                     tools:itemCount="2"
                     tools:listitem="@layout/itemview_league_odd" />
 
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
-                    android:background="@color/white"
+                    android:background="@color/colorWhite"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
 
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
-                    android:background="@color/white"
+                    android:background="@color/colorWhite"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/hall_date_list" />
 

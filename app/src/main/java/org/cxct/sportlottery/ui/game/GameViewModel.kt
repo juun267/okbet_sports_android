@@ -76,11 +76,9 @@ class GameViewModel(
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
-    val matchPreloadInPlay: LiveData<MatchPreloadResult>
+    private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadInPlay
-
-    val matchPreloadToday: LiveData<MatchPreloadResult>
-        get() = _matchPreloadToday
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
@@ -124,7 +122,7 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
-    val openGameDetail: LiveData<Pair<String, String>>
+    val openGameDetail: LiveData<Triple<String, String, String>>
         get() = _openGameDetail
 
     val openOutrightDetail: LiveData<Pair<String, String>>
@@ -134,8 +132,6 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
-    private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
-    private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
@@ -157,7 +153,7 @@ class GameViewModel(
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
 
-    private val _openGameDetail = MutableLiveData<Pair<String, String>>()
+    private val _openGameDetail = MutableLiveData<Triple<String, String, String>>()
     private val _openOutrightDetail = MutableLiveData<Pair<String, String>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -348,7 +344,7 @@ class GameViewModel(
                     MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
             }?.let { result ->
-                _matchPreloadInPlay.postValue(result)
+                _matchPreloadInPlay.postValue(Event(result))
             }
         }
     }
@@ -481,8 +477,7 @@ class GameViewModel(
                         leagueIdList
                     )
 
-
-                    _openGameDetail.postValue(it to leagueId)
+                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
                 }
             }
 
@@ -499,7 +494,7 @@ class GameViewModel(
                         leagueIdList
                     )
 
-                    _openGameDetail.postValue(it to leagueId)
+                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
                 }
             }
 
@@ -516,7 +511,7 @@ class GameViewModel(
                         leagueIdList
                     )
 
-                    _openGameDetail.postValue(it to leagueId)
+                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
                 }
             }
             else -> {
@@ -762,6 +757,14 @@ class GameViewModel(
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
+
+                    matchOdd.matchInfo?.let { matchInfo ->
+                        matchInfo.startDateDisplay =
+                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "MM/dd")
+                        matchOdd.matchInfo.startTimeDisplay =
+                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "HH:mm")
+                    }
+
                     matchOdd.odds.forEach { map ->
                         map.value.forEach { odd ->
                             odd?.isSelected = betInfoRepository.betInfoList.value?.any {

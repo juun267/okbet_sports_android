@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ui.profileCenter.sportRecord.search.BetRecordSearchFragment">
+    tools:context="org.cxct.sportlottery.ui.component.DateRangeSearchView">
 
     <TextView
         android:id="@+id/tv_calendar_title"
@@ -20,19 +20,19 @@
         android:id="@+id/calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        custom:calendar_tag="Test"
         custom:date_selection_mode="free_range"
-        custom:default_date_color="@color/blue3"
-        custom:disable_date_color="#ABABAB"
         custom:editable="true"
         custom:enable_time_selection="false"
-        custom:range_color="@color/blue_transparent_40"
-        custom:range_date_color="@color/blue3"
-        custom:selected_date_circle_color="@color/blue2"
-        custom:selected_date_color="@color/blue3"
+        custom:title_color="@color/colorGrayDark"
+        custom:default_date_color="@color/colorGrayDark"
+        custom:disable_date_color="@color/colorGrayLight"
+        custom:range_color="@color/colorWhite7"
+        custom:range_date_color="@color/colorGrayDark"
+        custom:selected_date_circle_color="@color/colorWhite6"
+        custom:selected_date_color="@color/colorGrayDark"
         custom:text_size_date="16dp"
         custom:text_size_title="16dp"
-        custom:week_color="@color/blue3"
+        custom:week_color="@color/colorGray"
         custom:week_offset="0" />
 
 </LinearLayout>

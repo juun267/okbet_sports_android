@@ -103,7 +103,7 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_bet_record, parent, false))
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
         }
     }
 
