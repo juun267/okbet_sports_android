@@ -76,11 +76,9 @@ class GameViewModel(
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
-    val matchPreloadInPlay: LiveData<MatchPreloadResult>
+    private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadInPlay
-
-    val matchPreloadToday: LiveData<MatchPreloadResult>
-        get() = _matchPreloadToday
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
@@ -134,8 +132,6 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
-    private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
-    private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
@@ -348,7 +344,7 @@ class GameViewModel(
                     MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
             }?.let { result ->
-                _matchPreloadInPlay.postValue(result)
+                _matchPreloadInPlay.postValue(Event(result))
             }
         }
     }

@@ -68,7 +68,7 @@
             android:background="@null"
             android:contentDescription="@null"
             android:padding="11dp"
-            android:src="@drawable/ic_close_gray"
+            android:src="@drawable/ic_close_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
