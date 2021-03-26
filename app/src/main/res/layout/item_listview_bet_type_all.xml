@@ -18,7 +18,7 @@
             android:textSize="@dimen/textSize12sp"
             android:paddingStart="28dp"
             android:paddingEnd="4dp"
-            android:buttonTint="@color/gray6" />
+            android:buttonTint="@color/colorGrayDark" />
 
         <TextView
             android:id="@+id/tv_cancel_selections"

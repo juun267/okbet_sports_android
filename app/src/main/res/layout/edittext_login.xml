@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:textStyle="bold"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 app:autoSizeMaxTextSize="13dp"
@@ -133,7 +134,7 @@
         android:layout_marginStart="10dp"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
-        android:textColor="@color/orangeRed"
+        android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize12sp"
         app:drawableStartCompat="@drawable/ic_error_tip"
         tools:text="@string/please_input_account" />

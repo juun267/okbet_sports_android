@@ -225,7 +225,7 @@
                 android:paddingTop="9dp"
                 android:paddingBottom="9dp"
                 android:text="@string/submit"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold" />
 

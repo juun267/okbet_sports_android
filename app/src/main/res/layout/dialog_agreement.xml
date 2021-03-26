@@ -56,7 +56,7 @@
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="協議內容" />
 

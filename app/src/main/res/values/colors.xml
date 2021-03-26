@@ -86,9 +86,6 @@
     <color name="progress_start_orange">#F0A028</color>
     <color name="progress_end_orange">#F07828</color>
 
-    <color name="bottom_sheet_top_bar_background">#EEEEEE</color>
-    <color name="bottom_sheet_top_bar_close_text">#999999</color>
-
     <color name="bet_list_warning">#DC474A</color>
 
 

@@ -40,7 +40,7 @@
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             tools:text="Bodo/Glimt" />
 

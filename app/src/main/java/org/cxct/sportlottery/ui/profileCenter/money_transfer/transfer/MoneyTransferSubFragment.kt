@@ -19,7 +19,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
 
-class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) { //TODO Cheryl: review all file
 
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
 
@@ -27,14 +27,17 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         SpinnerOutAdapter(viewModel.defaultOutPlat, SpinnerOutAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
                 viewModel.isPlatSwitched.value?.let { isPlatSwitched ->
-                    if (!isPlatSwitched) {
-                        out_account.setText(data.showName)
-                        viewModel.defaultOutPlat = data.code ?: ""
-                        out_account.dismiss()
-                    } else {
-                        in_account.setText(data.showName)
-                        viewModel.defaultInPlat = data.code
-                        in_account.dismiss()
+                    isPlatSwitched.getContentIfNotHandled()?.let {
+                        if (!it) {
+                            out_account.setText(data.showName)
+                            viewModel.defaultOutPlat = data.code ?: ""
+                            out_account.dismiss()
+                        } else {
+                            in_account.setText(data.showName)
+                            viewModel.defaultInPlat = data.code
+                            in_account.dismiss()
+                        }
+
                     }
                 }
             }
@@ -45,14 +48,16 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         SpinnerInAdapter(viewModel.defaultInPlat, SpinnerInAdapter.ItemCheckedListener { isChecked, data ->
             if (isChecked) {
                 viewModel.isPlatSwitched.value?.let { isPlatSwitched ->
-                    if (!isPlatSwitched) {
-                        in_account.setText(data.showName)
-                        viewModel.defaultInPlat = data.code
-                        in_account.dismiss()
-                    } else {
-                        out_account.setText(data.showName)
-                        viewModel.defaultOutPlat = data.code ?: ""
-                        out_account.dismiss()
+                    isPlatSwitched.getContentIfNotHandled()?.let {
+                        if (!it) {
+                            in_account.setText(data.showName)
+                            viewModel.defaultInPlat = data.code
+                            in_account.dismiss()
+                        } else {
+                            out_account.setText(data.showName)
+                            viewModel.defaultOutPlat = data.code ?: ""
+                            out_account.dismiss()
+                        }
                     }
                 }
             }
@@ -61,8 +66,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        viewModel.setIsPlatSwitched(null)
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
         viewModel.defaultInPlat = gameDataArg.gameData.code
@@ -96,7 +99,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         val rotateAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate)
 
         iv_spin.setOnClickListener {
-            viewModel.setIsPlatSwitched(!(viewModel.isPlatSwitched.value ?: false))
+            viewModel.setIsPlatSwitched()
             iv_spin.startAnimation(rotateAnimation)
         }
 
@@ -130,7 +133,14 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.transferResult.observe(viewLifecycleOwner) {
             it?.apply {
-                showPromptDialog(getString(R.string.prompt), it.msg, it.success) {}
+                val dialog = CustomAlertDialog(requireActivity()).apply {
+                    setTitle(getString(R.string.prompt))
+                    setMessage(it.msg)
+                    setNegativeButtonText(null)
+                    setTextColor(if (it.success) R.color.colorGray else R.color.colorRedDark)
+                }
+                dialog.show()
+
                 if (it.success) {
                     view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                 }
@@ -141,28 +151,31 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
             if (it == null) return@observe
 
-            val outAccountText = out_account.getText()
-            val inAccountText = in_account.getText()
-            out_account.setText(inAccountText)
-            in_account.setText(outAccountText)
+            it.getContentIfNotHandled().let { isSwitched ->
 
-            val outTag = out_account.tag
-            val inTag = in_account.tag
-            out_account.tag = inTag
-            in_account.tag = outTag
+                val outAccountText = out_account.getText()
+                val inAccountText = in_account.getText()
+                out_account.setText(inAccountText)
+                in_account.setText(outAccountText)
 
-            viewModel.defaultOutPlat = inTag.toString()
-            viewModel.defaultInPlat = outTag.toString()
+                val outTag = out_account.tag
+                val inTag = in_account.tag
+                out_account.tag = inTag
+                in_account.tag = outTag
 
-            if (it == true) {
-                out_account.setOnItemClickListener(rvInAdapter)
-                in_account.setOnItemClickListener(rvOutAdapter)
-            } else {
-                out_account.setOnItemClickListener(rvOutAdapter)
-                in_account.setOnItemClickListener(rvInAdapter)
+                viewModel.defaultOutPlat = inTag.toString()
+                viewModel.defaultInPlat = outTag.toString()
+
+                if (isSwitched == true) {
+                    out_account.setOnItemClickListener(rvInAdapter)
+                    in_account.setOnItemClickListener(rvOutAdapter)
+                } else {
+                    out_account.setOnItemClickListener(rvOutAdapter)
+                    in_account.setOnItemClickListener(rvInAdapter)
+                }
             }
-        }
 
+        }
     }
 
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.SheetAdapter
 import java.util.*
@@ -69,6 +71,8 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     private fun initRecyclerView() {
         rv_pay_type.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rv_pay_type.adapter = adapter
+        rv_pay_type.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(rv_pay_type.context, R.drawable.divider_gray)))
+
 
         rv_pay_type.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -83,6 +87,14 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         viewModel.feedbackList.observe(this.viewLifecycleOwner, Observer {
             val listData = it ?: return@Observer
             adapter?.data = listData
+
+            if (listData.size == 0) {
+                view_no_record.visibility = View.VISIBLE
+                rv_pay_type.visibility = View.GONE
+            } else {
+                view_no_record.visibility = View.GONE
+                rv_pay_type.visibility = View.VISIBLE
+            }
         })
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
             adapter?.isFinalPage = true
