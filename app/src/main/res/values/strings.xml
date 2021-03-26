@@ -391,6 +391,10 @@
     <string name="no_any_bet_record">暂无任何投注纪录</string>
     <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
 
+    <!--odds detail-->
+    <string name="odds_detail_more">更多</string>
+    <string name="odds_detail_less">更少</string>
+
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
 

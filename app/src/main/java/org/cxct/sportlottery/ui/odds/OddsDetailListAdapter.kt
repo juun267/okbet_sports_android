@@ -26,6 +26,7 @@ import kotlin.collections.ArrayList
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, private val sportGameType: String) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
+
     private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
 
 
@@ -189,9 +190,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
             GameType.LG.type -> layout = GameType.LG.layout
 
             GameType.SINGLE.type -> {
-                layout = if(sportGameType == SportType.FOOTBALL.code) {
+                layout = if (sportGameType == SportType.FOOTBALL.code) {
                     GameType.SINGLE.layout
-                }else{
+                } else {
                     GameType.HDP.layout
                 }
             }
@@ -217,25 +218,25 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
             GameType.OU_I_OT.type -> layout = GameType.OU_I_OT.layout
             GameType.OU_SEG.type -> layout = GameType.OU_SEG.layout
             GameType.SINGLE_1ST.type -> {
-                layout = if(sportGameType == SportType.FOOTBALL.code) {
+                layout = if (sportGameType == SportType.FOOTBALL.code) {
                     GameType.SINGLE_1ST.layout
-                }else{
+                } else {
                     GameType.HDP.layout
                 }
             }
             GameType.SINGLE_2ST.type -> {
-                layout = if(sportGameType == SportType.FOOTBALL.code) {
+                layout = if (sportGameType == SportType.FOOTBALL.code) {
                     GameType.SINGLE_2ST.layout
-                }else{
+                } else {
                     GameType.HDP.layout
                 }
             }
             GameType.SINGLE_OU.type -> layout = GameType.SINGLE_OU.layout
             GameType.SINGLE_OT.type -> layout = GameType.SINGLE_OT.layout
             GameType.SINGLE_SEG.type -> {
-                layout = if(sportGameType == SportType.FOOTBALL.code) {
+                layout = if (sportGameType == SportType.FOOTBALL.code) {
                     GameType.SINGLE_SEG.layout
-                }else{
+                } else {
                     GameType.HDP.layout
                 }
             }
@@ -282,7 +283,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
                     oldOddData.status = newOddData.status
                     oldOddData.producerId = newOddData.producerId
-
                 }
             }
         }
@@ -379,9 +379,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                 GameType.SINGLE_1ST.type,
                 GameType.SINGLE_2ST.type,
                 GameType.SINGLE.type -> {
-                    if(sportGameType == SportType.FOOTBALL.code){
+                    if (sportGameType == SportType.FOOTBALL.code) {
                         forSingle(oddsDetail)
-                    }else{
+                    } else {
                         forHDP(oddsDetail)
                     }
                 }
@@ -392,7 +392,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                 GameType.FG.type,
                 GameType.LG.type,
                 GameType.DC.type,
-                GameType.SCO.type,
+//                GameType.SCO.type,
                 GameType.TG.type,
                 GameType.TG_.type,
                 GameType.BTS.type,
@@ -402,7 +402,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                 GameType.WEH.type,
                 GameType.WM.type,
                 GameType.CLSH.type,
-                GameType.HTFT.type -> oneList(oddsDetail)
+                GameType.HTFT.type -> oneList(oddsDetail, false)
+
+                GameType.SCO.type -> oneList(oddsDetail, true)
+
             }
 
             for (element in oddsDetail.typeCodes) {
@@ -416,15 +419,39 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                 } catch (e: Exception) {
                     setVisibility(true)
                 }
-
             }
         }
 
-        private fun oneList(oddsDetail: OddsDetailListData) {
+        private fun oneList(oddsDetail: OddsDetailListData, isSCO: Boolean) {
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            if (isSCO) {
+                for (i in oddsDetail.oddArrayList.indices) {
+                    if (!oddsDetail.isMoreExpand && i > 4) {
+                        oddsDetail.oddArrayList[i].itemViewVisible = false
+                    }
+                }
+            }
+
             rvBet.apply {
-                adapter = TypeOneListAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId)
+                adapter = TypeOneListAdapter(
+                    oddsDetail,
+                    onOddClickListener,
+                    betInfoList,
+                    curMatchId,
+                    isSCO,
+                    object : TypeOneListAdapter.OnMoreClickListener {
+                        override fun click() {
+                            for (i in oddsDetail.oddArrayList.indices) {
+                                if (i > 4) {
+                                    oddsDetail.oddArrayList[i].itemViewVisible = !oddsDetail.oddArrayList[i].itemViewVisible
+                                }
+                            }
+                            oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
+                            adapter?.notifyDataSetChanged()
+                        }
+                    }
+                )
                 layoutManager = LinearLayoutManager(itemView.context)
                 if (itemDecorationCount == 0) {
                     addItemDecoration(
@@ -636,5 +663,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         }
 
     }
+
 
 }
