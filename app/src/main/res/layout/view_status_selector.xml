@@ -15,7 +15,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/textColorDark"
+        android:textColor="@color/colorGrayDark"
         android:textSize="@dimen/textSize14sp"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"

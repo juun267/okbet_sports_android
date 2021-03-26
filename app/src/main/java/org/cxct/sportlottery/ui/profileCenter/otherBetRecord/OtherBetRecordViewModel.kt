@@ -7,6 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
+import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Order
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryRequest
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
@@ -63,10 +66,18 @@ class OtherBetRecordViewModel(
             }?.let { result ->
                 hideLoading()
 
+                val thirdGameList = mutableListOf<GameFirmValues>()
                 val resultList = mutableListOf<SheetData>()
+
                 resultList.add(SheetData(allPlatTag, androidContext.getString(R.string.all_plat_type)))
                 for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
-                    resultList.add(SheetData(value.firmType, value.firmShowName))
+                    if (value.open == 1) {
+                        thirdGameList.add(value)
+                    }
+                }
+
+                thirdGameList.sortedBy { it.sort }.forEach {
+                    resultList.add(SheetData(it.firmType, it.firmShowName))
                 }
 
                 _thirdGamesResult.value = resultList.distinct()

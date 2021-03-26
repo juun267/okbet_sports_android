@@ -382,10 +382,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         val fragment: Fragment? = supportFragmentManager.findFragmentByTag(Page.ODDS_DETAIL.name)
         if (fragment != null) {
             mCloseOddsDetail = false
-            (fragment as OddsDetailFragment).refreshData(
-                gameType,
-                matchId,
-                typeName?.let { getString(it) })
+            (fragment as OddsDetailFragment).refreshData(gameType, matchId)
         } else {
             viewModel.getOddsDetail(gameType, typeName?.let { getString(it) }, matchId)
         }

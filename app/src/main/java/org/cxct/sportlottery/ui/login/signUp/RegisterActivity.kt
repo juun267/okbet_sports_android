@@ -374,9 +374,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             updateUiWithResult(it)
         })
 
-        viewModel.loginForGuestResult.observe(this) {
+        viewModel.loginForGuestResult.observe(this, Observer {
             updateUiWithResult(it)
-        }
+        })
     }
 
     private fun updateUiWithResult(state: RegisterFormState) {
@@ -399,11 +399,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         btn_register.isEnabled = state.isDataValid
 
         if (state.checkAgreement) {
-            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.gray4))
+            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
             cb_agreement.buttonTintList = null
         } else {
-            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.orangeRed))
-            cb_agreement.buttonTintList = ContextCompat.getColorStateList(this, R.color.orangeRed)
+            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorRedDark))
+            cb_agreement.buttonTintList = ContextCompat.getColorStateList(this, R.color.colorRedDark)
         }
     }
 

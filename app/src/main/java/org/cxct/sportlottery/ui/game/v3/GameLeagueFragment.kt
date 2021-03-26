@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -98,6 +99,19 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             backClickListener = View.OnClickListener {
                 backEvent()
             }
+
+            queryTextListener = object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    newText?.let {
+                        viewModel.searchMatch(it)
+                    }
+                    return true
+                }
+            }
         }
     }
 
@@ -130,6 +144,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
 
+            })
+
+            viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
+                leagueAdapter.data = it
             })
 
         } catch (e: Exception) {

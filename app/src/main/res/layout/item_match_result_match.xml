@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_home_vs"
@@ -75,7 +75,7 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="1-0" />
 
@@ -87,7 +87,7 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
@@ -99,7 +99,7 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
@@ -111,7 +111,7 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
         </LinearLayout>

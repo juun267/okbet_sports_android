@@ -24,7 +24,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="15dp"
             android:text="@string/unknown_data"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 

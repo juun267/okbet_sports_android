@@ -9,7 +9,7 @@
         android:id="@+id/rl_top_bar"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/bottom_sheet_top_bar_background"
+        android:background="@color/colorWhite2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +24,7 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:text="@string/bottom_sheet_close"
-            android:textColor="@color/bottom_sheet_top_bar_close_text"
+            android:textColor="@color/colorGrayLight"
             android:textSize="@dimen/textSize14sp"
             tools:ignore="RtlSymmetry" />
 

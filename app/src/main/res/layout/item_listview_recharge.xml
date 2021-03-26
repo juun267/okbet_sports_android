@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:maxLines="1"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playCateName : null}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -74,7 +74,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@{String.valueOf(row.totalAmount)}"
-            android:textColor="@color/gray6"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="1,000.00" />
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@{(row.win == null) ? @string/nothing : row.win > 0 ? String.format(@string/plus_symbol, row.win.toString()): String.format(@string/minus_symbol, row.win.toString())}"
-                android:textColor="@{(row.win == null) ?  @color/gray6 : row.win > 0 ? @color/green : @color/red2}"
+                android:textColor="@{(row.win == null) ?  @color/colorBlackLight : row.win > 0 ? @color/green : @color/red2}"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="+1,060.00"
                 tools:textColor="@color/green" />
