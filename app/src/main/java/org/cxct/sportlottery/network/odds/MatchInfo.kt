@@ -21,7 +21,12 @@ data class MatchInfo(
     @Json(name = "status")
     val status: Int
 ) {
+    //Live
     var awayScore: Int? = null //客队分数
     var homeScore: Int? = null //主队分数
     var statusName: String? = null //状态名称
+
+    //Other
+    var startDateDisplay: String? = null
+    var startTimeDisplay: String? = null
 }
