@@ -369,37 +369,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val leagueOdds = leagueAdapter.data
 
                         leagueOdds.forEach { leagueOdd ->
-                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == matchId
+                            if (leagueOdd.isExpand) {
+
+                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                    matchOdd.matchInfo?.id == matchId
+                                }
+
+                                updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
+                                updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
+                                updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+
+                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                             }
-
-                            updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
-                            updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
-                            updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
                         }
-
-                        leagueAdapter.notifyDataSetChanged()
-                    }
-                }
-            }
-        })
-
-        receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
-            it?.let { matchClockEvent ->
-                matchClockEvent.matchClockCO?.let { matchClockCO ->
-                    matchClockCO.matchId?.let { matchId ->
-
-                        val leagueOdds = leagueAdapter.data
-
-                        leagueOdds.forEach { leagueOdd ->
-                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == matchId
-                            }
-
-                            updateMatchOdd?.leagueTime = matchClockCO.matchTime
-                        }
-
-                        leagueAdapter.notifyDataSetChanged()
                     }
                 }
             }
