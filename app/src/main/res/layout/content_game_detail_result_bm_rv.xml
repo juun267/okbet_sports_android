@@ -38,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:gravity="center"
-                        android:text="@string/round"
+                        android:text="@string/plat"
                         android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize12sp" />
 
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/round"
+                        android:text="@string/plat"
                         android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize12sp" />
 
