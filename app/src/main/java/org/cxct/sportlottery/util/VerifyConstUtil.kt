@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.util
 
-import android.util.Log
 import java.util.regex.Pattern
 
 object VerifyConstUtil {
@@ -84,23 +83,8 @@ object VerifyConstUtil {
     fun verifyWithdrawAmount(withdrawAmount: CharSequence, minAmount: Double?, maxAmount: Double?): Boolean {
         val withdrawAmountDouble = withdrawAmount.toString().toDouble()
         val minLimit = minAmount ?: 0.0
-        //        val balanceMax = userMoney?.minus(fee)//餘額的最大金額 = 餘額 - 手續費
-        //餘額最大金額,限制提款最大金額 取小者
-        /*val maxLimit = when {
-            maxAmount == null -> {
-                balanceMax
-            }
-            balanceMax == null -> {
-                maxAmount
-            }
-            else -> {
-                min(maxAmount, balanceMax)
-            }
-        }*/
 
-        Log.e("Dean", "withdrawAmountDouble = $withdrawAmountDouble , maxLimit = $maxAmount , maxLimit =$maxAmount")
         return (minLimit <= withdrawAmountDouble) && (if (maxAmount == null) true else withdrawAmountDouble <= maxAmount)
-//        return noSmallerThan(withdrawAmountDouble, minAmount) && noBiggerThan(withdrawAmountDouble, maxLimit)
     }
 
     //充值金額
