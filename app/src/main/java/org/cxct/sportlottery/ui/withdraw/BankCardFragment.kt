@@ -9,6 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -37,6 +38,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
+
+    data class AddTypeTab(val type: TransferType, @IdRes val id: Int)
+
+    private val mTabList by lazy { listOf(AddTypeTab(TransferType.BANK, R.id.tab_bank_card), AddTypeTab(TransferType.CRYPTO, R.id.tab_crypto)) }
 
     private var transferType: TransferType = TransferType.BANK
 
@@ -133,6 +138,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             block_transfer_type.visibility = View.GONE
         } else {
             block_transfer_type.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showHideTypeTab() {
+        mTabList.forEach {
+            if (view?.findViewById<TextView>(it.id)?.visibility == View.VISIBLE) {
+                transferType = it.type
+                changeTransferType(transferType)
+                return
+            }
         }
     }
 
@@ -326,6 +341,26 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 protocolAdapter.dataList = list
                 setCryptoProtocol(list.first())
             }
+        })
+
+        //是否可以新增銀行卡
+        viewModel.addBankCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
+            if (show) {
+                tab_bank_card.visibility = View.VISIBLE
+            } else {
+                tab_bank_card.visibility = View.GONE
+            }
+            showHideTypeTab()
+        })
+
+        //是否可以新增虛擬幣
+        viewModel.addCryptoCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
+            if (show) {
+                tab_crypto.visibility = View.VISIBLE
+            } else {
+                tab_crypto.visibility = View.GONE
+            }
+            showHideTypeTab()
         })
 
         viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->

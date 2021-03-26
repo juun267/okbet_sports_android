@@ -135,10 +135,20 @@ class WithdrawViewModel(
         get() = _existCryptoCard
     private var _existCryptoCard = MutableLiveData<Boolean>()
 
+    //資金卡片是否可以繼續增加(銀行卡、虛擬幣)
+    val addMoneyCardSwitch: LiveData<Boolean>
+        get() = _addMoneyCardSwitch
+    private var _addMoneyCardSwitch = MutableLiveData<Boolean>()
+
     //銀行卡是否可以繼續增加
     val addBankCardSwitch: LiveData<Boolean>
         get() = _addBankCardSwitch
     private var _addBankCardSwitch = MutableLiveData<Boolean>()
+
+    //虛擬幣是否可以繼續增加
+    val addCryptoCardSwitch: LiveData<Boolean>
+        get() = _addCryptoCardSwitch
+    private var _addCryptoCardSwitch = MutableLiveData<Boolean>()
 
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
@@ -549,15 +559,83 @@ class WithdrawViewModel(
     /**
      * 判斷當前銀行卡數量是否超出銀行卡綁定上限
      */
-    //TODO Dean : 重構, 銀行卡限制、虛擬幣卡限制、銀行卡提款方式open、虛擬幣提款方式open
     fun checkBankCardCount() {
+        var showAddCryptoCard: Boolean = false //是否顯示虛擬幣
+        var showAddBankCard: Boolean = false // 是否顯示銀行卡
+
+        //虛擬幣是否可以被提款或新增卡片
+        val cryptoOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
+
         val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
-        val bankCardCount = bankCardList.value?.size
-        _addBankCardSwitch.value = when {
+        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK }
+        //銀行卡是否可以被提款或新增卡片
+        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+
+        val cryptoCardLimitList = checkCryptoBindable()
+
+        run breaking@{
+            if (!cryptoOpen) {
+                showAddCryptoCard = false
+                return@breaking
+            }
+            cryptoCardLimitList.forEach {
+                if (it.bindable == true) {
+                    showAddCryptoCard = true
+                    return@breaking
+                } else {
+                    showAddCryptoCard = false
+                }
+            }
+        }
+
+        showAddBankCard = when {
+            !bankOpen -> false
             bankCardCountLimit == null -> true
             bankCardCount == null -> true
             else -> bankCardCount < bankCardCountLimit
         }
+        _addMoneyCardSwitch.value = when {
+            showAddCryptoCard -> true
+            showAddBankCard -> true
+            else -> false
+        }
+        _addBankCardSwitch.value = showAddBankCard
+        _addCryptoCardSwitch.value = showAddCryptoCard
+    }
+
+    data class CryptoCardCountLimit(val channel: String, var count: Int, var bindable: Boolean? = null)
+
+    /**
+     * @return 各虛擬幣提款渠道的名稱、數量、是否可再被添加(channel, count, bindable)
+     */
+    private fun checkCryptoBindable(): List<CryptoCardCountLimit> {
+        val cryptoCardCountLimitList = mutableListOf<CryptoCardCountLimit>()
+        val cryptoCardList = bankCardList.value?.filter { it.transferType == TransferType.CRYPTO }
+
+        rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.forEach { configDetail ->
+            if (cryptoCardCountLimitList.none { it.channel == configDetail.contract }) {
+                configDetail.contract?.let { channelName ->
+                    cryptoCardCountLimitList.add(CryptoCardCountLimit(channelName, 0))
+                }
+            }
+        }
+
+        cryptoCardList?.forEach { card ->
+            if (cryptoCardCountLimitList.any { it.channel == card.bankName }) {
+                cryptoCardCountLimitList.first { it.channel == card.bankName }.count += 1
+            }
+        }
+
+        //判斷擁有的該渠道卡片小於限制數量
+        cryptoCardCountLimitList.forEach { cryptoCardCountLimit ->
+            val configLimit = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == cryptoCardCountLimit.channel }?.countLimit
+            cryptoCardCountLimit.bindable = if (configLimit == null)
+                true
+            else {
+                cryptoCardCountLimit.count < configLimit
+            }
+        }
+        return cryptoCardCountLimitList
     }
 
     fun resetWithdrawPage() {
