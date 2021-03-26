@@ -36,7 +36,9 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.MoshiUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.TimeUtil
+import timber.log.Timber
 
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     Animation.AnimationListener, OnOddClickListener {
@@ -85,6 +87,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             oddsType = it.getString(ODDS_TYPE)
         }
 
+        //TODO BIll 要遍尋訂閱
         service.subscribeEventChannel(matchId)
     }
 
@@ -117,7 +120,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun setWebView() {
-        web_view.loadUrl("https://sports.cxct.org/animation/?matchId=${matchId}")
+        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:","")}")
     }
 
     private fun initRecyclerView() {

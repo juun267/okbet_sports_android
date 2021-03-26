@@ -25,13 +25,11 @@ import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.odds.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.OddsListRequest
-import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
@@ -48,6 +46,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.odds.MoreGameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -214,6 +213,8 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+
+    var gameCardList: MutableList<MatchOdd>? = null
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -1318,47 +1319,10 @@ class GameViewModel(
         }
     }
 
-    fun getGameCard(): MutableList<MatchInfo> {
-        val list: LiveData<List<*>?> = oddsDetailMoreList
-        val matchOddList: MutableList<MatchInfo> = mutableListOf()
-        //後續再重構較好的資料判別方式
-        list.value?.indices?.let {
-            for (i in it) {
-                list.value?.let { value ->
-                    val m: Any?
-                    when (value[i]) {
-                        is Match -> {
-                            m = (value[i] as Match)
-                            m.apply {
-                                matchOddList.add(
-                                    MatchInfo(m.awayName, m.endTime.toString(), m.homeName, m.id, m.playCateNum ?: 0, m.startTime.toString(), m.status)
-                                )
-                            }
-                        }
-                        is MatchOdd -> {
-                            m = (value[i] as MatchOdd).matchInfo
-                            m?.apply {
-                                matchOddList.add(
-                                    MatchInfo(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status).apply {
-                                        awayScore = m.awayScore
-                                        homeScore = m.homeScore
-                                    })
-                            }
-                        }
-                        is MatchInfo -> {
-                            m = (value[i] as MatchInfo)
-                            m.apply {
-                                matchOddList.add(
-                                    MatchInfo(m.awayName, m.endTime, m.homeName, m.id, m.playCateNum, m.startTime, m.status).apply {
-                                        awayScore = m.awayScore
-                                        homeScore = m.homeScore
-                                    })
-                            }
-                        }
-                        else -> { }
-                    }
-                }
-            }
+    fun getGameCard(): MutableList<MatchInfo?> {
+        val matchOddList: MutableList<MatchInfo?> = mutableListOf()
+        gameCardList?.forEach {
+            matchOddList.add(it.matchInfo)
         }
         return matchOddList
     }

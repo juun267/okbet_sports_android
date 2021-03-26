@@ -30,7 +30,6 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var leagueOddListener: LeagueOddListener? = null
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (playType) {
             PlayType.OU_HDP -> ViewHolderHdpOu.from(parent)
@@ -42,8 +41,8 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(item, leagueOddListener)
-            is ViewHolder1x2 -> holder.bind(item, leagueOddListener)
+            is ViewHolderHdpOu -> holder.bind(item, data as MutableList<MatchOdd>, leagueOddListener)
+            is ViewHolder1x2 -> holder.bind(item,data as MutableList<MatchOdd>, leagueOddListener)
         }
     }
 
@@ -51,14 +50,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     class ViewHolderHdpOu private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        fun bind(item: MatchOdd,gameCardList:MutableList<MatchOdd>, leagueOddListener: LeagueOddListener?) {
 
             setupMatchInfo(item)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
+                leagueOddListener?.onClickLive(item,gameCardList)
             }
         }
 
@@ -230,14 +229,14 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        fun bind(item: MatchOdd,gameCardList:MutableList<MatchOdd>, leagueOddListener: LeagueOddListener?) {
 
             setupMatchInfo(item)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
+                leagueOddListener?.onClickLive(item,gameCardList)
             }
         }
 
@@ -381,10 +380,10 @@ class LeagueOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 }
 
 class LeagueOddListener(
-    val clickListenerLive: (item: MatchOdd) -> Unit,
+    val clickListenerLive: (item: MatchOdd,gameCardList: MutableList<MatchOdd>) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
-    fun onClickLive(item: MatchOdd) = clickListenerLive(item)
+    fun onClickLive(item: MatchOdd,gameCardList: MutableList<MatchOdd>) = clickListenerLive(item,gameCardList)
     fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         clickListenerBet(matchOdd, oddString, odd)
 }
