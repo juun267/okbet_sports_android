@@ -29,6 +29,8 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
+
+    //TODO simon test 訂閱、取消訂閱機制有問題，code 不能當 primary key，這部分邏輯之後看能不能整合到一個 class 集中管理
     private val mSubscribeMatchMap = mutableMapOf<String, Match>() //<code, Match>
 
     override fun onCreateView(
