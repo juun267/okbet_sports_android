@@ -26,6 +26,7 @@ import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 import java.math.RoundingMode
@@ -141,14 +142,14 @@ class WithdrawViewModel(
     private var _addMoneyCardSwitch = MutableLiveData<Boolean>()
 
     //銀行卡是否可以繼續增加
-    val addBankCardSwitch: LiveData<Boolean>
+    val addBankCardSwitch: LiveData<Event<Boolean>>
         get() = _addBankCardSwitch
-    private var _addBankCardSwitch = MutableLiveData<Boolean>()
+    private var _addBankCardSwitch = MutableLiveData<Event<Boolean>>()
 
     //虛擬幣是否可以繼續增加
-    val addCryptoCardSwitch: LiveData<Boolean>
+    val addCryptoCardSwitch: LiveData<Event<Boolean>>
         get() = _addCryptoCardSwitch
-    private var _addCryptoCardSwitch = MutableLiveData<Boolean>()
+    private var _addCryptoCardSwitch = MutableLiveData<Event<Boolean>>()
 
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
@@ -599,8 +600,8 @@ class WithdrawViewModel(
             showAddBankCard -> true
             else -> false
         }
-        _addBankCardSwitch.value = showAddBankCard
-        _addCryptoCardSwitch.value = showAddCryptoCard
+        _addBankCardSwitch.value = Event(showAddBankCard)
+        _addCryptoCardSwitch.value = Event(showAddCryptoCard)
     }
 
     data class CryptoCardCountLimit(val channel: String, var count: Int, var bindable: Boolean? = null)

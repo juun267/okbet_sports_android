@@ -32,6 +32,7 @@ import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.ToastUtil
 
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
+    private var transferType: TransferType = TransferType.BANK
 
     private lateinit var mBankSelectorBottomSheetDialog: BottomSheetDialog
     private lateinit var mBankSelectorAdapter: BankSelectorAdapter
@@ -42,8 +43,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     data class AddTypeTab(val type: TransferType, @IdRes val id: Int)
 
     private val mTabList by lazy { listOf(AddTypeTab(TransferType.BANK, R.id.tab_bank_card), AddTypeTab(TransferType.CRYPTO, R.id.tab_crypto)) }
-
-    private var transferType: TransferType = TransferType.BANK
 
     private val protocolAdapter by lazy {
         ProtocolAdapter(requireContext(), OnSelectProtocol {
@@ -345,22 +344,24 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         //是否可以新增銀行卡
         viewModel.addBankCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
-            if (show) {
+            if (show.getContentIfNotHandled() == true) {
                 tab_bank_card.visibility = View.VISIBLE
-            } else {
+                showHideTypeTab()
+            } else if (show.getContentIfNotHandled() == false) {
                 tab_bank_card.visibility = View.GONE
+                showHideTypeTab()
             }
-            showHideTypeTab()
         })
 
         //是否可以新增虛擬幣
         viewModel.addCryptoCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
-            if (show) {
+            if (show.getContentIfNotHandled() == true) {
                 tab_crypto.visibility = View.VISIBLE
-            } else {
+                showHideTypeTab()
+            } else if (show.getContentIfNotHandled() == false) {
                 tab_crypto.visibility = View.GONE
+                showHideTypeTab()
             }
-            showHideTypeTab()
         })
 
         viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
