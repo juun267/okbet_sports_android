@@ -184,7 +184,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
         //彈窗圖
         viewModel.popImageList.observe(this, Observer {
-            setPopImage(it)
+            setPopImage(it?: listOf())
         })
 
         //公告彈窗

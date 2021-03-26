@@ -56,8 +56,8 @@ class MainViewModel(
     val bannerList: LiveData<List<ImageData>?>
         get() = _bannerList
 
-    private val _popImageList = MutableLiveData<List<ImageData>>()
-    val popImageList: LiveData<List<ImageData>>
+    private val _popImageList = MutableLiveData<List<ImageData>?>()
+    val popImageList: LiveData<List<ImageData>?>
         get() = _popImageList
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
