@@ -54,8 +54,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         queryData()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         unSubscribeAllHallChannel()
     }
 
@@ -141,7 +141,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
-            updateUI(it)
+            it.getContentIfNotHandled()?.let { result ->
+                updateUI(result)
+            }
         })
     }
 

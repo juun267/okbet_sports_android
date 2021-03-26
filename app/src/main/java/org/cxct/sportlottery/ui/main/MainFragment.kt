@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.tab_layout
 import kotlinx.android.synthetic.main.view_message.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -34,6 +35,7 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.util.JumpUtil
 
 
@@ -212,7 +214,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initObserve() {
         //輪播圖
         viewModel.bannerList.observe(viewLifecycleOwner, Observer {
-            setBanner(it)
+            setBanner(it?: listOf())
         })
 
         //公告跑馬燈
@@ -484,7 +486,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupUpdate() {
         btn_update.setOnClickListener {
-            JumpUtil.toExternalWeb(btn_update.context, sConfigData?.mobileAppDownUrl)
+            startActivity(Intent(activity, VersionUpdateActivity::class.java))
         }
     }
 

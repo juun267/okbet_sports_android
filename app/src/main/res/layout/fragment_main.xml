@@ -22,9 +22,9 @@
             app:elevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/colorWhite"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <!-- Banner ads -->

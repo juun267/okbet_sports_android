@@ -2,7 +2,9 @@ package org.cxct.sportlottery.network.money
 
 import java.io.Serializable
 
+//TODO : 與MoneyRechCfgData重複, 需整理移除冗余
 class MoneyRechCfg {
+    enum class Switch(val code: Int) { ON(1), CLOSE(0) }
     class Data {
         var banks: MutableList<Bank>? = null //银行lfny
         var rechCfgs: MutableList<RechConfig>? = null //充值配置
@@ -66,11 +68,31 @@ class MoneyRechCfg {
         var uwTypeCfg: List<UwTypeCfg>? = null //提款方式配置参数
     }
 
-    data class UwTypeCfg (
+    data class UwTypeCfg(
         val name: String?,
         val type: String?,
         val sort: Int?, //排序
+        val detailList: List<DetailList>?,
         val countLimit: Long?, //提款张数限制
         val open: Int?, //是否启用 1是 0否
     )
+
+    data class DetailList(
+        val countLimit: Long?, //绑卡数限制,为0时则禁止绑卡，禁止该通道提现
+        val contract: String?, //合约信息
+        val currency: String?, //币种
+        val exchangeRate: Double?, //兑人民币汇率
+        val feeVal: Double?, //固定手续费(用于虚拟币提现)
+        val feeRate: Double?, //百分比手续费(用于人民币提现)
+        val minWithdrawMoney: Double?, //最小提现额度
+        val maxWithdrawMoney: Double?, //最大提现额度
+    )
+}
+
+/**
+ * MoneyConfig, uwTypes 提現Type
+ */
+enum class TransferType(val type: String) {
+    BANK("bankTransfer"), //銀行卡
+    CRYPTO("cryptoTransfer") //虛擬幣
 }

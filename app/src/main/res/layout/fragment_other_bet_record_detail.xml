@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite1"
     tools:context=".ui.profileCenter.otherBetRecord.detail.OtherBetRecordDetailFragment">
 
     <LinearLayout
@@ -22,9 +23,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/game_name"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
 
         <TextView
             android:layout_width="0dp"
@@ -33,9 +33,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_money"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
 
         <TextView
             android:layout_width="0dp"
@@ -44,9 +43,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/profit_and_loss"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
 
         <TextView
             android:layout_width="0dp"
@@ -55,24 +53,29 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/log_detail_trans_num_sub2"
-            android:textColor="@color/gray4"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"  />
     </LinearLayout>
 
 
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
-        android:id="@+id/rv_record"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/view_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_other_bet_record_detail"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout5"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
         app:layout_constraintBottom_toTopOf="@id/layout_total"
-        android:background="@color/gray11"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layout_constraintTop_toBottomOf="@id/linearLayout5"
+        app:srlEnablePureScrollMode="true">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_other_bet_record_detail" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     <ImageView
         android:id="@+id/iv_scroll_to_top"
         android:layout_width="48dp"
@@ -91,9 +94,9 @@
         layout="@layout/view_total_record"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

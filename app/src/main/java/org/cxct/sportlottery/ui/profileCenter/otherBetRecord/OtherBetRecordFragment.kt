@@ -98,14 +98,6 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     private fun initRv() {
         rv_record.apply {
             adapter = rvAdapter
-            /*
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
-            */
             addOnScrollListener(recyclerViewOnScrollListener)
         }
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F5"
+    android:background="@color/colorWhite1"
     android:orientation="vertical"
     tools:context=".ui.feedback.record.FeedbackRecordListFragment">
     <!-- Tab bar-->
@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F3F4F5"
+        android:background="@color/colorWhite3"
         android:gravity="center"
         android:minHeight="30dp"
         android:orientation="horizontal">
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/feedback_last_reply_time"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/feedback_content_description"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/status"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
 
     </LinearLayout>
@@ -64,18 +64,26 @@
         app:srlEnableLoadMore="true"
         app:srlEnablePureScrollMode="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_pay_type"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:visibility="visible"
-            tools:itemCount="5"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/content_feedback_record_list_rv"
-            tools:orientation="vertical"
-            tools:visibility="visible" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_pay_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                tools:itemCount="5"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/content_feedback_record_list_rv"
+                tools:orientation="vertical"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/view_no_record"
+                layout="@layout/view_no_record"/>
+        </FrameLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

@@ -90,7 +90,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginBottom="9dp"
                             android:includeFontPadding="false"
-                            android:text="@string/football"
+                            android:text="@string/soccer"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize20sp"
                             app:layout_constraintBottom_toBottomOf="parent"

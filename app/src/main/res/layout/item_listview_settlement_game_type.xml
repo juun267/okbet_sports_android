@@ -15,6 +15,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        tools:text="@string/football" />
+        tools:text="@string/soccer" />
 
 </LinearLayout>

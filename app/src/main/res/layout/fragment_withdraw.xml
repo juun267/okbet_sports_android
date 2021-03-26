@@ -10,7 +10,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/colorBlueLight"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/tab_bank_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_select_money_tab_left"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/bank_card"
+            android:textColor="@color/color_select_money_tab_text"
+            android:textSize="@dimen/textSize14sp" />
+
+        <TextView
+            android:id="@+id/tab_crypto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_select_money_tab_right"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/crypto"
+            android:textColor="@color/color_select_money_tab_text"
+            android:textSize="@dimen/textSize14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
         android:gravity="start|center_vertical"
         android:orientation="horizontal"
         android:paddingStart="24dp"
@@ -23,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/now_balance"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
@@ -31,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             tools:text="19940.000" />
 
@@ -40,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="@string/currency"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -65,12 +102,13 @@
             android:paddingEnd="10dp">
 
             <TextView
+                android:id="@+id/tv_channel_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
                 android:gravity="start|center_vertical"
                 android:text="@string/select_bank"
-                android:textColor="@color/gray4"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp" />
 
             <View
@@ -94,7 +132,7 @@
                 android:layout_weight="1"
                 android:gravity="start|center_vertical"
                 android:text="@string/select_bank"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
         <!-- 提款金額 -->
@@ -112,7 +150,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/withdraw_handling_fee_hint"
-            android:textColor="@color/orangeRed"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/textSize12sp" />
+        <!-- 提款虛擬幣所需餘提示 -->
+        <TextView
+            android:id="@+id/tv_hint_withdraw_crypto_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/withdraw_crypto_amount_hint"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/textSize12sp" />
+        <!-- 提款虛擬幣手續費提示 -->
+        <TextView
+            android:id="@+id/tv_hint_withdraw_crypto_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/withdraw_crypto_fee_hint"
+            android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp" />
         <!-- 提款密碼 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -133,43 +189,23 @@
         android:paddingEnd="16dp">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/btn_withdraw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            app:cardBackgroundColor="@color/blue3"
-            app:cardCornerRadius="5dp">
+            app:cardBackgroundColor="@color/colorBlue"
+            app:cardCornerRadius="20dp">
 
             <TextView
-                android:id="@+id/btn_withdraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:letterSpacing="0.2"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:text="@string/submit"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textSize16sp" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cardBackgroundColor="@color/blue4"
-            app:cardCornerRadius="5dp">
-
-            <TextView
-                android:id="@+id/btn_reset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-
-                android:paddingTop="8dp"
-
-                android:paddingBottom="8dp"
-                android:text="@string/reset"
-                android:textColor="@color/gray4"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize16sp" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>

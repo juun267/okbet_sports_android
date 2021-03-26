@@ -9,7 +9,6 @@ import android.os.Message
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +30,6 @@ import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.MoshiUtil
@@ -40,6 +38,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
+@Suppress("DEPRECATION")
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     Animation.AnimationListener, OnOddClickListener {
 
@@ -175,7 +174,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
+        oddsDetailListAdapter = gameType?.let { OddsDetailListAdapter(this@OddsDetailFragment, it) }
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
@@ -230,12 +229,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             val eventResult = it.peekContent()
             if (eventResult?.success != true) {
-                val dialog = CustomAlertDialog(requireActivity())
-                dialog.setTitle(getString(R.string.prompt))
-                dialog.setMessage(eventResult?.msg ?: getString(R.string.unknown_error))
-                dialog.setNegativeButtonText(null)
-                dialog.setTextColor(R.color.red2)
-                dialog.show()
+                showErrorPromptDialog(getString(R.string.prompt), eventResult?.msg ?: getString(R.string.unknown_error)) {}
             }
         })
 
@@ -255,7 +249,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
 
-    fun refreshData(gameType: String?, matchId: String?, typeName: String?) {
+    fun refreshData(gameType: String?, matchId: String?) {
         this.gameType = gameType
         this.matchId = matchId
         getData()

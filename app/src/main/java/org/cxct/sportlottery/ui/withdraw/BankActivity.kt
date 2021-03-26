@@ -31,6 +31,7 @@ class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel:
             mNavController.popBackStack()
             return
         }
+        finish()
     }
 
     private fun setupBackButton() {

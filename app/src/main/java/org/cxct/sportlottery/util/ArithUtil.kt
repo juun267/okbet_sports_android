@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.util.Log
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -87,4 +88,12 @@ object ArithUtil {
         return b1.divide(b2, scale, roundMode).toDouble()
     }
 
+    /**
+     * 小數運算
+     */
+    fun minus(paramsS: Double?, paramsO: Double?): Double {
+        val decimalSubject = BigDecimal(paramsS ?: 0.0)
+        val decimalObject = BigDecimal(paramsO ?: 0.0)
+        return round((decimalSubject - decimalObject).toDouble(), 3, RoundingMode.FLOOR).toDouble()
+    }
 }
