@@ -24,7 +24,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         viewModel.showToolbar(false)
         viewModel.fbQueryDetail()
@@ -48,7 +48,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            if (!et_content.text.isNullOrEmpty()){
+            if (et_content.text.trim().isNotEmpty()) {
                 viewModel.fbReply(et_content.text.toString())
             } else {
                 ll_error.visibility = View.VISIBLE
@@ -58,16 +58,15 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
     }
 
     private fun initRecyclerView() {
-        rv_content.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        rv_content.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rv_content.adapter = adapter
     }
 
     private fun initDataLive() {
-        viewModel.feedbackDetail.observe(viewLifecycleOwner,  {
+        viewModel.feedbackDetail.observe(viewLifecycleOwner, {
             et_content.text.clear()
             adapter?.data = it ?: mutableListOf()
-            rv_content.scrollToPosition((adapter?.itemCount ?: 0)-1)
+            rv_content.scrollToPosition((adapter?.itemCount ?: 0) - 1)
         })
     }
 

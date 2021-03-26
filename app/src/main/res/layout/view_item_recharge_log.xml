@@ -75,7 +75,7 @@
         android:layout_marginStart="24dp"
         android:gravity="center"
         android:minWidth="52dp"
-        android:textColor="@color/colorGrayDark"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

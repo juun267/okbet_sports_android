@@ -171,12 +171,12 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
         tvInfo.apply {
             if (infoData.isNullOrEmpty()) {
                 text = getString(R.string.need_improve)
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.text_tips_blue))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.colorBlueDark))
                 iconModify.visibility = View.VISIBLE
                 itemLayout.isEnabled = true
             } else {
                 text = infoData
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.textColorDark))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.colorGrayDark))
                 iconModify.visibility = View.GONE
                 itemLayout.isEnabled = false
             }

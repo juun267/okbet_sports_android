@@ -104,13 +104,6 @@
         tools:listitem="@layout/content_news_item_rv"
         tools:orientation="horizontal" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vp_msg"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/rv_tab" />
-
     <ImageView
         android:id="@+id/btn_close"
         android:layout_width="wrap_content"
