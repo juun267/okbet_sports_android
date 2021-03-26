@@ -28,20 +28,22 @@
 
         <LinearLayout
             android:id="@+id/block_nickname"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_bias="0"
             android:orientation="horizontal"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toTopOf="@id/label_user_id"
-            app:layout_constraintEnd_toStartOf="@id/line_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_head"
             app:layout_constraintTop_toTopOf="@id/iv_head">
 
             <TextView
                 android:id="@+id/tv_user_nickname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_height="match_parent"
                 android:ellipsize="end"
+                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:textColor="@color/main_dark"
                 android:textSize="@dimen/textSize16sp"
@@ -90,9 +92,9 @@
                 android:ellipsize="end"
                 android:maxWidth="220dp"
                 android:maxLines="1"
-                android:textStyle="bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize20sp"
+                android:textStyle="bold"
                 tools:text="87,547,000.000" />
 
             <TextView
@@ -121,13 +123,6 @@
             android:layout_height="8dp"
             android:background="@color/colorWhite1"
             app:layout_constraintTop_toBottomOf="@+id/linear_layout2" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/line_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_line"
@@ -267,9 +262,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:text="@string/more_service"
-                        android:textStyle="bold"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:id="@+id/btn_profile"
@@ -487,7 +482,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="4.5dp"
                         android:layout_marginBottom="4.5dp"
-                        android:background="@color/light_gray" />
+                        android:background="@color/colorWhite6" />
 
                     <LinearLayout
                         android:id="@+id/btn_news_center"
@@ -600,7 +595,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="4.5dp"
                         android:layout_marginBottom="4.5dp"
-                        android:background="@color/light_gray" />
+                        android:background="@color/colorWhite6" />
 
                     <LinearLayout
                         android:id="@+id/btn_help_center"
