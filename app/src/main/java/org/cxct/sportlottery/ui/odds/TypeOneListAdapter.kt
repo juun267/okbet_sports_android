@@ -77,7 +77,7 @@ class TypeOneListAdapter(
                 setOnClickListener {
                     onMoreClickListener.click()
                 }
-                visibility = if (!isSCO && oddsList.size > OVER_COUNT) {
+                visibility = if (isSCO && oddsList.size > OVER_COUNT) {
                     View.VISIBLE
                 } else {
                     View.GONE

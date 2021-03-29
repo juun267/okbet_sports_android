@@ -423,7 +423,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         private fun oneList(oddsDetail: OddsDetailListData, isSCO: Boolean) {
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            if (!isSCO) {
+            if (isSCO) {
                 for (i in oddsDetail.oddArrayList.indices) {
                     if (!oddsDetail.isMoreExpand && i > DEFAULT_ITEM_VISIBLE_POSITION) {
                         oddsDetail.oddArrayList[i].itemViewVisible = false
