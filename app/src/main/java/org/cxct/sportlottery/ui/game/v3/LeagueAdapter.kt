@@ -104,6 +104,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_expand.setExpanded(item.isExpand, true)
+                leagueOddAdapter.isTimerEnable = item.isExpand
                 updateArrowExpand()
 
                 itemExpandListener?.onItemExpand(item)

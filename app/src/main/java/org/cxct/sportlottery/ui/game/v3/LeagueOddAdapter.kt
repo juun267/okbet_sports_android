@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import timber.log.Timber
 import java.util.*
 
 class LeagueOddAdapter(private val matchType: MatchType) :
@@ -29,6 +30,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
     var playType: PlayType = PlayType.OU_HDP
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var isTimerEnable = false
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -48,8 +55,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(matchType, item, leagueOddListener)
-            is ViewHolder1x2 -> holder.bind(matchType, item, leagueOddListener)
+            is ViewHolderHdpOu -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
+            is ViewHolder1x2 -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
         }
     }
 
@@ -65,9 +72,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
 
     class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        fun bind(
+            matchType: MatchType,
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            isTimerEnable: Boolean
+        ) {
 
-            setupMatchInfo(item, matchType)
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
@@ -76,7 +88,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
+        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType, isTimerEnable: Boolean) {
             itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home.text = item.matchInfo?.homeName
@@ -93,7 +105,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                updateTimer(item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0)
             } else {
                 itemView.match_status.text = item.matchInfo?.startDateDisplay
                 itemView.match_time.text = item.matchInfo?.startTimeDisplay
@@ -261,9 +273,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        fun bind(
+            matchType: MatchType,
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            isTimerEnable: Boolean
+        ) {
 
-            setupMatchInfo(item, matchType)
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
@@ -272,7 +289,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
+        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType, isTimerEnable: Boolean) {
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
@@ -289,7 +306,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                updateTimer(item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0)
             }
         }
 
@@ -433,27 +450,37 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private var timer: Timer? = null
 
-        fun updateTimer(leagueTime: Int) {
-            var timeMillis = leagueTime * 1000L
+        fun updateTimer(isTimerEnable: Boolean, leagueTime: Int) {
 
-            Handler(Looper.getMainLooper()).post {
-                listener?.onTimerUpdate(timeMillis)
-            }
+            when (isTimerEnable) {
+                true -> {
+                    var timeMillis = leagueTime * 1000L
 
-            stopTimer()
-            timer = Timer()
-            timer?.schedule(object : TimerTask() {
-                override fun run() {
-                    timeMillis += 1000
                     Handler(Looper.getMainLooper()).post {
                         listener?.onTimerUpdate(timeMillis)
                     }
+
+                    timer = Timer()
+                    timer?.schedule(object : TimerTask() {
+                        override fun run() {
+                            timeMillis += 1000
+                            Timber.d("$timeMillis")
+                            Handler(Looper.getMainLooper()).post {
+                                listener?.onTimerUpdate(timeMillis)
+                            }
+                        }
+                    }, 1000L, 1000L)
                 }
-            }, 1000L, 1000L)
+
+                false -> {
+                    stopTimer()
+                }
+            }
         }
 
         fun stopTimer() {
             timer?.cancel()
+            timer = null
         }
     }
 }
