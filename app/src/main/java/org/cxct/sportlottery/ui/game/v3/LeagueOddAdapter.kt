@@ -102,6 +102,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 listener = object : TimerListener {
                     override fun onTimerUpdate(timeMillis: Long) {
                         itemView.match_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                        item.leagueTime = (timeMillis / 1000).toInt()
                     }
                 }
 
@@ -303,6 +304,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 listener = object : TimerListener {
                     override fun onTimerUpdate(timeMillis: Long) {
                         itemView.match_time_1x2.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                        item.leagueTime = (timeMillis / 1000).toInt()
                     }
                 }
 
