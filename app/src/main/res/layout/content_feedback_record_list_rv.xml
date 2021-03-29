@@ -35,7 +35,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:paddingHorizontal="4dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="testasdfasdfadf" />

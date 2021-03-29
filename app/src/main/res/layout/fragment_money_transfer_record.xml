@@ -7,8 +7,8 @@
     android:background="@color/colorWhite1"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:ignore="spUsage"
-    tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
+    tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity"
+    tools:ignore="spUsage">
 
     <org.cxct.sportlottery.ui.component.DateRangeSearchView
         android:id="@+id/date_search_bar"
@@ -77,8 +77,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/time"
-            android:textSize="@dimen/textSize12sp"
             android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -89,8 +89,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/money"
-            android:textSize="@dimen/textSize12sp"
             android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -101,8 +101,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/transfer_platform"
-            android:textSize="@dimen/textSize12sp"
             android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -113,29 +113,47 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/status"
-            android:textSize="@dimen/textSize12sp"
             android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
     </LinearLayout>
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        android:id="@+id/view_refresh"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlDragRate="0.3"
-        app:srlEnableLoadMore="true"
-        app:srlEnablePureScrollMode="true">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_record"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/view_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_money_transfer_history" />
+            app:srlDragRate="0.3"
+            app:srlEnableLoadMore="true"
+            app:srlEnablePureScrollMode="true">
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_money_transfer_history" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <ImageView
+            android:id="@+id/iv_scroll_to_top"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@drawable/bg_circle_gray6_alpha50"
+            android:padding="14dp"
+            android:src="@drawable/ic_scroll_to_top" />
+    </FrameLayout>
+
+
 </LinearLayout>
 

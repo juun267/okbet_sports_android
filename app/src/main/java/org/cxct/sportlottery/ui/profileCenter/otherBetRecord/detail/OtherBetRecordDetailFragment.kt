@@ -74,11 +74,9 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
     }
 
     private fun initOnclick() {
-
         iv_scroll_to_top.setOnClickListener {
             rv_record.smoothScrollToPosition(0)
         }
-
     }
 
     private fun initObserver() {

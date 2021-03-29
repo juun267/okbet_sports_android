@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +10,50 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.activity_recharge_log.*
+import kotlinx.android.synthetic.main.activity_recharge_log.iv_scroll_to_top
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
+import kotlinx.android.synthetic.main.fragment_other_bet_record.*
+import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
+        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
+            iv_scroll_to_top.apply {
+                when {
+                    firstVisibleItemPosition > 0 && alpha == 0f -> {
+                        visibility = View.VISIBLE
+                        animate().alpha(1f).setDuration(300).setListener(null)
+                    }
+                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
+                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                visibility = View.GONE
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            recyclerView.layoutManager?.let {
+                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                viewModel.getUserRechargeList(false)
+                scrollToTopControl(firstVisibleItemPosition)
+            }
+        }
+    }
+
     private val logDetailDialog by lazy {
         RechargeLogDetailDialog()
     }
@@ -35,6 +74,11 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
             this.selector_method_status.dataList = viewModel.rechargeChannelList
             this.selector_order_status.dataList = viewModel.rechargeStateList
+
+            iv_scroll_to_top.setOnClickListener {
+                rvlist.smoothScrollToPosition(0)
+            }
+
             setupListColumn(this)
             setupRechargeLogList(this)
             setupSearch(this)
@@ -50,6 +94,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+            addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = rechargeLogAdapter
             addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
         }
@@ -63,6 +108,14 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.isLoading.observe(this.viewLifecycleOwner,  {
+            if (it) {
+                loading()
+            } else {
+                hideLoading()
+            }
+        })
 
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
@@ -94,10 +147,8 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupNoRecordView(visible: Boolean) {
         if (visible) {
-            list_swipe_refresh_layout.visibility = View.GONE
             view_no_record.visibility = View.VISIBLE
         } else {
-            list_swipe_refresh_layout.visibility = View.VISIBLE
             view_no_record.visibility = View.GONE
         }
     }
