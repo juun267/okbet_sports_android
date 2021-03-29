@@ -12,10 +12,10 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
 const val MORE_ITEM = 1
 
+const val OVER_COUNT = 5
 
 class TypeOneListAdapter(
     private val oddsDetail: OddsDetailListData,
-//    private val oddsList: List<Odd>,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val curMatchId: String?,
@@ -77,7 +77,7 @@ class TypeOneListAdapter(
                 setOnClickListener {
                     onMoreClickListener.click()
                 }
-                visibility = if (isSCO && oddsList.size > 5) {
+                visibility = if (!isSCO && oddsList.size > OVER_COUNT) {
                     View.VISIBLE
                 } else {
                     View.GONE

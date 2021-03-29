@@ -22,7 +22,7 @@ import org.cxct.sportlottery.util.TextUtil
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+const val DEFAULT_ITEM_VISIBLE_POSITION = 4
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, private val sportGameType: String) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
@@ -386,13 +386,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                     }
                 }
 
-
                 GameType.SINGLE_OT.type,
                 GameType.SINGLE_OU.type,
                 GameType.FG.type,
                 GameType.LG.type,
                 GameType.DC.type,
-//                GameType.SCO.type,
                 GameType.TG.type,
                 GameType.TG_.type,
                 GameType.BTS.type,
@@ -425,9 +423,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         private fun oneList(oddsDetail: OddsDetailListData, isSCO: Boolean) {
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            if (isSCO) {
+            if (!isSCO) {
                 for (i in oddsDetail.oddArrayList.indices) {
-                    if (!oddsDetail.isMoreExpand && i > 4) {
+                    if (!oddsDetail.isMoreExpand && i > DEFAULT_ITEM_VISIBLE_POSITION) {
                         oddsDetail.oddArrayList[i].itemViewVisible = false
                     }
                 }
@@ -443,12 +441,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                     object : TypeOneListAdapter.OnMoreClickListener {
                         override fun click() {
                             for (i in oddsDetail.oddArrayList.indices) {
-                                if (i > 4) {
+                                if (i > DEFAULT_ITEM_VISIBLE_POSITION) {
                                     oddsDetail.oddArrayList[i].itemViewVisible = !oddsDetail.oddArrayList[i].itemViewVisible
                                 }
                             }
                             oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
-                            adapter?.notifyDataSetChanged()
+                            adapter?.notifyItemRangeChanged(OVER_COUNT, oddsDetail.oddArrayList.size -1)
                         }
                     }
                 )
