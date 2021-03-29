@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.iv_scroll_to_top
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import kotlinx.android.synthetic.main.fragment_other_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -26,21 +27,20 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
             iv_scroll_to_top.apply {
-                if (firstVisibleItemPosition > 0) {
-                    if (alpha == 0f) {
-                        alpha = 0f
-                        visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                } else {
-                    if (alpha == 1f) {
-                        alpha = 1f
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                visibility = View.GONE
-                            }
-                        })
-                    }
+                when {
+                    firstVisibleItemPosition > 0 ->
+                        if (alpha == 0f) {
+                            visibility = View.VISIBLE
+                            animate().alpha(1f).setDuration(300).setListener(null)
+                        }
+                    else ->
+                        if (alpha == 1f) {
+                            animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    visibility = View.GONE
+                                }
+                            })
+                        }
                 }
             }
         }

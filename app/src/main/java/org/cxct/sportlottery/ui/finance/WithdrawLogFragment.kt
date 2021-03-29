@@ -18,11 +18,14 @@ import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.activity_recharge_log.*
+import kotlinx.android.synthetic.main.activity_recharge_log.date_range_selector
 import kotlinx.android.synthetic.main.activity_recharge_log.iv_scroll_to_top
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.activity_recharge_log.view_no_record
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_list.*
+import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
@@ -35,21 +38,20 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
             iv_scroll_to_top.apply {
-                if (firstVisibleItemPosition > 0) {
-                    if (alpha == 0f) {
-                        alpha = 0f
-                        visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                } else {
-                    if (alpha == 1f) {
-                        alpha = 1f
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                visibility = View.GONE
-                            }
-                        })
-                    }
+                when {
+                    firstVisibleItemPosition > 0 ->
+                        if (alpha == 0f) {
+                            visibility = View.VISIBLE
+                            animate().alpha(1f).setDuration(300).setListener(null)
+                        }
+                    else ->
+                        if (alpha == 1f) {
+                            animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    visibility = View.GONE
+                                }
+                            })
+                        }
                 }
             }
         }
