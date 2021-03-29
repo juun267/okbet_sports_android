@@ -121,6 +121,9 @@ class GameViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
+    val curOddsDetailLiveParams: LiveData<List<String?>>
+        get() = _curOddsDetailLiveParams
+
     val matchTypeCardForParlay: LiveData<MatchType>
         get() = _matchTypeCardForParlay
 
@@ -154,6 +157,7 @@ class GameViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curDatePosition = MutableLiveData<Int>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
+    private val _curOddsDetailLiveParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
@@ -942,6 +946,38 @@ class GameViewModel(
 
     fun getOddsDetail(gameType: String?, typeName: String?, matchId: String?) {
         _curOddsDetailParams.postValue(listOf(gameType, typeName, matchId))
+    }
+
+    fun getOddsDetailLive(oddId: String?) {
+        var item: Item? = null
+        when (mathType) {
+            MatchType.IN_PLAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.TODAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.EARLY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.PARLAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+                    it.isSelected
+                }
+            }
+        }
+        _curOddsDetailLiveParams.postValue(listOf(item?.code, item?.name, oddId))
     }
 
     fun setOddsDetailMoreList(list: List<*>) {

@@ -70,7 +70,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ,gameCardList ->
-                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
                     viewModel.gameCardList = gameCardList
                 },
                 { matchOdd, oddString, odd ->
