@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.ui.game
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game.*
 import kotlinx.android.synthetic.main.fragment_game.view.*
@@ -97,7 +95,7 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             )
                         } else {
                             if (eventId?.let { mid -> viewModel.checkInBetInfo(mid) } == false) {
-                                service.unSubscribeHallChannel(
+                                service.unsubscribeHallChannel(
                                     code,
                                     CateMenuCode.HDP_AND_OU.code,
                                     eventId
@@ -615,7 +613,7 @@ class GameFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             if (it.isExpand) {
                 it.matchOdds.forEach { matchOdd ->
                     if (matchOdd.matchInfo?.id?.let { mid -> viewModel.checkInBetInfo(mid) } == false) {
-                        service.unSubscribeHallChannel(
+                        service.unsubscribeHallChannel(
                             code,
                             CateMenuCode.HDP_AND_OU.code,
                             matchOdd.matchInfo.id

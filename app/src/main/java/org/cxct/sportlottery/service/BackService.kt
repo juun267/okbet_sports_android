@@ -26,13 +26,11 @@ import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
-const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
-const val SERVICE_TOKEN = "TOKEN"
-const val SERVICE_USER_ID = "USER_ID"
-const val SERVICE_PLATFORM_ID = "PLATFORM_ID"
 
 class BackService : Service() {
     companion object {
+        const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
+
         private const val URL_SOCKET_HOST_AND_PORT = "http://sports.cxct.org/api/ws/app/im" //app连接端点,无sockjs
         const val URL_ALL = "/ws/notify/all" //全体公共频道
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
@@ -47,7 +45,6 @@ class BackService : Service() {
         var URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
-        //        private const val MAX_RECONNECT_COUNT = 3 //嘗試重新連線次數
     }
 
     private var mToken = ""
@@ -78,8 +75,27 @@ class BackService : Service() {
     private var mStompClient: StompClient? = null
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
-    private val mPingDisposable: Disposable? = null
 
+    //Map<url, channel>
+    private val subscribedMap = mutableMapOf<String, Disposable?>()
+
+    private fun subscribeChannel(url: String) {
+        Timber.i(">>> subscribe channel: $url")
+        val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
+            Timber.d(">>> socket channel: $url ==> returned msg: ${topicMessage.payload}")
+        }
+        mCompositeDisposable?.add(newDisposable!!)
+        subscribedMap[url] = newDisposable
+    }
+
+    private fun unsubscribeChannel(url: String) {
+        Timber.i("<<< unsubscribe channel: $url")
+        subscribedMap[url]?.let {
+            it.dispose()
+            mCompositeDisposable?.remove(it)
+        }
+        subscribedMap.remove(url)
+    }
 
     fun subscribeEventChannel(eventId: String?) {
         if (eventId == null) return
@@ -89,11 +105,20 @@ class BackService : Service() {
         subscribeChannel(url)
     }
 
-    fun unSubscribeEventChannel(eventId: String?) {
+    fun unsubscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
         val url = "$URL_EVENT/$mPlatformId/$eventId"
-        unSubscribeChannel(url)
+        unsubscribeChannel(url)
+    }
+
+    fun unsubscribeAllEventChannel() {
+        //要 clone 一份 list 來處理 url 判斷，避免刪減 map 資料時產生 ConcurrentModificationException
+        val urlList = subscribedMap.keys.toList()
+        urlList.forEach { url ->
+            if (url.contains("$URL_EVENT/"))
+                unsubscribeChannel(url)
+        }
     }
 
     fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
@@ -104,12 +129,21 @@ class BackService : Service() {
         subscribeChannel(url)
     }
 
-    fun unSubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
+    fun unsubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
         val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
 
-        unSubscribeChannel(url)
+        unsubscribeChannel(url)
+    }
+
+    fun unsubscribeAllHallChannel() {
+        //要 clone 一份 list 來處理 url 判斷，避免刪減 map 資料時產生 ConcurrentModificationException
+        val urlList = subscribedMap.keys.toList()
+        urlList.forEach { url ->
+            if (url.contains("$URL_HALL/"))
+                unsubscribeChannel(url)
+        }
     }
 
     override fun onDestroy() {
@@ -123,7 +157,7 @@ class BackService : Service() {
 
     private fun connect() {
         try {
-            Timber.e(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
+            Timber.i(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
             mStompClient = Stomp.over(
@@ -230,14 +264,6 @@ class BackService : Service() {
         mReconnectCount++
         releaseSocket()
         connect()
-        /* //重連次數
-        if (reconnectCount++ < MAX_RECONNECT_COUNT) {
-            connect()
-        } else {
-            releaseSocket()
-            stopSelf()
-        }
-        */
     }
 
     //關閉所有連線通道，釋放資源
@@ -249,7 +275,7 @@ class BackService : Service() {
         mStompClient = null
     }
 
-    private fun StompClient.subscribe(url: String, respond : (StompMessage) -> Unit = { }): Disposable? {
+    private fun StompClient.subscribe(url: String, respond: (StompMessage) -> Unit = { }): Disposable? {
         return this.topic(url, mHeader)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -264,7 +290,7 @@ class BackService : Service() {
 
     @SuppressLint("CheckResult")
     fun sendMessage(url: String, content: String) {
-        Timber.e("start sending message to server")
+        Timber.i("start sending message to server")
         val sendHeader = mHeader.toMutableList().apply {
             this.add(StompHeader(StompHeader.DESTINATION, url))
         }
@@ -272,27 +298,11 @@ class BackService : Service() {
         mStompClient?.send(StompMessage(StompCommand.SEND, sendHeader, content))?.compose(
             applySchedulers()
         )?.subscribe({
-            Timber.e("sending message to server succeed!!!")
+            Timber.i("傳送訊息成功!!!")
         }, { throwable ->
             Timber.e("傳送訊息失敗 ==> $throwable")
             reconnect()
         })
-    }
-
-    private val subscribedMap = mutableMapOf<String, Disposable?>()
-
-    private fun subscribeChannel(url: String) {
-        Timber.e(">>> subscribeEvent: $url")
-        val newDisposable: Disposable? = mStompClient?.subscribe(url) { topicMessage ->
-            Timber.e(">>> returned msg: ${topicMessage.payload}")
-        }
-        mCompositeDisposable?.add(newDisposable!!)
-        subscribedMap[url] = newDisposable
-    }
-
-    private fun unSubscribeChannel(url: String) {
-        Timber.e(">>> unSubscribeEvent: $url")
-        subscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
     }
 
     private fun applySchedulers(): CompletableTransformer {

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.SERVICE_SEND_DATA
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
@@ -94,7 +93,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     private fun subscribeBroadCastReceiver() {
         val filter = IntentFilter().apply {
-            addAction(SERVICE_SEND_DATA)
+            addAction(BackService.SERVICE_SEND_DATA)
         }
 
         registerReceiver(receiver, filter)
