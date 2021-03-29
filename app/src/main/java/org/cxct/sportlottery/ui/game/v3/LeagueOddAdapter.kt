@@ -17,7 +17,6 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import timber.log.Timber
 import java.util.*
 
 class LeagueOddAdapter(private val matchType: MatchType) :
@@ -466,7 +465,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     timer?.schedule(object : TimerTask() {
                         override fun run() {
                             timeMillis += 1000
-                            Timber.d("$timeMillis")
                             Handler(Looper.getMainLooper()).post {
                                 listener?.onTimerUpdate(timeMillis)
                             }
