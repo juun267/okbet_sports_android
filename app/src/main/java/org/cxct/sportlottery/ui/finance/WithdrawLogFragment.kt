@@ -3,34 +3,19 @@ package org.cxct.sportlottery.ui.finance
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.archit.calendardaterangepicker.customviews.CalendarListener
-import com.archit.calendardaterangepicker.customviews.DateSelectedType
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.activity_recharge_log.*
-import kotlinx.android.synthetic.main.activity_recharge_log.date_range_selector
-import kotlinx.android.synthetic.main.activity_recharge_log.iv_scroll_to_top
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
-import kotlinx.android.synthetic.main.activity_recharge_log.view_no_record
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_rech_list.*
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import java.util.*
 
 
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
@@ -94,8 +79,8 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun initOnclick(view: View) {
 
-        iv_scroll_to_top.setOnClickListener {
-            rv_data.smoothScrollToPosition(0)
+        view.iv_scroll_to_top.setOnClickListener {
+            view.rvlist.smoothScrollToPosition(0)
         }
 
         view.date_range_selector.setOnClickSearchListener {
