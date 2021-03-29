@@ -419,6 +419,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        game_list.adapter = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 

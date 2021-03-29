@@ -59,6 +59,13 @@ class LeagueAdapter(private val matchType: MatchType) :
 
     override fun getItemCount(): Int = data.size
 
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+
+        holder.itemView.league_odd_list.adapter = null
+    }
+
     class ViewHolder private constructor(matchType: MatchType, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
