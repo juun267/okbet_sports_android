@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="SpUsage" >
+
+    <TextView
+        android:id="@+id/tv_count_control"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_radius_4_odds_item_more"
+        android:gravity="center"
+        android:letterSpacing="0.09"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize15sp"
+        android:text="@string/odds_detail_more"
+        tools:text="更多"
+        tools:ignore="SpUsage" />
+
+</RelativeLayout>
+
