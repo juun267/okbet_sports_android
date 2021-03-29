@@ -20,10 +20,14 @@ import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.odds.League
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
@@ -43,6 +47,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.odds.MoreGameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -222,6 +227,8 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+
+    var gameCardList: MutableList<MatchOdd>? = null
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -1331,6 +1338,14 @@ class GameViewModel(
             else -> {
             }
         }
+    }
+
+    fun getGameCard(): MutableList<MatchInfo?> {
+        val matchOddList: MutableList<MatchInfo?> = mutableListOf()
+        gameCardList?.forEach {
+            matchOddList.add(it.matchInfo)
+        }
+        return matchOddList
     }
 
     fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
