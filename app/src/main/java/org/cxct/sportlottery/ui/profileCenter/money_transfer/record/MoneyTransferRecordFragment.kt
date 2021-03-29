@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_search_bar
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.rv_record
+import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
@@ -25,23 +26,20 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
             iv_scroll_to_top.apply {
                 when {
-                    firstVisibleItemPosition > 0 ->
-                        if (alpha == 0f) {
-                            visibility = View.VISIBLE
-                            animate().alpha(1f).setDuration(300).setListener(null)
-                        }
-                    else ->
-                        if (alpha == 1f) {
-                            animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                                override fun onAnimationEnd(animation: Animator) {
-                                    visibility = View.GONE
-                                }
-                            })
-                        }
+                    firstVisibleItemPosition > 0 && alpha == 0f -> {
+                        visibility = View.VISIBLE
+                        animate().alpha(1f).setDuration(300).setListener(null)
+                    }
+                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
+                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                visibility = View.GONE
+                            }
+                        })
+                    }
                 }
             }
         }
-
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
