@@ -43,6 +43,11 @@ data class MatchOdd(
     var status: Int = BetStatus.ACTIVATED.code,
     @Json(name = "gameType")
     var gameType: String,
+    @Json(name = "homeScore")
+    var homeScore: Int,
+    @Json(name = "awayScore")
+    var awayScore: Int,
+
 ){
     var oddState: Int = OddState.SAME.state
 

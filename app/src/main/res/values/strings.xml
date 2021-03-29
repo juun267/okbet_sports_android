@@ -557,6 +557,7 @@
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_in_play">滚球&#160;&#160;</string>
     <string name="bet_info_current_money">余额:%s</string>
+    <string name="bet_info_in_play_score">&#160;(%1$s:%2$s)</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
