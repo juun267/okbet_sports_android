@@ -19,7 +19,7 @@ class InfoCenterViewModel(
     betInfoRepository: BetInfoRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
-    enum class DataType { UNREAD, READED }//未讀,已讀
+    enum class DataType { UNREAD, READ }//未讀,已讀
 
     //未讀資料
     val userUnreadMsgList: LiveData<MutableList<InfoCenterData>?>
@@ -27,9 +27,9 @@ class InfoCenterViewModel(
     private var _userUnreadMsgList = MutableLiveData<MutableList<InfoCenterData>?>()
 
     //已讀資料
-    val userReadedMsgList: LiveData<MutableList<InfoCenterData>?>
-        get() = _userReadedMsgList
-    private var _userReadedMsgList = MutableLiveData<MutableList<InfoCenterData>?>()
+    val userReadMsgList: LiveData<MutableList<InfoCenterData>?>
+        get() = _userReadMsgList
+    private var _userReadMsgList = MutableLiveData<MutableList<InfoCenterData>?>()
 
     //未讀總數目
     val totalUnreadMsgCount: LiveData<Int>
@@ -37,9 +37,9 @@ class InfoCenterViewModel(
     private var _totalUnreadMsgCount = MutableLiveData<Int>()
 
     //已讀總數目
-    val totalReadedMsgCount: LiveData<Int>
-        get() = _totalReadedMsgCount
-    private var _totalReadedMsgCount = MutableLiveData<Int>()
+    val totalReadMsgCount: LiveData<Int>
+        get() = _totalReadMsgCount
+    private var _totalReadMsgCount = MutableLiveData<Int>()
 
     //Loading
     val isLoading: LiveData<Boolean>
@@ -51,11 +51,12 @@ class InfoCenterViewModel(
 
     private var pageSize = 20 //預設每次載入20筆資料
     private var mIsGettingData = false //判斷請求任務是否進行中
-    private var mNeedMoreLoadingReaded = false //已讀資料判斷滑到底是否需要繼續加載
+
+    private var mNeedMoreLoadingRead = false //已讀資料判斷滑到底是否需要繼續加載
     private var mNeedMoreLoadingUnRead = false //未讀資料判斷滑到底是否需要繼續加載
 
 
-    fun getUserMsgList(isReload: Boolean, currentTotalCount: Int, dataType: DataType) {
+    fun getUserMsgList(isReload: Boolean = true, currentTotalCount: Int = 0, dataType: DataType) {
         _isLoading.value = true
         if (mIsGettingData) {
             _isLoading.value = false
@@ -72,11 +73,11 @@ class InfoCenterViewModel(
                     mCurrentTotalCount = 0
                     mNeedMoreLoadingUnRead = true
                 }
-                DataType.READED -> {
+                DataType.READ -> {
                     mIsReadNextRequestPage = 1
-                    _userReadedMsgList.value = mutableListOf()
+                    _userReadMsgList.value = mutableListOf()
                     mCurrentTotalCount = 0
-                    mNeedMoreLoadingReaded = true
+                    mNeedMoreLoadingRead = true
                 }
             }
             mIsReadNextRequestPage = 1
@@ -103,8 +104,8 @@ class InfoCenterViewModel(
                     }
                 }
             }
-            DataType.READED -> {
-                if (mNeedMoreLoadingReaded) {
+            DataType.READ -> {
+                if (mNeedMoreLoadingRead) {
                     viewModelScope.launch {
                         val result = doNetwork(androidContext) {
                             val infoCenterRequest =
@@ -112,11 +113,11 @@ class InfoCenterViewModel(
                             infoCenterRepository.getUserNoticeList(infoCenterRequest)
                         }
 
-                        _userReadedMsgList.value = result?.infoCenterData
-                        _totalReadedMsgCount.value = result?.total?: 0
+                        _userReadMsgList.value = result?.infoCenterData
+                        _totalReadMsgCount.value = result?.total?: 0
 
                         //判斷是不是可以再加載
-                        mNeedMoreLoadingReaded =
+                        mNeedMoreLoadingRead =
                             (mCurrentTotalCount + (result?.infoCenterData?.size
                                 ?: 0)) < result?.total ?: 0
                         mIsReadNextRequestPage++
@@ -133,32 +134,31 @@ class InfoCenterViewModel(
     fun getMsgCount(dataType: DataType) {
         viewModelScope.launch {
             _isLoading.value = true
-            var isRead = when (dataType) {
+            val isRead = when (dataType) {
                 DataType.UNREAD -> 0
-                DataType.READED -> 1
+                DataType.READ -> 1
             }
             val result = doNetwork(androidContext) {
-                val infoCenterRequest =
-                    InfoCenterRequest(1, 20, isRead)
+                val infoCenterRequest = InfoCenterRequest(1, pageSize, isRead)
                 infoCenterRepository.getUserNoticeList(infoCenterRequest)
             }
             when (dataType) {
                 DataType.UNREAD -> {
                     _totalUnreadMsgCount.value = result?.total?: 0
                 }
-                DataType.READED -> {
-                    _totalReadedMsgCount.value = result?.total?: 0
+                DataType.READ -> {
+                    _totalReadMsgCount.value = result?.total?: 0
                 }
             }
             _isLoading.value = false
         }
     }
 
-    fun setDataReaded(msgId: String) {
+    fun setDataRead(msgId: String) {
         viewModelScope.launch {
             _isLoading.value = true
             doNetwork(androidContext) {
-                infoCenterRepository.setMsgReaded(msgId)
+                infoCenterRepository.setMsgRead(msgId)
             }
             _isLoading.value = false
         }

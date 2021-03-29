@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.fragment_other_bet_record.*
 import kotlinx.android.synthetic.main.fragment_other_bet_record.iv_scroll_to_top
 import kotlinx.android.synthetic.main.view_total_record.*
