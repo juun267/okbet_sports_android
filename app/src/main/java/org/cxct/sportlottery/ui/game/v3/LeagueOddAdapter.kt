@@ -140,6 +140,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 betStatus = oddListHDP?.get(0)?.status
 
+                oddStatus = oddListHDP?.get(0)?.oddState
+
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
                 } else {
@@ -174,6 +176,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 isSelected = oddListHDP?.get(1)?.isSelected ?: false
 
                 betStatus = oddListHDP?.get(1)?.status
+
+                oddStatus = oddListHDP?.get(1)?.oddState
 
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
@@ -212,6 +216,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 betStatus = oddListOU?.get(0)?.status
 
+                oddStatus = oddListOU?.get(0)?.oddState
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
@@ -248,6 +254,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 isSelected = oddListOU?.get(1)?.isSelected ?: false
 
                 betStatus = oddListOU?.get(1)?.status
+
+                oddStatus = oddListOU?.get(1)?.oddState
 
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
@@ -342,6 +350,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 betStatus = oddList1X2?.get(0)?.status
 
+                oddStatus = oddList1X2?.get(0)?.oddState
+
                 odd_1x2_top_text.text = "1"
 
                 odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 2) {
@@ -376,6 +386,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 betStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
                     oddList1X2[1]?.status
+                } else {
+                    null
+                }
+
+                oddStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[1]?.oddState
                 } else {
                     null
                 }
@@ -418,6 +434,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddList1X2[1]?.status
                 } else if (oddList1X2 != null && oddList1X2.size >= 3) {
                     oddList1X2[2]?.status
+                } else {
+                    null
+                }
+
+                oddStatus = if (oddList1X2 != null && oddList1X2.size == 2) {
+                    oddList1X2[1]?.oddState
+                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[2]?.oddState
                 } else {
                     null
                 }
