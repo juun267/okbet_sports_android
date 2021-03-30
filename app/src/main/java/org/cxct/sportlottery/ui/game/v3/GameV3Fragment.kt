@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -69,7 +70,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ,gameCardList ->
+                { matchOdd, gameCardList ->
                     viewModel.getOddsDetail(matchOdd.matchInfo?.id)
                     viewModel.gameCardList = gameCardList
                 },
@@ -404,6 +405,68 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 updateMatchOdd?.leagueTime = matchClockCO.matchTime
 
                                 leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
+            it?.let { oddsChangeEvent ->
+                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+                    val leagueOdds = leagueAdapter.data
+
+                    leagueOdds.forEach { leagueOdd ->
+                        if (leagueOdd.isExpand) {
+
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                matchOdd.odds.forEach { oddTypeMap ->
+
+                                    val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
+                                    val odds = oddTypeMap.value
+
+                                    odds.forEach { odd ->
+                                        odd?.let { oddNonNull ->
+                                            val oddSocket = oddsSocket?.find { oddSocket ->
+                                                oddSocket.id == odd.id
+                                            }
+
+                                            oddSocket?.let { oddSocketNonNull ->
+
+                                                oddNonNull.odds?.let { oddValue ->
+                                                    oddSocketNonNull.odds?.let { oddSocketValue ->
+                                                        when {
+                                                            oddValue > oddSocketValue -> {
+                                                                oddNonNull.oddState =
+                                                                    OddState.SMALLER.state
+                                                            }
+                                                            oddValue < oddSocketValue -> {
+                                                                oddNonNull.oddState =
+                                                                    OddState.LARGER.state
+                                                            }
+                                                            oddValue == oddSocketValue -> {
+                                                                oddNonNull.oddState =
+                                                                    OddState.SAME.state
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+
+                                                oddNonNull.odds = oddSocketNonNull.odds
+
+                                                oddNonNull.status = oddSocketNonNull.status
+
+                                                leagueAdapter.notifyItemChanged(
+                                                    leagueOdds.indexOf(
+                                                        leagueOdd
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
