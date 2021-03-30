@@ -2,18 +2,18 @@ package org.cxct.sportlottery.ui.profileCenter.sportRecord
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
+import kotlinx.android.synthetic.main.fragment_sport_bet_record.iv_scroll_to_top
+import kotlinx.android.synthetic.main.fragment_sport_bet_record.status_selector
 import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -41,28 +41,20 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
             iv_scroll_to_top.apply {
-                if (firstVisibleItemPosition > 0) {
-                    if (alpha == 0f) {
-                        alpha = 0f
+                when {
+                    firstVisibleItemPosition > 0 && alpha == 0f -> {
                         visibility = View.VISIBLE
-                        animate()
-                            .alpha(1f)
-                            .setDuration(300)
-                            .setListener(null)
+                        animate().alpha(1f).setDuration(300).setListener(null)
                     }
-                } else {
-                    if (alpha == 1f) {
-                        alpha = 1f
-                        animate()
-                            .alpha(0f)
-                            .setDuration(300)
-                            .setListener(object : AnimatorListenerAdapter() {
-                                override fun onAnimationEnd(animation: Animator) {
-                                    visibility = View.GONE
-                                }
-                            })
+                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
+                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                visibility = View.GONE
+                            }
+                        })
                     }
                 }
             }
@@ -149,6 +141,7 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
 
 
     }
+
     private fun initObserver() {
 
         viewModel.loading.observe(viewLifecycleOwner, {

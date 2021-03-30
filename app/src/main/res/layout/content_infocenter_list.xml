@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     tools:context=".ui.infoCenter.InfoCenterAdapter">
 
     <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="8dp"
@@ -38,6 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="3.5"
             android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="工商银行停用通知" />

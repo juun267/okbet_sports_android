@@ -63,11 +63,14 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Row, withdrawLogListener: WithdrawLogListener?) {
-            itemView.rech_log_date.text = item.withdrawDate
-            itemView.rech_log_time.text = item.withdrawTime
-            itemView.rech_log_amount.text = item.displayMoney
-            itemView.rech_log_type.text = item.withdrawType
-            itemView.rech_log_state.text = item.withdrawState
+
+            itemView.apply {
+                rech_log_date.text = item.withdrawDate
+                rech_log_time.text = item.withdrawTime
+                rech_log_amount.text = item.displayMoney
+                rech_log_type.text = item.withdrawType
+                rech_log_state.text = item.withdrawState
+            }
 
             itemView.setOnClickListener {
                 withdrawLogListener?.onClick(item)
@@ -79,29 +82,14 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun setupStateTextColor(item: Row) {
             when (item.checkStatus) {
                 CheckStatus.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.textGray
-                        )
-                    )
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorGray))
                 }
                 CheckStatus.PASS.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.green_blue
-                        )
-                    )
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorGreen))
                 }
 
                 CheckStatus.UN_PASS.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.orangeRed
-                        )
-                    )
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorRed))
                 }
             }
         }
@@ -109,8 +97,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.view_item_recharge_log, parent, false)
+                val view = layoutInflater.inflate(R.layout.view_item_recharge_log, parent, false)
 
                 return ViewHolder(view)
             }
@@ -128,11 +115,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup) =
-                NoDataViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_footer_no_data, parent, false)
-                )
+            fun from(parent: ViewGroup) = NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
         }
     }
 }
