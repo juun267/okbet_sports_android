@@ -221,7 +221,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
     suspend fun clear() {
         with(sharedPref.edit()) {
-            /*remove(KEY_IS_LOGIN)*/
+            _isLogin.value = false
             remove(KEY_TOKEN)
             apply()
         }
