@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 
@@ -133,7 +135,51 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun initSocketReceiver() {
-        //TODO add socket event
+        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
+            it?.let { oddsChangeEvent ->
+                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+
+                    val odds = outrightOddAdapter.data.filterIsInstance<Odd>()
+
+                    odds.forEach { odd ->
+                        oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
+
+                            val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
+                                oddSocket.id == odd.id
+                            }
+
+                            oddSocket?.let { oddSocketNonNull ->
+                                odd.odds?.let { oddValue ->
+                                    oddSocketNonNull.odds?.let { oddSocketValue ->
+                                        when {
+                                            oddValue > oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.SMALLER.state
+                                            }
+                                            oddValue < oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.LARGER.state
+                                            }
+                                            oddValue == oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.SAME.state
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                odd.odds = oddSocketNonNull.odds
+
+                                odd.status = oddSocketNonNull.status
+
+                                outrightOddAdapter.notifyItemChanged(odds.indexOf(odd))
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun backEvent() {
