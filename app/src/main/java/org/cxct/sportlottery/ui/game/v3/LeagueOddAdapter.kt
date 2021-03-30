@@ -42,7 +42,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     var leagueOddListener: LeagueOddListener? = null
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (playType) {
             PlayType.OU_HDP -> ViewHolderHdpOu.from(parent)
@@ -54,8 +53,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
-            is ViewHolder1x2 -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
+            is ViewHolderHdpOu -> holder.bind(
+                matchType,
+                item,
+                data as MutableList<MatchOdd>,
+                leagueOddListener,
+                isTimerEnable
+            )
+            is ViewHolder1x2 -> holder.bind(
+                matchType,
+                item,
+                data as MutableList<MatchOdd>,
+                leagueOddListener,
+                isTimerEnable
+            )
         }
     }
 
@@ -69,21 +80,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
     }
 
-
     class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
         fun bind(
             matchType: MatchType,
             item: MatchOdd,
+            gameCardList: MutableList<MatchOdd>,
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean
         ) {
-
             setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
+                leagueOddListener?.onClickLive(item, gameCardList)
             }
         }
 
@@ -273,23 +283,28 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
+        
         fun bind(
             matchType: MatchType,
             item: MatchOdd,
+            gameCardList: MutableList<MatchOdd>,
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean
         ) {
-
             setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
+                leagueOddListener?.onClickLive(item, gameCardList)
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType, isTimerEnable: Boolean) {
+        private fun setupMatchInfo(
+            item: MatchOdd,
+            matchType: MatchType,
+            isTimerEnable: Boolean
+        ) {
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
@@ -486,10 +501,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 }
 
 class LeagueOddListener(
-    val clickListenerLive: (item: MatchOdd) -> Unit,
+    val clickListenerLive: (item: MatchOdd, gameCardList: MutableList<MatchOdd>) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
-    fun onClickLive(item: MatchOdd) = clickListenerLive(item)
+    fun onClickLive(item: MatchOdd, gameCardList: MutableList<MatchOdd>) =
+        clickListenerLive(item, gameCardList)
+
     fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         clickListenerBet(matchOdd, oddString, odd)
 }

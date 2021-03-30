@@ -5,7 +5,7 @@
     android:id="@+id/account_balance_view"
     android:layout_width="match_parent"
     android:layout_height="44dp"
-    android:background="@color/white"
+    android:background="@color/colorWhite"
     android:gravity="center"
 
     android:orientation="horizontal">
@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/platform_account_money"
+        android:textStyle="bold"
         android:textColor="@color/colorDarkBlack"
         android:textSize="@dimen/textSize12sp" />
 
@@ -24,6 +25,7 @@
         android:layout_marginHorizontal="8dp"
         android:textColor="@color/colorBlueDark"
         android:textSize="@dimen/textSize20sp"
+        android:textStyle="bold"
         tools:text="87,547,000.000"
         />
 

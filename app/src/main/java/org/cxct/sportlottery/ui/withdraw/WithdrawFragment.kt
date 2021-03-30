@@ -21,6 +21,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
+import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.util.TextUtil
 
 
@@ -33,9 +35,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_withdraw, container, false).apply {
-
-        }
+        return inflater.inflate(R.layout.fragment_withdraw, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,8 +52,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupData() {
         viewModel.apply {
             getMoneyConfigs()
-            getBankCardList()
-            getMoney()
         }
     }
 
@@ -66,6 +64,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initTab() {
+        tab_bank_card.visibility = View.GONE
+        tab_crypto.visibility = View.GONE
         selectDealType(TransferType.BANK)
     }
 
@@ -77,7 +77,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun selectDealType(type: TransferType) {
         viewModel.setDealType(type)
         setupDealView(type)
-        viewModel.getBankCardList()
     }
 
     private fun setupDealView(type: TransferType) {
@@ -101,13 +100,17 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     private fun setupClickEvent() {
         tab_bank_card.setOnClickListener {
-            if (!it.isSelected)
+            if (!it.isSelected) {
                 selectDealType(TransferType.BANK)
+                clearEvent()
+            }
         }
 
         tab_crypto.setOnClickListener {
-            if (!it.isSelected)
+            if (!it.isSelected) {
                 selectDealType(TransferType.CRYPTO)
+                clearEvent()
+            }
         }
 
         ll_select_bank.setOnClickListener {
@@ -116,8 +119,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
-            withdrawBankCardData?.let { viewModel.addWithdraw(it.id.toLong(), et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
-
+            withdrawBankCardData?.let { viewModel.addWithdraw(withdrawBankCardData, et_withdrawal_amount.getText(), et_withdrawal_password.getText()) }
         }
 
         et_withdrawal_amount.getAllButton {
@@ -129,7 +131,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //提款金額
-            et_withdrawal_amount.afterTextChanged { checkWithdrawAmount(it) }
+            et_withdrawal_amount.afterTextChanged { checkWithdrawAmount(withdrawBankCardData, it) }
 
             //提款密碼
             setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
@@ -166,11 +168,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             viewModel.getWithdrawHint()
         })
 
-        viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer {
-            val iniData = it[0]
+        viewModel.withdrawCardList.observe(this.viewLifecycleOwner, Observer {
+            val iniData = it.firstOrNull()
             withdrawBankCardData = iniData
             tv_select_bank_card.text = getBankCardTailNo(iniData)
-            iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(iniData.bankName))
+            iniData?.bankName?.let { bankName ->
+                iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(bankName))
+            }
+
             initSelectBankCardBottomSheet(view, it.toMutableList())
         })
 
@@ -191,9 +196,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         //資金設定
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
             if (et_withdrawal_amount.getText().isEmpty()) {
-                viewModel.getWithdrawRate()
+                viewModel.getWithdrawRate(withdrawBankCardData)
             } else {
-                viewModel.getWithdrawRate(et_withdrawal_amount.getText().toDouble())
+                viewModel.getWithdrawRate(withdrawBankCardData, et_withdrawal_amount.getText().toDouble())
             }
             viewModel.getWithdrawHint()
         })
@@ -211,6 +216,26 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         //提款手續費提示
         viewModel.withdrawRateHint.observe(this.viewLifecycleOwner, Observer {
             tv_hint_withdraw_rate.text = it
+        })
+
+        //提款虛擬幣所需餘額
+        viewModel.withdrawCryptoAmountHint.observe(this.viewLifecycleOwner, Observer {
+            tv_hint_withdraw_crypto_amount.visibility = if (it.isEmpty())
+                View.GONE
+            else {
+                tv_hint_withdraw_crypto_amount.text = it
+                View.VISIBLE
+            }
+        })
+
+        //提款虛擬幣手續費
+        viewModel.withdrawCryptoFeeHint.observe(this.viewLifecycleOwner, Observer {
+            tv_hint_withdraw_crypto_fee.visibility = if (it.isEmpty())
+                View.GONE
+            else {
+                tv_hint_withdraw_crypto_fee.text = it
+                View.VISIBLE
+            }
         })
 
         //提款密碼訊息
@@ -246,20 +271,33 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)
             bankCardAdapter = BankCardAdapter(lv_bank_item.context, bankCardList, BankCardAdapterListener {
-                view.iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(it.bankName))
+                val cardIcon = when (it.transferType) {
+                    TransferType.BANK -> getBankIconByBankName(it.bankName)
+                    TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+                }
+                view.iv_bank_card_icon.setImageResource(cardIcon)
+
                 view.tv_select_bank_card.text = getBankCardTailNo(it)
+
                 withdrawBankCardData = it
+                viewModel.setupWithdrawCard(it)
                 dismiss()
             })
             lv_bank_item.adapter = bankCardAdapter
+
+            bankCardBottomSheet.tv_game_type_title.text = when (bankCardList.firstOrNull()?.transferType) {
+                TransferType.CRYPTO -> getString(R.string.select_crypto_card)
+                else -> getString(R.string.select_bank_card)
+            }
             bankCardBottomSheet.btn_close.setOnClickListener {
                 this.dismiss()
             }
         }
+        bankCardAdapter.initSelectStatus()
     }
 
-    private fun getBankCardTailNo(data: BankCardList): String {
-        return String.format(getString(R.string.selected_bank_card), data.bankName, data.cardNo)
+    private fun getBankCardTailNo(data: BankCardList?): String {
+        return String.format(getString(R.string.selected_bank_card), data?.bankName ?: "", data?.cardNo ?: "")
     }
 }
 
@@ -293,16 +331,18 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
 
     private fun setView(holder: ListViewHolder, data: BankCardList, position: Int, listener: BankCardAdapterListener) {
         holder.apply {
-            /*val viewHolder = ViewHolder()*/
             tvBank?.text = data.bankName
-            ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
+            val cardIcon = when (data.transferType) {
+                TransferType.BANK -> getBankIconByBankName(data.bankName)
+                TransferType.CRYPTO -> getCryptoIconByCryptoName(data.transferType.type)
+            }
+            ivBankIcon?.setImageResource(cardIcon)
             if (position == selectedPosition)
                 this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
             else
                 llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
             llSelectBankCard?.setOnClickListener {
                 if (selectedPosition != position) {
-                    //                data.isSelected = !data.isSelected
                     selectedPosition = position
                     notifyDataSetChanged()
                     listener.onClick(data)

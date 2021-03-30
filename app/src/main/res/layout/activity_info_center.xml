@@ -28,7 +28,7 @@
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
+                app:tint="@color/colorWhite" />
 
             <TextView
                 android:id="@+id/tv_toolbar_title"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/news_center"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +74,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/btn_readed_letters"
+                    android:id="@+id/btn_read_letters"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
@@ -90,7 +90,7 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/white"/>
+                    android:background="@color/colorWhite" />
 
                 <RadioButton
                     android:id="@+id/btn_unread_letters"
@@ -157,73 +157,49 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:srlDragRate="0.3"
-        app:srlEnableLoadMore="true"
-        app:srlEnablePureScrollMode="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_title">
-
-        <androidx.core.widget.NestedScrollView
-            android:overScrollMode="never"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:overScrollMode="never"
-                    android:id="@+id/rv_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    tools:context="org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/content_infocenter_list"
-                    tools:orientation="vertical" />
-
-                <include
-                    layout="@layout/item_footer_no_data"/>
-
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-
-
-
-    <LinearLayout
-        android:id="@+id/image_no_message"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="60dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_title"
-        tools:visibility="gone">
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_imgnorecord" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/finance_list_no_record" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                tools:context="org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter"
+                tools:itemCount="5"
+                tools:listitem="@layout/content_infocenter_list"
+                tools:orientation="vertical" />
 
-    </LinearLayout>
+            <include
+                android:id="@+id/image_no_message"
+                layout="@layout/view_no_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
+        </FrameLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    <ImageView
+        android:id="@+id/iv_scroll_to_top"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/bg_circle_gray6_alpha50"
+        android:padding="14dp"
+        android:src="@drawable/ic_scroll_to_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

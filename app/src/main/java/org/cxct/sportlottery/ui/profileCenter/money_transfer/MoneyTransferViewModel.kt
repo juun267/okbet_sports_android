@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.util.Event
 
 class MoneyTransferViewModel(
     private val androidContext: Context,
@@ -67,7 +68,7 @@ class MoneyTransferViewModel(
         }
     }
 
-    val isPlatSwitched: LiveData<Boolean?>
+    val isPlatSwitched: LiveData<Event<Boolean>>
         get() = _isPlatSwitched
 
     val allBalanceResultList: LiveData<List<GameData>>
@@ -99,7 +100,7 @@ class MoneyTransferViewModel(
 
 
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
-    private val _isPlatSwitched = MutableLiveData<Boolean?>()
+    private val _isPlatSwitched = MutableLiveData<Event<Boolean>>()
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
@@ -130,10 +131,8 @@ class MoneyTransferViewModel(
         _toolbarName.value = name
     }
 
-    fun setIsPlatSwitched(isSwitched: Boolean?) {
-        isSwitched.let {
-            _isPlatSwitched.value = it
-        }
+    fun setIsPlatSwitched() {
+        _isPlatSwitched.value = Event(!(isPlatSwitched.value?.getContentIfNotHandled() ?: false))
     }
 
     fun getAllBalance() {

@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.os.Handler
 import android.view.Gravity
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
@@ -18,14 +18,20 @@ const val BUTTON_SPREAD_TYPE_CENTER: Int = 0
 const val BUTTON_SPREAD_TYPE_END: Int = 1
 const val BUTTON_SPREAD_TYPE_BOTTOM: Int = 2
 
+
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+
+    private val rlOddItem = itemView.findViewById<RelativeLayout>(R.id.rl_odd_item)
     private val vCover = itemView.findViewById<View>(R.id.iv_disable_cover)
     private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
     private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
 
+
     fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?, spreadType: Int) {
+
+        if (rlOddItem != null) rlOddItem.visibility = if (odd.itemViewVisible) View.VISIBLE else View.GONE
 
         setData(odd)
 
@@ -34,7 +40,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         when (spreadType) {
             BUTTON_SPREAD_TYPE_CENTER -> {
                 tvOdds.gravity = Gravity.CENTER
-                tvOdds.setPadding(0,0,0,0)
+                tvOdds.setPadding(0, 0, 0, 0)
             }
             BUTTON_SPREAD_TYPE_END -> {
                 tvOdds.gravity = Gravity.END or Gravity.CENTER_VERTICAL
@@ -87,7 +93,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     }
 
 
-    private fun setData(odd: Odd){
+    private fun setData(odd: Odd) {
         if (tvSpread != null && !odd.spread.isNullOrEmpty()) {
             tvSpread.text = odd.spread
         }
@@ -100,4 +106,6 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             tvOdds.text = TextUtil.formatForOdd(odds)
         }
     }
+
+
 }

@@ -9,4 +9,5 @@ data class OddsDetailListData(
     var oddArrayList: List<Odd>, //odds[]
 ) {
     var isExpand: Boolean = true
+    var isMoreExpand: Boolean = false
 }

@@ -85,7 +85,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/greet"
-                                android:textColor="@color/colorGrayDark"
+                                android:textColor="@color/colorBlackLight"
                                 android:textSize="@dimen/textSize16sp"
                                 android:textStyle="bold" />
 
@@ -93,7 +93,7 @@
                                 android:id="@+id/tv_greet"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorGrayDark"
+                                android:textColor="@color/colorBlackLight"
                                 android:textSize="@dimen/textSize16sp"
                                 android:textStyle="bold"
                                 tools:text="Jason0921" />
@@ -479,7 +479,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:text="@string/growth"
-                        android:textColor="@color/colorGrayDark"
+                        android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold" />
 

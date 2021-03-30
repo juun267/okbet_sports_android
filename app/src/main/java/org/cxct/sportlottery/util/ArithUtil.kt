@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.util.Log
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -88,24 +89,11 @@ object ArithUtil {
     }
 
     /**
-     * 小數大於比較
+     * 小數運算
      */
-    fun biggerThan(paramsS: Double, paramsO: Double?): Boolean {
-        val decimalSubject = BigDecimal(paramsS)
+    fun minus(paramsS: Double?, paramsO: Double?): Double {
+        val decimalSubject = BigDecimal(paramsS ?: 0.0)
         val decimalObject = BigDecimal(paramsO ?: 0.0)
-        return decimalSubject > decimalObject
+        return round((decimalSubject - decimalObject).toDouble(), 3, RoundingMode.FLOOR).toDouble()
     }
-
-    fun noBiggerThan(paramsS: Double, paramsO: Double?): Boolean {
-        val decimalSubject = BigDecimal(paramsS)
-        val decimalObject = BigDecimal(paramsO ?: 0.0)
-        return decimalSubject <= decimalObject
-    }
-
-    fun smallerThan(paramsS: Double, paramsO: Double?): Boolean {
-        val decimalSubject = BigDecimal(paramsS)
-        val decimalObject = BigDecimal(paramsO ?: 0.0)
-        return decimalSubject < decimalObject
-    }
-
 }

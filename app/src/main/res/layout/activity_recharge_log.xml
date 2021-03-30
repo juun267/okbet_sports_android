@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite1"
     tools:content="org.cxct.sportlottery.ui.finance.RechargeLogFragment">
 
@@ -17,15 +17,14 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/date_range_selector"
-        >
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@id/date_range_selector">
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/selector_order_status"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="44dp"
+            android:layout_weight="1"
             app:defaultStatusText="@string/recharge_state_all"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
@@ -34,13 +33,13 @@
             android:layout_height="match_parent"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:background="@color/bright_gray2" />
+            android:background="@color/colorWhite6" />
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/selector_method_status"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="44dp"
+            android:layout_weight="1"
             app:defaultStatusText="@string/recharge_channel_all"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
@@ -62,7 +61,7 @@
         android:maxLines="1"
         android:minWidth="68dp"
         android:text="@string/recharge_log_order_time"
-        android:textColor="@color/gray4"
+        android:textColor="@color/colorBlackLight"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
@@ -79,7 +78,7 @@
         android:maxLines="1"
         android:minWidth="72dp"
         android:text="@string/recharge_log_recharge_amount"
-        android:textColor="@color/gray4"
+        android:textColor="@color/colorBlackLight"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
@@ -96,7 +95,7 @@
         android:maxLines="1"
         android:minWidth="60dp"
         android:text="@string/recharge_log_channel_type"
-        android:textColor="@color/gray4"
+        android:textColor="@color/colorBlackLight"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
@@ -114,7 +113,7 @@
         android:maxLines="1"
         android:minWidth="52dp"
         android:text="@string/recharge_log_order_state"
-        android:textColor="@color/gray4"
+        android:textColor="@color/colorBlackLight"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
@@ -122,28 +121,50 @@
         app:layout_constraintStart_toEndOf="@id/recg_log_channel_type"
         app:layout_constraintTop_toTopOf="@id/rech_log_column" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/list_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/rech_log_column">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rech_log_column"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
-            android:id="@+id/rvlist"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                tools:listitem="@layout/view_item_recharge_log" />
 
-    <include
-        android:id="@+id/view_no_record"
-        layout="@layout/view_no_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rech_log_column" />
+            <include
+                android:id="@+id/view_no_record"
+                layout="@layout/view_no_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rech_log_column"
+                tools:visibility="gone" />
+
+        </FrameLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    <ImageView
+        android:id="@+id/iv_scroll_to_top"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/bg_circle_gray6_alpha50"
+        android:padding="14dp"
+        android:src="@drawable/ic_scroll_to_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

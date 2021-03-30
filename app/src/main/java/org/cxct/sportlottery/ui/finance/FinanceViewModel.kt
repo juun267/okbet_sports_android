@@ -32,8 +32,8 @@ class FinanceViewModel(
     betInfoRepository: BetInfoRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
 
-    val loading: LiveData<Boolean> //使用者餘額
-        get() = _loading
+    val isLoading: LiveData<Boolean> //使用者餘額
+        get() = _isLoading
 
     val userMoney: LiveData<Double?>
         get() = _userMoney
@@ -90,7 +90,7 @@ class FinanceViewModel(
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
-    private val _loading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>()
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userMoney = MutableLiveData<Double?>()
     private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
@@ -178,11 +178,11 @@ class FinanceViewModel(
     }
 
     private fun loading() {
-        _loading.postValue(true)
+        _isLoading.postValue(true)
     }
 
     private fun hideLoading() {
-        _loading.postValue(false)
+        _isLoading.postValue(false)
     }
 
     fun getUserRechargeList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
@@ -252,6 +252,7 @@ class FinanceViewModel(
             }
 
             _userRechargeResult.postValue(result)
+            hideLoading()
         }
     }
 
@@ -260,6 +261,7 @@ class FinanceViewModel(
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime
     ) {
+        loading()
         when {
             isFirstFetch -> {
                 _isFinalPage.postValue(false)
@@ -325,6 +327,7 @@ class FinanceViewModel(
             }
 
             _userWithdrawResult.postValue(result)
+            hideLoading()
         }
     }
 

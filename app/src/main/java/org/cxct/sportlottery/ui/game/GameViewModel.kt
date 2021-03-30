@@ -20,10 +20,14 @@ import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
+import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.odds.League
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
@@ -43,6 +47,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.odds.MoreGameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -76,11 +81,9 @@ class GameViewModel(
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
-    val matchPreloadInPlay: LiveData<MatchPreloadResult>
+    private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadInPlay
-
-    val matchPreloadToday: LiveData<MatchPreloadResult>
-        get() = _matchPreloadToday
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
@@ -134,8 +137,6 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
-    private val _matchPreloadInPlay = MutableLiveData<MatchPreloadResult>()
-    private val _matchPreloadToday = MutableLiveData<MatchPreloadResult>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
@@ -226,6 +227,8 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+
+    var gameCardList: MutableList<MatchOdd>? = null
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -348,7 +351,7 @@ class GameViewModel(
                     MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
             }?.let { result ->
-                _matchPreloadInPlay.postValue(result)
+                _matchPreloadInPlay.postValue(Event(result))
             }
         }
     }
@@ -930,11 +933,11 @@ class GameViewModel(
                 }
             }
         }
-        _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
+        getOddsDetail(item?.code, item?.name, oddId)
     }
 
     fun getOddsDetail(entity: GameEntity) {
-        _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
+        getOddsDetail(entity.code, entity.name, entity.match?.id)
     }
 
     fun getOddsDetail(gameType: String?, typeName: String?, matchId: String?) {
@@ -1335,6 +1338,14 @@ class GameViewModel(
             else -> {
             }
         }
+    }
+
+    fun getGameCard(): MutableList<MatchInfo?> {
+        val matchOddList: MutableList<MatchInfo?> = mutableListOf()
+        gameCardList?.forEach {
+            matchOddList.add(it.matchInfo)
+        }
+        return matchOddList
     }
 
     fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {

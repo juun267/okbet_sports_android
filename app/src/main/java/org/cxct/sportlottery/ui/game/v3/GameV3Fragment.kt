@@ -69,9 +69,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ->
-                    //TODO open live and play type page
-                    matchOdd.matchInfo?.id
+                { matchOdd ,gameCardList ->
+                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                    viewModel.gameCardList = gameCardList
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
@@ -94,7 +94,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     false -> {
                         it.matchOdds.forEach { matchOdd ->
-                            service.unSubscribeHallChannel(
+                            service.unsubscribeHallChannel(
                                 sportType,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
@@ -433,7 +433,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         leagueAdapter.data.forEach {
             if (it.isExpand) {
                 it.matchOdds.forEach { matchOdd ->
-                    service.unSubscribeHallChannel(
+                    service.unsubscribeHallChannel(
                         sportType,
                         CateMenuCode.HDP_AND_OU.code,
                         matchOdd.matchInfo?.id

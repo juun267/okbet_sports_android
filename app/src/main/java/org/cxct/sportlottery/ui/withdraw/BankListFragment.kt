@@ -22,13 +22,22 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private val mBankListAdapter by lazy {
         val navigateFrom = (arguments?.getSerializable(navigateKey) ?: PageFrom.WITHDRAW_SETTING) as PageFrom
-        BankListAdapter(BankListClickListener({
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
-            mNavController.navigate(action)
-        }, {
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, navigateFrom)
-            mNavController.navigate(action)
-        }))
+        BankListAdapter(
+            BankListClickListener(
+                editBankListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
+                    mNavController.navigate(action)
+                },
+                editCryptoListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
+                    mNavController.navigate(action)
+                },
+                addListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, navigateFrom)
+                    mNavController.navigate(action)
+                }
+            )
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -78,14 +87,24 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
 
-        viewModel.addBankCardSwitch.observe(this.viewLifecycleOwner, Observer {
+        viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner, Observer {
             mBankListAdapter.addSwitch = it
         })
     }
 
     private fun setupRecyclerView(view: View) {
         view.rv_bank_list.apply {
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return when (mBankListAdapter.bankList.size) {
+                            0 -> 2
+                            else -> 1
+                        }
+                    }
+
+                }
+            }
             adapter = mBankListAdapter
         }
     }

@@ -41,6 +41,18 @@ class ThirdGameRepository {
         return response
     }
 
+    private fun localCateSort(code: String?): Int {
+        return when (code) {
+            ThirdGameCategory.LOCAL_SP.name -> 0
+            ThirdGameCategory.CGCP.name -> 1
+            ThirdGameCategory.LIVE.name -> 2
+            ThirdGameCategory.QP.name -> 3
+            ThirdGameCategory.DZ.name -> 4
+            ThirdGameCategory.BY.name -> 5
+            else -> 100
+        }
+    }
+
     private fun createHomeGameList(thirdGameData: ThirdGameData?): MutableList<GameCateData> {
         //1. 第一層 category 按鈕
         val gameCatList = mutableListOf<GameCategory>()
@@ -63,6 +75,7 @@ class ThirdGameRepository {
             //20200226 紀錄： cate 暫時不使用 sort 排序
 //            //cate list 排序，sort 從小到大排序
 //            gameCatList.sortBy { it.sort }
+            gameCatList.sortBy { localCateSort(it.code) }
         }
 
         val homeGameList = mutableListOf<GameCateData>()
@@ -118,7 +131,7 @@ class ThirdGameRepository {
     ): MutableList<GameItemData> {
         val pageList = mutableListOf<GameItemData>()
         thirdGameData?.thirdDictMap?.get(gameFirm.firmCode)?.forEach { thirdDict ->
-            if (thirdDict?.gameCode == null)
+            if (thirdDict?.gameCode.isNullOrEmpty())
                 thirdDict?.gameCode = gameFirm.playCode
 
             //20200120 記錄問題: 修正電子類遊戲無法進入的問題 by Bee

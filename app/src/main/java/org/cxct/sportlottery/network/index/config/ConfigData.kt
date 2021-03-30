@@ -78,5 +78,6 @@ data class ConfigData(
     val withDrawBalanceLimit: String?, //最低提现金额限制
     val zalo: String?,
     val zaloLink: String?,
-    val zaloQR: String?
+    val zaloQR: String?,
+    val sportAnimation: String?//体育动画接口
 )

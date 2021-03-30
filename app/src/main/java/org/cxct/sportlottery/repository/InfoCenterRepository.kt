@@ -35,7 +35,7 @@ class InfoCenterRepository {
         return response
     }
 
-    suspend fun setMsgReaded(msgId: String): Response<InfoCenterResult> {
+    suspend fun setMsgRead(msgId: String): Response<InfoCenterResult> {
         val response = OneBoSportApi.infoCenterService.setMsgReaded(msgId)
 
         if (response.isSuccessful) {

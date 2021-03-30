@@ -12,7 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.util.ItemNonLastDecoration
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
 class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
@@ -37,16 +37,9 @@ class LeagueAdapter(private val matchType: MatchType) :
         return ViewHolder.from(matchType, parent).apply {
 
             this.itemView.league_odd_list.apply {
-                this.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-                addItemDecoration(
-                    ItemNonLastDecoration(
-                        ContextCompat.getDrawable(
-                            context, R.drawable.divider_straight
-                        )
-                    )
-                )
+                addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_straight)))
             }
         }
     }
@@ -77,7 +70,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             item: LeagueOdd,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
-            itemExpandListener: ItemExpandListener?
+            itemExpandListener: ItemExpandListener?,
         ) {
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
@@ -89,7 +82,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         private fun setupLeagueOddList(
             item: LeagueOdd,
             playType: PlayType,
-            leagueOddListener: LeagueOddListener?
+            leagueOddListener: LeagueOddListener?,
         ) {
             itemView.league_odd_list.apply {
                 adapter = leagueOddAdapter.apply {
@@ -128,8 +121,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         companion object {
             fun from(matchType: MatchType, parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.itemview_game_league, parent, false)
+                val view = layoutInflater.inflate(R.layout.itemview_game_league, parent, false)
 
                 return ViewHolder(matchType, view)
             }
