@@ -7,7 +7,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 abstract class BaseSocketViewModel(val loginRepository: LoginRepository) : BaseViewModel() {
 
     init {
-        if (loginRepository.isLogin.value == true && !loginRepository.isCheckToken) {
+        if (!loginRepository.isCheckToken) {
             viewModelScope.launch {
                 loginRepository.checkToken()
             }

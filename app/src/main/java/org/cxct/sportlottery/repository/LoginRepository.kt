@@ -22,7 +22,6 @@ import org.cxct.sportlottery.util.AesCryptoUtil
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
-const val KEY_IS_LOGIN = "is_login"
 const val KEY_TOKEN = "token"
 const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
@@ -39,9 +38,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
-    private val _isLogin = MutableLiveData<Boolean>().apply {
-        value = sharedPref.getBoolean(KEY_IS_LOGIN, false)
-    }
+    private val _isLogin = MutableLiveData<Boolean>()
 
     var platformId
         get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
@@ -153,9 +150,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
         if (loginForGuestResponse.isSuccessful) {
             loginForGuestResponse.body()?.let {
-                        isCheckToken = true
-                        updateLoginData(it.loginData)
-                        updateUserInfo(it.loginData)
+                isCheckToken = true
+                updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
             }
         }
 
@@ -190,11 +187,13 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         if (checkTokenResponse.isSuccessful) {
             checkTokenResponse.body()?.let {
                 isCheckToken = true
+                _isLogin.postValue(true)
                 updateLoginData(it.loginData)
                 updateUserInfo(it.loginData)
             }
         } else {
             isCheckToken = false
+            _isLogin.postValue(false)
             clear()
         }
 
@@ -212,7 +211,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         _isLogin.postValue(loginData != null)
 
         with(sharedPref.edit()) {
-            putBoolean(KEY_IS_LOGIN, loginData != null)
+            /*putBoolean(KEY_IS_LOGIN, loginData != null)*/
             putString(KEY_TOKEN, loginData?.token)
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
@@ -222,7 +221,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
     suspend fun clear() {
         with(sharedPref.edit()) {
-            remove(KEY_IS_LOGIN)
+            /*remove(KEY_IS_LOGIN)*/
             remove(KEY_TOKEN)
             apply()
         }
