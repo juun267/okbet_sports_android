@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
@@ -170,6 +169,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onDestroy() {
         super.onDestroy()
 
-        service.unSubscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+        service.unsubscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 }

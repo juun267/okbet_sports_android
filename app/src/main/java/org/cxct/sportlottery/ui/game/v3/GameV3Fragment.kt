@@ -94,7 +94,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     false -> {
                         it.matchOdds.forEach { matchOdd ->
-                            service.unSubscribeHallChannel(
+                            service.unsubscribeHallChannel(
                                 sportType,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
@@ -403,7 +403,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         leagueAdapter.data.forEach {
             if (it.isExpand) {
                 it.matchOdds.forEach { matchOdd ->
-                    service.unSubscribeHallChannel(
+                    service.unsubscribeHallChannel(
                         sportType,
                         CateMenuCode.HDP_AND_OU.code,
                         matchOdd.matchInfo?.id

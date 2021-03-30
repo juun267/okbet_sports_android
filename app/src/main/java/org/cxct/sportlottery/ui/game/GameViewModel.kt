@@ -933,11 +933,11 @@ class GameViewModel(
                 }
             }
         }
-        _curOddsDetailParams.postValue(listOf(item?.code, item?.name, oddId))
+        getOddsDetail(item?.code, item?.name, oddId)
     }
 
     fun getOddsDetail(entity: GameEntity) {
-        _curOddsDetailParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
+        getOddsDetail(entity.code, entity.name, entity.match?.id)
     }
 
     fun getOddsDetail(gameType: String?, typeName: String?, matchId: String?) {
