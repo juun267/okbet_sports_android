@@ -97,8 +97,11 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp
             binding.betInfoDetail.tvName.text =
                 if (matchOdd.inplay == INPLAY) {
-                    context.getString(R.string.bet_info_in_play).plus(matchOdd.playCateName).plus(
-                        context.getString(R.string.bet_info_in_play_score, matchOdd.homeScore.toString(), matchOdd.awayScore.toString())
+                    context.getString(
+                        R.string.bet_info_in_play_score,
+                        matchOdd.playCateName,
+                        matchOdd.homeScore.toString(),
+                        matchOdd.awayScore.toString()
                     )
                 } else matchOdd.playCateName
 
