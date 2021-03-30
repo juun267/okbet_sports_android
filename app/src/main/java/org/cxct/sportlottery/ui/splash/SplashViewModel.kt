@@ -132,6 +132,7 @@ class SplashViewModel(
     }
 
     private fun setConfig(result: ConfigResult?) {
+        hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         _configResult.postValue(result)
     }

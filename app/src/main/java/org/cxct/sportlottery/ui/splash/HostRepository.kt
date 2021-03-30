@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.splash
 
 import android.content.Context
 import android.content.SharedPreferences
+import org.cxct.sportlottery.repository.KEY_PLATFORM_ID
 import org.cxct.sportlottery.repository.NAME_LOGIN
 
 class HostRepository(private val androidContext: Context) {
@@ -30,6 +31,15 @@ class HostRepository(private val androidContext: Context) {
         set(value) {
             with(sharedPref.edit()) {
                 putString(KEY_HOST_URL, value)
+                apply()
+            }
+        }
+
+    var platformId
+        get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
+        set(value) {
+            with(sharedPref.edit()) {
+                putLong(KEY_PLATFORM_ID, value)
                 apply()
             }
         }
