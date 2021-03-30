@@ -1,9 +1,7 @@
-package org.cxct.sportlottery.ui.splash
+package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import org.cxct.sportlottery.repository.KEY_PLATFORM_ID
-import org.cxct.sportlottery.repository.NAME_LOGIN
 
 class HostRepository(private val androidContext: Context) {
     companion object {

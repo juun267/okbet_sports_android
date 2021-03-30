@@ -10,8 +10,7 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.splash.HostRepository
-import timber.log.Timber
+import org.cxct.sportlottery.repository.HostRepository
 
 
 class MaintenanceViewModel(
