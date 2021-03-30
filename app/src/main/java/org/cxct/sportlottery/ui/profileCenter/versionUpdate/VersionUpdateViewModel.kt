@@ -10,13 +10,15 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.NAME_LOGIN
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class VersionUpdateViewModel(
-    private val androidContext: Context
-) : BaseViewModel() {
+    private val androidContext: Context,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
         const val KEY_LAST_SHOW_UPDATE_TIME = "key-last-show-update-time"

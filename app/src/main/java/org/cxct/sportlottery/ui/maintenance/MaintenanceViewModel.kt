@@ -8,6 +8,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.splash.HostRepository
@@ -16,8 +19,11 @@ import timber.log.Timber
 
 class MaintenanceViewModel(
     private val androidContext: Context,
-    private val hostRepository: HostRepository
-) : BaseViewModel() {
+    private val hostRepository: HostRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
 
     val configResult: LiveData<ConfigResult?>

@@ -48,6 +48,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         dialog.setMessage(message)
         dialog.setPositiveClickListener(View.OnClickListener {
             MainActivity.reStart(this)
+            viewModel.doResetData()
             dialog.dismiss()
         })
         dialog.setNegativeButtonText(null)
