@@ -265,6 +265,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curOddsDetailParams.observe(this, Observer {
+//            //TODO simon test 從首頁滾球盤跳轉到投注詳情頁面，back 時要直接回到首頁
+//            tabLayout.getTabAt(tabLayout.selectedTabPosition)?.customView?.isSelected = false
+//            tabLayout.getTabAt(1)?.customView?.isSelected = true
+            tabLayout.getTabAt(1)?.select()
+
             val gameType = it[0]
             val typeName = it[1]
             val matchId = it[2] ?: ""
@@ -297,7 +302,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.openGameDetail.observe(this, Observer {
             app_bar_layout.setExpanded(true, true)
-            addFragment(GameLeagueFragment.newInstance(it.first), Page.ODDS)
+            addFragment(GameLeagueFragment.newInstance(it.first, it.second, it.third), Page.ODDS)
         })
 
         viewModel.openOutrightDetail.observe(this, Observer {

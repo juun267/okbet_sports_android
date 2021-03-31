@@ -9,6 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -31,6 +32,7 @@ import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.ToastUtil
 
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
+    private var transferType: TransferType = TransferType.BANK
 
     private lateinit var mBankSelectorBottomSheetDialog: BottomSheetDialog
     private lateinit var mBankSelectorAdapter: BankSelectorAdapter
@@ -38,7 +40,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
 
-    private var transferType: TransferType = TransferType.BANK
+    data class AddTypeTab(val type: TransferType, @IdRes val id: Int)
+
+    private val mTabList by lazy { listOf(AddTypeTab(TransferType.BANK, R.id.tab_bank_card), AddTypeTab(TransferType.CRYPTO, R.id.tab_crypto)) }
 
     private val protocolAdapter by lazy {
         ProtocolAdapter(requireContext(), OnSelectProtocol {
@@ -133,6 +137,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             block_transfer_type.visibility = View.GONE
         } else {
             block_transfer_type.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showHideTypeTab() {
+        mTabList.forEach {
+            if (view?.findViewById<TextView>(it.id)?.visibility == View.VISIBLE) {
+                transferType = it.type
+                changeTransferType(transferType)
+                return
+            }
         }
     }
 
@@ -325,6 +339,28 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             protocolList?.let { list ->
                 protocolAdapter.dataList = list
                 setCryptoProtocol(list.first())
+            }
+        })
+
+        //是否可以新增銀行卡
+        viewModel.addBankCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
+            if (show.getContentIfNotHandled() == true) {
+                tab_bank_card.visibility = View.VISIBLE
+                showHideTypeTab()
+            } else if (show.getContentIfNotHandled() == false) {
+                tab_bank_card.visibility = View.GONE
+                showHideTypeTab()
+            }
+        })
+
+        //是否可以新增虛擬幣
+        viewModel.addCryptoCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
+            if (show.getContentIfNotHandled() == true) {
+                tab_crypto.visibility = View.VISIBLE
+                showHideTypeTab()
+            } else if (show.getContentIfNotHandled() == false) {
+                tab_crypto.visibility = View.GONE
+                showHideTypeTab()
             }
         })
 

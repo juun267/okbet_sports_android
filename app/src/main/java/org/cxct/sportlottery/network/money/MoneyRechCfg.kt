@@ -4,6 +4,7 @@ import java.io.Serializable
 
 //TODO : 與MoneyRechCfgData重複, 需整理移除冗余
 class MoneyRechCfg {
+    enum class Switch(val code: Int) { ON(1), CLOSE(0) }
     class Data {
         var banks: MutableList<Bank>? = null //银行lfny
         var rechCfgs: MutableList<RechConfig>? = null //充值配置
@@ -91,7 +92,7 @@ class MoneyRechCfg {
 /**
  * MoneyConfig, uwTypes 提現Type
  */
-enum class TransferType(val type: String){
+enum class TransferType(val type: String) {
     BANK("bankTransfer"), //銀行卡
     CRYPTO("cryptoTransfer") //虛擬幣
 }

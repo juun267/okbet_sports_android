@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
@@ -98,35 +97,43 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
-
-            viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
-
-                it.getContentIfNotHandled()?.let { outrightOddsListResult ->
-                    if (outrightOddsListResult.success) {
-                        val matchOdd =
-                            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
-                                0
-                            )
-
-                        outright_filter_row.sportName =
-                            outrightOddsListResult.outrightOddsListData?.sport?.name ?: ""
-
-                        outright_league_name.text =
-                            outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
-                                ?: ""
-
-                        outright_league_date.text = matchOdd?.startDate ?: ""
-
-                        outright_league_time.text = matchOdd?.startTime ?: ""
-
-                        outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
-                    }
-                }
-            })
+            initObserve()
+            initSocketReceiver()
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun initObserve() {
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+
+            it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+                if (outrightOddsListResult.success) {
+                    val matchOdd =
+                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
+                            0
+                        )
+
+                    outright_filter_row.sportName =
+                        outrightOddsListResult.outrightOddsListData?.sport?.name ?: ""
+
+                    outright_league_name.text =
+                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
+                            ?: ""
+
+                    outright_league_date.text = matchOdd?.startDate ?: ""
+
+                    outright_league_time.text = matchOdd?.startTime ?: ""
+
+                    outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
+                }
+            }
+        })
+    }
+
+    private fun initSocketReceiver() {
+        //TODO add socket event
     }
 
     private fun backEvent() {
@@ -162,6 +169,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onDestroy() {
         super.onDestroy()
 
-        service.unSubscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+        service.unsubscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 }

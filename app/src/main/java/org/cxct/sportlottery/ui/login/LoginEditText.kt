@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.login
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Typeface
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher

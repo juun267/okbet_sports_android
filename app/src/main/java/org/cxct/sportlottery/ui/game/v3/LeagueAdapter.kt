@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_game_league.view.*
 import kotlinx.android.synthetic.main.itemview_game_league.view.league_odd_count
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
-class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
+class LeagueAdapter(private val matchType: MatchType) :
+    RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
     var data = listOf<LeagueOdd>()
         set(value) {
@@ -32,7 +34,7 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
     var itemExpandListener: ItemExpandListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent).apply {
+        return ViewHolder.from(matchType, parent).apply {
 
             this.itemView.league_odd_list.apply {
                 this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -50,10 +52,18 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+
+        holder.itemView.league_odd_list.adapter = null
+    }
+
+    class ViewHolder private constructor(matchType: MatchType, itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
 
         private val leagueOddAdapter by lazy {
-            LeagueOddAdapter()
+            LeagueOddAdapter(matchType)
         }
 
         fun bind(
@@ -90,13 +100,11 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
 
         private fun setupLeagueOddExpand(item: LeagueOdd, itemExpandListener: ItemExpandListener?) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
-            if (item.isExpand) {
-                itemExpandListener?.onItemExpand(item)
-            }
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_expand.setExpanded(item.isExpand, true)
+                leagueOddAdapter.isTimerEnable = item.isExpand
                 updateArrowExpand()
 
                 itemExpandListener?.onItemExpand(item)
@@ -111,11 +119,11 @@ class LeagueAdapter : RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(matchType: MatchType, parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.itemview_game_league, parent, false)
 
-                return ViewHolder(view)
+                return ViewHolder(matchType, view)
             }
         }
     }

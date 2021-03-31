@@ -15,32 +15,39 @@ import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 
 
+private const val ARG_MATCH_TYPE = "matchType"
 private const val ARG_SPORT_TYPE = "sportType"
+private const val ARG_EVENT_ID = "eventId"
 
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     companion object {
-        fun newInstance(sportType: String) =
+        fun newInstance(matchType: String, sportType: String, eventId: String) =
             GameLeagueFragment().apply {
                 arguments = Bundle().apply {
+                    putString(ARG_MATCH_TYPE, matchType)
                     putString(ARG_SPORT_TYPE, sportType)
+                    putString(ARG_EVENT_ID, eventId)
                 }
             }
     }
 
+    private lateinit var matchType: MatchType
     private var sportType: String? = null
+    private var eventId: String? = null
 
     private val leagueAdapter by lazy {
-        LeagueAdapter().apply {
+        LeagueAdapter(matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ->
+                { matchOdd ,_ ->
                     //TODO open live and play type page
-                    matchOdd.matchInfo?.id
+                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
@@ -61,7 +68,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                     false -> {
                         it.matchOdds.forEach { matchOdd ->
-                            service.unSubscribeHallChannel(
+                            service.unsubscribeHallChannel(
                                 sportType,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
@@ -78,7 +85,18 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         arguments?.let {
             sportType = it.getString(ARG_SPORT_TYPE)
+            matchType = when (it.getString(ARG_MATCH_TYPE)) {
+                MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
+                MatchType.TODAY.postValue -> MatchType.TODAY
+                MatchType.EARLY.postValue -> MatchType.EARLY
+                MatchType.PARLAY.postValue -> MatchType.PARLAY
+                MatchType.OUTRIGHT.postValue -> MatchType.OUTRIGHT
+                else -> MatchType.AT_START
+            }
+            eventId = it.getString(ARG_EVENT_ID)
         }
+
+        service.subscribeHallChannel(sportType, CateMenuCode.HDP_AND_OU.code, eventId)
     }
 
     override fun onCreateView(
@@ -132,27 +150,32 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
-
-            viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
-
-                it.getContentIfNotHandled()?.let { oddsListResult ->
-                    if (oddsListResult.success) {
-
-                        game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
-
-                        leagueAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
-                    }
-                }
-
-            })
-
-            viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
-                leagueAdapter.data = it
-            })
+            initObserve()
+            initSocketReceiver()
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun initObserve() {
+        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+
+            it.getContentIfNotHandled()?.let { oddsListResult ->
+                if (oddsListResult.success) {
+                    game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
+                    leagueAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                }
+            }
+        })
+
+        viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
+            leagueAdapter.data = it
+        })
+    }
+
+    private fun initSocketReceiver() {
+        //TODO add socket event
     }
 
     private fun backEvent() {
@@ -191,7 +214,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         leagueAdapter.data.forEach {
             if (it.isExpand) {
                 it.matchOdds.forEach { matchOdd ->
-                    service.unSubscribeHallChannel(
+                    service.unsubscribeHallChannel(
                         sportType,
                         CateMenuCode.HDP_AND_OU.code,
                         matchOdd.matchInfo?.id

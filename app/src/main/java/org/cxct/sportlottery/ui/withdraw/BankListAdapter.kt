@@ -88,6 +88,9 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             is LastViewHolder -> {
                 holder.bind(mBankListClickListener)
             }
+            is NoCardAddViewHolder -> {
+                holder.bind(mBankListClickListener)
+            }
         }
     }
 
@@ -124,7 +127,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     class CryptoItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(data: BankCardList, mBankListClickListener: BankListClickListener) {
             itemView.apply {
-                iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
+                iv_bank_icon.setImageResource(MoneyManager.getCryptoIconByCryptoName(data.bankName))
                 tv_bank_name.text = data.bankName
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.addTime.toLong())

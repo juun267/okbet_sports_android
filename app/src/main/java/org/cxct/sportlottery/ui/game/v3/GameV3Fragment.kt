@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -67,11 +68,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter().apply {
+        LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ->
-                    //TODO open live and play type page
-                    matchOdd.matchInfo?.id
+                { matchOdd, gameCardList ->
+                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                    viewModel.gameCardList = gameCardList
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
@@ -94,7 +95,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     false -> {
                         it.matchOdds.forEach { matchOdd ->
-                            service.unSubscribeHallChannel(
+                            service.unsubscribeHallChannel(
                                 sportType,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
@@ -232,121 +233,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
-
-            viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
-                when (args.matchType) {
-                    MatchType.IN_PLAY -> {
-                        val itemList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
-
-                        sportTypeAdapter.dataSport = itemList
-                        game_filter_row.sportName =
-                            itemList.find { sportType -> sportType.isSelected }?.name
-                    }
-
-                    MatchType.TODAY -> {
-                        val itemList = it?.sportMenuData?.menu?.today?.items ?: listOf()
-
-                        sportTypeAdapter.dataSport = itemList
-                        game_filter_row.sportName =
-                            itemList.find { sportType -> sportType.isSelected }?.name
-                    }
-
-                    MatchType.EARLY -> {
-                        val itemList = it?.sportMenuData?.menu?.early?.items ?: listOf()
-
-                        sportTypeAdapter.dataSport = itemList
-                        game_filter_row.sportName =
-                            itemList.find { sportType -> sportType.isSelected }?.name
-                    }
-
-                    MatchType.PARLAY -> {
-                        val itemList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
-
-                        sportTypeAdapter.dataSport = itemList
-                        game_filter_row.sportName =
-                            itemList.find { sportType -> sportType.isSelected }?.name
-                    }
-
-                    MatchType.OUTRIGHT -> {
-                        val itemList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
-
-                        sportTypeAdapter.dataSport = itemList
-                        game_filter_row.sportName =
-                            itemList.find { sportType -> sportType.isSelected }?.name
-                    }
-
-                    MatchType.AT_START -> {
-                        val itemList = it?.sportMenuData?.atStart?.items ?: listOf()
-
-                        sportTypeAdapter.dataSport = itemList
-                        game_filter_row.sportName =
-                            itemList.find { sportType -> sportType.isSelected }?.name
-                    }
-                }
-            })
-
-            viewModel.gameCateDataList.observe(this.viewLifecycleOwner, Observer {
-                sportTypeAdapter.dataThirdGame = it
-            })
-
-            viewModel.curPlayType.observe(viewLifecycleOwner, Observer {
-                game_filter_row.playType = it
-                leagueAdapter.playType = it
-            })
-
-            viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
-                gameTypeAdapter.data = it
-            })
-
-            viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
-                hideLoading()
-
-                it.getContentIfNotHandled()?.let { oddsListResult ->
-                    if (oddsListResult.success) {
-                        game_list.adapter = leagueAdapter.apply {
-                            data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
-                        }
-                    }
-                }
-            })
-
-            viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
-                hideLoading()
-                clearSearchView()
-
-                it.getContentIfNotHandled()?.let { leagueListResult ->
-                    if (leagueListResult.success) {
-                        game_list.adapter = countryAdapter.apply {
-                            data = leagueListResult.rows ?: listOf()
-                        }
-                    }
-                }
-            })
-
-            viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
-                hideLoading()
-                clearSearchView()
-
-                it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
-                    if (outrightSeasonListResult.success) {
-                        game_list.adapter = outrightCountryAdapter.apply {
-                            data = outrightSeasonListResult.rows ?: listOf()
-                        }
-                    }
-                }
-            })
-
-            viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, Observer {
-                countryAdapter.data = it
-            })
-
-            viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
-                outrightCountryAdapter.data = it
-            })
-
-//            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
-//                //TODO add not history ui
-//            })
+            initObserve()
+            initSocketReceiver()
 
             viewModel.getGameHallList(args.matchType, true)
             loading()
@@ -356,11 +244,248 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun initObserve() {
+        viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
+            when (args.matchType) {
+                MatchType.IN_PLAY -> {
+                    val itemList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
+
+                    sportTypeAdapter.dataSport = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
+                }
+
+                MatchType.TODAY -> {
+                    val itemList = it?.sportMenuData?.menu?.today?.items ?: listOf()
+
+                    sportTypeAdapter.dataSport = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
+                }
+
+                MatchType.EARLY -> {
+                    val itemList = it?.sportMenuData?.menu?.early?.items ?: listOf()
+
+                    sportTypeAdapter.dataSport = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
+                }
+
+                MatchType.PARLAY -> {
+                    val itemList = it?.sportMenuData?.menu?.parlay?.items ?: listOf()
+
+                    sportTypeAdapter.dataSport = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
+                }
+
+                MatchType.OUTRIGHT -> {
+                    val itemList = it?.sportMenuData?.menu?.outright?.items ?: listOf()
+
+                    sportTypeAdapter.dataSport = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
+                }
+
+                MatchType.AT_START -> {
+                    val itemList = it?.sportMenuData?.atStart?.items ?: listOf()
+
+                    sportTypeAdapter.dataSport = itemList
+                    game_filter_row.sportName =
+                        itemList.find { sportType -> sportType.isSelected }?.name
+                }
+            }
+        })
+
+        viewModel.gameCateDataList.observe(this.viewLifecycleOwner, Observer {
+            sportTypeAdapter.dataThirdGame = it
+        })
+
+        viewModel.curPlayType.observe(viewLifecycleOwner, Observer {
+            game_filter_row.playType = it
+            leagueAdapter.playType = it
+        })
+
+        viewModel.curDate.observe(this.viewLifecycleOwner, Observer {
+            gameTypeAdapter.data = it
+        })
+
+        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
+
+            it.getContentIfNotHandled()?.let { oddsListResult ->
+                if (oddsListResult.success) {
+                    game_list.adapter = leagueAdapter.apply {
+                        data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                    }
+                }
+            }
+        })
+
+        viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
+            clearSearchView()
+
+            it.getContentIfNotHandled()?.let { leagueListResult ->
+                if (leagueListResult.success) {
+                    game_list.adapter = countryAdapter.apply {
+                        data = leagueListResult.rows ?: listOf()
+                    }
+                }
+            }
+        })
+
+        viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
+            clearSearchView()
+
+            it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
+                if (outrightSeasonListResult.success) {
+                    game_list.adapter = outrightCountryAdapter.apply {
+                        data = outrightSeasonListResult.rows ?: listOf()
+                    }
+                }
+            }
+        })
+
+        viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, Observer {
+            countryAdapter.data = it
+        })
+
+        viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
+            outrightCountryAdapter.data = it
+        })
+
+//            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+//                //TODO add not history ui
+//            })
+    }
+
+    private fun initSocketReceiver() {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            it?.let { matchStatusChangeEvent ->
+                matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+                    matchStatusCO.matchId?.let { matchId ->
+
+                        val leagueOdds = leagueAdapter.data
+
+                        leagueOdds.forEach { leagueOdd ->
+                            if (leagueOdd.isExpand) {
+
+                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                    matchOdd.matchInfo?.id == matchId
+                                }
+
+                                updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
+                                updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
+                                updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+
+                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
+            it?.let { matchClockEvent ->
+                matchClockEvent.matchClockCO?.let { matchClockCO ->
+                    matchClockCO.matchId.let { matchId ->
+
+                        val leagueOdds = leagueAdapter.data
+
+                        leagueOdds.forEach { leagueOdd ->
+                            if (leagueOdd.isExpand) {
+
+                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                    matchOdd.matchInfo?.id == matchId
+                                }
+
+                                updateMatchOdd?.leagueTime = matchClockCO.matchTime
+
+                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
+            it?.let { oddsChangeEvent ->
+                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+                    val leagueOdds = leagueAdapter.data
+
+                    leagueOdds.forEach { leagueOdd ->
+                        if (leagueOdd.isExpand) {
+
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                matchOdd.odds.forEach { oddTypeMap ->
+
+                                    val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
+                                    val odds = oddTypeMap.value
+
+                                    odds.forEach { odd ->
+                                        odd?.let { oddNonNull ->
+                                            val oddSocket = oddsSocket?.find { oddSocket ->
+                                                oddSocket.id == odd.id
+                                            }
+
+                                            oddSocket?.let { oddSocketNonNull ->
+
+                                                oddNonNull.odds?.let { oddValue ->
+                                                    oddSocketNonNull.odds?.let { oddSocketValue ->
+                                                        when {
+                                                            oddValue > oddSocketValue -> {
+                                                                oddNonNull.oddState =
+                                                                    OddState.SMALLER.state
+                                                            }
+                                                            oddValue < oddSocketValue -> {
+                                                                oddNonNull.oddState =
+                                                                    OddState.LARGER.state
+                                                            }
+                                                            oddValue == oddSocketValue -> {
+                                                                oddNonNull.oddState =
+                                                                    OddState.SAME.state
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+
+                                                oddNonNull.odds = oddSocketNonNull.odds
+
+                                                oddNonNull.status = oddSocketNonNull.status
+
+                                                leagueAdapter.notifyItemChanged(
+                                                    leagueOdds.indexOf(
+                                                        leagueOdd
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
     private fun clearSearchView() {
         game_filter_row.game_filter_search.apply {
             setQuery("", false)
             clearFocus()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        game_list.adapter = null
     }
 
     override fun onDestroy() {
@@ -371,7 +496,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         leagueAdapter.data.forEach {
             if (it.isExpand) {
                 it.matchOdds.forEach { matchOdd ->
-                    service.unSubscribeHallChannel(
+                    service.unsubscribeHallChannel(
                         sportType,
                         CateMenuCode.HDP_AND_OU.code,
                         matchOdd.matchInfo?.id

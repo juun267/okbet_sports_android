@@ -5,13 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.PagerAdapter
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.util.TimeUtil
 
-class NewsViewPagerAdapter(private val mActivity: FragmentActivity?) : PagerAdapter() {
+class NewsViewPagerAdapter : PagerAdapter() {
 
     var data = mutableListOf<Row>()
         set(value) {
@@ -26,8 +25,8 @@ class NewsViewPagerAdapter(private val mActivity: FragmentActivity?) : PagerAdap
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        var view = LayoutInflater.from(mActivity)
-            .inflate(R.layout.content_msg_dialog_viewpager, container, false)
+        val view = LayoutInflater.from(container.context)
+            .inflate(R.layout.content_news_item_rv, container, false)
 
         try {
             val arrowLeft: ImageView = view.findViewById(R.id.img_arrow_left)

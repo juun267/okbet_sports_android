@@ -28,7 +28,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
-import org.cxct.sportlottery.ui.splash.HostRepository
+import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
@@ -52,7 +52,7 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
         viewModel { SplashViewModel(get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get()) }
         viewModel { RegisterViewModel(get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get()) }
@@ -65,7 +65,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { SettingPasswordViewModel(get(), get(), get(), get()) }
         viewModel { FeedbackViewModel(get(), get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get()) }
         viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get()) }
@@ -86,6 +86,7 @@ class MultiLanguagesApplication : Application() {
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { ThirdGameRepository() }
+        single { WithdrawRepository(get()) }
     }
 
     private val dbModule = module {
