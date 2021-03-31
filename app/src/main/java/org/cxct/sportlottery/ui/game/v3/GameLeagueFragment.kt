@@ -304,16 +304,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onDestroy() {
         super.onDestroy()
 
-        leagueAdapter.data.forEach {
-            if (it.isExpand) {
-                it.matchOdds.forEach { matchOdd ->
-                    service.unsubscribeHallChannel(
-                        sportType,
-                        CateMenuCode.HDP_AND_OU.code,
-                        matchOdd.matchInfo?.id
-                    )
-                }
-            }
-        }
+        service.unsubscribeAllHallChannel()
     }
 }
