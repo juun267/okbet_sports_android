@@ -34,7 +34,13 @@ class MoneyTransferViewModel(
         private const val PAGE_SIZE = 20
     }
 
-    val PLAT_CODE = "CG"
+    enum class PLAT {
+        IN_PLAT, OUT_PLAT
+    }
+
+    val platCode = "CG"
+    private val inPlatSheetDataList = mutableListOf<StatusSheetData>()
+    private val outPlatSheetDataList = mutableListOf<StatusSheetData>()
 
     private val gameNameMap: Map<String?, String> = mapOf(
         "CG" to androidContext.getString(R.string.plat_money),
@@ -71,9 +77,6 @@ class MoneyTransferViewModel(
 
     val allBalanceResultList: LiveData<List<GameData>>
         get() = _allBalanceResultList
-
-    val thirdGamesResult: LiveData<ThirdGamesResult>
-        get() = _thirdGamesResult
 
     val recycleAllMoneyResult: LiveData<Event<BlankResult?>>
         get() = _recycleAllMoneyResult
@@ -131,11 +134,7 @@ class MoneyTransferViewModel(
     fun switchPlat() {
         _isPlatSwitched.value = Event(!(isPlatSwitched.value?.peekContent() ?: false))
     }
-    /*
-    fun reversePlat() {
-        isReversed = !isReversed
-    }
-*/
+
     fun getAllBalance() {
         loading()
         viewModelScope.launch {
@@ -159,13 +158,6 @@ class MoneyTransferViewModel(
             }
         }
     }
-
-    enum class PLAT {
-        IN_PLAT, OUT_PLAT
-    }
-
-    private val inPlatSheetDataList = mutableListOf<StatusSheetData>()
-    private val outPlatSheetDataList = mutableListOf<StatusSheetData>()
 
     fun setInSheetDataList (firstItemCode: String ?= null, firstItem: Int = R.string.all_in_plat) {
         inPlatSheetDataList.clear()
@@ -225,7 +217,6 @@ class MoneyTransferViewModel(
     private var isLoading = false
     private var nowPage = 1
     val recordDataList = mutableListOf<Row>()
-
     fun queryTransfers(page: Int? = 1,
                        startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime,
                        endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime,
@@ -256,18 +247,6 @@ class MoneyTransferViewModel(
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 isLoading = true
                 queryTransfers(++nowPage)
-            }
-        }
-    }
-
-    fun getThirdGames() {
-        loading()
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.getThirdGames()
-            }?.let { result ->
-                hideLoading()
-                _thirdGamesResult.value = result
             }
         }
     }

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,15 +19,15 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewMo
 import org.cxct.sportlottery.util.TextUtil
 
 
-class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) { //TODO Cheryl: review all file
+class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
-        viewModel.setInSheetDataList(viewModel.PLAT_CODE, R.string.plat_money)
-        viewModel.setOutSheetDataList(viewModel.PLAT_CODE, R.string.plat_money)
+        viewModel.setInSheetDataList(viewModel.platCode, R.string.plat_money)
+        viewModel.setOutSheetDataList(viewModel.platCode, R.string.plat_money)
 
         return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
     }
@@ -90,7 +89,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             out_account.selectedText = getString(R.string.plat_money)
             in_account.selectedText = gameDataArg.gameData.showName
 
-            out_account.selectedTag = viewModel.PLAT_CODE
+            out_account.selectedTag = viewModel.platCode
             in_account.selectedTag = gameDataArg.gameData.code
 
             out_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, in_account.selectedText)
@@ -115,29 +114,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
         viewModel.isPlatSwitched.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { isReversed ->
-
                 moveAnim(isReversed)
-
-/*
-                Log.e(">>>", "isReversed = $isReversed")
-
-                val outAccountText = out_account.selectedText
-                val inAccountText = in_account.selectedText
-
-                val outTag = out_account.selectedTag
-                val inTag = in_account.selectedTag
-
-
-                out_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, outAccountText)
-                in_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, inAccountText)
-
-                out_account.selectedText = inAccountText
-                in_account.selectedText = outAccountText
-
-                out_account.selectedTag = inTag
-                in_account.selectedTag = outTag
-*/
-
             }
         }
     }
@@ -170,20 +147,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private fun getDp(inputValue: Int): Int {
         val d = context?.resources?.displayMetrics?.density?:0.0f
         return (inputValue * d).toInt() // margin in pixels
-    }
-
-    private fun setSheetList(isReversed: Boolean = false) {
-        out_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, in_account.selectedText)
-        in_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, out_account.selectedText)
-        /*
-        if (!isReversed) {
-            out_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, in_account.selectedText)
-            in_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, out_account.selectedText)
-        } else {
-            out_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, out_account.selectedText)
-            in_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, in_account.selectedText)
-        }
-        */
     }
 
 }
