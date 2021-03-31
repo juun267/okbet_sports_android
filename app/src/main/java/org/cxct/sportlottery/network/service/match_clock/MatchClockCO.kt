@@ -13,11 +13,11 @@ data class MatchClockCO(
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "matchTime")
-    val matchTime: Int,
+    var matchTime: Int?, //赛事进行到的时刻，秒数,可能为空
     @Json(name = "remainingTime")
     val remainingTime: Int?,
     @Json(name = "remainingTimeInPeriod")
-    val remainingTimeInPeriod: Int?,
+    var remainingTimeInPeriod: Int?, //赛事该阶段/该节(篮球)剩余时间，秒数,可能为空
     @Json(name = "scheduledTime")
     val scheduledTime: Long,
     @Json(name = "stoppageTime")
@@ -25,5 +25,5 @@ data class MatchClockCO(
     @Json(name = "stoppageTimeAnnounced")
     val stoppageTimeAnnounced: Int?,
     @Json(name = "stopped")
-    val stopped: Int?
+    val stopped: Int? //是否计时停止 1:是 ，0：否
 )
