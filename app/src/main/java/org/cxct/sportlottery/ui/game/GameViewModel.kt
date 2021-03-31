@@ -861,14 +861,14 @@ class GameViewModel(
                             override val endTime: String?
                                 get() = null
                         },
-                        MatchType.IN_PLAY.name
+                        MatchType.IN_PLAY.postValue
                     )
                 )
                 dateRow.add(
                     Date(
                         androidContext.getString(R.string.date_row_today),
                         TimeUtil.getParlayTodayTimeRangeParams(),
-                        MatchType.TODAY.name
+                        MatchType.TODAY.postValue
                     )
                 )
                 TimeUtil.getFutureDate(6).forEach {
@@ -876,7 +876,7 @@ class GameViewModel(
                         Date(
                             it,
                             TimeUtil.getDayDateTimeRangeParams(it),
-                            MatchType.EARLY.name
+                            MatchType.EARLY.postValue
                         )
                     )
                 }
@@ -885,7 +885,7 @@ class GameViewModel(
                     Date(
                         androidContext.getString(R.string.date_row_other),
                         TimeUtil.getOtherEarlyDateTimeRangeParams(),
-                        MatchType.EARLY.name
+                        MatchType.EARLY.postValue
                     )
                 )
             }
