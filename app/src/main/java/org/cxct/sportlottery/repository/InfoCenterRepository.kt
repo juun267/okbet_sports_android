@@ -2,10 +2,10 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
-import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
+import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
+import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.service.user_notice.UserNotice
 import retrofit2.Response
 

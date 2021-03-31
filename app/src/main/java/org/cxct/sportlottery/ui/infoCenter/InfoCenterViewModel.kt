@@ -14,10 +14,10 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class InfoCenterViewModel(
     private val androidContext: Context,
-    private val infoCenterRepository: InfoCenterRepository,
+    infoCenterRepository: InfoCenterRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     enum class DataType { UNREAD, READ }//未讀,已讀
 

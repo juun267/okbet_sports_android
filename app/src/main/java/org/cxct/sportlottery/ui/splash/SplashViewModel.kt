@@ -10,6 +10,10 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import retrofit2.Retrofit
@@ -17,8 +21,11 @@ import timber.log.Timber
 
 class SplashViewModel(
     private val androidContext: Context,
-    private val hostRepository: HostRepository
-) : BaseViewModel() {
+    private val hostRepository: HostRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
     private var mServerUrlIndex = 0
@@ -132,6 +139,7 @@ class SplashViewModel(
     }
 
     private fun setConfig(result: ConfigResult?) {
+        hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         _configResult.postValue(result)
     }

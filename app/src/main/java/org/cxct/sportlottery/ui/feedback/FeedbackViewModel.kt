@@ -20,7 +20,8 @@ class FeedbackViewModel(
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val allStatusTag = "ALL_STATUS"
 
@@ -62,7 +63,11 @@ class FeedbackViewModel(
         get() = _isFinalPage
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
 
-    val statusList = listOf(SheetData(allStatusTag, androidContext.getString(R.string.all_status)), SheetData("0", androidContext.getString(R.string.feedback_wait_for_reply)), SheetData("1", androidContext.getString(R.string.feedback_already_reply)))
+    val statusList = listOf(
+        SheetData(allStatusTag, androidContext.getString(R.string.all_status)),
+        SheetData("0", androidContext.getString(R.string.feedback_wait_for_reply)),
+        SheetData("1", androidContext.getString(R.string.feedback_already_reply))
+    )
 
     companion object {
         private const val PAGE_SIZE = 20 //預設每次載入20筆資料

@@ -88,6 +88,9 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             is LastViewHolder -> {
                 holder.bind(mBankListClickListener)
             }
+            is NoCardAddViewHolder -> {
+                holder.bind(mBankListClickListener)
+            }
         }
     }
 

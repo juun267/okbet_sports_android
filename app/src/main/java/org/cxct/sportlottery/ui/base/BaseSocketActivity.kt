@@ -49,6 +49,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             })
         })
+
+        viewModel.errorResultToken.observe(this, Observer {
+            backService.apply {
+                //TODO Dean : 待解除訂閱方法完善後加入解除訂閱私人頻道
+            }
+        })
     }
 
     override fun onStart() {
