@@ -34,6 +34,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             notifyDataSetChanged()
         }
 
+    var isTimerEnable = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var leagueOddListener: LeagueOddListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -47,9 +53,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-
-            is ViewHolderHdpOu -> holder.bind(matchType, item,leagueOddListener)
-            is ViewHolder1x2 -> holder.bind(matchType, item,leagueOddListener)
+            is ViewHolderHdpOu -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
+            is ViewHolder1x2 -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
         }
     }
 
@@ -64,9 +69,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
 
-            setupMatchInfo(item, matchType)
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean) {
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
@@ -75,7 +80,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
+        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType, isTimerEnable: Boolean) {
             itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home.text = item.matchInfo?.homeName
@@ -89,10 +94,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 listener = object : TimerListener {
                     override fun onTimerUpdate(timeMillis: Long) {
                         itemView.match_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                        item.leagueTime = (timeMillis / 1000).toInt()
                     }
                 }
 
-                updateTimer(item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0)
             } else {
                 itemView.match_status.text = item.matchInfo?.startDateDisplay
                 itemView.match_time.text = item.matchInfo?.startTimeDisplay
@@ -116,6 +122,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 isSelected = oddListHDP?.get(0)?.isSelected ?: false
 
                 betStatus = oddListHDP?.get(0)?.status
+
+                oddStatus = oddListHDP?.get(0)?.oddState
 
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
@@ -151,6 +159,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 isSelected = oddListHDP?.get(1)?.isSelected ?: false
 
                 betStatus = oddListHDP?.get(1)?.status
+
+                oddStatus = oddListHDP?.get(1)?.oddState
 
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
@@ -189,6 +199,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 betStatus = oddListOU?.get(0)?.status
 
+                oddStatus = oddListOU?.get(0)?.oddState
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
@@ -226,6 +238,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 betStatus = oddListOU?.get(1)?.status
 
+                oddStatus = oddListOU?.get(1)?.oddState
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
@@ -260,9 +274,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
-
-            setupMatchInfo(item, matchType)
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean) {
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
@@ -271,7 +284,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
+        private fun setupMatchInfo(
+            item: MatchOdd,
+            matchType: MatchType,
+            isTimerEnable: Boolean
+        ) {
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
@@ -285,10 +302,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 listener = object : TimerListener {
                     override fun onTimerUpdate(timeMillis: Long) {
                         itemView.match_time_1x2.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                        item.leagueTime = (timeMillis / 1000).toInt()
                     }
                 }
 
-                updateTimer(item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0)
             }
         }
 
@@ -307,6 +325,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 isSelected = oddList1X2?.get(0)?.isSelected ?: false
 
                 betStatus = oddList1X2?.get(0)?.status
+
+                oddStatus = oddList1X2?.get(0)?.oddState
 
                 odd_1x2_top_text.text = "1"
 
@@ -342,6 +362,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 betStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
                     oddList1X2[1]?.status
+                } else {
+                    null
+                }
+
+                oddStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[1]?.oddState
                 } else {
                     null
                 }
@@ -384,6 +410,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddList1X2[1]?.status
                 } else if (oddList1X2 != null && oddList1X2.size >= 3) {
                     oddList1X2[2]?.status
+                } else {
+                    null
+                }
+
+                oddStatus = if (oddList1X2 != null && oddList1X2.size == 2) {
+                    oddList1X2[1]?.oddState
+                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                    oddList1X2[2]?.oddState
                 } else {
                     null
                 }
@@ -432,36 +466,48 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private var timer: Timer? = null
 
-        fun updateTimer(leagueTime: Int) {
-            var timeMillis = leagueTime * 1000L
+        fun updateTimer(isTimerEnable: Boolean, leagueTime: Int) {
 
-            Handler(Looper.getMainLooper()).post {
-                listener?.onTimerUpdate(timeMillis)
-            }
+            when (isTimerEnable) {
+                true -> {
+                    var timeMillis = leagueTime * 1000L
 
-            stopTimer()
-            timer = Timer()
-            timer?.schedule(object : TimerTask() {
-                override fun run() {
-                    timeMillis += 1000
                     Handler(Looper.getMainLooper()).post {
                         listener?.onTimerUpdate(timeMillis)
                     }
+
+                    timer = Timer()
+                    timer?.schedule(object : TimerTask() {
+                        override fun run() {
+                            timeMillis += 1000
+                            Handler(Looper.getMainLooper()).post {
+                                listener?.onTimerUpdate(timeMillis)
+                            }
+                        }
+                    }, 1000L, 1000L)
                 }
-            }, 1000L, 1000L)
+
+                false -> {
+                    stopTimer()
+                }
+            }
         }
 
         fun stopTimer() {
             timer?.cancel()
+            timer = null
         }
     }
 }
 
 class LeagueOddListener(
+
     val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
-    fun onClickLive(item: MatchOdd) = clickListenerLive(item)
+    fun onClickLive(item: MatchOdd) =
+        clickListenerLive(item)
+
     fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         clickListenerBet(matchOdd, oddString, odd)
 }

@@ -20,13 +20,10 @@ import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
-import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.odds.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -47,7 +44,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.odds.MoreGameEntity
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -251,18 +247,6 @@ class GameViewModel(
         }
         listWithOutOutright.forEach {
             removeBetInfoItem(it)
-        }
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.logout()
-            }.apply {
-                loginRepository.clear()
-                betInfoRepository.clear()
-                infoCenterRepository.clear()
-            }
         }
     }
 
