@@ -390,7 +390,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
             it?.let { matchClockEvent ->
                 matchClockEvent.matchClockCO?.let { matchClockCO ->
-                    matchClockCO.matchId?.let { matchId ->
+                    matchClockCO.matchId.let { matchId ->
 
                         val leagueOdds = leagueAdapter.data
 
