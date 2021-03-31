@@ -13,11 +13,11 @@ data class MatchClockCO(
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "matchTime")
-    val matchTime: Int,
+    var matchTime: Int,
     @Json(name = "remainingTime")
     val remainingTime: Int?,
     @Json(name = "remainingTimeInPeriod")
-    val remainingTimeInPeriod: Int?,
+    var remainingTimeInPeriod: Int?,
     @Json(name = "scheduledTime")
     val scheduledTime: Long,
     @Json(name = "stoppageTime")

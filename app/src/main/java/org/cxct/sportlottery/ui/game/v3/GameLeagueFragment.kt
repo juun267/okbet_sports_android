@@ -45,9 +45,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val leagueAdapter by lazy {
         LeagueAdapter(matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ,_ ->
+                { matchOdd ->
                     //TODO open live and play type page
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    //TODO Bill
+                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)

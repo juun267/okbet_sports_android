@@ -188,7 +188,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 selectData?.matchs?.let { list -> viewModel.setOddsDetailMoreList(list) }
 
                 scroll_view.smoothScrollTo(0, 0)
-                viewModel.getOddsDetail(select)
+
+                viewModel.getOddsDetailLive(select)
+                viewModel.getOddsList(select.code.toString(),MatchType.IN_PLAY.postValue)
             }
         })
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {

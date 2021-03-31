@@ -21,16 +21,21 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import kotlinx.android.synthetic.main.fragment_game_v3.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
+import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
+import timber.log.Timber
 
 @Suppress("DEPRECATION")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
@@ -38,8 +43,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     companion object {
-
-        const val TIME_LENGTH = 5
 
         const val GAME_TYPE = "gameType"
         const val TYPE_NAME = "typeName"//leagueName
@@ -63,6 +66,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private var matchId: String? = null
     private var oddsType: String? = null
 
+    private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
 
     private lateinit var dataBinding: FragmentOddsDetailLiveBinding
 
@@ -79,9 +83,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             matchId = it.getString(MATCH_ID)
             oddsType = it.getString(ODDS_TYPE)
         }
-
-        //TODO BIll 要遍尋訂閱
-        service.subscribeEventChannel(matchId)
     }
 
 
@@ -106,10 +107,16 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         initUI()
         observeData()
         observeSocketData()
-        getData()
         initRecyclerView()
+        getData()
         setupWebView(web_view)
         setWebView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unsubscribeAllHallChannel()
+        viewModel.removeOddsDetailPageValue()
     }
 
     private fun setWebView() {
@@ -119,7 +126,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun initRecyclerView() {
         rv_game_card.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter = OddsGameCardAdapter(OddsGameCardAdapter.ItemClickListener {
+        oddsGameCardAdapter = OddsGameCardAdapter(this@OddsDetailLiveFragment.matchId,OddsGameCardAdapter.ItemClickListener {
             it.let {
                 this@OddsDetailLiveFragment.matchId = it.id
                 getData()
@@ -127,7 +134,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         })
         rv_game_card.adapter = oddsGameCardAdapter
-        oddsGameCardAdapter?.data = viewModel.getGameCard()
     }
 
 
@@ -161,6 +167,17 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
+
+        //TODO Bill
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
+            Timber.e("訂閱:比分:matchStatusCO:${it?.matchStatusCO}")
+        })
+
+        receiver.matchClock.observe(viewLifecycleOwner, Observer {
+            oddsGameCardAdapter?.updateGameCard(it?.matchClockCO)
+            Timber.i("訂閱:時間:matchClockCO:${it?.matchClockCO}")
+        })
     }
 
 
@@ -168,7 +185,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = gameType?.let { OddsDetailListAdapter(this@OddsDetailLiveFragment, it) }
+        oddsDetailListAdapter =
+            gameType?.let { OddsDetailListAdapter(this@OddsDetailLiveFragment, it) }
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
@@ -223,12 +241,48 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             val eventResult = it.peekContent()
             if (eventResult?.success != true) {
-                showErrorPromptDialog(getString(R.string.prompt), eventResult?.msg ?: getString(R.string.unknown_error)) {}
+                showErrorPromptDialog(
+                    getString(R.string.prompt),
+                    eventResult?.msg ?: getString(R.string.unknown_error)
+                ) {}
             }
         })
 
+        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
+            unsubscribeAllHallChannel()
+
+            var sport =""
+            it.peekContent()?.let { oddsListResult ->
+                if (oddsListResult.success) {
+                    oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
+                        LeagueOdd.matchOdds.forEach { MatchOdd ->
+                            matchOddList.add(MatchOdd.matchInfo)
+                        }
+                    }
+                    sport = oddsListResult.oddsListData?.sport.toString()
+                    oddsGameCardAdapter?.data = matchOddList
+                }
+            }
+
+            //訂閱所有賽事
+            Timber.d("訂閱:matchOddList:${matchOddList}")
+
+            matchOddList.forEach { matchOddList->
+                subscribeHallChannel(sport,matchOddList?.id)
+                Timber.v("訂閱:${sport} ,matchId:${matchOddList?.id}")
+            }
+        })
     }
 
+    private fun subscribeHallChannel(code: String, match: String?) {
+        service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match)
+    }
+
+    private fun unsubscribeAllHallChannel() {
+        //離開畫面時取消訂閱所有賽事
+        service.unsubscribeAllHallChannel()
+    }
 
     private fun getData() {
         gameType?.let { gameType ->
@@ -280,7 +334,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
 
-    fun setupWebView(webView: WebView) {
+    private fun setupWebView(webView: WebView) {
         if (BuildConfig.DEBUG)
             WebView.setWebContentsDebuggingEnabled(true)
 
@@ -404,11 +458,4 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (matchId?.let { viewModel.checkInBetInfo(it) } == false) {
-            service.unSubscribeEventChannel(matchId)
-        }
-        viewModel.removeOddsDetailPageValue()
-    }
 }

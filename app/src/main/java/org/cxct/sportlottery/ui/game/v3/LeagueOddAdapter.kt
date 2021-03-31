@@ -48,8 +48,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         when (holder) {
 
-            is ViewHolderHdpOu -> holder.bind(matchType, item, data as MutableList<MatchOdd>,leagueOddListener)
-            is ViewHolder1x2 -> holder.bind(matchType, item,data as MutableList<MatchOdd>,leagueOddListener)
+            is ViewHolderHdpOu -> holder.bind(matchType, item,leagueOddListener)
+            is ViewHolder1x2 -> holder.bind(matchType, item,leagueOddListener)
         }
     }
 
@@ -64,14 +64,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd,gameCardList:MutableList<MatchOdd>, leagueOddListener: LeagueOddListener?) {
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
 
             setupMatchInfo(item, matchType)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item,gameCardList)
+                leagueOddListener?.onClickLive(item)
             }
         }
 
@@ -260,14 +260,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd,gameCardList:MutableList<MatchOdd>, leagueOddListener: LeagueOddListener?) {
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
 
             setupMatchInfo(item, matchType)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item,gameCardList)
+                leagueOddListener?.onClickLive(item)
             }
         }
 
@@ -458,10 +458,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 }
 
 class LeagueOddListener(
-    val clickListenerLive: (item: MatchOdd,gameCardList: MutableList<MatchOdd>) -> Unit,
+    val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
-    fun onClickLive(item: MatchOdd,gameCardList: MutableList<MatchOdd>) = clickListenerLive(item,gameCardList)
+    fun onClickLive(item: MatchOdd) = clickListenerLive(item)
     fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         clickListenerBet(matchOdd, oddString, odd)
 }
