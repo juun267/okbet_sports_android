@@ -34,6 +34,8 @@ class MoneyTransferViewModel(
         private const val PAGE_SIZE = 20
     }
 
+    val PLAT_CODE = "CG"
+
     private val gameNameMap: Map<String?, String> = mapOf(
         "CG" to androidContext.getString(R.string.plat_money),
         "DF" to androidContext.getString(R.string.third_game_df),
@@ -45,10 +47,6 @@ class MoneyTransferViewModel(
         "OGPLUS" to androidContext.getString(R.string.third_game_ogplus),
         "CR" to androidContext.getString(R.string.third_game_cr),
     )
-
-    private val resultList = mutableListOf<GameData>()
-    var outPlatDataList = mutableListOf<GameData>()
-    var inPlatDataList = mutableListOf<GameDataInPlat>()
 
     val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
         when (it) {
@@ -77,10 +75,10 @@ class MoneyTransferViewModel(
     val thirdGamesResult: LiveData<ThirdGamesResult>
         get() = _thirdGamesResult
 
-    val recycleAllMoneyResult: LiveData<BlankResult?>
+    val recycleAllMoneyResult: LiveData<Event<BlankResult?>>
         get() = _recycleAllMoneyResult
 
-    val transferResult: LiveData<BlankResult?>
+    val transferResult: LiveData<Event<BlankResult?>>
         get() = _transferResult
 
     val queryTransfersResult: LiveData<QueryTransfersResult>
@@ -98,7 +96,6 @@ class MoneyTransferViewModel(
     val toolbarName: LiveData<String>
         get() = _toolbarName
 
-
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
     private val _isPlatSwitched = MutableLiveData<Event<Boolean>>()
     private val _loading = MutableLiveData<Boolean>()
@@ -106,8 +103,8 @@ class MoneyTransferViewModel(
     private val _userMoney = MutableLiveData<Double?>()
     private var _allBalanceResultList = MutableLiveData<List<GameData>>()
     private var _thirdGamesResult = MutableLiveData<ThirdGamesResult>()
-    private var _recycleAllMoneyResult = MutableLiveData<BlankResult?>()
-    private var _transferResult = MutableLiveData<BlankResult?>()
+    private var _recycleAllMoneyResult = MutableLiveData<Event<BlankResult?>>()
+    private var _transferResult = MutableLiveData<Event<BlankResult?>>()
     private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
 
     fun showTitleBar(visible: Boolean) {
@@ -131,10 +128,14 @@ class MoneyTransferViewModel(
         _toolbarName.value = name
     }
 
-    fun setIsPlatSwitched() {
-        _isPlatSwitched.value = Event(!(isPlatSwitched.value?.getContentIfNotHandled() ?: false))
+    fun switchPlat() {
+        _isPlatSwitched.value = Event(!(isPlatSwitched.value?.peekContent() ?: false))
     }
-
+    /*
+    fun reversePlat() {
+        isReversed = !isReversed
+    }
+*/
     fun getAllBalance() {
         loading()
         viewModelScope.launch {
@@ -143,18 +144,16 @@ class MoneyTransferViewModel(
             }.let { result ->
                 hideLoading()
                 result?.apply {
-                    resultList.clear()
+                    val resultList = mutableListOf<GameData>()
                     for ((key, value) in result.resultMap ?: mapOf()) {
                         value?.apply {
                             val gameData = GameData(money, remark, transRemaining).apply {
                                 code = key
                                 showName = gameNameMap[key] ?: key
                             }
-
                             resultList.add(gameData)
                         }
                     }
-                    setPlatDataList()
                     _allBalanceResultList.postValue(resultList)
                 }
             }
@@ -165,51 +164,29 @@ class MoneyTransferViewModel(
         IN_PLAT, OUT_PLAT
     }
 
-    fun getRecordPlatNameList(plat: PLAT, list: List<GameData>): MutableList<StatusSheetData> {
-        val recordList = mutableListOf<StatusSheetData>()
-        recordList.apply {
-            val item = if (plat == PLAT.IN_PLAT) R.string.all_in_plat else R.string.all_out_plat
-            recordList.add(StatusSheetData(null, androidContext.getString(item)))
-            list.forEach {
-                this.add(StatusSheetData(it.code, it.showName))
-            }
+    private val inPlatSheetDataList = mutableListOf<StatusSheetData>()
+    private val outPlatSheetDataList = mutableListOf<StatusSheetData>()
+
+    fun setInSheetDataList (firstItemCode: String ?= null, firstItem: Int = R.string.all_in_plat) {
+        inPlatSheetDataList.clear()
+        inPlatSheetDataList.add(StatusSheetData(firstItemCode, androidContext.getString(firstItem)))
+        _allBalanceResultList.value?.forEach {
+            inPlatSheetDataList.add(StatusSheetData(it.code, it.showName))
         }
-        return recordList
     }
 
-    var defaultOutPlat = "CG"
-    var defaultInPlat: String? = null
-
-    fun setPlatDataList() {
-        outPlatDataList.clear()
-        inPlatDataList.clear()
-
-        resultList.forEach { gameData ->
-            val inPlatData = GameDataInPlat(gameData.money, gameData.remark, gameData.transRemaining).apply {
-                isChecked = false
-                showName = gameData.showName
-                code = gameData.code
-            }
-            inPlatDataList.add(inPlatData)
+    fun setOutSheetDataList (firstItemCode: String ?= null, firstItem: Int = R.string.all_out_plat) {
+        outPlatSheetDataList.clear()
+        outPlatSheetDataList.add(StatusSheetData(firstItemCode, androidContext.getString(firstItem)))
+        _allBalanceResultList.value?.forEach {
+            outPlatSheetDataList.add(StatusSheetData(it.code, it.showName))
         }
+    }
 
-        resultList.forEach { gameData ->
-            val inPlatData = gameData.apply { gameData.isChecked = false }
-            outPlatDataList.add(inPlatData)
-        }
-
-        inPlatDataList.add(0, GameDataInPlat().apply {
-            isChecked = false
-            code = "CG"
-            showName = androidContext.getString(R.string.plat_money)
-        })
-
-        outPlatDataList.add(0, GameData().apply {
-            isChecked = false
-            code = "CG"
-            showName = androidContext.getString(R.string.plat_money)
-        })
-
+    fun getPlatRecordList(plat: PLAT, nowSelectedPlat: String?): List<StatusSheetData> {
+        val sheetList = if (plat == PLAT.IN_PLAT) inPlatSheetDataList else outPlatSheetDataList
+        return if (nowSelectedPlat.isNullOrEmpty()) sheetList
+        else sheetList.filter { it.showName != nowSelectedPlat }
     }
 
     fun recycleAllMoney() {
@@ -219,28 +196,27 @@ class MoneyTransferViewModel(
                 OneBoSportApi.thirdGameService.allTransferOut()
             }?.let { result ->
                 hideLoading()
-                _recycleAllMoneyResult.value = result
+                _recycleAllMoneyResult.value = Event(result)
 
                 getAllBalance()
                 getMoney()
-                clearRecycleAllMoneyResult()
             }
         }
     }
 
-    fun transfer(outPlat: String, inPlat: String, amount: Long?) {
-        if (amount == null) return
+    fun transfer(outPlat: String?, inPlat: String?, amount: Long?) {
+        if (amount == null || outPlat==null || inPlat==null ) return
+
         loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
             }?.let { result ->
                 hideLoading()
-                _transferResult.value = result
+                _transferResult.value = Event(result)
 
                 getAllBalance()
                 getMoney()
-                clearTransferResult()
             }
         }
     }
@@ -294,16 +270,6 @@ class MoneyTransferViewModel(
                 _thirdGamesResult.value = result
             }
         }
-    }
-
-    @SuppressLint("NullSafeMutableLiveData")
-    fun clearTransferResult() {
-        _transferResult.postValue(null)
-    }
-
-    @SuppressLint("NullSafeMutableLiveData")
-    fun clearRecycleAllMoneyResult() {
-        _recycleAllMoneyResult.postValue(null)
     }
 
     private fun loading() {

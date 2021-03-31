@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:maxLines="1"
@@ -49,10 +49,8 @@
 
             <View
                 android:layout_width="1dp"
-                android:layout_height="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
                 android:background="@color/colorWhite6" />
 
             <EditText

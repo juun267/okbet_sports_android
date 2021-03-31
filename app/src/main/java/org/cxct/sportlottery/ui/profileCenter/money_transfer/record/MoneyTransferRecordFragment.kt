@@ -3,17 +3,16 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer.record
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_search_bar
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.rv_record
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
@@ -65,6 +64,10 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         viewModel.getAllBalance()
         viewModel.queryTransfers()
         viewModel.setToolbarName(getString(R.string.record_conversion))
+
+        viewModel.setInSheetDataList()
+        viewModel.setOutSheetDataList()
+
         return inflater.inflate(R.layout.fragment_money_transfer_record, container, false)
     }
 
@@ -86,8 +89,17 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         date_search_bar.setOnClickSearchListener {
             viewModel.queryTransfers(startTime = date_search_bar.startTime.toString(), endTime = date_search_bar.endTime.toString(), firmTypeIn = selector_in_plat.selectedTag, firmTypeOut = selector_out_plat.selectedTag, status = selector_transfer_status.selectedTag)
         }
-    }
 
+        selector_out_plat.setOnItemSelectedListener {
+            selector_in_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+
+        }
+
+        selector_in_plat.setOnItemSelectedListener {
+            selector_out_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+        }
+
+    }
 
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
@@ -95,8 +107,8 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
-            selector_out_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.OUT_PLAT, it)
-            selector_in_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.IN_PLAT, it)
+            selector_out_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, selector_in_plat.selectedText)
+            selector_in_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, selector_out_plat.selectedText)
         }
     }
 
