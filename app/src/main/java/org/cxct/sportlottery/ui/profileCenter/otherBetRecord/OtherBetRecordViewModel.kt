@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Ot
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OrderData
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.TimeUtil
@@ -23,8 +24,9 @@ import org.cxct.sportlottery.util.TimeUtil
 class OtherBetRecordViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val allPlatTag = "ALL_PLAT"
 

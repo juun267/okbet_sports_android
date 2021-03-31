@@ -19,9 +19,9 @@ class ProfileCenterViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
-    private val infoCenterRepository: InfoCenterRepository,
+    infoCenterRepository: InfoCenterRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
@@ -56,15 +56,7 @@ class ProfileCenterViewModel(
     }
 
     fun logout() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.logout()
-            }.apply {
-                loginRepository.clear()
-                betInfoRepository.clear()
-                infoCenterRepository.clear()
-            }
-        }
+        doLogoutCleanUser()
     }
 
     fun getUserInfo() {

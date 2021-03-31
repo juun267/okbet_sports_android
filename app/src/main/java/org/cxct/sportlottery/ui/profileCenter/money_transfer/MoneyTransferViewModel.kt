@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRe
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
@@ -27,8 +28,9 @@ import org.cxct.sportlottery.util.Event
 class MoneyTransferViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository,
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -159,7 +161,7 @@ class MoneyTransferViewModel(
         }
     }
 
-    fun setInSheetDataList (firstItemCode: String ?= null, firstItem: Int = R.string.all_in_plat) {
+    fun setInSheetDataList(firstItemCode: String? = null, firstItem: Int = R.string.all_in_plat) {
         inPlatSheetDataList.clear()
         inPlatSheetDataList.add(StatusSheetData(firstItemCode, androidContext.getString(firstItem)))
         _allBalanceResultList.value?.forEach {
@@ -167,7 +169,7 @@ class MoneyTransferViewModel(
         }
     }
 
-    fun setOutSheetDataList (firstItemCode: String ?= null, firstItem: Int = R.string.all_out_plat) {
+    fun setOutSheetDataList(firstItemCode: String? = null, firstItem: Int = R.string.all_out_plat) {
         outPlatSheetDataList.clear()
         outPlatSheetDataList.add(StatusSheetData(firstItemCode, androidContext.getString(firstItem)))
         _allBalanceResultList.value?.forEach {
@@ -197,7 +199,7 @@ class MoneyTransferViewModel(
     }
 
     fun transfer(outPlat: String?, inPlat: String?, amount: Long?) {
-        if (amount == null || outPlat==null || inPlat==null ) return
+        if (amount == null || outPlat == null || inPlat == null) return
 
         loading()
         viewModelScope.launch {
@@ -217,12 +219,14 @@ class MoneyTransferViewModel(
     private var isLoading = false
     private var nowPage = 1
     val recordDataList = mutableListOf<Row>()
-    fun queryTransfers(page: Int? = 1,
-                       startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime,
-                       endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime,
-                       status: String ?= null,
-                       firmTypeIn: String ?= null,
-                       firmTypeOut: String ?= null) {
+    fun queryTransfers(
+        page: Int? = 1,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        status: String? = null,
+        firmTypeIn: String? = null,
+        firmTypeOut: String? = null
+    ) {
 
         loading()
         if (page == 1) {

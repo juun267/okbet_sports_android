@@ -76,18 +76,6 @@ class MainViewModel(
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
-    fun logout() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.logout()
-            }.apply {
-                loginRepository.clear()
-                betInfoRepository.clear()
-                infoCenterRepository.clear()
-            }
-        }
-    }
-
     //獲取系統公告
     fun getMarquee() {
         viewModelScope.launch {

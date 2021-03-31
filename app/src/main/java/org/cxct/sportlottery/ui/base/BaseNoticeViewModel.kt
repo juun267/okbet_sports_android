@@ -8,8 +8,8 @@ import org.cxct.sportlottery.repository.LoginRepository
 abstract class BaseNoticeViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    val infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     fun setUserNoticeList(userNoticeList: List<UserNotice>) {
         infoCenterRepository.setUserNoticeList(userNoticeList)
