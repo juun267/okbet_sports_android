@@ -95,6 +95,7 @@ abstract class BaseViewModel(
 
     fun doResetData() {
         viewModelScope.launch {
+            loginRepository.logout()
             loginRepository.clear()
             betInfoRepository.clear()
             infoCenterRepository.clear()
