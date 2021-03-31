@@ -269,6 +269,27 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
+            it?.let { _ ->
+                service.unsubscribeAllHallChannel()
+
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEach { leagueOdd ->
+                    if (leagueOdd.isExpand) {
+
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun backEvent() {
