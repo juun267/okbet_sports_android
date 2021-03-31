@@ -247,10 +247,6 @@ class GameViewModel(
         }
     }
 
-    fun logout() {
-        doLogoutCleanUser()
-    }
-
     //獲取系統公告
     fun getAnnouncement() {
         viewModelScope.launch {
