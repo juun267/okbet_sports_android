@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -132,7 +131,7 @@ class ThirdGameRepository {
     ): MutableList<GameItemData> {
         val pageList = mutableListOf<GameItemData>()
         thirdGameData?.thirdDictMap?.get(gameFirm.firmCode)?.forEach { thirdDict ->
-            if (thirdDict?.gameCode == null)
+            if (thirdDict?.gameCode.isNullOrEmpty())
                 thirdDict?.gameCode = gameFirm.playCode
 
             //20200120 記錄問題: 修正電子類遊戲無法進入的問題 by Bee

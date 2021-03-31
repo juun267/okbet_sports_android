@@ -29,7 +29,6 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
-    private val mSubscribeMatchMap = mutableMapOf<String, Match>() //<code, Match>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +55,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unSubscribeAllHallChannel()
+        unsubscribeAllHallChannel()
     }
 
     private fun initEvent() {
@@ -119,19 +118,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun subscribeHallChannel(code: String, match: Match) {
-        //訂閱賽事並記錄到訂閱清單裡面
-        mSubscribeMatchMap[code] = match
         service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match.id)
     }
 
-    private fun unSubscribeAllHallChannel() {
+    private fun unsubscribeAllHallChannel() {
         //離開畫面時取消訂閱所有賽事
-        mSubscribeMatchMap.forEach {
-            val code = it.key
-            val matchId = it.value.id
-            service.unSubscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, matchId)
-        }
-        mSubscribeMatchMap.clear()
+        service.unsubscribeAllHallChannel()
     }
 
     private fun initObserve() {
@@ -177,7 +169,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateUI(result: MatchPreloadResult) {
-        unSubscribeAllHallChannel() //先清除之前訂閱項目
+        unsubscribeAllHallChannel() //先清除之前訂閱項目
 
         //訂閱所有滾球賽事
         result.matchPreloadData?.datas?.forEach { data ->
