@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.component.StatusSheetData
@@ -30,7 +31,8 @@ class FinanceViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
