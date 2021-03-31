@@ -47,7 +47,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun showDialogLogout(message: String) {
         showTokenPromptDialog(message) {
             MainActivity.reStart(this)
-            viewModel.doResetData()
+            viewModel.doLogoutCleanUser()
         }
     }
 

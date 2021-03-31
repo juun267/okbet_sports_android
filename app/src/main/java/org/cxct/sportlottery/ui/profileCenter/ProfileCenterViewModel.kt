@@ -56,15 +56,7 @@ class ProfileCenterViewModel(
     }
 
     fun logout() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.logout()
-            }.apply {
-                loginRepository.clear()
-                betInfoRepository.clear()
-                infoCenterRepository.clear()
-            }
-        }
+        doLogoutCleanUser()
     }
 
     fun getUserInfo() {

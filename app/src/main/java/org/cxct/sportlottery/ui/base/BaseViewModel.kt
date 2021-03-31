@@ -93,7 +93,7 @@ abstract class BaseViewModel(
         return errorResult
     }
 
-    fun doResetData() {
+    fun doLogoutCleanUser() {
         viewModelScope.launch {
             loginRepository.logout()
             loginRepository.clear()
