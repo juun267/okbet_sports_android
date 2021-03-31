@@ -326,7 +326,7 @@ class WithdrawViewModel(
                 moneyRepository.getRechCfg()
             }?.let { result ->
                 result.rechCfg?.let {
-                    uwBankType = it.uwTypes.first { config -> config.type == TransferType.BANK.type }
+                    uwBankType = it.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
                     _rechargeConfigs.value = it
                     getWithdrawCardList()
                 }
