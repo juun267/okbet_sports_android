@@ -28,7 +28,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
-import org.cxct.sportlottery.ui.splash.HostRepository
+import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel

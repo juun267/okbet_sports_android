@@ -557,6 +557,7 @@
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_in_play">滚球&#160;&#160;</string>
     <string name="bet_info_current_money">余额:%s</string>
+    <string name="bet_info_in_play_score">滚球&#160;&#160;%1$s&#160;(%2$s:%3$s)</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
@@ -604,6 +605,7 @@
     <string name="log_detail_amount_sub">交易金额：</string>
     <string name="log_detail_status_sub">交易状态：</string>
     <string name="log_detail_handle_fee">手续费用：</string>
+    <string name="log_detail_rebate_money">返利金额：</string>
     <string name="log_detail_review_time">审核时间：</string>
     <string name="log_detail_reason">备注：</string>
 

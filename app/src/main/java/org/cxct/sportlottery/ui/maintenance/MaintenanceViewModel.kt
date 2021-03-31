@@ -13,8 +13,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.splash.HostRepository
-import timber.log.Timber
+import org.cxct.sportlottery.repository.HostRepository
 
 
 class MaintenanceViewModel(

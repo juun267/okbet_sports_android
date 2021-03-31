@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import retrofit2.Retrofit
@@ -138,6 +139,7 @@ class SplashViewModel(
     }
 
     private fun setConfig(result: ConfigResult?) {
+        hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         _configResult.postValue(result)
     }
