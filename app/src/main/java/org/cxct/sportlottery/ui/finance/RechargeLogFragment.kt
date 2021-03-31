@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_recharge_log.*
-import kotlinx.android.synthetic.main.activity_recharge_log.iv_scroll_to_top
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -70,7 +69,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             this.selector_method_status.dataList = viewModel.rechargeChannelList
             this.selector_order_status.dataList = viewModel.rechargeStateList
 
-            iv_scroll_to_top.setOnClickListener {
+            this.iv_scroll_to_top.setOnClickListener {
                 rvlist.smoothScrollToPosition(0)
             }
 

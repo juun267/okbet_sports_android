@@ -8,10 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
-import org.cxct.sportlottery.repository.AvatarRepository
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class ProfileModel(
@@ -19,8 +16,9 @@ class ProfileModel(
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository,
     private val avatarRepository: AvatarRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
 

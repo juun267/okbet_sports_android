@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -174,17 +173,13 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             updateUiWithLogin(it)
         })
 
-        viewModel.errorResultToken.observe(this, Observer {
-            viewModel.logout()
-        })
-
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
 
         //彈窗圖
         viewModel.popImageList.observe(this, Observer {
-            setPopImage(it?: listOf())
+            setPopImage(it ?: listOf())
         })
 
         //公告彈窗

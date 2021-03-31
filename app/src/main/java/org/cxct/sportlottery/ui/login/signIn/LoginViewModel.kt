@@ -11,16 +11,16 @@ import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 
 
 class LoginViewModel(
     private val androidContext: Context,
-    private val loginRepository: LoginRepository
-) : BaseViewModel() {
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
     val loginResult: LiveData<LoginResult>

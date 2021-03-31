@@ -5,7 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="40dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    tools:context="org.cxct.sportlottery.ui.finance.RechargeLogDetailDialog">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
@@ -118,6 +119,27 @@
             tools:text="1,000,000.00" />
 
         <TextView
+            android:id="@+id/log_detail_rebate_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_rebate_money"
+            android:textColor="@color/colorBlackLight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/log_detail_amount_subtitle" />
+
+        <TextView
+            android:id="@+id/log_detail_rebate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/log_detail_rebate_subtitle"
+            app:layout_constraintStart_toEndOf="@id/log_detail_rebate_subtitle"
+            tools:text="0.000" />
+
+        <TextView
             android:id="@+id/log_detail_status_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,7 +148,7 @@
             android:text="@string/log_detail_status_sub"
             android:textColor="@color/colorBlackLight"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/log_detail_amount_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/log_detail_rebate_subtitle" />
 
         <TextView
             android:id="@+id/log_detail_status"
