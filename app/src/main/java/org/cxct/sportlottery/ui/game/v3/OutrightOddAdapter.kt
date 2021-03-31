@@ -73,6 +73,8 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 betStatus = item.status
 
+                oddStatus = item.oddState
+
                 odd_outright_text.text = item.odds?.let { TextUtil.formatForOdd(it) }
 
                 setOnClickListener {
