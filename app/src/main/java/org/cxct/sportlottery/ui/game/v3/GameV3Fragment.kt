@@ -45,7 +45,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
-                //TODO add 滾球賽事
                 viewModel.getGameHallList(args.matchType, it)
                 loading()
             }

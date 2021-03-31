@@ -383,12 +383,12 @@ class GameViewModel(
 
     fun getGameHallList(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
-        getGameHallList(matchType, false)
+        getGameHallList(matchType, false, date.date)
 
         _curDatePosition.postValue(_curDate.value?.indexOf(date))
     }
 
-    fun getGameHallList(matchType: MatchType, isReloadDate: Boolean) {
+    fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
         mathType = matchType
         if (isReloadDate) {
             getDateRow(matchType)
@@ -436,7 +436,7 @@ class GameViewModel(
                 }?.code
 
                 gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
+                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams(), date)
                 }
 
                 _isNoHistory.postValue(gameType == null)
@@ -796,7 +796,8 @@ class GameViewModel(
     private fun getLeagueList(
         gameType: String,
         matchType: String,
-        timeRangeParams: TimeRangeParams?
+        timeRangeParams: TimeRangeParams?,
+        date: String? = null
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -805,7 +806,8 @@ class GameViewModel(
                         gameType,
                         matchType,
                         startTime = timeRangeParams?.startTime,
-                        endTime = timeRangeParams?.endTime
+                        endTime = timeRangeParams?.endTime,
+                        date = date
                     )
                 )
             }
@@ -852,19 +854,38 @@ class GameViewModel(
                 )
                 dateRow.add(
                     Date(
+                        androidContext.getString(R.string.date_row_live),
+                        object : TimeRangeParams {
+                            override val startTime: String?
+                                get() = null
+                            override val endTime: String?
+                                get() = null
+                        },
+                        MatchType.IN_PLAY.name
+                    )
+                )
+                dateRow.add(
+                    Date(
                         androidContext.getString(R.string.date_row_today),
-                        TimeUtil.getParlayTodayTimeRangeParams()
-
+                        TimeUtil.getParlayTodayTimeRangeParams(),
+                        MatchType.TODAY.name
                     )
                 )
                 TimeUtil.getFutureDate(6).forEach {
-                    dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
+                    dateRow.add(
+                        Date(
+                            it,
+                            TimeUtil.getDayDateTimeRangeParams(it),
+                            MatchType.EARLY.name
+                        )
+                    )
                 }
 
                 dateRow.add(
                     Date(
                         androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams()
+                        TimeUtil.getOtherEarlyDateTimeRangeParams(),
+                        MatchType.EARLY.name
                     )
                 )
             }
