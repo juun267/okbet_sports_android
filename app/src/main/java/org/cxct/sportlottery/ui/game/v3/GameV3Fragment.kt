@@ -357,9 +357,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             outrightCountryAdapter.data = it
         })
 
-//            viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
-//                //TODO add not history ui
-//            })
+        viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+            game_no_record.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        })
     }
 
     private fun initSocketReceiver() {
