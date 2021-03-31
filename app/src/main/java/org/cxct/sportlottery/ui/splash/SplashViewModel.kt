@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import retrofit2.Retrofit
@@ -132,6 +133,7 @@ class SplashViewModel(
     }
 
     private fun setConfig(result: ConfigResult?) {
+        hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         _configResult.postValue(result)
     }
