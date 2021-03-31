@@ -25,15 +25,15 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         BankListAdapter(
             BankListClickListener(
                 editBankListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it)
                     mNavController.navigate(action)
                 },
                 editCryptoListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, navigateFrom)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it)
                     mNavController.navigate(action)
                 },
                 addListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, navigateFrom)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null)
                     mNavController.navigate(action)
                 }
             )

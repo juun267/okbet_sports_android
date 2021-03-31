@@ -22,30 +22,18 @@
                 android:defaultValue="@null"
                 app:argType="org.cxct.sportlottery.network.bank.my.BankCardList"
                 app:nullable="true" />
-            <argument
-                android:name="navigateFrom"
-                app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
         </action>
     </fragment>
     <fragment
         android:id="@+id/bankCardFragment"
         android:name="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
-        android:label="BankCardFragment">
+        android:label="BankCardFragment"
+        tools:layout="@layout/fragment_bank_card">
         <argument
             android:name="editBankCard"
             android:defaultValue="@null"
             app:argType="org.cxct.sportlottery.network.bank.my.BankCardList"
             app:nullable="true" />
-        <argument
-            android:name="navigateFrom"
-            app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
-        <action
-            android:id="@+id/action_bankCardFragment_to_withdrawFragment"
-            app:destination="@+id/withdrawFragment">
-            <argument
-                android:name="navigateFrom"
-                app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
-        </action>
     </fragment>
 
 </navigation>
