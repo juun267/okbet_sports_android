@@ -240,6 +240,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onDestroy() {
         super.onDestroy()
 
-        service.unsubscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+        service.unsubscribeAllHallChannel()
     }
 }
