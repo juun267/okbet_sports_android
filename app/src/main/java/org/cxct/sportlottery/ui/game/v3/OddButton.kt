@@ -160,6 +160,8 @@ class OddButton @JvmOverloads constructor(
     }
 
     private fun setupOddState(oddState: Int) {
+        if (!isEnabled) return
+
         when (oddState) {
             OddState.LARGER.state -> {
                 odd_button.background =

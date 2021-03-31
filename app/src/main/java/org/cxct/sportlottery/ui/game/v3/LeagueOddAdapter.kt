@@ -34,6 +34,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             notifyDataSetChanged()
         }
 
+    var isTimerEnable = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var leagueOddListener: LeagueOddListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -47,9 +53,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-
-            is ViewHolderHdpOu -> holder.bind(matchType, item, data as MutableList<MatchOdd>,leagueOddListener)
-            is ViewHolder1x2 -> holder.bind(matchType, item,data as MutableList<MatchOdd>,leagueOddListener)
+            is ViewHolderHdpOu -> holder.bind(
+                matchType,
+                item,
+                data as MutableList<MatchOdd>,
+                leagueOddListener,
+                isTimerEnable
+            )
+            is ViewHolder1x2 -> holder.bind(
+                matchType,
+                item,
+                data as MutableList<MatchOdd>,
+                leagueOddListener,
+                isTimerEnable
+            )
         }
     }
 
@@ -64,18 +81,23 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd,gameCardList:MutableList<MatchOdd>, leagueOddListener: LeagueOddListener?) {
-
-            setupMatchInfo(item, matchType)
+        fun bind(
+            matchType: MatchType,
+            item: MatchOdd,
+            gameCardList: MutableList<MatchOdd>,
+            leagueOddListener: LeagueOddListener?,
+            isTimerEnable: Boolean
+        ) {
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item,gameCardList)
+                leagueOddListener?.onClickLive(item, gameCardList)
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
+        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType, isTimerEnable: Boolean) {
             itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home.text = item.matchInfo?.homeName
@@ -89,10 +111,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 listener = object : TimerListener {
                     override fun onTimerUpdate(timeMillis: Long) {
                         itemView.match_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                        item.leagueTime = (timeMillis / 1000).toInt()
                     }
                 }
 
-                updateTimer(item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0)
             } else {
                 itemView.match_status.text = item.matchInfo?.startDateDisplay
                 itemView.match_time.text = item.matchInfo?.startTimeDisplay
@@ -260,18 +283,28 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd,gameCardList:MutableList<MatchOdd>, leagueOddListener: LeagueOddListener?) {
-
-            setupMatchInfo(item, matchType)
+        
+        fun bind(
+            matchType: MatchType,
+            item: MatchOdd,
+            gameCardList: MutableList<MatchOdd>,
+            leagueOddListener: LeagueOddListener?,
+            isTimerEnable: Boolean
+        ) {
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item,gameCardList)
+                leagueOddListener?.onClickLive(item, gameCardList)
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType) {
+        private fun setupMatchInfo(
+            item: MatchOdd,
+            matchType: MatchType,
+            isTimerEnable: Boolean
+        ) {
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
@@ -285,10 +318,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 listener = object : TimerListener {
                     override fun onTimerUpdate(timeMillis: Long) {
                         itemView.match_time_1x2.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                        item.leagueTime = (timeMillis / 1000).toInt()
                     }
                 }
 
-                updateTimer(item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0)
             }
         }
 
@@ -432,36 +466,47 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private var timer: Timer? = null
 
-        fun updateTimer(leagueTime: Int) {
-            var timeMillis = leagueTime * 1000L
+        fun updateTimer(isTimerEnable: Boolean, leagueTime: Int) {
 
-            Handler(Looper.getMainLooper()).post {
-                listener?.onTimerUpdate(timeMillis)
-            }
+            when (isTimerEnable) {
+                true -> {
+                    var timeMillis = leagueTime * 1000L
 
-            stopTimer()
-            timer = Timer()
-            timer?.schedule(object : TimerTask() {
-                override fun run() {
-                    timeMillis += 1000
                     Handler(Looper.getMainLooper()).post {
                         listener?.onTimerUpdate(timeMillis)
                     }
+
+                    timer = Timer()
+                    timer?.schedule(object : TimerTask() {
+                        override fun run() {
+                            timeMillis += 1000
+                            Handler(Looper.getMainLooper()).post {
+                                listener?.onTimerUpdate(timeMillis)
+                            }
+                        }
+                    }, 1000L, 1000L)
                 }
-            }, 1000L, 1000L)
+
+                false -> {
+                    stopTimer()
+                }
+            }
         }
 
         fun stopTimer() {
             timer?.cancel()
+            timer = null
         }
     }
 }
 
 class LeagueOddListener(
-    val clickListenerLive: (item: MatchOdd,gameCardList: MutableList<MatchOdd>) -> Unit,
+    val clickListenerLive: (item: MatchOdd, gameCardList: MutableList<MatchOdd>) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
-    fun onClickLive(item: MatchOdd,gameCardList: MutableList<MatchOdd>) = clickListenerLive(item,gameCardList)
+    fun onClickLive(item: MatchOdd, gameCardList: MutableList<MatchOdd>) =
+        clickListenerLive(item, gameCardList)
+
     fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         clickListenerBet(matchOdd, oddString, odd)
 }
