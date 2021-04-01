@@ -152,7 +152,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             searchHint = getString(R.string.game_filter_row_search_hint)
 
             backClickListener = View.OnClickListener {
-                //TODO add back logic to view model
+                activity?.onBackPressed()
             }
 
             ouHDPClickListener = View.OnClickListener {
