@@ -17,13 +17,20 @@ object Constants {
         mBaseUrl = baseUrl
     }
 
-    //20210208 記錄問題：retrofit.setBaseUrl() 開頭一定要有 http://[isNotEmpty] or https://[isNotEmpty]，否則會直接 exception
     fun getBaseUrl(): String {
+        return mBaseUrl.httpFormat()
+    }
+
+    //20210401 記錄問題：retrofit.setBaseUrl() format http://[isNotEmpty]/ or https://[isNotEmpty]/，否則會直接 exception
+    fun String.httpFormat(): String {
         val regex = "^http[s]?://.+".toRegex()
-        return if (mBaseUrl.contains(regex))
-            mBaseUrl
-        else
-            "https://default"
+        return this.let {
+            if (it.isEmpty()) "https://default/" else it
+        }.let {
+            if (it.contains(regex)) it else "https://$it"
+        }.let {
+            if (it.endsWith("/")) it else "$it/"
+        }
     }
 
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
