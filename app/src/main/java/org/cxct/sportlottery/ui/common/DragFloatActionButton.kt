@@ -9,14 +9,18 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
+import org.cxct.sportlottery.util.MetricsUtil
 import kotlin.math.sqrt
 
 
 const val DURATION: Long = 300
-const val DEFAULT_POSITION_X = 16f
 
 
 class DragFloatActionButton : LinearLayout {
+
+
+    val defaultPositionX = 16f
+    val defaultPositionY = MetricsUtil.getScreenHeight() - MetricsUtil.convertDpToPixel(82f, context)
 
 
     private var parentHeight: Int = 0
@@ -80,7 +84,7 @@ class DragFloatActionButton : LinearLayout {
                 if (rawX >= parentWidth / 2) {
                     animate().setInterpolator(DecelerateInterpolator())
                         .setDuration(DURATION)
-                        .xBy(parentWidth - width - x - DEFAULT_POSITION_X)
+                        .xBy(parentWidth - width - x - defaultPositionX)
                         .setListener(object : Animator.AnimatorListener {
                             override fun onAnimationStart(animation: Animator?) {
                             }
@@ -97,7 +101,7 @@ class DragFloatActionButton : LinearLayout {
                         })
                         .start()
                 } else {
-                    val oa = ObjectAnimator.ofFloat(this, "x", x, DEFAULT_POSITION_X)
+                    val oa = ObjectAnimator.ofFloat(this, "x", x, defaultPositionX)
                     oa.interpolator = DecelerateInterpolator()
                     oa.addListener(object : Animator.AnimatorListener {
                         override fun onAnimationStart(animation: Animator?) {
@@ -123,13 +127,12 @@ class DragFloatActionButton : LinearLayout {
 
 
     private fun isNotDrag(): Boolean {
-        return !isDrag && (x == DEFAULT_POSITION_X || x == (parentWidth - width - DEFAULT_POSITION_X))
+        return !isDrag && (x == defaultPositionX || x == (parentWidth - width - defaultPositionX))
     }
 
 
     class ActionUpListener(private val actionUp: () -> Unit) {
         fun getPosition() = actionUp()
     }
-
 
 }

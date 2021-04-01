@@ -16,22 +16,6 @@ import retrofit2.Response
 class BetInfoRepository {
 
 
-    var buttonPositionX: Int = 0
-    var buttonPositionY: Int = 0
-
-
-    val _updateButtonPosition = MutableLiveData<Map<String, Int>>()
-    val updateButtonPosition: LiveData<Map<String, Int>>
-        get() = _updateButtonPosition
-
-
-    fun updateButtonPosition(x: Int, y: Int) {
-        buttonPositionX = x
-        buttonPositionY = y
-        _updateButtonPosition.postValue(mapOf("x" to x, "y" to y))
-    }
-
-
     //每個畫面都要觀察
     val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
     val betInfoList: LiveData<MutableList<BetInfoListData>>
