@@ -15,7 +15,7 @@
         android:padding="20dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_bank"
+            android:id="@+id/cv_currency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/colorWhite"
@@ -86,6 +86,15 @@
             android:text="@string/hint_rate"
             android:textColor="@color/orangeRed"
             android:textSize="@dimen/textSize12sp" />
+
+        <TextView
+            android:id="@+id/tv_recharge_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txv_recharge_money"
+            android:textColor="@color/orangeRed"
+            android:textSize="@dimen/textSize12sp"
+            android:layout_marginTop="10dp"/>
 
         <!-- 區塊鏈交易ID -->
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -169,7 +178,9 @@
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_rate"
             android:textColor="@color/orangeRed"
-            android:textSize="@dimen/textSize12sp" />
+            android:textSize="@dimen/textSize12sp"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
 
         <TextView
             android:id="@+id/tv_fee_amount"
@@ -178,10 +189,12 @@
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_amount"
             android:textColor="@color/orangeRed"
-            android:textSize="@dimen/textSize12sp" />
+            android:textSize="@dimen/textSize12sp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_currency"
+            android:id="@+id/cv_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -272,8 +285,8 @@
                         android:layout_gravity="top"
                         android:layout_weight="1"
                         android:gravity="top"
-                        android:text="充币地址 : "
-                        android:textColor="#FE9B3E"
+                        android:text="@string/title_recharge_address"
+                        android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize14sp" />
 
                     <TextView
@@ -283,7 +296,7 @@
                         android:layout_gravity="top"
                         android:layout_weight="1"
                         android:gravity="top"
-                        android:textColor="#FE9B3E"
+                        android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize14sp"
                         tools:text="TCZVMNd1D42qcweFSahY2NtWW2DCt8KR7GJ" />
 
@@ -329,7 +342,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="20dp"
                             android:background="@drawable/bg_frame_4dp_blue"
-                            android:text="去充值"
+                            android:text="@string/btn_recharge"
                             android:textColor="@color/colorBlue"
                             android:textSize="@dimen/textSize14sp" />
 
@@ -351,6 +364,7 @@
             app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cv_upload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -367,29 +381,72 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_shape"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="10dp"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_click"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_upload" />
-
-                <TextView
-                    android:id="@+id/tv_click"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/title_click_upload_pic"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="@dimen/textSize13sp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="15dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="@null"
+                    app:contentPaddingLeft="10dp"
+                    app:contentPaddingRight="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_upload">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/blue8">
+
+                        <ImageView
+                            android:id="@+id/ic_screen_shot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_shape"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:scaleType="fitXY"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_click"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_upload" />
+
+                        <ImageView
+                            android:id="@+id/img_screen_shot"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_shape"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:scaleType="fitXY"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_click"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_upload" />
+
+                        <TextView
+                            android:id="@+id/tv_click"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/title_click_upload_pic"
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/textSize13sp"
+                            android:layout_marginBottom="20dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

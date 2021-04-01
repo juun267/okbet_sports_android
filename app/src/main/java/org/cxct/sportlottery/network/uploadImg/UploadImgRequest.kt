@@ -7,7 +7,7 @@ import org.cxct.sportlottery.repository.PLATFORM_CODE
 import org.cxct.sportlottery.repository.PROJECT_CODE
 import java.io.File
 
-class UploadImgRequest(val userId: String, private val file: File) {
+class UploadImgRequest(val userId: String, private val file: File,val platformCodeType:PlatformCodeType) {
 
     fun toParts(): List<MultipartBody.Part> {
         val mediaType = "image/*".toMediaTypeOrNull()
@@ -15,11 +15,17 @@ class UploadImgRequest(val userId: String, private val file: File) {
 
         return MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart("projectCode", PROJECT_CODE) //项目代码
-            .addFormDataPart("platformCode", PLATFORM_CODE) //平台代码
+            .addFormDataPart("platformCode", "${PLATFORM_CODE}/${platformCodeType.code}") //平台代码
             .addFormDataPart("userId", userId)
             .addFormDataPart("expireAfterDays", "0") //多久过期（天）0：不过期，N：N天后过期（1<=N<=365）
             .addFormDataPart("file", file.name, requestFile)
             .build().parts
+    }
+
+
+    enum class PlatformCodeType(val code: String) {
+        AVATAR("img"),
+        VOUCHER("voucher")
     }
 
 }

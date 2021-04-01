@@ -160,4 +160,9 @@ object VerifyConstUtil {
     fun verifySecurityCode(securityCode: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", securityCode)
     }
+
+    //区块链交易ID //长度大于等于6位,小于256位
+    fun verifyHashCode(hashCode: CharSequence): Boolean {
+        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD$NUMBER]{6,256}", hashCode)
+    }
 }

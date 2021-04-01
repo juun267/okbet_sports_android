@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.money.recharge
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -15,10 +16,10 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.MoneyRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
@@ -29,10 +30,14 @@ import timber.log.Timber
 
 class MoneyRechViewModel(
     private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
     private val moneyRepository: MoneyRepository,
+    private val avatarRepository: AvatarRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+
+    val token = loginRepository.token
 
     val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs
@@ -63,6 +68,11 @@ class MoneyRechViewModel(
         get() = _rechargeAmountMsg
     private var _rechargeAmountMsg = MutableLiveData<String>()
 
+    //充值個數錯誤訊息
+    val rechargeAccountMsg: LiveData<String>
+        get() = _rechargeAccountMsg
+    private var _rechargeAccountMsg = MutableLiveData<String>()
+
     //微信錯誤訊息
     val wxErrorMsg: LiveData<String>
         get() = _wxErrorMsg
@@ -73,10 +83,10 @@ class MoneyRechViewModel(
         get() = _nameErrorMsg
     private var _nameErrorMsg = MutableLiveData<String>()
 
-    //銀行卡號錯誤訊息
-    val bankIDErrorMsg: LiveData<String>
-        get() = _bankIDErrorMsg
-    private var _bankIDErrorMsg = MutableLiveData<String>()
+    //区块链交易ID錯誤訊息
+    val hashCodeErrorMsg: LiveData<String>
+        get() = _hashCodeErrorMsg
+    private var _hashCodeErrorMsg = MutableLiveData<String>()
 
     //暱稱錯誤訊息
     val nickNameErrorMsg: LiveData<String>
@@ -93,6 +103,14 @@ class MoneyRechViewModel(
         get() = _userMoneyResult
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
 
+    //銀行卡號錯誤訊息
+    val bankIDErrorMsg: LiveData<String>
+        get() = _bankIDErrorMsg
+    private var _bankIDErrorMsg = MutableLiveData<String>()
+
+
+    //上傳支付截圖
+    val voucherUrlResult: LiveData<String?> = avatarRepository.voucherUrlResult
 
     //獲取充值的基礎配置
     fun getRechCfg() {
@@ -151,17 +169,24 @@ class MoneyRechViewModel(
         }
     }
 
+    //TODO Bill
+    //充值頁面[虛擬幣充值]-[按鈕]提交申請
+    fun rechargeCryptoSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
+        checkAll(moneyAddRequest, rechType, rechConfig)
+        if (checkTransferPayCryptoInput()) {
+            rechargeAdd(moneyAddRequest)
+        }
+    }
+
     //轉帳支付充值
     private fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
         if (checkTransferPayInput()) {
             viewModelScope.launch {
-                if (checkTransferPayInput()) {
-                    doNetwork(androidContext) {
-                        moneyRepository.rechargeAdd(moneyAddRequest)
-                    }.let {
-                        it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
-                        _apiResult.value = it
-                    }
+                doNetwork(androidContext) {
+                    moneyRepository.rechargeAdd(moneyAddRequest)
+                }.let {
+                    it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
+                    _apiResult.value = it
                 }
             }
         }
@@ -199,6 +224,9 @@ class MoneyRechViewModel(
                 checkNickName(moneyAddRequest.payerName)
                 checkUserName(moneyAddRequest.payerInfo ?: "")
             }
+            MoneyType.CRYPTO.code ->{
+                checkHashCode(moneyAddRequest.txHashCode ?: "")
+            }
         }
         checkRechargeAmount(moneyAddRequest.depositMoney.toString(), rechConfig)
     }
@@ -217,6 +245,27 @@ class MoneyRechViewModel(
                 channelMaxMoney
             ) -> {
                 androidContext.getString(R.string.error_recharge_amount)
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
+    //充值個數驗證
+    fun checkRechargeAccount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+        val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
+        val channelMaxMoney = rechConfig?.maxMoney?.toLong()
+        _rechargeAccountMsg.value = when {
+            rechargeAmount.isEmpty() || rechargeAmount == "0" -> {
+                androidContext.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) -> {
+                androidContext.getString(R.string.error_recharge_account)
             }
             else -> {
                 ""
@@ -313,6 +362,23 @@ class MoneyRechViewModel(
         }
     }
 
+    //HashCode区块链交易ID認證
+    fun checkHashCode(HashCode:String){
+        _hashCodeErrorMsg.value =when {
+            HashCode.isEmpty() -> {
+                androidContext.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyHashCode(
+                HashCode
+            ) -> {
+                androidContext.getString(R.string.error_hashcode)
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
     //獲取使用者餘額
     fun getMoney() {
         viewModelScope.launch {
@@ -336,6 +402,15 @@ class MoneyRechViewModel(
             return false
         return true
     }
+    //TODO Bill
+    private fun checkTransferPayCryptoInput(): Boolean {
+        if (!rechargeAccountMsg.value.isNullOrEmpty())
+            return false
+        if (!hashCodeErrorMsg.value.isNullOrEmpty())
+            return false
+
+        return true
+    }
 
     private fun onlinePayInput(): Boolean {
         if (!_rechargeOnlineAmountMsg.value.isNullOrEmpty())
@@ -350,5 +425,16 @@ class MoneyRechViewModel(
         _bankIDErrorMsg.value = ""
         _nickNameErrorMsg.value = ""
         _rechargeOnlineAmountMsg.value = ""
+        _hashCodeErrorMsg.value = ""
+        _rechargeAccountMsg.value = ""
+    }
+
+    //上傳支付截圖
+    fun uploadImage(uploadImgRequest: UploadImgRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                avatarRepository.uploadVoucher(uploadImgRequest)
+            }
+        }
     }
 }

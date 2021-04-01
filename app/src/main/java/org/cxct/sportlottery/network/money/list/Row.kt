@@ -48,6 +48,8 @@ data class Row(
     val rechName: String,
     @Json(name = "rechTime")
     val rechTime: Long,
+    @Json(name = "addTime")
+    val addTime: Long,
     @Json(name = "rechType")
     val rechType: String,
     @Json(name = "remark")

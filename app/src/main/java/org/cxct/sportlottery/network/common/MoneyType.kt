@@ -12,5 +12,5 @@ enum class MoneyType(val code: String) {
     WX_TYPE("weixin"),
     CTF_TYPE("cft"),
     ONLINE_TYPE("ic_online_pay"),
-    CRYPTO_TYPE("ic_crypto_pay")
+    CRYPTO_TYPE("ic_crypto_pay"),
 }
