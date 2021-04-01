@@ -164,7 +164,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         viewModel.moneyCardList.observe(this.viewLifecycleOwner, Observer {
             val cardList = it.cardList
-            if (cardList.isEmpty() || it == null) {
+            if (cardList.isEmpty()) {
                 jumpToMoneyCardSetting(true, it.transferType)
                 return@Observer
             }
