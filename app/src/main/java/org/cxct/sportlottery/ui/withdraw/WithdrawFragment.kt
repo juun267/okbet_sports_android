@@ -163,11 +163,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
 
         viewModel.moneyCardList.observe(this.viewLifecycleOwner, Observer {
-            if (it.isEmpty() || it == null) {
-                jumpToMoneyCardSetting(true)
+            val cardList = it.cardList
+            if (cardList.isEmpty() || it == null) {
+                jumpToMoneyCardSetting(true, it.transferType)
                 return@Observer
             }
-            val initData = it.firstOrNull()
+            val initData = cardList.firstOrNull()
             initData?.let { bankCardList ->
                 setupDealView(bankCardList.transferType)
                 withdrawBankCardData = initData
@@ -176,19 +177,23 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     iv_bank_card_icon.setImageResource(getBankIconByBankName(bankName))
                 }
             }
-            initSelectBankCardBottomSheet(view, it.toMutableList())
+            initSelectBankCardBottomSheet(view, cardList.toMutableList())
         })
 
         viewModel.moneyCardExist.observe(this.viewLifecycleOwner, Observer { moneyCardSet ->
             val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
             val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
 
-            if (bankCardExist == true) {
-                viewModel.setDealType(TransferType.BANK)
-            } else if (cryptoCardExist == true) {
-                viewModel.setDealType(TransferType.CRYPTO)
-            } else {
-                jumpToMoneyCardSetting()
+            when {
+                bankCardExist == true -> {
+                    viewModel.setDealType(TransferType.BANK)
+                }
+                cryptoCardExist == true -> {
+                    viewModel.setDealType(TransferType.CRYPTO)
+                }
+                else -> {
+                    jumpToMoneyCardSetting()
+                }
             }
         })
 
@@ -257,10 +262,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
      * 跳轉至資金卡新增頁面
      * @param assignType 是否指定跳轉新增型態(銀行卡, 虛擬幣)
      */
-    private fun jumpToMoneyCardSetting(assignType: Boolean = false) {
+    private fun jumpToMoneyCardSetting(assignType: Boolean = false, transferType: TransferType? = null) {
         SettingTipsDialog(requireContext(), SettingTipsDialog.SettingTipsDialogListener {
             this@WithdrawFragment.activity?.finish()
-            startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, viewModel.getDealType()) })
+            startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
         }).apply {
             setTipsTitle(R.string.withdraw_setting)
             setTipsContent(R.string.please_setting_bank_card)

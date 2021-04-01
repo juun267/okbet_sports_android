@@ -55,9 +55,11 @@ class WithdrawViewModel(
         get() = _bankCardList
     private var _bankCardList = MutableLiveData<List<BankCardList>>()
 
-    val moneyCardList: LiveData<List<BankCardList>>
+    data class MyMoneyCard(val cardList: List<BankCardList>, val transferType: TransferType)
+
+    val moneyCardList: LiveData<MyMoneyCard>
         get() = _moneyCardList
-    private var _moneyCardList = MutableLiveData<List<BankCardList>>()
+    private var _moneyCardList = MutableLiveData<MyMoneyCard>()
 
     val bankAddResult: LiveData<BankAddResult>
         get() = _bankAddResult
@@ -148,9 +150,6 @@ class WithdrawViewModel(
     private var cardConfig: MoneyRechCfg.DetailList? = null
 
     private var dealType: TransferType = TransferType.BANK
-    fun getDealType(): TransferType {
-        return dealType
-    }
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
@@ -230,7 +229,7 @@ class WithdrawViewModel(
             if (dealType.type == bankCard.uwType)
                 cardList.add(bankCard.apply { transferType = dealType })
         }
-        _moneyCardList.value = cardList
+        _moneyCardList.value = MyMoneyCard(cardList, dealType)
         getWithdrawRate(cardList.firstOrNull())
         getWithdrawHint()
     }
