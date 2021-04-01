@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.network
 
 import android.content.Context
-import android.util.Log
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
