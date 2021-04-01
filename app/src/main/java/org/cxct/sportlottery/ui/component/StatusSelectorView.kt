@@ -170,7 +170,7 @@ data class StatusSheetData(val code: String?, val showName: String?) {
 
 class StatusSheetAdapter (private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var mNowCheckedPos:Int? = null
+    private var mPreviousItem: String? = null
 
     var defaultCheckedCode: String? = null
         set(value) {
@@ -204,22 +204,27 @@ class StatusSheetAdapter (private val checkedListener: ItemCheckedListener) : Re
     private fun setSingleChecked(checkbox: CheckBox, position: Int) {
         val data = dataList[position]
 
-        if ((data.code == defaultCheckedCode || data.code == null) && mNowCheckedPos == null) {
+        if ((data.code == defaultCheckedCode || data.code == null) && mPreviousItem == null) {
             data.isChecked = true
-            mNowCheckedPos = position
+            mPreviousItem = dataList[position].showName
         }
 
         checkbox.setOnClickListener {
-            val previousPosition = mNowCheckedPos
-
-            if (previousPosition != null) {
-                dataList[previousPosition].isChecked = false
-                notifyItemChanged(previousPosition)
+            var previousPosition: Int? = null
+            dataList.forEachIndexed { index, data ->
+                if (data.showName == mPreviousItem)
+                    previousPosition = index
             }
 
-            mNowCheckedPos = position
+            if (previousPosition != null) {
+                dataList[previousPosition!!].isChecked = false
+                notifyItemChanged(previousPosition!!)
+            }
+
+            mPreviousItem = dataList[position].showName
             checkbox.isChecked = true
             data.isChecked = true
+
             checkedListener.onChecked(checkbox.isChecked, data)
 
             notifyItemChanged(position)

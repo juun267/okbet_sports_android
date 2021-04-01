@@ -80,6 +80,10 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         rv_record.adapter = rvAdapter
         rv_record.addOnScrollListener(recyclerViewOnScrollListener)
         selector_transfer_status.dataList = viewModel.statusList
+
+        selector_in_plat.selectedTag = viewModel.platCode
+        selector_out_plat.selectedTag = viewModel.platCode
+
     }
 
     private fun initOnclick() {
