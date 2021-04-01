@@ -510,6 +510,10 @@ class GameViewModel(
                     it.isSelected
                 }?.code
 
+                val date = _curDate.value?.find {
+                    it.isSelected
+                }
+
                 gameType?.let {
                     getOddsList(
                         gameType,
@@ -518,7 +522,9 @@ class GameViewModel(
                         leagueIdList
                     )
 
-                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
+                    _openGameDetail.postValue(
+                        Triple(date?.date ?: matchType.postValue, it, leagueId)
+                    )
                 }
             }
             else -> {
