@@ -310,6 +310,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             gameTypeAdapter.data = it
         })
 
+        viewModel.curDatePosition.observe(this.viewLifecycleOwner, Observer {
+            (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                it, game_filter_type_list.width / 2
+            )
+        })
+
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
 
