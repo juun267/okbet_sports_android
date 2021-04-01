@@ -175,10 +175,14 @@ class OddButton @JvmOverloads constructor(
             OddState.LARGER.state -> {
                 odd_button.background =
                     ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg_green)
+
+                isActivated = true
             }
             OddState.SMALLER.state -> {
                 odd_button.background =
                     ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg_red)
+
+                isActivated = true
             }
             else -> return
         }
@@ -186,6 +190,8 @@ class OddButton @JvmOverloads constructor(
         runnable = Runnable {
             odd_button.background =
                 ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
+
+            isActivated = false
 
             onOddStatusChangedListener?.onOddStateChangedFinish()
         }
