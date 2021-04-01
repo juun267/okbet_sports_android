@@ -204,7 +204,7 @@ class MoneyTransferViewModel(
 
     private fun setRecordInSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(null, androidContext.getString(R.string.all_in_plat)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.all_in_plat)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }
@@ -215,7 +215,7 @@ class MoneyTransferViewModel(
 
     private fun setRecordOutSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(null, androidContext.getString(R.string.all_out_plat)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.all_out_plat)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }
@@ -295,7 +295,8 @@ class MoneyTransferViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, firmTypeIn, firmTypeOut, status?.toIntOrNull()))
+                val firmFilter = {item: String? -> if (item == platCode) null else item}
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, firmFilter(firmTypeIn), firmFilter(firmTypeOut), status?.toIntOrNull()))
             }?.let { result ->
                 hideLoading()
                 isLoading = false

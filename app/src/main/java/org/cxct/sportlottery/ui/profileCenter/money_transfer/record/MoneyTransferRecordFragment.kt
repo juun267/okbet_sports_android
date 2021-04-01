@@ -89,7 +89,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
 
         selector_out_plat.setOnItemSelectedListener {
             viewModel.filterRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
-
         }
 
         selector_in_plat.setOnItemSelectedListener {
