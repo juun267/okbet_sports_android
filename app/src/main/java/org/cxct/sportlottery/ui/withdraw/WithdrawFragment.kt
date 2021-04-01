@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +20,9 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.profileCenter.SettingTipsDialog
+import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.util.TextUtil
@@ -56,17 +58,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initView() {
-        initTab()
         et_withdrawal_amount.apply {
             clearIsShow = false
             getAllIsShow = true
         }
-    }
-
-    private fun initTab() {
-        tab_bank_card.visibility = View.GONE
-        tab_crypto.visibility = View.GONE
-        selectDealType(TransferType.BANK)
     }
 
     private fun initEvent() {
@@ -76,7 +71,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     private fun selectDealType(type: TransferType) {
         viewModel.setDealType(type)
-        setupDealView(type)
     }
 
     private fun setupDealView(type: TransferType) {
@@ -168,29 +162,39 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             viewModel.getWithdrawHint()
         })
 
-        viewModel.withdrawCardList.observe(this.viewLifecycleOwner, Observer {
-            val iniData = it.firstOrNull()
-            withdrawBankCardData = iniData
-            tv_select_bank_card.text = getBankCardTailNo(iniData)
-            iniData?.bankName?.let { bankName ->
-                iv_bank_card_icon.setImageResource(MoneyManager.getBankIconByBankName(bankName))
+        viewModel.moneyCardList.observe(this.viewLifecycleOwner, Observer {
+            val cardList = it.cardList
+            if (cardList.isEmpty()) {
+                jumpToMoneyCardSetting(true, it.transferType)
+                return@Observer
             }
-
-            initSelectBankCardBottomSheet(view, it.toMutableList())
+            val initData = cardList.firstOrNull()
+            initData?.let { bankCardList ->
+                setupDealView(bankCardList.transferType)
+                withdrawBankCardData = initData
+                tv_select_bank_card.text = getBankCardTailNo(initData)
+                bankCardList.bankName.let { bankName ->
+                    iv_bank_card_icon.setImageResource(getBankIconByBankName(bankName))
+                }
+            }
+            initSelectBankCardBottomSheet(view, cardList.toMutableList())
         })
 
-        viewModel.existBankCard.observe(this.viewLifecycleOwner, Observer {
-            if (it)
-                tab_bank_card.visibility = View.VISIBLE
-            else
-                tab_bank_card.visibility = View.GONE
-        })
+        viewModel.moneyCardExist.observe(this.viewLifecycleOwner, Observer { moneyCardSet ->
+            val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
+            val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
 
-        viewModel.existCryptoCard.observe(this.viewLifecycleOwner, Observer {
-            if (it)
-                tab_crypto.visibility = View.VISIBLE
-            else
-                tab_crypto.visibility = View.GONE
+            when {
+                bankCardExist == true -> {
+                    viewModel.setDealType(TransferType.BANK)
+                }
+                cryptoCardExist == true -> {
+                    viewModel.setDealType(TransferType.CRYPTO)
+                }
+                else -> {
+                    jumpToMoneyCardSetting()
+                }
+            }
         })
 
         //資金設定
@@ -252,6 +256,21 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
             }
         })
+    }
+
+    /**
+     * 跳轉至資金卡新增頁面
+     * @param assignType 是否指定跳轉新增型態(銀行卡, 虛擬幣)
+     */
+    private fun jumpToMoneyCardSetting(assignType: Boolean = false, transferType: TransferType? = null) {
+        SettingTipsDialog(requireContext(), SettingTipsDialog.SettingTipsDialogListener {
+            this@WithdrawFragment.activity?.finish()
+            startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
+        }).apply {
+            setTipsTitle(R.string.withdraw_setting)
+            setTipsContent(R.string.please_setting_bank_card)
+            show(this@WithdrawFragment.parentFragmentManager, "")
+        }
     }
 
     private fun initSocketObserver() {

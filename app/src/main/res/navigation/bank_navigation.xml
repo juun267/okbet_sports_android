@@ -9,11 +9,6 @@
         android:name="org.cxct.sportlottery.ui.withdraw.BankListFragment"
         android:label="fragment_bank_list"
         tools:layout="@layout/fragment_bank_list">
-        <argument
-            android:name="navigateFrom"
-            android:defaultValue="WITHDRAW_SETTING"
-            app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
-
         <action
             android:id="@+id/action_bankListFragment_to_bankCardFragment"
             app:destination="@+id/bankCardFragment">
@@ -23,29 +18,23 @@
                 app:argType="org.cxct.sportlottery.network.bank.my.BankCardList"
                 app:nullable="true" />
             <argument
-                android:name="navigateFrom"
-                app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
+                android:name="transferType"
+                app:argType="org.cxct.sportlottery.network.money.TransferType" />
         </action>
     </fragment>
     <fragment
         android:id="@+id/bankCardFragment"
         android:name="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
-        android:label="BankCardFragment">
+        android:label="BankCardFragment"
+        tools:layout="@layout/fragment_bank_card">
         <argument
             android:name="editBankCard"
             android:defaultValue="@null"
             app:argType="org.cxct.sportlottery.network.bank.my.BankCardList"
             app:nullable="true" />
         <argument
-            android:name="navigateFrom"
-            app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
-        <action
-            android:id="@+id/action_bankCardFragment_to_withdrawFragment"
-            app:destination="@+id/withdrawFragment">
-            <argument
-                android:name="navigateFrom"
-                app:argType="org.cxct.sportlottery.ui.withdraw.PageFrom" />
-        </action>
+            android:name="transferType"
+            app:argType="org.cxct.sportlottery.network.money.TransferType" />
     </fragment>
 
 </navigation>

@@ -528,6 +528,7 @@
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_wallet_address_empty">钱包地址为必填栏位</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
+    <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
