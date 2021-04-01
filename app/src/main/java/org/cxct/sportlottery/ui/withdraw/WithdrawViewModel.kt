@@ -407,6 +407,7 @@ class WithdrawViewModel(
     fun checkWalletAddress(walletAddress: String) {
         _walletAddressMsg.value = when {
             walletAddress.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
+            !VerifyConstUtil.verifyCryptoWalletAddress(walletAddress) -> androidContext.getString(R.string.error_wallet_address)
             else -> ""
         }
     }
