@@ -523,19 +523,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onDestroy() {
         super.onDestroy()
 
-        val sportType = sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code
-
-        leagueAdapter.data.forEach {
-            if (it.isExpand) {
-                it.matchOdds.forEach { matchOdd ->
-                    service.unsubscribeHallChannel(
-                        sportType,
-                        CateMenuCode.HDP_AND_OU.code,
-                        matchOdd.matchInfo?.id
-                    )
-                }
-            }
-        }
+        service.unsubscribeAllHallChannel()
     }
-
 }
