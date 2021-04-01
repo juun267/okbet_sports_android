@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.withdraw.WithdrawActivity.Companion.navigateKey
 
 class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -21,19 +21,18 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
 
     private val mBankListAdapter by lazy {
-        val navigateFrom = (arguments?.getSerializable(navigateKey) ?: PageFrom.WITHDRAW_SETTING) as PageFrom
         BankListAdapter(
             BankListClickListener(
                 editBankListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType)
                     mNavController.navigate(action)
                 },
                 editCryptoListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType)
                     mNavController.navigate(action)
                 },
                 addListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, TransferType.values().first())
                     mNavController.navigate(action)
                 }
             )

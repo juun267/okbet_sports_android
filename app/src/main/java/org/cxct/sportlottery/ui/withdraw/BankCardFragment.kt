@@ -9,7 +9,6 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -40,12 +39,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
 
-    data class AddTypeTab(val type: TransferType, @IdRes val id: Int)
-
-    private val mTabList by lazy { listOf(AddTypeTab(TransferType.BANK, R.id.tab_bank_card), AddTypeTab(TransferType.CRYPTO, R.id.tab_crypto)) }
-
     private val protocolAdapter by lazy {
-        ProtocolAdapter(requireContext(), OnSelectProtocol {
+        ProtocolAdapter(OnSelectProtocol {
             sv_protocol.apply {
                 setCryptoProtocol(it)
                 dismiss()
@@ -88,7 +83,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupInitData(view: View) {
         viewModel.clearBankCardFragmentStatus()
 
-        args.editBankCard?.transferType?.let { transferType = it }
+        transferType = args.transferType
 
         val initData = args.editBankCard
         initData?.let {
@@ -137,16 +132,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             block_transfer_type.visibility = View.GONE
         } else {
             block_transfer_type.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showHideTypeTab() {
-        mTabList.forEach {
-            if (view?.findViewById<TextView>(it.id)?.visibility == View.VISIBLE) {
-                transferType = it.type
-                changeTransferType(transferType)
-                return
-            }
         }
     }
 
@@ -342,27 +327,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
 
-        //是否可以新增銀行卡
-        viewModel.addBankCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
-            if (show.getContentIfNotHandled() == true) {
-                tab_bank_card.visibility = View.VISIBLE
-                showHideTypeTab()
-            } else if (show.getContentIfNotHandled() == false) {
-                tab_bank_card.visibility = View.GONE
-                showHideTypeTab()
-            }
-        })
-
-        //是否可以新增虛擬幣
-        viewModel.addCryptoCardSwitch.observe(this.viewLifecycleOwner, Observer { show ->
-            if (show.getContentIfNotHandled() == true) {
-                tab_crypto.visibility = View.VISIBLE
-                showHideTypeTab()
-            } else if (show.getContentIfNotHandled() == false) {
-                tab_crypto.visibility = View.GONE
-                showHideTypeTab()
-            }
-        })
 
         viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
             if (result.success) {
@@ -372,15 +336,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 } else {
                     //綁定成功後回至銀行卡列表bank card list
                     showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_add_success)) {
-                        when (args.navigateFrom) {
-                            PageFrom.WITHDRAW -> {
-                                val action = BankCardFragmentDirections.actionBankCardFragmentToWithdrawFragment(args.navigateFrom)
-                                mNavController.navigate(action)
-                            }
-                            else -> {
-                                mNavController.popBackStack()
-                            }
-                        }
+                        mNavController.popBackStack()
                     }
                 }
             } else {
@@ -388,7 +344,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
 
-        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer { result ->
+        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer
+        { result ->
             if (result.success) {
                 showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_delete_success)) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
@@ -398,27 +355,32 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         //錯誤訊息
         //開戶名
-        viewModel.createNameErrorMsg.observe(this.viewLifecycleOwner, Observer {
+        viewModel.createNameErrorMsg.observe(this.viewLifecycleOwner, Observer
+        {
             et_create_name.setError(it ?: "")
         })
 
         //銀行卡號
-        viewModel.bankCardNumberMsg.observe(this.viewLifecycleOwner, Observer {
+        viewModel.bankCardNumberMsg.observe(this.viewLifecycleOwner, Observer
+        {
             et_bank_card_number.setError(it ?: "")
         })
 
         //開戶網點
-        viewModel.networkPointMsg.observe(this.viewLifecycleOwner, Observer {
+        viewModel.networkPointMsg.observe(this.viewLifecycleOwner, Observer
+        {
             et_network_point.setError(it ?: "")
         })
 
         //錢包地址
-        viewModel.walletAddressMsg.observe(this.viewLifecycleOwner, Observer {
+        viewModel.walletAddressMsg.observe(this.viewLifecycleOwner, Observer
+        {
             et_wallet.setError(it ?: "")
         })
 
         //提款密碼
-        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer
+        {
             et_withdrawal_password.setError(it ?: "")
         })
     }
@@ -508,7 +470,7 @@ class BankSelectorAdapterListener(private val selectListener: (item: MoneyRechCf
 }
 
 //虛擬幣 協議/渠道選擇
-class ProtocolAdapter(private val context: Context, private val selectedListener: OnSelectProtocol) :
+class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
