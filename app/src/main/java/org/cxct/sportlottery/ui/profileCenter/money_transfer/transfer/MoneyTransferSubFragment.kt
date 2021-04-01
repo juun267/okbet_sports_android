@@ -26,17 +26,26 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
-        viewModel.setInSheetDataList(viewModel.platCode, R.string.plat_money)
-        viewModel.setOutSheetDataList(viewModel.platCode, R.string.plat_money)
-
         return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initView()
         initOnclick()
         initObserver()
+    }
+
+    private fun initView() {
+        out_account.selectedText = getString(R.string.plat_money)
+        in_account.selectedText = gameDataArg.gameData.showName
+
+        out_account.selectedTag = viewModel.platCode
+        in_account.selectedTag = gameDataArg.gameData.code
+
+        viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
+        viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
     }
 
     private fun initOnclick() {
@@ -61,11 +70,11 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
 
         out_account.setOnItemSelectedListener {
-            in_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+            viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
         }
 
         in_account.setOnItemSelectedListener {
-            out_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+            viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
         }
 
     }
@@ -83,18 +92,12 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             }
         }
 
-        viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
-            if (it == null) return@observe
+        viewModel.subInPlatSheetList.observe(viewLifecycleOwner) {
+            in_account.dataList = it
+        }
 
-            out_account.selectedText = getString(R.string.plat_money)
-            in_account.selectedText = gameDataArg.gameData.showName
-
-            out_account.selectedTag = viewModel.platCode
-            in_account.selectedTag = gameDataArg.gameData.code
-
-            out_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, in_account.selectedText)
-            in_account.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, out_account.selectedText)
-
+        viewModel.subOutPlatSheetList.observe(viewLifecycleOwner) {
+            out_account.dataList = it
         }
 
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->

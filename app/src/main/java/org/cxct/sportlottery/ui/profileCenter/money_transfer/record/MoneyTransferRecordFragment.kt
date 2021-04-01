@@ -65,9 +65,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         viewModel.queryTransfers()
         viewModel.setToolbarName(getString(R.string.record_conversion))
 
-        viewModel.setInSheetDataList()
-        viewModel.setOutSheetDataList()
-
         return inflater.inflate(R.layout.fragment_money_transfer_record, container, false)
     }
 
@@ -91,12 +88,12 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         selector_out_plat.setOnItemSelectedListener {
-            selector_in_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
 
         }
 
         selector_in_plat.setOnItemSelectedListener {
-            selector_out_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
         }
 
     }
@@ -106,9 +103,12 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
             rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
         }
 
-        viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
-            selector_out_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, selector_in_plat.selectedText)
-            selector_in_plat.dataList = viewModel.getPlatRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, selector_out_plat.selectedText)
+        viewModel.recordInPlatSheetList.observe(viewLifecycleOwner) {
+            selector_in_plat.dataList = it
+        }
+
+        viewModel.recordOutPlatSheetList.observe(viewLifecycleOwner) {
+            selector_out_plat.dataList = it
         }
     }
 
