@@ -96,6 +96,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.match_live.setOnClickListener {
                 leagueOddListener?.onClickLive(item, gameCardList)
             }
+
+            itemView.match_play_type_block.setOnClickListener {
+                leagueOddListener?.onClickLive(item, gameCardList)
+            }
         }
 
         private fun setupMatchInfo(item: MatchOdd, matchType: MatchType, isTimerEnable: Boolean) {
@@ -329,6 +333,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
+                leagueOddListener?.onClickLive(item, gameCardList)
+            }
+
+            itemView.match_play_type_block_1x2.setOnClickListener {
                 leagueOddListener?.onClickLive(item, gameCardList)
             }
         }
