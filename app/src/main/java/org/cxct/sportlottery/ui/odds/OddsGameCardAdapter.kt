@@ -61,14 +61,13 @@ class OddsGameCardAdapter(
         holder.gameCard.setOnClickListener {
             if (position != mSelectedPosition) {
                 mSelectedPosition = position
-//                stopAllTimer()
-                mTimerMap[position]?.cancel()
-                mTimerMap = mutableMapOf<Int, Timer?>()
+                stopAllTimer()
+                mTimerMap = mutableMapOf()
                 notifyDataSetChanged()
-            }
-            Timber.e("Bill==>,清除後的:${mTimerMap.size}")
+                Timber.e("Bill==>,清除後的:${mTimerMap.size}")
 
-            item?.let { it -> clickListener.onClick(it) }
+                item?.let { it -> clickListener.onClick(it) }
+            }
         }
     }
 
@@ -226,7 +225,7 @@ class OddsGameCardAdapter(
 
                     }
                 }
-
+                mTimerMap[adapterPosition] = timer
 
             } else {
                 itemView.txv_time.text = ""
