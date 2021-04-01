@@ -206,6 +206,33 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
+        receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
+            it?.let { matchClockEvent ->
+                if (matchType == MatchType.IN_PLAY) {
+
+                    matchClockEvent.matchClockCO?.let { matchClockCO ->
+                        matchClockCO.matchId.let { matchId ->
+
+                            val leagueOdds = leagueAdapter.data
+
+                            leagueOdds.forEach { leagueOdd ->
+                                if (leagueOdd.isExpand) {
+
+                                    val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                        matchOdd.matchInfo?.id == matchId
+                                    }
+
+                                    updateMatchOdd?.leagueTime = matchClockCO.matchTime
+
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
@@ -349,6 +376,12 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
             false
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        game_league_odd_list.adapter = null
     }
 
     override fun onDestroy() {
