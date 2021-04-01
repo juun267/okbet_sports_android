@@ -205,6 +205,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 }
             }
         })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
+            it?.let { _ ->
+                service.unsubscribeAllHallChannel()
+                service.subscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+            }
+        })
     }
 
     private fun backEvent() {
