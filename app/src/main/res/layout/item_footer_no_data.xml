@@ -6,5 +6,5 @@
     android:gravity="center"
     android:paddingVertical="12dp"
     android:text="@string/no_data"
-    android:textColor="@color/gray6"
+    android:textColor="@color/colorBlackLight"
     android:textSize="@dimen/textSize12sp" />

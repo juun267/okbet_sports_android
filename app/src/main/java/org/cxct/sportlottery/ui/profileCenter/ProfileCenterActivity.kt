@@ -15,13 +15,18 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
@@ -88,6 +93,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         setupWithdrawButton()
         setupLogout()
         setupMoreButtons()
+        initBottomNav()
         getUserInfo()
         initObserve()
         initSocketObserver()
@@ -204,6 +210,49 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         }
     }
 
+    private fun initBottomNav() {
+        bottom_nav_view.selectedItemId = R.id.my_account_page
+        bottom_nav_view.setOnNavigationItemSelectedListener {
+            //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
+            when (it.itemId) {
+                R.id.home_page -> {
+                    viewModel.setGoToThirdGamePage(ThirdGameCategory.MAIN)
+                    startActivity(Intent(this, MainActivity::class.java))
+                    false
+                }
+                R.id.game_page -> {
+                    startActivity(Intent(this, GameActivity::class.java))
+                    false
+                }
+                R.id.promotion_page -> {
+                    JumpUtil.toInternalWeb(
+                        this,
+                        Constants.getPromotionUrl(viewModel.token),
+                        getString(R.string.promotion)
+                    )
+                    false
+                }
+                R.id.chat_page -> {
+                    false
+                }
+                R.id.my_account_page -> {
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            startActivity(Intent(this, ProfileCenterActivity::class.java))
+                        }
+                        else -> { //遊客 //尚未登入
+                            startActivity(Intent(this, RegisterActivity::class.java))
+                        }
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+
+        //聊天室按鈕 啟用判斷
+        bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
+    }
 
     private fun getUserInfo() {
         viewModel.getUserInfo()
@@ -220,54 +269,62 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
-            if (it == true) {
-                SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
-                    startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
-                }).apply {
-                    setTipsTitle(R.string.withdraw_setting)
-                    setTipsContent(R.string.please_setting_withdraw_password)
-                    show(supportFragmentManager, "")
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    }).apply {
+                        setTipsTitle(R.string.withdraw_setting)
+                        setTipsContent(R.string.please_setting_withdraw_password)
+                        show(supportFragmentManager, "")
+                    }
+                } else {
+                    viewModel.checkProfileInfoComplete()
                 }
-            } else if (it == false) {
-                viewModel.checkProfileInfoComplete()
             }
         })
 
         viewModel.needToCompleteProfileInfo.observe(this, Observer {
-            if (it == true) {
-                SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
-                    startActivity(Intent(this, ProfileActivity::class.java))
-                }).apply {
-                    setTipsTitle(R.string.withdraw_setting)
-                    setTipsContent(R.string.please_complete_profile_info)
-                    show(supportFragmentManager, "")
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                        startActivity(Intent(this, ProfileActivity::class.java))
+                    }).apply {
+                        setTipsTitle(R.string.withdraw_setting)
+                        setTipsContent(R.string.please_complete_profile_info)
+                        show(supportFragmentManager, "")
+                    }
+                } else {
+                    viewModel.checkBankCardPermissions()
                 }
-            } else if (it == false) {
-                viewModel.checkBankCardPermissions()
             }
         })
 
         viewModel.needToBindBankCard.observe(this, Observer {
-            if (it == true) {
-                SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
-                    startActivity(Intent(this, BankActivity::class.java))
-                }).apply {
-                    setTipsTitle(R.string.withdraw_setting)
-                    setTipsContent(R.string.please_setting_bank_card)
-                    show(supportFragmentManager, "")
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                        startActivity(Intent(this, BankActivity::class.java))
+                    }).apply {
+                        setTipsTitle(R.string.withdraw_setting)
+                        setTipsContent(R.string.please_setting_bank_card)
+                        show(supportFragmentManager, "")
+                    }
+                } else {
+                    startActivity(Intent(this, WithdrawActivity::class.java))
                 }
-            } else {
-                startActivity(Intent(this, WithdrawActivity::class.java))
             }
         })
 
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
-            if (it == true) {
-                showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
-                    startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    }
+                } else if (!b) {
+                    startActivity(Intent(this, BankActivity::class.java))
                 }
-            } else if (it == false) {
-                startActivity(Intent(this, BankActivity::class.java))
             }
         })
 

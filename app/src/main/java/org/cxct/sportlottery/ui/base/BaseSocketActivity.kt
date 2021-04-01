@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.service.BackService
-import org.cxct.sportlottery.service.SERVICE_SEND_DATA
-import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -49,6 +48,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             startActivity(Intent(this, MaintenanceActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             })
+        })
+
+        viewModel.errorResultToken.observe(this, Observer {
+            backService.apply {
+                //TODO Dean : 待解除訂閱方法完善後加入解除訂閱私人頻道
+            }
         })
     }
 
@@ -94,7 +99,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     private fun subscribeBroadCastReceiver() {
         val filter = IntentFilter().apply {
-            addAction(SERVICE_SEND_DATA)
+            addAction(BackService.SERVICE_SEND_DATA)
         }
 
         registerReceiver(receiver, filter)

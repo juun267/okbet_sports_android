@@ -12,7 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.util.ItemNonLastDecoration
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
 class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
     var data = listOf<LeagueOdd>()
@@ -83,7 +83,7 @@ class LeagueOddAdapter : RecyclerView.Adapter<LeagueOddAdapter.ViewHolder>() {
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 this.adapter = matchOddAdapter
                 addItemDecoration(
-                    ItemNonLastDecoration(
+                    DividerItemDecorator(
                         ContextCompat.getDrawable(context, R.drawable.divider_straight)
                     )
                 )

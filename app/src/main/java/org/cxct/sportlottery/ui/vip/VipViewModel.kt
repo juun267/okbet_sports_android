@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.Debate
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
@@ -22,8 +23,9 @@ class VipViewModel(
     private val androidContext: Context,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val userLevelGrowthResult: LiveData<LevelGrowthResult>
         get() = _userLevelGrowthResult

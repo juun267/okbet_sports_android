@@ -4,7 +4,7 @@
     android:id="@+id/ll_content"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/white"
+    android:background="@color/colorWhite"
     android:gravity="center"
     android:orientation="vertical"
     tools:ignore="SpUsage"
@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingHorizontal="4dp"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="2020-12-12 19:58:00" />
 
@@ -35,8 +35,8 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:paddingHorizontal="4dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/colorGrayDark"
+            android:gravity="center"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="testasdfasdfadf" />
 

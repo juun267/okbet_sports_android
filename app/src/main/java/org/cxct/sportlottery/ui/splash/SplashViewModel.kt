@@ -6,19 +6,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import retrofit2.Retrofit
 import timber.log.Timber
 
 class SplashViewModel(
     private val androidContext: Context,
-    private val hostRepository: HostRepository
-) : BaseViewModel() {
+    private val hostRepository: HostRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
     private var mServerUrlIndex = 0
@@ -45,7 +49,7 @@ class SplashViewModel(
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
                 Timber.i("==> checkLocalHost: $hostUrl")
-                val retrofit = RequestManager.instance.createRetrofit(hostUrl)
+                val retrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
                 val result = doNetwork(androidContext) {
                     retrofit.create(IndexService::class.java).getConfig()
                 }
@@ -106,7 +110,7 @@ class SplashViewModel(
     private fun checkHostByGettingConfig(baseUrl: String) {
         viewModelScope.launch {
             Timber.i("==> checkHostByGettingConfig: $baseUrl")
-            val retrofit = RequestManager.instance.createRetrofit(baseUrl)
+            val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
             val result = doNetwork(androidContext) {
                 val indexService = retrofit.create(IndexService::class.java)
                 indexService.getConfig()
@@ -132,6 +136,7 @@ class SplashViewModel(
     }
 
     private fun setConfig(result: ConfigResult?) {
+        hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         _configResult.postValue(result)
     }

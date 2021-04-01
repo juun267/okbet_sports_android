@@ -24,12 +24,13 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
-import org.cxct.sportlottery.ui.game.outright.OutrightDetailFragment
 import org.cxct.sportlottery.ui.game.v3.GameLeagueFragment
 import org.cxct.sportlottery.ui.game.v3.GameOutrightFragment
 import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -70,7 +71,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            tabLayout.getTabAt(0)?.select()
+            viewModel.setGoToThirdGamePage(ThirdGameCategory.MAIN)
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         //頭像 當 側邊欄 開/關
@@ -124,7 +126,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
-            val countAsStart = sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tab_all)
@@ -265,6 +266,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curOddsDetailParams.observe(this, Observer {
+//            //TODO simon test 從首頁滾球盤跳轉到投注詳情頁面，back 時要直接回到首頁
+//            tabLayout.getTabAt(tabLayout.selectedTabPosition)?.customView?.isSelected = false
+//            tabLayout.getTabAt(1)?.customView?.isSelected = true
+            tabLayout.getTabAt(1)?.select()
+
             val gameType = it[0]
             val typeName = it[1]
             val matchId = it[2] ?: ""
@@ -297,7 +303,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.openGameDetail.observe(this, Observer {
             app_bar_layout.setExpanded(true, true)
-            addFragment(GameLeagueFragment.newInstance(it.first), Page.ODDS)
+            addFragment(GameLeagueFragment.newInstance(it.first, it.second, it.third), Page.ODDS)
         })
 
         viewModel.openOutrightDetail.observe(this, Observer {
@@ -382,10 +388,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         val fragment: Fragment? = supportFragmentManager.findFragmentByTag(Page.ODDS_DETAIL.name)
         if (fragment != null) {
             mCloseOddsDetail = false
-            (fragment as OddsDetailFragment).refreshData(
-                gameType,
-                matchId,
-                typeName?.let { getString(it) })
+            (fragment as OddsDetailFragment).refreshData(gameType, matchId)
         } else {
             viewModel.getOddsDetail(gameType, typeName?.let { getString(it) }, matchId)
         }

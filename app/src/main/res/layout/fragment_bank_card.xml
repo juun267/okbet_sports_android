@@ -1,159 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical"
-    android:paddingStart="16dp"
-    android:paddingTop="16dp"
-    android:paddingEnd="16dp">
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/block_transfer_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <!-- 選擇銀行 -->
-        <LinearLayout
-            android:id="@+id/item_bank_selector"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/frame_bank_list_selector"
+        android:background="@color/colorBlueLight"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/tab_bank_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_select_money_tab_left"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/bank_card"
+            android:textColor="@color/color_select_money_tab_text"
+            android:textSize="@dimen/textSize14sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="4"
-                android:gravity="start|center_vertical"
-                android:text="@string/create_bank"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize13sp" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="14dp"
-                android:layout_marginEnd="12dp"
-                android:background="@color/bright_gray" />
-
-            <ImageView
-                android:id="@+id/iv_bank_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_bank_default" />
-
-            <TextView
-                android:id="@+id/tv_bank_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="28dp"
-                android:layout_weight="1"
-                android:gravity="start|center_vertical"
-                android:text="@string/select_bank"
-                android:textColor="@color/textColorDark"
-                android:textSize="@dimen/textSize12sp" />
-        </LinearLayout>
-        <!-- 開戶名 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_create_name"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tab_crypto"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:cvHint="@string/hint_please_enter_create_name"
-            app:cvInputType="text"
-            app:cvTitle="@string/create_name" />
-        <!-- 銀行卡號 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_bank_card_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cvHint="@string/please_enter_bank_card_rule"
-            app:cvInputType="number"
-            app:cvTitle="@string/bank_card_number" />
-
-        <!-- 開戶網點 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_network_point"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cvHint="@string/please_enter_network_point"
-            app:cvInputType="text"
-            app:cvTitle="@string/network_point" />
-        <!-- 提款密碼 -->
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_withdrawal_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cvHint="@string/hint_please_enter_withdraw_password"
-            app:cvInputType="textPassword"
-            app:cvTitle="@string/withdraw_password" />
+            android:layout_weight="1"
+            android:background="@drawable/bg_select_money_tab_right"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/crypto"
+            android:textColor="@color/color_select_money_tab_text"
+            android:textSize="@dimen/textSize14sp" />
     </LinearLayout>
-    <!--  按鈕  -->
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="14dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="14dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/btn_submit"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_weight="1"
-            app:cardBackgroundColor="@color/blue3"
-            app:cardCornerRadius="5dp"
-            app:contentPaddingBottom="8dp"
-            app:contentPaddingTop="8dp">
+            android:orientation="vertical">
+            <!-- 銀行卡 -->
+            <LinearLayout
+                android:id="@+id/block_bank_card_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- 選擇銀行 -->
+                <LinearLayout
+                    android:id="@+id/item_bank_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/frame_bank_list_selector"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="4"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/create_bank"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize13sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@color/colorWhite6" />
+
+                    <ImageView
+                        android:id="@+id/iv_bank_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_bank_default" />
+
+                    <TextView
+                        android:id="@+id/tv_bank_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="28dp"
+                        android:layout_weight="1"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/select_bank"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>
+                <!-- 開戶名 -->
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_create_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvHint="@string/hint_please_enter_create_name"
+                    app:cvInputType="text"
+                    app:cvTitle="@string/create_name"
+                    app:cvTitleTextStyle="bold" />
+                <!-- 銀行卡號 -->
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_bank_card_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvHint="@string/please_enter_bank_card_rule"
+                    app:cvInputType="number"
+                    app:cvTitle="@string/bank_card_number"
+                    app:cvTitleTextStyle="bold" />
+                <!-- 開戶網點 -->
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_network_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvHint="@string/please_enter_network_point"
+                    app:cvInputType="text"
+                    app:cvTitle="@string/network_point"
+                    app:cvTitleTextStyle="bold" />
+            </LinearLayout>
+
+            <!-- 虛擬幣 -->
+            <LinearLayout
+                android:id="@+id/block_crypto_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- 協議/幣種 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/item_protocol_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="@null"
+                    app:contentPaddingLeft="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:layout_marginBottom="14dp"
+                            android:text="@string/currency_protocol"
+                            android:textColor="@color/colorBlackLight"
+                            android:textSize="@dimen/textSize13sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="@color/colorWhite6" />
+
+                        <org.cxct.sportlottery.ui.component.StatusSelectorView
+                            android:id="@+id/sv_protocol"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            app:defaultBottomSheetTitleText="@string/select_currency_protocol"
+                            app:horizontalChainStyle="spread_inside" />
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+                <!-- 錢包地址 -->
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_wallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvHint="@string/please_enter_wallet_address"
+                    app:cvInputType="text"
+                    app:cvTitle="@string/wallet_address"
+                    app:cvTitleTextStyle="bold" />
+            </LinearLayout>
+            <!-- 提款密碼 -->
+            <org.cxct.sportlottery.ui.login.LoginEditText
+                android:id="@+id/et_withdrawal_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvHint="@string/hint_please_enter_withdraw_password"
+                app:cvInputType="textPassword"
+                app:cvTitle="@string/withdraw_password"
+                app:cvTitleTextStyle="bold" />
+        </LinearLayout>
+
+
+        <!--  按鈕  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/btn_submit"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/bg_radius_20_button_dusk"
+                android:gravity="center"
                 android:letterSpacing="0.1"
+                android:paddingTop="9dp"
+                android:paddingBottom="9dp"
                 android:text="@string/submit"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textSize16sp" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/btn_reset"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cardBackgroundColor="@color/blue4"
-            app:cardCornerRadius="5dp"
-            app:contentPaddingBottom="8dp"
-            app:contentPaddingTop="8dp">
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/btn_delete_bank"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="11dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_radius_20_button_hollow"
+                android:gravity="center"
                 android:letterSpacing="0.1"
-                android:text="@string/reset"
-                android:textColor="@color/gray4"
-                android:textSize="@dimen/textSize16sp" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
+                android:text="@string/delete_bank_card"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/btn_delete_bank"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/frame_sideline_dark_blue_5dp"
-        android:gravity="center"
-        android:letterSpacing="0.1"
-        android:paddingStart="64dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="64dp"
-        android:paddingBottom="8dp"
-        android:text="@string/delete_bank_card"
-        android:textColor="@color/gray4"
-        android:textSize="@dimen/textSize16sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

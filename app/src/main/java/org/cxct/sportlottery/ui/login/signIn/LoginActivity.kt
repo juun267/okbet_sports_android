@@ -18,7 +18,6 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -143,12 +142,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupForgetPasswordButton() {
         btn_forget_password.setOnClickListener {
-            val dialog = CustomAlertDialog(this)
-            dialog.setTitle(getString(R.string.prompt))
-            dialog.setMessage(getString(R.string.desc_forget_password))
-            dialog.setNegativeButtonText(null)
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.show()
+            showPromptDialog(getString(R.string.prompt), getString(R.string.desc_forget_password)) {}
         }
     }
 

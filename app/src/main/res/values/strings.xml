@@ -63,7 +63,6 @@
     <string name="desc_no_account">还没有账号？</string>
     <string name="desc_have_account">已有账号？</string>
     <string name="sign_up_know">立即注册</string>
-    <string name="sign_up_now">注册新账户</string>
 
     <!-- Service select dialog -->
     <string name="online_service1">在线客服1</string>
@@ -164,6 +163,14 @@
     <string name="saturday">星期六</string>
     <string name="sunday">星期日</string>
 
+    <!-- NewsDialog -->
+    <string name="game_announcement">游戏公告</string>
+    <string name="member_benefits">会员福利</string>
+    <string name="transfer_notes">转账须知</string>
+    <string name="best_recommend">劲爆推荐</string>
+    <string name="navigation_web">导航网</string>
+    <string name="other">其他</string>
+
     <!-- MenuFragment -->
     <string name="profile_center">个人中心</string>
     <string name="member_level">会员层级</string>
@@ -220,7 +227,7 @@
     <string name="game_result">赛果</string>
     <string name="game_yellow_card">罚牌</string>
     <string name="game_corner_kick">角球</string>
-    <string name="football">足球</string>
+    <string name="soccer">足球</string>
     <string name="basketball">篮球</string>
     <string name="tennis">网球</string>
     <string name="badminton">羽球</string>
@@ -346,9 +353,9 @@
 
     <string name="uncheck">未确认</string>
     <string name="undone">未结算</string>
-    <string name="win_all">全赢</string>
+    <string name="win_all">赢</string>
     <string name="win_half">赢半</string>
-    <string name="lose_all">全输</string>
+    <string name="lose_all">输</string>
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
@@ -376,6 +383,7 @@
     <string name="date_row_league">赛事</string>
     <string name="date_row_other">其他早盘</string>
     <string name="date_row_all">所有赛事</string>
+    <string name="date_row_live">滚球赛事</string>
     <string name="date_row_today">今日赛事</string>
     <string name="outright_row_entrance">冠军盘口</string>
     <string name="ou_hdp_ou_title">大小</string>
@@ -390,6 +398,10 @@
     <string name="win_lose">赢 / 输 (RMB)</string>
     <string name="no_any_bet_record">暂无任何投注纪录</string>
     <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
+
+    <!--odds detail-->
+    <string name="odds_detail_more">更多</string>
+    <string name="odds_detail_less">更少</string>
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
@@ -483,6 +495,7 @@
     <string name="submit">提交</string>
     <string name="reset">重置</string>
     <string name="select_bank_card">选择银行卡</string>
+    <string name="select_crypto_card">选择虚拟币</string>
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount">提款金额格式或数值错误</string>
     <string name="error_withdraw_amount_bigger_than_balance">提款金额大于账号余额</string>
@@ -506,31 +519,41 @@
     <string name="withdraw_password">提款密码</string>
     <string name="withdraw_all">全部提取</string>
     <string name="withdraw_handling_fee_hint">・手续费率：%1$s%% 须支付手续费：%2$sRMB</string>
-    <string name="withdraw_crypto_fee_hint">・汇率：%1$s% ,需支付手续费：%2$s个USDT</string>
+    <string name="withdraw_crypto_exchange_rate_hint">・汇率：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">・提款金额：%1$s RMB</string>
+    <string name="withdraw_crypto_fee_hint">・提款手续费：%1$s RMB</string>
     <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s RMB</string>
+    <string name="hint_please_enter_withdraw_crypto_amount">限额%1$s~%2$s 个</string>
     <string name="hint_four_number_password">密码为4个数字</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
     <string name="add_credit_card">新增银行卡</string>
+    <string name="add_crypto_card">新增虚拟币</string>
     <string name="add_credit_or_virtual">新增银行卡/虚拟币</string>
     <!--  BankCard  -->
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
     <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
     <string name="edit_bank_card">编辑银行卡</string>
+    <string name="edit_crypto_card">编辑虚拟币</string>
     <string name="bank_card_number">银行卡号</string>
+    <string name="wallet_address">钱包地址</string>
     <string name="withdraw_amount_range">(限額%s~%s RMB)</string>
     <string name="please_enter_bank_card_rule">请输入银行卡卡号</string>
+    <string name="please_enter_wallet_address">请输入钱包地址</string>
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
+    <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_create_name_empty">开户名为必填栏位</string>
     <string name="error_bank_card_number">您输入的银行卡号格式有错误</string>
     <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
     <string name="error_network_point">您输入的开户网点格式有错误</string>
     <string name="error_network_point_empty">开户网点为必填栏位</string>
     <string name="error_withdraw_password">您输入的密码错误</string>
+    <string name="error_wallet_address_empty">钱包地址为必填栏位</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
+    <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
@@ -560,6 +583,7 @@
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_in_play">滚球&#160;&#160;</string>
     <string name="bet_info_current_money">余额:%s</string>
+    <string name="bet_info_in_play_score">滚球&#160;&#160;%1$s&#160;(%2$s:%3$s)</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
@@ -607,12 +631,12 @@
     <string name="log_detail_amount_sub">交易金额：</string>
     <string name="log_detail_status_sub">交易状态：</string>
     <string name="log_detail_handle_fee">手续费用：</string>
+    <string name="log_detail_rebate_money">返利金额：</string>
     <string name="log_detail_review_time">审核时间：</string>
     <string name="log_detail_reason">备注：</string>
 
     <string name="finance_log_selector_until">到</string>
-    <string name="finance_list_no_more">没有更多数据了</string>
-    <string name="finance_list_no_record">暂无纪录</string>
+    <string name="finance_list_no_record">暂无任何内容</string>
 
     <!--意見反饋-->
     <string name="feedback_toolbar_title">建议反馈</string>
@@ -688,12 +712,11 @@
     <string name="qp">棋牌</string>
     <string name="dz">电子</string>
     <string name="by">捕鱼</string>
-    <string name="soccer">足球</string>
     <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容， 致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
     <string name="sport_bet_record">体育投注记录</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
-    <string name="visit_first">先去逛逛</string>
+    <string name="visit_first">來去逛逛</string>
     <string name="bet_number">注数</string>
     <string name="bet_money">下注金額</string>
     <string name="profit_and_loss">盈亏</string>
@@ -705,5 +728,7 @@
     <string name="all_in_plat">全部转入</string>
     <string name="all_transfer_status">全部状态</string>
     <string name="write_suggestion">填写建议</string>
+    <string name="can_input_1_to_500_word">可输入1-500字</string>
+    <string name="must_fill_this_column">此栏位为必填栏位</string>
 
 </resources>

@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
@@ -19,8 +20,10 @@ class ProfileCenterViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
-    private val infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    infoCenterRepository: InfoCenterRepository,
+    private val withdrawRepository: WithdrawRepository,
+    private val thirdGameRepository: ThirdGameRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
@@ -29,22 +32,14 @@ class ProfileCenterViewModel(
     val userMoney: LiveData<String?>
         get() = _userMoney
 
-    private var _needToUpdateWithdrawPassword = MutableLiveData<Boolean>()
-    val needToUpdateWithdrawPassword: LiveData<Boolean> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
-        get() = _needToUpdateWithdrawPassword
-
-    private var _needToCompleteProfileInfo = MutableLiveData<Boolean>()
-    val needToCompleteProfileInfo: LiveData<Boolean> //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-        get() = _needToCompleteProfileInfo
-
-
-    private var _settingNeedToUpdateWithdrawPassword = MutableLiveData<Boolean>()
-    val settingNeedToUpdateWithdrawPassword: LiveData<Boolean> //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
-        get() = _settingNeedToUpdateWithdrawPassword
-
-    private var _needToBindBankCard = MutableLiveData<Boolean>()
-    val needToBindBankCard: LiveData<Boolean>
-        get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+    val needToUpdateWithdrawPassword =
+        withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToUpdateWithdrawPassword =
+        withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val needToCompleteProfileInfo =
+        withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val needToBindBankCard =
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
     val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
 
@@ -63,15 +58,7 @@ class ProfileCenterViewModel(
     }
 
     fun logout() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.logout()
-            }.apply {
-                loginRepository.clear()
-                betInfoRepository.clear()
-                infoCenterRepository.clear()
-            }
-        }
+        doLogoutCleanUser()
     }
 
     fun getUserInfo() {
@@ -80,22 +67,18 @@ class ProfileCenterViewModel(
         }
     }
 
-    private fun checkNeedUpdatePassWord(): Boolean? {
-        return when (userInfo.value?.updatePayPw) {
-            1 -> true
-            0 -> false
-            else -> null
-        }
-    }
-
     //提款判斷權限
     fun withdrawCheckPermissions() {
-        this.checkNeedUpdatePassWord()?.let { _needToUpdateWithdrawPassword.value = it }
+        viewModelScope.launch {
+            withdrawRepository.withdrawCheckPermissions()
+        }
     }
 
     //提款設置判斷權限
     fun settingCheckPermissions() {
-        this.checkNeedUpdatePassWord()?.let { _settingNeedToUpdateWithdrawPassword.value = it }
+        viewModelScope.launch {
+            withdrawRepository.settingCheckPermissions()
+        }
     }
 
     /**
@@ -103,26 +86,15 @@ class ProfileCenterViewModel(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     fun checkProfileInfoComplete() {
-        var complete = false
-        sConfigData?.apply {
-            if (enableWithdrawFullName == FLAG_OPEN && userInfo.value?.fullName.isNullOrBlank() ||
-                enableWithdrawQQ == FLAG_OPEN && userInfo.value?.qq.isNullOrBlank() ||
-                enableWithdrawEmail == FLAG_OPEN && userInfo.value?.email.isNullOrBlank() ||
-                enableWithdrawPhone == FLAG_OPEN && userInfo.value?.phone.isNullOrBlank() ||
-                enableWithdrawWechat == FLAG_OPEN && userInfo.value?.wechat.isNullOrBlank()
-            ) {
-                complete = true
-            }
+        viewModelScope.launch {
+            withdrawRepository.checkProfileInfoComplete()
         }
-        _needToCompleteProfileInfo.value = complete
     }
 
     fun checkBankCardPermissions() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.bankService.getBankMy()
-            }?.let { result ->
-                _needToBindBankCard.value = result.bankCardList.isNullOrEmpty()
+                withdrawRepository.checkBankCardPermissions()
             }
         }
     }
@@ -133,5 +105,9 @@ class ProfileCenterViewModel(
                 avatarRepository.uploadImage(uploadImgRequest)
             }
         }
+    }
+
+    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
+        thirdGameRepository.setGoToThirdGamePage(catePage)
     }
 }

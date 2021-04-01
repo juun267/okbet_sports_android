@@ -10,17 +10,18 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="56dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:src="@drawable/selector_main_tab_sport"
-        android:contentDescription="@null" />
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:src="@drawable/selector_main_tab_sport" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_select_orange_black"
-        android:textSize="@dimen/textSize12sp"
-        android:text="@string/sport" />
+        android:text="@string/sport"
+        android:textColor="@color/color_select_orange_gray"
+        android:textSize="@dimen/textSize12sp" />
 
 </LinearLayout>

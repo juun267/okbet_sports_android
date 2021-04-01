@@ -252,6 +252,6 @@ class OutrightDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onDestroy() {
         super.onDestroy()
 
-        service.unSubscribeHallChannel(gameType, CateMenuCode.OUTRIGHT.code, eventId)
+        service.unsubscribeHallChannel(gameType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 }

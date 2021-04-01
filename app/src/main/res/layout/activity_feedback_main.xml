@@ -26,7 +26,7 @@
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
+                app:tint="@color/colorWhite" />
 
             <TextView
                 android:id="@+id/tv_toolbar_title"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/feedback_toolbar_title"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

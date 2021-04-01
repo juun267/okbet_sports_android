@@ -1,100 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="335dp"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
     android:gravity="center"
-    android:orientation="vertical">
-
-
-    <!--    android:background="@drawable/bg_white_soild_grey_corner"-->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content">
+    android:orientation="vertical"
+    tools:background="@color/transparent_black_50">
 
     <ImageView
         android:id="@+id/img_top"
-        android:layout_width="300dp"
-        android:layout_height="167dp"
-        android:orientation="horizontal"
-        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
         android:src="@drawable/bg_news_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_content"
-        android:layout_width="300dp"
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@null"
+        android:src="@drawable/bg_square_shape_8dp_white_bottom"
+        app:layout_constraintBottom_toBottomOf="@id/rv_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_top" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_tab"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_white_soild_grey_corner"
-        android:minHeight="300dp"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/img_top"
-        app:layout_constraintStart_toStartOf="@+id/img_top"
-        app:layout_constraintTop_toBottomOf="@+id/img_top">
+        android:layout_marginStart="4.5dp"
+        android:layout_marginEnd="4.5dp"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toStartOf="@id/img_arrow_right"
+        app:layout_constraintStart_toEndOf="@id/img_arrow_left"
+        app:layout_constraintTop_toBottomOf="@id/img_top"
+        tools:itemCount="3"
+        tools:listitem="@layout/content_news_tab_rv"
+        tools:orientation="horizontal" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+    <ImageView
+        android:id="@+id/img_arrow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="17dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_triangle_left"
+        app:layout_constraintBottom_toBottomOf="@id/rv_tab"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rv_tab" />
 
-            <ImageView
-                android:id="@+id/img_arrow_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_triangle_left"
-                android:visibility="invisible"
-                android:layout_marginStart="5dp"/>
+    <ImageView
+        android:id="@+id/img_arrow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="17dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_triangle_right"
+        app:layout_constraintBottom_toBottomOf="@id/rv_tab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rv_tab" />
 
-            <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
-                android:id="@+id/rv_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                tools:itemCount="3"
-                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/content_news_tab"
-                tools:orientation="horizontal"
-                android:layout_weight="1" />
+    <ImageView
+        android:id="@+id/content_arrow_left"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_arrow_gray_left"
+        app:layout_constraintBottom_toBottomOf="@id/rv_content"
+        app:layout_constraintEnd_toEndOf="@id/img_arrow_left"
+        app:layout_constraintTop_toTopOf="@id/rv_content" />
 
-            <ImageView
-                android:id="@+id/img_arrow_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_triangle_right"
-                android:layout_marginEnd="5dp"/>
+    <ImageView
+        android:id="@+id/content_arrow_right"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_arrow_gray_right"
+        app:layout_constraintBottom_toBottomOf="@id/rv_content"
+        app:layout_constraintStart_toStartOf="@id/img_arrow_right"
+        app:layout_constraintTop_toTopOf="@id/rv_content" />
 
-        </LinearLayout>
-        
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:background="@color/white" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_content"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:overScrollMode="never"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toStartOf="@id/content_arrow_right"
+        app:layout_constraintStart_toEndOf="@id/content_arrow_left"
+        app:layout_constraintTop_toBottomOf="@id/rv_tab"
+        tools:itemCount="1"
+        tools:listitem="@layout/content_news_item_rv"
+        tools:orientation="horizontal" />
 
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_circle_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_content" />
 
-        <ImageView
-            android:id="@+id/img_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_close"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_content"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,4 +24,5 @@ data class Odd(
 ) {
     var isSelect: Boolean? = false
     var oddState: Int? = OddState.SAME.state
+    var itemViewVisible = true
 }

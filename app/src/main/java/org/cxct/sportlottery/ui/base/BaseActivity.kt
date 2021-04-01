@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -24,16 +23,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private var mLayoutHandler = Handler(Looper.getMainLooper())
     private var mPromptDialog: CustomAlertDialog? = null
+    private var mTokenPromptDialog: CustomAlertDialog? = null
 
     val viewModel: T by viewModel(clazz = clazz)
 
     private var loadingView: View? = null
 
     private var floatButtonView: View? = null
-
-    private val mReceiver by lazy {
-        ServiceBroadcastReceiver()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,14 +45,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun showDialogLogout(message: String) {
-        val dialog = CustomAlertDialog(this)
-        dialog.setMessage(message)
-        dialog.setPositiveClickListener {
+        showTokenPromptDialog(message) {
             MainActivity.reStart(this)
-            dialog.dismiss()
+            viewModel.doLogoutCleanUser()
         }
-        dialog.setNegativeButtonText(null)
-        dialog.show()
     }
 
     private fun onNetworkException() {
@@ -111,6 +103,35 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         Toast.makeText(applicationContext, R.string.connect_first, Toast.LENGTH_SHORT).show()
     }
 
+    private fun showTokenPromptDialog(errorMessage: String, positiveClickListener: () -> Unit?) {
+        safelyUpdateLayout(Runnable {
+            try {
+                //防止跳出多個 error dialog
+                if (mTokenPromptDialog?.isShowing == true)
+                    return@Runnable
+
+                mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                    setTextColor(R.color.orangeRed)
+                    setTitle(getString(R.string.prompt))
+                    setMessage(errorMessage)
+                    setPositiveButtonText(getString(R.string.btn_determine))
+                    setNegativeButtonText(null)
+                    setPositiveClickListener(View.OnClickListener {
+                        positiveClickListener()
+                        mTokenPromptDialog?.dismiss()
+                        mTokenPromptDialog = null
+                    })
+
+                    setCanceledOnTouchOutside(false)
+                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
+                    show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
+    }
+
     fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
@@ -125,6 +146,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 //防止跳出多個 error dialog
                 if (mPromptDialog?.isShowing == true)
                     mPromptDialog?.dismiss()
+                if (mTokenPromptDialog?.isShowing == true) {
+                    mPromptDialog?.dismiss()
+                    return@Runnable
+                }
 
                 mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
                     if (isError) {

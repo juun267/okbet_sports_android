@@ -17,17 +17,20 @@ import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRe
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.util.Event
 
 class MoneyTransferViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -67,7 +70,7 @@ class MoneyTransferViewModel(
         }
     }
 
-    val isPlatSwitched: LiveData<Boolean?>
+    val isPlatSwitched: LiveData<Event<Boolean>>
         get() = _isPlatSwitched
 
     val allBalanceResultList: LiveData<List<GameData>>
@@ -99,7 +102,7 @@ class MoneyTransferViewModel(
 
 
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
-    private val _isPlatSwitched = MutableLiveData<Boolean?>()
+    private val _isPlatSwitched = MutableLiveData<Event<Boolean>>()
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
@@ -130,10 +133,8 @@ class MoneyTransferViewModel(
         _toolbarName.value = name
     }
 
-    fun setIsPlatSwitched(isSwitched: Boolean?) {
-        isSwitched.let {
-            _isPlatSwitched.value = it
-        }
+    fun setIsPlatSwitched() {
+        _isPlatSwitched.value = Event(!(isPlatSwitched.value?.getContentIfNotHandled() ?: false))
     }
 
     fun getAllBalance() {
@@ -251,12 +252,14 @@ class MoneyTransferViewModel(
     private var nowPage = 1
     val recordDataList = mutableListOf<Row>()
 
-    fun queryTransfers(page: Int? = 1,
-                       startTime: String ?= TimeUtil.getDefaultTimeStamp().startTime,
-                       endTime: String ?= TimeUtil.getDefaultTimeStamp().endTime,
-                       status: String ?= null,
-                       firmTypeIn: String ?= null,
-                       firmTypeOut: String ?= null) {
+    fun queryTransfers(
+        page: Int? = 1,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        status: String? = null,
+        firmTypeIn: String? = null,
+        firmTypeOut: String? = null
+    ) {
 
         loading()
         if (page == 1) {

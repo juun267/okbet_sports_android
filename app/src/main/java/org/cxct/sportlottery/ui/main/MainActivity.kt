@@ -22,8 +22,9 @@ import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
-import org.cxct.sportlottery.ui.main.next.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
@@ -172,28 +173,30 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             updateUiWithLogin(it)
         })
 
-        viewModel.errorResultToken.observe(this, Observer {
-            viewModel.logout()
-        })
-
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)
         })
 
         //彈窗圖
         viewModel.popImageList.observe(this, Observer {
-            setPopImage(it)
+            setPopImage(it ?: listOf())
         })
 
         //公告彈窗
-        viewModel.messageDialogResult.observe(this, Observer {
-            setNewsDialog(it)
+        viewModel.messageDialogResult.observe(this, Observer { it ->
+            it.getContentIfNotHandled()?.let { result ->
+                setNewsDialog(result)
+            }
         })
 
         viewModel.goToThirdGamePage.observe(this, Observer {
-            if (it != null) {
-                goToMainMoreFragment(it.name)
-                viewModel.clearThirdGameCatePage()
+            it.getContentIfNotHandled().let { cate ->
+                when {
+                    cate == ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
+                    cate != null -> goToMainMoreFragment(cate.name)
+                    else -> {
+                    }
+                }
             }
         })
     }
@@ -223,10 +226,9 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     //用戶登入公告訊息彈窗
     private fun setNewsDialog(messageListResult: MessageListResult) {
         //未登入、遊客登入都要顯示彈窗
-        if (!messageListResult.rows.isNullOrEmpty() &&
-            mNewsDialog?.isVisible != true
-        ) {
-            mNewsDialog = NewsDialog(this, messageListResult.rows)
+        if (!messageListResult.rows.isNullOrEmpty()) {
+            mNewsDialog?.dismiss()
+            mNewsDialog = NewsDialog(messageListResult.rows)
             mNewsDialog?.show(supportFragmentManager, null)
         }
     }

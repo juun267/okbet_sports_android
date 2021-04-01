@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="org.cxct.sportlottery.ui.main.next.RvBYAdapter">
+    tools:context="org.cxct.sportlottery.ui.main.more.RvBYAdapter">
 
     <ImageView
         android:id="@+id/iv_bg"

@@ -117,7 +117,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         btn_sign_out.setOnClickListener {
-            viewModel.logout()
+            viewModel.doLogoutCleanUser()
             context?.run {
                 MainActivity.reStart(this)
             }

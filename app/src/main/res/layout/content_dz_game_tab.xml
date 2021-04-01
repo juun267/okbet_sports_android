@@ -8,5 +8,5 @@
     android:layout_marginEnd="5dp"
     android:contentDescription="@null"
     android:minHeight="52dp"
-    tools:context=".ui.main.next.RvDZTabAdapter"
+    tools:context=".ui.main.more.RvDZTabAdapter"
     tools:src="@drawable/ic_image_load" />

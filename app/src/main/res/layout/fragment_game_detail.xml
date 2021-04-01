@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/colorWhite"
     android:clickable="true"
     android:focusable="true"
     tools:context=".ui.game.GameDetailFragment">
@@ -69,13 +69,15 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/league_odd_layout"
 
-        tools:listitem="@layout/itemview_match_odd"
+        app:layout_constraintTop_toBottomOf="@+id/league_odd_layout"
+        app:layout_constraintVertical_bias="0.0"
         tools:itemCount="1"
+        tools:layout_constraintVertical_bias="0"
         tools:layout_height="wrap_content"
-        tools:layout_constraintVertical_bias="0"/>
+        tools:listitem="@layout/itemview_match_odd" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:overScrollMode="never"

@@ -78,9 +78,9 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="@string/football" />
+                tools:text="@string/soccer" />
 
         </LinearLayout>
 
@@ -104,7 +104,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/league"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/league" />
 
@@ -170,7 +170,7 @@
             android:id="@+id/refactor_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorWhite"
             android:overScrollMode="never"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

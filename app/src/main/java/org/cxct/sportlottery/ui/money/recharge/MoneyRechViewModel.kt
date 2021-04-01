@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.money.recharge
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -15,15 +14,16 @@ import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.*
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
-import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
-import org.cxct.sportlottery.util.MoshiUtil
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
 import org.cxct.sportlottery.util.VerifyConstUtil
 import timber.log.Timber
@@ -34,8 +34,9 @@ class MoneyRechViewModel(
     private val moneyRepository: MoneyRepository,
     private val avatarRepository: AvatarRepository,
     loginRepository: LoginRepository,
-    betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository) {
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val token = loginRepository.token
 

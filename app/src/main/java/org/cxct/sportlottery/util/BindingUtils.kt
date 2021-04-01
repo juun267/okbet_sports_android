@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.util
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -56,10 +59,10 @@ fun TextView.setRecordStatus(status: Int?) {
 fun TextView.setRecordStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            1 -> R.color.gray3
-            2 -> R.color.green
-            3 -> R.color.red
-            else -> R.color.gray3
+            1 -> R.color.colorGray
+            2 -> R.color.colorGreen
+            3 -> R.color.colorRed
+            else -> R.color.colorGray
         }
 
         this.setTextColor(ContextCompat.getColor(context, color))
@@ -118,12 +121,29 @@ fun TextView.setPlatName(platCode: String?) {
 fun TextView.setMoneyColor(profit: Double = 0.0) {
 
     val color = when {
-        profit > 0.0 -> R.color.green
-        profit < 0.0 -> R.color.red
-        profit == 0.0 -> R.color.gray3
-        else -> R.color.gray3
+        profit > 0.0 -> R.color.colorGreen
+        profit < 0.0 -> R.color.colorRed
+        profit == 0.0 -> R.color.colorGray
+        else -> R.color.colorGray
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))
 }
 
+fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(char: CharSequence, start: Int, before: Int, count: Int) {
+            if (char.trim().isNotEmpty()) {
+                textAmount.invoke(char.length)
+            } else {
+                textAmount.invoke(0)
+            }
+        }
+    })
+}

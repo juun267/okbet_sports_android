@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_update"
     tools:context=".ui.profileCenter.versionUpdate.VersionUpdateActivity">
 
     <RelativeLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/colorBlue">
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btn_back"
@@ -20,39 +21,43 @@
             android:layout_centerVertical="true"
             android:background="@null"
             android:contentDescription="@null"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back_black" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/version_update"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize16sp" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_update"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:contentDescription="@null"
-            android:src="@drawable/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            app:riv_corner_radius="10dp" />
 
         <TextView
             android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:textColor="@color/gray6"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             tools:text="v2.0.37" />
 
@@ -61,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/gray6"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="有新的版本(v13_1.2.3)可更新" />
 
@@ -69,11 +74,11 @@
             android:id="@+id/pb_update"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
-            android:minWidth="280dp"
             android:layout_height="8dp"
-            android:indeterminate="false"
             android:layout_marginTop="15dp"
+            android:indeterminate="false"
             android:max="100"
+            android:minWidth="280dp"
             android:progressDrawable="@drawable/gradient_progress"
             tools:progress="33" />
 
@@ -83,11 +88,11 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
-            android:textAllCaps="false"
             android:background="@drawable/bg_radius_20_button_dusk"
             android:minWidth="240dp"
             android:minHeight="36dp"
             android:text="@string/internal_download"
+            android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize14sp" />
 
@@ -97,14 +102,14 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
-            android:textAllCaps="false"
             android:background="@drawable/bg_radius_20_button_dusk_stroke"
             android:minWidth="240dp"
             android:minHeight="36dp"
             android:text="@string/external_download"
-            android:textStyle="bold"
+            android:textAllCaps="false"
             android:textColor="@color/colorBlue"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -112,8 +117,9 @@
         android:id="@+id/layout_loading"
         layout="@layout/layout_loading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolBar"
-        tools:visibility="gone"/>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar"
+        tools:visibility="gone" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

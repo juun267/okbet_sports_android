@@ -2,11 +2,13 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import android.content.res.AssetManager
+import androidx.annotation.DrawableRes
 import com.squareup.moshi.Types
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.money.TransferType
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -75,7 +77,16 @@ object MoneyManager {
         return R.drawable.ic_bank_default
     }
 
-    enum class BankKey(val bankName: String, val iconId: Int) {
+    fun getCryptoIconByCryptoName(cryptoName: String): Int {
+        CryptoIcon.values().map { if (it.cryptoName == cryptoName) return it.iconId }
+        return R.drawable.ic_crypto
+    }
+
+    enum class CryptoIcon(val cryptoName: String, @DrawableRes val iconId: Int) {
+        CRYPTO(TransferType.CRYPTO.type, R.drawable.ic_crypto)
+    }
+
+    enum class BankKey(val bankName: String, @DrawableRes val iconId: Int) {
         ABC("农业银行", R.drawable.ic_bank_abc),
         CCB("建设银行", R.drawable.ic_bank_ccb),
         ICBC("工商银行", R.drawable.ic_bank_icbc),
