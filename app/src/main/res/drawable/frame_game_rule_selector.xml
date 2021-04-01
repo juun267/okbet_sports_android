@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:drawable="@drawable/bg_frame_5dp"
-        android:id="@+id/background" />
+        android:id="@+id/background"
+        android:drawable="@drawable/bg_frame_5dp" />
     <item
-        android:gravity="end|center_vertical"
         android:id="@+id/arrow"
+        android:gravity="end|center_vertical"
         android:right="15dp">
         <rotate
             android:drawable="@drawable/ic_arrow_dark"
-            android:fromDegrees="180"
-            />
+            android:fromDegrees="180" />
     </item>
 </layer-list>
