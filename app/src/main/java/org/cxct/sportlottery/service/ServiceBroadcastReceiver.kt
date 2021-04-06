@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.json.JSONArray
+import timber.log.Timber
 
 open class ServiceBroadcastReceiver : BroadcastReceiver() {
 
@@ -75,101 +76,73 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
         val bundle = intent.extras
         val channel = bundle?.getString("channel", "")
         val messageStr = bundle?.getString("serverMessage", "") ?: ""
+//        val messageStr = "[]"
 
         val jsonArray = JSONArray(messageStr)
         for (i in 0 until jsonArray.length()) {
             val jObjStr = jsonArray.optJSONObject(i).toString()
-            val eventType = jsonArray.optJSONObject(i).optString("eventType")
-            when (channel) {
-                //全体公共频道
-                BackService.URL_ALL -> {
-                    when (eventType) {
-                        EventType.NOTICE.value -> {
-                            val data = ServiceMessage.getNotice(jObjStr)
-                            _notice.value = data
-                        }
-                        EventType.GLOBAL_STOP.value -> {
-                            val data = ServiceMessage.getGlobalStop(jObjStr)
-                            _globalStop.value = data
+            val eventType = EventType.getEventType(jsonArray.optJSONObject(i).optString("eventType"))
+            //全体公共频道
+            when (eventType) {
+                EventType.NOTICE -> {
+                    val data = ServiceMessage.getNotice(jObjStr)
+                    _notice.value = data
+                }
+                EventType.GLOBAL_STOP -> {
+                    val data = ServiceMessage.getGlobalStop(jObjStr)
+                    _globalStop.value = data
 
-                        }
-                        EventType.PRODUCER_UP.value -> {
-                            val data = ServiceMessage.getProducerUp(jObjStr)
-                            _producerUp.value = data
-                        }
-                    }
+                }
+                EventType.PRODUCER_UP -> {
+                    val data = ServiceMessage.getProducerUp(jObjStr)
+                    _producerUp.value = data
                 }
 
                 //公共频道(这个通道会通知主站平台维护)
-                BackService.URL_PLATFORM -> {
-                    when (eventType) {
-                        EventType.SYS_MAINTENANCE.value -> {
-                            val data = ServiceMessage.getSysMaintenance(jObjStr)
-                            _sysMaintenance.value = data
-                        }
-                    }
+                EventType.SYS_MAINTENANCE -> {
+                    val data = ServiceMessage.getSysMaintenance(jObjStr)
+                    _sysMaintenance.value = data
                 }
 
                 //用户私人频道
-                BackService.URL_USER_PRIVATE -> {
-                    when (eventType) {
-                        EventType.USER_MONEY.value -> {
-                            val data = ServiceMessage.getUserMoney(jObjStr)
-                            _userMoney.value = data?.money
-                        }
-                        EventType.USER_NOTICE.value -> {
-                            val data = ServiceMessage.getUserNotice(jObjStr)
-                            _userNotice.value = data
-                        }
-                        EventType.ORDER_SETTLEMENT.value -> {
-                            val data = ServiceMessage.getOrderSettlement(jObjStr)
-                            _orderSettlement.value = data
-                        }
-                        EventType.PING_PONG.value -> {
-                            val data = ServiceMessage.getPingPong(jObjStr)
-                            _pingPong.value = data
-                        }
-                    }
+                EventType.USER_MONEY -> {
+                    val data = ServiceMessage.getUserMoney(jObjStr)
+                    _userMoney.value = data?.money
+                }
+                EventType.USER_NOTICE -> {
+                    val data = ServiceMessage.getUserNotice(jObjStr)
+                    _userNotice.value = data
+                }
+                EventType.ORDER_SETTLEMENT -> {
+                    val data = ServiceMessage.getOrderSettlement(jObjStr)
+                    _orderSettlement.value = data
+                }
+                EventType.PING_PONG -> {
+                    val data = ServiceMessage.getPingPong(jObjStr)
+                    _pingPong.value = data
                 }
 
-                BackService.URL_PING -> {
-                    when (eventType) {
-                        EventType.PING_PONG.value -> {
-                            val data = ServiceMessage.getPingPong(jObjStr)
-                            _pingPong.value = data
-                        }
-                    }
+                //大廳賠率
+                EventType.MATCH_STATUS_CHANGE -> {
+                    val data = ServiceMessage.getMatchStatusChange(jObjStr)
+                    _matchStatusChange.value = data
                 }
-            }
-
-            //大廳賠率
-            if (channel?.contains(BackService.URL_HALL) == true) {
-                when (eventType) {
-                    EventType.MATCH_STATUS_CHANGE.value -> {
-                        val data = ServiceMessage.getMatchStatusChange(jObjStr)
-                        _matchStatusChange.value = data
-
-                    }
-                    EventType.MATCH_CLOCK.value -> {
-                        val data = ServiceMessage.getMatchClock(jObjStr)
-                        _matchClock.value = data
-
-                    }
-                    EventType.ODDS_CHANGE.value -> {
-                        val data = ServiceMessage.getOddsChange(jObjStr)
-                        _oddsChange.value = data
-
-                    }
+                EventType.MATCH_CLOCK -> {
+                    val data = ServiceMessage.getMatchClock(jObjStr)
+                    _matchClock.value = data
                 }
-            }
+                EventType.ODDS_CHANGE -> {
+                    val data = ServiceMessage.getOddsChange(jObjStr)
+                    _oddsChange.value = data
+                }
 
-            //具体赛事/赛季频道
-            if (channel?.contains(BackService.URL_EVENT) == true) {
-                when (eventType) {
-                    EventType.MATCH_ODDS_CHANGE.value -> {
-                        val data = ServiceMessage.getMatchOddsChange(jObjStr)
-                        _matchOddsChange.value = data
-                    }
+                //具体赛事/赛季频道
+                EventType.MATCH_ODDS_CHANGE -> {
+                    val data = ServiceMessage.getMatchOddsChange(jObjStr)
+                    _matchOddsChange.value = data
+                }
+                EventType.UNKNOWN -> {
+                    Timber.i("Receive UnKnown EventType : ${eventType.value}")
                 }
             }
         }
