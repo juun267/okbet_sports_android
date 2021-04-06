@@ -68,7 +68,7 @@ class RequestManager private constructor(context: Context) {
 
     fun createRetrofit(baseUrl: String): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("$baseUrl/")
+            .baseUrl("$baseUrl")
             .client(mOkHttpClientBuilder.build())
             .addConverterFactory(MoshiConverterFactory.create(mMoshi))
             .build()
