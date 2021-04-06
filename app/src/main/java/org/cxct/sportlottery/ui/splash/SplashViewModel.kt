@@ -6,15 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.HostRepository
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import retrofit2.Retrofit
 import timber.log.Timber
@@ -52,7 +49,7 @@ class SplashViewModel(
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
                 Timber.i("==> checkLocalHost: $hostUrl")
-                val retrofit = RequestManager.instance.createRetrofit(hostUrl)
+                val retrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
                 val result = doNetwork(androidContext) {
                     retrofit.create(IndexService::class.java).getConfig()
                 }
@@ -113,7 +110,7 @@ class SplashViewModel(
     private fun checkHostByGettingConfig(baseUrl: String) {
         viewModelScope.launch {
             Timber.i("==> checkHostByGettingConfig: $baseUrl")
-            val retrofit = RequestManager.instance.createRetrofit(baseUrl)
+            val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
             val result = doNetwork(androidContext) {
                 val indexService = retrofit.create(IndexService::class.java)
                 indexService.getConfig()

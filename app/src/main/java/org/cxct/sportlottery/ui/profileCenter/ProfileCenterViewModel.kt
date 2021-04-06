@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
@@ -20,7 +21,8 @@ class ProfileCenterViewModel(
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val withdrawRepository: WithdrawRepository
+    private val withdrawRepository: WithdrawRepository,
+    private val thirdGameRepository: ThirdGameRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
@@ -103,5 +105,9 @@ class ProfileCenterViewModel(
                 avatarRepository.uploadImage(uploadImgRequest)
             }
         }
+    }
+
+    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
+        thirdGameRepository.setGoToThirdGamePage(catePage)
     }
 }

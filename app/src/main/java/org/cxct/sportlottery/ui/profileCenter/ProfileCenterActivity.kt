@@ -15,13 +15,18 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
@@ -88,6 +93,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         setupWithdrawButton()
         setupLogout()
         setupMoreButtons()
+        initBottomNav()
         getUserInfo()
         initObserve()
         initSocketObserver()
@@ -204,6 +210,49 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         }
     }
 
+    private fun initBottomNav() {
+        bottom_nav_view.selectedItemId = R.id.my_account_page
+        bottom_nav_view.setOnNavigationItemSelectedListener {
+            //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
+            when (it.itemId) {
+                R.id.home_page -> {
+                    viewModel.setGoToThirdGamePage(ThirdGameCategory.MAIN)
+                    startActivity(Intent(this, MainActivity::class.java))
+                    false
+                }
+                R.id.game_page -> {
+                    startActivity(Intent(this, GameActivity::class.java))
+                    false
+                }
+                R.id.promotion_page -> {
+                    JumpUtil.toInternalWeb(
+                        this,
+                        Constants.getPromotionUrl(viewModel.token),
+                        getString(R.string.promotion)
+                    )
+                    false
+                }
+                R.id.chat_page -> {
+                    false
+                }
+                R.id.my_account_page -> {
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            startActivity(Intent(this, ProfileCenterActivity::class.java))
+                        }
+                        else -> { //遊客 //尚未登入
+                            startActivity(Intent(this, RegisterActivity::class.java))
+                        }
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+
+        //聊天室按鈕 啟用判斷
+        bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
+    }
 
     private fun getUserInfo() {
         viewModel.getUserInfo()

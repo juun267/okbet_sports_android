@@ -21,6 +21,10 @@ class OddButton @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    interface OnOddStatusChangedListener {
+        fun onOddStateChangedFinish()
+    }
+
     var playType: PlayType? = null
         set(value) {
             field = value
@@ -56,6 +60,8 @@ class OddButton @JvmOverloads constructor(
                 setupOddState(it)
             }
         }
+
+    var onOddStatusChangedListener: OnOddStatusChangedListener? = null
 
     private val mHandler by lazy {
         Handler()
@@ -144,7 +150,10 @@ class OddButton @JvmOverloads constructor(
 
     private fun setupBetStatus(betStatus: Int) {
         visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
-            View.INVISIBLE
+            when (playType) {
+                PlayType.X12 -> View.GONE
+                else -> View.INVISIBLE
+            }
         } else {
             View.VISIBLE
         }
@@ -166,10 +175,14 @@ class OddButton @JvmOverloads constructor(
             OddState.LARGER.state -> {
                 odd_button.background =
                     ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg_green)
+
+                isActivated = true
             }
             OddState.SMALLER.state -> {
                 odd_button.background =
                     ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg_red)
+
+                isActivated = true
             }
             else -> return
         }
@@ -177,6 +190,10 @@ class OddButton @JvmOverloads constructor(
         runnable = Runnable {
             odd_button.background =
                 ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
+
+            isActivated = false
+
+            onOddStatusChangedListener?.onOddStateChangedFinish()
         }
 
         runnable?.let {
