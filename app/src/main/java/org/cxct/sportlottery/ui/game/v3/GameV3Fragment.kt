@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -357,7 +358,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
-            game_no_record.visibility = if (it) {
+
+            game_no_record.apply {
+                setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+
+                visibility = if (it) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+
+            game_no_record_bg.visibility = if (it) {
                 View.VISIBLE
             } else {
                 View.GONE
