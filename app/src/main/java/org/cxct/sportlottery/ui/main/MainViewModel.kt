@@ -36,7 +36,9 @@ class MainViewModel(
         loginRepository.isLogin
     }
 
-    val token = loginRepository.token
+    val token
+        get() = loginRepository.token
+
     val userId = loginRepository.userId
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
