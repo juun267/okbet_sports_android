@@ -65,7 +65,7 @@ class FeedbackViewModel(
 
     val statusList = listOf(
         SheetData(allStatusTag, androidContext.getString(R.string.all_status)),
-        SheetData("0", androidContext.getString(R.string.feedback_wait_for_reply)),
+        SheetData("0", androidContext.getString(R.string.feedback_not_reply_yet)),
         SheetData("1", androidContext.getString(R.string.feedback_already_reply))
     )
 

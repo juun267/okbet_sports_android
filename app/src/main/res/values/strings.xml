@@ -641,7 +641,7 @@
     <string name="feedback_type_service_reply">客服反馈</string>
     <string name="feedback_type_user_reply">玩家回复</string>
     <string name="feedback_type_draw_suggestion">开奖网信息反馈</string>
-    <string name="feedback_wait_for_reply">待反馈</string>
+    <string name="feedback_not_reply_yet">待反馈</string>
     <string name="feedback_already_reply">已反馈</string>
 
 
