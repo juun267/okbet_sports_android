@@ -44,6 +44,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         set(value) {
             field = value
             tv_selected.tag = value
+            sheetAdapter?.defaultCheckedCode = value
         }
 
     var selectedTextColor: Int? = null
@@ -76,7 +77,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         addView(view)
 
         try {
-            setButtonSheet(typedArray)
+            setBottomSheet(typedArray)
 
             view?.apply {
                 setOnClickListener {
@@ -127,9 +128,13 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         }
     }
 
-    var itemSelectedListener: (()->Unit)? = null
+    var itemSelectedListener: ((data: StatusSheetData) -> Unit)? = null
 
-    private fun setButtonSheet(typedArray: TypedArray) {
+    fun setOnItemSelectedListener(listener: (data: StatusSheetData) -> Unit) {
+        itemSelectedListener = listener
+    }
+
+    private fun setBottomSheet(typedArray: TypedArray) {
 
         bottomSheetView.apply {
             bottomSheetView.sheet_tv_title.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText)
@@ -139,13 +144,11 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                 bottomSheet.dismiss()
             }
 
-
-
-            sheetAdapter = StatusSheetAdapter(null, StatusSheetAdapter.ItemCheckedListener { isChecked, data ->
+            sheetAdapter = StatusSheetAdapter(StatusSheetAdapter.ItemCheckedListener { isChecked, data ->
                 if (isChecked) {
                     selectedText = data.showName
                     selectedTag = data.code
-                    itemSelectedListener?.invoke()
+                    itemSelectedListener?.invoke(data)
                     dismiss()
                 }
             })
@@ -165,9 +168,16 @@ data class StatusSheetData(val code: String?, val showName: String?) {
     var isChecked = false
 }
 
-class StatusSheetAdapter (private val defaultCheckedCode: String?, private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class StatusSheetAdapter (private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var mNowCheckedPos:Int? = null
+    private var mPreviousItem: String? = null
+
+    var defaultCheckedCode: String? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var dataList = listOf<StatusSheetData>()
         set(value) {
             field = value
@@ -194,22 +204,27 @@ class StatusSheetAdapter (private val defaultCheckedCode: String?, private val c
     private fun setSingleChecked(checkbox: CheckBox, position: Int) {
         val data = dataList[position]
 
-        if ((data.code == defaultCheckedCode || data.code == null) && mNowCheckedPos == null) {
+        if ((data.code == defaultCheckedCode || data.code == null) && mPreviousItem == null) {
             data.isChecked = true
-            mNowCheckedPos = position
+            mPreviousItem = dataList[position].showName
         }
 
         checkbox.setOnClickListener {
-            val previousPosition = mNowCheckedPos
-
-            if (previousPosition != null) {
-                dataList[previousPosition].isChecked = false
-                notifyItemChanged(previousPosition)
+            var previousPosition: Int? = null
+            dataList.forEachIndexed { index, data ->
+                if (data.showName == mPreviousItem)
+                    previousPosition = index
             }
 
-            mNowCheckedPos = position
+            if (previousPosition != null) {
+                dataList[previousPosition!!].isChecked = false
+                notifyItemChanged(previousPosition!!)
+            }
+
+            mPreviousItem = dataList[position].showName
             checkbox.isChecked = true
             data.isChecked = true
+
             checkedListener.onChecked(checkbox.isChecked, data)
 
             notifyItemChanged(position)

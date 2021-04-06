@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 data class Date(
     val display: String,
     val timeRangeParams: TimeRangeParams,
+    val date: String? = null
 ) {
     var isSelected: Boolean = false
 }

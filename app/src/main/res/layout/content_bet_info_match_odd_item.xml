@@ -31,7 +31,7 @@
             android:id="@+id/tv_close_warning"
             android:layout_width="match_parent"
             android:layout_height="28dp"
-            android:background="@color/bet_list_warning"
+            android:background="@color/colorRed"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:paddingStart="10dp"

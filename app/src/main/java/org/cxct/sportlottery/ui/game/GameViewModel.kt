@@ -117,6 +117,9 @@ class GameViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
+    val curOddsDetailLiveParams: LiveData<List<String?>>
+        get() = _curOddsDetailLiveParams
+
     val matchTypeCardForParlay: LiveData<MatchType>
         get() = _matchTypeCardForParlay
 
@@ -134,6 +137,7 @@ class GameViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _oddsListGameHallLiveResult = MutableLiveData<OddsListResult?>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
@@ -150,6 +154,7 @@ class GameViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curDatePosition = MutableLiveData<Int>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
+    private val _curOddsDetailLiveParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
@@ -223,9 +228,7 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
-
-    var gameCardList: MutableList<MatchOdd>? = null
-
+    
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
 
@@ -367,12 +370,12 @@ class GameViewModel(
 
     fun getGameHallList(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
-        getGameHallList(matchType, false)
+        getGameHallList(matchType, false, date.date)
 
         _curDatePosition.postValue(_curDate.value?.indexOf(date))
     }
 
-    fun getGameHallList(matchType: MatchType, isReloadDate: Boolean) {
+    fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
         mathType = matchType
         if (isReloadDate) {
             getDateRow(matchType)
@@ -420,7 +423,7 @@ class GameViewModel(
                 }?.code
 
                 gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
+                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams(), date)
                 }
 
                 _isNoHistory.postValue(gameType == null)
@@ -494,6 +497,10 @@ class GameViewModel(
                     it.isSelected
                 }?.code
 
+                val date = _curDate.value?.find {
+                    it.isSelected
+                }
+
                 gameType?.let {
                     getOddsList(
                         gameType,
@@ -502,7 +509,9 @@ class GameViewModel(
                         leagueIdList
                     )
 
-                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
+                    _openGameDetail.postValue(
+                        Triple(date?.date ?: matchType.postValue, it, leagueId)
+                    )
                 }
             }
             else -> {
@@ -658,6 +667,7 @@ class GameViewModel(
 
         if (mathType == MatchType.IN_PLAY) {
             _oddsListGameHallResult.value = Event(result)
+            _oddsListGameHallLiveResult.value = result
         } else {
             _oddsListResult.value = Event(result)
         }
@@ -727,7 +737,7 @@ class GameViewModel(
         _oddsListGameHallResult.postValue(Event(result))
     }
 
-    private fun getOddsList(
+    fun getOddsList(
         gameType: String,
         matchType: String,
         timeRangeParams: TimeRangeParams? = null,
@@ -780,7 +790,8 @@ class GameViewModel(
     private fun getLeagueList(
         gameType: String,
         matchType: String,
-        timeRangeParams: TimeRangeParams?
+        timeRangeParams: TimeRangeParams?,
+        date: String? = null
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -789,7 +800,8 @@ class GameViewModel(
                         gameType,
                         matchType,
                         startTime = timeRangeParams?.startTime,
-                        endTime = timeRangeParams?.endTime
+                        endTime = timeRangeParams?.endTime,
+                        date = date
                     )
                 )
             }
@@ -836,19 +848,38 @@ class GameViewModel(
                 )
                 dateRow.add(
                     Date(
+                        androidContext.getString(R.string.date_row_live),
+                        object : TimeRangeParams {
+                            override val startTime: String?
+                                get() = null
+                            override val endTime: String?
+                                get() = null
+                        },
+                        MatchType.IN_PLAY.postValue
+                    )
+                )
+                dateRow.add(
+                    Date(
                         androidContext.getString(R.string.date_row_today),
-                        TimeUtil.getParlayTodayTimeRangeParams()
-
+                        TimeUtil.getParlayTodayTimeRangeParams(),
+                        MatchType.TODAY.postValue
                     )
                 )
                 TimeUtil.getFutureDate(6).forEach {
-                    dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
+                    dateRow.add(
+                        Date(
+                            it,
+                            TimeUtil.getDayDateTimeRangeParams(it),
+                            MatchType.EARLY.postValue
+                        )
+                    )
                 }
 
                 dateRow.add(
                     Date(
                         androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams()
+                        TimeUtil.getOtherEarlyDateTimeRangeParams(),
+                        MatchType.EARLY.postValue
                     )
                 )
             }
@@ -926,6 +957,42 @@ class GameViewModel(
 
     fun getOddsDetail(gameType: String?, typeName: String?, matchId: String?) {
         _curOddsDetailParams.postValue(listOf(gameType, typeName, matchId))
+    }
+
+    fun getOddsDetailLive(oddId: String?) {
+        var item: Item? = null
+        when (mathType) {
+            MatchType.IN_PLAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.TODAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.EARLY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.PARLAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+                    it.isSelected
+                }
+            }
+        }
+        _curOddsDetailLiveParams.postValue(listOf(item?.code, item?.name, oddId))
+    }
+
+    fun getOddsDetailLive(entity: GameEntity) {
+        _curOddsDetailLiveParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
     fun setOddsDetailMoreList(list: List<*>) {
@@ -1322,14 +1389,6 @@ class GameViewModel(
             else -> {
             }
         }
-    }
-
-    fun getGameCard(): MutableList<MatchInfo?> {
-        val matchOddList: MutableList<MatchInfo?> = mutableListOf()
-        gameCardList?.forEach {
-            matchOddList.add(it.matchInfo)
-        }
-        return matchOddList
     }
 
     fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {

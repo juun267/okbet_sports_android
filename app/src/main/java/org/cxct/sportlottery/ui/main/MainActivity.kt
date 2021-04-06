@@ -245,4 +245,9 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         val bundle = MainMoreFragmentArgs(cateCode ?: "", firmCode ?: "").toBundle()
         navController.navigate(R.id.mainMoreFragment, bundle)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        resetButton()
+    }
 }

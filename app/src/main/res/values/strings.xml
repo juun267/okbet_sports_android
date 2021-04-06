@@ -383,6 +383,7 @@
     <string name="date_row_league">赛事</string>
     <string name="date_row_other">其他早盘</string>
     <string name="date_row_all">所有赛事</string>
+    <string name="date_row_live">滚球赛事</string>
     <string name="date_row_today">今日赛事</string>
     <string name="outright_row_entrance">冠军盘口</string>
     <string name="ou_hdp_ou_title">大小</string>
@@ -528,6 +529,7 @@
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_wallet_address_empty">钱包地址为必填栏位</string>
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
+    <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>

@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
@@ -53,20 +54,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(
-                matchType,
-                item,
-                data as MutableList<MatchOdd>,
-                leagueOddListener,
-                isTimerEnable
-            )
-            is ViewHolder1x2 -> holder.bind(
-                matchType,
-                item,
-                data as MutableList<MatchOdd>,
-                leagueOddListener,
-                isTimerEnable
-            )
+            is ViewHolderHdpOu -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
+            is ViewHolder1x2 -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
         }
     }
 
@@ -81,19 +70,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(
-            matchType: MatchType,
-            item: MatchOdd,
-            gameCardList: MutableList<MatchOdd>,
-            leagueOddListener: LeagueOddListener?,
-            isTimerEnable: Boolean
-        ) {
+
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean) {
             setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item, gameCardList)
+                leagueOddListener?.onClickLive(item)
+            }
+
+            itemView.match_play_type_block.setOnClickListener {
+                leagueOddListener?.onClickLive(item)
             }
         }
 
@@ -142,6 +130,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 oddStatus = oddListHDP?.get(0)?.oddState
 
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        oddListHDP?.get(0)?.oddState = OddState.SAME.state
+                    }
+                }
+
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
                 } else {
@@ -178,6 +172,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 betStatus = oddListHDP?.get(1)?.status
 
                 oddStatus = oddListHDP?.get(1)?.oddState
+
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        oddListHDP?.get(1)?.oddState = OddState.SAME.state
+                    }
+                }
 
                 odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
                     ""
@@ -218,6 +218,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 oddStatus = oddListOU?.get(0)?.oddState
 
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        oddListOU?.get(0)?.oddState = OddState.SAME.state
+                    }
+                }
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
@@ -257,6 +263,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 oddStatus = oddListOU?.get(1)?.oddState
 
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        oddListOU?.get(1)?.oddState = OddState.SAME.state
+                    }
+                }
+
                 odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
                     ""
                 } else {
@@ -291,20 +303,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        
-        fun bind(
-            matchType: MatchType,
-            item: MatchOdd,
-            gameCardList: MutableList<MatchOdd>,
-            leagueOddListener: LeagueOddListener?,
-            isTimerEnable: Boolean
-        ) {
+        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean) {
             setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
 
             itemView.match_live_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item, gameCardList)
+                leagueOddListener?.onClickLive(item)
+            }
+
+            itemView.match_play_type_block_1x2.setOnClickListener {
+                leagueOddListener?.onClickLive(item)
             }
         }
 
@@ -352,6 +361,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 oddStatus = oddList1X2?.get(0)?.oddState
 
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        oddList1X2?.get(0)?.oddState = OddState.SAME.state
+                    }
+                }
+
                 odd_1x2_top_text.text = "1"
 
                 odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 2) {
@@ -394,6 +409,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddList1X2[1]?.oddState
                 } else {
                     null
+                }
+
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        if (oddList1X2 != null && oddList1X2.size >= 3) {
+                            oddList1X2[1]?.oddState = OddState.SAME.state
+                        }
+                    }
                 }
 
                 odd_1x2_top_text.text = "X"
@@ -444,6 +467,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddList1X2[2]?.oddState
                 } else {
                     null
+                }
+
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        if (oddList1X2 != null && oddList1X2.size == 2) {
+                            oddList1X2[1]?.oddState = OddState.SAME.state
+                        } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                            oddList1X2[2]?.oddState = OddState.SAME.state
+                        }
+                    }
                 }
 
                 odd_1x2_top_text.text = "2"
@@ -525,11 +558,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 }
 
 class LeagueOddListener(
-    val clickListenerLive: (item: MatchOdd, gameCardList: MutableList<MatchOdd>) -> Unit,
+
+    val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
-    fun onClickLive(item: MatchOdd, gameCardList: MutableList<MatchOdd>) =
-        clickListenerLive(item, gameCardList)
+    fun onClickLive(item: MatchOdd) =
+        clickListenerLive(item)
 
     fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         clickListenerBet(matchOdd, oddString, odd)

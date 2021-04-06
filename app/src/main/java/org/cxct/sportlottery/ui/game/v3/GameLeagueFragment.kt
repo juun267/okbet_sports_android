@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -46,7 +47,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val leagueAdapter by lazy {
         LeagueAdapter(matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ,_ ->
+                { matchOdd ->
                     //TODO open live and play type page
                     viewModel.getOddsDetail(matchOdd.matchInfo?.id)
                 },
@@ -176,6 +177,62 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initSocketReceiver() {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+            it?.let { matchStatusChangeEvent ->
+                if (matchType == MatchType.IN_PLAY) {
+
+                    matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+                        matchStatusCO.matchId?.let { matchId ->
+
+                            val leagueOdds = leagueAdapter.data
+
+                            leagueOdds.forEach { leagueOdd ->
+                                if (leagueOdd.isExpand) {
+
+                                    val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                        matchOdd.matchInfo?.id == matchId
+                                    }
+
+                                    updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
+                                    updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
+                                    updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
+            it?.let { matchClockEvent ->
+                if (matchType == MatchType.IN_PLAY) {
+
+                    matchClockEvent.matchClockCO?.let { matchClockCO ->
+                        matchClockCO.matchId.let { matchId ->
+
+                            val leagueOdds = leagueAdapter.data
+
+                            leagueOdds.forEach { leagueOdd ->
+                                if (leagueOdd.isExpand) {
+
+                                    val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                        matchOdd.matchInfo?.id == matchId
+                                    }
+
+                                    updateMatchOdd?.leagueTime = matchClockCO.matchTime
+
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
@@ -237,6 +294,58 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, Observer {
+            it?.let { globalStopEvent ->
+
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { odds ->
+                            odds.forEach { odd ->
+                                when (globalStopEvent.producerId) {
+                                    null -> {
+                                        odd?.status = BetStatus.DEACTIVATED.code
+                                    }
+                                    else -> {
+                                        odd?.producerId?.let { producerId ->
+                                            if (producerId == globalStopEvent.producerId) {
+                                                odd.status = BetStatus.DEACTIVATED.code
+                                            }
+                                        }
+                                    }
+                                }
+
+                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                            }
+                        }
+
+                    }
+                }
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
+            it?.let { _ ->
+                service.unsubscribeAllHallChannel()
+
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEach { leagueOdd ->
+                    if (leagueOdd.isExpand) {
+
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun backEvent() {
@@ -269,19 +378,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        game_league_odd_list.adapter = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
-        leagueAdapter.data.forEach {
-            if (it.isExpand) {
-                it.matchOdds.forEach { matchOdd ->
-                    service.unsubscribeHallChannel(
-                        sportType,
-                        CateMenuCode.HDP_AND_OU.code,
-                        matchOdd.matchInfo?.id
-                    )
-                }
-            }
-        }
+        service.unsubscribeAllHallChannel()
     }
 }
