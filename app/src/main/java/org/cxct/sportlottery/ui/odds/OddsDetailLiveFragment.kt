@@ -119,13 +119,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setWebView() {
-        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:","")}")
+        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}")
     }
 
     private fun initRecyclerView() {
         rv_game_card.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter = OddsGameCardAdapter(this@OddsDetailLiveFragment.matchId,OddsGameCardAdapter.ItemClickListener {
+        oddsGameCardAdapter = OddsGameCardAdapter(this@OddsDetailLiveFragment.matchId, OddsGameCardAdapter.ItemClickListener {
             it.let {
                 this@OddsDetailLiveFragment.matchId = it.id
                 getData()
@@ -248,7 +248,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             hideLoading()
             unsubscribeAllHallChannel()
 
-            var sport =""
+            var sport = ""
             it.peekContent()?.let { oddsListResult ->
                 if (oddsListResult.success) {
                     oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
@@ -262,8 +262,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
 
             //訂閱所有賽事
-            matchOddList.forEach { matchOddList->
-                subscribeHallChannel(sport,matchOddList?.id)
+            matchOddList.forEach { matchOddList ->
+                subscribeHallChannel(sport, matchOddList?.id)
             }
         })
     }
@@ -283,9 +283,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
 
         matchId?.let { matchId ->
-            oddsType?.let { oddsType ->
-                viewModel.getOddsDetail(matchId, oddsType)
-            }
+            viewModel.getOddsDetailByMatchId(matchId)
         }
     }
 

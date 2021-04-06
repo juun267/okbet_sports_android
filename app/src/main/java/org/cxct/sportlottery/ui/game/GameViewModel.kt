@@ -1242,10 +1242,10 @@ class GameViewModel(
         }
     }
 
-    fun getOddsDetail(matchId: String, oddsType: String) {
+    fun getOddsDetailByMatchId(matchId: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId, oddsType))
+                OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
             }
             _oddsDetailResult.postValue(result)
             result?.success?.let {
