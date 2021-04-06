@@ -92,7 +92,7 @@ class MatchOddAdapter : RecyclerView.Adapter<MatchOddAdapter.ViewHolder>() {
                     setupMatchOddOuHdp(item, matchOddListener)
                 }
                 PlayType.X12 -> {
-                    setupMatchOdd1x2(item, matchOddListener) //TODO Dean : review
+                    setupMatchOdd1x2(item, matchOddListener)
                 }
                 else -> {
                 }
