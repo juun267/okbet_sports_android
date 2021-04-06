@@ -11,6 +11,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
@@ -27,6 +28,9 @@ import java.util.concurrent.TimeUnit
 class BackService : Service() {
     companion object {
         const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
+        const val CHANNEL_KEY = "channel"
+        const val SERVER_MESSAGE_KEY = "serverMessage"
+        const val CONNECT_STATUS = "connectStatus"
 
         private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getBaseUrl()}/api/ws/app/im" //app连接端点,无sockjs
         const val URL_ALL = "/ws/notify/all" //全体公共频道
@@ -50,6 +54,8 @@ class BackService : Service() {
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
+    private var errorFlag = false // Stomp connect錯誤
+    private var reconnectionNum = 0//重新連接次數
 
     inner class MyBinder : Binder() {
         val service: BackService
@@ -106,14 +112,22 @@ class BackService : Service() {
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("Stomp connection closed")
                                     resetSubscriptions()
+                                    reconnectionNum++
+                                    if (errorFlag && reconnectionNum < 5){
+                                        Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
+                                        reconnect()
+                                    }else{
+                                        sendConnectStatusToActivity(ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT)
+                                    }
                                 }
                                 LifecycleEvent.Type.ERROR -> {
+                                    errorFlag = true
                                     Timber.e("Stomp connection error ==> ${lifecycleEvent.exception}")
-                                    reconnect()
+//                                    reconnect()
                                 }
                                 LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
                                     Timber.d("Stomp connection failed server heartbeat")
-                                    reconnect()
+//                                    reconnect()
                                 }
                                 null -> Timber.e("Stomp connection failed")
                             }
@@ -170,10 +184,20 @@ class BackService : Service() {
 
     private fun sendMessageToActivity(channel: String, message: String) {
         val bundle = Bundle()
-        bundle.putString("channel", channel)
-        bundle.putString("serverMessage", setJObjToJArray(message))
+        bundle.putString(CHANNEL_KEY, channel)
+        bundle.putString(SERVER_MESSAGE_KEY, setJObjToJArray(message))
         val intent = Intent(SERVICE_SEND_DATA)
         intent.putExtras(bundle)
+        sendBroadcast(intent)
+    }
+
+    private fun sendConnectStatusToActivity(connectStatus: ServiceConnectStatus) {
+        val bundle = Bundle().apply {
+            putSerializable(CONNECT_STATUS, connectStatus)
+        }
+        val intent = Intent(SERVICE_SEND_DATA).apply {
+            putExtras(bundle)
+        }
         sendBroadcast(intent)
     }
 
