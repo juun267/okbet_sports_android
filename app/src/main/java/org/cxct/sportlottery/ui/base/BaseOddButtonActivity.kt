@@ -3,8 +3,6 @@ package org.cxct.sportlottery.ui.base
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,7 +95,6 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
 
     private fun setupOddButton() {
         if (floatButtonView != null) {
-            Log.e("[kevin]", "floatButtonView != null")
             getPositionX()?.let { it -> ll_bet_float_button?.x = it }
             getPositionY()?.let { it -> ll_bet_float_button?.y = it }
             return
@@ -118,8 +115,6 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                         savePositionXY(x, y)
                     }
                     post {
-                        Log.e("[kevin]", "${getPositionX()}")
-                        Log.e("[kevin]", "${getPositionY()}")
                         getPositionX()?.let { it -> x = it }
                         getPositionY()?.let { it -> y = it }
                         savePositionXY(x, y)
