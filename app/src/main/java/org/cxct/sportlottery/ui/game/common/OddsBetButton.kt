@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Handler
 import android.util.AttributeSet
 import android.view.View
@@ -11,7 +10,6 @@ import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
-import org.cxct.sportlottery.ui.game.odds.MatchOddAdapter
 import java.lang.Exception
 
 const val O_TYPE = 0
