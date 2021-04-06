@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
 import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.MetricsUtil
 
@@ -42,7 +43,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private var mCloseOddsDetail = true
 
-    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT }
+    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT, ODDS_DETAIL_LIVE}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -281,6 +282,20 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             addFragment(
                 OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
                 Page.ODDS_DETAIL
+            )
+        })
+
+        viewModel.curOddsDetailLiveParams.observe(this, Observer {
+            val gameType = it[0]
+            val typeName = it[1]
+            val matchId = it[2] ?: ""
+            val oddsType = "EU"
+
+            app_bar_layout.setExpanded(true, true)
+
+            addFragment(
+                OddsDetailLiveFragment.newInstance(gameType, typeName, matchId, oddsType),
+                Page.ODDS_DETAIL_LIVE
             )
         })
 

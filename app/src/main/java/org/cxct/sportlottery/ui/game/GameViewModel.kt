@@ -117,6 +117,9 @@ class GameViewModel(
     val curOddsDetailParams: LiveData<List<String?>>
         get() = _curOddsDetailParams
 
+    val curOddsDetailLiveParams: LiveData<List<String?>>
+        get() = _curOddsDetailLiveParams
+
     val matchTypeCardForParlay: LiveData<MatchType>
         get() = _matchTypeCardForParlay
 
@@ -134,6 +137,7 @@ class GameViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _oddsListGameHallLiveResult = MutableLiveData<OddsListResult?>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
@@ -150,6 +154,7 @@ class GameViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curDatePosition = MutableLiveData<Int>()
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
+    private val _curOddsDetailLiveParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
@@ -223,9 +228,7 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
-
-    var gameCardList: MutableList<MatchOdd>? = null
-
+    
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
 
@@ -664,6 +667,7 @@ class GameViewModel(
 
         if (mathType == MatchType.IN_PLAY) {
             _oddsListGameHallResult.value = Event(result)
+            _oddsListGameHallLiveResult.value = result
         } else {
             _oddsListResult.value = Event(result)
         }
@@ -733,7 +737,7 @@ class GameViewModel(
         _oddsListGameHallResult.postValue(Event(result))
     }
 
-    private fun getOddsList(
+    fun getOddsList(
         gameType: String,
         matchType: String,
         timeRangeParams: TimeRangeParams? = null,
@@ -953,6 +957,42 @@ class GameViewModel(
 
     fun getOddsDetail(gameType: String?, typeName: String?, matchId: String?) {
         _curOddsDetailParams.postValue(listOf(gameType, typeName, matchId))
+    }
+
+    fun getOddsDetailLive(oddId: String?) {
+        var item: Item? = null
+        when (mathType) {
+            MatchType.IN_PLAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.TODAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.EARLY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.PARLAY -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
+                    it.isSelected
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                item = _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
+                    it.isSelected
+                }
+            }
+        }
+        _curOddsDetailLiveParams.postValue(listOf(item?.code, item?.name, oddId))
+    }
+
+    fun getOddsDetailLive(entity: GameEntity) {
+        _curOddsDetailLiveParams.postValue(listOf(entity.code, entity.name, entity.match?.id))
     }
 
     fun setOddsDetailMoreList(list: List<*>) {
@@ -1349,14 +1389,6 @@ class GameViewModel(
             else -> {
             }
         }
-    }
-
-    fun getGameCard(): MutableList<MatchInfo?> {
-        val matchOddList: MutableList<MatchInfo?> = mutableListOf()
-        gameCardList?.forEach {
-            matchOddList.add(it.matchInfo)
-        }
-        return matchOddList
     }
 
     fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
