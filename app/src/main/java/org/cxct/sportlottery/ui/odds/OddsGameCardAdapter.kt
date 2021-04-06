@@ -123,16 +123,16 @@ class OddsGameCardAdapter(
                     }
                     "FT" -> {
                         itemView.txv_time.text =
-                            TimeUtil.timeFormat(matchClockCO.matchTime * 1000L, "mm:ss")
+                            TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
 
                         timer = Timer()
                         timer?.schedule(object : TimerTask() {
                             override fun run() {
                                 Handler(Looper.getMainLooper()).post {
-                                    matchClockCO.matchTime += 1
+                                    matchClockCO.matchTime = matchClockCO.matchTime?.plus(1)
                                     itemView.txv_time.text =
                                         TimeUtil.timeFormat(
-                                            matchClockCO.matchTime * 1000L,
+                                            matchClockCO.matchTime?.times(1000L),
                                             "mm:ss"
                                         )
                                 }

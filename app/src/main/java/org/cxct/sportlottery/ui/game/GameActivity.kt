@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.game.v3.GameOutrightFragment
 import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
@@ -72,7 +73,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
             viewModel.setGoToThirdGamePage(ThirdGameCategory.MAIN)
-            finish()
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         //頭像 當 側邊欄 開/關

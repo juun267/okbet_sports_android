@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -180,6 +181,37 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 }
             }
         })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, Observer {
+            it?.let { globalStopEvent ->
+
+                val odds = outrightOddAdapter.data.filterIsInstance<Odd>()
+
+                odds.forEach { odd ->
+                    when (globalStopEvent.producerId) {
+                        null -> {
+                            odd.status = BetStatus.DEACTIVATED.code
+                        }
+                        else -> {
+                            odd.producerId?.let { producerId ->
+                                if (producerId == globalStopEvent.producerId) {
+                                    odd.status = BetStatus.DEACTIVATED.code
+                                }
+                            }
+                        }
+                    }
+
+                    outrightOddAdapter.notifyItemChanged(odds.indexOf(odd))
+                }
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
+            it?.let { _ ->
+                service.unsubscribeAllHallChannel()
+                service.subscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+            }
+        })
     }
 
     private fun backEvent() {
@@ -215,6 +247,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onDestroy() {
         super.onDestroy()
 
-        service.unsubscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+        service.unsubscribeAllHallChannel()
     }
 }

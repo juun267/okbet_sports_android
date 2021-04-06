@@ -73,8 +73,8 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
             }
         }
 
-        viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) {
-            it?.apply {
+        viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) { result ->
+            result?.getContentIfNotHandled()?.let {
                 showPromptDialog(
                     title = getString(R.string.prompt),
                     message = it.msg,

@@ -103,6 +103,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val timer = it.value
             timer?.cancel()
         }
+        mTimerMap.clear()
     }
 
     inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -125,7 +126,17 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 team2.text = data.match?.awayName
 
                 tv_session.text = data.matchStatusCO?.statusName
-                updateTime(data.matchClockCO?.matchTime)
+
+                when (data.code) {
+                    "FT" -> { //足球
+                        showTime(data.matchClockCO?.matchTime)
+                        startFTTimer(data.matchClockCO)
+                    }
+                    "BK" -> { //籃球
+                        showTime(data.matchClockCO?.remainingTimeInPeriod)
+                        startBKTimer(data.matchClockCO)
+                    }
+                }
 
                 if (data.itemType == ItemType.FOOTER) {
                     line_item.visibility = View.GONE
@@ -151,26 +162,40 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        private fun updateTime(matchTime: Int?) {
+        private fun showTime(sec: Int?) {
+            itemView.tv_time.text = if (sec == null)
+                null
+            else
+                TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+        }
+
+        private fun startFTTimer(matchClockCO: MatchClockCO?) {
+            //足球每秒時間往上加
+            startTimer {
+                matchClockCO?.matchTime = matchClockCO?.matchTime?.let { it + 1 }
+                showTime(matchClockCO?.matchTime)
+            }
+        }
+
+        private fun startBKTimer(matchClockCO: MatchClockCO?) {
+            //籃球每秒時間倒數
+            startTimer {
+                matchClockCO?.remainingTimeInPeriod = matchClockCO?.remainingTimeInPeriod?.let { it - 1 }
+                showTime(matchClockCO?.remainingTimeInPeriod)
+            }
+        }
+
+        private fun startTimer(timerTask: () -> Unit) {
             mTimerMap[adapterPosition]?.cancel()
             stopTimer()
-            if (matchTime == null) {
-                itemView.tv_time.text = null
-            } else {
-                var timeMillis = matchTime * 1000L
-                itemView.tv_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-
-                timer = Timer()
-                timer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        Handler(Looper.getMainLooper()).post {
-                            timeMillis += 1000
-                            itemView.tv_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-                        }
+            timer = Timer()
+            timer?.schedule(object : TimerTask() {
+                override fun run() {
+                    Handler(Looper.getMainLooper()).post {
+                        timerTask()
                     }
-                }, 1000L, 1000L)
-            }
-
+                }
+            }, 1000L, 1000L)
             mTimerMap[adapterPosition] = timer
         }
 
