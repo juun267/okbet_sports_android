@@ -1020,9 +1020,10 @@ class GameViewModel(
             it.odds.forEach { map ->
                 val value = map.value
                 value.forEach { odd ->
-                    val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
+                    val newOdd = Odd(
                         odd.id,
                         odd.odds,
+                        odd.hkOdds,
                         odd.producerId,
                         odd.spread,
                         odd.status,
@@ -1090,9 +1091,10 @@ class GameViewModel(
                 val value = map.value
                 value.odds?.forEach { odd ->
                     val newOdd = odd?.status?.let { status ->
-                        org.cxct.sportlottery.network.odds.list.Odd(
+                        Odd(
                             odd.id,
                             odd.odds,
+                            odd.hkOdds,
                             odd.producerId,
                             odd.spread,
                             status
