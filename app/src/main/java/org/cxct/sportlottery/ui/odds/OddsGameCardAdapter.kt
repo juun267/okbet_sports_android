@@ -14,7 +14,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
-import timber.log.Timber
 import java.util.*
 
 class OddsGameCardAdapter(
@@ -32,15 +31,6 @@ class OddsGameCardAdapter(
             notifyDataSetChanged()
             socketDataList = MutableList(data.size) { MatchClockCO(0, "", "", 0, 0, 0, 0, 0, 0, 0) }
         }
-//    private var mDateSelectedList: MutableList<Boolean> = mutableListOf()
-//    var mDateList: MutableList<String> = mutableListOf()
-//        set(value) {
-//            field = value
-//            mDateSelectedList = MutableList(mDateList.size) { false }
-//            mDateSelectedList[0] = true
-//            notifyDataSetChanged()
-//        }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -50,7 +40,6 @@ class OddsGameCardAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Timber.v("Bill==>,onBindViewHolder:${mTimerMap.size}")
         val item = data[position]
         item?.let { holder.bind(it, position) }
         holder.itemView.isSelected = mSelectedPosition == position
@@ -64,7 +53,6 @@ class OddsGameCardAdapter(
                 stopAllTimer()
                 mTimerMap = mutableMapOf()
                 notifyDataSetChanged()
-                Timber.e("Bill==>,清除後的:${mTimerMap.size}")
 
                 item?.let { it -> clickListener.onClick(it) }
             }
@@ -93,86 +81,20 @@ class OddsGameCardAdapter(
             awayScore.text = (item.awayScore ?: 0).toString()
             awayName.text = item.awayName
 
-//            if(item.startTime.isNotEmpty()&& item.endTime?.isNotEmpty() == true){
-//                footBasketballTime(item.startTime.toLong(),item.startTime.toLong(),position)
-//            }else if(item.startTime.isNotEmpty()){
-//                footBallTime(item.startTime.toLong(),position)
-//            }else{
-//                itemView.txv_time.text =""
-//            }
-
             setTimer(position, socketDataList[position])
 
-        }
-
-        //足球 累積時間
-        private fun footBallTime(starTime: Long?, position: Int) {
-            mTimerMap[position]?.cancel()
-            mTimerMap[position] = null
-            stopTimer()
-
-            val currentTime = System.currentTimeMillis()
-            if (starTime == null) {
-                txvTime.text = null
-            } else {
-                var timeMillis = (currentTime - starTime) * 1000L
-                Timber.d("Bill==>,position:${position}   starTime:${starTime}  timeMillis:${timeMillis} ")
-
-                itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-
-                timer = Timer()
-                timer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        Handler(Looper.getMainLooper()).post {
-                            timeMillis += 1000
-                            itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-                        }
-                    }
-                }, 1000L, 1000L)
-            }
-
-            mTimerMap[position] = timer
-        }
-
-        //籃球 倒數時間
-        private fun footBasketballTime(starTime: Long?, endTime: Long?, position: Int) {
-            mTimerMap[position]?.cancel()
-            mTimerMap[position] = null
-            itemView.txv_time.text = ""
-            stopTimer()
-
-            if (starTime == null || endTime == null) {
-                txvTime.text = null
-            } else {
-                var timeMillis = (endTime.minus(starTime)).times(1000L)
-                Timber.d("Bill==>,position:${position}   starTime:${starTime}    endTime:${endTime}    timeMillis:${timeMillis} ")
-                itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-
-                timer = Timer()
-                timer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        Handler(Looper.getMainLooper()).post {
-                            timeMillis = timeMillis.minus(1000)
-                            itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-                        }
-                    }
-                }, 1000L, 1000L)
-            }
-
-            mTimerMap[position] = timer
         }
 
         fun stopTimer() {
             timer?.cancel()
         }
 
-        //TODO Bill Test
-        fun setTimer(position: Int, matchClockCO: MatchClockCO?) {
+        private fun setTimer(position: Int, matchClockCO: MatchClockCO?) {
             mTimerMap[position]?.cancel()
             mTimerMap[position] = null
             stopTimer()
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
-                when (matchClockCO?.gameType) {
+                when (matchClockCO.gameType) {
                     "BK" -> {
                         if (matchClockCO.stoppageTime == null) {
                             itemView.txv_time.text = null
@@ -213,10 +135,6 @@ class OddsGameCardAdapter(
                                             matchClockCO.matchTime * 1000L,
                                             "mm:ss"
                                         )
-                                    Timber.d("Bill==>足球,position:${position}   matchClockCO.matchTime:${matchClockCO.matchTime} 顯示:${TimeUtil.timeFormat(
-                                        matchClockCO.matchTime * 1000L,
-                                        "mm:ss"
-                                    )} ")
                                 }
                             }
                         }, 1000L, 1000L)
@@ -233,7 +151,7 @@ class OddsGameCardAdapter(
         }
     }
 
-    fun stopAllTimer() {
+    private fun stopAllTimer() {
         mTimerMap.forEach {
             val timer = it.value
             timer?.cancel()

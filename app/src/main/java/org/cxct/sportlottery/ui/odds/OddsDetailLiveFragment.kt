@@ -35,7 +35,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
-import timber.log.Timber
 
 @Suppress("DEPRECATION")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
@@ -168,15 +167,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
 
-        //TODO Bill
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
             oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
-            Timber.e("訂閱:比分:matchStatusCO:${it?.matchStatusCO}")
         })
 
         receiver.matchClock.observe(viewLifecycleOwner, Observer {
             oddsGameCardAdapter?.updateGameCard(it?.matchClockCO)
-            Timber.i("訂閱:時間:matchClockCO:${it?.matchClockCO}")
         })
     }
 
@@ -266,11 +262,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
 
             //訂閱所有賽事
-            Timber.d("訂閱:matchOddList:${matchOddList}")
-
             matchOddList.forEach { matchOddList->
                 subscribeHallChannel(sport,matchOddList?.id)
-                Timber.v("訂閱:${sport} ,matchId:${matchOddList?.id}")
             }
         })
     }
