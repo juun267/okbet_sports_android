@@ -67,7 +67,6 @@ class TypeOneListAdapter(
         fun bindModel(originOdd: Odd) {
             setData(originOdd, onOddClickListener, betInfoList, curMatchId,
                 if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM
-//                BUTTON_SPREAD_TYPE_CENTER
             )
         }
     }
