@@ -16,8 +16,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
@@ -74,12 +72,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     fun setArguments(moneyPayWay: MoneyPayWayData?): CryptoPayFragment {
         mMoneyPayWay = moneyPayWay
-        Timber.i(
-            "CryptoPayFragment>>>>>>公告彈窗:${
-                Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-                    .adapter(MoneyPayWayData::class.java).toJson(mMoneyPayWay)
-            }"
-        )
         return this
     }
 
@@ -152,6 +144,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         getMoney()
         updateMoneyRange()
         refreshCurrencyType(0)
+
+        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0")
     }
 
     @SuppressLint("SetTextI18n")
@@ -240,9 +234,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         clearFocus()
         et_recharge_account.setText("")
         et_transaction_id.setText("")
-//        et_name.setText("")
-//        et_bank_account.setText("")
-//        et_nickname.setText("")
         refreshCurrencyType(0)
 
         //清空圖片
@@ -255,14 +246,12 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //幣種選項
     private fun initBottomSheet() {
-        //支付類型的入款帳號清單
         rechCfgsList = (viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType
         } ?: mutableListOf()) as MutableList<MoneyRechCfg.RechConfig>
 
         //幣種
         if (mMoneyPayWay?.rechType == "cryptoPay") {
-            //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
                 val selectCurrency = CustomImageAdapter.SelectBank(
                     it.prodName.toString(),
@@ -337,12 +326,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs?.rebateFee ?: 0.0).toString()) + "%"
             }
 
-            //手續費率//TODO Bill
-//        tv_fee_rate.text = String.format(
-//            getString(R.string.hint_fee_rate),
-//            abs(selectRechCfgs?.rebateFee ?: 1 * 100.toDouble())
-//        )
-
             //充幣地址
             txv_payee.text = selectRechCfgs?.payee
 
@@ -382,49 +365,26 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     //充值金額
                     tv_recharge_money.text = String.format(
                         resources.getString(R.string.txv_recharge_money),
-                        it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
+                        it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
                     )
                     //返利/手續費金額
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
                         tv_fee_amount.text =
                             String.format(getString(R.string.hint_feeback_amount), (it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
                     } else {
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), abs(it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
                     }
                 }
             }
-//            //微信
-//            et_wx_id.afterTextChanged { checkWX(it) }
-//            //認證姓名
-//            et_name.afterTextChanged { checkUserName(it) }
-//            //認證銀行卡號
-//            et_bank_account.afterTextChanged { checkBankID(it) }
-//            //暱稱
-//            et_nickname.afterTextChanged { checkNickName(it) }
-//            et_recharge_account.afterTextChanged {
-//                if (mSelectRechCfgs?.exchangeRate !== 0.0 && mSelectRechCfgs?.exchangeRate !== null && et_recharge_account.isNotEmpty()) {
-//                    tv_recharge_money.text = String.format(
-//                        getString(R.string.hint_fee_amount),
-//                        "${(et_recharge_account.getText().toDouble()) * (mSelectRechCfgs?.exchangeRate ?: 1.0)}"
-//                    )
-//                }
-//            }
         }
     }
 
     private fun setupFocusEvent() {
         viewModel.apply {
-            //充值金額
+            //充值個數
             setupEditTextFocusEvent(et_recharge_account) { checkRechargeAccount(it, mSelectRechCfgs) }
-//            //微信
-//            setupEditTextFocusEvent(et_wx_id) { checkWX(it) }
-//            //認證姓名
-//            setupEditTextFocusEvent(et_name) { checkUserName(it) }
-//            //認證銀行卡號
-//            setupEditTextFocusEvent(et_bank_account) { checkBankID(it) }
-//            //暱稱
-//            setupEditTextFocusEvent(et_nickname) { checkNickName(it) }
-
+            //區塊鏈交易ID
+            setupEditTextFocusEvent(et_transaction_id) { checkHashCode(et_transaction_id.getText()) }
         }
     }
 

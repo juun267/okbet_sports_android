@@ -211,6 +211,25 @@ class MoneyRechViewModel(
         }
     }
 
+    //在線支付 - 虛擬幣 //TODO Bill 確認API參數
+    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, payee: String?,payeeName: String?) {
+        checkRcgOnlineAmount(depositMoney.toString(), mSelectRechCfgs)
+        if (onlinePayInput()) {
+            var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
+            val queryMap = hashMapOf(
+                "x-session-token" to (loginRepository.token ?: ""),
+                "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
+                "payee" to (payee ?: ""),
+                "payeeName" to (payee ?: ""),
+                "depositMoney" to depositMoney.toString()
+            )
+            url += toUrlParamsFormat(queryMap)
+            toExternalWeb(context, url)
+
+            _onlinePaySubmit.value = depositMoney.toLong() //金額帶入result
+        }
+    }
+
     //轉帳支付 - 送出前判斷全部
     private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         when (rechType) {

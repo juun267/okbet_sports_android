@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite1"
     android:overScrollMode="never"
-    tools:context=".ui.money.recharge.TransferPayFragment">
+    tools:context=".ui.money.recharge.CryptoPayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -326,7 +326,7 @@
                             android:id="@+id/btn_qr_copy"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="76dp"
-                            android:layout_height="26dp"
+                            android:layout_height="28dp"
                             android:layout_marginEnd="12dp"
                             android:background="@drawable/bg_3dp_radius_button"
                             android:gravity="center"
@@ -336,9 +336,8 @@
 
                         <Button
                             android:id="@+id/btn_qr_recharge"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="84dp"
-                            android:layout_height="30dp"
+                            android:layout_width="76dp"
+                            android:layout_height="28dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="20dp"
                             android:background="@drawable/bg_frame_4dp_blue"

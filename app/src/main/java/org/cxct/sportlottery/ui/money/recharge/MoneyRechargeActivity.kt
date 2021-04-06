@@ -194,7 +194,12 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
 
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment {
         return when (moneyPayWay.rechType) {
-            "onlinePayment" -> OnlinePayFragment().setArguments(moneyPayWay)
+            "onlinePayment" -> {
+               return if (moneyPayWay.onlineType == 11)
+                    OnlineCryptoPayFragment().setArguments(moneyPayWay)
+                else
+                    OnlinePayFragment().setArguments(moneyPayWay)
+            }
             "cryptoPay"->CryptoPayFragment().setArguments(moneyPayWay)
             else -> {
                 TransferPayFragment().setArguments(moneyPayWay)
