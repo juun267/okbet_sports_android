@@ -316,8 +316,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
-                    game_list.adapter = leagueAdapter.apply {
-                        data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                    val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+
+                    game_list.apply {
+                        adapter = leagueAdapter.apply {
+                            data = leagueOdds
+                        }
+
+                        if (leagueOdds.isEmpty()) {
+                            removeItemDecorationAt(0)
+                        }
                     }
                 }
             }
