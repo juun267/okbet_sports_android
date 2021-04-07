@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
@@ -41,7 +42,7 @@ class ProfileCenterViewModel(
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
-    val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
+    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
     fun getMoney() {
         viewModelScope.launch {
