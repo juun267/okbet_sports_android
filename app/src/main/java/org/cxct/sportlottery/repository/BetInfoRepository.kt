@@ -26,6 +26,9 @@ class BetInfoRepository {
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
 
+    private val _removeItem = MutableLiveData<String>()
+    val removeItem: LiveData<String>
+        get() = _removeItem
 
     var betList: MutableList<BetInfoListData> = mutableListOf()
     var matchOddList: MutableList<MatchOdd> = mutableListOf()
@@ -86,9 +89,9 @@ class BetInfoRepository {
 
 
     fun removeItem(oddId: String?) {
-        betList.remove(betList.find {
-            it.matchOdd.oddsId == oddId
-        })
+        val item = betList.find { it.matchOdd.oddsId == oddId }
+        betList.remove(item)
+        _removeItem.postValue(item?.matchOdd?.matchId)
         _betInfoList.postValue(betList)
     }
 

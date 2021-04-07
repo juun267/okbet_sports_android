@@ -20,8 +20,10 @@ import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
+
 
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     BetInfoListAdapter.OnItemClickListener {
@@ -34,6 +36,9 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private var deletePosition: Int = -1
+
+
+    private var isSubScribe = false
 
 
     init {
@@ -86,15 +91,25 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             it?.let { money -> setMoney(money) }
         })
 
-        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
             if (it.size == 0) {
                 dismiss()
             } else {
+                if (!isSubScribe) {
+                    isSubScribe = true
+                    it.forEach { betInfoListData ->
+                        service.subscribeEventChannel(betInfoListData.matchOdd.matchId)
+                    }
+                }
                 betInfoListAdapter.modify(it, deletePosition)
             }
         })
 
-        viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
+            service.unsubscribeEventChannel(it)
+        })
+
+        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 showPromptDialog(
                     title = getString(R.string.prompt),
@@ -105,7 +120,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             }
         })
 
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this, {
             betInfoListAdapter.isNeedRegister =
                 (it == null) || (it.testFlag == TestFlag.GUEST.index)
         })
@@ -116,31 +131,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         receiver.userMoney.observe(viewLifecycleOwner, {
             it?.let { money -> setMoney(money) }
-        })
-
-        receiver.oddsChange.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                mutableListOf()
-            it.odds.forEach { map ->
-                val value = map.value
-                value.forEach { odd ->
-                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
-                        null,
-                        odd.id,
-                        null,
-                        odd.odds,
-                        odd.hkOdds,
-                        odd.producerId,
-                        odd.spread,
-                        odd.status,
-                    )
-                    newOdd.isSelect = odd.isSelected
-                    newOdd.oddState = odd.oddState
-                    newList.add(newOdd)
-                }
-            }
-            betInfoListAdapter.updatedBetInfoList = newList
         })
 
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
@@ -170,11 +160,16 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         receiver.producerUp.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
+
+            //0331 取消全部訂閱
+            service.unsubscribeAllEventChannel()
+
             val list = betInfoListAdapter.betInfoList
             list.forEach { listData ->
-                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
-                    listData.matchOdd.status = BetStatus.ACTIVATED.code
-                }
+
+                //0331 重新訂閱所以項目
+                service.subscribeEventChannel(listData.matchOdd.matchId)
+
             }
             betInfoListAdapter.betInfoList = list
         })
@@ -184,6 +179,16 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
     private fun getMoney() {
         viewModel.getMoney()
+    }
+
+
+    private fun getSubscribingInOddsDetail(): String? {
+        var matchId: String? = null
+        val oddsDetail = parentFragmentManager.findFragmentByTag(GameActivity.Page.ODDS_DETAIL.name)
+        if (oddsDetail?.isAdded == true) {
+            matchId = (oddsDetail as OddsDetailFragment).matchId
+        }
+        return matchId
     }
 
 
@@ -227,6 +232,15 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
     override fun onRegisterClick() {
         context?.startActivity(Intent(context, RegisterActivity::class.java))
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        service.unsubscribeAllEventChannel()
+        getSubscribingInOddsDetail()?.let {
+            service.subscribeEventChannel(it)
+        }
     }
 
 
