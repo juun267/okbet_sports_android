@@ -16,9 +16,7 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity

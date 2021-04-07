@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="view"
+            type="org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment" />
+
+        <variable
+            name="gameViewModel"
+            type="org.cxct.sportlottery.ui.game.GameViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite1"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_back"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_semicircle"
+                    android:onClick="@{() -> view.back()}"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:src="@drawable/ic_arrow_left_game_back" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_game_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    tools:context="com.example.recyclerview_demo.dataAdapter.dataAdapter"
+                    tools:itemCount="5"
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/content_odds_detail_game_card"
+                    tools:orientation="horizontal" />
+
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                android:overScrollMode="never"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srlDragRate="0.3"
+                app:srlEnableLoadMore="true"
+                app:srlEnablePureScrollMode="true">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:clipToPadding="false"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:overScrollMode="never"
+                    tools:listitem="@layout/content_odds_detail_list_item" />
+
+            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

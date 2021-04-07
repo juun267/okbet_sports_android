@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/list_no_record_img"
-        android:layout_width="190dp"
-        android:layout_height="125dp"
+        android:layout_width="130dp"
+        android:layout_height="84dp"
         android:src="@drawable/ic_img_no_record"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
