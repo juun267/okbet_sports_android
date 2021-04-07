@@ -312,17 +312,24 @@ class WithdrawViewModel(
     }
 
     fun getMoneyConfigs() {
+        getMoney()
         viewModelScope.launch {
             loading()
             doNetwork(androidContext) {
-                moneyRepository.getRechCfg()
-            }?.let { result ->
-                result.rechCfg?.let {
-                    uwBankType = it.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
-                    _rechargeConfigs.value = it
-                    getWithdrawCardList()
+                OneBoSportApi.userService.getMoney()
+            }.let { userMoneyResult ->
+                _userMoney.postValue(userMoneyResult?.money)
+                doNetwork(androidContext) {
+                    moneyRepository.getRechCfg()
+                }?.let { result ->
+                    result.rechCfg?.let {
+                        uwBankType = it.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
+                        _rechargeConfigs.value = it
+                        getWithdrawCardList()
+                    }
                 }
             }
+
         }
     }
 
