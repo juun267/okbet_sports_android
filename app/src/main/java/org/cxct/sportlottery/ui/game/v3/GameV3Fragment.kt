@@ -323,8 +323,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             data = leagueOdds
                         }
 
-                        if (leagueOdds.isEmpty()) {
+                        if (leagueOdds.isEmpty() && game_list.itemDecorationCount > 0) {
                             removeItemDecorationAt(0)
+
+                        } else if (leagueOdds.isNotEmpty() && game_list.itemDecorationCount == 0) {
+                            addItemDecoration(
+                                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                            )
                         }
                     }
                 }
