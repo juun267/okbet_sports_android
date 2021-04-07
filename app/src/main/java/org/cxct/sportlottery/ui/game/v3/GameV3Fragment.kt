@@ -364,8 +364,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                 if (outrightSeasonListResult.success) {
-                    game_list.adapter = outrightCountryAdapter.apply {
-                        data = outrightSeasonListResult.rows ?: listOf()
+                    val rows = outrightSeasonListResult.rows ?: listOf()
+
+                    game_list.apply {
+                        adapter = outrightCountryAdapter.apply {
+                            data = rows
+                        }
+
+                        if (rows.isEmpty() && itemDecorationCount > 0) {
+                            removeItemDecorationAt(0)
+
+                        } else if (rows.isNotEmpty() && itemDecorationCount == 0) {
+                            addItemDecoration(
+                                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                            )
+                        }
                     }
                 }
             }
@@ -386,6 +399,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
             outrightCountryAdapter.data = it
+
+            if (it.isEmpty() && game_list.itemDecorationCount > 0) {
+                game_list.removeItemDecorationAt(0)
+
+            } else if (it.isNotEmpty() && game_list.itemDecorationCount == 0) {
+                game_list.addItemDecoration(
+                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                )
+            }
         })
 
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
