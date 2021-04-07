@@ -37,7 +37,7 @@ class MoneyRechCfg {
         var onlineType: Int? = null //在线充值类型：1-网银在线充值、2-支付宝在线充值、3-微信在线充值、4-qq在线充值、5-出款、6、信用卡在线充值、7-百度钱包、8-京东钱包
         var pcMobile: Int? = null //支持类型:0-都支付，1-电脑版，2-手机版
         var banks: MutableList<RechBank>? = null //银行列表，银行在线支付有此列表
-        var rebateFee: Double? = null//赠送金额
+        var rebateFee: Double? = null// 手續費率/返利
         var payUrl: String? = null //支付入口
         var exchangeRate: Double? = null//汇率
         var exchangeList: MutableList<ExchangeList>? = null//汇率列表

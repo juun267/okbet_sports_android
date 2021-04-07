@@ -51,7 +51,13 @@ open class BankBtsAdapter(
     ) {
         holder.apply {
             tvBank?.text = data.bankName
-            ivBankIcon?.setImageResource(data.bankIcon ?: 0)
+
+            if(data.bankIcon!=null){
+                ivBankIcon?.setImageResource(data.bankIcon ?: 0)
+            }else{
+                ivBankIcon?.setImageResource(android.R.color.transparent)
+            }
+
             if (position == selectedPosition)
                 this.llSelectBankCard?.setBackgroundColor(
                     ContextCompat.getColor(

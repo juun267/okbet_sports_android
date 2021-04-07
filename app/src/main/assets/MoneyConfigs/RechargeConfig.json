@@ -28,6 +28,13 @@
     "onlineType": "3"
   },
   {
+    "title": "虚拟币",
+    "subtitle": "在线虚拟币支付",
+    "image": "ic_crypto_pay",
+    "rechType": "onlinePayment",
+    "onlineType": "11"
+  },
+  {
     "title": "在线QQ",
     "subtitle": "QQ在线支付",
     "image": "money_qqpay_icon",
@@ -81,6 +88,13 @@
     "subtitle": "支付宝转账，自动审核，快速受理。",
     "image": "money_zfb_icon",
     "rechType": "alipayAuto",
+    "onlineType": "0"
+  },
+  {
+    "title": "虚拟币",
+    "subtitle": "虚拟币支付",
+    "image": "ic_crypto_pay",
+    "rechType": "cryptoPay",
     "onlineType": "0"
   }
 ]

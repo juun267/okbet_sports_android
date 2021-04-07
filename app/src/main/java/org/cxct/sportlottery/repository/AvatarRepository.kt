@@ -17,6 +17,10 @@ class AvatarRepository(private val androidContext: Context, private val userInfo
     val editIconUrlResult: LiveData<IconUrlResult?>
         get() = _editIconUrlResult
 
+    private val _voucherUrlResult = MutableLiveData<String>()
+    val voucherUrlResult: LiveData<String?>
+        get() = _voucherUrlResult
+
     //UploadImage API 在另一個伺服器，上傳成功後得到的 url，再透過 editIconUrl API 去更新，下次登入的 LoginData 裡面的 iconUrl 才會更新
     suspend fun uploadImage(uploadImgRequest: UploadImgRequest): Response<UploadImgResult> {
         val response = OneBoSportApi.uploadImgService.uploadImg(uploadImgRequest.toParts())
@@ -47,6 +51,23 @@ class AvatarRepository(private val androidContext: Context, private val userInfo
                 _editIconUrlResult.postValue(result)
             }
         }
+    }
+
+    suspend fun uploadVoucher(uploadImgRequest: UploadImgRequest): Response<UploadImgResult> {
+        val response = OneBoSportApi.uploadImgService.uploadImg(uploadImgRequest.toParts())
+        if (response.isSuccessful) {
+            val result = response.body()
+            when {
+                result == null -> _editIconUrlResult.postValue(IconUrlResult(-1, androidContext.getString(R.string.unknown_error), false, null))
+                result.success -> {
+                    val path = result.imgData?.path ?: ""
+                    val iconUrl = sConfigData?.resServerHost + path
+                    _voucherUrlResult.postValue(iconUrl)
+
+                }
+            }
+        }
+        return response
     }
 
 }
