@@ -192,11 +192,8 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            Log.e("simon test", "${it.hasBeenHandled}")
-            it.getContentIfNotHandled()?.let { isLogin ->
-                getMsgDialog() //登入/登出刷新彈窗公告
-                updateUiWithLogin(isLogin)
-            }
+            getMsgDialog() //登入/登出刷新彈窗公告
+            updateUiWithLogin(it)
         })
 
         viewModel.userInfo.observe(this, Observer {

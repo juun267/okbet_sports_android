@@ -61,7 +61,7 @@ class GameViewModel(
     private val thirdGameRepository: ThirdGameRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    val isLogin: LiveData<Event<Boolean>> by lazy {
+    val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
     }
 

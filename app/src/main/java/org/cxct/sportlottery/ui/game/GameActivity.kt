@@ -254,9 +254,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { isLogin ->
-                updateUiWithLogin(isLogin)
-            }
+            updateUiWithLogin(it)
         })
 
         viewModel.messageListResult.observe(this, Observer {
