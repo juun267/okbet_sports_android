@@ -40,6 +40,10 @@ class ModifyProfileInfoActivity : BaseOddButtonActivity<ModifyProfileInfoViewMod
 
         //根據傳入的ModifyType當前編輯的欄位做顯示
         when (modifyType) {
+            ModifyType.RealName -> {
+                tv_title.text = getString(R.string.real_name)
+                ll_real_name.visibility = View.VISIBLE
+            }
             ModifyType.NickName -> {
                 tv_title.text = getString(R.string.change_nickname)
                 ll_nickname.visibility = View.VISIBLE

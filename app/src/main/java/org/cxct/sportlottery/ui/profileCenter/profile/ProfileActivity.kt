@@ -99,6 +99,8 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
     }
 
     private fun setupToInfoSettingPage() {
+        //真實姓名
+        ll_real_name.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.RealName) }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //密碼設置
