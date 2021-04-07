@@ -110,7 +110,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
 
     private fun getMsgStatus(status: Int): String {
         return when (status) {
-            0 -> context.getString(R.string.feedback_unreplied)
+            0 -> context.getString(R.string.feedback_not_reply_yet)
             1 -> context.getString(R.string.feedback_replied)
             else -> ""
         }
