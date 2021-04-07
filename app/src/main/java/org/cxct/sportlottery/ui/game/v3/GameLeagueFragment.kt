@@ -167,13 +167,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             data = leagueOdds
                         }
 
-                        if (leagueOdds.isEmpty() && itemDecorationCount > 0) {
-                            removeItemDecorationAt(0)
+                        when {
+                            (leagueOdds.isEmpty() && itemDecorationCount > 0) -> {
+                                removeItemDecorationAt(0)
+                            }
 
-                        } else if (leagueOdds.isNotEmpty() && itemDecorationCount == 0) {
-                            addItemDecoration(
-                                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                            )
+                            (leagueOdds.isNotEmpty() && itemDecorationCount == 0) -> {
+                                addItemDecoration(
+                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                                )
+                            }
                         }
                     }
                 }
@@ -183,13 +186,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
             leagueAdapter.data = it
 
-            if (it.isEmpty() && game_league_odd_list.itemDecorationCount > 0) {
-                game_league_odd_list.removeItemDecorationAt(0)
+            when {
+                (it.isEmpty() && game_league_odd_list.itemDecorationCount > 0) -> {
+                    game_league_odd_list.removeItemDecorationAt(0)
+                }
 
-            } else if (it.isNotEmpty() && game_league_odd_list.itemDecorationCount == 0) {
-                game_league_odd_list.addItemDecoration(
-                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                )
+                (it.isNotEmpty() && game_league_odd_list.itemDecorationCount == 0) -> {
+                    game_league_odd_list.addItemDecoration(
+                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                    )
+                }
             }
         })
     }
