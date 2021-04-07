@@ -353,9 +353,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     override fun onDestroy() {
         super.onDestroy()
         service.unsubscribeAllEventChannel()
-        //投注係向
         getSubscribingInOddsDetail()?.let {
-            Log.e("[kevin]", "重新訂閱 -> $it")
             service.subscribeEventChannel(it)
         }
     }
