@@ -26,6 +26,9 @@ class BetInfoRepository {
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
 
+    private val _removeItem = MutableLiveData<String>()
+    val removeItem: LiveData<String>
+        get() = _removeItem
 
     var betList: MutableList<BetInfoListData> = mutableListOf()
     var matchOddList: MutableList<MatchOdd> = mutableListOf()
@@ -48,7 +51,7 @@ class BetInfoRepository {
 
 
     private suspend fun getBetUrl(oddsList: List<Odd>): Response<BetInfoResult> {
-        val request = BetInfoRequest("EU", oddsList)
+        val request = BetInfoRequest(oddsList)
         return if (oddsList[0].matchType == MatchType.OUTRIGHT) {
             OneBoSportApi.outrightService.getOutrightBetInfo(request)
         } else {
@@ -58,7 +61,7 @@ class BetInfoRepository {
 
 
     suspend fun getBetInfoList(oddsList: List<Odd>): Response<BetInfoResult> {
-        val result = OneBoSportApi.betService.getBetInfo(BetInfoRequest("EU", oddsList))
+        val result = OneBoSportApi.betService.getBetInfo(BetInfoRequest(oddsList))
         result.body()?.success.let {
             result.body()?.betInfoData.let { data ->
                 data?.matchOdds?.isNotEmpty()?.let { boolean ->
@@ -86,9 +89,9 @@ class BetInfoRepository {
 
 
     fun removeItem(oddId: String?) {
-        betList.remove(betList.find {
-            it.matchOdd.oddsId == oddId
-        })
+        val item = betList.find { it.matchOdd.oddsId == oddId }
+        betList.remove(item)
+        _removeItem.postValue(item?.matchOdd?.matchId)
         _betInfoList.postValue(betList)
     }
 

@@ -95,11 +95,12 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
 
     private fun setupOddButton() {
         if (floatButtonView != null) {
-            getPositionX()?.let { it -> ll_bet_float_button?.x = it }
-            getPositionY()?.let { it -> ll_bet_float_button?.y = it }
+            ll_bet_float_button.post {
+                getPositionX()?.let { it -> ll_bet_float_button?.x = it }
+                getPositionY()?.let { it -> ll_bet_float_button?.y = it }
+            }
             return
         }
-
         val contentView: ViewGroup = window.decorView.findViewById(android.R.id.content)
         floatButtonView = LayoutInflater.from(this)
             .inflate(R.layout.layout_bet_info_list_float_button, contentView, false).apply {
@@ -122,7 +123,6 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                 }
             }
         contentView.addView(floatButtonView)
-
     }
 
     fun resetButton() {

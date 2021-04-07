@@ -86,7 +86,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         WM("WM", R.layout.content_odds_detail_list_one, 18),//净胜球数
         CLSH("CLSH", R.layout.content_odds_detail_list_one, 19),//零失球
         HTFT("HT/FT", R.layout.content_odds_detail_list_one, 20),//半场/全场
-        W3("W3", R.layout.content_odds_detail_list_group, 21),//三项让球
+        W3("W3", R.layout.content_odds_detail_list_one, 21),//三项让球
         TG_OU("TG&O/U", R.layout.content_odds_detail_list_two_sides, 22),//球队进球数&大/小
         C_OU("CORNER-O/U", R.layout.content_odds_detail_list_two_sides, 23),//角球大/小
         C_OE("CORNER-OE", R.layout.content_odds_detail_list_two_sides, 24),//角球单/双
@@ -97,6 +97,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         SINGLE_OU("1X2-O/U", R.layout.content_odds_detail_list_one, 29),//独赢大/小
         SINGLE_OT("1X2-INCL-OT", R.layout.content_odds_detail_list_one, 30),//独赢(含加时)
         SINGLE_SEG("1X2-SEG", R.layout.content_odds_detail_list_single, 31),//独赢-第X节
+        SINGLE_FLG("1X2-FLG", R.layout.content_odds_detail_list_one, 32),//独赢-最先進球
     }
 
 
@@ -169,6 +170,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
             checkKey(type, GameType.SINGLE_SEG.value) -> return GameType.SINGLE_SEG.type
 
+            checkKey(type, GameType.SINGLE_FLG.value) -> return GameType.SINGLE_FLG.type
+
+
             else -> {
                 return -1
             }
@@ -211,7 +215,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
             GameType.CLSH.type -> layout = GameType.CLSH.layout
             GameType.HTFT.type -> layout = GameType.HTFT.layout
             GameType.W3.type -> layout = GameType.W3.layout
-            GameType.W3.type -> layout = GameType.W3.layout
             GameType.TG_OU.type -> layout = GameType.TG_OU.layout
             GameType.C_OU.type -> layout = GameType.C_OU.layout
             GameType.C_OE.type -> layout = GameType.C_OE.layout
@@ -240,6 +243,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                     GameType.HDP.layout
                 }
             }
+            GameType.SINGLE_FLG.type -> layout = GameType.SINGLE_FLG.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -361,7 +365,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
             when (viewType) {
                 GameType.HDP.type -> forHDP(oddsDetail)
-                GameType.W3.type -> groupItem(oddsDetail, 3)
 
                 GameType.OU.type,
                 GameType.OU_1ST.type,
@@ -386,6 +389,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                     }
                 }
 
+                GameType.SINGLE_FLG.type,
+                GameType.W3.type,
                 GameType.SINGLE_OT.type,
                 GameType.SINGLE_OU.type,
                 GameType.FG.type,

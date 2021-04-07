@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
