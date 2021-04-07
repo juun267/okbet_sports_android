@@ -242,9 +242,9 @@ class FinanceViewModel(
                     else -> ""
                 }
 
-                it.rechDateAndTime = TimeUtil.timeFormat(it.rechTime, "yyyy-MM-dd HH:mm:ss")
-                it.rechDateStr = TimeUtil.timeFormat(it.rechTime, "yyyy-MM-dd")
-                it.rechTimeStr = TimeUtil.timeFormat(it.rechTime, "HH:mm:ss")
+                it.rechDateAndTime = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd HH:mm:ss")
+                it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
+                it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
 
                 it.displayMoney = ArithUtil.toMoneyFormat(it.rechMoney)
             }
