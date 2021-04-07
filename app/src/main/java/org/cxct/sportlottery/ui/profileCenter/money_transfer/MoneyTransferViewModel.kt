@@ -268,7 +268,8 @@ class MoneyTransferViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, firmTypeIn, firmTypeOut, status?.toIntOrNull()))
+                val emptyFilter = {item: String? -> if (item.isNullOrEmpty()) null else item}
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, emptyFilter(firmTypeIn), emptyFilter(firmTypeOut), status?.toIntOrNull()))
             }?.let { result ->
                 hideLoading()
                 isLoading = false
