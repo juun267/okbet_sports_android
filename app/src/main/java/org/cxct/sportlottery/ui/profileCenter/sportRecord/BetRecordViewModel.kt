@@ -14,19 +14,19 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.util.TimeUtil
-
-data class BetListRequestState(var hasStatus: Boolean, var hasStartDate: Boolean, var hasEndDate: Boolean)
-
 
 class BetRecordViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    private val statusNameMap = mapOf(0 to "未确认", 1 to "未结算", 2 to "全赢", 3 to "赢半", 4 to "全输", 5 to "输半", 6 to "和", 7 to "已取消")
+    private val statusNameMap = mapOf("01234567" to androidContext.getString(R.string.all_order),
+                                      "01" to androidContext.getString(R.string.not_settled_order),
+                                      "234567" to androidContext.getString(R.string.settled_order))
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -35,78 +35,28 @@ class BetRecordViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val statusSearchEnable: LiveData<Boolean>
-        get() = _statusSearchEnable
-
-    val selectedBetStatus: LiveData<String?>
-        get() = _selectedBetStatus
-
-    val betListRequestState: LiveData<BetListRequestState>
-        get() = _betListRequestState
-
     val betRecordResult: LiveData<BetListResult>
         get() = _betRecordResult
 
     private val _loading = MutableLiveData<Boolean>()
-    private val _statusSearchEnable = MutableLiveData<Boolean>()
-    private val _betListRequestState = MutableLiveData<BetListRequestState>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
-    private val _selectedBetStatus = MutableLiveData<String?>()
 
     private var mBetListRequest: BetListRequest? = null
-    private val selectedStatusList: List<SheetData>
-        get() = betStatusList.filter { it.isChecked }
-
     val betStatusList by lazy {
         statusNameMap.map {
-            SheetData(it.key, it.value).apply {
-                this.isChecked = true
-            }
-        }.toMutableList()
+            StatusSheetData(it.key, it.value)
+        }
     }
 
-    fun searchBetRecord(isChampionChecked: Boolean? = false, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
-        if (betStatusList.none { it.isChecked }) {
-            _statusSearchEnable.value = false
-        } else {
-            _statusSearchEnable.value = true
-            val statusList = selectedStatusList.map { it.code }
+    fun searchBetRecord(isChampionChecked: Boolean? = false,
+                        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+                        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+                        status: String? = betStatusList.firstOrNull()?.code
+    ) {
+            val statusList = status?.toList()
             val championOnly = if (isChampionChecked == true) 1 else 0
             mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusList, startTime = startTime, endTime = endTime, page = 1, pageSize = PAGE_SIZE)
             mBetListRequest?.let { getBetList(it) }
-        }
-    }
-
-    fun getBetStatus(): String {
-
-        return when (selectedStatusList.size) {
-            statusNameMap.values.size -> {
-                androidContext.getString(R.string.all_bet_status)
-            }
-            0 -> {
-                androidContext.getString(R.string.please_choose_bet_state)
-            }
-            else -> {
-                selectedStatusList.joinToString(",") { it.showName.toString() }
-            }
-        }
-    }
-
-    fun isAllCbChecked(): Boolean {
-        return (selectedStatusList.size == statusNameMap.size)
-    }
-
-
-    fun clearStatusList() {
-        betStatusList.forEach {
-            it.isChecked = false
-        }
-    }
-
-    fun addAllStatusList() {
-        betStatusList.forEach {
-            it.isChecked = true
-        }
     }
 
     var isLastPage = false
@@ -118,8 +68,7 @@ class BetRecordViewModel(
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loading()
                 mBetListRequest?.let {
-                    mBetListRequest =
-                        BetListRequest(championOnly = it.championOnly, statusList = it.statusList, startTime = it.startTime, endTime = it.endTime, page = it.page?.plus(1), pageSize = PAGE_SIZE)
+                    mBetListRequest = BetListRequest(championOnly = it.championOnly, statusList = it.statusList, startTime = it.startTime, endTime = it.endTime, page = it.page?.plus(1), pageSize = PAGE_SIZE)
                     getBetList(mBetListRequest!!)
                 }
             }
