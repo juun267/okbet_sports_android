@@ -26,7 +26,7 @@ class BetInfoRepository {
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
 
-    val _removeItem = MutableLiveData<String>()
+    private val _removeItem = MutableLiveData<String>()
     val removeItem: LiveData<String>
         get() = _removeItem
 

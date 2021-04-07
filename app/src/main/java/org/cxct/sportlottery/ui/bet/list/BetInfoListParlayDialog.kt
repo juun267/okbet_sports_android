@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,6 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
-import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -184,7 +182,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         })
 
         viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
-            service.subscribeEventChannel(it)
+            service.unsubscribeEventChannel(it)
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
@@ -249,9 +247,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 //0331 重新訂閱所以項目
                 service.subscribeEventChannel(listData.matchId)
 
-                if (it.producerId == null || listData.producerId == it.producerId) {
-                    listData.status = BetStatus.ACTIVATED.code
-                }
             }
             matchOddAdapter.matchOddList = list
         })

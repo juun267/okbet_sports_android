@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +22,6 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
-import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
@@ -108,7 +107,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         })
 
         viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
-            service.subscribeEventChannel(it)
+            service.unsubscribeEventChannel(it)
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
@@ -172,9 +171,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                 //0331 重新訂閱所以項目
                 service.subscribeEventChannel(listData.matchOdd.matchId)
 
-                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
-                    listData.matchOdd.status = BetStatus.ACTIVATED.code
-                }
             }
             betInfoListAdapter.betInfoList = list
         })
@@ -188,9 +184,9 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun getSubscribingInOddsDetail(): String? {
-        var matchId: String ?= null
+        var matchId: String? = null
         val oddsDetail = parentFragmentManager.findFragmentByTag(GameActivity.Page.ODDS_DETAIL.name)
-        if(oddsDetail?.isAdded == true){
+        if (oddsDetail?.isAdded == true) {
             matchId = (oddsDetail as OddsDetailFragment).matchId
         }
         return matchId
