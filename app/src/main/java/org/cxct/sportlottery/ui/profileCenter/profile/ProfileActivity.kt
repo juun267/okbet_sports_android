@@ -80,7 +80,7 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
             ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_phone_number.visibility = if (enableWithdrawPhone == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_wechat.visibility = if (enableWithdrawWechat == FLAG_OPEN) View.VISIBLE else View.GONE
-            ll_real_name.visibility = if (enableFullName == FLAG_OPEN) View.VISIBLE else View.GONE
+            ll_real_name.visibility = if (enableWithdrawFullName == FLAG_OPEN) View.VISIBLE else View.GONE
         }
 
     }
