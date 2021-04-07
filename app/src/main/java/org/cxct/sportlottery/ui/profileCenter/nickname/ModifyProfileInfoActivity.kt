@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.LoginEditText
 
 class ModifyProfileInfoActivity : BaseOddButtonActivity<ModifyProfileInfoViewModel>(ModifyProfileInfoViewModel::class) {
     private val modifyType by lazy { intent.getSerializableExtra(MODIFY_INFO) }
@@ -24,7 +25,7 @@ class ModifyProfileInfoActivity : BaseOddButtonActivity<ModifyProfileInfoViewMod
         setContentView(R.layout.activity_modify_profile_info)
 
         initSetting()
-        setupNickname()
+        setupInputFieldVerify()
         initButton()
         initObserve()
     }
@@ -67,10 +68,28 @@ class ModifyProfileInfoActivity : BaseOddButtonActivity<ModifyProfileInfoViewMod
         }
     }
 
-    private fun setupNickname() {
-        et_nickname.setEditTextOnFocusChangeListener { et: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                viewModel.checkInput(modifyType as ModifyType, et.et_input.text.toString())
+    private fun setupInputFieldVerify() {
+        //暱稱
+        setEditTextFocusChangeMethod(et_nickname)
+        //真實姓名
+        setEditTextFocusChangeMethod(et_real_name)
+        //QQ號碼
+        setEditTextFocusChangeMethod(et_qq_number)
+        //郵箱
+        setEditTextFocusChangeMethod(et_e_mail)
+        //手機號碼
+        setEditTextFocusChangeMethod(et_phone_number)
+        //微信
+        setEditTextFocusChangeMethod(et_we_chat)
+    }
+
+    private fun setEditTextFocusChangeMethod(editText: LoginEditText) {
+        editText.apply {
+            setEditTextOnFocusChangeListener { view, hasFocus ->
+                if (!hasFocus)
+                    viewModel.checkInput(modifyType as ModifyType, view.et_input.text.toString())
+            }
+            setupEditTextClearListener() { viewModel.checkInput(modifyType as ModifyType, editText.et_input.text.toString()) }
         }
     }
 
