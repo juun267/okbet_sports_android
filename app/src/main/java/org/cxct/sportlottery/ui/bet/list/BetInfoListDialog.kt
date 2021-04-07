@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 
@@ -184,6 +187,16 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
+    private fun getSubscribingInOddsDetail(): String? {
+        var matchId: String ?= null
+        val oddsDetail = parentFragmentManager.findFragmentByTag(GameActivity.Page.ODDS_DETAIL.name)
+        if(oddsDetail?.isAdded == true){
+            matchId = (oddsDetail as OddsDetailFragment).matchId
+        }
+        return matchId
+    }
+
+
     private fun setMoney(money: Double) {
         tv_money.text = getString(R.string.bet_info_current_money, TextUtil.formatMoney(money))
     }
@@ -230,6 +243,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     override fun onDestroy() {
         super.onDestroy()
         service.unsubscribeAllEventChannel()
+        getSubscribingInOddsDetail()?.let {
+            Log.e("[kevin]", "重新訂閱 -> $it")
+            service.subscribeEventChannel(it)
+        }
     }
 
 
