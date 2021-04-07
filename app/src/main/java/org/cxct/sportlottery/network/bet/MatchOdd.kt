@@ -20,10 +20,10 @@ data class MatchOdd(
     val matchId: String,
     @Json(name = "odds")
     val odds: Double,
+    @Json(name = "hkOdds")
+    val hkOdds: Double,
     @Json(name = "oddsId")
     val oddsId: String,
-    @Json(name = "oddsType")
-    val oddsType: String,
     @Json(name = "playCateId")
     val playCateId: Int,
     @Json(name = "playCateName")

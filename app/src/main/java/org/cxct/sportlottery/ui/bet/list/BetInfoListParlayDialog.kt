@@ -151,6 +151,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
                     odd.oddsId,
                     odd.odds,
+                    odd.hkOdds,
                     odd.producerId,
                     odd.spread,
                     odd.status,

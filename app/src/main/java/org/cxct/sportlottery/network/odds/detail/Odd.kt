@@ -15,6 +15,8 @@ data class Odd(
     var name: String?, //玩法名称（如果是球员玩法，则名称代码球员名称）
     @Json(name = "odds")
     var odds: Double?, //赔率
+    @Json(name = "hkOdds")
+    var hkOdds: Double?, //香港
     @Json(name = "producerId")
     var producerId: Int?, //赔率生产者
     @Json(name = "spread")
