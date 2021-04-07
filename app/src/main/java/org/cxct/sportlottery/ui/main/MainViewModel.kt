@@ -158,15 +158,6 @@ class MainViewModel(
                     )
                 )
             }
-            (userInfo.value?.testFlag == TestFlag.GUEST.index) -> {
-                _enterThirdGameResult.postValue(
-                    EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.GUEST,
-                        url = null,
-                        errorMsg = androidContext.getString(R.string.message_guest_no_permission)
-                    )
-                )
-            }
             else -> {
                 viewModelScope.launch {
                     val thirdLoginResult = thirdGameLogin(gameData)
