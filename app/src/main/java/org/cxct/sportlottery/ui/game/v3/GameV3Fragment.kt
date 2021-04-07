@@ -224,10 +224,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         view.game_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-            this.addItemDecoration(
-                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-            )
         }
     }
 
