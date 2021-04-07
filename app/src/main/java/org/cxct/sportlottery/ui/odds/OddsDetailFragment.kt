@@ -284,9 +284,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
 
         matchId?.let { matchId ->
-            oddsType?.let { oddsType ->
-                viewModel.getOddsDetail(matchId, oddsType)
-            }
+            viewModel.getOddsDetailByMatchId(matchId)
         }
     }
 
