@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,8 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
+import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections.Companion.actionHomeFragmentToMainActivity
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -36,8 +39,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             thirdGameListener = ThirdGameListener {
-                viewModel.setGoToThirdGamePage(it)
-                activity?.finish()
+                val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(it)
+                findNavController().navigate(action)
             }
         }
     }

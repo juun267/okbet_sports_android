@@ -32,7 +32,7 @@ class MainViewModel(
     private val withdrawRepository: WithdrawRepository
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    val isLogin: LiveData<Boolean> by lazy {
+    val isLogin: LiveData<Event<Boolean>> by lazy {
         loginRepository.isLogin
     }
 
@@ -147,7 +147,7 @@ class MainViewModel(
                     )
                 )
             }
-            loginRepository.isLogin.value != true -> {
+            loginRepository.isLogin.value?.peekContent() != true -> {
                 _enterThirdGameResult.postValue(
                     EnterThirdGameResult(
                         resultType = EnterThirdGameResult.ResultType.NEED_REGISTER,

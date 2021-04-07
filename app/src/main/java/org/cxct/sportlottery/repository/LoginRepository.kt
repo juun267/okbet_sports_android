@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.util.AesCryptoUtil
+import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
@@ -35,10 +36,10 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    val isLogin: LiveData<Boolean>
+    val isLogin: LiveData<Event<Boolean>>
         get() = _isLogin
 
-    private val _isLogin = MutableLiveData<Boolean>()
+    private val _isLogin = MutableLiveData<Event<Boolean>>()
 
     var platformId
         get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
@@ -187,13 +188,13 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         if (checkTokenResponse.isSuccessful) {
             checkTokenResponse.body()?.let {
                 isCheckToken = true
-                _isLogin.postValue(true)
+                _isLogin.postValue(Event(true))
                 updateLoginData(it.loginData)
                 updateUserInfo(it.loginData)
             }
         } else {
             isCheckToken = false
-            _isLogin.postValue(false)
+            _isLogin.postValue(Event(false))
             clear()
         }
 
@@ -201,14 +202,14 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     }
 
     suspend fun logout(): Response<LogoutResult> {
-        _isLogin.postValue(false)
+        _isLogin.postValue(Event(false))
 
         return OneBoSportApi.indexService.logout(LogoutRequest())
     }
 
     private fun updateLoginData(loginData: LoginData?) {
 
-        _isLogin.postValue(loginData != null)
+        _isLogin.postValue(Event(loginData != null))
 
         with(sharedPref.edit()) {
             /*putBoolean(KEY_IS_LOGIN, loginData != null)*/

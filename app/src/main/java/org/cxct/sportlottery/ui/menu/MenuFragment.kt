@@ -61,8 +61,9 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                getMoney()
+            it.getContentIfNotHandled()?.let { isLogin ->
+                if (isLogin)
+                    getMoney()
             }
         })
         viewModel.userMoney.observe(viewLifecycleOwner, Observer {
