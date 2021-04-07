@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.vip
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,6 @@ import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_BET_ID
 import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_RECHARGE_ID
 import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
-import org.cxct.sportlottery.util.TextUtil
 
 class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
@@ -29,7 +27,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter() }
 
     private val thirdGameAdapter by lazy {
-        ThirdGameAdapter(this, OnSelectThirdGames {
+        ThirdGameAdapter(OnSelectThirdGames {
             sv_third_games.apply {
                 setRebatesFormGame(it)
                 dismiss()
@@ -124,6 +122,10 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun updateNextLevelTips(userInfo: UserInfoData) {
+        if (verifyMaxLevel(userInfo.userLevelId)) {
+            tv_next_level_tips.text = getString(R.string.level_max)
+            return
+        }
         getNextLevel(userInfo.userLevelId)?.let { nextLevel ->
             tv_next_level_tips.text = "${getString(nextLevel.levelRequirement.level)}  ${nextLevel.levelRequirement.levelName}"
         }
@@ -135,6 +137,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
                 max = 1
                 progress = 1
             }
+            tv_requirement_amount.text = getString(R.string.level_max)
             return
         }
         val growthRequirement = getUpgradeGrowthRequirement(userInfo.userLevelId)
@@ -233,7 +236,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     }
 }
 
-class ThirdGameAdapter(private val context: Context, private val selectedListener: OnSelectThirdGames) :
+class ThirdGameAdapter(private val selectedListener: OnSelectThirdGames) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {

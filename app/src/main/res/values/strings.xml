@@ -196,6 +196,7 @@
     <string name="level_four">VIP4</string>
     <string name="level_five">VIP5</string>
     <string name="level_six">VIP6</string>
+    <string name="level_max">已是最高层级</string>
     <string name="unlimited">无上限</string>
     <string name="select_plat">选择平台</string>
     <string name="daily_bet_range">每日有效打码区间值</string>
