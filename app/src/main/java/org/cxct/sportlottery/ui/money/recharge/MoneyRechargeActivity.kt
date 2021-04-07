@@ -25,14 +25,14 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     var currentTab = RechargeType.TRANSFER_PAY
 
     private var bankTypeAdapter: MoneyBankTypeAdapter? = null
-
-
     private var transferPayList = mutableListOf<MoneyPayWayData>()
     private var onlinePayList = mutableListOf<MoneyPayWayData>()
 
     private var mCurrentFragment: Fragment? = null
 
     var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
+
+    private val CYRPTOPAY_INDEX = 11 //11-虚拟币支付
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,17 +193,16 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     }
 
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment {
-        return when (moneyPayWay.rechType) {
-            "onlinePayment" -> {
-               return if (moneyPayWay.onlineType == 11)
-                    OnlineCryptoPayFragment().setArguments(moneyPayWay)
-                else
-                    OnlinePayFragment().setArguments(moneyPayWay)
+        return when {
+            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType == CYRPTOPAY_INDEX -> {
+                OnlineCryptoPayFragment().setArguments(moneyPayWay)
             }
-            "cryptoPay"->CryptoPayFragment().setArguments(moneyPayWay)
-            else -> {
-                TransferPayFragment().setArguments(moneyPayWay)
+            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType != CYRPTOPAY_INDEX -> {
+                OnlinePayFragment().setArguments(moneyPayWay)
             }
+            moneyPayWay.rechType == "cryptoPay" -> CryptoPayFragment().setArguments(moneyPayWay)
+            else -> TransferPayFragment().setArguments(moneyPayWay)
+
         }
     }
 

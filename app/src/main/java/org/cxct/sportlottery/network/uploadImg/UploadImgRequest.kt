@@ -15,7 +15,7 @@ class UploadImgRequest(val userId: String, private val file: File,val platformCo
 
         return MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart("projectCode", PROJECT_CODE) //项目代码
-            .addFormDataPart("platformCode", "${PLATFORM_CODE}/${platformCodeType.code}") //平台代码
+            .addFormDataPart("platformCode", "$PLATFORM_CODE/${platformCodeType.code}") //平台代码
             .addFormDataPart("userId", userId)
             .addFormDataPart("expireAfterDays", "0") //多久过期（天）0：不过期，N：N天后过期（1<=N<=365）
             .addFormDataPart("file", file.name, requestFile)
