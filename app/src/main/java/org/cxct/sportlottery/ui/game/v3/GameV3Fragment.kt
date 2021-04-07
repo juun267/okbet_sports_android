@@ -323,10 +323,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             data = leagueOdds
                         }
 
-                        if (leagueOdds.isEmpty() && game_list.itemDecorationCount > 0) {
+                        if (leagueOdds.isEmpty() && itemDecorationCount > 0) {
                             removeItemDecorationAt(0)
 
-                        } else if (leagueOdds.isNotEmpty() && game_list.itemDecorationCount == 0) {
+                        } else if (leagueOdds.isNotEmpty() && itemDecorationCount == 0) {
                             addItemDecoration(
                                 DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
                             )
@@ -342,8 +342,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             it.getContentIfNotHandled()?.let { leagueListResult ->
                 if (leagueListResult.success) {
-                    game_list.adapter = countryAdapter.apply {
-                        data = leagueListResult.rows ?: listOf()
+                    val rows = leagueListResult.rows ?: listOf()
+
+                    game_list.apply {
+                        adapter = countryAdapter.apply {
+                            data = rows
+                        }
+
+                        if (rows.isEmpty() && itemDecorationCount > 0) {
+                            removeItemDecorationAt(0)
+
+                        } else if (rows.isNotEmpty() && itemDecorationCount == 0) {
+                            addItemDecoration(
+                                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                            )
+                        }
                     }
                 }
             }
@@ -364,6 +377,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, Observer {
             countryAdapter.data = it
+
+            if (it.isEmpty() && game_list.itemDecorationCount > 0) {
+                game_list.removeItemDecorationAt(0)
+
+            } else if (it.isNotEmpty() && game_list.itemDecorationCount == 0) {
+                game_list.addItemDecoration(
+                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                )
+            }
         })
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
