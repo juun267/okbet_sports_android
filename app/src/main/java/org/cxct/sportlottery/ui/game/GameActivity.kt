@@ -251,7 +251,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.messageListResult.observe(this, Observer {
-            hideLoading()
             updateUiWithResult(it)
         })
 
