@@ -312,7 +312,6 @@ class WithdrawViewModel(
     }
 
     fun getMoneyConfigs() {
-        getMoney()
         viewModelScope.launch {
             loading()
             doNetwork(androidContext) {
