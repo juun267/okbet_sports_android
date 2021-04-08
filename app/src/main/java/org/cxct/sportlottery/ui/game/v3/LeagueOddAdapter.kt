@@ -551,11 +551,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private var timer: Timer? = null
 
-        fun updateTimer(isTimerEnable: Boolean, leagueTime: Int) {
+        fun updateTimer(isTimerEnable: Boolean, startTime: Int, isDecrease: Boolean = false) {
 
             when (isTimerEnable) {
                 true -> {
-                    var timeMillis = leagueTime * 1000L
+                    var timeMillis = startTime * 1000L
 
                     Handler(Looper.getMainLooper()).post {
                         listener?.onTimerUpdate(timeMillis)
@@ -564,7 +564,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     timer = Timer()
                     timer?.schedule(object : TimerTask() {
                         override fun run() {
-                            timeMillis += 1000
+                            when (isDecrease) {
+                                true -> {
+                                    timeMillis -= 1000
+                                }
+                                false -> {
+                                    timeMillis += 1000
+                                }
+                            }
+
                             Handler(Looper.getMainLooper()).post {
                                 listener?.onTimerUpdate(timeMillis)
                             }
