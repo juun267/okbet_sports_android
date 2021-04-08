@@ -51,7 +51,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
                 },
                 { matchOdd ->
-                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                    when (matchType) {
+                        MatchType.IN_PLAY -> {
+                            viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                        }
+                        else -> {
+                            viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                        }
+                    }
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
