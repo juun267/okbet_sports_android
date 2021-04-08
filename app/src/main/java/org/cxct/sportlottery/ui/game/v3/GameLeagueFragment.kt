@@ -235,7 +235,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 if (matchType == MatchType.IN_PLAY) {
 
                     matchClockEvent.matchClockCO?.let { matchClockCO ->
-                        matchClockCO.matchId.let { matchId ->
+                        matchClockCO.matchId?.let { matchId ->
 
                             val leagueOdds = leagueAdapter.data
 

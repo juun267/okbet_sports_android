@@ -7,11 +7,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class MatchClockCO(
     @Json(name = "eventDate")
-    val eventDate: Long,
+    val eventDate: Long?,
     @Json(name = "gameType")
-    val gameType: String,
+    val gameType: String?,
     @Json(name = "matchId")
-    val matchId: String,
+    val matchId: String?,
     @Json(name = "matchTime")
     var matchTime: Int?, //赛事进行到的时刻，秒数,可能为空
     @Json(name = "remainingTime")
@@ -19,7 +19,7 @@ data class MatchClockCO(
     @Json(name = "remainingTimeInPeriod")
     var remainingTimeInPeriod: Int?, //赛事该阶段/该节(篮球)剩余时间，秒数,可能为空
     @Json(name = "scheduledTime")
-    val scheduledTime: Long,
+    val scheduledTime: Long?,
     @Json(name = "stoppageTime")
     val stoppageTime: Int?,
     @Json(name = "stoppageTimeAnnounced")
