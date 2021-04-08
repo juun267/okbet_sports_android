@@ -79,7 +79,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
+                leagueOddListener?.onClickPlayType(item)
             }
         }
 
@@ -325,7 +325,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
+                leagueOddListener?.onClickPlayType(item)
             }
         }
 
@@ -586,12 +586,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 }
 
 class LeagueOddListener(
-
     val clickListenerLive: (item: MatchOdd) -> Unit,
+    val clickListenerPlayType: (item: MatchOdd) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
 ) {
     fun onClickLive(item: MatchOdd) =
         clickListenerLive(item)
+
+    fun onClickPlayType(item: MatchOdd) =
+        clickListenerPlayType(item)
 
     fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
         clickListenerBet(matchOdd, oddString, odd)
