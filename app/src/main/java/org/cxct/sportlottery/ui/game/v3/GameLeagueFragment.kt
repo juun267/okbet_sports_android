@@ -47,7 +47,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val leagueAdapter by lazy {
         LeagueAdapter(matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd, _ ->
+                { matchOdd ->
                     //TODO open live and play type page
                     viewModel.getOddsDetail(matchOdd.matchInfo?.id)
                 },
@@ -137,15 +137,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun setupLeagueOddList(view: View) {
         view.game_league_odd_list.apply {
-
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-            this.adapter = leagueAdapter
-
-            this.addItemDecoration(
-                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-            )
         }
     }
 
@@ -165,14 +158,45 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
+                    val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+
                     game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
-                    leagueAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+
+                    game_league_odd_list.apply {
+                        adapter = leagueAdapter.apply {
+                            data = leagueOdds
+                        }
+
+                        when {
+                            (leagueOdds.isEmpty() && itemDecorationCount > 0) -> {
+                                removeItemDecorationAt(0)
+                            }
+
+                            (leagueOdds.isNotEmpty() && itemDecorationCount == 0) -> {
+                                addItemDecoration(
+                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         })
 
         viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
             leagueAdapter.data = it
+
+            when {
+                (it.isEmpty() && game_league_odd_list.itemDecorationCount > 0) -> {
+                    game_league_odd_list.removeItemDecorationAt(0)
+                }
+
+                (it.isNotEmpty() && game_league_odd_list.itemDecorationCount == 0) -> {
+                    game_league_odd_list.addItemDecoration(
+                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                    )
+                }
+            }
         })
     }
 

@@ -22,7 +22,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
-import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.OnForbidClickListener
@@ -32,6 +31,7 @@ import java.math.RoundingMode
 
 const val NOT_INPLAY: Int = 0
 const val INPLAY: Int = 1
+const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
@@ -153,7 +153,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = if (inputError) {
                         background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_unselected)
-                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.bright_gray))
+                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorWhite))
                         false
                     } else {
                         background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
@@ -408,7 +408,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 true -> {
                     tv_bet.apply {
                         background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_unselected)
-                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.bright_gray))
+                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
                         isClickable = false
                     }
                 }
@@ -431,7 +431,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
 
     private fun changeColorByOdds(tv_bet: TextView, tv_close_warning: TextView) {
-        tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.red))
+        tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.colorRed))
         tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
         tv_close_warning.apply {
             visibility = View.VISIBLE

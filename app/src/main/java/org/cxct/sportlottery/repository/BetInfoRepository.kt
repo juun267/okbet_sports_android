@@ -12,23 +12,28 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import retrofit2.Response
 
+
 class BetInfoRepository {
+
 
     //每個畫面都要觀察
     val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
     val betInfoList: LiveData<MutableList<BetInfoListData>>
         get() = _betInfoList
 
+
     val _isParlayPage = MutableLiveData<Boolean>()
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
 
+    private val _removeItem = MutableLiveData<String>()
+    val removeItem: LiveData<String>
+        get() = _removeItem
 
     var betList: MutableList<BetInfoListData> = mutableListOf()
-
     var matchOddList: MutableList<MatchOdd> = mutableListOf()
-
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
+
 
     suspend fun getBetInfo(oddsList: List<Odd>): Response<BetInfoResult> {
         val result = getBetUrl(oddsList)
@@ -44,8 +49,9 @@ class BetInfoRepository {
         return result
     }
 
+
     private suspend fun getBetUrl(oddsList: List<Odd>): Response<BetInfoResult> {
-        val request = BetInfoRequest("EU", oddsList)
+        val request = BetInfoRequest(oddsList)
         return if (oddsList[0].matchType == MatchType.OUTRIGHT) {
             OneBoSportApi.outrightService.getOutrightBetInfo(request)
         } else {
@@ -53,13 +59,11 @@ class BetInfoRepository {
         }
     }
 
-    suspend fun getBetInfoList(oddsList: List<Odd>): Response<BetInfoResult> {
 
-        val result = OneBoSportApi.betService.getBetInfo(BetInfoRequest("EU", oddsList))
+    suspend fun getBetInfoList(oddsList: List<Odd>): Response<BetInfoResult> {
+        val result = OneBoSportApi.betService.getBetInfo(BetInfoRequest(oddsList))
         result.body()?.success.let {
             result.body()?.betInfoData.let { data ->
-
-
                 data?.matchOdds?.isNotEmpty()?.let { boolean ->
                     if (boolean) {
                         matchOddList.clear()
@@ -78,16 +82,19 @@ class BetInfoRepository {
         return result
     }
 
+
     fun getCurrentBetInfoList() {
         _betInfoList.postValue(betList)
     }
 
+
     fun removeItem(oddId: String?) {
-        betList.remove(betList.find {
-            it.matchOdd.oddsId == oddId
-        })
+        val item = betList.find { it.matchOdd.oddsId == oddId }
+        betList.remove(item)
+        _removeItem.postValue(item?.matchOdd?.matchId)
         _betInfoList.postValue(betList)
     }
+
 
     fun clear() {
         betList.clear()
@@ -95,5 +102,6 @@ class BetInfoRepository {
         parlayOddList.clear()
         _betInfoList.postValue(betList)
     }
+
 
 }

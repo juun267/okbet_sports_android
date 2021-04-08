@@ -56,6 +56,7 @@ data class MatchOdds (
     val playCode: String?,
     val playName: String?,
     val odds: Double?,
+    val hkOdds: Double?,
     val oddsType: String?,
     val playCateId: Int?,
     val playCateName: String?,

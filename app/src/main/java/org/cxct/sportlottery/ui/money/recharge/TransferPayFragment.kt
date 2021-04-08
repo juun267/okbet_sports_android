@@ -66,7 +66,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initPayAccountSpinner()
+        initPayAccountBottomSheet()
         initView()
         initButton()
         initObserve()
@@ -203,13 +203,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     //入款帳號選單
-    private fun initPayAccountSpinner() {
+    private fun initPayAccountBottomSheet() {
         //支付類型的入款帳號清單
         rechCfgsList = (viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType
         } ?: mutableListOf()) as MutableList<MoneyRechCfg.RechConfig>
 
-        //產生對應 spinner 選單
         var count = 1
 
         if (mMoneyPayWay?.rechType == "bankTransfer") //銀行卡轉帳 顯示銀行名稱，不用加排序數字

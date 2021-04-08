@@ -9,6 +9,8 @@ data class Odd(
     val id: String? = "",
     @Json(name = "odds")
     var odds: Double? = null,
+    @Json(name = "hkOdds")
+    var hkOdds: Double? = null,
     @Json(name = "producerId")
     var producerId: Int? = null,
     @Json(name = "spread")
