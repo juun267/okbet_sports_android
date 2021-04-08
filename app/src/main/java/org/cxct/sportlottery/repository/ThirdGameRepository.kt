@@ -22,10 +22,6 @@ class ThirdGameRepository {
     val gameCateDataList: LiveData<List<GameCateData>>
         get() = _homeCatePageDataList
 
-    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
-        _goToThirdGamePage.postValue(Event(catePage))
-    }
-
     suspend fun getThirdGame(): Response<ThirdGamesResult> {
         val response = OneBoSportApi.thirdGameService.getThirdGames()
         if (response.isSuccessful) {

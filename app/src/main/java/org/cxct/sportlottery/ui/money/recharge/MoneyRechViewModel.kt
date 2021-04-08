@@ -220,7 +220,7 @@ class MoneyRechViewModel(
                 "x-session-token" to (loginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "payee" to (payee ?: ""),
-                "payeeName" to (payee ?: ""),
+                "payeeName" to (payeeName ?: ""),
                 "depositMoney" to depositMoney.toString()
             )
             url += toUrlParamsFormat(queryMap)
