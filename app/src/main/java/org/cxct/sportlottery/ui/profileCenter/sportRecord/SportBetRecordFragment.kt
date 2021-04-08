@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
+import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
@@ -25,6 +26,12 @@ import org.cxct.sportlottery.util.setProfitFormat
 
 
 class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
+
+    private val betStatusList by lazy {
+        listOf(StatusSheetData("01234567", context?.getString(R.string.all_order)),
+               StatusSheetData("01", context?.getString(R.string.not_settled_order)),
+               StatusSheetData("234567", context?.getString(R.string.settled_order)))
+    }
 
     private val rvAdapter = BetRecordAdapter(ItemClickListener {
         it.let { data ->
@@ -82,8 +89,8 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
     private fun initView() {
         layout_total.tv_total.text = getString(R.string.total_bet_amount)
         status_selector.setCloseBtnText(getString(R.string.cancel_select))
-        status_selector.dataList = viewModel.betStatusList
-        status_selector.selectedTag = viewModel.betStatusList.firstOrNull()?.code
+        status_selector.dataList = betStatusList
+        status_selector.selectedTag = betStatusList.firstOrNull()?.code
     }
 
     private fun initOnclick() {

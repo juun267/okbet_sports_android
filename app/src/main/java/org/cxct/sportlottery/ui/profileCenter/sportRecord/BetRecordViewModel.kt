@@ -24,10 +24,6 @@ class BetRecordViewModel(
     infoCenterRepository: InfoCenterRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    private val statusNameMap = mapOf("01234567" to androidContext.getString(R.string.all_order),
-                                      "01" to androidContext.getString(R.string.not_settled_order),
-                                      "234567" to androidContext.getString(R.string.settled_order))
-
     companion object {
         private const val PAGE_SIZE = 20
     }
@@ -42,21 +38,19 @@ class BetRecordViewModel(
     private val _betRecordResult = MutableLiveData<BetListResult>()
 
     private var mBetListRequest: BetListRequest? = null
-    val betStatusList by lazy {
-        statusNameMap.map {
-            StatusSheetData(it.key, it.value)
-        }
-    }
 
-    fun searchBetRecord(isChampionChecked: Boolean? = false,
-                        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
-                        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
-                        status: String? = betStatusList.firstOrNull()?.code
+    fun searchBetRecord(
+        isChampionChecked: Boolean? = false,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        status: String? = null,
     ) {
-            val statusList = status?.toList()
-            val championOnly = if (isChampionChecked == true) 1 else 0
-            mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusList, startTime = startTime, endTime = endTime, page = 1, pageSize = PAGE_SIZE)
-            mBetListRequest?.let { getBetList(it) }
+        val statusFilter = { item: String? -> if (item.isNullOrEmpty()) listOf(1, 2, 3, 4, 5, 6, 7) else item.toList().map { Character.getNumericValue(it)
+
+        } }
+        val championOnly = if (isChampionChecked == true) 1 else 0
+        mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusFilter(status), startTime = startTime, endTime = endTime, page = 1, pageSize = PAGE_SIZE)
+        mBetListRequest?.let { getBetList(it) }
     }
 
     var isLastPage = false
