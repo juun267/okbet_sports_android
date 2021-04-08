@@ -12,7 +12,6 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -112,11 +111,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         menu_game_result.setOnClickListener {
             startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             mDownMenuListener?.onClick(menu_game_result)
-        }
-
-        menu_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
-            mDownMenuListener?.onClick(menu_game_rule)
         }
 
         menu_odds_type.setOnClickListener {
