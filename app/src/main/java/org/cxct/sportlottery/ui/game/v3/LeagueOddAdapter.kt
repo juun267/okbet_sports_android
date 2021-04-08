@@ -76,9 +76,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupOddButton(item, leagueOddListener)
 
-            itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
-            }
+            setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block.setOnClickListener {
                 leagueOddListener?.onClickLive(item)
@@ -107,6 +105,22 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             } else {
                 itemView.match_status.text = item.matchInfo?.startDateDisplay
                 itemView.match_time.text = item.matchInfo?.startTimeDisplay
+            }
+        }
+
+        private fun setupLiveButton(
+            item: MatchOdd,
+            matchType: MatchType,
+            leagueOddListener: LeagueOddListener?
+        ) {
+            itemView.match_live.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
+
+            itemView.match_live.setOnClickListener {
+                leagueOddListener?.onClickLive(item)
             }
         }
 
@@ -308,9 +322,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupOddButton(item, leagueOddListener)
 
-            itemView.match_live_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
-            }
+            setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block_1x2.setOnClickListener {
                 leagueOddListener?.onClickLive(item)
@@ -340,6 +352,22 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 updateTimer(isTimerEnable, item.leagueTime ?: 0)
+            }
+        }
+
+        private fun setupLiveButton(
+            item: MatchOdd,
+            matchType: MatchType,
+            leagueOddListener: LeagueOddListener?
+        ) {
+            itemView.match_live_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
+
+            itemView.match_live_1x2.setOnClickListener {
+                leagueOddListener?.onClickLive(item)
             }
         }
 
