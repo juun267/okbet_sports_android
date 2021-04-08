@@ -18,7 +18,7 @@ class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(Mone
 
         viewModel.getMoney()
         viewModel.getAllBalance()
-//        viewModel.getThirdGames() //TODO Cheryl: 平台名稱不太會換，跟ios先寫死，後續有更動再調整
+        viewModel.getThirdGames()
 
         initToolbar()
         initObserver()
