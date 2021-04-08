@@ -33,38 +33,38 @@ class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(Mone
     }
 
     private fun initObserver() {
-        viewModel.loading.observe(this, Observer {
+        viewModel.loading.observe(this, {
             if (it)
                 loading()
             else
                 hideLoading()
         })
 
-        viewModel.isShowTitleBar.observe(this, Observer {
+        viewModel.isShowTitleBar.observe(this, {
             ll_title_bar.visibility = if (it == true) View.VISIBLE else View.GONE
         })
 
-        viewModel.toolbarName.observe(this, Observer {
+        viewModel.toolbarName.observe(this, {
             tv_toolbar_title.text = it
         })
     }
 
-    private fun CheckBox.setCheckedChange(unCheckedItem: CheckBox, checked: (Unit) -> Unit) {
-        this.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                unCheckedItem.isChecked = false
-                checked.invoke(Unit)
-            }
-
-        }
-    }
-
     private fun initOnClick() {
-        cb_change.setCheckedChange(cb_record) {
-            my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
+        val navController = my_nav_host_fragment.findNavController()
+        rb_change.setOnClickListener {
+            when (navController.currentDestination?.id) {
+                R.id.moneyTransferRecordFragment -> {
+
+                    my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
+                }
+            }
         }
-        cb_record.setCheckedChange(cb_change) {
-            my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
+        rb_record.setOnClickListener {
+            when (navController.currentDestination?.id) {
+                R.id.moneyTransferFragment -> {
+                    my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
+                }
+            }
         }
     }
 }
