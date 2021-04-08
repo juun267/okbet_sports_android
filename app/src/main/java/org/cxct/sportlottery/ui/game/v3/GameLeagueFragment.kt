@@ -48,8 +48,17 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         LeagueAdapter(matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ->
-                    //TODO open live and play type page
-                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                },
+                { matchOdd ->
+                    when (matchType) {
+                        MatchType.IN_PLAY -> {
+                            viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                        }
+                        else -> {
+                            viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                        }
+                    }
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
