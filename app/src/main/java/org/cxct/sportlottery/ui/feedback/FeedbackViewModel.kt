@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
@@ -22,6 +23,8 @@ class FeedbackViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+
+    val userInfo = userInfoRepository.userInfo.asLiveData()
 
     val allStatusTag = "ALL_STATUS"
 

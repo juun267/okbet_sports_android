@@ -9,12 +9,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_info_center.*
-import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.date_range_selector
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.iv_scroll_to_top

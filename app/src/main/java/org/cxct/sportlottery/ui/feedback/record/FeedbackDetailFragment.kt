@@ -71,6 +71,10 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
             adapter?.data = it ?: mutableListOf()
             rv_content.scrollToPosition((adapter?.itemCount ?: 0) - 1)
         })
+
+        viewModel.userInfo.observe(this.viewLifecycleOwner,  {
+            adapter?.iconUrl = it?.iconUrl
+        })
     }
 
 }
