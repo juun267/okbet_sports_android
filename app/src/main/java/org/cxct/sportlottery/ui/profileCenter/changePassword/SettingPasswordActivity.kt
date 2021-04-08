@@ -84,12 +84,6 @@ class SettingPasswordActivity : BaseOddButtonActivity<SettingPasswordViewModel>(
     }
 
     private fun initObserve() {
-        viewModel.passwordFormState.observe(this, Observer {
-            val passwordState = it ?: return@Observer
-            et_current_password.setError(passwordState.currentPwdError)
-            et_new_password.setError(passwordState.newPwdError)
-            et_confirm_password.setError(passwordState.confirmPwdError)
-        })
 
         viewModel.currentPwdError.observe(this, Observer {
             et_current_password.setError(it)

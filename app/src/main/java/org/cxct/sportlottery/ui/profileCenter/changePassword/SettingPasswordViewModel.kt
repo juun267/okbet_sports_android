@@ -29,15 +29,12 @@ class SettingPasswordViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    private val _passwordFormState = MutableLiveData<PasswordFormState>()
     private val _updatePwdResult = MutableLiveData<UpdatePwdResult?>()
     private val _updateFundPwdResult = MutableLiveData<UpdateFundPwdResult?>()
     private val _currentPwdError = MutableLiveData<String>()
     private val _newPwdError = MutableLiveData<String>()
     private val _confirmPwdError = MutableLiveData<String>()
 
-    val passwordFormState: LiveData<PasswordFormState>
-        get() = _passwordFormState
     val updatePwdResult: LiveData<UpdatePwdResult?>
         get() = _updatePwdResult
     val updateFundPwdResult: LiveData<UpdateFundPwdResult?>
