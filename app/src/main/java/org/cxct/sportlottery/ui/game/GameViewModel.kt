@@ -1072,7 +1072,7 @@ class GameViewModel(
     fun updateMatchOdd(it: MatchOddsChangeEvent) {
         val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
             mutableListOf()
-        for ((key, value) in it.odds) {
+        for ((key, value) in it.odds ?: mapOf()) {
             value.odds?.forEach { odd ->
                 odd?.let { o ->
                     newList.add(o)
@@ -1087,7 +1087,7 @@ class GameViewModel(
         } else {
             updateMatchOddStatus(newList)
             val list: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-            it.odds.forEach { map ->
+            it.odds?.forEach { map ->
                 val value = map.value
                 value.odds?.forEach { odd ->
                     val newOdd = odd?.status?.let { status ->
