@@ -11,11 +11,13 @@
 
     <View
         android:id="@+id/ll_start_date"
-        android:layout_width="135dp"
+        android:layout_width="0dp"
         android:layout_height="32dp"
+        android:maxWidth="135dp"
         android:background="@drawable/spinner_gray_5dp"
-        app:layout_constraintEnd_toStartOf="@id/date_selector_until"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/date_selector_until"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -40,14 +42,16 @@
         android:text="@string/finance_log_selector_until"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_start_date"
+        app:layout_constraintStart_toEndOf="@id/ll_start_date"
         app:layout_constraintEnd_toStartOf="@id/ll_end_date"
-        app:layout_constraintStart_toEndOf="@id/ll_start_date" />
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_start_date" />
 
     <View
         android:id="@+id/ll_end_date"
-        android:layout_width="135dp"
+        android:layout_width="0dp"
         android:layout_height="32dp"
+        android:maxWidth="135dp"
+        app:layout_constraintHorizontal_weight="2"
         android:background="@drawable/spinner_gray_5dp"
         app:layout_constraintEnd_toStartOf="@id/btn_search"
         app:layout_constraintStart_toEndOf="@id/date_selector_until"
@@ -68,12 +72,14 @@
 
     <Button
         android:id="@+id/btn_search"
-        android:layout_width="50dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:maxWidth="50dp"
         android:layout_marginStart="5dp"
         android:background="@drawable/bg_radius_5_button_dusk"
         android:text="@string/inquire"
         android:textColor="@color/colorWhite"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ll_end_date" />
 
