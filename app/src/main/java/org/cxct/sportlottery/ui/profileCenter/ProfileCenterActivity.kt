@@ -327,10 +327,11 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.editIconUrlResult.observe(this, Observer {
-            if (it?.success == true)
+            val iconUrlResult = it?.getContentIfNotHandled()
+            if (iconUrlResult?.success == true)
                 ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
             else
-                ToastUtil.showToastInCenter(this, it?.msg)
+                ToastUtil.showToastInCenter(this, iconUrlResult?.msg)
         })
     }
 

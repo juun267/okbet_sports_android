@@ -40,6 +40,8 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             btn_clear.visibility = if (value) View.VISIBLE else View.GONE
         }
 
+    private var clearListener: OnClickListener? = null
+
     var getAllIsShow
         get() = btn_withdraw_all.visibility == View.VISIBLE
         set(value) {
@@ -81,7 +83,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         afterTextChanged { }
         setupFocus()
         setupEye()
-        setupClear()
+        setupEditTextClearListener()
         setupVerificationCode()
         setError(null)
         setupKeyBoardPressDown()
@@ -105,9 +107,19 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun setupClear() {
-        btn_clear.setOnClickListener {
-            et_input.setText("")
+    fun setupEditTextClearListener(listener: (() -> Unit)? = null) {
+        listener?.let {
+            clearListener = OnClickListener {
+                et_input.setText("")
+                listener.invoke()
+            }
+        }
+        clearListener?.let {
+            btn_clear.setOnClickListener(it)
+        } ?: run {
+            btn_clear.setOnClickListener {
+                et_input.setText("")
+            }
         }
     }
 

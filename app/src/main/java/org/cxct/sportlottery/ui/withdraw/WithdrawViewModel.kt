@@ -48,7 +48,6 @@ class WithdrawViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
-    //TODO Dean : 以Event包裝, 避免ui加載時預載了上一次的資料
     val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList
     private var _bankCardList = MutableLiveData<List<BankCardList>>()
@@ -316,14 +315,20 @@ class WithdrawViewModel(
         viewModelScope.launch {
             loading()
             doNetwork(androidContext) {
-                moneyRepository.getRechCfg()
-            }?.let { result ->
-                result.rechCfg?.let {
-                    uwBankType = it.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
-                    _rechargeConfigs.value = it
-                    getWithdrawCardList()
+                OneBoSportApi.userService.getMoney()
+            }.let { userMoneyResult ->
+                _userMoney.postValue(userMoneyResult?.money)
+                doNetwork(androidContext) {
+                    moneyRepository.getRechCfg()
+                }?.let { result ->
+                    result.rechCfg?.let {
+                        uwBankType = it.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
+                        _rechargeConfigs.value = it
+                        getWithdrawCardList()
+                    }
                 }
             }
+
         }
     }
 

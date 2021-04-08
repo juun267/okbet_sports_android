@@ -158,10 +158,10 @@ class RegisterViewModel(
         return when {
             account.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             isExistAccount -> context.getString(R.string.error_register_id_exist)
-            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_incompatible_format)
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
                 context.getString(R.string.error_member_account)
             }
+            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_incompatible_format)
             else -> null
         }
     }

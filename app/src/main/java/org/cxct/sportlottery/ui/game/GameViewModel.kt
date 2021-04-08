@@ -613,7 +613,6 @@ class GameViewModel(
         _outrightOddsListResult.postValue(Event(result))
     }
 
-    //TODO Dean : 重構，整理、提取程式碼
     fun updateMatchBetList(
         matchOdd: MatchOdd,
         oddString: String,

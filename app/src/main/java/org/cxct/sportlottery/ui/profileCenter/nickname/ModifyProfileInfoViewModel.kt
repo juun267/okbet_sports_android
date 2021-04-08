@@ -169,7 +169,7 @@ class ModifyProfileInfoViewModel(
 
     private fun checkNickname(context: Context, nickname: String?) {
         _nickNameErrorMsg.value = when {
-            nickname.isNullOrBlank() -> context.getString(R.string.error_nickname_empty)
+            nickname.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyNickname(nickname) -> context.getString(R.string.error_incompatible_format)
             else -> ""
         }
