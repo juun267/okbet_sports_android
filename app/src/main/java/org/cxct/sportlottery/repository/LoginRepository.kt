@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.ui.menu.OddType
 import org.cxct.sportlottery.util.AesCryptoUtil
 import retrofit2.Response
 
@@ -27,6 +28,7 @@ const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
 const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
+const val KEY_ODD_TYPE = "oddType"
 
 const val KEY_USER_ID = "user_id"
 
@@ -105,6 +107,15 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         set(value) {
             with(sharedPref.edit()) {
                 putBoolean(KEY_REMEMBER_PWD, value)
+                commit()
+            }
+        }
+
+    var oddType
+        get() = sharedPref.getString(KEY_ODD_TYPE, OddType.EU.value)
+        set(value) {
+            with(sharedPref.edit()) {
+                putString(KEY_ODD_TYPE, value)
                 commit()
             }
         }
@@ -222,9 +233,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     suspend fun clear() {
         with(sharedPref.edit()) {
             remove(KEY_TOKEN)
+            remove(KEY_ODD_TYPE)
             apply()
         }
-
         clearUserInfo()
     }
 

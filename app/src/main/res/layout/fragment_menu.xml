@@ -39,6 +39,7 @@
             android:layout_marginStart="10dp"
             android:ellipsize="marquee"
             android:singleLine="true"
+            android:letterSpacing="0.1"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_money"
@@ -53,6 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="￥0.00"
+            android:letterSpacing="0.1"
+            android:textStyle="bold"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
@@ -108,6 +111,13 @@
                 app:cvTitle="@string/game_settlement" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_game_rule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_icongamerule"
+                app:cvTitle="@string/game_rule" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_odds_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,6 +154,7 @@
             android:background="@drawable/bg_radius_19_button_white"
             android:minHeight="38dp"
             android:text="@string/sign_out"
+            android:letterSpacing="0.117"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_version" />

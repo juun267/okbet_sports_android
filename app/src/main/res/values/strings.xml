@@ -732,4 +732,9 @@
     <string name="can_input_1_to_500_word">可输入1-500字</string>
     <string name="must_fill_this_column">此栏位为必填栏位</string>
 
+    <!--odd type-->
+    <string name="odd_type_title">盘口类型</string>
+    <string name="odd_type_eu">欧洲盘</string>
+    <string name="odd_type_hk">香港盘</string>
+
 </resources>

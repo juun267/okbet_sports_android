@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -20,13 +22,12 @@ import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 
 /**
  * 遊戲右側功能選單
  */
+@SuppressLint("SetTextI18n")
 class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
 
@@ -47,6 +48,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         initEvent()
         setupSelectLanguage()
         setupVersion()
+        setupOddType()
     }
 
     private fun setupCloseBtn() {
@@ -65,18 +67,19 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 getMoney()
             }
         })
-        viewModel.userMoney.observe(viewLifecycleOwner, Observer {
-            tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
+        viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
+            tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
             updateUI(it?.iconUrl, it?.userName, it?.nickName)
         })
+
     }
 
     private fun initSocketObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner, Observer {
-            tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
+        receiver.userMoney.observe(viewLifecycleOwner, Observer { money ->
+            tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
         })
     }
 
@@ -111,6 +114,16 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_game_result)
         }
 
+        menu_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
+            mDownMenuListener?.onClick(menu_game_rule)
+        }
+
+        menu_odds_type.setOnClickListener {
+            ChangeOddTypeDialog().show(parentFragmentManager, null)
+            mDownMenuListener?.onClick(menu_odds_type)
+        }
+
         menu_version_update.setOnClickListener {
             startActivity(Intent(activity, VersionUpdateActivity::class.java))
             mDownMenuListener?.onClick(menu_version_update)
@@ -118,12 +131,16 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         btn_sign_out.setOnClickListener {
             viewModel.doLogoutCleanUser()
-            context?.run {
-                MainActivity.reStart(this)
-            }
-            mDownMenuListener?.onClick(btn_sign_out)
+                context?.run {
+                    MainActivity.reStart(this)
+                }
+                mDownMenuListener?.onClick(btn_sign_out)
         }
 
+    }
+
+    private fun setupOddType() {
+        menu_odds_type.text = getString(R.string.odds_type, viewModel.getOddType())
     }
 
     private fun setupSelectLanguage() {
