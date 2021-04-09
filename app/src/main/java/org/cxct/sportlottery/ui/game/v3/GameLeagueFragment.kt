@@ -70,7 +70,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     true -> {
                         it.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
-                                sportType,
+                                this@GameLeagueFragment.sportType,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
                             )
@@ -80,7 +80,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     false -> {
                         it.matchOdds.forEach { matchOdd ->
                             service.unsubscribeHallChannel(
-                                sportType,
+                                this@GameLeagueFragment.sportType,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
                             )
