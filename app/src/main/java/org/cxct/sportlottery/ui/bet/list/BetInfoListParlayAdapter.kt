@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 import java.math.RoundingMode
 
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
@@ -37,15 +38,6 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             field = value
             notifyDataSetChanged()
         }
-
-
-    private fun getOdds(parlayOdd: ParlayOdd): Double {
-        return when (oddsType) {
-            OddsType.EU.value -> parlayOdd.odds
-            OddsType.HK.value -> parlayOdd.hkOdds
-            else -> 0.0
-        }
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -104,13 +96,13 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                     }
                 }
 
-                winQuotaList[position] = it.toDouble() * getOdds(parlayOdd)
+                winQuotaList[position] = it.toDouble() * getOdds(parlayOdd, oddsType)
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
                 sendBetQuotaList[position] = it.toDouble()
 
                 binding.tvParlayWinQuota.text =
                     ArithUtil.round(
-                        it.toDouble() * getOdds(parlayOdd),
+                        it.toDouble() * getOdds(parlayOdd, oddsType),
                         3,
                         RoundingMode.HALF_UP
                     ).plus(" ").plus(binding.root.context.getString(R.string.bet_info_list_rmb))
@@ -150,7 +142,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
 
-            binding.tvParlayOdds.text = TextUtil.formatForOdd(getOdds(parlayOdd))
+            binding.tvParlayOdds.text = TextUtil.formatForOdd(getOdds(parlayOdd, oddsType))
 
             binding.tvParlayOdds.visibility = if (position == 0) View.VISIBLE else View.GONE
 
