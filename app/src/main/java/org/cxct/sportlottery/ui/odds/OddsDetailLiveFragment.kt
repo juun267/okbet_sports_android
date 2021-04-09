@@ -34,6 +34,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
 @Suppress("DEPRECATION")
@@ -119,7 +120,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setWebView() {
-        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}")
+        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}&lang=${LanguageManager.getSelectLanguage(context).key}")
     }
 
     private fun initRecyclerView() {
@@ -256,7 +257,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             matchOddList.add(MatchOdd.matchInfo)
                         }
                     }
-                    sport = oddsListResult.oddsListData?.sport.toString()
+                    sport = oddsListResult.oddsListData?.sport?.code.toString()
                     oddsGameCardAdapter?.data = matchOddList
                 }
             }
