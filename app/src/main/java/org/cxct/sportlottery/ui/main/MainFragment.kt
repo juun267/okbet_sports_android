@@ -295,10 +295,10 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             rv_marquee.stopAuto() //停止跑馬燈
         }
 
-        val adapter = MarqueeAdapter()
-        adapter.setData(titleList)
-        rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_marquee.adapter = adapter
+//        val adapter = MarqueeAdapter()
+//        adapter.setData(titleList)
+//        rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        rv_marquee.adapter = adapter
     }
 
     private fun setGameData(cateDataList: List<GameCateData>?) {

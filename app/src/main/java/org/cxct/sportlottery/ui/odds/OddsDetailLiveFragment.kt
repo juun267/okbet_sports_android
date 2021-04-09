@@ -267,6 +267,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 subscribeHallChannel(sport, matchOddList?.id)
             }
         })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            oddsDetailListAdapter?.oddsType = it
+        })
+
     }
 
     private fun subscribeHallChannel(code: String, match: String?) {

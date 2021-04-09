@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.OddButtonHighLight
+import org.cxct.sportlottery.util.getOdds
 
 
 const val BUTTON_SPREAD_TYPE_CENTER: Int = 0
@@ -29,11 +30,11 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
 
 
-    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?, spreadType: Int) {
+    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?, spreadType: Int, oddsType: String) {
 
         if (rlOddItem != null) rlOddItem.visibility = if (odd.itemViewVisible) View.VISIBLE else View.GONE
 
-        setData(odd)
+        setContent(odd, oddsType)
 
         OddButtonHighLight.set(tvOdds, tvSpread, odd)
 
@@ -93,7 +94,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     }
 
 
-    private fun setData(odd: Odd) {
+    private fun setContent(odd: Odd, oddsType: String) {
         if (tvSpread != null && !odd.spread.isNullOrEmpty()) {
             tvSpread.text = odd.spread
         }
@@ -102,9 +103,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             tvName.text = odd.name
         }
 
-        odd.odds?.let { odds ->
-            tvOdds.text = TextUtil.formatForOdd(odds)
-        }
+        tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
     }
 
 

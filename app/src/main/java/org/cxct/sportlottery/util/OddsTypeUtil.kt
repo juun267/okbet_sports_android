@@ -2,7 +2,17 @@ package org.cxct.sportlottery.util
 
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
+
+
+fun getOdds(odd: Odd, oddsType: String): Double {
+    return when (oddsType) {
+        OddsType.EU.value -> odd.odds ?: 0.0
+        OddsType.HK.value -> odd.hkOdds ?: 0.0
+        else -> 0.0
+    }
+}
 
 
 fun getOdds(matchOdd: MatchOdd, oddsType: String): Double {

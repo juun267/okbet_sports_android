@@ -40,7 +40,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
-    private val mMarqueeAdapter by lazy { MarqueeAdapter() }
+//    private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private var mCloseOddsDetail = true
 
@@ -112,8 +112,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     //公告
     private fun initRvMarquee() {
-        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        rv_marquee.adapter = mMarqueeAdapter
+//        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        rv_marquee.adapter = mMarqueeAdapter
     }
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
@@ -340,16 +340,16 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult) {
-        val titleList: MutableList<String> = mutableListOf()
-        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
-
-        if (messageListResult.success && titleList.size > 0) {
-            rv_marquee.startAuto() //啟動跑馬燈
-        } else {
-            rv_marquee.stopAuto() //停止跑馬燈
-        }
-
-        mMarqueeAdapter.setData(titleList)
+//        val titleList: MutableList<String> = mutableListOf()
+//        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
+//
+//        if (messageListResult.success && titleList.size > 0) {
+//            rv_marquee.startAuto() //啟動跑馬燈
+//        } else {
+//            rv_marquee.stopAuto() //停止跑馬燈
+//        }
+//
+//        mMarqueeAdapter.setData(titleList)
     }
 
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
