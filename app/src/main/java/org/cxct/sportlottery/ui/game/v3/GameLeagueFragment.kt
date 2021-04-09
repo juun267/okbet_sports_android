@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.v3
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -134,7 +133,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             viewModel.getLeagueOddsList(args.matchType, args.leagueId)
             loading()
-
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -367,18 +365,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
-                findNavController().navigateUp()
-                return@OnKeyListener true
-            }
-            false
         })
     }
 
