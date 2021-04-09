@@ -20,9 +20,12 @@ import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.getOddsTypeCode
 
 
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
@@ -39,6 +42,9 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private var isSubScribe = false
+
+
+    private var oddsType: String = OddsType.EU.value
 
 
     init {
@@ -126,6 +132,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            oddsType = it
             betInfoListAdapter.oddsType = it
         })
 
@@ -212,10 +219,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
         viewModel.addBet(
             BetAddRequest(
-                listOf(Odd(betInfoListData.matchOdd.oddsId, betInfoListData.matchOdd.odds)),
+                listOf(Odd(betInfoListData.matchOdd.oddsId, getOdds(betInfoListData.matchOdd, oddsType))),
                 listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
                 1,
-                "EU"
+                getOddsTypeCode(oddsType)
             ), betInfoListData.matchType
         )
     }

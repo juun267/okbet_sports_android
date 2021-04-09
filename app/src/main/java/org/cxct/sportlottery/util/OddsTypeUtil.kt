@@ -21,3 +21,12 @@ fun getOdds(parlayOdd: ParlayOdd, oddsType: String): Double {
         else -> 0.0
     }
 }
+
+
+fun getOddsTypeCode(value: String): String {
+    return when (value) {
+        OddsType.EU.value -> OddsType.EU.code
+        OddsType.HK.value -> OddsType.HK.code
+        else -> OddsType.EU.code
+    }
+}

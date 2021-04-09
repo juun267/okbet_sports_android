@@ -31,11 +31,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.OnForbidClickListener
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.*
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
@@ -43,6 +41,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private var isSubScribe = false
+
+
+    private var oddsType: String = OddsType.EU.value
 
 
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
@@ -216,6 +217,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            oddsType = it
             matchOddAdapter.oddsType = it
             parlayAdapter.oddsType = it
         })
@@ -286,7 +288,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private fun addBet() {
         val matchList: MutableList<Odd> = mutableListOf()
         for (i in matchOddAdapter.matchOddList.indices) {
-            matchList.add(Odd(matchOddAdapter.matchOddList[i].oddsId, matchOddAdapter.matchOddList[i].odds))
+            matchList.add(Odd(matchOddAdapter.matchOddList[i].oddsId, getOdds(matchOddAdapter.matchOddList[i], oddsType)))
         }
         val parlayList: MutableList<Stake> = mutableListOf()
         for (i in parlayAdapter.parlayOddList.indices) {
@@ -300,7 +302,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 matchList,
                 parlayList,
                 1,
-                "EU"
+                getOddsTypeCode(oddsType)
             ), MatchType.PARLAY
         )
     }
