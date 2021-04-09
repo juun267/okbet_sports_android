@@ -5,121 +5,127 @@
     android:id="@+id/odd_button"
     android:layout_width="65dp"
     android:layout_height="50dp"
-    android:background="@drawable/shape_button_odd_bg"
-    android:padding="4dp">
+    android:background="@drawable/shape_button_odd_bg">
 
-    <TextView
-        android:id="@+id/odd_hdp_top_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_top_text"
-        android:textSize="@dimen/textSize14sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="0/0.5"
-        tools:textColor="@color/colorRedDark" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp">
 
-    <TextView
-        android:id="@+id/odd_hdp_bottom_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_bottom_text"
-        android:textSize="@dimen/textSize15sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/odd_hdp_top_text"
-        tools:text="1.067"
-        tools:textColor="@color/colorBlack" />
+        <TextView
+            android:id="@+id/odd_hdp_top_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_top_text"
+            android:textSize="@dimen/textSize14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="0/0.5"
+            tools:textColor="@color/colorRedDark" />
 
-    <TextView
-        android:id="@+id/odd_ou_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_top_text2"
-        android:textSize="@dimen/textSize13sp"
-        app:layout_constraintEnd_toStartOf="@id/odd_ou_top_text"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="小"
-        tools:textColor="@color/colorGrayLight" />
+        <TextView
+            android:id="@+id/odd_hdp_bottom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_bottom_text"
+            android:textSize="@dimen/textSize15sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/odd_hdp_top_text"
+            tools:text="1.067"
+            tools:textColor="@color/colorBlack" />
 
-    <TextView
-        android:id="@+id/odd_ou_top_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_top_text"
-        android:textSize="@dimen/textSize13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/odd_ou_type"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="2"
-        tools:textColor="@color/colorRedDark" />
+        <TextView
+            android:id="@+id/odd_ou_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_top_text2"
+            android:textSize="@dimen/textSize13sp"
+            app:layout_constraintEnd_toStartOf="@id/odd_ou_top_text"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="小"
+            tools:textColor="@color/colorGrayLight" />
 
-    <TextView
-        android:id="@+id/odd_ou_bottom_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_bottom_text"
-        android:textSize="@dimen/textSize15sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/odd_ou_top_text"
-        tools:text="1.067"
-        tools:textColor="@color/colorBlack" />
+        <TextView
+            android:id="@+id/odd_ou_top_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_top_text"
+            android:textSize="@dimen/textSize13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/odd_ou_type"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2"
+            tools:textColor="@color/colorRedDark" />
 
-    <TextView
-        android:id="@+id/odd_1x2_top_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_top_text"
-        android:textSize="@dimen/textSize14sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="0/0.5"
-        tools:textColor="@color/colorRedDark" />
+        <TextView
+            android:id="@+id/odd_ou_bottom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_bottom_text"
+            android:textSize="@dimen/textSize15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/odd_ou_top_text"
+            tools:text="1.067"
+            tools:textColor="@color/colorBlack" />
 
-    <TextView
-        android:id="@+id/odd_1x2_bottom_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_bottom_text"
-        android:textSize="@dimen/textSize15sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/odd_1x2_top_text"
-        tools:text="1.067"
-        tools:textColor="@color/colorBlack" />
+        <TextView
+            android:id="@+id/odd_1x2_top_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_top_text"
+            android:textSize="@dimen/textSize14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="0/0.5"
+            tools:textColor="@color/colorRedDark" />
 
-    <TextView
-        android:id="@+id/odd_outright_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/selector_button_odd_bottom_text"
-        android:textSize="@dimen/textSize15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1.067"
-        tools:textColor="@color/colorBlack" />
+        <TextView
+            android:id="@+id/odd_1x2_bottom_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_bottom_text"
+            android:textSize="@dimen/textSize15sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/odd_1x2_top_text"
+            tools:text="1.067"
+            tools:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/odd_outright_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/selector_button_odd_bottom_text"
+            android:textSize="@dimen/textSize15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1.067"
+            tools:textColor="@color/colorBlack" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/odd_lock"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
+        android:background="@drawable/shape_button_odd_bg_lock"
         android:scaleType="center"
         android:src="@drawable/ic_iconlock"
         android:visibility="gone"

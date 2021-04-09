@@ -150,6 +150,47 @@
                 app:cvTitle="@string/phone_number"
                 app:necessarySymbol="visible" />
 
+            <LinearLayout
+                android:id="@+id/block_sms_valid_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
+
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_sms_valid_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:cvEnableVerificationCode="false"
+                    app:cvHint="@string/hint_verification_code_by_sms"
+                    app:cvInputType="number"
+                    app:cvTitle="@string/verification_code_by_sms"
+                    app:necessarySymbol="visible" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:minWidth="80dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_send_sms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:minHeight="32dp"
+                        android:background="@drawable/btn_send_sms"
+                        android:text="@string/get_verification_code"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
             <org.cxct.sportlottery.ui.login.LoginEditText
                 android:id="@+id/et_mail"
                 android:layout_width="match_parent"
@@ -220,47 +261,6 @@
                 app:cvInputType="number"
                 app:cvTitle="@string/verification_code"
                 app:necessarySymbol="visible" />
-
-            <LinearLayout
-                android:id="@+id/block_sms_valid_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal">
-
-                <org.cxct.sportlottery.ui.login.LoginEditText
-                    android:id="@+id/et_sms_valid_code"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cvEnableVerificationCode="false"
-                    app:cvHint="@string/hint_verification_code_by_sms"
-                    app:cvInputType="number"
-                    app:cvTitle="@string/verification_code_by_sms"
-                    app:necessarySymbol="visible" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="5dp"
-                    android:background="@color/transparent"
-                    android:gravity="center"
-                    android:minWidth="80dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btn_send_sms"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minHeight="32dp"
-                        android:background="@drawable/btn_send_sms"
-                        android:text="@string/get_verification_code"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/textSize14sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

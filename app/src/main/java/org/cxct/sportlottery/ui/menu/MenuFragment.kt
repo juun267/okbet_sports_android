@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.activity_profile_center.*
 import kotlinx.android.synthetic.main.fragment_menu.*
-import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -67,16 +66,15 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if (it)
                 getMoney()
-            }
         })
         viewModel.userMoney.observe(viewLifecycleOwner, Observer {
             tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            updateUI(it?.iconUrl, it?.userName, it?.nickName)
+            updateUI(it?.iconUrl, it?.userName, it?.nickName, it?.fullName, StaticData.getTestFlag(it?.testFlag))
         })
     }
 
@@ -175,16 +173,21 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
-    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?) {
+    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {
         Glide.with(this)
             .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head) //載入頭像
 
-        tv_name.text = if (nickName.isNullOrEmpty()) {
-            userName
-        } else {
-            nickName
+        tv_name.text = when (testFlag) {
+            TestFlag.GUEST -> fullName
+            else -> {
+                if (nickName.isNullOrEmpty()) {
+                    userName
+                } else {
+                    nickName
+                }
+            }
         }
     }
 

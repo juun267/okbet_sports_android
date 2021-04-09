@@ -17,6 +17,13 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+        <action
+            android:id="@+id/action_homeFragment_to_mainActivity"
+            app:destination="@id/mainActivity">
+            <argument
+                android:name="thirdGameCate"
+                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+        </action>
     </fragment>
 
     <fragment
@@ -34,6 +41,23 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+        <action
+            android:id="@+id/action_gameV3Fragment_to_mainActivity"
+            app:destination="@id/mainActivity">
+            <argument
+                android:name="thirdGameCate"
+                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+        </action>
     </fragment>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="org.cxct.sportlottery.ui.main.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main">
+        <argument
+            android:name="thirdGameCate"
+            app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+    </activity>
 
 </navigation>

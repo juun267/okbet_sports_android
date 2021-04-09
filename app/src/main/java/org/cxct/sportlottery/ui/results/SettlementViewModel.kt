@@ -63,7 +63,6 @@ class SettlementViewModel(
             }?.let { result ->
                 reformatMatchResultData(result.matchResultList).let {
                     matchResultReformatted = it
-                    //TODO Dean : review 過濾資料
                     //獲取賽果資料後,更新聯賽列表
                     setupLeagueFilterList(it)
                     //過濾資料
