@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.network.service
 
 interface ServiceEventType {
-    val eventType: String
+    val eventType: String?
 }
 
 enum class EventType(val value: String) {
