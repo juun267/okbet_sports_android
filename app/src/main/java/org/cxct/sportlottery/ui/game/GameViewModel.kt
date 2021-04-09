@@ -451,57 +451,22 @@ class GameViewModel(
         val leagueIdList by lazy {
             listOf(leagueId)
         }
-        when (matchType) {
-            MatchType.TODAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
-                    it.isSelected
-                }?.code
 
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
-                }
-            }
+        val gameType = when (matchType) {
+            MatchType.TODAY -> _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }?.code
+            MatchType.EARLY -> _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
+            MatchType.PARLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
+            MatchType.IN_PLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
+            else -> null
+        }
 
-            MatchType.EARLY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
-                    it.isSelected
-                }?.code
-
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
-                }
-            }
-
-            MatchType.PARLAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
-                    it.isSelected
-                }?.code
-
-                val date = _curDate.value?.find {
-                    it.isSelected
-                }
-
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
-                }
-            }
-            else -> {
-            }
+        gameType?.let {
+            getOddsList(
+                gameType,
+                matchType.postValue,
+                getCurrentTimeRangeParams(),
+                leagueIdList
+            )
         }
     }
 
