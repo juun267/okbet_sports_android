@@ -609,8 +609,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 }
                             }
 
-                            Handler(Looper.getMainLooper()).post {
-                                listener?.onTimerUpdate(timeMillis)
+                            if (timeMillis > 0) {
+                                Handler(Looper.getMainLooper()).post {
+                                    listener?.onTimerUpdate(timeMillis)
+                                }
                             }
                         }
                     }, 1000L, 1000L)
