@@ -2,8 +2,6 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_money_transfer.*
 import org.cxct.sportlottery.R
@@ -12,6 +10,9 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransfe
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
 
 class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+
+    private val navController = my_nav_host_fragment.findNavController()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_transfer)
@@ -50,11 +51,9 @@ class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(Mone
     }
 
     private fun initOnClick() {
-        val navController = my_nav_host_fragment.findNavController()
         rb_change.setOnClickListener {
             when (navController.currentDestination?.id) {
                 R.id.moneyTransferRecordFragment -> {
-
                     my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
                 }
             }
