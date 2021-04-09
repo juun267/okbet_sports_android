@@ -33,6 +33,11 @@ class TypeOneListAdapter(
     private val oddsList = oddsDetail.oddArrayList
 
 
+    private fun checkKey(type: String, value: String): Boolean {
+        return type == value || type.contains(value)
+    }
+
+
     override fun getItemViewType(position: Int): Int {
         return when (position) {
             (oddsList.size) -> {
@@ -66,8 +71,22 @@ class TypeOneListAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(originOdd: Odd) {
-            setData(originOdd, onOddClickListener, betInfoList, curMatchId,
-                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType
+
+
+            when {
+                //獨贏&大小 強制不顯示spread
+                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.SINGLE_OU.value) -> originOdd.spread = null
+
+                //大小&双方球队进球 強制不顯示spread
+                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.OU_BTS.value) -> originOdd.spread = null
+
+                //双重机会&大小 強制不顯示spread
+                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.DC_OU.value) -> originOdd.spread = null
+            }
+
+            setData(
+                originOdd, onOddClickListener, betInfoList, curMatchId,
+                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
             )
         }
     }

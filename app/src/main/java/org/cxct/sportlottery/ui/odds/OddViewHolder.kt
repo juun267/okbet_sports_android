@@ -29,14 +29,32 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
     private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
 
+    private fun checkKey(type: String, value: String): Boolean {
+        return type == value || type.contains(value)
+    }
 
-    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?, spreadType: Int, oddsType: String) {
+    fun setData(
+        odd: Odd,
+        onOddClickListener: OnOddClickListener,
+        betInfoList: MutableList<BetInfoListData>,
+        curMatchId: String?,
+        spreadType: Int,
+        oddsType: String,
+        gameType: String?
+    ) {
+
+        gameType?.let { type ->
+            when {
+                checkKey(type, OddsDetailListAdapter.GameType.HDP.value) -> showName(false)
+                type == OddsDetailListAdapter.GameType.CLSH.value  -> showName(false)
+            }
+        }
 
         if (rlOddItem != null) rlOddItem.visibility = if (odd.itemViewVisible) View.VISIBLE else View.GONE
 
         setContent(odd, oddsType)
 
-        OddButtonHighLight.set(tvOdds, tvSpread, odd)
+        OddButtonHighLight.set(tvName, tvOdds, tvSpread, odd)
 
         when (spreadType) {
             BUTTON_SPREAD_TYPE_CENTER -> {
@@ -63,6 +81,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
                 tvOdds.isSelected = odd.isSelect ?: false
                 tvSpread?.let { it.isSelected = odd.isSelect ?: false }
+                tvName?.let { it.isSelected = odd.isSelect ?: false }
                 tvOdds.setOnClickListener {
                     if (odd.isSelect != true) {
                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
@@ -90,6 +109,13 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvOdds.isEnabled = false
             }
 
+        }
+    }
+
+
+    fun showName(visible: Boolean) {
+        if (tvName != null) {
+            tvName.visibility = if (visible) View.VISIBLE else View.GONE
         }
     }
 

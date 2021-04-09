@@ -45,7 +45,7 @@ class TypeGroupItemAdapter(
 
         fun bindModel(odd: Odd, position: Int) {
 
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM, oddsType)
+            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null)
 
             tvSpread.text = odd.spread
 

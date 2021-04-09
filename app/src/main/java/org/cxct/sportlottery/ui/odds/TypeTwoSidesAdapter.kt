@@ -36,7 +36,7 @@ class TypeTwoSidesAdapter(
         fun bindModel(odd: Odd) {
             setData(
                 odd, onOddClickListener, betInfoList, curMatchId,
-                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType
+                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
             )
         }
     }

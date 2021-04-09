@@ -83,13 +83,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         SCO("SCO", R.layout.content_odds_detail_list_one, 10),//进球球员
         TG("TG", R.layout.content_odds_detail_list_one, 11),//总进球数
         TG_("TG-", R.layout.content_odds_detail_list_one, 12),//进球数-半場
-        BTS("BTS", R.layout.content_odds_detail_list_one, 13),//双方球队进球
+        BTS("BTS", R.layout.content_odds_detail_list_hdp, 13),//双方球队进球
         GT1ST("GT1ST", R.layout.content_odds_detail_list_one, 14),//首个入球时间
         SBH("SBH", R.layout.content_odds_detail_list_one, 15),//双半场进球
         WBH("WBH", R.layout.content_odds_detail_list_one, 16),//赢得所有半场
         WEH("WEH", R.layout.content_odds_detail_list_one, 17),//赢得任一半场
         WM("WM", R.layout.content_odds_detail_list_one, 18),//净胜球数
-        CLSH("CLSH", R.layout.content_odds_detail_list_one, 19),//零失球
+        CLSH("CLSH", R.layout.content_odds_detail_list_hdp, 19),//零失球
         HTFT("HT/FT", R.layout.content_odds_detail_list_one, 20),//半场/全场
         W3("W3", R.layout.content_odds_detail_list_one, 21),//三项让球
         TG_OU("TG&O/U", R.layout.content_odds_detail_list_two_sides, 22),//球队进球数&大/小
@@ -103,6 +103,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         SINGLE_OT("1X2-INCL-OT", R.layout.content_odds_detail_list_one, 30),//独赢(含加时)
         SINGLE_SEG("1X2-SEG", R.layout.content_odds_detail_list_single, 31),//独赢-第X节
         SINGLE_FLG("1X2-FLG", R.layout.content_odds_detail_list_one, 32),//独赢-最先進球
+        OU_BTS("O/U-BTS", R.layout.content_odds_detail_list_one, 33),//大小&双方球队进球
+        SINGLE_BTS("1X2-BTS", R.layout.content_odds_detail_list_one, 34),//独赢&双方球队进球
+        DC_OU("DC-O/U", R.layout.content_odds_detail_list_one, 35),//双重机会&大小
     }
 
 
@@ -127,6 +130,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
             type == GameType.SINGLE.value -> return GameType.SINGLE.type
 
+            //先判斷完整字串 再比對部分字串(由長至短)
+            checkKey(type, GameType.DC_OU.value) -> return GameType.DC_OU.type
             checkKey(type, GameType.DC.value) -> return GameType.DC.type
 
             checkKey(type, GameType.OE.value) -> return GameType.OE.type
@@ -137,6 +142,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
             checkKey(type, GameType.TG_.value) -> return GameType.TG_.type
 
+            //先判斷完整字串 再比對部分字串(由長至短)
+            type == GameType.SINGLE_BTS.value -> return GameType.SINGLE_BTS.type
+            checkKey(type, GameType.OU_BTS.value) -> return GameType.OU_BTS.type
             checkKey(type, GameType.BTS.value) -> return GameType.BTS.type
 
             type == GameType.GT1ST.value -> return GameType.GT1ST.type
@@ -176,7 +184,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
             checkKey(type, GameType.SINGLE_SEG.value) -> return GameType.SINGLE_SEG.type
 
             checkKey(type, GameType.SINGLE_FLG.value) -> return GameType.SINGLE_FLG.type
-
 
             else -> {
                 return -1
@@ -249,6 +256,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                 }
             }
             GameType.SINGLE_FLG.type -> layout = GameType.SINGLE_FLG.layout
+            GameType.OU_BTS.type -> layout = GameType.OU_BTS.layout
+            GameType.SINGLE_BTS.type -> layout = GameType.SINGLE_BTS.layout
+            GameType.DC_OU.type -> layout = GameType.DC_OU.layout
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
@@ -376,6 +386,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
 
             when (viewType) {
+                GameType.CLSH.type,
+                GameType.BTS.type,
                 GameType.HDP.type -> forHDP(oddsDetail)
 
                 GameType.OU.type,
@@ -401,6 +413,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                     }
                 }
 
+
+                GameType.DC_OU.type,
+                GameType.SINGLE_BTS.type,
+                GameType.OU_BTS.type,
                 GameType.SINGLE_FLG.type,
                 GameType.W3.type,
                 GameType.SINGLE_OT.type,
@@ -410,13 +426,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                 GameType.DC.type,
                 GameType.TG.type,
                 GameType.TG_.type,
-                GameType.BTS.type,
                 GameType.GT1ST.type,
                 GameType.SBH.type,
                 GameType.WBH.type,
                 GameType.WEH.type,
                 GameType.WM.type,
-                GameType.CLSH.type,
                 GameType.HTFT.type -> oneList(oddsDetail, false)
 
                 GameType.SCO.type -> oneList(oddsDetail, true)
@@ -508,7 +522,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
                         tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
-                        OddButtonHighLight.set(tvOdds, null, odd)
+                        OddButtonHighLight.set(null, tvOdds, null, odd)
 
                         when (odd.status) {
                             BetStatus.ACTIVATED.code -> {
@@ -628,6 +642,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         }
 
         private fun forHDP(oddsDetail: OddsDetailListData) {
+
             itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
             itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
             itemView.findViewById<RelativeLayout>(R.id.rl_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -635,7 +650,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeHDPAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeHDPAdapter(oddsDetail, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
                 if (itemDecorationCount == 0) {
                     addItemDecoration(
