@@ -266,7 +266,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                         matchOdd.matchInfo?.id == matchId
                                     }
 
-                                    updateMatchOdd?.leagueTime = matchClockCO.matchTime
+                                    updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
+                                        SportType.FOOTBALL.code -> {
+                                            matchClockCO.matchTime
+                                        }
+                                        SportType.BASKETBALL.code -> {
+                                            matchClockCO.remainingTime
+                                        }
+                                        else -> null
+                                    }
 
                                     leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                                 }

@@ -24,8 +24,6 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
-import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections.Companion.actionHomeFragmentToMainActivity
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -508,7 +506,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     matchOdd.matchInfo?.id == matchId
                                 }
 
-                                updateMatchOdd?.leagueTime = matchClockCO.matchTime
+                                updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
+                                    SportType.FOOTBALL.code -> {
+                                        matchClockCO.matchTime
+                                    }
+                                    SportType.BASKETBALL.code -> {
+                                        matchClockCO.remainingTime
+                                    }
+                                    else -> null
+                                }
 
                                 leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                             }
