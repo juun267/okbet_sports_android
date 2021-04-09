@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.dialog_change_odd_type.*
 import kotlinx.android.synthetic.main.dialog_change_odd_type.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 
 class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
@@ -23,7 +22,8 @@ class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent(view)
-        setOddType()
+        initObserver()
+        getOddType()
     }
 
 
@@ -41,10 +41,19 @@ class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel
         }
     }
 
+    private fun initObserver(){
+        viewModel.oddType.observe(viewLifecycleOwner, {
+            setOddType(it)
+        })
+    }
 
-    private fun setOddType() {
+    private fun getOddType(){
+        viewModel.getOddType()
+    }
+
+    private fun setOddType(oddType: String) {
         context?.let { context ->
-            when (viewModel.getOddType()) {
+            when (oddType) {
                 OddType.EU.value -> {
                     tv_odd_type_hk.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                     tv_odd_type_eu.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
@@ -60,9 +69,7 @@ class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel
 
     private fun selectOddType(oddType: String) {
         viewModel.saveOddType(oddType)
-        activity?.run {
-            MainActivity.reStart(this)
-        }
+        dismiss()
     }
 
 

@@ -47,7 +47,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         initEvent()
         setupSelectLanguage()
         setupVersion()
-        setupOddType()
+        getOddType()
     }
 
     private fun setupCloseBtn() {
@@ -72,6 +72,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
             updateUI(it?.iconUrl, it?.userName, it?.nickName)
+        })
+
+        viewModel.oddType.observe(viewLifecycleOwner, {
+            setupOddType(it)
         })
 
     }
@@ -133,8 +137,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     }
 
-    private fun setupOddType() {
-        menu_odds_type.text = getString(R.string.odds_type, viewModel.getOddType())
+    private fun setupOddType(oddType: String) {
+        menu_odds_type.text = getString(R.string.odds_type, oddType)
     }
 
     private fun setupSelectLanguage() {
@@ -148,6 +152,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupVersion() {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
+    }
+
+    private fun getOddType(){
+        viewModel.getOddType()
     }
 
     private fun updateUI(iconUrl: String?, userName: String?, nickName: String?) {

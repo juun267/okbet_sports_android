@@ -256,12 +256,4 @@ class MainViewModel(
         }
     }
 
-    fun saveOddType(oddType: String) {
-        loginRepository.oddType = oddType
-    }
-
-    fun getOddType(): String? {
-        return loginRepository.oddType
-    }
-
 }
