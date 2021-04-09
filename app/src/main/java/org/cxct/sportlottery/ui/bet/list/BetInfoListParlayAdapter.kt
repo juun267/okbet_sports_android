@@ -100,12 +100,9 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
                 sendBetQuotaList[position] = it.toDouble()
 
-                binding.tvParlayWinQuota.text =
-                    ArithUtil.round(
-                        it.toDouble() * getOdds(parlayOdd, oddsType),
-                        3,
-                        RoundingMode.HALF_UP
-                    ).plus(" ").plus(binding.root.context.getString(R.string.bet_info_list_rmb))
+                binding.tvParlayWinQuota.text = TextUtil.format(it.toDouble() * getOdds(parlayOdd, oddsType))
+                    .plus(" ")
+                    .plus(binding.root.context.getString(R.string.bet_info_list_rmb))
 
             }
             onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())

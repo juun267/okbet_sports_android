@@ -134,6 +134,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
 
+    fun showErrorPromptDialog(message: String, positiveClickListener: () -> Unit? ){
+        showErrorPromptDialog(getString(R.string.error), message, positiveClickListener)
+    }
+
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
         showPromptDialog(title, message, null, positiveClickListener, true)
     }

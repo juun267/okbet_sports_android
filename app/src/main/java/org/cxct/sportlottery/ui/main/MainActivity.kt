@@ -3,10 +3,12 @@ package org.cxct.sportlottery.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,6 +33,7 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
@@ -74,6 +77,26 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         }
 
         super.onBackPressed()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        jumpScreen()
+    }
+
+    private fun jumpScreen() {
+        try {
+            val args: MainActivityArgs by navArgs()
+            val cate = args.thirdGameCate
+            Timber.d("Jump screen: ${cate.name}")
+            when (cate) {
+                ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
+                else -> goToMainMoreFragment(cate.name)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun initToolBar() {
@@ -186,17 +209,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         viewModel.messageDialogResult.observe(this, Observer { it ->
             it.getContentIfNotHandled()?.let { result ->
                 setNewsDialog(result)
-            }
-        })
-
-        viewModel.goToThirdGamePage.observe(this, Observer {
-            it.getContentIfNotHandled().let { cate ->
-                when {
-                    cate == ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
-                    cate != null -> goToMainMoreFragment(cate.name)
-                    else -> {
-                    }
-                }
             }
         })
     }

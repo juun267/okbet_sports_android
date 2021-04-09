@@ -34,6 +34,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
 @Suppress("DEPRECATION")
@@ -119,7 +120,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setWebView() {
-        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}")
+        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}&lang=${LanguageManager.getSelectLanguage(context).key}")
     }
 
     private fun initRecyclerView() {
@@ -146,7 +147,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
             val newList = arrayListOf<OddsDetailListData>()
 
-            it.odds.forEach { map ->
+            it.odds?.forEach { map ->
                 val key = map.key
                 val value = map.value
                 val filteredOddList = mutableListOf<Odd>()
@@ -256,7 +257,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             matchOddList.add(MatchOdd.matchInfo)
                         }
                     }
-                    sport = oddsListResult.oddsListData?.sport.toString()
+                    sport = oddsListResult.oddsListData?.sport?.code.toString()
                     oddsGameCardAdapter?.data = matchOddList
                 }
             }

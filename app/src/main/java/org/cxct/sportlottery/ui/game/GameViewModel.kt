@@ -24,7 +24,6 @@ import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
@@ -43,7 +42,6 @@ import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
@@ -615,7 +613,6 @@ class GameViewModel(
         _outrightOddsListResult.postValue(Event(result))
     }
 
-    //TODO Dean : 重構，整理、提取程式碼
     fun updateMatchBetList(
         matchOdd: MatchOdd,
         oddString: String,
@@ -1006,7 +1003,7 @@ class GameViewModel(
 
     fun updateOdd(it: OddsChangeEvent) {
         val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-        for ((_, value) in it.odds) {
+        for ((_, value) in it.odds ?: mapOf()) {
             newList.addAll(value)
         }
         val status = newList.find { odd ->
@@ -1017,7 +1014,7 @@ class GameViewModel(
         } else {
             updateOddStatus(newList)
             val list: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-            it.odds.forEach { map ->
+            it.odds?.forEach { map ->
                 val value = map.value
                 value.forEach { odd ->
                     val newOdd = Odd(
@@ -1072,7 +1069,7 @@ class GameViewModel(
     fun updateMatchOdd(it: MatchOddsChangeEvent) {
         val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
             mutableListOf()
-        for ((key, value) in it.odds) {
+        for ((key, value) in it.odds ?: mapOf()) {
             value.odds?.forEach { odd ->
                 odd?.let { o ->
                     newList.add(o)
@@ -1087,7 +1084,7 @@ class GameViewModel(
         } else {
             updateMatchOddStatus(newList)
             val list: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-            it.odds.forEach { map ->
+            it.odds?.forEach { map ->
                 val value = map.value
                 value.odds?.forEach { odd ->
                     val newOdd = odd?.status?.let { status ->
@@ -1391,10 +1388,6 @@ class GameViewModel(
             else -> {
             }
         }
-    }
-
-    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
-        thirdGameRepository.setGoToThirdGamePage(catePage)
     }
 
     fun searchLeague(matchType: MatchType, searchText: String) {

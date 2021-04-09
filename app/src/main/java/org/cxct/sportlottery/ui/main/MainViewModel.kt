@@ -36,7 +36,9 @@ class MainViewModel(
         loginRepository.isLogin
     }
 
-    val token = loginRepository.token
+    val token
+        get() = loginRepository.token
+
     val userId = loginRepository.userId
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
@@ -153,15 +155,6 @@ class MainViewModel(
                         resultType = EnterThirdGameResult.ResultType.NEED_REGISTER,
                         url = null,
                         errorMsg = null
-                    )
-                )
-            }
-            (userInfo.value?.testFlag == TestFlag.GUEST.index) -> {
-                _enterThirdGameResult.postValue(
-                    EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.GUEST,
-                        url = null,
-                        errorMsg = androidContext.getString(R.string.message_guest_no_permission)
                     )
                 )
             }

@@ -21,7 +21,11 @@ class FeedbackMainActivity : BaseOddButtonActivity<FeedbackViewModel>(FeedbackVi
     private fun initButton() {
         val navController = findNavController(R.id.myNavHostFragment)
         btn_sugession.setOnClickListener {
-            navController.navigate(R.id.action_feedbackRecordListFragment_to_feedbackSuggestFragment)
+            when (navController.currentDestination?.id) {
+                R.id.feedbackRecordListFragment -> {
+                    navController.navigate(R.id.action_feedbackRecordListFragment_to_feedbackSuggestFragment)
+                }
+            }
         }
         btn_record.setOnClickListener {
             when (navController.currentDestination?.id) {

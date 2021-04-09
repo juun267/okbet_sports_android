@@ -43,6 +43,9 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         tv_input_count.text = String.format("%d / 500", 0)
         et_content.countTextAmount {
             tv_input_count.text = String.format("%d / 500", it)
+            ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
+            val textColor = if (it > 0) R.color.colorSilverDirk else R.color.colorRedDark
+            tv_input_count.setTextColor(ContextCompat.getColor(tv_input_count.context, textColor))
         }
     }
 
@@ -67,6 +70,10 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
             et_content.text.clear()
             adapter?.data = it ?: mutableListOf()
             rv_content.scrollToPosition((adapter?.itemCount ?: 0) - 1)
+        })
+
+        viewModel.userInfo.observe(this.viewLifecycleOwner,  {
+            adapter?.iconUrl = it?.iconUrl
         })
     }
 

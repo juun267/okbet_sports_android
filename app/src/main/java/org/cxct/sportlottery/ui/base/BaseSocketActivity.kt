@@ -5,6 +5,7 @@ import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import androidx.lifecycle.Observer
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -50,9 +51,15 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             })
         })
 
-        viewModel.errorResultToken.observe(this, Observer {
-            backService.apply {
-                //TODO Dean : 待解除訂閱方法完善後加入解除訂閱私人頻道
+        receiver.serviceConnectStatus.observe(this, Observer { status ->
+            when (status) {
+                ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
+                    //TODO : 待PM確認Socket重連行為
+                    showErrorPromptDialog("Socket 重連次數超過上限 請重新啟動App (測試文字, 待產品規劃行為及文案)") {}
+                }
+                else -> {
+                    //do nothing
+                }
             }
         })
     }

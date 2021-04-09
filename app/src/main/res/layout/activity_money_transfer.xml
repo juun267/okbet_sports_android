@@ -54,30 +54,39 @@
         android:paddingHorizontal="15dp"
         android:paddingVertical="8dp">
 
-        <CheckBox
-            android:id="@+id/cb_change"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/selector_button_white_blue_left"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:paddingVertical="4dp"
-            android:text="@string/account_transfer"
-            android:textColor="@color/selector_blue_white" />
 
-        <CheckBox
-            android:id="@+id/cb_record"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/selector_button_white_blue_right"
-            android:button="@null"
-            android:gravity="center"
-            android:paddingVertical="4dp"
-            android:text="@string/record_conversion"
-            android:textColor="@color/selector_blue_white" />
+            android:layout_gravity="center"
+            android:background="@drawable/frame_4dp_white"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_change"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selector_button_white_blue_left"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:paddingVertical="4dp"
+                android:text="@string/account_transfer"
+                android:textColor="@color/selector_blue_white" />
+
+            <RadioButton
+                android:id="@+id/rb_record"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selector_button_white_blue_right"
+                android:button="@null"
+                android:gravity="center"
+                android:paddingVertical="4dp"
+                android:text="@string/record_conversion"
+                android:textColor="@color/selector_blue_white" />
+        </RadioGroup>
 
     </LinearLayout>
 

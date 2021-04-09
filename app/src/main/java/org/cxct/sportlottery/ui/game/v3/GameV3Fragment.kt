@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -37,8 +39,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             thirdGameListener = ThirdGameListener {
-                viewModel.setGoToThirdGamePage(it)
-                activity?.finish()
+                val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(it)
+                findNavController().navigate(action)
             }
         }
     }
@@ -71,7 +73,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd  ->
+                { matchOdd ->
+                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                },
+                { matchOdd ->
                     viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
                 },
                 { matchOdd, oddString, odd ->
@@ -319,9 +324,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
+                    val sportType = when (oddsListResult.oddsListData?.sport?.code) {
+                        SportType.FOOTBALL.code -> SportType.FOOTBALL
+                        SportType.BASKETBALL.code -> SportType.BASKETBALL
+                        SportType.BADMINTON.code -> SportType.BADMINTON
+                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                        SportType.TENNIS.code -> SportType.TENNIS
+                        else -> null
+                    }
+
                     game_list.apply {
                         adapter = leagueAdapter.apply {
                             data = leagueOdds
+                            this.sportType = sportType
                         }
 
                         when {
@@ -480,7 +495,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
             it?.let { matchClockEvent ->
                 matchClockEvent.matchClockCO?.let { matchClockCO ->
-                    matchClockCO.matchId.let { matchId ->
+                    matchClockCO.matchId?.let { matchId ->
 
                         val leagueOdds = leagueAdapter.data
 
@@ -491,7 +506,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     matchOdd.matchInfo?.id == matchId
                                 }
 
-                                updateMatchOdd?.leagueTime = matchClockCO.matchTime
+                                updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
+                                    SportType.FOOTBALL.code -> {
+                                        matchClockCO.matchTime
+                                    }
+                                    SportType.BASKETBALL.code -> {
+                                        matchClockCO.remainingTime
+                                    }
+                                    else -> null
+                                }
 
                                 leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                             }

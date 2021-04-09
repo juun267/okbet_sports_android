@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
-import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -39,18 +38,6 @@ class MoneyTransferViewModel(
     }
 
     val platCode = "CG"
-
-    private val gameNameMap: Map<String?, String> = mapOf(
-        "CG" to androidContext.getString(R.string.plat_money),
-        "DF" to androidContext.getString(R.string.third_game_df),
-        "SBTY" to androidContext.getString(R.string.third_game_sbty),
-        "AG" to androidContext.getString(R.string.third_game_ag),
-        "IBO" to androidContext.getString(R.string.third_game_ibo),
-        "CQ9" to androidContext.getString(R.string.third_game_cq9),
-        "CGCP" to androidContext.getString(R.string.third_game_cgcp),
-        "OGPLUS" to androidContext.getString(R.string.third_game_ogplus),
-        "CR" to androidContext.getString(R.string.third_game_cr),
-    )
 
     val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
         when (it) {
@@ -109,7 +96,6 @@ class MoneyTransferViewModel(
     val toolbarName: LiveData<String>
         get() = _toolbarName
 
-    private var _allBalanceResultList = MutableLiveData<List<GameData>>()
     private val _subInPlatSheetList = MutableLiveData<List<StatusSheetData>>()
     private val _subOutPlatSheetList = MutableLiveData<List<StatusSheetData>>()
     private val _recordInPlatSheetList = MutableLiveData<List<StatusSheetData>>()
@@ -119,6 +105,7 @@ class MoneyTransferViewModel(
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
+    private var _allBalanceResultList = MutableLiveData<List<GameData>>()
     private var _recycleAllMoneyResult = MutableLiveData<Event<BlankResult?>>()
     private var _transferResult = MutableLiveData<Event<BlankResult?>>()
     private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
@@ -148,6 +135,24 @@ class MoneyTransferViewModel(
         _isPlatSwitched.value = Event(!(isPlatSwitched.value?.peekContent() ?: false))
     }
 
+    private var thirdGameMap = mutableMapOf<String?, String?>()
+
+    fun getThirdGames() {
+        loading()
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.getThirdGames()
+            }?.let { result ->
+                hideLoading()
+
+                for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
+                    thirdGameMap[value.firmType] = value.firmShowName
+                }
+
+            }
+        }
+    }
+
     fun getAllBalance() {
         loading()
         viewModelScope.launch {
@@ -161,7 +166,7 @@ class MoneyTransferViewModel(
                         value?.apply {
                             val gameData = GameData(money, remark, transRemaining).apply {
                                 code = key
-                                showName = gameNameMap[key] ?: key
+                                showName = thirdGameMap[key] ?: key
                             }
                             resultList.add(gameData)
                         }
@@ -295,7 +300,7 @@ class MoneyTransferViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                val firmFilter = {item: String? -> if (item == platCode) null else item}
+                val firmFilter = { item: String? -> if (item == platCode) null else item }
                 OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, firmFilter(firmTypeIn), firmFilter(firmTypeOut), status?.toIntOrNull()))
             }?.let { result ->
                 hideLoading()

@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
+import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat
@@ -26,12 +27,11 @@ import org.cxct.sportlottery.util.setProfitFormat
 
 class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewModel::class) {
 
-    private val statusAdapter = BottomSheetAdapter(BottomSheetAdapter.ItemCheckedListener {
-        val cbAll = status_selector.bottomSheetView.checkbox_select_all
-        cbAll.isChecked = viewModel.isAllCbChecked()
-        status_selector.selectedText = viewModel.getBetStatus()
-        status_selector.selectedTextColor = R.color.textColorDark
-    })
+    private val betStatusList by lazy {
+        listOf(StatusSheetData("01234567", context?.getString(R.string.all_order)),
+               StatusSheetData("01", context?.getString(R.string.not_settled_order)),
+               StatusSheetData("234567", context?.getString(R.string.settled_order)))
+    }
 
     private val rvAdapter = BetRecordAdapter(ItemClickListener {
         it.let { data ->
@@ -82,7 +82,6 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
 
         initView()
         initRv()
-        initBottomSheet()
         initOnclick()
         initObserver()
     }
@@ -90,40 +89,9 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
     private fun initView() {
         layout_total.tv_total.text = getString(R.string.total_bet_amount)
         status_selector.setCloseBtnText(getString(R.string.cancel_select))
-        status_selector.setAdapter(statusAdapter)
+        status_selector.dataList = betStatusList
+        status_selector.selectedTag = betStatusList.firstOrNull()?.code
     }
-
-
-    private fun initBottomSheet() {
-        status_selector.isShowAllCheckBoxView = true
-        statusAdapter.dataList = viewModel.betStatusList
-
-        //item selected
-        val cbAll = status_selector.bottomSheetView.checkbox_select_all
-
-        //全選按鈕
-        cbAll.setOnClickListener {
-            if (cbAll.isChecked) {
-                viewModel.addAllStatusList()
-            } else {
-                viewModel.clearStatusList()
-            }
-
-            status_selector.post {
-                statusAdapter.notifyDataSetChanged()
-            }
-        }
-
-        //取消選擇
-        val tvCancel = status_selector.bottomSheetView.sheet_tv_close
-        tvCancel.setOnClickListener {
-            viewModel.clearStatusList()
-            cbAll.isChecked = false
-            statusAdapter.notifyDataSetChanged()
-        }
-
-    }
-
 
     private fun initOnclick() {
 
@@ -132,7 +100,7 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
         }
 
         date_search_bar.setOnClickSearchListener {
-            viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString())
+            viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString(), status_selector.selectedTag)
         }
 
         iv_scroll_to_top.setOnClickListener {
@@ -146,10 +114,6 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
 
         viewModel.loading.observe(viewLifecycleOwner, {
             if (it) loading() else hideLoading()
-        })
-
-        viewModel.statusSearchEnable.observe(viewLifecycleOwner, {
-            if (it == false) status_selector.selectedTextColor = R.color.red
         })
 
         viewModel.betRecordResult.observe(viewLifecycleOwner, {

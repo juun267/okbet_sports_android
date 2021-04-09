@@ -87,6 +87,10 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     }
 
     private fun initOnclick() {
+        iv_scroll_to_top.setOnClickListener {
+            rv_record.smoothScrollToPosition(0)
+        }
+
         date_search_bar.setOnClickSearchListener {
             viewModel.queryTransfers(startTime = date_search_bar.startTime.toString(), endTime = date_search_bar.endTime.toString(), firmTypeIn = selector_in_plat.selectedTag, firmTypeOut = selector_out_plat.selectedTag, status = selector_transfer_status.selectedTag)
         }

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.itemview_game_league.view.league_odd_count
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
@@ -22,6 +23,12 @@ class LeagueAdapter(private val matchType: MatchType) :
     }
 
     var data = listOf<LeagueOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var sportType: SportType? = null
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -75,7 +82,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             is ItemViewHolder -> {
                 val item = data[position]
 
-                holder.bind(item, playType, leagueOddListener, itemExpandListener)
+                holder.bind(item, sportType, playType, leagueOddListener, itemExpandListener)
             }
         }
     }
@@ -105,6 +112,7 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         fun bind(
             item: LeagueOdd,
+            sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
             itemExpandListener: ItemExpandListener?,
@@ -112,12 +120,13 @@ class LeagueAdapter(private val matchType: MatchType) :
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupLeagueOddList(item, playType, leagueOddListener)
-            setupLeagueOddExpand(item, itemExpandListener)
+            setupLeagueOddList(item, sportType, playType, leagueOddListener)
+            setupLeagueOddExpand(item, sportType, itemExpandListener)
         }
 
         private fun setupLeagueOddList(
             item: LeagueOdd,
+            sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
         ) {
@@ -130,20 +139,25 @@ class LeagueAdapter(private val matchType: MatchType) :
                     }
 
                     this.playType = playType
+                    this.isTimerDecrease = (sportType == SportType.BASKETBALL)
                     this.leagueOddListener = leagueOddListener
                 }
             }
         }
 
-        private fun setupLeagueOddExpand(item: LeagueOdd, itemExpandListener: ItemExpandListener?) {
+        private fun setupLeagueOddExpand(
+            item: LeagueOdd,
+            sportType: SportType?,
+            itemExpandListener: ItemExpandListener?
+        ) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
-            leagueOddAdapter.isTimerEnable = item.isExpand
+            updateTimer(sportType)
             updateArrowExpand()
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_expand.setExpanded(item.isExpand, true)
-                leagueOddAdapter.isTimerEnable = item.isExpand
+                updateTimer(sportType)
                 updateArrowExpand()
 
                 itemExpandListener?.onItemExpand(item)
@@ -155,6 +169,11 @@ class LeagueAdapter(private val matchType: MatchType) :
                 true -> itemView.league_arrow.setImageResource(R.drawable.ic_arrow_dark)
                 false -> itemView.league_arrow.setImageResource(R.drawable.ic_arrow_down_dark)
             }
+        }
+
+        private fun updateTimer(sportType: SportType?) {
+            leagueOddAdapter.isTimerEnable =
+                itemView.league_odd_expand.isExpanded && (sportType == SportType.FOOTBALL || sportType == SportType.BASKETBALL)
         }
 
         companion object {

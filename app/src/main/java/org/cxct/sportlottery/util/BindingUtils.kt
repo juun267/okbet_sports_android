@@ -106,13 +106,18 @@ val gameNameMap: Map<String?, Int> = mapOf(
     "CGCP" to R.string.third_game_cgcp,
     "OGPLUS" to R.string.third_game_ogplus,
     "CR" to R.string.third_game_cr,
+    "KY" to R.string.third_game_ky,
 )
 
 @BindingAdapter("platName")
 fun TextView.setPlatName(platCode: String?) {
 
     platCode?.let {
-        text = gameNameMap[it]?.let { stringId -> context.getString(stringId) }
+        text = if (gameNameMap[it]!= null) {
+            gameNameMap[it]?.let { it1 -> context.getString(it1) }
+        } else {
+            platCode
+        }
     }
 }
 

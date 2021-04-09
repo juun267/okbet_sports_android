@@ -149,7 +149,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             if (it == null) return@Observer
             val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
                 mutableListOf()
-            it.odds.forEach { map ->
+            it.odds?.forEach { map ->
                 val value = map.value
                 value.odds?.forEach { odd ->
                     if (odd != null)

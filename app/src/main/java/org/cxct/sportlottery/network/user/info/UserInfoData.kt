@@ -16,7 +16,7 @@ data class UserInfoData(
     @Json(name = "facebook")
     val facebook: String?,
     @Json(name = "fullName")
-    val fullName: String,
+    val fullName: String?,
     @Json(name = "hideFlag")
     val hideFlag: Int?,
     @Json(name = "iconUrl")

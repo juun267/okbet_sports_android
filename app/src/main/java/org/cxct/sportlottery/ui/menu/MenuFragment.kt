@@ -12,16 +12,24 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.ToastUtil
 
 /**
  * 遊戲右側功能選單
@@ -62,16 +70,15 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if (it)
                 getMoney()
-            }
         })
         viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
             tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            updateUI(it?.iconUrl, it?.userName, it?.nickName)
+            updateUI(it?.iconUrl, it?.userName, it?.nickName, it?.fullName, StaticData.getTestFlag(it?.testFlag))
         })
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
@@ -87,11 +94,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initEvent() {
-        btn_change_language.setOnClickListener {
-            ChangeLanguageDialog().show(parentFragmentManager, null)
-            mDownMenuListener?.onClick(btn_change_language)
-        }
 
+        //個人中心
         menu_profile_center.setOnClickListener {
             when (viewModel.userInfo.value?.testFlag) {
                 TestFlag.NORMAL.index -> {
@@ -107,14 +111,34 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_profile_center)
         }
 
+        //體育投注記錄
+        menu_sport_bet_record.setOnClickListener {
+            startActivity(Intent(context, BetRecordActivity::class.java))
+            mDownMenuListener?.onClick(menu_sport_bet_record)
+        }
+
+        //其他投注記錄
+        menu_other_bet_record.setOnClickListener {
+            startActivity(Intent(context, OtherBetRecordActivity::class.java))
+            mDownMenuListener?.onClick(menu_other_bet_record)
+        }
+
+        //會員層級
         menu_member_level.setOnClickListener {
             startActivity(Intent(context, VipActivity::class.java))
             mDownMenuListener?.onClick(menu_member_level)
         }
 
+        //賽果結算
         menu_game_result.setOnClickListener {
             startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             mDownMenuListener?.onClick(menu_game_result)
+        }
+
+        //遊戲規則
+        menu_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
+            mDownMenuListener?.onClick(menu_game_rule)
         }
 
         menu_odds_type.setOnClickListener {
@@ -122,17 +146,25 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_odds_type)
         }
 
+        //版本更新
         menu_version_update.setOnClickListener {
             startActivity(Intent(activity, VersionUpdateActivity::class.java))
             mDownMenuListener?.onClick(menu_version_update)
         }
 
+        //退出登入
         btn_sign_out.setOnClickListener {
             viewModel.doLogoutCleanUser()
                 context?.run {
                     MainActivity.reStart(this)
                 }
                 mDownMenuListener?.onClick(btn_sign_out)
+        }
+
+        //語系設置
+        btn_change_language.setOnClickListener {
+            ChangeLanguageDialog().show(parentFragmentManager, null)
+            mDownMenuListener?.onClick(btn_change_language)
         }
 
     }
@@ -158,16 +190,21 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.getOddsType()
     }
 
-    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?) {
+    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {
         Glide.with(this)
             .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head) //載入頭像
 
-        tv_name.text = if (nickName.isNullOrEmpty()) {
-            userName
-        } else {
-            nickName
+        tv_name.text = when (testFlag) {
+            TestFlag.GUEST -> fullName
+            else -> {
+                if (nickName.isNullOrEmpty()) {
+                    userName
+                } else {
+                    nickName
+                }
+            }
         }
     }
 

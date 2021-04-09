@@ -109,7 +109,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
             val newList = arrayListOf<OddsDetailListData>()
 
-            it.odds.forEach { map ->
+            it.odds?.forEach { map ->
                 val key = map.key
                 val value = map.value
                 val filteredOddList = mutableListOf<Odd>()

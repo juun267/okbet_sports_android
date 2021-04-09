@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.FeedBackRows
 
@@ -110,7 +112,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
 
     private fun getMsgStatus(status: Int): String {
         return when (status) {
-            0 -> context.getString(R.string.feedback_unreplied)
+            0 -> context.getString(R.string.feedback_not_reply_yet)
             1 -> context.getString(R.string.feedback_replied)
             else -> ""
         }
