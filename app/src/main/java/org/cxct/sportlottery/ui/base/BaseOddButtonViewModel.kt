@@ -11,19 +11,15 @@ abstract class BaseOddButtonViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseSocketViewModel(loginRepository, betInfoRepository, infoCenterRepository){
 
-    val oddType: LiveData<String> = loginRepository.mOddType
+    val oddsType: LiveData<String> = loginRepository.mOddsType
 
-    fun saveOddType(oddType: String) {
-        loginRepository.sOddType = oddType
-        loginRepository.mOddType.postValue(oddType)
+    fun saveOddsType(oddsType: String) {
+        loginRepository.sOddsType = oddsType
+        loginRepository.mOddsType.postValue(oddsType)
     }
 
-//    fun getOddType(): String? {
-//        return loginRepository.oddType
-//    }
-
-    fun getOddType(){
-        loginRepository.mOddType.postValue(loginRepository.sOddType)
+    fun getOddsType(){
+        loginRepository.mOddsType.postValue(loginRepository.sOddsType)
     }
 
 }

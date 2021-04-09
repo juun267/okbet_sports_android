@@ -47,7 +47,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         initEvent()
         setupSelectLanguage()
         setupVersion()
-        getOddType()
+        getOddsType()
     }
 
     private fun setupCloseBtn() {
@@ -74,8 +74,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             updateUI(it?.iconUrl, it?.userName, it?.nickName)
         })
 
-        viewModel.oddType.observe(viewLifecycleOwner, {
-            setupOddType(it)
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            setupOddsType(it)
         })
 
     }
@@ -118,7 +118,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_odds_type.setOnClickListener {
-            ChangeOddTypeDialog().show(parentFragmentManager, null)
+            ChangeOddsTypeDialog().show(parentFragmentManager, null)
             mDownMenuListener?.onClick(menu_odds_type)
         }
 
@@ -137,8 +137,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     }
 
-    private fun setupOddType(oddType: String) {
-        menu_odds_type.text = getString(R.string.odds_type, oddType)
+    private fun setupOddsType(oddsType: String) {
+        menu_odds_type.text = getString(R.string.odds_type, oddsType)
     }
 
     private fun setupSelectLanguage() {
@@ -154,8 +154,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
-    private fun getOddType(){
-        viewModel.getOddType()
+    private fun getOddsType(){
+        viewModel.getOddsType()
     }
 
     private fun updateUI(iconUrl: String?, userName: String?, nickName: String?) {

@@ -11,7 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
-class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
+class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -23,7 +23,7 @@ class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel
         super.onViewCreated(view, savedInstanceState)
         initEvent(view)
         initObserver()
-        getOddType()
+        getOddsType()
     }
 
 
@@ -33,32 +33,32 @@ class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel
                 dismiss()
             }
             tv_odd_type_hk?.setOnClickListener {
-                selectOddType(OddType.HK.value)
+                selectOddsType(OddsType.HK.value)
             }
             tv_odd_type_eu?.setOnClickListener {
-                selectOddType(OddType.EU.value)
+                selectOddsType(OddsType.EU.value)
             }
         }
     }
 
     private fun initObserver(){
-        viewModel.oddType.observe(viewLifecycleOwner, {
-            setOddType(it)
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            setOddsType(it)
         })
     }
 
-    private fun getOddType(){
-        viewModel.getOddType()
+    private fun getOddsType(){
+        viewModel.getOddsType()
     }
 
-    private fun setOddType(oddType: String) {
+    private fun setOddsType(oddsType: String) {
         context?.let { context ->
-            when (oddType) {
-                OddType.EU.value -> {
+            when (oddsType) {
+                OddsType.EU.value -> {
                     tv_odd_type_hk.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                     tv_odd_type_eu.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
                 }
-                OddType.HK.value -> {
+                OddsType.HK.value -> {
                     tv_odd_type_hk.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
                     tv_odd_type_eu.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                 }
@@ -67,8 +67,8 @@ class ChangeOddTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel
     }
 
 
-    private fun selectOddType(oddType: String) {
-        viewModel.saveOddType(oddType)
+    private fun selectOddsType(oddsType: String) {
+        viewModel.saveOddsType(oddsType)
         dismiss()
     }
 
