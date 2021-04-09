@@ -124,6 +124,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             betInfoListAdapter.isNeedRegister =
                 (it == null) || (it.testFlag == TestFlag.GUEST.index)
         })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            betInfoListAdapter.oddsType = it
+        })
+
     }
 
 
