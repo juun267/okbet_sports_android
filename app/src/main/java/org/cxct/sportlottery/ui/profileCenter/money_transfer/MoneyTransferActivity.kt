@@ -11,7 +11,7 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTrans
 
 class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
-    private val navController = my_nav_host_fragment.findNavController()
+    private val navController by lazy { my_nav_host_fragment.findNavController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
 import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.MetricsUtil
 
@@ -42,7 +44,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private var mCloseOddsDetail = true
 
-    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT }
+    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT, ODDS_DETAIL_LIVE}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +73,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            viewModel.setGoToThirdGamePage(ThirdGameCategory.MAIN)
-            startActivity(Intent(this, MainActivity::class.java))
+            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
+            mNavController.navigate(action)
         }
 
         //頭像 當 側邊欄 開/關
@@ -216,12 +218,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
-            R.id.game2Fragment -> {
-                val action =
-                    GameDetailFragmentDirections.actionGame2FragmentToGameFragment(matchType)
-                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                mNavController.navigate(action, navOptions)
-            }
         }
     }
 
@@ -256,7 +252,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.messageListResult.observe(this, Observer {
-            hideLoading()
             updateUiWithResult(it)
         })
 
@@ -269,7 +264,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 //            //TODO simon test 從首頁滾球盤跳轉到投注詳情頁面，back 時要直接回到首頁
 //            tabLayout.getTabAt(tabLayout.selectedTabPosition)?.customView?.isSelected = false
 //            tabLayout.getTabAt(1)?.customView?.isSelected = true
-            tabLayout.getTabAt(1)?.select()
+//            tabLayout.getTabAt(1)?.select()
 
             val gameType = it[0]
             val typeName = it[1]
@@ -281,6 +276,20 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             addFragment(
                 OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
                 Page.ODDS_DETAIL
+            )
+        })
+
+        viewModel.curOddsDetailLiveParams.observe(this, Observer {
+            val gameType = it[0]
+            val typeName = it[1]
+            val matchId = it[2] ?: ""
+            val oddsType = "EU"
+
+            app_bar_layout.setExpanded(true, true)
+
+            addFragment(
+                OddsDetailLiveFragment.newInstance(gameType, typeName, matchId, oddsType),
+                Page.ODDS_DETAIL_LIVE
             )
         })
 

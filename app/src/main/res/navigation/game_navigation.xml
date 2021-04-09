@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/game_navigation"
     app:startDestination="@id/homeFragment">
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="org.cxct.sportlottery.ui.game.home.HomeFragment"
@@ -16,21 +17,20 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+        <action
+            android:id="@+id/action_homeFragment_to_mainActivity"
+            app:destination="@id/mainActivity">
+            <argument
+                android:name="thirdGameCate"
+                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+        </action>
     </fragment>
-    <fragment
-        android:id="@+id/gameFragment"
-        android:name="org.cxct.sportlottery.ui.game.GameFragment"
-        android:label="fragment_game"
-        tools:layout="@layout/fragment_game">
-        <argument
-            android:name="matchType"
-            app:argType="org.cxct.sportlottery.network.common.MatchType" />
-    </fragment>
+
     <fragment
         android:id="@+id/gameV3Fragment"
         android:name="org.cxct.sportlottery.ui.game.v3.GameV3Fragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game">
+        tools:layout="@layout/fragment_game_v3">
         <argument
             android:name="matchType"
             app:argType="org.cxct.sportlottery.network.common.MatchType" />
@@ -42,33 +42,22 @@
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
         <action
-            android:id="@+id/action_gameFragment_to_game2Fragment"
-            app:destination="@id/game2Fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/game2Fragment"
-        android:name="org.cxct.sportlottery.ui.game.GameDetailFragment"
-        android:label="fragment_game2"
-        tools:layout="@layout/fragment_game_detail">
-        <argument
-            android:name="oddsListId"
-            app:argType="string" />
-        <argument
-            android:name="matchType"
-            app:argType="org.cxct.sportlottery.network.common.MatchType" />
-        <argument
-            android:name="startTime"
-            app:argType="string" />
-        <argument
-            android:name="endTime"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_game2Fragment_to_gameFragment"
-            app:destination="@+id/gameV3Fragment">
+            android:id="@+id/action_gameV3Fragment_to_mainActivity"
+            app:destination="@id/mainActivity">
             <argument
-                android:name="matchType"
-                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+                android:name="thirdGameCate"
+                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
         </action>
     </fragment>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="org.cxct.sportlottery.ui.main.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main">
+        <argument
+            android:name="thirdGameCate"
+            app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+    </activity>
 
 </navigation>

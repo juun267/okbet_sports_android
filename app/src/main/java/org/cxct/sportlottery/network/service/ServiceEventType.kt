@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.network.service
 
 interface ServiceEventType {
-    val eventType: String
+    val eventType: String?
 }
 
 enum class EventType(val value: String) {
@@ -24,4 +24,18 @@ enum class EventType(val value: String) {
     GLOBAL_STOP("GLOBAL_STOP"), //所有赔率禁用，不允许投注
     PRODUCER_UP("PRODUCER_UP"), //開啟允許投注
     SYS_MAINTENANCE("SYS_MAINTENANCE"), //系统维护状态
+
+    /*未被定義的頻道*/
+    UNKNOWN("UNKNOWN");
+
+    companion object {
+        fun getEventType(eventType: String): EventType {
+            return try {
+                valueOf(eventType)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                UNKNOWN
+            }
+        }
+    }
 }

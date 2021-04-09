@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -41,15 +42,24 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private lateinit var matchType: MatchType
-    private var sportType: String? = null
+    private var sportType: SportType? = null
     private var eventId: String? = null
 
     private val leagueAdapter by lazy {
         LeagueAdapter(matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd, _ ->
-                    //TODO open live and play type page
-                    viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                { matchOdd ->
+                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                },
+                { matchOdd ->
+                    when (matchType) {
+                        MatchType.IN_PLAY -> {
+                            viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                        }
+                        else -> {
+                            viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                        }
+                    }
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
@@ -61,7 +71,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     true -> {
                         it.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
-                                sportType,
+                                this@GameLeagueFragment.sportType?.code,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
                             )
@@ -71,7 +81,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     false -> {
                         it.matchOdds.forEach { matchOdd ->
                             service.unsubscribeHallChannel(
-                                sportType,
+                                this@GameLeagueFragment.sportType?.code,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
                             )
@@ -86,7 +96,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            sportType = it.getString(ARG_SPORT_TYPE)
+            sportType = when (it.getString(ARG_SPORT_TYPE)) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
             matchType = when (it.getString(ARG_MATCH_TYPE)) {
                 MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
                 MatchType.TODAY.postValue -> MatchType.TODAY
@@ -95,10 +113,11 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 MatchType.OUTRIGHT.postValue -> MatchType.OUTRIGHT
                 else -> MatchType.AT_START
             }
+
             eventId = it.getString(ARG_EVENT_ID)
         }
 
-        service.subscribeHallChannel(sportType, CateMenuCode.HDP_AND_OU.code, eventId)
+        service.subscribeHallChannel(sportType?.code, CateMenuCode.HDP_AND_OU.code, eventId)
     }
 
     override fun onCreateView(
@@ -137,15 +156,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun setupLeagueOddList(view: View) {
         view.game_league_odd_list.apply {
-
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-            this.adapter = leagueAdapter
-
-            this.addItemDecoration(
-                DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-            )
         }
     }
 
@@ -165,14 +177,46 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
+                    val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+
                     game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
-                    leagueAdapter.data = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+
+                    game_league_odd_list.apply {
+                        adapter = leagueAdapter.apply {
+                            data = leagueOdds
+                            sportType = this@GameLeagueFragment.sportType
+                        }
+
+                        when {
+                            (leagueOdds.isEmpty() && itemDecorationCount > 0) -> {
+                                removeItemDecorationAt(0)
+                            }
+
+                            (leagueOdds.isNotEmpty() && itemDecorationCount == 0) -> {
+                                addItemDecoration(
+                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         })
 
         viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
             leagueAdapter.data = it
+
+            when {
+                (it.isEmpty() && game_league_odd_list.itemDecorationCount > 0) -> {
+                    game_league_odd_list.removeItemDecorationAt(0)
+                }
+
+                (it.isNotEmpty() && game_league_odd_list.itemDecorationCount == 0) -> {
+                    game_league_odd_list.addItemDecoration(
+                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                    )
+                }
+            }
         })
     }
 
@@ -211,7 +255,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 if (matchType == MatchType.IN_PLAY) {
 
                     matchClockEvent.matchClockCO?.let { matchClockCO ->
-                        matchClockCO.matchId.let { matchId ->
+                        matchClockCO.matchId?.let { matchId ->
 
                             val leagueOdds = leagueAdapter.data
 
@@ -222,7 +266,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                         matchOdd.matchInfo?.id == matchId
                                     }
 
-                                    updateMatchOdd?.leagueTime = matchClockCO.matchTime
+                                    updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
+                                        SportType.FOOTBALL.code -> {
+                                            matchClockCO.matchTime
+                                        }
+                                        SportType.BASKETBALL.code -> {
+                                            matchClockCO.remainingTime
+                                        }
+                                        else -> null
+                                    }
 
                                     leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                                 }
@@ -337,7 +389,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
-                                sportType,
+                                sportType?.code,
                                 CateMenuCode.HDP_AND_OU.code,
                                 matchOdd.matchInfo?.id
                             )

@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
@@ -216,7 +215,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
             when (it.itemId) {
                 R.id.home_page -> {
-                    viewModel.setGoToThirdGamePage(ThirdGameCategory.MAIN)
                     startActivity(Intent(this, MainActivity::class.java))
                     false
                 }
@@ -329,10 +327,11 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.editIconUrlResult.observe(this, Observer {
-            if (it?.success == true)
+            val iconUrlResult = it?.getContentIfNotHandled()
+            if (iconUrlResult?.success == true)
                 ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
             else
-                ToastUtil.showToastInCenter(this, it?.msg)
+                ToastUtil.showToastInCenter(this, iconUrlResult?.msg)
         })
     }
 
@@ -366,7 +365,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file)
+        val uploadImgRequest = UploadImgRequest(userId, file,UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 

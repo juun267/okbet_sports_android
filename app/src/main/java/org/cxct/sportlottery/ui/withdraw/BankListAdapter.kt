@@ -101,7 +101,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 tv_bank_name.text = data.bankName
                 tv_name.text = fullName
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
-                tv_bind_time.text = stampToDateHMS(data.addTime.toLong())
+                tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
                 if (sConfigData?.enableModifyBank == "1") {
                     img_edit_bank.apply {
                         visibility = View.VISIBLE
@@ -130,7 +130,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 iv_bank_icon.setImageResource(MoneyManager.getCryptoIconByCryptoName(data.bankName))
                 tv_bank_name.text = data.bankName
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
-                tv_bind_time.text = stampToDateHMS(data.addTime.toLong())
+                tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
                 if (sConfigData?.enableModifyBank == "1") {
                     img_edit_bank.apply {
                         visibility = View.VISIBLE

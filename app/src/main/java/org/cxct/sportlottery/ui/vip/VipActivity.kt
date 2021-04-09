@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.vip
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,9 @@ import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_BET_ID
 import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_RECHARGE_ID
 import org.cxct.sportlottery.network.vip.growth.GrowthConfig
+import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
-import org.cxct.sportlottery.util.TextUtil
 
 class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
@@ -29,13 +29,15 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter() }
 
     private val thirdGameAdapter by lazy {
-        ThirdGameAdapter(this, OnSelectThirdGames {
+        ThirdGameAdapter(OnSelectThirdGames {
             sv_third_games.apply {
                 setRebatesFormGame(it)
                 dismiss()
             }
         })
     }
+
+    private var userVipLevel: Level? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,27 +119,33 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun userInfoUpdateView(userInfo: UserInfoData) {
+        updateUserVipLevel(userInfo.testFlag, userInfo.userLevelId)
         setupViewByUserInfo(userInfo)
-        updateUserLevel(userInfo.userLevelId)
+        updateUserLevelBlock()
         updateUserGrowthBar(userInfo)
-        updateNextLevelTips(userInfo)
+        updateNextLevelTips()
     }
 
-    private fun updateNextLevelTips(userInfo: UserInfoData) {
-        getNextLevel(userInfo.userLevelId)?.let { nextLevel ->
+    private fun updateNextLevelTips() {
+        if (verifyMaxLevel()) {
+            tv_next_level_tips.text = getString(R.string.level_max)
+            return
+        }
+        getNextLevel()?.let { nextLevel ->
             tv_next_level_tips.text = "${getString(nextLevel.levelRequirement.level)}  ${nextLevel.levelRequirement.levelName}"
         }
     }
 
     private fun updateUserGrowthBar(userInfo: UserInfoData) {
-        if (verifyMaxLevel(userInfo.userLevelId)) {
+        if (verifyMaxLevel()) {
             pb_user_growth.apply {
                 max = 1
                 progress = 1
             }
+            tv_requirement_amount.text = getString(R.string.level_max)
             return
         }
-        val growthRequirement = getUpgradeGrowthRequirement(userInfo.userLevelId)
+        val growthRequirement = getUpgradeGrowthRequirement()
         val userGrowth = userInfo.growth?.toInt() ?: 0
         val nextLevelRequirement = (growthRequirement - userGrowth).let { if (it < 0) 0 else it }.toLong()
         pb_user_growth.apply {
@@ -147,26 +155,38 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
         tv_requirement_amount.text = String.format(getString(R.string.next_level_tips), nextLevelRequirement)
     }
 
-    private fun verifyMaxLevel(levelId: Int): Boolean {
-        return Level.values().last() === Level.values().find { level -> level.levelRequirement.levelId == levelId }
+    private fun verifyMaxLevel(): Boolean {
+        return Level.values().last() === userVipLevel
     }
 
-    private fun getUpgradeGrowthRequirement(levelId: Int): Int {
-        return getNextLevel(levelId)?.levelRequirement?.growthRequirement ?: 0
+    private fun getUpgradeGrowthRequirement(): Int {
+        return getNextLevel()?.levelRequirement?.growthRequirement ?: 0
     }
 
-    private fun getNextLevel(levelId: Int): Level? {
-        return Level.values().find { level -> level.levelRequirement.levelId == levelId + 1 }
+    private fun getNextLevel(): Level? {
+        val nextLevelId = userVipLevel?.name?.let { Level.valueOf(it).levelRequirement.levelId?.plus(1) }
+        return Level.values().find { level -> level.levelRequirement.levelId == nextLevelId }
     }
 
     private fun setupViewByUserInfo(userInfo: UserInfoData) {
         userInfo.let { user ->
-            tv_greet.text = user.nickName
+            tv_greet.text = if (user.fullName.isNullOrEmpty()) user.nickName else user.fullName
         }
     }
 
-    private fun updateUserLevel(levelId: Int) {
-        Level.values().find { it.levelRequirement.levelId == levelId }?.apply {
+    private fun updateUserVipLevel(testFlag: Long, levelId: Int) {
+        userVipLevel = when (StaticData.getTestFlag(testFlag)) {
+            TestFlag.GUEST -> {
+                Level.values().first()
+            }
+            else -> {
+                Level.values().find { it.levelRequirement.levelId == levelId }
+            }
+        }
+    }
+
+    private fun updateUserLevelBlock() {
+        userVipLevel?.apply {
             tv_vip_name.text = levelRequirement.levelName
             iv_vip.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, levelRequirement.levelTitleIcon))
             updateLevelBar(ordinal)
@@ -206,17 +226,17 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
                 tvLevel?.text = getString(cardInfo.level)
                 ivLevel?.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, cardInfo.levelIcon))
                 tvLevelName?.text = cardInfo.levelName
-                tvGrowthRequirement?.text = getGrowthRequirementTips(cardInfo.growthRequirement)
+                tvGrowthRequirement?.text = getGrowthRequirementTips(cardInfo.levelId, cardInfo.growthRequirement)
             }
         }
     }
 
-    private fun getGrowthRequirementTips(requirement: Int?): String {
+    private fun getGrowthRequirementTips(level: Int?, requirement: Int?): String {
         return when {
-            requirement == null -> ""
-            (requirement <= 1) -> {
+            level == 2 -> {
                 getString(R.string.no_value)
             }
+            requirement == null -> ""
             else -> "$requirement ${getString(R.string.level_requirement_unit)}"
         }
     }
@@ -233,7 +253,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     }
 }
 
-class ThirdGameAdapter(private val context: Context, private val selectedListener: OnSelectThirdGames) :
+class ThirdGameAdapter(private val selectedListener: OnSelectThirdGames) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {

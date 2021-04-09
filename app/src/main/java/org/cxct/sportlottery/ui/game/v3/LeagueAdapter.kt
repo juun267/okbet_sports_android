@@ -11,13 +11,24 @@ import kotlinx.android.synthetic.main.itemview_game_league.view.league_odd_count
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
 class LeagueAdapter(private val matchType: MatchType) :
-    RecyclerView.Adapter<LeagueAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    enum class ItemType {
+        ITEM, NO_DATA
+    }
 
     var data = listOf<LeagueOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var sportType: SportType? = null
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -33,33 +44,66 @@ class LeagueAdapter(private val matchType: MatchType) :
 
     var itemExpandListener: ItemExpandListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(matchType, parent).apply {
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            data.isEmpty() -> ItemType.NO_DATA.ordinal
+            else -> ItemType.ITEM.ordinal
+        }
+    }
 
-            this.itemView.league_odd_list.apply {
-                this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ItemType.ITEM.ordinal -> {
+                ItemViewHolder.from(matchType, parent).apply {
 
-                addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_straight)))
+                    this.itemView.league_odd_list.apply {
+                        this.layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+                        addItemDecoration(
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_straight
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+            else -> {
+                NoDataViewHolder.from(parent)
             }
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ItemViewHolder -> {
+                val item = data[position]
 
-        holder.bind(item, playType, leagueOddListener, itemExpandListener)
+                holder.bind(item, sportType, playType, leagueOddListener, itemExpandListener)
+            }
+        }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = if (data.isEmpty()) {
+        1
+    } else {
+        data.size
+    }
 
-
-    override fun onViewRecycled(holder: ViewHolder) {
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
 
-        holder.itemView.league_odd_list.adapter = null
+        when (holder) {
+            is ItemViewHolder -> {
+                holder.itemView.league_odd_list.adapter = null
+            }
+        }
     }
 
-    class ViewHolder private constructor(matchType: MatchType, itemView: View) :
+    class ItemViewHolder private constructor(matchType: MatchType, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private val leagueOddAdapter by lazy {
@@ -68,6 +112,7 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         fun bind(
             item: LeagueOdd,
+            sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
             itemExpandListener: ItemExpandListener?,
@@ -75,12 +120,13 @@ class LeagueAdapter(private val matchType: MatchType) :
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupLeagueOddList(item, playType, leagueOddListener)
-            setupLeagueOddExpand(item, itemExpandListener)
+            setupLeagueOddList(item, sportType, playType, leagueOddListener)
+            setupLeagueOddExpand(item, sportType, itemExpandListener)
         }
 
         private fun setupLeagueOddList(
             item: LeagueOdd,
+            sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
         ) {
@@ -93,20 +139,25 @@ class LeagueAdapter(private val matchType: MatchType) :
                     }
 
                     this.playType = playType
+                    this.isTimerDecrease = (sportType == SportType.BASKETBALL)
                     this.leagueOddListener = leagueOddListener
                 }
             }
         }
 
-        private fun setupLeagueOddExpand(item: LeagueOdd, itemExpandListener: ItemExpandListener?) {
+        private fun setupLeagueOddExpand(
+            item: LeagueOdd,
+            sportType: SportType?,
+            itemExpandListener: ItemExpandListener?
+        ) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
-            leagueOddAdapter.isTimerEnable = item.isExpand
+            updateTimer(sportType)
             updateArrowExpand()
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_expand.setExpanded(item.isExpand, true)
-                leagueOddAdapter.isTimerEnable = item.isExpand
+                updateTimer(sportType)
                 updateArrowExpand()
 
                 itemExpandListener?.onItemExpand(item)
@@ -120,12 +171,31 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
         }
 
+        private fun updateTimer(sportType: SportType?) {
+            leagueOddAdapter.isTimerEnable =
+                itemView.league_odd_expand.isExpanded && (sportType == SportType.FOOTBALL || sportType == SportType.BASKETBALL)
+        }
+
         companion object {
-            fun from(matchType: MatchType, parent: ViewGroup): ViewHolder {
+            fun from(matchType: MatchType, parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.itemview_game_league, parent, false)
 
-                return ViewHolder(matchType, view)
+                return ItemViewHolder(matchType, view)
+            }
+        }
+    }
+
+    class NoDataViewHolder private constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+
+        companion object {
+            fun from(parent: ViewGroup): NoDataViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_game_no_record, parent, false)
+
+                return NoDataViewHolder(view)
             }
         }
     }

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -91,12 +90,9 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
                 sendBetQuotaList[position] = it.toDouble()
 
-                binding.tvParlayWinQuota.text =
-                    ArithUtil.round(
-                        it.toDouble() * parlayOdd.odds,
-                        3,
-                        RoundingMode.HALF_UP
-                    ).plus(" ").plus(binding.root.context.getString(R.string.bet_info_list_rmb))
+                binding.tvParlayWinQuota.text = TextUtil.format(it.toDouble() * parlayOdd.odds)
+                    .plus(" ")
+                    .plus(binding.root.context.getString(R.string.bet_info_list_rmb))
 
             }
             onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())

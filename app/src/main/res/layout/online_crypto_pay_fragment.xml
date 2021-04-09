@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    android:background="@color/colorWhite1"
+    tools:context=".ui.money.recharge.OnlineCryptoPayFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F3F4F5"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <!--协议/币种-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_currency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="5"
+                    android:text="@string/title_currency"
+                    android:textColor="@color/gray4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:textStyle="" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/bright_gray" />
+
+                <TextView
+                    android:id="@+id/txv_currency"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical|left"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_click_pay_account"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_arrow_gray" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <!--充值账号-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="5"
+                    android:text="@string/title_recharge_account"
+                    android:textColor="@color/gray4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:textStyle="" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/bright_gray" />
+
+                <TextView
+                    android:id="@+id/txv_account"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical|left"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_click_recharge_account"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_arrow_gray" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- 充值個數 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_recharge_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:cvHint="@string/edt_hint_crypto_pay_count"
+            app:cvInputType="number"
+            app:cvTitle="@string/txv_recharge_count" />
+
+        <TextView
+            android:id="@+id/tv_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_rate"
+            android:textColor="@color/orangeRed"
+            android:textSize="@dimen/textSize12sp" />
+
+        <TextView
+            android:id="@+id/tv_recharge_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txv_recharge_money"
+            android:textColor="@color/orangeRed"
+            android:textSize="@dimen/textSize12sp"
+            android:layout_marginTop="10dp"/>
+
+
+        <TextView
+            android:id="@+id/tv_fee_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/hint_fee_rate"
+            android:textColor="@color/orangeRed"
+            android:textSize="@dimen/textSize12sp"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
+
+
+
+        <TextView
+            android:id="@+id/tv_fee_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/hint_fee_amount"
+            android:textColor="@color/orangeRed"
+            android:textSize="@dimen/textSize12sp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_radius_20_button_dusk"
+            android:gravity="center"
+            android:text="@string/btn_submit"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSize16sp" />
+
+    </LinearLayout>
+
+</ScrollView>

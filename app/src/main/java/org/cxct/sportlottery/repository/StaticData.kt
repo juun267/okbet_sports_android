@@ -17,3 +17,11 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
+
+class StaticData {
+    companion object{
+        fun getTestFlag(index: Long?): TestFlag? {
+            return TestFlag.values().find { it.index == index }
+        }
+    }
+}

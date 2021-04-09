@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -11,7 +14,9 @@ import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.*
+import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -21,14 +26,19 @@ import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
 import org.cxct.sportlottery.util.VerifyConstUtil
+import timber.log.Timber
 
 class MoneyRechViewModel(
     private val androidContext: Context,
+    private val userInfoRepository: UserInfoRepository,
     private val moneyRepository: MoneyRepository,
+    private val avatarRepository: AvatarRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+
+    val token = loginRepository.token
 
     val rechargeConfigs: LiveData<MoneyRechCfgData?>
         get() = _rechargeConfigs
@@ -59,6 +69,11 @@ class MoneyRechViewModel(
         get() = _rechargeAmountMsg
     private var _rechargeAmountMsg = MutableLiveData<String>()
 
+    //充值個數錯誤訊息
+    val rechargeAccountMsg: LiveData<String>
+        get() = _rechargeAccountMsg
+    private var _rechargeAccountMsg = MutableLiveData<String>()
+
     //微信錯誤訊息
     val wxErrorMsg: LiveData<String>
         get() = _wxErrorMsg
@@ -69,10 +84,10 @@ class MoneyRechViewModel(
         get() = _nameErrorMsg
     private var _nameErrorMsg = MutableLiveData<String>()
 
-    //銀行卡號錯誤訊息
-    val bankIDErrorMsg: LiveData<String>
-        get() = _bankIDErrorMsg
-    private var _bankIDErrorMsg = MutableLiveData<String>()
+    //区块链交易ID錯誤訊息
+    val hashCodeErrorMsg: LiveData<String>
+        get() = _hashCodeErrorMsg
+    private var _hashCodeErrorMsg = MutableLiveData<String>()
 
     //暱稱錯誤訊息
     val nickNameErrorMsg: LiveData<String>
@@ -89,6 +104,14 @@ class MoneyRechViewModel(
         get() = _userMoneyResult
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
 
+    //銀行卡號錯誤訊息
+    val bankIDErrorMsg: LiveData<String>
+        get() = _bankIDErrorMsg
+    private var _bankIDErrorMsg = MutableLiveData<String>()
+
+
+    //上傳支付截圖
+    val voucherUrlResult: LiveData<String?> = avatarRepository.voucherUrlResult
 
     //獲取充值的基礎配置
     fun getRechCfg() {
@@ -104,6 +127,7 @@ class MoneyRechViewModel(
     //篩選List要顯示的資料
     private fun filterBankList(rechConfigList: List<MoneyRechCfg.RechConfig>) {
         try {
+//            Timber.i("充值的基礎配置>>>>>>rechConfigList:${Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter<List<MoneyRechCfg.RechConfig>>(Types.newParameterizedType(MutableList::class.java, MoneyRechCfg.RechConfig::class.java)).toJson(rechConfigList)}")
 
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
@@ -129,6 +153,10 @@ class MoneyRechViewModel(
             _onlinePayList.value = onlineData
             _transferPayList.value = transferData
 
+            Timber.v("充值的基礎配置>>>>>>onlineData:${Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter<List<MoneyPayWayData>>(Types.newParameterizedType(MutableList::class.java, MoneyPayWayData::class.java)).toJson(onlineData)}")
+            Timber.i("充值的基礎配置>>>>>>transferData:${Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter<List<MoneyPayWayData>>(Types.newParameterizedType(MutableList::class.java, MoneyPayWayData::class.java)).toJson(transferData)}")
+
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -142,17 +170,24 @@ class MoneyRechViewModel(
         }
     }
 
+    //TODO Bill
+    //充值頁面[虛擬幣充值]-[按鈕]提交申請
+    fun rechargeCryptoSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
+        checkAll(moneyAddRequest, rechType, rechConfig)
+        if (checkTransferPayCryptoInput()) {
+            rechargeAdd(moneyAddRequest)
+        }
+    }
+
     //轉帳支付充值
     private fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
         if (checkTransferPayInput()) {
             viewModelScope.launch {
-                if (checkTransferPayInput()) {
-                    doNetwork(androidContext) {
-                        moneyRepository.rechargeAdd(moneyAddRequest)
-                    }.let {
-                        it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
-                        _apiResult.value = it
-                    }
+                doNetwork(androidContext) {
+                    moneyRepository.rechargeAdd(moneyAddRequest)
+                }.let {
+                    it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
+                    _apiResult.value = it
                 }
             }
         }
@@ -176,6 +211,25 @@ class MoneyRechViewModel(
         }
     }
 
+    //在線支付 - 虛擬幣 //TODO Bill 確認API參數
+    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, payee: String?,payeeName: String?) {
+        checkRcgOnlineAmount(depositMoney.toString(), mSelectRechCfgs)
+        if (onlinePayInput()) {
+            var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
+            val queryMap = hashMapOf(
+                "x-session-token" to (loginRepository.token ?: ""),
+                "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
+                "payee" to (payee ?: ""),
+                "payeeName" to (payeeName ?: ""),
+                "depositMoney" to depositMoney.toString()
+            )
+            url += toUrlParamsFormat(queryMap)
+            toExternalWeb(context, url)
+
+            _onlinePaySubmit.value = depositMoney.toLong() //金額帶入result
+        }
+    }
+
     //轉帳支付 - 送出前判斷全部
     private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         when (rechType) {
@@ -189,6 +243,9 @@ class MoneyRechViewModel(
             MoneyType.ALI_TYPE.code -> {
                 checkNickName(moneyAddRequest.payerName)
                 checkUserName(moneyAddRequest.payerInfo ?: "")
+            }
+            MoneyType.CRYPTO.code ->{
+                checkHashCode(moneyAddRequest.txHashCode ?: "")
             }
         }
         checkRechargeAmount(moneyAddRequest.depositMoney.toString(), rechConfig)
@@ -208,6 +265,27 @@ class MoneyRechViewModel(
                 channelMaxMoney
             ) -> {
                 androidContext.getString(R.string.error_recharge_amount)
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
+    //充值個數驗證
+    fun checkRechargeAccount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+        val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
+        val channelMaxMoney = rechConfig?.maxMoney?.toLong()
+        _rechargeAccountMsg.value = when {
+            rechargeAmount.isEmpty() || rechargeAmount == "0" -> {
+                androidContext.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) -> {
+                androidContext.getString(R.string.error_recharge_account)
             }
             else -> {
                 ""
@@ -304,6 +382,23 @@ class MoneyRechViewModel(
         }
     }
 
+    //HashCode区块链交易ID認證
+    fun checkHashCode(HashCode:String){
+        _hashCodeErrorMsg.value =when {
+            HashCode.isEmpty() -> {
+                androidContext.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyHashCode(
+                HashCode
+            ) -> {
+                androidContext.getString(R.string.error_hashcode)
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
     //獲取使用者餘額
     fun getMoney() {
         viewModelScope.launch {
@@ -327,6 +422,15 @@ class MoneyRechViewModel(
             return false
         return true
     }
+    //TODO Bill
+    private fun checkTransferPayCryptoInput(): Boolean {
+        if (!rechargeAccountMsg.value.isNullOrEmpty())
+            return false
+        if (!hashCodeErrorMsg.value.isNullOrEmpty())
+            return false
+
+        return true
+    }
 
     private fun onlinePayInput(): Boolean {
         if (!_rechargeOnlineAmountMsg.value.isNullOrEmpty())
@@ -341,5 +445,16 @@ class MoneyRechViewModel(
         _bankIDErrorMsg.value = ""
         _nickNameErrorMsg.value = ""
         _rechargeOnlineAmountMsg.value = ""
+        _hashCodeErrorMsg.value = ""
+        _rechargeAccountMsg.value = ""
+    }
+
+    //上傳支付截圖
+    fun uploadImage(uploadImgRequest: UploadImgRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                avatarRepository.uploadVoucher(uploadImgRequest)
+            }
+        }
     }
 }

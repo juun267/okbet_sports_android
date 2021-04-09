@@ -29,8 +29,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private var loadingView: View? = null
 
-    private var floatButtonView: View? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -134,6 +132,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
         showPromptDialog(title, message, null, positiveClickListener, false)
+    }
+
+    fun showErrorPromptDialog(message: String, positiveClickListener: () -> Unit? ){
+        showErrorPromptDialog(getString(R.string.error), message, positiveClickListener)
     }
 
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {

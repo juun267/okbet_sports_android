@@ -110,12 +110,16 @@
 
     <TextView
         android:id="@+id/game_name_home_1x2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize15sp"
         app:layout_constraintBaseline_toBaselineOf="@id/game_score_home_1x2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/game_score_home_1x2"
         tools:text="皇家马德里" />
 
@@ -134,12 +138,16 @@
 
     <TextView
         android:id="@+id/game_name_away_1x2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize15sp"
         app:layout_constraintBaseline_toBaselineOf="@id/game_score_away_1x2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/game_score_away_1x2"
         tools:text="利物浦" />
 

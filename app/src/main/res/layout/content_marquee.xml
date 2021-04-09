@@ -4,6 +4,8 @@
     android:id="@+id/tv_marquee"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     android:gravity="center_vertical"
     android:singleLine="true"
     android:textColor="@color/colorGrayLight"

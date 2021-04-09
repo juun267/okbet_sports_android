@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
@@ -84,28 +85,28 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         card_lottery.setOnClickListener {
-            viewModel.setGoToThirdGamePage(ThirdGameCategory.CGCP)
-            activity?.finish()
+            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.CGCP)
+            findNavController().navigate(action)
         }
 
         card_live.setOnClickListener {
-            viewModel.setGoToThirdGamePage(ThirdGameCategory.LIVE)
-            activity?.finish()
+            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.LIVE)
+            findNavController().navigate(action)
         }
 
         card_poker.setOnClickListener {
-            viewModel.setGoToThirdGamePage(ThirdGameCategory.QP)
-            activity?.finish()
+            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.QP)
+            findNavController().navigate(action)
         }
 
         card_slot.setOnClickListener {
-            viewModel.setGoToThirdGamePage(ThirdGameCategory.DZ)
-            activity?.finish()
+            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.DZ)
+            findNavController().navigate(action)
         }
 
         card_fishing.setOnClickListener {
-            viewModel.setGoToThirdGamePage(ThirdGameCategory.BY)
-            activity?.finish()
+            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.BY)
+            findNavController().navigate(action)
         }
 
         card_game_result.setOnClickListener {
@@ -188,7 +189,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 selectData?.matchs?.let { list -> viewModel.setOddsDetailMoreList(list) }
 
                 scroll_view.smoothScrollTo(0, 0)
-                viewModel.getOddsDetail(select)
+
+                viewModel.getOddsDetailLive(select)
+                viewModel.getOddsList(select.code.toString(),MatchType.IN_PLAY.postValue)
             }
         })
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {

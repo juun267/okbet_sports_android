@@ -196,6 +196,7 @@
     <string name="level_four">VIP4</string>
     <string name="level_five">VIP5</string>
     <string name="level_six">VIP6</string>
+    <string name="level_max">已是最高层级</string>
     <string name="unlimited">无上限</string>
     <string name="select_plat">选择平台</string>
     <string name="daily_bet_range">每日有效打码区间值</string>
@@ -393,6 +394,7 @@
     <string name="detail_outright_upper_bar_title">冠军</string>
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
+    <string name="no_history_search">您搜寻或筛选项目查无对应资料</string>
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
 
@@ -456,10 +458,34 @@
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
     <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
+    <string name="error_recharge_account">您输入的充值个数或数值错误</string>
     <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
     <string name="error_wx">您输入的微信格式或数值错误</string>
     <string name="error_bank_id">您输入的银行卡号格式有错误</string>
+    <string name="error_hashcode">您输入的区块链交易ID格式有错误</string>
     <string name="text_money_copy_success">复制成功</string>
+
+    <string name="title_currency">协议/币种</string>
+    <string name="txv_recharge_count">充值个数</string>
+    <string name="edt_hint_crypto_pay_count">限额最低%1$s个，最高%2$s个</string>
+    <string name="hint_rate">・汇率：%1$s</string>
+    <string name="title_transaction_id">区块链交易ID</string>
+    <string name="hint_transaction_id">请输入您的区块链ID</string>
+    <string name="hint_fee_rate">・手续费：%1$s </string>
+    <string name="hint_fee_amount">・手续费金额：%1$s RMB</string>
+    <string name="hint_feeback_rate">・返利：%1$s </string>
+    <string name="hint_feeback_amount">・返利金额：%1$s RMB</string>
+    <string name="txv_recharge_money">・充值金额:%1$s RMB</string>
+    <string name="title_recharge_account">充值账号</string>
+    <string name="title_recharge_address">充币地址:</string>
+    <string name="btn_recharge">去充值</string>
+    <string name="title_upload_pic">上传支付截图</string>
+    <string name="title_click_upload_pic">请点击上传支付成功截图</string>
+    <string name="hint_remark">备注：%1$s%</string>
+
+
+
+
 
 
     <!--  Withdraw  -->
@@ -711,4 +737,5 @@
     <string name="third_game_ky">开元棋牌</string>
     <string name="choose_title">选择状态</string>
 
+    <string name="handicap">盘口</string>
 </resources>

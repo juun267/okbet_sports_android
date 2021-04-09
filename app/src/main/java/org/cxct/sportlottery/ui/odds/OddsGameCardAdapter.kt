@@ -11,18 +11,25 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_odds_detail_game_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class OddsGameCardAdapter(private val clickListener: ItemClickListener) :
+class OddsGameCardAdapter(
+    private var matchId: String?,
+    private val clickListener: ItemClickListener
+) :
     RecyclerView.Adapter<OddsGameCardAdapter.ViewHolder>() {
-    private var mSelectedPosition = 0
-    private val mTimerMap = mutableMapOf<Int, Timer?>()
+    private var mSelectedPosition = -1
+    private var mTimerMap = mutableMapOf<Int, Timer?>()
 
+    var socketDataList: MutableList<MatchClockCO> = mutableListOf()
     var data: MutableList<MatchInfo?> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
+            socketDataList = MutableList(data.size) { MatchClockCO(0, "", "", 0, 0, 0, 0, 0, 0, 0) }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,14 +41,21 @@ class OddsGameCardAdapter(private val clickListener: ItemClickListener) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        item?.let { holder.bind(it) }
+        item?.let { holder.bind(it, position) }
         holder.itemView.isSelected = mSelectedPosition == position
+
+        if (mSelectedPosition == -1)//首次進入用ID判斷
+            holder.itemView.isSelected = matchId == item?.id
+
         holder.gameCard.setOnClickListener {
             if (position != mSelectedPosition) {
                 mSelectedPosition = position
+                stopAllTimer()
+                mTimerMap = mutableMapOf()
                 notifyDataSetChanged()
+
+                item?.let { it -> clickListener.onClick(it) }
             }
-            item?.let { it1 -> clickListener.onClick(it1) }
         }
     }
 
@@ -60,74 +74,86 @@ class OddsGameCardAdapter(private val clickListener: ItemClickListener) :
         val gameCard: LinearLayout = itemView.findViewById(R.id.ll_game_card)
 
 
-        fun bind(item: MatchInfo) {
+        fun bind(item: MatchInfo, position: Int) {
             homeScore.text = (item.homeScore ?: 0).toString()
             homeName.text = item.homeName
 
             awayScore.text = (item.awayScore ?: 0).toString()
             awayName.text = item.awayName
 
-            if(item.startTime.isNotEmpty()&& item.endTime?.isNotEmpty() == true){
-                footBasketballTime(item.startTime.toLong(),item.startTime.toLong())
-            }else if(item.startTime.isNotEmpty()){
-                footBallTime(item.startTime.toLong())
-            }else{
-                itemView.txv_time.text =""
-            }
-        }
+            setTimer(position, socketDataList[position])
 
-        //足球 累積時間
-        private fun footBallTime(starTime: Long?) {
-            mTimerMap[adapterPosition]?.cancel()
-            stopTimer()
-
-            val currentTime = System.currentTimeMillis()
-            if (starTime == null) {
-                txvTime.text = null
-            } else {
-                var timeMillis = (currentTime - starTime) * 1000L
-                itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-
-                timer = Timer()
-                timer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        Handler(Looper.getMainLooper()).post {
-                            timeMillis += 1000
-                            itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-                        }
-                    }
-                }, 1000L, 1000L)
-            }
-
-            mTimerMap[layoutPosition] = timer
-        }
-
-        //籃球 倒數時間
-        private fun footBasketballTime(starTime: Long?, endTime: Long?) {
-            mTimerMap[layoutPosition]?.cancel()
-            stopTimer()
-
-            if (starTime == null || endTime == null) {
-                txvTime.text = null
-            } else {
-                var timeMillis = (endTime.minus(starTime)).times(1000L)
-                itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-
-                timer = Timer()
-                timer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        Handler(Looper.getMainLooper()).post {
-                            timeMillis = timeMillis.minus(1000)
-                            itemView.txv_time.text = TimeUtil.timeFormat(timeMillis, "HH:mm:ss")
-                        }
-                    }
-                }, 1000L, 1000L)
-            }
-
-            mTimerMap[adapterPosition] = timer
         }
 
         fun stopTimer() {
+            timer?.cancel()
+        }
+
+        private fun setTimer(position: Int, matchClockCO: MatchClockCO?) {
+            mTimerMap[position]?.cancel()
+            mTimerMap[position] = null
+            stopTimer()
+            if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
+                when (matchClockCO.gameType) {
+                    "BK" -> {
+                        if (matchClockCO.stoppageTime == null) {
+                            itemView.txv_time.text = null
+                        } else {
+                            itemView.txv_time.text = TimeUtil.timeFormat(
+                                matchClockCO.remainingTimeInPeriod?.times(1000L),
+                                "mm:ss"
+                            )
+
+                            timer = Timer()
+                            timer?.schedule(object : TimerTask() {
+                                override fun run() {
+                                    Handler(Looper.getMainLooper()).post {
+                                        matchClockCO.remainingTimeInPeriod =
+                                            matchClockCO.remainingTimeInPeriod?.minus(1)
+                                        itemView.txv_time.text =
+                                            TimeUtil.timeFormat(
+                                                matchClockCO.remainingTimeInPeriod?.times(
+                                                    1000L
+                                                ), "mm:ss"
+                                            )
+                                    }
+                                }
+                            }, 1000L, 1000L)
+                        }
+                    }
+                    "FT" -> {
+                        itemView.txv_time.text =
+                            TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
+
+                        timer = Timer()
+                        timer?.schedule(object : TimerTask() {
+                            override fun run() {
+                                Handler(Looper.getMainLooper()).post {
+                                    matchClockCO.matchTime = matchClockCO.matchTime?.plus(1)
+                                    itemView.txv_time.text =
+                                        TimeUtil.timeFormat(
+                                            matchClockCO.matchTime?.times(1000L),
+                                            "mm:ss"
+                                        )
+                                }
+                            }
+                        }, 1000L, 1000L)
+                    }
+                    else -> {
+
+                    }
+                }
+                mTimerMap[adapterPosition] = timer
+
+            } else {
+                itemView.txv_time.text = ""
+            }
+        }
+    }
+
+    private fun stopAllTimer() {
+        mTimerMap.forEach {
+            val timer = it.value
             timer?.cancel()
         }
     }
@@ -136,5 +162,32 @@ class OddsGameCardAdapter(private val clickListener: ItemClickListener) :
         fun onClick(oddsData: MatchInfo) = clickListener(oddsData)
     }
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.stopTimer()
+    }
+
+    fun updateGameCard(matchClockCO: MatchClockCO?) {
+        data.forEachIndexed { index, matchInfo ->
+            if (matchInfo?.id == matchId) {
+                matchClockCO?.let {
+                    socketDataList[index] = matchClockCO
+                }
+                notifyItemChanged(index)
+            }
+        }
+    }
+
+    fun updateGameCard(MatchStatusCO: MatchStatusCO?) {
+        data.forEachIndexed { index, matchInfo ->
+            if (matchInfo?.id == matchId) {
+                MatchStatusCO?.let {
+                    data[index]?.homeScore = it.homeScore
+                    data[index]?.awayScore = it.awayScore
+                }
+                notifyItemChanged(index)
+            }
+        }
+    }
 
 }

@@ -9,7 +9,7 @@ object VerifyConstUtil {
     private const val ENGLISH_WORD = "a-zA-Z"
     private const val SYMBOL = "!#\$%&'*+-/=?^_`{|}~"
 
-    private const val EMAIL_REGEX = "([_$ENGLISH_WORD$NUMBER$SYMBOL]+)+@[-$ENGLISH_WORD$NUMBER]+[.][-$ENGLISH_WORD$NUMBER]+([.]?[-$NUMBER$ENGLISH_WORD])+"
+    private const val EMAIL_REGEX = "^([_$ENGLISH_WORD$NUMBER$SYMBOL]+)+@[-$ENGLISH_WORD$NUMBER$SYMBOL]+([.][-$ENGLISH_WORD$NUMBER$SYMBOL]+)*[.]((?=.*[$ENGLISH_WORD$SYMBOL])[$ENGLISH_WORD$NUMBER$SYMBOL]+([-$ENGLISH_WORD$NUMBER$SYMBOL]*[$ENGLISH_WORD$NUMBER$SYMBOL]+)*)\$"
     private const val CRYPTO_COMMON_WALLET_ADDRESS_REGEX = "^(?=.*[$ENGLISH_WORD])(?=.*[$NUMBER])[$ENGLISH_WORD$NUMBER]+$"
 
     //是否為越南文文字
@@ -152,5 +152,10 @@ object VerifyConstUtil {
     //簡訊驗證碼 //數字 4位
     fun verifySecurityCode(securityCode: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", securityCode)
+    }
+
+    //区块链交易ID //长度大于等于6位,小于256位
+    fun verifyHashCode(hashCode: CharSequence): Boolean {
+        return Pattern.matches("[$CHINESE_WORD$ENGLISH_WORD$NUMBER]{6,256}", hashCode)
     }
 }

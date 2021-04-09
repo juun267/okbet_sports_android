@@ -1,71 +1,129 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorWhite1"
+    android:orientation="vertical"
     tools:context=".ui.profileCenter.money_transfer.transfer.MoneyTransferSubFragment">
 
     <include
         android:id="@+id/layout_balance"
-        layout="@layout/view_account_balance_2"/>
+        layout="@layout/view_account_balance_2"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <org.cxct.sportlottery.ui.component.SpinnerWithTitleAtStart
-        android:id="@+id/out_account"
-        android:layout_margin="15dp"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
-        app:spinnerTitle="@string/select_plat"
-        app:titleText="@string/out_account"
-        />
-
-    <ImageView
-        android:id="@+id/iv_spin"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_icon_transfer"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/layout_balance">
 
-    <org.cxct.sportlottery.ui.component.SpinnerWithTitleAtStart
-        android:id="@+id/in_account"
-        android:layout_margin="15dp"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:spinnerTitle="@string/select_plat"
-        app:titleText="@string/in_account"
-        />
+        <LinearLayout
+            android:id="@+id/ll_out"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_square_shape_4dp_white"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/tv_title_out"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/out_account"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@color/colorWhite6" />
+
+            <org.cxct.sportlottery.ui.component.StatusSelectorView
+                android:id="@+id/out_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:horizontalChainStyle="spread_inside" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_spin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_icon_transfer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_out" />
+
+        <LinearLayout
+            android:id="@+id/ll_in"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_square_shape_4dp_white"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_spin">
+
+            <TextView
+                android:id="@+id/tv_title_in"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/in_account"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@color/colorWhite6" />
+
+            <org.cxct.sportlottery.ui.component.StatusSelectorView
+                android:id="@+id/in_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:horizontalChainStyle="spread_inside" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <org.cxct.sportlottery.ui.login.LoginEditText
         android:id="@+id/et_transfer_money"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15dp"
-        app:cvTitle="@string/transfer_money"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="10dp"
         app:cvHint="@string/please_input_money"
-        app:cvInputType="number" />
-
+        app:cvInputType="number"
+        app:cvTitle="@string/transfer_money"
+        app:layout_constraintTop_toBottomOf="@id/constraint_layout" />
 
     <Button
         android:id="@+id/btn_transfer"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:layout_margin="15dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/bg_radius_20_button_dusk"
+        android:gravity="center"
         android:maxWidth="100dp"
         android:text="@string/confirm_transform"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/linear_layout"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/et_transfer_money" />
 
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -71,7 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_left"
+                android:background="@drawable/effect_select_bg_white_transparent"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
@@ -85,7 +85,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_right"
+                android:background="@drawable/effect_select_bg_white_transparent"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
@@ -141,7 +141,6 @@
                         android:visibility="gone"
                         tools:visibility="visible" />
 
-                <!--                TODO Bill 這裡沒綁定銀行卡UI還沒出圖-->
                 <RelativeLayout
                     android:id="@+id/block_no_type"
                     android:layout_width="match_parent"

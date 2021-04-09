@@ -80,7 +80,7 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
             ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_phone_number.visibility = if (enableWithdrawPhone == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_wechat.visibility = if (enableWithdrawWechat == FLAG_OPEN) View.VISIBLE else View.GONE
-            ll_real_name.visibility = if (enableFullName == FLAG_OPEN) View.VISIBLE else View.GONE
+            ll_real_name.visibility = if (enableWithdrawFullName == FLAG_OPEN) View.VISIBLE else View.GONE
         }
 
     }
@@ -99,6 +99,8 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
     }
 
     private fun setupToInfoSettingPage() {
+        //真實姓名
+        ll_real_name.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.RealName) }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //密碼設置
@@ -126,16 +128,17 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file)
+        val uploadImgRequest = UploadImgRequest(userId, file,UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
     private fun initObserve() {
         viewModel.editIconUrlResult.observe(this, Observer {
-            if (it?.success == true)
+            val iconUrlResult = it?.getContentIfNotHandled()
+            if (iconUrlResult?.success == true)
                 ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
             else
-                ToastUtil.showToastInCenter(this, it?.msg)
+                ToastUtil.showToastInCenter(this, iconUrlResult?.msg)
         })
 
         viewModel.userInfo.observe(this, Observer {

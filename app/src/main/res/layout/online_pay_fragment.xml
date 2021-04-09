@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:overScrollMode="never"
     android:background="@color/colorWhite1"
-    tools:context=".ui.money.recharge.TransferPayFragment">
+    tools:context=".ui.money.recharge.OnlinePayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

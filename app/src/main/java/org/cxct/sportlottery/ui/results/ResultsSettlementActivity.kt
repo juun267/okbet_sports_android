@@ -212,7 +212,6 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     }
 
     private fun settleLeagueBottomSheet() {
-        //TODO Dean : 看有沒有font-family可以做使用, 此處文字的style沒有與Zeplin相符
         tv_league.text = getString(R.string.league)
         val bottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_league_type, null)
         settlementLeagueBottomSheet = BottomSheetDialog(this@ResultsSettlementActivity)

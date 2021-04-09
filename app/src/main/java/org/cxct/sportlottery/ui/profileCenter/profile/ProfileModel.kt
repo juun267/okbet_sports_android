@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.util.Event
 
 class ProfileModel(
     private val androidContext: Context,
@@ -20,7 +21,7 @@ class ProfileModel(
     private val avatarRepository: AvatarRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
+    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
