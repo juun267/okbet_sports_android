@@ -41,6 +41,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             notifyDataSetChanged()
         }
 
+    var isTimerDecrease = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var leagueOddListener: LeagueOddListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -54,8 +60,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
-            is ViewHolder1x2 -> holder.bind(matchType, item, leagueOddListener, isTimerEnable)
+            is ViewHolderHdpOu -> holder.bind(
+                matchType,
+                item,
+                leagueOddListener,
+                isTimerEnable,
+                isTimerDecrease
+            )
+            is ViewHolder1x2 -> holder.bind(
+                matchType,
+                item,
+                leagueOddListener,
+                isTimerEnable,
+                isTimerDecrease
+            )
         }
     }
 
@@ -75,9 +93,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             matchType: MatchType,
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
-            isTimerEnable: Boolean
+            isTimerEnable: Boolean,
+            isTimerDecrease: Boolean
         ) {
-            setupMatchInfo(item, matchType, isTimerEnable)
+            setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
 
             setupOddButton(item, leagueOddListener)
 
@@ -88,7 +107,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupMatchInfo(item: MatchOdd, matchType: MatchType, isTimerEnable: Boolean) {
+        private fun setupMatchInfo(
+            item: MatchOdd,
+            matchType: MatchType,
+            isTimerEnable: Boolean,
+            isTimerDecrease: Boolean
+        ) {
             itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home.text = item.matchInfo?.homeName
@@ -106,7 +130,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                updateTimer(isTimerEnable, item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
             } else {
                 itemView.match_status.text = item.matchInfo?.startDateDisplay
                 itemView.match_time.text = item.matchInfo?.startTimeDisplay
@@ -326,9 +350,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             matchType: MatchType,
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
-            isTimerEnable: Boolean
+            isTimerEnable: Boolean,
+            isTimerDecrease: Boolean
         ) {
-            setupMatchInfo(item, matchType, isTimerEnable)
+            setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
 
             setupOddButton(item, leagueOddListener)
 
@@ -342,7 +367,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupMatchInfo(
             item: MatchOdd,
             matchType: MatchType,
-            isTimerEnable: Boolean
+            isTimerEnable: Boolean,
+            isTimerDecrease: Boolean
         ) {
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
@@ -361,7 +387,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                updateTimer(isTimerEnable, item.leagueTime ?: 0)
+                updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
             }
         }
 
@@ -561,7 +587,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private var timer: Timer? = null
 
-        fun updateTimer(isTimerEnable: Boolean, startTime: Int, isDecrease: Boolean = false) {
+        fun updateTimer(isTimerEnable: Boolean, startTime: Int, isDecrease: Boolean) {
 
             when (isTimerEnable) {
                 true -> {
