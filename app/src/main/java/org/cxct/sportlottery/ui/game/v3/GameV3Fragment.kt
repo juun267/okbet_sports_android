@@ -56,8 +56,33 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val countryAdapter by lazy {
         CountryAdapter().apply {
-            countryLeagueListener = CountryLeagueListener {
-                viewModel.getLeagueOddsList(args.matchType, it.id)
+            countryLeagueListener = CountryLeagueListener { league ->
+                val sportType =
+                    when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                        SportType.FOOTBALL.code -> SportType.FOOTBALL
+                        SportType.BASKETBALL.code -> SportType.BASKETBALL
+                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                        SportType.BADMINTON.code -> SportType.BADMINTON
+                        SportType.TENNIS.code -> SportType.TENNIS
+                        else -> null
+                    }
+
+                val matchType = when (gameTypeAdapter.data.find {
+                    it.isSelected
+                }?.date) {
+                    MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
+                    else -> null
+                }
+
+                sportType?.let {
+                    val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
+                        matchType ?: args.matchType,
+                        sportType,
+                        league.id
+                    )
+
+                    findNavController().navigate(action)
+                }
             }
         }
     }
