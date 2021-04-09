@@ -256,7 +256,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             matchOddList.add(MatchOdd.matchInfo)
                         }
                     }
-                    sport = oddsListResult.oddsListData?.sport.toString()
+                    sport = oddsListResult.oddsListData?.sport?.code.toString()
                     oddsGameCardAdapter?.data = matchOddList
                 }
             }
