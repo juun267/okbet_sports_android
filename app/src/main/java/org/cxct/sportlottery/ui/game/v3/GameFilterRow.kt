@@ -115,25 +115,32 @@ class GameFilterRow @JvmOverloads constructor(
     }
 
     private fun updateMatchType(type: Int) {
-        game_filter_inplay.visibility = if (type == IN_PLAY) {
+        game_filter_inplay.apply {
+            visibility = if (type == IN_PLAY || type == AT_START) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            text = when (type) {
+                IN_PLAY -> resources.getString(R.string.match_type_row_in_play)
+                AT_START -> resources.getString(R.string.match_type_row_at_start)
+                else -> null
+            }
+        }
+
+        game_filter_1x2.visibility = if (type == IN_PLAY || type == AT_START) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        game_filter_1x2.visibility = if (type == IN_PLAY) {
+        game_filter_ou.visibility = if (type == IN_PLAY || type == AT_START) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        game_filter_ou.visibility = if (type == IN_PLAY) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        game_filter_sport_type.isSelected = (type != IN_PLAY)
+        game_filter_sport_type.isSelected = (type != IN_PLAY && type != AT_START)
     }
 
     private fun updatePlayType(type: PlayType) {
