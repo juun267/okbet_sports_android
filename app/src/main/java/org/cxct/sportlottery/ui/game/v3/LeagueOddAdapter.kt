@@ -71,7 +71,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     class ViewHolderHdpOu private constructor(itemView: View) : ViewHolderTimer(itemView) {
 
-        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean) {
+        fun bind(
+            matchType: MatchType,
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            isTimerEnable: Boolean
+        ) {
             setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
@@ -317,7 +322,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     class ViewHolder1x2 private constructor(itemView: View) : ViewHolderTimer(itemView) {
-        fun bind(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean) {
+        fun bind(
+            matchType: MatchType,
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            isTimerEnable: Boolean
+        ) {
             setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener)
