@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -30,7 +29,6 @@ import org.cxct.sportlottery.ui.game.v3.GameOutrightFragment
 import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
@@ -44,7 +42,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private var mCloseOddsDetail = true
 
-    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT, ODDS_DETAIL_LIVE}
+    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT, ODDS_DETAIL_LIVE }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -343,13 +341,13 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         val titleList: MutableList<String> = mutableListOf()
         messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
+        mMarqueeAdapter.setData(titleList)
+
         if (messageListResult.success && titleList.size > 0) {
             rv_marquee.startAuto() //啟動跑馬燈
         } else {
             rv_marquee.stopAuto() //停止跑馬燈
         }
-
-        mMarqueeAdapter.setData(titleList)
     }
 
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {

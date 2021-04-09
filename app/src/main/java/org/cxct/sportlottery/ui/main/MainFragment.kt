@@ -289,16 +289,16 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val titleList: MutableList<String> = mutableListOf()
         messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
+        val adapter = MarqueeAdapter()
+        adapter.setData(titleList)
+        rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_marquee.adapter = adapter
+
         if (messageListResult.success && titleList.size > 0) {
             rv_marquee.startAuto() //啟動跑馬燈
         } else {
             rv_marquee.stopAuto() //停止跑馬燈
         }
-
-        val adapter = MarqueeAdapter()
-        adapter.setData(titleList)
-        rv_marquee.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_marquee.adapter = adapter
     }
 
     private fun setGameData(cateDataList: List<GameCateData>?) {
