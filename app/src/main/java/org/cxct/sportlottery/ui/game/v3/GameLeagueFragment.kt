@@ -184,6 +184,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
                             data = leagueOdds
+                            sportType = this@GameLeagueFragment.sportType
                         }
 
                         when {

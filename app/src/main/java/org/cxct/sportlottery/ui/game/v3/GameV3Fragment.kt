@@ -18,6 +18,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -325,9 +326,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
+                    val sportType = when (oddsListResult.oddsListData?.sport?.code) {
+                        SportType.FOOTBALL.code -> SportType.FOOTBALL
+                        SportType.BASKETBALL.code -> SportType.BASKETBALL
+                        SportType.BADMINTON.code -> SportType.BADMINTON
+                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                        SportType.TENNIS.code -> SportType.TENNIS
+                        else -> null
+                    }
+
                     game_list.apply {
                         adapter = leagueAdapter.apply {
                             data = leagueOdds
+                            this.sportType = sportType
                         }
 
                         when {
