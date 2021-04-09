@@ -245,6 +245,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
 
     override fun onBackPressed() {
+        if (mNavController.currentDestination?.id == R.id.gameLeagueFragment) {
+            mNavController.navigateUp()
+            return
+        }
+
         if (mNavController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
             tabLayout.getTabAt(0)?.select()
             return
