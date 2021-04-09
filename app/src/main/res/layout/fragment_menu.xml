@@ -94,6 +94,20 @@
                 app:cvTitle="@string/profile_center" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_sport_bet_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_sport_bet_record"
+                app:cvTitle="@string/sport_bet_record" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_other_bet_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_other_bet_record"
+                app:cvTitle="@string/other_bet_record" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_member_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,6 +120,20 @@
                 android:layout_height="wrap_content"
                 app:cvIcon="@drawable/ic_menu_game_settlement"
                 app:cvTitle="@string/game_settlement" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_game_rule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_game_rule"
+                app:cvTitle="@string/game_rule" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_handicap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_menu_handicap"
+                app:cvTitle="@string/handicap" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_version_update"
