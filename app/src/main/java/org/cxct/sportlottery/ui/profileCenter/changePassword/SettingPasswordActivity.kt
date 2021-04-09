@@ -143,8 +143,7 @@ class SettingPasswordActivity : BaseOddButtonActivity<SettingPasswordViewModel>(
     private fun updateUiWithResult(updatePwdResult: UpdatePwdResult?) {
         hideLoading()
         if (updatePwdResult?.success == true) {
-            ToastUtil.showToast(this, getString(R.string.update_login_pwd))
-            finish()
+            showPromptDialog(getString(R.string.prompt), getString(R.string.update_login_pwd)) { finish() }
         } else {
             val errorMsg = updatePwdResult?.msg ?: getString(R.string.unknown_error)
             showErrorPromptDialog(getString(R.string.prompt), errorMsg) {}

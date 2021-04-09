@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -15,7 +14,6 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GameDataInPlat
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
-import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -29,24 +27,12 @@ class MoneyTransferViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
         private const val PAGE_SIZE = 20
     }
-
-    private val gameNameMap: Map<String?, String> = mapOf(
-        "CG" to androidContext.getString(R.string.plat_money),
-        "DF" to androidContext.getString(R.string.third_game_df),
-        "SBTY" to androidContext.getString(R.string.third_game_sbty),
-        "AG" to androidContext.getString(R.string.third_game_ag),
-        "IBO" to androidContext.getString(R.string.third_game_ibo),
-        "CQ9" to androidContext.getString(R.string.third_game_cq9),
-        "CGCP" to androidContext.getString(R.string.third_game_cgcp),
-        "OGPLUS" to androidContext.getString(R.string.third_game_ogplus),
-        "CR" to androidContext.getString(R.string.third_game_cr),
-    )
 
     private val resultList = mutableListOf<GameData>()
     var outPlatDataList = mutableListOf<GameData>()
@@ -76,9 +62,6 @@ class MoneyTransferViewModel(
     val allBalanceResultList: LiveData<List<GameData>>
         get() = _allBalanceResultList
 
-    val thirdGamesResult: LiveData<ThirdGamesResult>
-        get() = _thirdGamesResult
-
     val recycleAllMoneyResult: LiveData<BlankResult?>
         get() = _recycleAllMoneyResult
 
@@ -107,7 +90,6 @@ class MoneyTransferViewModel(
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
     private var _allBalanceResultList = MutableLiveData<List<GameData>>()
-    private var _thirdGamesResult = MutableLiveData<ThirdGamesResult>()
     private var _recycleAllMoneyResult = MutableLiveData<BlankResult?>()
     private var _transferResult = MutableLiveData<BlankResult?>()
     private var _queryTransfersResult = MutableLiveData<QueryTransfersResult>()
@@ -137,6 +119,24 @@ class MoneyTransferViewModel(
         _isPlatSwitched.value = Event(!(isPlatSwitched.value?.getContentIfNotHandled() ?: false))
     }
 
+    private var thirdGameMap = mutableMapOf<String?, String?>()
+
+    fun getThirdGames() {
+        loading()
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.getThirdGames()
+            }?.let { result ->
+                hideLoading()
+
+                for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
+                    thirdGameMap[value.firmType] = value.firmShowName
+                }
+
+            }
+        }
+    }
+
     fun getAllBalance() {
         loading()
         viewModelScope.launch {
@@ -150,7 +150,7 @@ class MoneyTransferViewModel(
                         value?.apply {
                             val gameData = GameData(money, remark, transRemaining).apply {
                                 code = key
-                                showName = gameNameMap[key] ?: key
+                                showName = thirdGameMap[key] ?: key
                             }
 
                             resultList.add(gameData)
@@ -258,7 +258,7 @@ class MoneyTransferViewModel(
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
         status: String? = null,
         firmTypeIn: String? = null,
-        firmTypeOut: String? = null
+        firmTypeOut: String? = null,
     ) {
 
         loading()
@@ -268,7 +268,7 @@ class MoneyTransferViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                val emptyFilter = {item: String? -> if (item.isNullOrEmpty()) null else item}
+                val emptyFilter = { item: String? -> if (item.isNullOrEmpty()) null else item }
                 OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, emptyFilter(firmTypeIn), emptyFilter(firmTypeOut), status?.toIntOrNull()))
             }?.let { result ->
                 hideLoading()
@@ -285,18 +285,6 @@ class MoneyTransferViewModel(
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 isLoading = true
                 queryTransfers(++nowPage)
-            }
-        }
-    }
-
-    fun getThirdGames() {
-        loading()
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.getThirdGames()
-            }?.let { result ->
-                hideLoading()
-                _thirdGamesResult.value = result
             }
         }
     }
