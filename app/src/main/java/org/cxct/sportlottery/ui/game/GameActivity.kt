@@ -71,8 +71,17 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
-            mNavController.navigate(action)
+            when (mNavController.currentDestination?.id) {
+                R.id.homeFragment -> {
+                    val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
+                    mNavController.navigate(action)
+                }
+                R.id.gameV3Fragment -> {
+                    val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(ThirdGameCategory.MAIN)
+                    mNavController.navigate(action)
+                }
+            }
+
         }
 
         //頭像 當 側邊欄 開/關
