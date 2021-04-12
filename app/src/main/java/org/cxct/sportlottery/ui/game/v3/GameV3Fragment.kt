@@ -34,6 +34,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val sportTypeAdapter by lazy {
         SportTypeAdapter().apply {
             sportTypeListener = SportTypeListener {
+                service.unsubscribeAllHallChannel()
+
                 viewModel.getGameHallList(args.matchType, it)
                 loading()
             }
