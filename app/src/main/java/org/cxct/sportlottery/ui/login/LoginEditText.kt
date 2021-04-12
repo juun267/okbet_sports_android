@@ -177,6 +177,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
+    fun resetText() {
+        et_input.setText("")
+        setError(null)
+    }
+
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged {
             if (inputType != 0x00000081) {
