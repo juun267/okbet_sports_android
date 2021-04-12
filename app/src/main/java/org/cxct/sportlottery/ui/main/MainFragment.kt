@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -18,7 +17,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.stx.xhb.xbanner.XBanner
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.tab_layout
 import kotlinx.android.synthetic.main.view_message.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -61,7 +59,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getMarquee()
         getBanner()
         getThirdGame()
     }
@@ -213,21 +210,23 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         //輪播圖
-        viewModel.bannerList.observe(viewLifecycleOwner, Observer {
+        viewModel.bannerList.observe(viewLifecycleOwner, {
             setBanner(it?: listOf())
         })
 
         //公告跑馬燈
-        viewModel.messageListResult.observe(viewLifecycleOwner, Observer {
-            setMarquee(it)
+        viewModel.promoteNoticeResult.observe(viewLifecycleOwner, {
+            it?.peekContent()?.let { result ->
+                setMarquee(result)
+            }
         })
 
         //第三方遊戲清單
-        viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
+        viewModel.gameCateDataList.observe(viewLifecycleOwner, {
             setGameData(it)
         })
 
-        viewModel.enterThirdGameResult.observe(viewLifecycleOwner, Observer {
+        viewModel.enterThirdGameResult.observe(viewLifecycleOwner, {
             if (isVisible)
                 enterThirdGame(it)
         })
@@ -236,7 +235,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     //輪播廣告圖示
     private fun setBanner(bannerList: List<ImageData>) {
         //如果有 連結url, 點擊跳轉畫面
-        xBanner.setOnItemClickListener { banner: XBanner, model: Any, view: View, position: Int ->
+        xBanner.setOnItemClickListener { _: XBanner, _: Any, _: View, position: Int ->
             if (!bannerList[position].imageLink.isNullOrEmpty())
                 JumpUtil.toExternalWeb(xBanner.context, bannerList[position].imageLink)
         }
@@ -248,7 +247,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             .dontTransform()
 
         //加載圖片
-        xBanner.loadImage { xBanner: XBanner, model: Any, view: View, position: Int ->
+        xBanner.loadImage { _: XBanner, _: Any, view: View, position: Int ->
             try {
                 (view as ImageView).scaleType = ImageView.ScaleType.CENTER_CROP
 
@@ -450,10 +449,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getBanner() {
         viewModel.getBanner()
-    }
-
-    private fun getMarquee() {
-        viewModel.getMarquee()
     }
 
     private fun getThirdGame() {
