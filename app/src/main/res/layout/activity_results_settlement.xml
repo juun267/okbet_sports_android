@@ -124,7 +124,7 @@
             android:maxLines="1"
             android:paddingStart="10dp"
             android:paddingEnd="32dp"
-            android:textColorHint="@color/bright_gray"
+            android:textColorHint="@color/colorWhite6"
             android:textSize="14dp" />
 
         <Button
