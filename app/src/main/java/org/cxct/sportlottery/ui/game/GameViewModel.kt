@@ -755,12 +755,14 @@ class GameViewModel(
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
-
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime.toLong(), "MM/dd")
+
                         matchOdd.matchInfo.startTimeDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime.toLong(), "HH:mm")
+
+                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
                     }
 
                     matchOdd.odds.forEach { map ->
