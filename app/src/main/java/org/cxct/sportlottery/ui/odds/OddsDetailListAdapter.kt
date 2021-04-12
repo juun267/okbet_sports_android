@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -21,6 +23,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 const val DEFAULT_ITEM_VISIBLE_POSITION = 4
+
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, private val sportGameType: String) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
@@ -290,7 +293,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         oldOddList.forEach { oldOddData ->
             newOddList.forEach { newOddData ->
                 if (oldOddData.id == newOddData.id) {
-                    oldOddData.name = newOddData.name
+
+                    //如果是球員 忽略名字替換
+                    if(!checkKey(oddsDetail.gameType, GameType.SCO.value)){
+                        oldOddData.name = newOddData.name
+                    }
+
                     oldOddData.extInfo = newOddData.extInfo
                     oldOddData.spread = newOddData.spread
 
@@ -433,7 +441,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                 GameType.WM.type,
                 GameType.HTFT.type -> oneList(oddsDetail, false)
 
-                GameType.SCO.type -> oneList(oddsDetail, true)
+                GameType.SCO.type -> scoList(oddsDetail)
 
             }
 
@@ -477,7 +485,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                                 }
                             }
                             oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
-                            adapter?.notifyItemRangeChanged(OVER_COUNT, oddsDetail.oddArrayList.size -1)
+                            adapter?.notifyItemRangeChanged(OVER_COUNT, oddsDetail.oddArrayList.size - 1)
                         }
                     },
                     oddsType
@@ -488,6 +496,49 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
                         SpaceItemDecoration(
                             context,
                             R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                        )
+                    )
+                }
+            }
+        }
+
+        private fun scoList(oddsDetail: OddsDetailListData) {
+            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+
+            for (i in oddsDetail.oddArrayList.indices) {
+                if (!oddsDetail.isMoreExpand && i > DEFAULT_ITEM_VISIBLE_POSITION) {
+                    oddsDetail.oddArrayList[i].itemViewVisible = false
+                }
+            }
+
+            rvBet.apply {
+                adapter = TypeSCOAdapter(
+                    oddsDetail,
+                    onOddClickListener,
+                    betInfoList,
+                    curMatchId,
+                    object : TypeSCOAdapter.OnMoreClickListener {
+                        override fun click() {
+                            for (i in oddsDetail.oddArrayList.indices) {
+                                if (i > DEFAULT_ITEM_VISIBLE_POSITION) {
+                                    oddsDetail.oddArrayList[i].itemViewVisible = !oddsDetail.oddArrayList[i].itemViewVisible
+                                }
+                            }
+                            oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
+                            adapter?.notifyItemRangeChanged(OVER_COUNT, oddsDetail.oddArrayList.size - 1)
+                        }
+                    },
+                    oddsType
+                )
+                layoutManager = LinearLayoutManager(itemView.context)
+                if (itemDecorationCount == 0) {
+                    addItemDecoration(
+                        DividerItemDecorator(
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.divider_straight
+                            )
                         )
                     )
                 }
