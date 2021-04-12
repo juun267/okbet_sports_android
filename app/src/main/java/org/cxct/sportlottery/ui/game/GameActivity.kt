@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -30,7 +29,6 @@ import org.cxct.sportlottery.ui.game.v3.GameOutrightFragment
 import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
@@ -40,11 +38,11 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
-//    private val mMarqueeAdapter by lazy { MarqueeAdapter() }
+    private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private var mCloseOddsDetail = true
 
-    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT, ODDS_DETAIL_LIVE}
+    enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT, ODDS_DETAIL_LIVE }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +71,17 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
-            mNavController.navigate(action)
+            when (mNavController.currentDestination?.id) {
+                R.id.homeFragment -> {
+                    val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
+                    mNavController.navigate(action)
+                }
+                R.id.gameV3Fragment -> {
+                    val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(ThirdGameCategory.MAIN)
+                    mNavController.navigate(action)
+                }
+            }
+
         }
 
         //頭像 當 側邊欄 開/關
@@ -112,8 +119,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     //公告
     private fun initRvMarquee() {
-//        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        rv_marquee.adapter = mMarqueeAdapter
+        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_marquee.adapter = mMarqueeAdapter
     }
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
@@ -247,15 +254,16 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this, Observer {
+        viewModel.isLogin.observe(this, {
             updateUiWithLogin(it)
+            getAnnouncement()
         })
 
-        viewModel.messageListResult.observe(this, Observer {
+        viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
         })
 
-        viewModel.sportMenuResult.observe(this, Observer {
+        viewModel.sportMenuResult.observe(this, {
             hideLoading()
             updateUiWithResult(it)
         })
@@ -279,7 +287,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             )
         })
 
-        viewModel.curOddsDetailLiveParams.observe(this, Observer {
+        viewModel.curOddsDetailLiveParams.observe(this, {
             val gameType = it[0]
             val typeName = it[1]
             val matchId = it[2] ?: ""
@@ -293,7 +301,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             )
         })
 
-        viewModel.matchTypeCardForParlay.observe(this, Observer {
+        viewModel.matchTypeCardForParlay.observe(this, {
             app_bar_layout.setExpanded(true, false)
             when (it) {
                 MatchType.PARLAY -> {
@@ -310,17 +318,17 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.openGameDetail.observe(this, Observer {
+        viewModel.openGameDetail.observe(this, {
             app_bar_layout.setExpanded(true, true)
             addFragment(GameLeagueFragment.newInstance(it.first, it.second, it.third), Page.ODDS)
         })
 
-        viewModel.openOutrightDetail.observe(this, Observer {
+        viewModel.openOutrightDetail.observe(this, {
             app_bar_layout.setExpanded(true, true)
             addFragment(GameOutrightFragment.newInstance(it.first, it.second), Page.OUTRIGHT)
         })
 
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this, {
             updateAvatar(it?.iconUrl)
         })
     }
@@ -339,17 +347,19 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun updateUiWithResult(messageListResult: MessageListResult) {
-//        val titleList: MutableList<String> = mutableListOf()
-//        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
-//
-//        if (messageListResult.success && titleList.size > 0) {
-//            rv_marquee.startAuto() //啟動跑馬燈
-//        } else {
-//            rv_marquee.stopAuto() //停止跑馬燈
-//        }
-//
-//        mMarqueeAdapter.setData(titleList)
+    private fun updateUiWithResult(messageListResult: MessageListResult?) {
+        val titleList: MutableList<String> = mutableListOf()
+        messageListResult?.let {
+            it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
+
+            mMarqueeAdapter.setData(titleList)
+
+            if (messageListResult.success && titleList.size > 0) {
+                rv_marquee.startAuto() //啟動跑馬燈
+            } else {
+                rv_marquee.stopAuto() //停止跑馬燈
+            }
+        }
     }
 
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
