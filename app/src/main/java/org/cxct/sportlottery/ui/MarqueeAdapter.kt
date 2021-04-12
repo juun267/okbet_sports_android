@@ -26,7 +26,7 @@ class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return Int.MAX_VALUE
+        return if (mDataList.size > 0) Int.MAX_VALUE else 0
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -39,7 +39,7 @@ class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder>() {
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(viewHolder: DetailViewHolder, position: Int) {
         try {
-            if (getItemViewType(position) == Type.ITEM.ordinal) {
+            if (getItemViewType(position) == Type.ITEM.ordinal && mDataList.size != 0) {
                 val dataPosition = (position - 1) % mDataList.size
                 viewHolder.detail.text = mDataList[dataPosition] + "　"
             }
