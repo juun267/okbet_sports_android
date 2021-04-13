@@ -258,6 +258,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             return
         }
 
+        if (mNavController.currentDestination?.id == R.id.oddsDetailFragment) {
+            mNavController.navigateUp()
+            return
+        }
+
         if (mNavController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
             tabLayout.getTabAt(0)?.select()
             return
@@ -279,25 +284,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.sportMenuResult.observe(this, {
             hideLoading()
             updateUiWithResult(it)
-        })
-
-        viewModel.curOddsDetailParams.observe(this, Observer {
-//            //TODO simon test 從首頁滾球盤跳轉到投注詳情頁面，back 時要直接回到首頁
-//            tabLayout.getTabAt(tabLayout.selectedTabPosition)?.customView?.isSelected = false
-//            tabLayout.getTabAt(1)?.customView?.isSelected = true
-//            tabLayout.getTabAt(1)?.select()
-
-            val gameType = it[0]
-            val typeName = it[1]
-            val matchId = it[2] ?: ""
-            val oddsType = "EU"
-
-            app_bar_layout.setExpanded(true, true)
-
-            addFragment(
-                OddsDetailFragment.newInstance(gameType, typeName, matchId, oddsType),
-                Page.ODDS_DETAIL
-            )
         })
 
         viewModel.curOddsDetailLiveParams.observe(this, {
