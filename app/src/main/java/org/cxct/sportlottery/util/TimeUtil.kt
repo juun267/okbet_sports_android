@@ -108,8 +108,8 @@ object TimeUtil {
     }
 
     fun getDefaultDate(): TimeRangeParams {
-        val minusDay = ymdFormat.format(getCalendarForDates(7).first.time)
-        val today = ymdFormat.format(getCalendarForDates(7).second.time)
+        val minusDay = ymdFormat.format(getCalendarForDates(6).first.time)
+        val today = ymdFormat.format(getCalendarForDates(6).second.time)
         return object : TimeRangeParams {
             override val startTime: String
                 get() = minusDay.toString()
