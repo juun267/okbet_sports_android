@@ -510,7 +510,7 @@ class WithdrawViewModel(
             TransferType.CRYPTO -> {
                 withdrawCard?.let {
                     val fee = cardConfig?.let { it.exchangeRate?.times(it.feeVal ?: 0.0) } ?: 0.0
-                    val withdrawNeedAmount = if (withdrawAmount != 0.0 && withdrawAmount != null) cardConfig?.let { withdrawAmount.times(it.exchangeRate ?: 0.0).plus(fee) } ?: 0.0 else 0.0
+                    val withdrawNeedAmount = if (withdrawAmount != 0.0 && withdrawAmount != null) cardConfig?.let { withdrawAmount.times(it.exchangeRate ?: 0.0) } ?: 0.0 else 0.0
                     _withdrawCryptoAmountHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_amount_hint),
                         ArithUtil.toMoneyFormat(withdrawNeedAmount)
