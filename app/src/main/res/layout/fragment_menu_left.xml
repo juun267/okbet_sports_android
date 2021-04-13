@@ -13,44 +13,46 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite1"
-            android:gravity="center"
-            android:minHeight="44dp"
-            android:orientation="horizontal">
+            android:minHeight="44dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/btn_lobby"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
                 android:ellipsize="marquee"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
                 android:singleLine="true"
                 android:text="@string/games_lobby"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/tv_money"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_close"
-                app:layout_constraintStart_toEndOf="@+id/iv_head"
-                app:layout_constraintTop_toTopOf="@+id/iv_head" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
                 android:id="@+id/btn_close"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp"
                 android:background="@null"
                 android:contentDescription="@null"
                 android:padding="11dp"
                 android:src="@drawable/ic_close_menu"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <org.cxct.sportlottery.ui.menu.MenuLeftItem
             android:id="@+id/menu_sport_game"

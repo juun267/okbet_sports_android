@@ -3,11 +3,13 @@ package org.cxct.sportlottery.ui.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
+import kotlinx.android.synthetic.main.view_nav_left.view.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
@@ -44,6 +47,32 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private var mCloseOddsDetail = true
 
+    private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
+        override fun onClick(id: Int) {
+            when (id) {
+                R.id.btn_lobby -> iv_logo.performClick()
+                R.id.menu_sport_game -> tabLayout.getTabAt(0)?.select()
+                R.id.menu_in_play -> tabLayout.getTabAt(1)?.select()
+                R.id.menu_date_row_today -> tabLayout.getTabAt(2)?.select()
+                R.id.menu_early -> tabLayout.getTabAt(3)?.select()
+                R.id.menu_parlay -> tabLayout.getTabAt(4)?.select()
+                R.id.menu_champion -> tabLayout.getTabAt(5)?.select()
+                //TODO simon test 球類跳轉
+                R.id.menu_soccer -> {}
+                R.id.menu_basketball -> {}
+                R.id.menu_tennis -> {}
+                R.id.menu_badminton -> {}
+                R.id.menu_volleyball -> {}
+                R.id.menu_cg_lottery -> gotToMainActivity(ThirdGameCategory.CGCP)
+                R.id.menu_live_game -> gotToMainActivity(ThirdGameCategory.LIVE)
+                R.id.menu_poker_game -> gotToMainActivity(ThirdGameCategory.QP)
+                R.id.menu_slot_game -> gotToMainActivity(ThirdGameCategory.DZ)
+                R.id.menu_fish_game -> gotToMainActivity(ThirdGameCategory.BY)
+            }
+
+        }
+    }
+
     enum class Page { ODDS_DETAIL, ODDS, OUTRIGHT, ODDS_DETAIL_LIVE }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,20 +99,23 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         rv_marquee.stopAuto()
     }
 
+    private fun gotToMainActivity(thirdGameCategory: ThirdGameCategory) {
+        when (mNavController.currentDestination?.id) {
+            R.id.homeFragment -> {
+                val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(thirdGameCategory)
+                mNavController.navigate(action)
+            }
+            R.id.gameV3Fragment -> {
+                val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(thirdGameCategory)
+                mNavController.navigate(action)
+            }
+        }
+    }
+
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            when (mNavController.currentDestination?.id) {
-                R.id.homeFragment -> {
-                    val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
-                    mNavController.navigate(action)
-                }
-                R.id.gameV3Fragment -> {
-                    val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(ThirdGameCategory.MAIN)
-                    mNavController.navigate(action)
-                }
-            }
-
+            gotToMainActivity(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
@@ -116,6 +148,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             //選單選擇結束要收起選單
             val menuLeftFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu_left) as MenuLeftFragment
             menuLeftFrag.setDownMenuListener { drawer_layout.closeDrawers() }
+            menuLeftFrag.setMenuLeftListener(mMenuLeftListener)
             nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
             btn_menu_left.setOnClickListener {

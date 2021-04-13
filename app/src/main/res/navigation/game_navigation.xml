@@ -91,6 +91,20 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/menuLeftFragment"
+        android:name="org.cxct.sportlottery.ui.menu.MenuLeftFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_menu_left">
+        <action
+            android:id="@+id/action_menuLeftFragment_to_mainActivity"
+            app:destination="@id/mainActivity">
+            <argument
+                android:name="thirdGameCate"
+                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
+        </action>
+    </fragment>
+
     <activity
         android:id="@+id/mainActivity"
         android:name="org.cxct.sportlottery.ui.main.MainActivity"
