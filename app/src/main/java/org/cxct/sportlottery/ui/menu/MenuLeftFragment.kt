@@ -34,6 +34,7 @@ class MenuLeftFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class)
         super.onViewCreated(view, savedInstanceState)
 
         setupCloseBtn()
+        initObserve()
         initEvent()
     }
 
@@ -41,6 +42,27 @@ class MenuLeftFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class)
         btn_close.setOnClickListener {
             mDownMenuListener?.onClick(btn_close)
         }
+    }
+
+    private fun initObserve() {
+        viewModel.sportMenuResult.observe(viewLifecycleOwner, { sportMenuResult ->
+            val countInPlay =
+                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+            val countToday =
+                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+            val countEarly =
+                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countParlay =
+                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countOutright =
+                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+
+            menu_in_play.setCount(countInPlay.toString())
+            menu_date_row_today.setCount(countToday.toString())
+            menu_early.setCount(countEarly.toString())
+            menu_parlay.setCount(countParlay.toString())
+            menu_champion.setCount(countOutright.toString())
+        })
     }
 
     private fun initEvent() {

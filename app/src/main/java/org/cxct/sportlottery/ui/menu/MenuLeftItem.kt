@@ -26,4 +26,7 @@ class MenuLeftItem @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
     }
 
+    fun setCount(count: String?) {
+        tv_count.text = count
+    }
 }
