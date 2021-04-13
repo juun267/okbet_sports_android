@@ -82,7 +82,7 @@ class ThirdRebatesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.apply {
                 tv_bet_min.text = isNullToSetUnlimited(context, data.minMoney)
                 tv_bet_max.text = isNullToSetUnlimited(context, data.maxMoney)
-                tv_rebates_rate.text = "${data.debate} ${context.getString(R.string.percent)}"
+                tv_rebates_rate.text = "${data.debate?.times(100)?.toLong()} ${context.getString(R.string.percent)}"
                 tv_rebates.text = isNullToSetUnlimited(context, data.maxDebateMoney)
             }
         }
