@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cvHint="@string/hint_transaction_id"
-            app:cvInputType="number"
+            app:cvInputType="number|text"
             app:cvTitle="@string/title_transaction_id" />
 
         <!-- 充值時間 -->
