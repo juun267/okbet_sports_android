@@ -176,6 +176,7 @@
     <string name="member_level">会员层级</string>
     <string name="game_settlement">赛果结算</string>
     <string name="version_update">版本更新</string>
+    <string name="odds_type">盘口-%s</string>
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号 Ver %s</string>
 
@@ -739,6 +740,11 @@
     <string name="must_fill_this_column">此栏位为必填栏位</string>
     <string name="third_game_ky">开元棋牌</string>
     <string name="choose_title">选择状态</string>
+
+    <!--odd type-->
+    <string name="odd_type_title">盘口类型</string>
+    <string name="odd_type_eu">欧洲盘</string>
+    <string name="odd_type_hk">香港盘</string>
 
     <string name="handicap">盘口</string>
     <string name="choose_method">选择渠道</string>
