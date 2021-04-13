@@ -172,6 +172,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             ic_screen_shot.visibility =View.GONE
             img_screen_shot.visibility=View.VISIBLE
             tv_click.visibility=View.GONE
+            tv_upload.text = String.format(resources.getString(R.string.title_reupload_pic))
             voucherUrl = it
         })
     }
@@ -235,13 +236,21 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         et_recharge_account.setText("")
         et_transaction_id.setText("")
         refreshCurrencyType(0)
+        tv_upload.text = String.format(resources.getString(R.string.title_upload_pic))
 
         //清空圖片
         ic_screen_shot.visibility = View.VISIBLE
         img_screen_shot.visibility = View.GONE
+        img_screen_shot.invalidate()
+        img_screen_shot.setImageBitmap(null)
         voucherUrl = ""
 
         viewModel.clearnRechargeStatus()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resetEvent()
     }
 
     //幣種選項

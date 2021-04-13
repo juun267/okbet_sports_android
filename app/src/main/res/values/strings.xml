@@ -480,6 +480,7 @@
     <string name="title_recharge_address">充币地址:</string>
     <string name="btn_recharge">去充值</string>
     <string name="title_upload_pic">上传支付截图</string>
+    <string name="title_reupload_pic">重新上传支付截图</string>
     <string name="title_click_upload_pic">请点击上传支付成功截图</string>
     <string name="hint_remark">备注：%1$s%</string>
 
