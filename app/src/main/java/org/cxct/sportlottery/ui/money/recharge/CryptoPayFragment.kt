@@ -28,7 +28,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
+import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -121,7 +121,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         //上傳照片
         cv_upload.setOnClickListener {
             this.activity?.let { activity -> fragmentManager?.let { fragmentManager ->
-                AvatarSelectorDialog(activity, mSelectMediaListener).show(
+                RechargePicSelectorDialog(activity, mSelectMediaListener).show(
                     fragmentManager, null)
             } }
         }
