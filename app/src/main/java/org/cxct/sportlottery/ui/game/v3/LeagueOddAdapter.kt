@@ -118,22 +118,53 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.game_name_home.text = item.matchInfo?.homeName
             itemView.game_name_away.text = item.matchInfo?.awayName
 
-            if (matchType == MatchType.IN_PLAY) {
-                itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
-                itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
-                itemView.match_status.text = item.matchInfo?.statusName
+            itemView.icon_remain_time.visibility = if (matchType == MatchType.AT_START) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
 
-                listener = object : TimerListener {
-                    override fun onTimerUpdate(timeMillis: Long) {
-                        itemView.match_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-                        item.leagueTime = (timeMillis / 1000).toInt()
+            when (matchType) {
+                MatchType.IN_PLAY -> {
+                    itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
+                    itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
+                    itemView.match_status.text = item.matchInfo?.statusName
+
+                    listener = object : TimerListener {
+                        override fun onTimerUpdate(timeMillis: Long) {
+                            itemView.match_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                            item.leagueTime = (timeMillis / 1000).toInt()
+                        }
+                    }
+
+                    updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
+                }
+
+                MatchType.AT_START -> {
+                    listener = object : TimerListener {
+                        override fun onTimerUpdate(timeMillis: Long) {
+                            itemView.match_time.text = String.format(
+                                itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                TimeUtil.timeFormat(timeMillis, "mm")
+                            )
+
+                            item.matchInfo?.remainTime = timeMillis
+                        }
+                    }
+
+                    item.matchInfo?.remainTime?.let { remainTime ->
+                        updateTimer(
+                            isTimerEnable,
+                            (remainTime / 1000).toInt(),
+                            true
+                        )
                     }
                 }
 
-                updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
-            } else {
-                itemView.match_status.text = item.matchInfo?.startDateDisplay
-                itemView.match_time.text = item.matchInfo?.startTimeDisplay
+                else -> {
+                    itemView.match_status.text = item.matchInfo?.startDateDisplay
+                    itemView.match_time.text = item.matchInfo?.startTimeDisplay
+                }
             }
         }
 
@@ -375,19 +406,51 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
             itemView.game_name_away_1x2.text = item.matchInfo?.awayName
 
-            if (matchType == MatchType.IN_PLAY) {
-                itemView.game_score_home_1x2.text = (item.matchInfo?.homeScore ?: 0).toString()
-                itemView.game_score_away_1x2.text = (item.matchInfo?.awayScore ?: 0).toString()
-                itemView.match_status_1x2.text = item.matchInfo?.statusName
+            itemView.icon_remain_time_1x2.visibility = if (matchType == MatchType.AT_START) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
 
-                listener = object : TimerListener {
-                    override fun onTimerUpdate(timeMillis: Long) {
-                        itemView.match_time_1x2.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-                        item.leagueTime = (timeMillis / 1000).toInt()
+            when (matchType) {
+                MatchType.IN_PLAY -> {
+                    itemView.game_score_home_1x2.text = (item.matchInfo?.homeScore ?: 0).toString()
+                    itemView.game_score_away_1x2.text = (item.matchInfo?.awayScore ?: 0).toString()
+                    itemView.match_status_1x2.text = item.matchInfo?.statusName
+
+                    listener = object : TimerListener {
+                        override fun onTimerUpdate(timeMillis: Long) {
+                            itemView.match_time_1x2.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                            item.leagueTime = (timeMillis / 1000).toInt()
+                        }
+                    }
+
+                    updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
+                }
+
+                MatchType.AT_START -> {
+                    listener = object : TimerListener {
+                        override fun onTimerUpdate(timeMillis: Long) {
+                            itemView.match_time_1x2.text = String.format(
+                                itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                TimeUtil.timeFormat(timeMillis, "mm")
+                            )
+
+                            item.matchInfo?.remainTime = timeMillis
+                        }
+                    }
+
+                    item.matchInfo?.remainTime?.let { remainTime ->
+                        updateTimer(
+                            isTimerEnable,
+                            (remainTime / 1000).toInt(),
+                            true
+                        )
                     }
                 }
 
-                updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
+                else -> {
+                }
             }
         }
 
