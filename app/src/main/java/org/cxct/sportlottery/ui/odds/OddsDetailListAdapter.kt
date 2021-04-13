@@ -126,6 +126,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         SINGLE_OT_2("1X2-INCL-OT", 39),
         SINGLE_SEG_2("1X2-SEG", 40),
 
+        HWMG_SINGLE("HWMG&1X2", 41)
 
     }
 
@@ -174,6 +175,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
             type == GameType.WEH.value -> return GameType.WEH.type
 
+            //先判斷完整字串 再比對部分字串(由長至短)
+            type == GameType.HWMG_SINGLE.value -> return GameType.HWMG_SINGLE.type
             checkKey(type, GameType.WM.value) -> return GameType.WM.type
 
             type == GameType.CLSH.value -> return GameType.CLSH.type
@@ -280,6 +283,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
             GameType.SINGLE_2ST_2.type -> LayoutType.HDP.layout
             GameType.SINGLE_OT_2.type -> LayoutType.HDP.layout
             GameType.SINGLE_SEG_2.type -> LayoutType.HDP.layout
+
+            GameType.HWMG_SINGLE.type -> LayoutType.SINGLE.layout
 
             else -> 0
 
@@ -430,6 +435,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
                 GameType.CS.type -> forCS(oddsDetail)
 
+                GameType.HWMG_SINGLE.type,
                 GameType.SINGLE_OT.type,
                 GameType.SINGLE_SEG.type,
                 GameType.SINGLE_1ST.type,
