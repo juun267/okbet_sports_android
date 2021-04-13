@@ -30,7 +30,7 @@ class NewsContentAdapter : RecyclerView.Adapter<NewsContentAdapter.ViewHolder>()
     override fun getItemCount(): Int = mDataList.size
 
     fun setData(newDataList: List<Row>?) {
-        mDataList = newDataList?: listOf()
+        mDataList = newDataList ?: listOf()
         notifyDataSetChanged()
     }
 
@@ -39,7 +39,7 @@ class NewsContentAdapter : RecyclerView.Adapter<NewsContentAdapter.ViewHolder>()
             itemView.apply {
                 txv_title.text = data.title
                 txv_content.text = data.message
-                txv_time.text = TimeUtil.stampToDateHMS(data.addTime)
+                txv_time.text = TimeUtil.stampToDateHMS(data.updateTime)
             }
         }
     }

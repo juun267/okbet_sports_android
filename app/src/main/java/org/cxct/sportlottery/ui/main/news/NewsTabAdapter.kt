@@ -8,21 +8,31 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_news_tab_rv.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.message.Row
 
-class NewsTabAdapter(val context: Context?) : RecyclerView.Adapter<NewsTabAdapter.ViewHolder>() {
+class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?) : RecyclerView.Adapter<NewsTabAdapter.ViewHolder>() {
 
     private var mSelectedPosition = 0
     private var mOnSelectItemListener: OnSelectItemListener<TabEntity>? = null
 
     //消息类型：1：游戏公告，2：会员福利，3：转账须知，4：劲爆推荐，5：导航网，6：其他
-    private val mDataList = mutableListOf(
-        TabEntity(1, context?.getString(R.string.game_announcement)),
-        TabEntity(2, context?.getString(R.string.member_benefits)),
-        TabEntity(3, context?.getString(R.string.transfer_notes)),
-        TabEntity(4, context?.getString(R.string.best_recommend)),
-        TabEntity(5, context?.getString(R.string.navigation_web)),
-        TabEntity(6, context?.getString(R.string.other))
-    )
+    private val mDataList by lazy {
+        val showTabEntity = mutableListOf<TabEntity>()
+        val allTabEntity = mutableListOf(
+            TabEntity(1, context?.getString(R.string.game_announcement)),
+            TabEntity(2, context?.getString(R.string.member_benefits)),
+            TabEntity(3, context?.getString(R.string.transfer_notes)),
+            TabEntity(4, context?.getString(R.string.best_recommend)),
+            TabEntity(5, context?.getString(R.string.navigation_web)),
+            TabEntity(6, context?.getString(R.string.other))
+        )
+        allTabEntity.forEach { tabEntity ->
+            if (mMessageList?.any { tabEntity.msgType == it.msgType } == true)
+                showTabEntity.add(tabEntity)
+        }
+
+        showTabEntity
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.content_news_tab_rv, parent, false)

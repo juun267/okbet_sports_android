@@ -69,7 +69,7 @@ class GameViewModel(
     val userId = loginRepository.userId
     var mathType: MatchType? = null
 
-    val messageListResult: LiveData<MessageListResult>
+    val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
     val sportMenuResult: LiveData<SportMenuResult?>
@@ -228,7 +228,7 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
-    
+
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
 
@@ -252,12 +252,17 @@ class GameViewModel(
 
     //獲取系統公告
     fun getAnnouncement() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                val typeList = arrayOf(1)
-                OneBoSportApi.messageService.getPromoteNotice(typeList)
-            }?.let { result -> _messageListResult.postValue(result) }
+        if (isLogin.value == true) {
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    val typeList = arrayOf(1)
+                    OneBoSportApi.messageService.getPromoteNotice(typeList)
+                }?.let { result -> _messageListResult.postValue(result) }
+            }
+        } else {
+            _messageListResult.value = null
         }
+
     }
 
 

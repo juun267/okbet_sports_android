@@ -71,8 +71,17 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
-            mNavController.navigate(action)
+            when (mNavController.currentDestination?.id) {
+                R.id.homeFragment -> {
+                    val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.MAIN)
+                    mNavController.navigate(action)
+                }
+                R.id.gameV3Fragment -> {
+                    val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(ThirdGameCategory.MAIN)
+                    mNavController.navigate(action)
+                }
+            }
+
         }
 
         //頭像 當 側邊欄 開/關
@@ -245,15 +254,16 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this, Observer {
+        viewModel.isLogin.observe(this, {
             updateUiWithLogin(it)
+            getAnnouncement()
         })
 
-        viewModel.messageListResult.observe(this, Observer {
+        viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
         })
 
-        viewModel.sportMenuResult.observe(this, Observer {
+        viewModel.sportMenuResult.observe(this, {
             hideLoading()
             updateUiWithResult(it)
         })
@@ -277,7 +287,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             )
         })
 
-        viewModel.curOddsDetailLiveParams.observe(this, Observer {
+        viewModel.curOddsDetailLiveParams.observe(this, {
             val gameType = it[0]
             val typeName = it[1]
             val matchId = it[2] ?: ""
@@ -291,7 +301,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             )
         })
 
-        viewModel.matchTypeCardForParlay.observe(this, Observer {
+        viewModel.matchTypeCardForParlay.observe(this, {
             app_bar_layout.setExpanded(true, false)
             when (it) {
                 MatchType.PARLAY -> {
@@ -308,17 +318,17 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.openGameDetail.observe(this, Observer {
+        viewModel.openGameDetail.observe(this, {
             app_bar_layout.setExpanded(true, true)
             addFragment(GameLeagueFragment.newInstance(it.first, it.second, it.third), Page.ODDS)
         })
 
-        viewModel.openOutrightDetail.observe(this, Observer {
+        viewModel.openOutrightDetail.observe(this, {
             app_bar_layout.setExpanded(true, true)
             addFragment(GameOutrightFragment.newInstance(it.first, it.second), Page.OUTRIGHT)
         })
 
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this, {
             updateAvatar(it?.iconUrl)
         })
     }
@@ -337,16 +347,18 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun updateUiWithResult(messageListResult: MessageListResult) {
+    private fun updateUiWithResult(messageListResult: MessageListResult?) {
         val titleList: MutableList<String> = mutableListOf()
-        messageListResult.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
+        messageListResult?.let {
+            it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
-        mMarqueeAdapter.setData(titleList)
+            mMarqueeAdapter.setData(titleList)
 
-        if (messageListResult.success && titleList.size > 0) {
-            rv_marquee.startAuto() //啟動跑馬燈
-        } else {
-            rv_marquee.stopAuto() //停止跑馬燈
+            if (messageListResult.success && titleList.size > 0) {
+                rv_marquee.startAuto() //啟動跑馬燈
+            } else {
+                rv_marquee.stopAuto() //停止跑馬燈
+            }
         }
     }
 
