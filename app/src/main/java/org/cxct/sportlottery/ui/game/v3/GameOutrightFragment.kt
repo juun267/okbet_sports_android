@@ -133,6 +133,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 }
             }
         })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            val odds = outrightOddAdapter.data.filterIsInstance<Odd>()
+
+            odds.forEach { odd ->
+                odd.isSelected = it.any {
+                    it.matchOdd.oddsId == odd.id
+                }
+            }
+
+            outrightOddAdapter.notifyDataSetChanged()
+        })
     }
 
     private fun initSocketReceiver() {
