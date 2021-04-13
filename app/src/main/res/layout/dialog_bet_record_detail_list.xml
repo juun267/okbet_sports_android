@@ -40,6 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -52,33 +53,33 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/bet_detail"
-                        android:textStyle="bold"
                         android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/textSize16sp" />
+                        android:textSize="@dimen/textSize16sp"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/img_close"
-                        android:layout_width="15dp"
-                        android:layout_height="match_parent"
-                        app:tint="@color/colorWhite6"
-                        android:src="@drawable/ic_close" />
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/colorGrayLight" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/colorWhite6"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                    app:layout_constraintBottom_toTopOf="@id/refresh"/>
+                    app:layout_constraintBottom_toTopOf="@id/refresh"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                 <com.scwang.smart.refresh.layout.SmartRefreshLayout
                     android:id="@+id/refresh"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    app:srlDragRate="0.3"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:srlDragRate="0.3"
                     app:srlEnableLoadMore="true"
                     app:srlEnablePureScrollMode="true">
 
@@ -207,57 +208,51 @@
                                 android:layout_marginStart="4dp"
                                 android:textColor="@color/colorGray"
                                 android:textSize="@dimen/textSize14sp"
+                                app:gameStatus="@{row.status}"
                                 app:layout_constraintBottom_toBottomOf="@+id/text_view4"
                                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toEndOf="@+id/tv_status_money"
                                 app:layout_constraintTop_toBottomOf="@+id/text_view3"
-                                app:gameStatus="@{row.status}"
                                 tools:text="全输" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <androidx.cardview.widget.CardView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            app:cardCornerRadius="4dp">
+                            android:background="@color/colorWhite3"
+                            android:orientation="vertical">
 
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/tv_bet_title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/blue4"
-                                android:orientation="vertical">
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="8dp"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/textSize14sp"
+                                android:text="@{row.matchOdds.size() > 1 ? String.format(@string/bet_item, TextUtil.replaceParlayByC(row.parlayType)) : row.matchOdds.size() == 1 ? String.format(@string/bet_item, row.matchOdds[0].playCateName):null}"
+                                android:textColor="@color/colorBlackLight"
+                                tools:text="投注项目 - 3串4" />
 
-                                <TextView
-                                    android:id="@+id/tv_bet_title"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:paddingHorizontal="8dp"
-                                    android:paddingVertical="8dp"
-                                    android:text="@{row.matchOdds.size() > 1 ? String.format(@string/bet_item, TextUtil.replaceParlayByC(row.parlayType)) : row.matchOdds.size() == 1 ? String.format(@string/bet_item, row.matchOdds[0].playCateName):null}"
-                                    android:textColor="@color/colorBlackLight"
-                                    tools:text="投注项目 - 3串4" />
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/colorWhite"
+                                android:overScrollMode="never"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                tools:itemCount="3"
+                                tools:listitem="@layout/item_bet_record_detail" />
 
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/rv_detail"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/colorWhite"
-                                    android:overScrollMode="never"
-                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                    tools:itemCount="2"
-                                    tools:listitem="@layout/item_bet_record_detail" />
+                        </LinearLayout>
 
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
 
                     </LinearLayout>
 
 
                 </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
