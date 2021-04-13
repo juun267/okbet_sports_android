@@ -201,7 +201,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     }
 
     suspend fun logout(): Response<LogoutResult> {
-        _isLogin.postValue(false)
+        _isLogin.value = false
 
         return OneBoSportApi.indexService.logout(LogoutRequest())
     }
