@@ -216,6 +216,24 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            val leagueOdds = leagueAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.values.forEach { oddList ->
+                        oddList.forEach { odd ->
+                            odd?.isSelected = it.any {
+                                it.matchOdd.oddsId == odd?.id
+                            }
+                        }
+                    }
+                }
+            }
+
+            leagueAdapter.notifyDataSetChanged()
+        })
     }
 
     private fun initSocketReceiver() {
