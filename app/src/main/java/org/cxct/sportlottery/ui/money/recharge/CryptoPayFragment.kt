@@ -117,7 +117,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             clipboard?.setPrimaryClip(clipData)
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
-
         //上傳照片
         cv_upload.setOnClickListener {
             this.activity?.let { activity -> fragmentManager?.let { fragmentManager ->
@@ -125,7 +124,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     fragmentManager, null)
             } }
         }
-
         //去充值
         btn_qr_recharge.setOnClickListener {
             if (!mSelectRechCfgs?.payUrl.isNullOrEmpty()) {
@@ -135,6 +133,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 startActivity(browserIntent)
             }
         }
+        et_transaction_id.setDigits("0123456789.xX_-@")
     }
 
     private fun initView() {

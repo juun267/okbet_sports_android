@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
@@ -175,6 +176,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun getText(): String {
         return et_input.text.toString()
+    }
+
+    fun setDigits(input:String){
+        et_input.keyListener = DigitsKeyListener.getInstance(input)
     }
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
