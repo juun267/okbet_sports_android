@@ -237,6 +237,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         et_transaction_id.setText("")
         refreshCurrencyType(0)
         tv_upload.text = String.format(resources.getString(R.string.title_upload_pic))
+        tv_click.visibility = View.VISIBLE
 
         //清空圖片
         ic_screen_shot.visibility = View.VISIBLE
