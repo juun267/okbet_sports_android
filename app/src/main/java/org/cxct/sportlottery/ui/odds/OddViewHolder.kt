@@ -74,7 +74,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvOdds.isSelected = odd.isSelect ?: false
                 tvSpread?.let { it.isSelected = odd.isSelect ?: false }
                 tvName?.let { it.isSelected = odd.isSelect ?: false }
-                tvOdds.setOnClickListener {
+                itemView.setOnClickListener {
                     if (odd.isSelect != true) {
                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
                             return@setOnClickListener
