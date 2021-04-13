@@ -171,6 +171,15 @@
     <string name="navigation_web">导航网</string>
     <string name="other">其他</string>
 
+    <!-- MenuLeftFragment -->
+    <string name="games_lobby">游戏大厅</string>
+    <string name="sport_game">体育赛事</string>
+    <string name="cg_lottery">CG彩票</string>
+    <string name="live_game">真人娱乐</string>
+    <string name="poker_game">棋牌游戏</string>
+    <string name="slot_game">电子游戏</string>
+    <string name="fish_game">捕鱼游戏</string>
+
     <!-- MenuFragment -->
     <string name="profile_center">个人中心</string>
     <string name="member_level">会员层级</string>

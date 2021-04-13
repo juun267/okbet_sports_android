@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_message.*
+import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
@@ -31,6 +32,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.MenuLeftFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
 import org.cxct.sportlottery.ui.results.GameType
@@ -107,11 +109,21 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
             //選單選擇結束要收起選單
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
-            menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
-
+            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+
+            //選單選擇結束要收起選單
+            val menuLeftFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu_left) as MenuLeftFragment
+            menuLeftFrag.setDownMenuListener { drawer_layout.closeDrawers() }
+            nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+
+            btn_menu_left.setOnClickListener {
+                if (drawer_layout.isDrawerOpen(nav_left)) drawer_layout.closeDrawers()
+                else {
+                    drawer_layout.openDrawer(nav_left)
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
