@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -31,7 +32,7 @@ class FinanceViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLoading: LiveData<Boolean> //使用者餘額
@@ -195,18 +196,6 @@ class FinanceViewModel(
 
     fun getUserRechargeList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
         loading()
-        when {
-            isFirstFetch -> {
-                _isFinalPage.postValue(false)
-                page = 1
-            }
-            else -> {
-                if (isFinalPage.value == false) {
-                    page++
-                }
-            }
-        }
-
         val rechType = rechargeChannelList.find {
             it.isChecked
         }?.code
@@ -217,16 +206,21 @@ class FinanceViewModel(
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getUserRechargeList(
-                    RechargeListRequest(
-                        rechType = rechType,
-                        status = status,
-                        startTime = startTime,
-                        endTime = endTime,
-                        page = page,
-                        pageSize = pageSize
-                    )
-                )
+                OneBoSportApi.moneyService.getUserRechargeList(RechargeListRequest(rechType = rechType, status = status, startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
+            }
+
+            result.apply {
+                when {
+                    isFirstFetch -> {
+                        _isFinalPage.postValue(false)
+                        page = 1
+                    }
+                    else -> {
+                        if (isFinalPage.value == false) {
+                            page++
+                        }
+                    }
+                }
             }
 
             result?.rows?.map {
@@ -267,20 +261,10 @@ class FinanceViewModel(
     fun getUserWithdrawList(
         isFirstFetch: Boolean,
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
-        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
     ) {
         loading()
-        when {
-            isFirstFetch -> {
-                _isFinalPage.postValue(false)
-                page = 1
-            }
-            else -> {
-                if (isFinalPage.value == false) {
-                    page++
-                }
-            }
-        }
+
 
         val checkStatus = withdrawStateList.find {
             it.isChecked
@@ -292,14 +276,21 @@ class FinanceViewModel(
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getWithdrawList(
-                    WithdrawListRequest(
-                        checkStatus = checkStatus,
-                        uwType = uwType,
-                        startTime = startTime,
-                        endTime = endTime
-                    )
-                )
+                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(checkStatus = checkStatus, uwType = uwType, startTime = startTime, endTime = endTime))
+            }
+
+            result.apply {
+                when {
+                    isFirstFetch -> {
+                        _isFinalPage.postValue(false)
+                        page = 1
+                    }
+                    else -> {
+                        if (isFinalPage.value == false) {
+                            page++
+                        }
+                    }
+                }
             }
 
             result?.rows?.map {
