@@ -17,6 +17,17 @@
         tools:text="0.951" />
 
     <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:gravity="center"
+        android:textColor="@color/selector_game_name"
+        android:textSize="@dimen/textSize14sp"
+        tools:text="123456" />
+
+    <TextView
         android:id="@+id/tv_spread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

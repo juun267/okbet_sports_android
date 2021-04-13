@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
@@ -32,6 +34,7 @@ import org.cxct.sportlottery.util.ToastUtil
 /**
  * 遊戲右側功能選單
  */
+@SuppressLint("SetTextI18n")
 class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
 
@@ -52,6 +55,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         initEvent()
         setupSelectLanguage()
         setupVersion()
+        getOddsType()
     }
 
     private fun setupCloseBtn() {
@@ -69,18 +73,23 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             if (it)
                 getMoney()
         })
-        viewModel.userMoney.observe(viewLifecycleOwner, Observer {
-            tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
+        viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
+            tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
             updateUI(it?.iconUrl, it?.userName, it?.nickName, it?.fullName, StaticData.getTestFlag(it?.testFlag))
         })
+
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            setupOddsType(it)
+        })
+
     }
 
     private fun initSocketObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner, Observer {
-            tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
+        receiver.userMoney.observe(viewLifecycleOwner, Observer { money ->
+            tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
         })
     }
 
@@ -132,9 +141,9 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_game_rule)
         }
 
-        //盤口類型
-        menu_handicap.setOnClickListener {
-            //TODO 盤口切換彈窗
+        menu_odds_type.setOnClickListener {
+            ChangeOddsTypeDialog().show(parentFragmentManager, null)
+            mDownMenuListener?.onClick(menu_odds_type)
         }
 
         //版本更新
@@ -146,10 +155,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         //退出登入
         btn_sign_out.setOnClickListener {
             viewModel.doLogoutCleanUser()
-            context?.run {
-                MainActivity.reStart(this)
-            }
-            mDownMenuListener?.onClick(btn_sign_out)
+                context?.run {
+                    MainActivity.reStart(this)
+                }
+                mDownMenuListener?.onClick(btn_sign_out)
         }
 
         //語系設置
@@ -158,6 +167,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(btn_change_language)
         }
 
+    }
+
+    private fun setupOddsType(oddsType: String) {
+        menu_odds_type.text = getString(R.string.odds_type, oddsType)
     }
 
     private fun setupSelectLanguage() {
@@ -171,6 +184,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupVersion() {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
+    }
+
+    private fun getOddsType(){
+        viewModel.getOddsType()
     }
 
     private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {

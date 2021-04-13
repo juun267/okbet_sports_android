@@ -17,6 +17,7 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
+            view.tv_title.letterSpacing = 0.117f
             view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0))
         } catch (e: Exception) {
             e.printStackTrace()
@@ -24,5 +25,11 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             typedArray.recycle()
         }
     }
+
+    var text: CharSequence
+        get() = tv_title.text
+        set(value) {
+            tv_title.text = value
+        }
 
 }

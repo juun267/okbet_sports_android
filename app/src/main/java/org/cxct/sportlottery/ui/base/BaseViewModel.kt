@@ -95,7 +95,6 @@ abstract class BaseViewModel(
 
     fun doLogoutCleanUser() {
         viewModelScope.launch {
-            //先清除資料後才進行登出, 先進行登出可能會造成後續行為取得應被清除的資料
             loginRepository.clear()
             betInfoRepository.clear()
             infoCenterRepository.clear()
