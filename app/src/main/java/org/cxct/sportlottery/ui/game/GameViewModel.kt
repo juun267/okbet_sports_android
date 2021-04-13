@@ -760,12 +760,14 @@ class GameViewModel(
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
-
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime.toLong(), "MM/dd")
+
                         matchOdd.matchInfo.startTimeDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime.toLong(), "HH:mm")
+
+                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
                     }
 
                     matchOdd.odds.forEach { map ->
@@ -779,9 +781,6 @@ class GameViewModel(
             }
 
             if (leagueIdList != null) {
-                if (result?.oddsListData?.leagueOdds?.isNotEmpty() == true) {
-                    result.oddsListData.leagueOdds[0].isExpand = true
-                }
                 _oddsListResult.postValue(Event(result))
             } else {
                 _oddsListGameHallResult.postValue(Event(result))

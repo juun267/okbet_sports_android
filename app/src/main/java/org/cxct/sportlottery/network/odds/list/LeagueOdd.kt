@@ -12,6 +12,6 @@ data class LeagueOdd(
     @Json(name = "matchOdds")
     val matchOdds: MutableList<MatchOdd>
 ) {
-    var isExpand = false
+    var isExpand = true
     var searchMatchOdds = listOf<MatchOdd>()
 }
