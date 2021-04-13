@@ -22,11 +22,16 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
+    private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0) }
+
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
     private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
         block_editText.isSelected = hasFocus
         setError(null)
     }
+
+    //控制物件與下方的間距, default = 10dp
+    var itemMarginBottom: Int = typedArray.getDimensionPixelOffset(R.styleable.CustomView_cvMarginBottom, 10.dp)
 
     var eyeVisibility
         get() = btn_eye.visibility
@@ -54,8 +59,6 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
         addView(view)
 
-        val typedArray = context.theme
-            .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.tv_title.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 1))
@@ -159,12 +162,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     fun setError(value: String?) {
         tv_error.text = value
         if (tv_error.text.isNullOrEmpty()) {
-            tv_error.visibility = View.INVISIBLE
-            (tv_error.layoutParams as LayoutParams).setMargins(0, 0, 0, 0)
+            tv_error.visibility = View.GONE
+            (layout.layoutParams as LayoutParams).setMargins(0, 0, 0, itemMarginBottom)
             block_editText.isActivated = false
         } else {
             tv_error.visibility = View.VISIBLE
-            (tv_error.layoutParams as LayoutParams).setMargins(0, 4.dp, 0, 10.dp)
+            (layout.layoutParams as LayoutParams).setMargins(0, 0, 0, 0)
+            (tv_error.layoutParams as LayoutParams).setMargins(10.dp, 5.dp, 0, 5.dp)
             block_editText.isActivated = true
         }
     }

@@ -41,16 +41,16 @@
                     android:layout_marginStart="12dp"
                     android:ems="5"
                     android:text="@string/title_currency"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="" />
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/txv_currency"
@@ -98,16 +98,16 @@
                     android:layout_marginStart="12dp"
                     android:ems="5"
                     android:text="@string/title_recharge_account"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="" />
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/txv_account"

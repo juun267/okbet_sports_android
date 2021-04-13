@@ -6,6 +6,7 @@
 
     <declare-styleable name="CustomView">
         <attr name="cvTitle" format="string" />
+        <attr name="cvMarginBottom" format="dimension" />
         <attr name="cvTitleTextStyle">
             <flag name="normal" value="0"/>
             <flag name="bold" value="1"/>

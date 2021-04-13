@@ -26,6 +26,9 @@ data class MatchInfo(
     var homeScore: Int? = null //主队分数
     var statusName: String? = null //状态名称
 
+    //At Start
+    var remainTime: Long? = null
+
     //Other
     var startDateDisplay: String? = null
     var startTimeDisplay: String? = null

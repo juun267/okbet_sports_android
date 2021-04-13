@@ -35,16 +35,16 @@
                     android:layout_marginStart="12dp"
                     android:ems="4"
                     android:text="@string/title_bank"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="" />
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <ImageView
                     android:id="@+id/iv_bank_icon"
@@ -60,7 +60,7 @@
                     android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:textColor="@color/colorDarkBlack"
+                    android:textColor="@color/colorBlack"
                     android:gravity="center_vertical|left"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -103,18 +103,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:ems="2"
                         android:text="@string/title_name"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="使用者姓名" />
 
@@ -127,7 +125,7 @@
                         android:background="@drawable/bg_3dp_radius_button"
                         android:gravity="center"
                         android:text="@string/btn_copy"
-                        android:textColor="@color/main_light"
+                        android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -143,18 +141,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:ems="2"
                         android:text="@string/title_account"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
                         android:id="@+id/tv_account"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="1123456789011111" />
 
@@ -167,7 +163,7 @@
                         android:background="@drawable/bg_3dp_radius_button"
                         android:gravity="center"
                         android:text="@string/btn_copy"
-                        android:textColor="@color/main_light"
+                        android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -186,19 +182,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="12dp"
-                        android:ems="2"
                         android:text="@string/title_address"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
                         android:id="@+id/tv_address"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:paddingTop="1dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="上海市浦东大道2851号" />
 
@@ -214,7 +208,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:minHeight="40dp"
                         android:orientation="horizontal">
 
@@ -223,19 +216,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
-                            android:ems="5"
                             android:text="@string/title_qr_pay"
-                            android:textColor="@color/black"
+                            android:textColor="@color/colorBlack"
                             android:textSize="@dimen/textSize13sp" />
 
                         <TextView
                             android:id="@+id/tv_hint_qr_pay"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:text="@string/title_hint_qr_pay"
-                            android:textColor="@color/black"
+                            android:textColor="@color/colorBlack"
                             android:textSize="@dimen/textSize12sp" />
 
                     </LinearLayout>
@@ -248,13 +239,10 @@
                         android:minHeight="40dp"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:ems="5"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/textSize13sp" />
+                        <Space
+                            android:layout_width="65dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
 
                         <ImageView
                             android:id="@+id/iv_address"
@@ -286,19 +274,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:ems="2"
                         android:text="@string/title_remark"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
                         android:id="@+id/tv_remark"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:text="@string/title_hint_qr_pay"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorBlack"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="财付通线下充值" />
 
@@ -312,14 +298,14 @@
             android:id="@+id/ll_hit1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dot"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -327,7 +313,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money_recharge_hint1"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -342,7 +328,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dot"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -350,7 +336,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money_recharge_hint2"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -426,7 +412,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlackLight"
+                    android:textStyle="bold"
                     android:textSize="@dimen/textSize13sp" />
 
                 <View
@@ -435,14 +422,13 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
 
                 <TextView
                     android:id="@+id/txv_recharge_time"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="start|center_vertical"
@@ -468,7 +454,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
@@ -489,8 +475,9 @@
                     android:ems="4"
                     android:gravity="center_vertical"
                     android:maxLines="1"
+                    android:textStyle="bold"
                     android:text="@string/title_current_money"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp" />
 
                 <View
@@ -499,13 +486,12 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/txv_wallet_money"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="start|center_vertical"
@@ -529,7 +515,7 @@
                 android:id="@+id/title_fee_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/title_fee_rate" />
 
@@ -537,7 +523,7 @@
                 android:id="@+id/tv_fee_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="0.500" />
 
@@ -545,7 +531,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/percent"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -559,7 +545,7 @@
                 android:id="@+id/title_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/title_fee_amount" />
 
@@ -567,7 +553,7 @@
                 android:id="@+id/tv_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="12.000" />
 
@@ -576,7 +562,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="@string/currency"
-                android:textColor="@color/orangeRed"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
