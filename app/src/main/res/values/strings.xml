@@ -287,7 +287,7 @@
     <!-- Setting password page-->
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
-    <string name="current_login_password">当前密码</string>
+    <string name="current_login_password">当前登录密码</string>
     <string name="current_withdrawal_password">当前提款密码</string>
     <string name="hint_current_login_password">请输入登录密码</string>
     <string name="hint_current_withdrawal_password">请输入提款密码</string>
