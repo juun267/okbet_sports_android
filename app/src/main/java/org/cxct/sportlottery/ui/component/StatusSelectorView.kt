@@ -29,7 +29,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.StatusBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_sheetLayout, R.layout.dialog_bottom_sheet_custom) }
-    val bottomSheetView: View by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
+    private val bottomSheetView: View by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
     var selectedText: String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
@@ -237,7 +237,7 @@ class StatusSheetAdapter (private val checkedListener: ItemCheckedListener) : Re
             itemView.apply {
                 checkbox.isChecked = data.isChecked
                 checkbox.text = data.showName
-                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.blue2) else ContextCompat.getColor(checkbox.context, R.color.white))
+                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.colorWhite6) else ContextCompat.getColor(checkbox.context, R.color.white))
             }
         }
 
