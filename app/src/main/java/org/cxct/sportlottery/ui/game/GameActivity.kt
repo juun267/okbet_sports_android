@@ -253,6 +253,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             return
         }
 
+        if (mNavController.currentDestination?.id == R.id.gameOutrightFragment) {
+            mNavController.navigateUp()
+            return
+        }
+
         if (mNavController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
             tabLayout.getTabAt(0)?.select()
             return
@@ -324,11 +329,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 else -> {
                 }
             }
-        })
-
-        viewModel.openOutrightDetail.observe(this, Observer {
-            app_bar_layout.setExpanded(true, true)
-            addFragment(GameOutrightFragment.newInstance(it.first, it.second), Page.OUTRIGHT)
         })
 
         viewModel.userInfo.observe(this, {
