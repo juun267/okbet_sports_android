@@ -8,17 +8,17 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 
-class TypeHDPAdapter(
+class TypeOnlyOddHDPAdapter(
     private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val curMatchId: String?,
     private val oddsType: String
-) : RecyclerView.Adapter<TypeHDPAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<TypeOnlyOddHDPAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_hdp_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_hdp_only_odd_item, parent, false))
     }
 
 
@@ -37,6 +37,5 @@ class TypeHDPAdapter(
             setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_END, oddsType, oddsDetail.gameType)
         }
     }
-
 
 }
