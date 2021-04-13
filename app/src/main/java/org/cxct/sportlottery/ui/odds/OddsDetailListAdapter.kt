@@ -593,7 +593,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
                         tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
-                        OddButtonHighLight.set(false,null, tvOdds, null, odd)
+                        OddButtonHighLight.set(false, null, tvOdds, null, odd)
 
                         when (odd.status) {
                             BetStatus.ACTIVATED.code -> {
@@ -688,32 +688,32 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
         }
 
         private fun forSingle(oddsDetail: OddsDetailListData) {
-                itemView.findViewById<TextView>(R.id.tv_home_name).text = oddsDetail.oddArrayList[0].name
-                itemView.findViewById<TextView>(R.id.tv_draw).text = oddsDetail.oddArrayList[1].name
-                itemView.findViewById<TextView>(R.id.tv_away_name).text = oddsDetail.oddArrayList[2].name
-                itemView.findViewById<RelativeLayout>(R.id.rl_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            itemView.findViewById<TextView>(R.id.tv_home_name).text = oddsDetail.oddArrayList[0].name
+            itemView.findViewById<TextView>(R.id.tv_draw).text = oddsDetail.oddArrayList[1].name
+            itemView.findViewById<TextView>(R.id.tv_away_name).text = oddsDetail.oddArrayList[2].name
+            itemView.findViewById<RelativeLayout>(R.id.rl_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-                val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
-                rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-                rvBet.apply {
-                    adapter = TypeSingleAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
-                    layoutManager = GridLayoutManager(itemView.context, 3)
-                    if (itemDecorationCount == 0) {
-                        addItemDecoration(
-                            GridItemDecoration(
-                                itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                                itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                                ContextCompat.getColor(itemView.context, R.color.colorWhite),
-                                false
-                            )
+            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet.apply {
+                adapter = TypeSingleAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                layoutManager = GridLayoutManager(itemView.context, 3)
+                if (itemDecorationCount == 0) {
+                    addItemDecoration(
+                        GridItemDecoration(
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
+                            ContextCompat.getColor(itemView.context, R.color.colorWhite),
+                            false
                         )
-                    }
+                    )
                 }
+            }
         }
 
         private fun forChangeHDP(oddsDetail: OddsDetailListData) {
-            itemView.findViewById<TextView>(R.id.tv_home_name).text = oddsDetail.oddArrayList[0].name
-            itemView.findViewById<TextView>(R.id.tv_away_name).text = oddsDetail.oddArrayList[1].name
+            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
+            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
             itemView.findViewById<RelativeLayout>(R.id.rl_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
