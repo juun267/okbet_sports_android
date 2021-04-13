@@ -413,9 +413,9 @@
 
     <!--money-recharge-->
     <string name="title_bank">选择银行</string>
-    <string name="title_name">姓名:</string>
-    <string name="title_account">账号:</string>
-    <string name="title_address">地址:</string>
+    <string name="title_name">姓名：</string>
+    <string name="title_account">账号：</string>
+    <string name="title_address">地址：</string>
     <string name="title_deposit_money">充值金额</string>
     <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
     <string name="title_real_name">认证姓名</string>
@@ -436,7 +436,7 @@
     <string name="title_fee_amount">・手续费金额：</string>
     <string name="title_rebate_rate">・返利：</string>
     <string name="title_rebate_amount">・返利金额：</string>
-    <string name="title_remark">备注:</string>
+    <string name="title_remark">备注：</string>
     <string name="title_tips">・温馨提示：</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
