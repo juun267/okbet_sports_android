@@ -690,6 +690,8 @@
     <string name="transfer_platform">转换平台</string>
     <string name="finance_rmb">%s RMB</string>
     <string name="recycle_success">回收成功</string>
+    <string name="transfer_money_succeed">额度转换成功</string>
+
 
     <string name="third_game_df">德丰捕鱼</string>
     <string name="third_game_sbty">沙巴体育</string>
