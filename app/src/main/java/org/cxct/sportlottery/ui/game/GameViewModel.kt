@@ -134,7 +134,7 @@ class GameViewModel(
 
     val betInfoList = betInfoRepository.betInfoList
 
-    private val _messageListResult = MutableLiveData<MessageListResult>()
+    private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListGameHallLiveResult = MutableLiveData<OddsListResult?>()
