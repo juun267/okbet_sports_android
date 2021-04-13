@@ -77,6 +77,9 @@ class FinanceViewModel(
             androidContext.getString(R.string.withdraw_log_type_admin) -> {
                 StatusSheetData(UWType.ADMIN_SUB_MONEY.type, it)
             }
+            androidContext.getString(R.string.withdraw_log_crypto_transfer) -> {
+                StatusSheetData(UWType.CRYPTO.type, it)
+            }
             else -> {
                 StatusSheetData(null, it).apply { isChecked = true }
             }
@@ -139,6 +142,9 @@ class FinanceViewModel(
             }
             androidContext.getString(R.string.recharge_channel_admin) -> {
                 StatusSheetData(RechType.ADMIN_ADD_MONEY.type, it)
+            }
+            androidContext.getString(R.string.recharge_channel_crypto) -> {
+                StatusSheetData(RechType.CRYPTO.type, it)
             }
             else -> {
                 StatusSheetData(null, it).apply { isChecked = true }

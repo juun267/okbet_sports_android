@@ -60,6 +60,7 @@
                         android:id="@+id/img_close"
                         android:layout_width="15dp"
                         android:layout_height="match_parent"
+                        app:tint="@color/colorWhite6"
                         android:src="@drawable/ic_close" />
                 </LinearLayout>
 

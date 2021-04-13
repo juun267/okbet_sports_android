@@ -32,6 +32,7 @@
         <item>@string/recharge_channel_weixin</item>
         <item>@string/recharge_channel_alipay</item>
         <item>@string/recharge_channel_cft</item>
+        <item>@string/recharge_channel_crypto</item>
         <item>@string/recharge_channel_admin</item>
     </string-array>
 
@@ -46,5 +47,6 @@
         <item>@string/withdraw_log_type_all</item>
         <item>@string/withdraw_log_type_bank_trans</item>
         <item>@string/withdraw_log_type_admin</item>
+        <item>@string/withdraw_log_crypto_transfer</item>
     </string-array>
 </resources>
