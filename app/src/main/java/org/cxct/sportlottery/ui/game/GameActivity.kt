@@ -3,18 +3,17 @@ package org.cxct.sportlottery.ui.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
@@ -23,6 +22,7 @@ import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
@@ -47,6 +47,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private var mCloseOddsDetail = true
 
+    private var mSportMenuResult: SportMenuResult? = null
     private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
         override fun onClick(id: Int) {
             when (id) {
@@ -57,19 +58,17 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 R.id.menu_early -> tabLayout.getTabAt(3)?.select()
                 R.id.menu_parlay -> tabLayout.getTabAt(4)?.select()
                 R.id.menu_champion -> tabLayout.getTabAt(5)?.select()
-                //TODO simon test 球類跳轉
-                R.id.menu_soccer -> {}
-                R.id.menu_basketball -> {}
-                R.id.menu_tennis -> {}
-                R.id.menu_badminton -> {}
-                R.id.menu_volleyball -> {}
+                R.id.menu_soccer -> goToSportGame(SportType.FOOTBALL)
+                R.id.menu_basketball -> goToSportGame(SportType.BASKETBALL)
+                R.id.menu_tennis -> goToSportGame(SportType.TENNIS)
+                R.id.menu_badminton -> goToSportGame(SportType.BADMINTON)
+                R.id.menu_volleyball -> goToSportGame(SportType.VOLLEYBALL)
                 R.id.menu_cg_lottery -> gotToMainActivity(ThirdGameCategory.CGCP)
                 R.id.menu_live_game -> gotToMainActivity(ThirdGameCategory.LIVE)
                 R.id.menu_poker_game -> gotToMainActivity(ThirdGameCategory.QP)
                 R.id.menu_slot_game -> gotToMainActivity(ThirdGameCategory.DZ)
                 R.id.menu_fish_game -> gotToMainActivity(ThirdGameCategory.BY)
             }
-
         }
     }
 
@@ -97,6 +96,41 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
+    }
+
+    private fun goToSportGame(sportType: SportType) {
+        //規則：看當前在哪種類型賽事，再跳轉到對應類型下的球類賽事
+        //若此類型賽事無該種球類比賽，則一律跳轉到“串關”類型的球類賽事
+        val matchType = when (tabLayout.selectedTabPosition) {
+            1 -> { //滾球盤
+                val itemList = mSportMenuResult?.sportMenuData?.menu?.inPlay?.items ?: listOf()
+                val targetItem = itemList.firstOrNull { it.code == sportType.code }
+                if (targetItem != null) MatchType.IN_PLAY else MatchType.PARLAY
+            }
+
+            2 -> { //今日賽事
+                val itemList = mSportMenuResult?.sportMenuData?.menu?.today?.items ?: listOf()
+                val targetItem = itemList.firstOrNull { it.code == sportType.code }
+                if (targetItem != null) MatchType.TODAY else MatchType.PARLAY
+            }
+
+            3 -> { //早盤
+                val itemList = mSportMenuResult?.sportMenuData?.menu?.early?.items ?: listOf()
+                val targetItem = itemList.firstOrNull { it.code == sportType.code }
+                if (targetItem != null) MatchType.EARLY else MatchType.PARLAY
+            }
+
+            5 -> { //冠軍
+                val itemList = mSportMenuResult?.sportMenuData?.menu?.outright?.items ?: listOf()
+                val targetItem = itemList.firstOrNull { it.code == sportType.code }
+                if (targetItem != null) MatchType.OUTRIGHT else MatchType.PARLAY
+            }
+
+            else -> { //全部 //串關
+                MatchType.PARLAY
+            }
+        }
+        viewModel.getGameHallList(matchType, sportType)
     }
 
     private fun gotToMainActivity(thirdGameCategory: ThirdGameCategory) {
@@ -414,6 +448,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
         }
+
+        mSportMenuResult = sportMenuResult
     }
 
     private fun updateAvatar(iconUrl: String?) {
