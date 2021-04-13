@@ -170,7 +170,6 @@ class MoneyRechViewModel(
         }
     }
 
-    //TODO Bill
     //充值頁面[虛擬幣充值]-[按鈕]提交申請
     fun rechargeCryptoSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         checkAll(moneyAddRequest, rechType, rechConfig)
