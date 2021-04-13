@@ -39,7 +39,17 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
                         }
                         else -> {
-                            viewModel.getOddsDetail(matchOdd.matchInfo?.id)
+                            matchOdd.matchInfo?.id?.let { matchId ->
+                                val action =
+                                    GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                                        args.sportType,
+                                        matchId,
+                                        "EU"
+                                    )
+
+                                findNavController().navigate(action)
+                            }
+
                         }
                     }
                 },
