@@ -74,16 +74,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        service.subscribeHallChannel(
-            args.sportType.code,
-            CateMenuCode.HDP_AND_OU.code,
-            args.leagueId
-        )
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
