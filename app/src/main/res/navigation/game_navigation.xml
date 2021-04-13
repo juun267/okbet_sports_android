@@ -72,6 +72,22 @@
                 android:name="leagueId"
                 app:argType="string" />
         </action>
+
+        <action
+            android:id="@+id/action_gameV3Fragment_to_gameOutrightFragment"
+            app:destination="@id/gameOutrightFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+            <argument
+                android:name="sportType"
+                app:argType="org.cxct.sportlottery.network.common.SportType" />
+
+            <argument
+                android:name="eventId"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
@@ -88,6 +104,19 @@
 
         <argument
             android:name="leagueId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/gameOutrightFragment"
+        android:name="org.cxct.sportlottery.ui.game.v3.GameOutrightFragment"
+        tools:layout="@layout/fragment_game_outright">
+        <argument
+            android:name="sportType"
+            app:argType="org.cxct.sportlottery.network.common.SportType" />
+
+        <argument
+            android:name="eventId"
             app:argType="string" />
     </fragment>
 

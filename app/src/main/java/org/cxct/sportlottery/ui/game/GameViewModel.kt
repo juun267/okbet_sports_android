@@ -124,9 +124,6 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
-    val openOutrightDetail: LiveData<Pair<String, String>>
-        get() = _openOutrightDetail
-
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
@@ -153,8 +150,6 @@ class GameViewModel(
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
-
-    private val _openOutrightDetail = MutableLiveData<Pair<String, String>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -536,8 +531,6 @@ class GameViewModel(
 
                 _outrightOddsListResult.postValue(Event(result))
             }
-
-            _openOutrightDetail.postValue(it to leagueId)
         }
     }
 
