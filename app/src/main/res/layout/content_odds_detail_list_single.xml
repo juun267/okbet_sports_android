@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_toStartOf="@+id/tv_draw_ddd"
+            android:layout_toStartOf="@+id/tv_draw"
             android:letterSpacing="0.0088"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize14sp"
@@ -39,7 +39,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:layout_toEndOf="@+id/tv_draw_ddd"
+            android:layout_toEndOf="@+id/tv_draw"
             android:gravity="end"
             android:letterSpacing="0.0088"
             android:textColor="@color/colorBlack"
@@ -47,7 +47,7 @@
             tools:text="利物浦" />
 
         <TextView
-            android:id="@+id/tv_draw_ddd"
+            android:id="@+id/tv_draw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

@@ -689,7 +689,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
         private fun forSingle(oddsDetail: OddsDetailListData) {
                 itemView.findViewById<TextView>(R.id.tv_home_name).text = oddsDetail.oddArrayList[0].name
-                itemView.findViewById<TextView>(R.id.tv_draw_ddd).text = oddsDetail.oddArrayList[1].name
+                itemView.findViewById<TextView>(R.id.tv_draw).text = oddsDetail.oddArrayList[1].name
                 itemView.findViewById<TextView>(R.id.tv_away_name).text = oddsDetail.oddArrayList[2].name
                 itemView.findViewById<RelativeLayout>(R.id.rl_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
