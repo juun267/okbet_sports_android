@@ -84,6 +84,7 @@ class TypeOneListAdapter(
                 checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.DC_OU.value) -> originOdd.spread = null
             }
 
+            nameChangeColor = false
             setData(
                 originOdd, onOddClickListener, betInfoList, curMatchId,
                 if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null

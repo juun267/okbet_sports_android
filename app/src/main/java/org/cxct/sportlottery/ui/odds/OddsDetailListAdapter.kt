@@ -593,7 +593,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener, 
 
                         tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
-                        OddButtonHighLight.set(null, tvOdds, null, odd)
+                        OddButtonHighLight.set(false,null, tvOdds, null, odd)
 
                         when (odd.status) {
                             BetStatus.ACTIVATED.code -> {
