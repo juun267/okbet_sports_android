@@ -266,4 +266,11 @@ object TimeUtil {
         }
         return weekDateList
     }
+
+    fun getRemainTime(timeStamp: Long): Long {
+        val calendar = Calendar.getInstance()
+        val startTimeStamp = calendar.timeInMillis
+
+        return timeStamp - startTimeStamp
+    }
 }

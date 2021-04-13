@@ -34,6 +34,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val sportTypeAdapter by lazy {
         SportTypeAdapter().apply {
             sportTypeListener = SportTypeListener {
+                service.unsubscribeAllHallChannel()
+
                 viewModel.getGameHallList(args.matchType, it)
                 loading()
             }
@@ -152,7 +154,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 MatchType.AT_START -> GameFilterRow.AT_START
             }
 
-            isSearchViewVisible = (args.matchType != MatchType.IN_PLAY)
+            isSearchViewVisible =
+                (args.matchType != MatchType.IN_PLAY && args.matchType != MatchType.AT_START)
 
             searchHint = getString(R.string.game_filter_row_search_hint)
 

@@ -116,8 +116,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             eventId = it.getString(ARG_EVENT_ID)
         }
-
-        service.subscribeHallChannel(sportType?.code, CateMenuCode.HDP_AND_OU.code, eventId)
     }
 
     override fun onCreateView(
