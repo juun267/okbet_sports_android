@@ -278,6 +278,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.SINGLE_2ST.type -> LayoutType.SINGLE.layout
             GameType.SINGLE_OT.type -> LayoutType.SINGLE.layout
             GameType.SINGLE_SEG.type -> LayoutType.SINGLE.layout
+            GameType.HWMG_SINGLE.type -> LayoutType.SINGLE.layout
 
             GameType.SINGLE_2.type -> LayoutType.SINGLE_2_ITEM.layout
             GameType.SINGLE_1ST_2.type -> LayoutType.SINGLE_2_ITEM.layout
@@ -285,13 +286,107 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.SINGLE_OT_2.type -> LayoutType.SINGLE_2_ITEM.layout
             GameType.SINGLE_SEG_2.type -> LayoutType.SINGLE_2_ITEM.layout
 
-            GameType.HWMG_SINGLE.type -> LayoutType.SINGLE.layout
+
 
             else -> 0
 
         }
 
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType)
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType).apply {
+            when (layout) {
+                LayoutType.HDP.layout -> {
+                    rvBet.apply {
+                        addItemDecoration(
+                            GridItemDecoration(
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_horizontal),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_vertical),
+                                ContextCompat.getColor(context, R.color.colorWhite),
+                                false
+                            )
+                        )
+                    }
+                }
+
+                LayoutType.TWO_SIDES.layout -> {
+                    rvBet.apply {
+                        addItemDecoration(
+                            GridItemDecoration(
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
+                                ContextCompat.getColor(context, R.color.colorWhite6),
+                                false
+                            )
+                        )
+                    }
+                }
+
+                LayoutType.CS.layout -> {
+                    rvHome.apply {
+                        addItemDecoration(
+                            SpaceItemDecoration(
+                                context,
+                                R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                            )
+                        )
+                    }
+                    rvDraw.apply {
+                        addItemDecoration(
+                            SpaceItemDecoration(
+                                context,
+                                R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                            )
+                        )
+                    }
+                    rvAway.apply {
+                        addItemDecoration(
+                            SpaceItemDecoration(
+                                context,
+                                R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
+                            )
+                        )
+                    }
+                }
+
+                LayoutType.ONE_LIST.layout -> {
+                    rvBet.apply {
+                        addItemDecoration(
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_straight
+                                )
+                            )
+                        )
+                    }
+                }
+
+                LayoutType.SINGLE.layout -> {
+                    rvBet.apply {
+                        addItemDecoration(
+                            GridItemDecoration(
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
+                                ContextCompat.getColor(context, R.color.colorWhite),
+                                false
+                            )
+                        )
+                    }
+                }
+
+                LayoutType.SINGLE_2_ITEM.layout -> {
+                    rvBet.apply {
+                        addItemDecoration(
+                            GridItemDecoration(
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
+                                ContextCompat.getColor(context, R.color.colorWhite),
+                                false
+                            )
+                        )
+                    }
+                }
+            }
+        }
     }
 
 
@@ -396,6 +491,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private val ivArrowUp = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
         private val vLine = itemView.findViewById<View>(R.id.v_line)
 
+        val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+
+        //cs
+        val rvHome = itemView.findViewById<RecyclerView>(R.id.rv_home)
+        val rvDraw = itemView.findViewById<RecyclerView>(R.id.rv_draw)
+        val rvAway = itemView.findViewById<RecyclerView>(R.id.rv_away)
+
+
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
 
             val type = oddsDetailDataList[position].gameType
@@ -487,7 +590,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun oneList(oddsDetail: OddsDetailListData) {
-            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             for (i in oddsDetail.oddArrayList.indices) {
@@ -516,16 +618,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     oddsType
                 )
                 layoutManager = LinearLayoutManager(itemView.context)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        DividerItemDecorator(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.divider_straight
-                            )
-                        )
-                    )
-                }
             }
         }
 
@@ -611,47 +703,23 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 it.name?.split(" - ")?.get(1)?.toInt()
             }
 
-            itemView.findViewById<RecyclerView>(R.id.rv_home).apply {
+            rvHome.apply {
                 adapter = TypeCSAdapter(homeList, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        SpaceItemDecoration(
-                            context,
-                            R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
-                        )
-                    )
-                }
             }
 
-            itemView.findViewById<RecyclerView>(R.id.rv_draw).apply {
+            rvDraw.apply {
                 adapter = TypeCSAdapter(drawList, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        SpaceItemDecoration(
-                            context,
-                            R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
-                        )
-                    )
-                }
             }
 
-            itemView.findViewById<RecyclerView>(R.id.rv_away).apply {
+            rvAway.apply {
                 adapter = TypeCSAdapter(awayList, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        SpaceItemDecoration(
-                            context,
-                            R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
-                        )
-                    )
-                }
             }
 
-            if(drawList.size == 0){
-                itemView.findViewById<RecyclerView>(R.id.rv_draw).visibility = View.GONE
+            if (drawList.size == 0) {
+                rvDraw.visibility = View.GONE
             }
 
         }
@@ -662,21 +730,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.findViewById<TextView>(R.id.tv_away_name).text = oddsDetail.oddArrayList[2].name
             itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
                 adapter = TypeSingleAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 3)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        GridItemDecoration(
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                            ContextCompat.getColor(itemView.context, R.color.colorWhite),
-                            false
-                        )
-                    )
-                }
             }
         }
 
@@ -685,21 +742,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
             itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
                 adapter = TypeSingleAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        GridItemDecoration(
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                            ContextCompat.getColor(itemView.context, R.color.colorWhite),
-                            false
-                        )
-                    )
-                }
             }
 
         }
@@ -709,21 +755,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
             itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
                 adapter = TypeOnlyOddHDPAdapter(oddsDetail, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        GridItemDecoration(
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_horizontal),
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_vertical),
-                            ContextCompat.getColor(itemView.context, R.color.colorWhite),
-                            false
-                        )
-                    )
-                }
             }
         }
 
@@ -733,40 +768,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
             itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
                 adapter = TypeHDPAdapter(oddsDetail, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        GridItemDecoration(
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_horizontal),
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_vertical),
-                            ContextCompat.getColor(itemView.context, R.color.colorWhite),
-                            false
-                        )
-                    )
-                }
             }
         }
 
         private fun twoSides(oddsDetail: OddsDetailListData) {
-            val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
                 adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(
-                        GridItemDecoration(
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
-                            ContextCompat.getColor(itemView.context, R.color.colorWhite6),
-                            false
-                        )
-                    )
-                }
             }
         }
 
