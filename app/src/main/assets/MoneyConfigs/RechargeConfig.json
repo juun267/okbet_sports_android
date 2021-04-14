@@ -63,6 +63,13 @@
     "onlineType": "0"
   },
   {
+    "title": "银行卡转账",
+    "subtitle": "线下入款，您的首选",
+    "image": "ic_bank_atm",
+    "rechType": "bankTransfer",
+    "onlineType": "0"
+  },
+  {
     "title": "支付宝转账",
     "subtitle": "支付宝转账支付",
     "image": "ic_alipay",
@@ -74,13 +81,6 @@
     "subtitle": "财付通转账支付",
     "image": "ic_tenpay",
     "rechType": "cft",
-    "onlineType": "0"
-  },
-  {
-    "title": "银行卡转账",
-    "subtitle": "线下入款，您的首选",
-    "image": "ic_bank_atm",
-    "rechType": "bankTransfer",
     "onlineType": "0"
   },
   {
