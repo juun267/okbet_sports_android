@@ -19,7 +19,6 @@ class TypeOneListAdapter(
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val curMatchId: String?,
-    private val isSCO: Boolean,
     private val onMoreClickListener: OnMoreClickListener,
     private val oddsType: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -59,7 +58,7 @@ class TypeOneListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> holder.bindModel(oddsList[position])
-            is MoreViewHolder -> holder.bind(isSCO)
+            is MoreViewHolder -> holder.bind()
         }
     }
 
@@ -71,19 +70,6 @@ class TypeOneListAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(originOdd: Odd) {
-
-
-            when {
-                //獨贏&大小 強制不顯示spread
-                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.SINGLE_OU.value) -> originOdd.spread = null
-
-                //大小&双方球队进球 強制不顯示spread
-                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.OU_BTS.value) -> originOdd.spread = null
-
-                //双重机会&大小 強制不顯示spread
-                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.DC_OU.value) -> originOdd.spread = null
-            }
-
             nameChangeColor = false
             setData(
                 originOdd, onOddClickListener, betInfoList, curMatchId,
@@ -95,12 +81,12 @@ class TypeOneListAdapter(
 
     inner class MoreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val tvExpandControl: TextView = itemView.findViewById(R.id.tv_expand_control)
-        fun bind(isSCO: Boolean) {
+        fun bind() {
             tvExpandControl.apply {
                 setOnClickListener {
                     onMoreClickListener.click()
                 }
-                visibility = if (isSCO && oddsList.size > OVER_COUNT) {
+                visibility = if (oddsList.size > OVER_COUNT) {
                     View.VISIBLE
                 } else {
                     View.GONE
