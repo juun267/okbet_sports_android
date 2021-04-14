@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_cgcp.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -16,6 +19,13 @@ import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.util.JumpUtil
 
 class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainViewModel>(MainViewModel::class) {
+
+    private val mActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        //若自動轉換功能開啟，離開第三方遊戲要再把錢都轉回平台帳戶
+        if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
+            viewModel.allTransferOut()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_cgcp, container, false)
     }
@@ -46,7 +56,7 @@ class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
         when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "", mActivityResultLauncher) }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}

@@ -5,13 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Patterns
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentActivity
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.ServiceSelectDialog
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import timber.log.Timber
-import kotlin.jvm.Throws
 
 object JumpUtil {
 
@@ -48,13 +52,12 @@ object JumpUtil {
     }
 
     //跳轉第三方遊戲網頁
-    fun toThirdGameWeb(context: Context, href: String) {
+    fun toThirdGameWeb(context: Context, href: String, activityResultLauncher: ActivityResultLauncher<Intent>) {
         try {
             Timber.i("跳转到链接:$href")
             if (Patterns.WEB_URL.matcher(href).matches()) {
-                context.startActivity(
-                    Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href)
-                )
+                activityResultLauncher
+                    .launch(Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href))
             } else {
                 throw Exception(href) //20191022 記錄問題：當網址無效時，代表他回傳的 url 是錯誤訊息
             }

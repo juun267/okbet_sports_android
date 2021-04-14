@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -184,6 +185,15 @@ class MainViewModel(
                 errorMsg = null
             )
         )
+    }
+
+   //回收所有第三方遊戲餘額至平台帳戶
+    fun allTransferOut() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.allTransferOut()
+            }
+        }
     }
 
     private suspend fun autoTransfer(gameData: ThirdDictValues) {
