@@ -345,6 +345,7 @@ class GameViewModel(
     }
 
     fun getMoney() {
+        if (isLogin.value == false) return
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
