@@ -77,7 +77,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                         binding.tvErrorMessage.text =
                             String.format(
                                 binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
-                                parlayOdd.max.toString()
+                                TextUtil.formatMoneyNoDecimal(parlayOdd.max)
                             )
                         sendOutStatus = false
                     }
