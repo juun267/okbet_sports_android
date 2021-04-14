@@ -314,10 +314,8 @@ class MoneyRechViewModel(
             wxID.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyWeChat(
-                wxID
-            ) -> {
-                androidContext.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyWeChat(wxID) -> {
+                androidContext.getString(R.string.error_wx_incompatible_format)
             }
             else -> {
                 ""
@@ -331,9 +329,7 @@ class MoneyRechViewModel(
             userName.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyFullName(
-                userName
-            ) -> {
+            !VerifyConstUtil.verifyFullName(userName) -> {
                 androidContext.getString(R.string.error_incompatible_format)
             }
             else -> {
