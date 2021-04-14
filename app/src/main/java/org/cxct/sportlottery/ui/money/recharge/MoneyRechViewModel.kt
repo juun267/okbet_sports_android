@@ -127,7 +127,6 @@ class MoneyRechViewModel(
     //篩選List要顯示的資料
     private fun filterBankList(rechConfigList: List<MoneyRechCfg.RechConfig>) {
         try {
-//            Timber.i("充值的基礎配置>>>>>>rechConfigList:${Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter<List<MoneyRechCfg.RechConfig>>(Types.newParameterizedType(MutableList::class.java, MoneyRechCfg.RechConfig::class.java)).toJson(rechConfigList)}")
 
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
@@ -152,10 +151,6 @@ class MoneyRechViewModel(
 
             _onlinePayList.value = onlineData
             _transferPayList.value = transferData
-
-            Timber.v("充值的基礎配置>>>>>>onlineData:${Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter<List<MoneyPayWayData>>(Types.newParameterizedType(MutableList::class.java, MoneyPayWayData::class.java)).toJson(onlineData)}")
-            Timber.i("充值的基礎配置>>>>>>transferData:${Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter<List<MoneyPayWayData>>(Types.newParameterizedType(MutableList::class.java, MoneyPayWayData::class.java)).toJson(transferData)}")
-
 
         } catch (e: Exception) {
             e.printStackTrace()
