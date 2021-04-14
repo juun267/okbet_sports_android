@@ -187,6 +187,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         currencyPosition = position
                         refreshCurrencyType(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = currencyBtsAdapter
@@ -211,6 +212,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     mAccountBottomSheetList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         refreshAccount(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = accountBtsAdapter
@@ -331,5 +333,10 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
     //取得餘額
     private fun getMoney() {
         viewModel.getMoney()
+    }
+
+    private fun resetEvent() {
+        clearFocus()
+        et_recharge_account.setText("")
     }
 }

@@ -177,6 +177,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                         bankPosition = position
                         //更新銀行
                         getBankType(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = bankCardAdapter

@@ -479,7 +479,7 @@
     <string name="hint_fee_amount">・手续费金额：%1$s RMB</string>
     <string name="hint_feeback_rate">・返利：%1$s </string>
     <string name="hint_feeback_amount">・返利金额：%1$s RMB</string>
-    <string name="txv_recharge_money">・充值金额:%1$s RMB</string>
+    <string name="txv_recharge_money">・充值金额：%1$s RMB</string>
     <string name="title_recharge_account">充值账号</string>
     <string name="title_recharge_address">充币地址:</string>
     <string name="btn_recharge">去充值</string>

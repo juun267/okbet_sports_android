@@ -192,6 +192,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         currencyPosition = position
                         refreshCurrencyType(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = currencyBtsAdapter
