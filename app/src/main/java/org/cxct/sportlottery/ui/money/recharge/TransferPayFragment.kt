@@ -124,6 +124,14 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         getMoney()
         updateMoneyRange()
         getBankType(0)
+        refreshFieldTitle()
+    }
+
+    private fun refreshFieldTitle(){
+        if(mMoneyPayWay?.rechType == "bankTransfer")
+            tv_pay_type.text = String.format(resources.getString(R.string.title_bank))
+        else
+            tv_pay_type.text = String.format(resources.getString(R.string.title_main_account))
     }
 
     @SuppressLint("SetTextI18n")

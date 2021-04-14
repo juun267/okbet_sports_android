@@ -416,6 +416,7 @@
 
     <!--money-recharge-->
     <string name="title_bank">选择银行</string>
+    <string name="title_main_account">选择帐户</string>
     <string name="title_name">姓名：</string>
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
