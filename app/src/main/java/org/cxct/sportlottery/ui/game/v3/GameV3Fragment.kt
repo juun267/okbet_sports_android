@@ -76,10 +76,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
@@ -701,6 +705,28 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     sportType,
                     matchId
                 )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun navOddsDetailLive(matchId: String) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        sportType?.let {
+            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
+                sportType,
+                matchId,
+                "EU"
+            )
 
             findNavController().navigate(action)
         }

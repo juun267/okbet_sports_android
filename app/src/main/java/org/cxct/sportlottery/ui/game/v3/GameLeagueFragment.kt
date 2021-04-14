@@ -31,12 +31,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
-                            viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                            matchOdd.matchInfo?.id?.let {
+                                navOddsDetailLive(it)
+                            }
                         }
                         else -> {
                             matchOdd.matchInfo?.id?.let {
@@ -367,6 +371,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 matchId,
                 "EU"
             )
+
+        findNavController().navigate(action)
+    }
+
+    private fun navOddsDetailLive(matchId: String) {
+        val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
+            args.sportType,
+            matchId,
+            "EU"
+        )
 
         findNavController().navigate(action)
     }

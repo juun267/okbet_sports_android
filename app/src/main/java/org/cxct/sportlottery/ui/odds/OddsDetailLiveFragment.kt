@@ -9,16 +9,15 @@ import android.os.Message
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.webkit.*
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_v3.*
@@ -37,32 +36,14 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
+
 @Suppress("DEPRECATION")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    Animation.AnimationListener, OnOddClickListener {
+    OnOddClickListener {
 
-
-    companion object {
-
-        const val GAME_TYPE = "gameType"
-        const val TYPE_NAME = "typeName"//leagueName
-        const val MATCH_ID = "matchId"
-        const val ODDS_TYPE = "oddsType"
-
-        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
-            OddsDetailLiveFragment().apply {
-                arguments = Bundle().apply {
-                    putString(GAME_TYPE, gameType)
-                    putString(TYPE_NAME, typeName)
-                    putString(MATCH_ID, matchId)
-                    putString(ODDS_TYPE, oddsType)
-                }
-            }
-    }
-
+    private val args: OddsDetailLiveFragmentArgs by navArgs()
 
     private var gameType: String? = null
-    private var typeName: String? = null
     private var matchId: String? = null
     private var oddsType: String? = null
 
@@ -70,21 +51,17 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private lateinit var dataBinding: FragmentOddsDetailLiveBinding
 
-
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var oddsGameCardAdapter: OddsGameCardAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            gameType = it.getString(GAME_TYPE)
-            typeName = it.getString(TYPE_NAME)
-            matchId = it.getString(MATCH_ID)
-            oddsType = it.getString(ODDS_TYPE)
-        }
-    }
 
+        gameType = args.sportType.code
+        matchId = args.matchId
+        oddsType = args.oddsType
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -307,24 +284,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     fun back() {
-        //比照h5特別處理退出動畫
-        val animation: Animation =
-            AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
-        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
-        animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                parentFragmentManager.popBackStack()
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
-        this.view?.startAnimation(animation)
+        findNavController().navigateUp()
     }
-
 
     private fun setupWebView(webView: WebView) {
         if (BuildConfig.DEBUG)
@@ -412,42 +373,4 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
 
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        requireView().isFocusableInTouchMode = true
-        requireView().requestFocus()
-        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
-                back()
-                return@OnKeyListener true
-            }
-            false
-        })
-    }
-
-
-    override fun onAnimationRepeat(animation: Animation?) {
-    }
-
-
-    override fun onAnimationEnd(animation: Animation?) {
-    }
-
-
-    override fun onAnimationStart(animation: Animation?) {
-    }
-
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        return if (enter) {
-            val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
-            anim.setAnimationListener(this)
-            anim
-        } else {
-            null
-        }
-    }
-
 }

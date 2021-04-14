@@ -30,8 +30,6 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
-import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
-import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
@@ -223,27 +221,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment -> {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
                 mNavController.popBackStack(R.id.gameV3Fragment, false)
             }
         }
     }
-
-    private fun addFragment(fragment: Fragment, page: Page) {
-        if (supportFragmentManager.findFragmentByTag(page.name) == null) {
-            supportFragmentManager.beginTransaction().setCustomAnimations(
-                R.anim.enter_from_right,
-                0
-            ).add(
-                R.id.odds_detail_container,
-                fragment,
-                page.name
-            ).addToBackStack(
-                page.name
-            ).commit()
-        }
-    }
-
 
     override fun onBackPressed() {
         if (mNavController.currentDestination?.id == R.id.gameLeagueFragment) {
@@ -257,6 +239,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
 
         if (mNavController.currentDestination?.id == R.id.oddsDetailFragment) {
+            mNavController.navigateUp()
+            return
+        }
+
+        if (mNavController.currentDestination?.id == R.id.oddsDetailLiveFragment) {
             mNavController.navigateUp()
             return
         }
@@ -282,20 +269,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.sportMenuResult.observe(this, {
             hideLoading()
             updateUiWithResult(it)
-        })
-
-        viewModel.curOddsDetailLiveParams.observe(this, {
-            val gameType = it[0]
-            val typeName = it[1]
-            val matchId = it[2] ?: ""
-            val oddsType = "EU"
-
-            app_bar_layout.setExpanded(true, true)
-
-            addFragment(
-                OddsDetailLiveFragment.newInstance(gameType, typeName, matchId, oddsType),
-                Page.ODDS_DETAIL_LIVE
-            )
         })
 
         viewModel.matchTypeCardForParlay.observe(this, {
@@ -389,8 +362,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         //TODO add odds detail live fragment with navigation component
 
         val bundle = intent.extras
-        val gameTypeList = GameType.values()
-        val typeName = gameTypeList.find { it.key == bundle?.getString("gameType") }?.string
         val matchType = bundle?.getString("matchType")
         val gameType = bundle?.getString("gameType")
         val matchId = bundle?.getString("matchId")
