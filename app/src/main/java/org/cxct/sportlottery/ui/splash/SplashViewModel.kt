@@ -60,6 +60,8 @@ class SplashViewModel(
                 }else{
                     getHost()
                 }
+            }else{
+                getHost()
             }
             //確定localHost無法獲取config後才去獲取其他域名
 //            getHost()
