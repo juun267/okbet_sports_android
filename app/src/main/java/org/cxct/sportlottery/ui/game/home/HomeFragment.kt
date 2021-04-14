@@ -191,7 +191,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 scroll_view.smoothScrollTo(0, 0)
 
                 viewModel.getOddsList(select.code.toString(), MatchType.IN_PLAY.postValue)
-                navOddsDetailLive(select.code, select.match?.id, select.name)
+                navOddsDetailLive(select.code, select.match?.id, "EU")
             }
         })
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
