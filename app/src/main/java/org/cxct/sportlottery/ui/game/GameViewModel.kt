@@ -124,9 +124,6 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
-    val openGameDetail: LiveData<Triple<String, String, String>>
-        get() = _openGameDetail
-
     val openOutrightDetail: LiveData<Pair<String, String>>
         get() = _openOutrightDetail
 
@@ -159,7 +156,6 @@ class GameViewModel(
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
 
-    private val _openGameDetail = MutableLiveData<Triple<String, String, String>>()
     private val _openOutrightDetail = MutableLiveData<Pair<String, String>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -462,65 +458,22 @@ class GameViewModel(
         val leagueIdList by lazy {
             listOf(leagueId)
         }
-        when (matchType) {
-            MatchType.TODAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
-                    it.isSelected
-                }?.code
 
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
+        val gameType = when (matchType) {
+            MatchType.TODAY -> _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }?.code
+            MatchType.EARLY -> _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
+            MatchType.PARLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
+            MatchType.IN_PLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
+            else -> null
+        }
 
-                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
-                }
-            }
-
-            MatchType.EARLY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
-                    it.isSelected
-                }?.code
-
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
-
-                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
-                }
-            }
-
-            MatchType.PARLAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
-                    it.isSelected
-                }?.code
-
-                val date = _curDate.value?.find {
-                    it.isSelected
-                }
-
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
-
-                    _openGameDetail.postValue(
-                        Triple(date?.date ?: matchType.postValue, it, leagueId)
-                    )
-                }
-            }
-            else -> {
-            }
+        gameType?.let {
+            getOddsList(
+                gameType,
+                matchType.postValue,
+                getCurrentTimeRangeParams(),
+                leagueIdList
+            )
         }
     }
 
