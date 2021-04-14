@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
-import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -26,10 +25,9 @@ import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
-import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 /**
@@ -156,10 +154,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         //退出登入
         btn_sign_out.setOnClickListener {
             viewModel.doLogoutCleanUser()
-                context?.run {
-                    MainActivity.reStart(this)
-                }
-                mDownMenuListener?.onClick(btn_sign_out)
+            context?.run {
+                MainActivity.reStart(this)
+            }
+            mDownMenuListener?.onClick(btn_sign_out)
         }
 
         //語系設置
@@ -187,7 +185,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
-    private fun getOddsType(){
+    private fun getOddsType() {
         viewModel.getOddsType()
     }
 
@@ -206,6 +204,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     nickName
                 }
             }
+        }
+
+        menu_profile_center.visibility = if (testFlag == TestFlag.GUEST) {
+            View.GONE
+        } else {
+            View.VISIBLE
         }
     }
 
