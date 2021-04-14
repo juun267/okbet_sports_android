@@ -304,7 +304,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
-            R.id.gameLeagueFragment -> {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment -> {
                 mNavController.popBackStack(R.id.gameV3Fragment, false)
             }
         }
@@ -328,6 +328,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     override fun onBackPressed() {
         if (mNavController.currentDestination?.id == R.id.gameLeagueFragment) {
+            mNavController.navigateUp()
+            return
+        }
+
+        if (mNavController.currentDestination?.id == R.id.gameOutrightFragment) {
             mNavController.navigateUp()
             return
         }
@@ -403,11 +408,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 else -> {
                 }
             }
-        })
-
-        viewModel.openOutrightDetail.observe(this, Observer {
-            app_bar_layout.setExpanded(true, true)
-            addFragment(GameOutrightFragment.newInstance(it.first, it.second), Page.OUTRIGHT)
         })
 
         viewModel.userInfo.observe(this, {

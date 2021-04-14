@@ -57,10 +57,14 @@ class SplashViewModel(
                     setConfig(result)
                     setBaseUrl(hostUrl, retrofit)
                     return@launch
+                }else{
+                    getHost()
                 }
+            }else{
+                getHost()
             }
-
-            getHost()
+            //確定localHost無法獲取config後才去獲取其他域名
+//            getHost()
         }
     }
 
