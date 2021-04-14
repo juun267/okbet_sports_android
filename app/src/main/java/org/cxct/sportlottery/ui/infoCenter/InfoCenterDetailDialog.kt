@@ -15,10 +15,6 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 class InfoCenterDetailDialog(val data: InfoCenterData) :
     BaseDialog<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
-    init {
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN) //hide keyboard
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
