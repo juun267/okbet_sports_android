@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,19 +18,18 @@ import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
-import org.cxct.sportlottery.ui.game.v3.GameLeagueFragment
-import org.cxct.sportlottery.ui.game.v3.GameOutrightFragment
-import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
+import org.cxct.sportlottery.ui.game.v3.*
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
-import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment
 import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.MetricsUtil
@@ -387,18 +385,23 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+
+        //TODO add odds detail live fragment with navigation component
+        //TODO add match type outright logic
+
         val bundle = intent.extras
         val gameTypeList = GameType.values()
         val typeName = gameTypeList.find { it.key == bundle?.getString("gameType") }?.string
         val gameType = bundle?.getString("gameType")
         val matchId = bundle?.getString("matchId")
 
-        val fragment: Fragment? = supportFragmentManager.findFragmentByTag(Page.ODDS_DETAIL.name)
-        if (fragment != null) {
-            mCloseOddsDetail = false
-            (fragment as OddsDetailFragment).refreshData(gameType, matchId)
-        } else {
-            viewModel.getOddsDetail(gameType, typeName?.let { getString(it) }, matchId)
+        val sportType = when (gameType) {
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.TENNIS.code -> SportType.TENNIS
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            else -> null
         }
 
         when (bundle?.getString("matchType")) {
@@ -409,6 +412,43 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
             MatchType.AT_START.postValue -> toAtStart()
         }
+
+        when (mNavController.currentDestination?.id) {
+            R.id.gameV3Fragment -> {
+                sportType?.let {
+                    matchId?.let {
+                        val action =
+                            GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                                sportType, matchId, "EU"
+                            )
+                        mNavController.navigate(action)
+                    }
+                }
+            }
+            R.id.gameLeagueFragment -> {
+                sportType?.let {
+                    matchId?.let {
+                        val action =
+                            GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                                sportType, matchId, "EU"
+                            )
+                        mNavController.navigate(action)
+                    }
+                }
+            }
+            R.id.oddsDetailFragment -> {
+                sportType?.let {
+                    matchId?.let {
+                        val action =
+                            OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
+                                sportType, matchId, "EU"
+                            )
+                        mNavController.navigate(action)
+                    }
+                }
+            }
+        }
+
         mCloseOddsDetail = true
     }
 
