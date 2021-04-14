@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.component
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +36,13 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         set(value) {
             field = value
             tv_selected.text = value
+        }
+
+    var bottomSheetTitleText: String? = null
+        get() = if (bottomSheetView.sheet_tv_title.text.toString().isEmpty()) typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText) else bottomSheetView.sheet_tv_title.text.toString()
+        set(value) {
+            field = value
+            bottomSheetView.sheet_tv_title.text = value
         }
 
     var selectedTag: String? = ""
@@ -134,10 +140,11 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         itemSelectedListener = listener
     }
 
+
     private fun setBottomSheet(typedArray: TypedArray) {
 
         bottomSheetView.apply {
-            bottomSheetView.sheet_tv_title.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText)
+            bottomSheetView.sheet_tv_title.text = bottomSheetTitleText?:typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText)
             val isShowCloseButton = typedArray.getBoolean(R.styleable.StatusBottomSheetStyle_bottomSheetShowCloseButton, true)
             sheet_tv_close.visibility = if (isShowCloseButton) View.VISIBLE else View.GONE
             sheet_tv_close.setOnClickListener {
