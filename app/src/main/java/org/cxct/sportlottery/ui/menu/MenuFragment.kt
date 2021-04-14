@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
+import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants

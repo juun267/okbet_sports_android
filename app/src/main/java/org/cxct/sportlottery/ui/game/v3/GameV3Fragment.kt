@@ -58,16 +58,59 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val countryAdapter by lazy {
         CountryAdapter().apply {
-            countryLeagueListener = CountryLeagueListener {
-                viewModel.getLeagueOddsList(args.matchType, it.id)
+            countryLeagueListener = CountryLeagueListener { league ->
+                val sportType =
+                    when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                        SportType.FOOTBALL.code -> SportType.FOOTBALL
+                        SportType.BASKETBALL.code -> SportType.BASKETBALL
+                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                        SportType.BADMINTON.code -> SportType.BADMINTON
+                        SportType.TENNIS.code -> SportType.TENNIS
+                        else -> null
+                    }
+
+                val matchType = when (gameTypeAdapter.data.find {
+                    it.isSelected
+                }?.date) {
+                    MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
+                    else -> null
+                }
+
+                sportType?.let {
+                    val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
+                        matchType ?: args.matchType,
+                        sportType,
+                        league.id
+                    )
+
+                    findNavController().navigate(action)
+                }
             }
         }
     }
 
     private val outrightCountryAdapter by lazy {
         OutrightCountryAdapter().apply {
-            outrightCountryLeagueListener = OutrightCountryLeagueListener {
-                viewModel.getOutrightOddsList(it.id)
+            outrightCountryLeagueListener = OutrightCountryLeagueListener { season ->
+                val sportType =
+                    when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                        SportType.FOOTBALL.code -> SportType.FOOTBALL
+                        SportType.BASKETBALL.code -> SportType.BASKETBALL
+                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                        SportType.BADMINTON.code -> SportType.BADMINTON
+                        SportType.TENNIS.code -> SportType.TENNIS
+                        else -> null
+                    }
+
+                sportType?.let {
+                    val action =
+                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightFragment(
+                            sportType,
+                            season.id
+                        )
+
+                    findNavController().navigate(action)
+                }
             }
         }
     }
@@ -465,6 +508,24 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             } else {
                 View.GONE
             }
+        })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            val leagueOdds = leagueAdapter.data
+
+            leagueOdds.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.odds.values.forEach { oddList ->
+                        oddList.forEach { odd ->
+                            odd?.isSelected = it.any {
+                                it.matchOdd.oddsId == odd?.id
+                            }
+                        }
+                    }
+                }
+            }
+
+            leagueAdapter.notifyDataSetChanged()
         })
     }
 
