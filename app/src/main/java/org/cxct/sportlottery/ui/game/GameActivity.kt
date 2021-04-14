@@ -225,7 +225,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
-            R.id.gameLeagueFragment -> {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment -> {
                 mNavController.popBackStack(R.id.gameV3Fragment, false)
             }
         }
