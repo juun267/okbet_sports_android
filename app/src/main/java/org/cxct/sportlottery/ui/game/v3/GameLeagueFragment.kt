@@ -39,17 +39,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
                         }
                         else -> {
-                            matchOdd.matchInfo?.id?.let { matchId ->
-                                val action =
-                                    GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                                        args.sportType,
-                                        matchId,
-                                        "EU"
-                                    )
-
-                                findNavController().navigate(action)
+                            matchOdd.matchInfo?.id?.let {
+                                navOddsDetail(it)
                             }
-
                         }
                     }
                 },
@@ -366,6 +358,17 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         })
+    }
+
+    private fun navOddsDetail(matchId: String) {
+        val action =
+            GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                args.sportType,
+                matchId,
+                "EU"
+            )
+
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
