@@ -104,7 +104,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             result?.getContentIfNotHandled()?.let { it ->
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     setTitle(getString(R.string.prompt))
-                    setMessage(it.msg)
+                    setMessage(if (it.success) getString(R.string.transfer_money_succeed) else it.msg)
                     setNegativeButtonText(null)
                     setTextColor(if (it.success) R.color.colorGray else R.color.colorRedDark)
                 }
