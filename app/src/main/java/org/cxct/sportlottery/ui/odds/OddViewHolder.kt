@@ -31,6 +31,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
     private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
 
+   var nameChangeColor: Boolean = true
 
     private fun checkKey(type: String, value: String): Boolean {
         return type == value || type.contains(value)
@@ -50,7 +51,6 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         gameType?.let { type ->
             when {
                 checkKey(type, OddsDetailListAdapter.GameType.HDP.value) -> showName(false)
-                type == OddsDetailListAdapter.GameType.CLSH.value -> showName(false)
             }
         }
 
@@ -59,7 +59,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         setName(odd)
         setSpread(odd, spreadType)
 
-        OddButtonHighLight.set(tvName, tvOdds, tvSpread, odd)
+        OddButtonHighLight.set(nameChangeColor, tvName, tvOdds, tvSpread, odd)
 
         when (odd.status) {
             BetStatus.ACTIVATED.code -> {
@@ -74,7 +74,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvOdds.isSelected = odd.isSelect ?: false
                 tvSpread?.let { it.isSelected = odd.isSelect ?: false }
                 tvName?.let { it.isSelected = odd.isSelect ?: false }
-                tvOdds.setOnClickListener {
+                itemView.setOnClickListener {
                     if (odd.isSelect != true) {
                         if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
                             return@setOnClickListener
