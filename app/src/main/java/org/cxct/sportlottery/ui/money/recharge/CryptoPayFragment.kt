@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
@@ -126,11 +127,15 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
         //去充值
         btn_qr_recharge.setOnClickListener {
-            if (!mSelectRechCfgs?.payUrl.isNullOrEmpty()) {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW, Uri.parse(mSelectRechCfgs?.payUrl ?: "")
-                )
-                startActivity(browserIntent)
+            try {
+                if (!mSelectRechCfgs?.payUrl.isNullOrEmpty()) {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW, Uri.parse(mSelectRechCfgs?.payUrl?.httpFormat())
+                    )
+                    startActivity(browserIntent)
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
         }
         et_transaction_id.setDigits("0123456789.xX_-@")
