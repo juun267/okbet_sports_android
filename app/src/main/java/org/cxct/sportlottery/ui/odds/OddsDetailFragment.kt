@@ -156,10 +156,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         }
         )
-
-        ll_type_name.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 
 
@@ -277,6 +273,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         getData()
     }
 
+    fun back() {
+        findNavController().navigateUp()
+    }
 
     override fun getBetInfoList(odd: Odd) {
         viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))

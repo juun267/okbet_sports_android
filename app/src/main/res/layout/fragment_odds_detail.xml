@@ -34,6 +34,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
+                android:onClick="@{() -> view.back()}"
                 android:orientation="horizontal">
 
                 <ImageView
