@@ -387,11 +387,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         super.onNewIntent(intent)
 
         //TODO add odds detail live fragment with navigation component
-        //TODO add match type outright logic
 
         val bundle = intent.extras
         val gameTypeList = GameType.values()
         val typeName = gameTypeList.find { it.key == bundle?.getString("gameType") }?.string
+        val matchType = bundle?.getString("matchType")
         val gameType = bundle?.getString("gameType")
         val matchId = bundle?.getString("matchId")
 
@@ -404,7 +404,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             else -> null
         }
 
-        when (bundle?.getString("matchType")) {
+        when (matchType) {
             null, MatchType.IN_PLAY.postValue -> tabLayout.getTabAt(1)?.select()
             MatchType.TODAY.postValue -> tabLayout.getTabAt(2)?.select()
             MatchType.EARLY.postValue -> tabLayout.getTabAt(3)?.select()
@@ -413,37 +413,40 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             MatchType.AT_START.postValue -> toAtStart()
         }
 
-        when (mNavController.currentDestination?.id) {
-            R.id.gameV3Fragment -> {
-                sportType?.let {
-                    matchId?.let {
-                        val action =
-                            GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                                sportType, matchId, "EU"
-                            )
-                        mNavController.navigate(action)
+        if (matchType != MatchType.OUTRIGHT.postValue) {
+
+            when (mNavController.currentDestination?.id) {
+                R.id.gameV3Fragment -> {
+                    sportType?.let {
+                        matchId?.let {
+                            val action =
+                                GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                                    sportType, matchId, "EU"
+                                )
+                            mNavController.navigate(action)
+                        }
                     }
                 }
-            }
-            R.id.gameLeagueFragment -> {
-                sportType?.let {
-                    matchId?.let {
-                        val action =
-                            GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                                sportType, matchId, "EU"
-                            )
-                        mNavController.navigate(action)
+                R.id.gameLeagueFragment -> {
+                    sportType?.let {
+                        matchId?.let {
+                            val action =
+                                GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                                    sportType, matchId, "EU"
+                                )
+                            mNavController.navigate(action)
+                        }
                     }
                 }
-            }
-            R.id.oddsDetailFragment -> {
-                sportType?.let {
-                    matchId?.let {
-                        val action =
-                            OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
-                                sportType, matchId, "EU"
-                            )
-                        mNavController.navigate(action)
+                R.id.oddsDetailFragment -> {
+                    sportType?.let {
+                        matchId?.let {
+                            val action =
+                                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
+                                    sportType, matchId, "EU"
+                                )
+                            mNavController.navigate(action)
+                        }
                     }
                 }
             }
