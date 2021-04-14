@@ -29,7 +29,7 @@
         android:id="@+id/img_arrow"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:src="@drawable/ic_arrow_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_selected"
         app:layout_constraintEnd_toEndOf="parent"

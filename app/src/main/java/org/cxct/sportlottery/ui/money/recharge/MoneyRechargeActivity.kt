@@ -179,8 +179,6 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     }
 
     private fun initView() {
-        btn_transfer_pay.isSelected = true
-        btn_online_pay.isSelected = false
 
         if ((!transferPayList.isNullOrEmpty() && currentTab == RechargeType.TRANSFER_PAY) || (!onlinePayList.isNullOrEmpty() && currentTab == RechargeType.ONLINE_PAY)) {
             block_no_type.visibility = View.VISIBLE
@@ -231,16 +229,6 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
 
     private fun setTab(selectTab: RechargeType) {
         currentTab = selectTab
-        when (currentTab) {
-            RechargeType.TRANSFER_PAY -> {
-                btn_transfer_pay.isSelected = true
-                btn_online_pay.isSelected = false
-            }
-            RechargeType.ONLINE_PAY -> {
-                btn_transfer_pay.isSelected = false
-                btn_online_pay.isSelected = true
-            }
-        }
     }
 
     /**

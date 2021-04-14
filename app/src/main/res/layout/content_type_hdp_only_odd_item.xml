@@ -16,17 +16,6 @@
         android:paddingEnd="10dp"
         tools:text="0.951" />
 
-    <TextView
-        android:id="@+id/tv_spread"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:gravity="center"
-        android:textColor="@color/selector_game_spread"
-        android:textSize="@dimen/textSize14sp"
-        tools:text="1/1.5" />
-
     <ImageView
         android:id="@+id/iv_disable_cover"
         android:layout_width="wrap_content"

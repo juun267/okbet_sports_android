@@ -275,6 +275,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            oddsDetailListAdapter?.oddsType = it
+        })
+
     }
 
 

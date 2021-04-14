@@ -3,23 +3,19 @@ package org.cxct.sportlottery.ui.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
-
-const val MORE_ITEM = 1
-
-const val OVER_COUNT = 5
-
-class TypeOneListAdapter(
+class TypeSCOAdapter(
     private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val curMatchId: String?,
-    private val isSCO: Boolean,
     private val onMoreClickListener: OnMoreClickListener,
     private val oddsType: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -31,11 +27,6 @@ class TypeOneListAdapter(
 
 
     private val oddsList = oddsDetail.oddArrayList
-
-
-    private fun checkKey(type: String, value: String): Boolean {
-        return type == value || type.contains(value)
-    }
 
 
     override fun getItemViewType(position: Int): Int {
@@ -50,7 +41,7 @@ class TypeOneListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ItemType.ITEM.ordinal -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
+            ItemType.ITEM.ordinal -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_sco_item, parent, false))
             else -> MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_more_item, parent, false))
         }
     }
@@ -59,7 +50,7 @@ class TypeOneListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> holder.bindModel(oddsList[position])
-            is MoreViewHolder -> holder.bind(isSCO)
+            is MoreViewHolder -> holder.bind()
         }
     }
 
@@ -71,23 +62,8 @@ class TypeOneListAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(originOdd: Odd) {
-
-
-            when {
-                //獨贏&大小 強制不顯示spread
-                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.SINGLE_OU.value) -> originOdd.spread = null
-
-                //大小&双方球队进球 強制不顯示spread
-                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.OU_BTS.value) -> originOdd.spread = null
-
-                //双重机会&大小 強制不顯示spread
-                checkKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.DC_OU.value) -> originOdd.spread = null
-            }
-
-            nameChangeColor = false
             setData(
-                originOdd, onOddClickListener, betInfoList, curMatchId,
-                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
+                originOdd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_CENTER, oddsType, null
             )
         }
     }
@@ -95,15 +71,10 @@ class TypeOneListAdapter(
 
     inner class MoreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val tvExpandControl: TextView = itemView.findViewById(R.id.tv_expand_control)
-        fun bind(isSCO: Boolean) {
+        fun bind() {
             tvExpandControl.apply {
                 setOnClickListener {
                     onMoreClickListener.click()
-                }
-                visibility = if (isSCO && oddsList.size > OVER_COUNT) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
                 }
                 text = if (oddsDetail.isMoreExpand) context.getString(R.string.odds_detail_less) else context.getString(R.string.odds_detail_more)
             }

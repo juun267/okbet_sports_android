@@ -95,10 +95,10 @@ abstract class BaseViewModel(
 
     fun doLogoutCleanUser() {
         viewModelScope.launch {
-            loginRepository.logout()
             loginRepository.clear()
             betInfoRepository.clear()
             infoCenterRepository.clear()
+            loginRepository.logout()
         }
     }
 

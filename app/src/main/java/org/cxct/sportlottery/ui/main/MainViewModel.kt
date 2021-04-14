@@ -42,13 +42,9 @@ class MainViewModel(
     val userId = loginRepository.userId
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
-    private val _messageListResult = MutableLiveData<MessageListResult>()
-    val messageListResult: LiveData<MessageListResult>
-        get() = _messageListResult
-
-    private val _messageDialogResult = MutableLiveData<Event<MessageListResult>>()
-    val messageDialogResult: LiveData<Event<MessageListResult>>
-        get() = _messageDialogResult
+    private val _promoteNoticeResult = MutableLiveData<Event<MessageListResult>>()
+    val promoteNoticeResult: LiveData<Event<MessageListResult>>
+        get() = _promoteNoticeResult
 
     private val _userMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
@@ -78,25 +74,14 @@ class MainViewModel(
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
 
-    //獲取系統公告
-    fun getMarquee() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                val typeList = arrayOf(1)
-                OneBoSportApi.messageService.getPromoteNotice(typeList)
-            }?.let { result ->
-                _messageListResult.postValue(result)
-            }
-        }
-    }
-
-    fun getMsgDialog() {
+    //獲取系統公告及跑馬燈
+    fun getAnnouncement() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 val typeList = arrayOf(2, 3)
                 OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result ->
-                _messageDialogResult.postValue(Event(result))
+                _promoteNoticeResult.postValue(Event(result))
             }
         }
     }
@@ -248,4 +233,5 @@ class MainViewModel(
             }
         }
     }
+
 }

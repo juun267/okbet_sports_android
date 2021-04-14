@@ -34,16 +34,16 @@
                     android:layout_marginStart="12dp"
                     android:ems="5"
                     android:text="@string/title_currency"
-                    android:textColor="@color/gray4"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="" />
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/txv_currency"
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hint_rate"
-            android:textColor="@color/orangeRed"
+            android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txv_recharge_money"
-            android:textColor="@color/orangeRed"
+            android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp"
             android:layout_marginTop="10dp"/>
 
@@ -132,7 +132,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
                     android:textSize="@dimen/textSize13sp" />
 
                 <View
@@ -141,14 +142,13 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
 
                 <TextView
                     android:id="@+id/txv_recharge_time"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="start|center_vertical"
@@ -177,7 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_rate"
-            android:textColor="@color/orangeRed"
+            android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp"
             android:visibility="invisible"
             tools:visibility="visible"/>
@@ -186,9 +186,9 @@
             android:id="@+id/tv_fee_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="10dp"
             android:text="@string/hint_fee_amount"
-            android:textColor="@color/orangeRed"
+            android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp"
             android:visibility="invisible"
             tools:visibility="visible" />
@@ -197,7 +197,6 @@
             android:id="@+id/cv_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
@@ -214,16 +213,16 @@
                     android:layout_marginStart="12dp"
                     android:ems="4"
                     android:text="@string/title_recharge_account"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize13sp"
-                    android:textStyle="" />
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/textSize13sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/txv_account"
@@ -314,36 +313,35 @@
                         tools:text="备注 : " />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
-                        android:gravity="left|center_horizontal|bottom"
                         android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/btn_qr_copy"
                             style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="76dp"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:maxWidth="76dp"
                             android:layout_height="28dp"
-                            android:layout_marginEnd="12dp"
                             android:background="@drawable/bg_3dp_radius_button"
                             android:gravity="center"
                             android:text="@string/btn_copy"
-                            android:textColor="@color/textGray"
+                            android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize12sp" />
 
                         <Button
                             android:id="@+id/btn_qr_recharge"
-                            android:layout_width="76dp"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:maxWidth="76dp"
                             android:layout_height="28dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="20dp"
                             android:background="@drawable/bg_frame_4dp_blue"
                             android:text="@string/btn_recharge"
                             android:textColor="@color/colorBlue"
-                            android:textSize="@dimen/textSize14sp" />
+                            android:textSize="@dimen/textSize12sp" />
 
                     </LinearLayout>
 

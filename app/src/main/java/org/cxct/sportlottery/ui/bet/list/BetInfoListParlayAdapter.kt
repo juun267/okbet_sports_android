@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoParlayItemBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 import java.math.RoundingMode
 
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
@@ -29,6 +31,14 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     val winQuotaList: MutableList<Double> = mutableListOf()
     val betQuotaList: MutableList<Double> = mutableListOf()//用於計算
     val sendBetQuotaList: MutableList<Double> = mutableListOf()//用於送出
+
+
+    var oddsType: String = OddsType.EU.value
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -86,11 +96,11 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                     }
                 }
 
-                winQuotaList[position] = it.toDouble() * parlayOdd.odds
+                winQuotaList[position] = it.toDouble() * getOdds(parlayOdd, oddsType)
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
                 sendBetQuotaList[position] = it.toDouble()
 
-                binding.tvParlayWinQuota.text = TextUtil.format(it.toDouble() * parlayOdd.odds)
+                binding.tvParlayWinQuota.text = TextUtil.format(it.toDouble() * getOdds(parlayOdd, oddsType))
                     .plus(" ")
                     .plus(binding.root.context.getString(R.string.bet_info_list_rmb))
 
@@ -129,7 +139,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
 
-            binding.tvParlayOdds.text = TextUtil.formatForOdd(parlayOdd.odds)
+            binding.tvParlayOdds.text = TextUtil.formatForOdd(getOdds(parlayOdd, oddsType))
 
             binding.tvParlayOdds.visibility = if (position == 0) View.VISIBLE else View.GONE
 

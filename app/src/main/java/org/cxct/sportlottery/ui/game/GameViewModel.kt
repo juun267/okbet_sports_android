@@ -69,7 +69,7 @@ class GameViewModel(
     val userId = loginRepository.userId
     var mathType: MatchType? = null
 
-    val messageListResult: LiveData<MessageListResult>
+    val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
     val sportMenuResult: LiveData<SportMenuResult?>
@@ -124,15 +124,14 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
-    val openGameDetail: LiveData<Triple<String, String, String>>
-        get() = _openGameDetail
-
     val openOutrightDetail: LiveData<Pair<String, String>>
         get() = _openOutrightDetail
 
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
-    private val _messageListResult = MutableLiveData<MessageListResult>()
+    val betInfoList = betInfoRepository.betInfoList
+
+    private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListGameHallLiveResult = MutableLiveData<OddsListResult?>()
@@ -157,7 +156,6 @@ class GameViewModel(
     private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
     private val _isNoHistory = MutableLiveData<Boolean>()
 
-    private val _openGameDetail = MutableLiveData<Triple<String, String, String>>()
     private val _openOutrightDetail = MutableLiveData<Pair<String, String>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -226,7 +224,7 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
-    
+
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
 
@@ -250,12 +248,17 @@ class GameViewModel(
 
     //獲取系統公告
     fun getAnnouncement() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                val typeList = arrayOf(1)
-                OneBoSportApi.messageService.getPromoteNotice(typeList)
-            }?.let { result -> _messageListResult.postValue(result) }
+        if (isLogin.value == true) {
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    val typeList = arrayOf(1)
+                    OneBoSportApi.messageService.getPromoteNotice(typeList)
+                }?.let { result -> _messageListResult.postValue(result) }
+            }
+        } else {
+            _messageListResult.value = null
         }
+
     }
 
 
@@ -455,65 +458,22 @@ class GameViewModel(
         val leagueIdList by lazy {
             listOf(leagueId)
         }
-        when (matchType) {
-            MatchType.TODAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
-                    it.isSelected
-                }?.code
 
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
+        val gameType = when (matchType) {
+            MatchType.TODAY -> _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }?.code
+            MatchType.EARLY -> _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
+            MatchType.PARLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
+            MatchType.IN_PLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
+            else -> null
+        }
 
-                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
-                }
-            }
-
-            MatchType.EARLY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
-                    it.isSelected
-                }?.code
-
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
-
-                    _openGameDetail.postValue(Triple(matchType.postValue, it, leagueId))
-                }
-            }
-
-            MatchType.PARLAY -> {
-                val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
-                    it.isSelected
-                }?.code
-
-                val date = _curDate.value?.find {
-                    it.isSelected
-                }
-
-                gameType?.let {
-                    getOddsList(
-                        gameType,
-                        matchType.postValue,
-                        getCurrentTimeRangeParams(),
-                        leagueIdList
-                    )
-
-                    _openGameDetail.postValue(
-                        Triple(date?.date ?: matchType.postValue, it, leagueId)
-                    )
-                }
-            }
-            else -> {
-            }
+        gameType?.let {
+            getOddsList(
+                gameType,
+                matchType.postValue,
+                getCurrentTimeRangeParams(),
+                leagueIdList
+            )
         }
     }
 
@@ -755,12 +715,14 @@ class GameViewModel(
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
-
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime.toLong(), "MM/dd")
+
                         matchOdd.matchInfo.startTimeDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime.toLong(), "HH:mm")
+
+                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
                     }
 
                     matchOdd.odds.forEach { map ->
@@ -774,9 +736,6 @@ class GameViewModel(
             }
 
             if (leagueIdList != null) {
-                if (result?.oddsListData?.leagueOdds?.isNotEmpty() == true) {
-                    result.oddsListData.leagueOdds[0].isExpand = true
-                }
                 _oddsListResult.postValue(Event(result))
             } else {
                 _oddsListGameHallResult.postValue(Event(result))

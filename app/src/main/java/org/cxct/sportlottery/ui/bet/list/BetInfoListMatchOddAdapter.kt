@@ -16,8 +16,10 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 import java.lang.Exception
 
 class BetInfoListMatchOddAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
@@ -30,7 +32,15 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             notifyDataSetChanged()
         }
 
+
     var updatedBetInfoList: MutableList<Odd> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+
+    var oddsType: String = OddsType.EU.value
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -43,8 +53,9 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             try {
                 newItem.id.let {
                     if (it == matchOdd.oddsId) {
-                        matchOdd.oddState = getOddState(matchOdd.odds, newItem)
+                        matchOdd.oddState = getOddState(getOdds(matchOdd, oddsType), newItem)
                         newItem.odds?.let { odds -> matchOdd.odds = odds }
+                        newItem.hkOdds?.let { hkOdds -> matchOdd.hkOdds = hkOdds }
                         newItem.status.let { status -> matchOdd.status = status }
                     }
                 }
@@ -56,7 +67,12 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
 
     private fun getOddState(oldItemOdd: Double, it: Odd): Int {
-        val newOdd = it.odds ?: 0.0
+        val odds = when (oddsType) {
+            OddsType.EU.value -> it.odds
+            OddsType.HK.value -> it.hkOdds
+            else -> 0.0
+        }
+        val newOdd = odds ?: 0.0
         return when {
             newOdd == oldItemOdd -> OddState.SAME.state
             newOdd > oldItemOdd -> OddState.LARGER.state
@@ -88,7 +104,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
         fun bind(matchOdd: MatchOdd, position: Int) {
             binding.matchOdd = matchOdd
-            binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(matchOdd.odds)
+            binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             val strVerse = context.getString(R.string.verse_lower)
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
@@ -141,7 +157,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                 tv_odds.apply {
                     setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
-                    text = TextUtil.formatForOdd(matchOdd.odds)
+                    text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
                 onItemClickListener.onOddChange()
             }
@@ -151,7 +167,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                 tv_odds.apply {
                     setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.green))
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
-                    text = TextUtil.formatForOdd(matchOdd.odds)
+                    text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
                 onItemClickListener.onOddChange()
             }

@@ -216,6 +216,8 @@ class BackService : Service() {
     }
 
     private fun subscribeChannel(url: String) {
+        if (mSubscribedMap.containsKey(url)) return
+
         Timber.i(">>> subscribe channel: $url")
         mStompClient?.run {
             this.topic(url, mHeader)

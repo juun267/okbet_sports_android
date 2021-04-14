@@ -12,7 +12,8 @@ class TypeSingleAdapter (
     private val oddsList: List<Odd>,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?
+    private val curMatchId: String?,
+    private val oddsType: String
 ) : RecyclerView.Adapter<TypeSingleAdapter.ViewHolder>() {
 
 
@@ -33,7 +34,7 @@ class TypeSingleAdapter (
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_CENTER)
+            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_CENTER, oddsType, null)
         }
     }
 

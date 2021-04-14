@@ -17,7 +17,8 @@ class TypeGroupItemAdapter(
     private val groupItemCount: Int,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?
+    private val curMatchId: String?,
+    private val oddsType: String
 ) :
     RecyclerView.Adapter<TypeGroupItemAdapter.ViewHolder>() {
 
@@ -44,7 +45,7 @@ class TypeGroupItemAdapter(
 
         fun bindModel(odd: Odd, position: Int) {
 
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM)
+            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null)
 
             tvSpread.text = odd.spread
 

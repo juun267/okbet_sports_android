@@ -46,9 +46,9 @@ object TimeUtil {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
         val currentLocalTime = calendar.time
-        val timeZoneFormat = SimpleDateFormat("Z")
-        val timeZoneGTM = timeZoneFormat.format(currentLocalTime)
-        return simpleDateFormat.format(Date(time)) + " (GMT" + timeZoneGTM + ")"
+        val timeZoneFormat = SimpleDateFormat("X")
+        val timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
+        return simpleDateFormat.format(Date(time)) + " (GMT+" + timeZoneGTM + ")"
     }
 
     @JvmStatic
@@ -57,7 +57,7 @@ object TimeUtil {
     }
 
     @JvmStatic
-    fun stampToDateTime(date:Date): String {
+    fun stampToDateTime(date: Date): String {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return simpleDateFormat.format(date)
     }
@@ -97,7 +97,7 @@ object TimeUtil {
         val today = ymdFormat.format(getCalendarForDates(7).second.time)
         val startTimeStamp = ymdhmsFormat.parse("$minusDay 00:00:00")?.time
         val endTimeStamp = ymdhmsFormat.parse("$today 23:59:59")?.time
-        
+
         return object : TimeRangeParams {
             override val startTime: String
                 get() = startTimeStamp.toString()
@@ -265,5 +265,12 @@ object TimeUtil {
             weekDateList.add(timeFormat(calendar.time.time, format))
         }
         return weekDateList
+    }
+
+    fun getRemainTime(timeStamp: Long): Long {
+        val calendar = Calendar.getInstance()
+        val startTimeStamp = calendar.timeInMillis
+
+        return timeStamp - startTimeStamp
     }
 }
