@@ -29,6 +29,7 @@ import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
+import java.math.RoundingMode
 import java.util.*
 import kotlin.math.abs
 
@@ -442,8 +443,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_deposit_money),
-                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney ?: 0.0),
-                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney ?: 999999.0)
+                ArithUtil.round(mSelectRechCfgs?.minMoney ?: 0.00,2, RoundingMode.HALF_UP),
+                ArithUtil.round(mSelectRechCfgs?.maxMoney ?: 999999.00,2, RoundingMode.HALF_UP)
             )
         )
     }

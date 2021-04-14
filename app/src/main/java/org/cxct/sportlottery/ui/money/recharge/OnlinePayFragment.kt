@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import java.math.RoundingMode
 import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -179,8 +180,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun getAmountLimitHint(): String {
         return String.format(
             getString(R.string.edt_hint_deposit_money),
-            ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney),
-            ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney)
+            ArithUtil.round(mSelectRechCfgs?.minMoney ?: 0.00,2, RoundingMode.HALF_UP),
+            ArithUtil.round(mSelectRechCfgs?.maxMoney ?: 999999.00,2, RoundingMode.HALF_UP)
         )
     }
 
