@@ -363,6 +363,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.apply {
             //充值金額
             et_recharge_amount.afterTextChanged {
+                if(it.startsWith("0") && it.length>1){
+                    et_recharge_amount.setText("${et_recharge_amount.getText().replace("0","")}")
+                    et_recharge_amount.setCursor()
+                    return@afterTextChanged
+                }
+
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)

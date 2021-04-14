@@ -200,6 +200,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
+    fun setCursor(){
+        et_input.setSelection(et_input.text.length)
+    }
+
     fun getAllButton(clickGetAll: (EditText) -> Unit) {
         btn_withdraw_all.setOnClickListener {
             clickGetAll(et_input)
