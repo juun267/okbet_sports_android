@@ -164,13 +164,13 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.hashCodeErrorMsg.observe(viewLifecycleOwner, {
             et_transaction_id.setError(it)
         })
-
+        //API回傳結果
         viewModel.apiResult.observe(viewLifecycleOwner, {
             if (it.success) {
                 resetEvent()
             }
         })
-
+        //上傳支付截圖
         viewModel.voucherUrlResult.observe(viewLifecycleOwner,{
             Glide.with(this).load(it).into(img_screen_shot)
             ic_screen_shot.visibility =View.GONE
@@ -533,7 +533,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 ?: Date().time
         ).apply {
             payee = txv_payee.text.toString()//充幣地址
-            payeeName = txv_account.text.toString()//火閉網
+            payeeName = txv_account.text.toString()//火幣網
             txHashCode = et_transaction_id.getText()
             voucherPath = voucherUrl
         }

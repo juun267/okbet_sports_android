@@ -109,7 +109,6 @@ class MoneyRechViewModel(
         get() = _bankIDErrorMsg
     private var _bankIDErrorMsg = MutableLiveData<String>()
 
-
     //上傳支付截圖
     val voucherUrlResult: LiveData<String?> = avatarRepository.voucherUrlResult
 
@@ -207,8 +206,8 @@ class MoneyRechViewModel(
 
     //在線支付 - 虛擬幣 //TODO Bill 確認API參數
     fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, payee: String?,payeeName: String?) {
-        checkRcgOnlineAmount(depositMoney.toString(), mSelectRechCfgs)
-        if (onlinePayInput()) {
+        checkRcgOnlineAccount(depositMoney.toString(), mSelectRechCfgs)
+        if (onlineCryptoPayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
@@ -238,8 +237,9 @@ class MoneyRechViewModel(
                 checkNickName(moneyAddRequest.payerName)
                 checkUserName(moneyAddRequest.payerInfo ?: "")
             }
-            MoneyType.CRYPTO.code ->{
+            MoneyType.CRYPTO_TYPE.code ->{
                 checkHashCode(moneyAddRequest.txHashCode ?: "")
+                checkRechargeAccount(moneyAddRequest.depositMoney.toString() , rechConfig)
             }
         }
         checkRechargeAmount(moneyAddRequest.depositMoney.toString(), rechConfig)
@@ -301,6 +301,27 @@ class MoneyRechViewModel(
                 channelMaxMoney
             ) || rechargeAmount == "0" -> {
                 androidContext.getString(R.string.error_recharge_amount)
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
+    //在線充值金額
+    fun checkRcgOnlineAccount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+        val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
+        val channelMaxMoney = rechConfig?.maxMoney?.toLong()
+        _rechargeAccountMsg.value = when {
+            rechargeAmount.isEmpty() -> {
+                androidContext.getString(R.string.error_input_empty)
+            }
+            !VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) || rechargeAmount == "0" -> {
+                androidContext.getString(R.string.error_recharge_account)
             }
             else -> {
                 ""
@@ -374,7 +395,7 @@ class MoneyRechViewModel(
 
     //HashCode区块链交易ID認證
     fun checkHashCode(HashCode:String){
-        _hashCodeErrorMsg.value =when {
+        _hashCodeErrorMsg.value = when {
             HashCode.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
@@ -427,6 +448,13 @@ class MoneyRechViewModel(
             return false
         return true
     }
+
+    private fun onlineCryptoPayInput(): Boolean {
+        if (!_rechargeAccountMsg.value.isNullOrEmpty())
+            return false
+        return true
+    }
+
 
     fun clearnRechargeStatus() {
         _rechargeAmountMsg.value = ""
