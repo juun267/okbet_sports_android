@@ -98,6 +98,11 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         initSocketObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getMoney()
+    }
+
     private fun setupHeadButton() {
         iv_head.setOnClickListener {
             AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
@@ -113,7 +118,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
     }
 
     private fun setupBalance() {
-        getMoney()
         btn_refresh_money.setOnClickListener {
             getMoney()
         }
@@ -365,7 +369,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file,UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
