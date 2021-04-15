@@ -189,6 +189,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                         dismiss()
                     })
                 lv_bank_item.adapter = bankCardAdapter
+
+                if(mMoneyPayWay?.rechType == "bankTransfer")
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_bank))
+                else
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_main_account))
+
                 bankBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }

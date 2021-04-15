@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
-import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
 import java.math.RoundingMode
@@ -227,7 +226,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payGapBottomSheet = BottomSheetDialog(this.requireContext())
             payGapBottomSheet.apply {
                 setContentView(bottomSheetView)
-                setTitle(R.string.choose_gap_type)
                 payGapAdapter = BankBtsAdapter(
                     lv_bank_item.context,
                     payRoadSpannerList,
@@ -236,6 +234,12 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         payGapBottomSheet.dismiss()
                     })
                 lv_bank_item.adapter = payGapAdapter
+
+                if (mMoneyPayWay?.onlineType == OnlineType.ONLINE.type)
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
+                else
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_gap))
+
                 payGapBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }
@@ -268,6 +272,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         dismiss()
                     })
                 lv_bank_item.adapter = bankCardAdapter
+                tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_bank))
                 bankBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }

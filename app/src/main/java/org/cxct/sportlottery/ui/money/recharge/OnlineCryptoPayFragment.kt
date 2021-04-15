@@ -191,6 +191,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                         dismiss()
                     })
                 lv_bank_item.adapter = currencyBtsAdapter
+                tv_game_type_title.text = String.format(resources.getString(R.string.title_choose_currency))
                 currencyBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }
@@ -216,6 +217,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                         dismiss()
                     })
                 lv_bank_item.adapter = accountBtsAdapter
+                tv_game_type_title.text = String.format(resources.getString(R.string.title_choose_recharge_account))
                 accountBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }

@@ -448,8 +448,11 @@
     <string name="ali_recharge_hint">请每次入款前登录会员核对支付宝账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="cft_recharge_hint">请每次入款前登录会员核对财付通账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
+    <string name="title_choose_pay_channel">选择支付渠道</string>
     <string name="title_pay_gap">支付账户</string>
+    <string name="title_choose_pay_gap">选择支付账户</string>
     <string name="title_pay_bank">支付银行</string>
+    <string name="title_choose_pay_bank">选择支付银行</string>
     <string name="title_rebate_fee">返利手续费</string>
     <string name="hint_tip"><font color="#ff4b2c">・温馨提示：%1$s。</font></string>
     <string name="edt_hint_online_pay_money">單筆下限%1$s，上限%2$s</string>
@@ -471,6 +474,7 @@
     <string name="text_money_copy_success">复制成功</string>
 
     <string name="title_currency">协议/币种</string>
+    <string name="title_choose_currency">选择协议/币种</string>
     <string name="txv_recharge_count">充值个数</string>
     <string name="edt_hint_crypto_pay_count">限额最低%1$s个，最高%2$s个</string>
     <string name="hint_rate">・汇率：%1$s</string>
@@ -482,6 +486,7 @@
     <string name="hint_feeback_amount">・返利金额：%1$s RMB</string>
     <string name="txv_recharge_money">・充值金额：%1$s RMB</string>
     <string name="title_recharge_account">充值账号</string>
+    <string name="title_choose_recharge_account">选择充值账号</string>
     <string name="title_recharge_address">充币地址:</string>
     <string name="btn_recharge">去充值</string>
     <string name="title_upload_pic">上传支付截图</string>
