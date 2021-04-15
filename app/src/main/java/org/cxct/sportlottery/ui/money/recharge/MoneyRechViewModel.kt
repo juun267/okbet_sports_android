@@ -271,14 +271,14 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAccountMsg.value = when {
-            rechargeAmount.isEmpty() || rechargeAmount == "0" -> {
+            rechargeAmount.isEmpty()  -> {
                 androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) -> {
+            ) || rechargeAmount == "0" -> {
                 androidContext.getString(R.string.error_recharge_account)
             }
             else -> {
@@ -292,14 +292,14 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeOnlineAmountMsg.value = when {
-            rechargeAmount.isEmpty() || rechargeAmount == "0" -> {
+            rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) -> {
+            ) || rechargeAmount == "0" -> {
                 androidContext.getString(R.string.error_recharge_amount)
             }
             else -> {

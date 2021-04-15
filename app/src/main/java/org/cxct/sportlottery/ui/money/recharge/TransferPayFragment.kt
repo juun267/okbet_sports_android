@@ -364,7 +364,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             //充值金額
             et_recharge_amount.afterTextChanged {
                 if(it.startsWith("0") && it.length>1){
-                    et_recharge_amount.setText("${et_recharge_amount.getText().replace("0","")}")
+                    et_recharge_amount.setText(et_recharge_amount.getText().replace("0",""))
                     et_recharge_amount.setCursor()
                     return@afterTextChanged
                 }

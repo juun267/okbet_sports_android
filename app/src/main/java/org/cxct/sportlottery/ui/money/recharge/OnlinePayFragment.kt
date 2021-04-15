@@ -157,6 +157,12 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.apply {
             //充值金額
             et_recharge_online_amount.afterTextChanged {
+                if(it.startsWith("0") && it.length>1){
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().replace("0",""))
+                    et_recharge_online_amount.setCursor()
+                    return@afterTextChanged
+                }
+
                 checkRcgOnlineAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
