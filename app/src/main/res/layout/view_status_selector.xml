@@ -19,19 +19,18 @@
         android:textSize="@dimen/textSize14sp"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:layout_constraintEnd_toStartOf="@+id/img_arrow"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constrainedWidth="true"
         tools:text="全部订单状态123123123" />
 
     <ImageView
         android:id="@+id/img_arrow"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginHorizontal="10dp"
         android:src="@drawable/ic_arrow_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_selected"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_selected"
         app:layout_constraintTop_toTopOf="@id/tv_selected" />
