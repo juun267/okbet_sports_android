@@ -165,7 +165,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="26dp"
-            android:background="@drawable/bg_radius_19_button_white"
+            android:background="@drawable/bg_radius_20_button_white6"
             android:minHeight="38dp"
             android:text="@string/sign_out"
             android:letterSpacing="0.117"
