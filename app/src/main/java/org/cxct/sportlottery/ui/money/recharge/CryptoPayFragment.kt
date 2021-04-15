@@ -494,8 +494,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         calendarBottomSheet = BottomSheetDialog(this.requireContext())
         calendarBottomSheet.setContentView(bottomSheetView)
         calendarBottomSheet.calendar.setSelectableDateRange(
-            getDateInCalendar(30).first,
-            getDateInCalendar(30).second
+            getDateInCalendar(7).first,
+            getDateInCalendar(7).second
         )
         calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(
