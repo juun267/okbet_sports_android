@@ -291,6 +291,12 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     return@afterTextChanged
                 }
 
+                if(et_recharge_account.getText().length > 6){
+                    et_recharge_account.setText(et_recharge_account.getText().substring(0,6))
+                    et_recharge_account.setCursor()
+                    return@afterTextChanged
+                }
+
                 tv_fee_amount.visibility = View.VISIBLE
                 checkRechargeAccount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {

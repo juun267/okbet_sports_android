@@ -157,8 +157,14 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.apply {
             //充值金額
             et_recharge_online_amount.afterTextChanged {
-                if(it.startsWith("0") && it.length>1){
+                if(it.startsWith("0") && it.length > 1){
                     et_recharge_online_amount.setText(et_recharge_online_amount.getText().replace("0",""))
+                    et_recharge_online_amount.setCursor()
+                    return@afterTextChanged
+                }
+
+                if(et_recharge_online_amount.getText().length > 6){
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().substring(0,6))
                     et_recharge_online_amount.setCursor()
                     return@afterTextChanged
                 }

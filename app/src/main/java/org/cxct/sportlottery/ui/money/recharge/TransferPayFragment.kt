@@ -369,6 +369,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     return@afterTextChanged
                 }
 
+                if(et_recharge_amount.getText().length > 6){
+                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0,6))
+                    et_recharge_amount.setCursor()
+                    return@afterTextChanged
+                }
+
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
