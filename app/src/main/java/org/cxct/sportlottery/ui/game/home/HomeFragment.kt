@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
@@ -50,12 +51,17 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         initEvent()
         initObserve()
         observeSocketData()
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         queryData()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onStop() {
+        super.onStop()
+
         unsubscribeAllHallChannel()
     }
 
@@ -191,8 +197,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 scroll_view.smoothScrollTo(0, 0)
 
-                viewModel.getOddsDetailLive(select)
-                viewModel.getOddsList(select.code.toString(), MatchType.IN_PLAY.postValue)
+                navOddsDetailLive(select.code, select.match?.id, "EU")
             }
         })
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
@@ -201,5 +206,30 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 viewModel.getGameHallList(MatchType.IN_PLAY, select.code)
             }
         })
+    }
+
+    private fun navOddsDetailLive(sportTypeCode: String?, matchId: String?, oddsType: String?) {
+        val sportType = when (sportTypeCode) {
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            SportType.TENNIS.code -> SportType.TENNIS
+            else -> null
+        }
+
+        sportType?.let {
+            matchId?.let {
+                oddsType?.let {
+                    val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                        sportType,
+                        matchId,
+                        oddsType
+                    )
+
+                    findNavController().navigate(action)
+                }
+            }
+        }
     }
 }

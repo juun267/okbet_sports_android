@@ -32,12 +32,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        service.subscribeHallChannel(args.sportType.code, CateMenuCode.OUTRIGHT.code, args.eventId)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,12 +76,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             initObserve()
             initSocketReceiver()
 
-            viewModel.getOutrightOddsList(args.eventId)
-            loading()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        service.subscribeHallChannel(args.sportType.code, CateMenuCode.OUTRIGHT.code, args.eventId)
+
+        viewModel.getOutrightOddsList(args.eventId)
+        loading()
     }
 
     private fun initObserve() {
@@ -213,8 +213,8 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
 
         service.unsubscribeAllHallChannel()
     }

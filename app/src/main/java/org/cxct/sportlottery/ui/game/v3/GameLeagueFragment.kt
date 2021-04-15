@@ -31,12 +31,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
-                            viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                            matchOdd.matchInfo?.id?.let {
+                                navOddsDetailLive(it)
+                            }
                         }
                         else -> {
                             matchOdd.matchInfo?.id?.let {
@@ -123,12 +127,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             initObserve()
             initSocketReceiver()
 
-            viewModel.getLeagueOddsList(args.matchType, args.leagueId)
-            loading()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.getLeagueOddsList(args.matchType, args.leagueId)
+        loading()
     }
 
     private fun initObserve() {
@@ -389,15 +397,25 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         findNavController().navigate(action)
     }
 
+    private fun navOddsDetailLive(matchId: String) {
+        val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
+            args.sportType,
+            matchId,
+            "EU"
+        )
+
+        findNavController().navigate(action)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        service.unsubscribeAllHallChannel()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
         game_league_odd_list.adapter = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        service.unsubscribeAllHallChannel()
     }
 }

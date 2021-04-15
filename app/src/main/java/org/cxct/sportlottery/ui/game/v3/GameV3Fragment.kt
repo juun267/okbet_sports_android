@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.row_game_filter.view.*
@@ -81,10 +80,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
@@ -251,6 +254,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.getGameHallList(args.matchType, true)
+        loading()
     }
 
     private fun initObserve() {
@@ -742,15 +752,37 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun navOddsDetailLive(matchId: String) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        sportType?.let {
+            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
+                sportType,
+                matchId,
+                "EU"
+            )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        service.unsubscribeAllHallChannel()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
         game_list.adapter = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        service.unsubscribeAllHallChannel()
     }
 }

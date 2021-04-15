@@ -39,8 +39,8 @@
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
-    <string name="btn_confirm">确定</string>
-    <string name="btn_determine">确定</string>
+    <string name="btn_confirm">确认</string>
+    <string name="btn_determine">确认</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_retry">重试</string>
     <string name="btn_download">下载</string>
@@ -760,4 +760,6 @@
     <string name="handicap">盘口</string>
     <string name="choose_method">选择渠道</string>
     <string name="choose_order">选择订单</string>
+    <string name="submit_time">提交时间:</string>
+    <string name="feedback_time">反馈时间:</string>
 </resources>

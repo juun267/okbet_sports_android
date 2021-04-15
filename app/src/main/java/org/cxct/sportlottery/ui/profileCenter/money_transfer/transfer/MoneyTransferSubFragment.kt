@@ -130,6 +130,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             if (isReversed) {
                 tv_title_in.text = getString(R.string.out_account)
                 tv_title_out.text = getString(R.string.in_account)
+                in_account.bottomSheetTitleText = getString(R.string.out_account)
+                out_account.bottomSheetTitleText = getString(R.string.in_account)
                 clone(constraint_layout)
                 connect(R.id.ll_in, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, getDp(10))
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_in, ConstraintSet.BOTTOM, getDp(10))
@@ -137,6 +139,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             } else {
                 tv_title_in.text = getString(R.string.in_account)
                 tv_title_out.text = getString(R.string.out_account)
+                in_account.bottomSheetTitleText = getString(R.string.in_account)
+                out_account.bottomSheetTitleText = getString(R.string.out_account)
                 clone(constraint_layout)
                 connect(R.id.ll_out, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, getDp(10))
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_out, ConstraintSet.BOTTOM, getDp(10))
