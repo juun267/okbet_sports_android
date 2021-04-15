@@ -131,56 +131,6 @@
 
         </RelativeLayout>
 
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginHorizontal="4dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:orientation="vertical">-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tv_play_cate_name"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="center"-->
-        <!--                android:maxLines="1"-->
-        <!--                android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playCateName : null}"-->
-        <!--                android:textColor="@color/colorBlackLight"-->
-        <!--                android:textSize="@dimen/textSize12sp"-->
-        <!--                android:ellipsize="end"-->
-        <!--                app:autoSizeMaxTextSize="@dimen/textSize12sp"-->
-        <!--                app:autoSizeMinTextSize="@dimen/textSize8sp"-->
-        <!--                tools:text="独赢" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tv_home_name"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="center"-->
-        <!--                android:maxLines="1"-->
-        <!--                android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playName : null}"-->
-        <!--                android:textColor="@color/colorBlackLight"-->
-        <!--                android:textSize="@dimen/textSize12sp"-->
-        <!--                android:ellipsize="end"-->
-        <!--                app:autoSizeMaxTextSize="@dimen/textSize12sp"-->
-        <!--                app:autoSizeMinTextSize="@dimen/textSize8sp"-->
-        <!--                tools:text="曼联" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tv_odds"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="center"-->
-        <!--                android:maxLines="1"-->
-        <!--                android:text="@{row.matchOdds.size() > 0 ? String.format(@string/at_symbol, row.matchOdds.get(0).odds) : null}"-->
-        <!--                android:textColor="@color/red2"-->
-        <!--                android:textSize="@dimen/textSize12sp"-->
-        <!--                app:autoSizeMaxTextSize="@dimen/textSize12sp"-->
-        <!--                app:autoSizeMinTextSize="@dimen/textSize8sp"-->
-        <!--                tools:text="\u00404.3" />-->
-
-        <!--        </LinearLayout>-->
-
         <TextView
             android:id="@+id/tv_bet_total_money"
             android:layout_width="0dp"
@@ -207,7 +157,7 @@
                 android:gravity="center"
                 android:textSize="@dimen/textSize12sp"
                 app:moneyColor="@{row.win}"
-                app:profitFormat="@{row.win}"
+                app:profitFormatInRecord="@{row.win}"
                 tools:text="+1,060.00"
                 tools:textColor="@color/green" />
 
