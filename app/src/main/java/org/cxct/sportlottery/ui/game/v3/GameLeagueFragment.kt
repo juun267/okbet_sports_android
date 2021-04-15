@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 
 
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -203,6 +204,18 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
 
             leagueAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
+            val oddsType = when (it) {
+                OddsType.EU.value -> OddsType.EU
+                OddsType.HK.value -> OddsType.HK
+                else -> null
+            }
+
+            oddsType?.let {
+                leagueAdapter.oddsType = oddsType
+            }
         })
     }
 
