@@ -124,6 +124,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 View.INVISIBLE
             }
 
+            itemView.game_score_home.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            itemView.game_score_away.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
             when (matchType) {
                 MatchType.IN_PLAY -> {
                     itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
@@ -410,6 +422,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 View.VISIBLE
             } else {
                 View.INVISIBLE
+            }
+
+            itemView.game_score_home_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            itemView.game_score_away_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
             }
 
             when (matchType) {

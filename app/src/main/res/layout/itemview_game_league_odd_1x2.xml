@@ -112,12 +112,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="22dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@id/game_name_home_1x2"
         app:layout_constraintStart_toStartOf="@id/match_odd_block_info"
-        app:layout_constraintTop_toTopOf="@id/match_odd_block_info"
         tools:text="0" />
 
     <TextView
@@ -125,14 +124,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="10dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize15sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/game_score_home_1x2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/game_score_home_1x2"
+        app:layout_constraintTop_toTopOf="@id/match_odd_block_info"
         tools:text="皇家马德里" />
 
     <TextView
@@ -140,11 +140,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="22dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/match_odd_block_info"
+        app:layout_constraintBaseline_toBaselineOf="@id/game_name_away_1x2"
         app:layout_constraintStart_toStartOf="@id/match_odd_block_info"
         tools:text="0" />
 
@@ -154,11 +153,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="22dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize15sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/game_score_away_1x2"
+        app:layout_constraintBottom_toBottomOf="@id/match_odd_block_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/game_score_away_1x2"
         tools:text="利物浦" />
