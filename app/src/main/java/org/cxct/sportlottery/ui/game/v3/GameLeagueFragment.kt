@@ -127,12 +127,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             initObserve()
             initSocketReceiver()
 
-            viewModel.getLeagueOddsList(args.matchType, args.leagueId)
-            loading()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.getLeagueOddsList(args.matchType, args.leagueId)
+        loading()
     }
 
     private fun initObserve() {
@@ -385,15 +389,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         findNavController().navigate(action)
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        service.unsubscribeAllHallChannel()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
         game_league_odd_list.adapter = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        service.unsubscribeAllHallChannel()
     }
 }
