@@ -17,6 +17,7 @@ class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewMode
         savedInstanceState: Bundle?
     ): View? {
         viewModel.showToolbar(true)
+        viewModel.setToolbarName(getString(R.string.feedback_toolbar_title))
         return inflater.inflate(R.layout.fragment_feedback_suggest, container, false)
     }
 

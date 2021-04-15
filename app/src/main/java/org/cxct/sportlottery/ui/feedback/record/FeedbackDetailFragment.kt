@@ -27,6 +27,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         savedInstanceState: Bundle?,
     ): View? {
         viewModel.showToolbar(false)
+        viewModel.setToolbarName(getString(R.string.feedback_detail))
         viewModel.fbQueryDetail()
         return inflater.inflate(R.layout.fragment_feedback_detail, container, false)
     }

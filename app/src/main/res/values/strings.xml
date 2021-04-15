@@ -648,6 +648,7 @@
 
     <!--意見反饋-->
     <string name="feedback_toolbar_title">建议反馈</string>
+    <string name="feedback_detail">反馈详情</string>
     <string name="feedback_tabName_problem">问题与建议</string>
     <string name="feedback_tabName_record">反馈纪录</string>
     <string name="feedback_description">如果您对游戏或者平台有好的建议或者发现Bug可以进行提交，官方客服会在48小时内进行回复。我们会及时修正Bug或参考您的反馈不断优化我们的产品和服务。 (若同样建议或Bug有多人反馈,奖金将会发给最先反馈者,记得发现问题第一时间反馈喔)</string>
