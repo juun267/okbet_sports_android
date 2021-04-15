@@ -48,6 +48,19 @@
             tools:text="您好，您有任何疑问，可点击我司在线客服人员咨询详情哦！谢谢" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/feedback_time"
+            android:textColor="@color/colorSilverDirk"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txv_reply_time"
+            app:layout_constraintTop_toBottomOf="@+id/txv_reply"
+            app:layout_constraintVertical_bias="1" />
+        <TextView
             android:id="@+id/txv_reply_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +74,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txv_reply"
             app:layout_constraintVertical_bias="1"
-            tools:text="提交时间:2021-02-16 13:34:43" />
+            tools:text="2021-02-16 13:34:43" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

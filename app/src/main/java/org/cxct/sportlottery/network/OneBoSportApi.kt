@@ -25,133 +25,133 @@ import org.cxct.sportlottery.network.withdraw.WithdrawService
 
 
 object OneBoSportApi {
-    val retrofit by lazy {
-        RequestManager.instance.retrofit
-    }
+    val retrofit
+        get() =
+            RequestManager.instance.retrofit
 
-    val indexService: IndexService by lazy {
-        RequestManager.instance
+
+    val indexService: IndexService
+        get() = RequestManager.instance
             .retrofit
             .create(IndexService::class.java)
-    }
 
-    val sportService: SportService by lazy {
-        RequestManager.instance
+    val sportService: SportService
+        get() = RequestManager.instance
             .retrofit
             .create(SportService::class.java)
-    }
 
-    val matchService: MatchService by lazy {
-        RequestManager.instance
+
+    val matchService: MatchService
+        get() = RequestManager.instance
             .retrofit
             .create(MatchService::class.java)
-    }
 
-    val messageService: MessageService by lazy {
-        RequestManager.instance
+
+    val messageService: MessageService
+        get() = RequestManager.instance
             .retrofit
             .create(MessageService::class.java)
-    }
 
-    val oddsService: OddsService by lazy {
-        RequestManager.instance
+
+    val oddsService: OddsService
+        get() = RequestManager.instance
             .retrofit
             .create(OddsService::class.java)
-    }
 
-    val betService: BetService by lazy {
-        RequestManager.instance
+
+    val betService: BetService
+        get() = RequestManager.instance
             .retrofit
             .create(BetService::class.java)
-    }
 
-    val leagueService: LeagueService by lazy {
-        RequestManager.instance
+
+    val leagueService: LeagueService
+        get() = RequestManager.instance
             .retrofit
             .create(LeagueService::class.java)
-    }
 
-    val matchResultService: MatchResultService by lazy {
-        RequestManager.instance
+
+    val matchResultService: MatchResultService
+        get() = RequestManager.instance
             .retrofit
             .create(MatchResultService::class.java)
-    }
 
-    val playCateListService: PlayCateListService by lazy {
-        RequestManager.instance
+
+    val playCateListService: PlayCateListService
+        get() = RequestManager.instance
             .retrofit
             .create(PlayCateListService::class.java)
-    }
 
-    val outrightService: OutrightService by lazy {
-        RequestManager.instance
+
+    val outrightService: OutrightService
+        get() = RequestManager.instance
             .retrofit
             .create(OutrightService::class.java)
-    }
 
-    val userService: UserService by lazy {
-        RequestManager.instance
+
+    val userService: UserService
+        get() = RequestManager.instance
             .retrofit
             .create(UserService::class.java)
-    }
 
-    val uploadImgService: UploadImgService by lazy {
-        RequestManager.instance
+
+    val uploadImgService: UploadImgService
+        get() = RequestManager.instance
             .retrofit
             .create(UploadImgService::class.java)
-    }
 
-    val infoCenterService: InfoCenterService by lazy {
-        RequestManager.instance
+
+    val infoCenterService: InfoCenterService
+        get() = RequestManager.instance
             .retrofit
             .create(InfoCenterService::class.java)
-    }
 
-    val moneyService: MoneyService by lazy {
-        RequestManager.instance
+
+    val moneyService: MoneyService
+        get() = RequestManager.instance
             .retrofit
             .create(MoneyService::class.java)
-    }
 
-    val bankService: BankService by lazy {
-        RequestManager.instance
+
+    val bankService: BankService
+        get() = RequestManager.instance
             .retrofit
             .create(BankService::class.java)
-    }
 
-    val withdrawService: WithdrawService by lazy {
-        RequestManager.instance
+
+    val withdrawService: WithdrawService
+        get() = RequestManager.instance
             .retrofit
             .create(WithdrawService::class.java)
-    }
 
-    val feedbackService: FeedbackService by lazy {
-        RequestManager.instance
+
+    val feedbackService: FeedbackService
+        get() = RequestManager.instance
             .retrofit
             .create(FeedbackService::class.java)
-    }
 
-    val appUpdateService: AppUpdateService by lazy {
-        RequestManager.instance
+
+    val appUpdateService: AppUpdateService
+        get() = RequestManager.instance
             .retrofit
             .create(AppUpdateService::class.java)
-    }
 
-    val thirdGameService: ThirdGameService by lazy {
-        RequestManager.instance
+
+    val thirdGameService: ThirdGameService
+        get() = RequestManager.instance
             .retrofit
             .create(ThirdGameService::class.java)
-    }
 
-    val hostService: HostService by lazy {
-        RequestManager.instance
+
+    val hostService: HostService
+        get() = RequestManager.instance
             .retrofit
             .create(HostService::class.java)
-    }
 
-    val vipService: VipService by lazy {
-        RequestManager.instance
+
+    val vipService: VipService
+        get() = RequestManager.instance
             .retrofit
             .create(VipService::class.java)
-    }
+
 }
