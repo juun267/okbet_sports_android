@@ -61,9 +61,11 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
                 holder.bind(data.row, clickListener)
             }
 
-            is FooterViewHolder -> {}
+            is FooterViewHolder -> {
+            }
 
-            is NoDataViewHolder -> {}
+            is NoDataViewHolder -> {
+            }
         }
     }
 
@@ -80,7 +82,13 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
             binding.row = data
             binding.clickListener = clickListener
             binding.textUtil = TextUtil
+
+            binding.llRowsContent.visibility = if (data.parlayType == "1C1") View.VISIBLE else View.GONE
+            binding.tvParlayType.visibility = if (data.parlayType == "1C1") View.GONE else View.VISIBLE
+
             binding.executePendingBindings()
+
+
         }
 
         companion object {

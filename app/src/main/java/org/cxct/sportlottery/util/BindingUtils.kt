@@ -89,6 +89,22 @@ fun TextView.setProfitFormat(money: Double?) {
     }
 }
 
+@BindingAdapter("profitFormatInRecord")
+fun TextView.setProfitFormatInRecord(money: Double?) {
+
+    text = when {
+        money == null -> {
+            "--"
+        }
+        money > 0.0 -> {
+            "+${TextUtil.format(money)}"
+        }
+        else -> {
+            TextUtil.format(money)
+        }
+    }
+}
+
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Long?) {
     money?.let {

@@ -144,7 +144,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 when {
                     quota > parlayOdd.max -> {
                         inputError = true
-                        binding.tvErrorMessage.text = String.format(binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit), parlayOdd.max.toString())
+                        binding.tvErrorMessage.text = String.format(binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit), TextUtil.formatMoneyNoDecimal(parlayOdd.max))
                         binding.etBet.setBackgroundResource(R.drawable.bg_radius_4_edittext_error)
                     }
                     quota < parlayOdd.min -> {
