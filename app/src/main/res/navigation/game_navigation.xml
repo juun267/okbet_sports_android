@@ -10,21 +10,12 @@
         android:name="org.cxct.sportlottery.ui.game.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
-
         <action
             android:id="@+id/action_homeFragment_to_gameFragment"
             app:destination="@id/gameV3Fragment">
             <argument
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
-        </action>
-
-        <action
-            android:id="@+id/action_homeFragment_to_mainActivity"
-            app:destination="@id/mainActivity">
-            <argument
-                android:name="thirdGameCate"
-                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
         </action>
     </fragment>
 
@@ -43,14 +34,6 @@
             <argument
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
-        </action>
-
-        <action
-            android:id="@+id/action_gameV3Fragment_to_mainActivity"
-            app:destination="@id/mainActivity">
-            <argument
-                android:name="thirdGameCate"
-                app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
         </action>
 
         <action
@@ -88,6 +71,7 @@
                 android:name="eventId"
                 app:argType="string" />
         </action>
+
         <action
             android:id="@+id/action_gameV3Fragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
@@ -194,15 +178,5 @@
                 app:argType="string" />
         </action>
     </fragment>
-
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="org.cxct.sportlottery.ui.main.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main">
-        <argument
-            android:name="thirdGameCate"
-            app:argType="org.cxct.sportlottery.ui.main.entity.ThirdGameCategory" />
-    </activity>
 
 </navigation>

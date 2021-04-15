@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.v3
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -669,8 +671,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
-        val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(thirdGameCategory)
-        findNavController().navigate(action)
+        val intent = Intent(activity, MainActivity::class.java)
+            .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+        startActivity(intent)
     }
 
     private fun navGameLeague(matchId: String) {

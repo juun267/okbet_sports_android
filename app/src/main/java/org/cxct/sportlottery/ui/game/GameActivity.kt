@@ -30,6 +30,8 @@ import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.v3.*
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.MenuLeftFragment
@@ -131,16 +133,9 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun gotToMainActivity(thirdGameCategory: ThirdGameCategory) {
-        when (mNavController.currentDestination?.id) {
-            R.id.homeFragment -> {
-                val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(thirdGameCategory)
-                mNavController.navigate(action)
-            }
-            R.id.gameV3Fragment -> {
-                val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(thirdGameCategory)
-                mNavController.navigate(action)
-            }
-        }
+        val intent = Intent(this, MainActivity::class.java)
+            .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
+        startActivity(intent)
     }
 
     private fun initToolBar() {
