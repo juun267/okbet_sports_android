@@ -136,7 +136,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = gameType?.let { OddsDetailListAdapter(this@OddsDetailFragment, it) }
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter

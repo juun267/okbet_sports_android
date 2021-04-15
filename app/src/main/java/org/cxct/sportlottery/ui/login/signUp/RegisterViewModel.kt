@@ -178,6 +178,7 @@ class RegisterViewModel(
 
     private fun checkConfirmPassword(context: Context, password: String?, confirmPassword: String?): String? {
         return when {
+            password.isNullOrBlank() -> context.getString(R.string.error_input_empty)
             password != confirmPassword -> context.getString(R.string.error_confirm_password)
             else -> null
         }
