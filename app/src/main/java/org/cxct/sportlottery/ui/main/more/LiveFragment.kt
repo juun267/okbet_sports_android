@@ -5,14 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_live.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -21,12 +18,6 @@ import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.util.JumpUtil
 
 class LiveFragment(private val gameCateData: GameCateData) : BaseFragment<MainViewModel>(MainViewModel::class) {
-
-    private val mActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        //若自動轉換功能開啟，離開第三方遊戲要再把錢都轉回平台帳戶
-        if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
-            viewModel.allTransferOut()
-    }
 
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
         override fun onClick(select: ThirdDictValues?) {
@@ -65,7 +56,7 @@ class LiveFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
         when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "", mActivityResultLauncher) }
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}

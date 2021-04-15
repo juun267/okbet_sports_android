@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,12 +38,6 @@ import org.cxct.sportlottery.util.JumpUtil
 
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
-
-    private val mActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        //若自動轉換功能開啟，離開第三方遊戲要再把錢都轉回平台帳戶
-        if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
-            viewModel.allTransferOut()
-    }
 
     private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
         override fun onClick(select: ThirdDictValues?) {
@@ -218,7 +211,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initObserve() {
         //輪播圖
         viewModel.bannerList.observe(viewLifecycleOwner, {
-            setBanner(it ?: listOf())
+            setBanner(it?: listOf())
         })
 
         //公告跑馬燈
@@ -321,7 +314,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
         when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "", mActivityResultLauncher) }
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
