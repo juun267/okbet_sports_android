@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -218,14 +219,18 @@ class GameViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
+    private val _syetemDelete = MutableLiveData<Boolean>()
+    val systemDelete: LiveData<Boolean>
+        get() = _syetemDelete
+
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
-
         if (boolean) {
             //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
             cleanOutrightBetOrder()
+            getBetInfoListForParlay(false)
         }
     }
 
@@ -1118,7 +1123,18 @@ class GameViewModel(
 
             //以matchId分組 key為matchOdd(object)
             val groupList = list.groupBy { data ->
-                list.find { d -> data.matchOdd.matchId == d.matchOdd.matchId }
+                list.find { d ->
+                    data.matchOdd.matchId == d.matchOdd.matchId
+                }
+            }
+
+            run loop@{
+                groupList.forEach {
+                    if (it.value.size>1){
+                        _syetemDelete.postValue(true)
+                        return@loop
+                    }
+                }
             }
 
             //各別取第一項做為串關項目送出
