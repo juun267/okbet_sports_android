@@ -48,7 +48,8 @@
                 android:id="@+id/out_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:horizontalChainStyle="spread_inside" />
+                app:horizontalChainStyle="spread_inside"
+                app:defaultBottomSheetTitleText="@string/out_account"/>
 
         </LinearLayout>
 
@@ -93,7 +94,8 @@
                 android:id="@+id/in_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:horizontalChainStyle="spread_inside" />
+                app:horizontalChainStyle="spread_inside"
+                app:defaultBottomSheetTitleText="@string/in_account"/>
 
         </LinearLayout>
 

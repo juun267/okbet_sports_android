@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -41,8 +42,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             thirdGameListener = ThirdGameListener {
-                val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(it)
-                findNavController().navigate(action)
+                navThirdGame(it)
             }
         }
     }
@@ -59,32 +59,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val countryAdapter by lazy {
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener { league ->
-                val sportType =
-                    when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
-                        SportType.FOOTBALL.code -> SportType.FOOTBALL
-                        SportType.BASKETBALL.code -> SportType.BASKETBALL
-                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-                        SportType.BADMINTON.code -> SportType.BADMINTON
-                        SportType.TENNIS.code -> SportType.TENNIS
-                        else -> null
-                    }
-
-                val matchType = when (gameTypeAdapter.data.find {
-                    it.isSelected
-                }?.date) {
-                    MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
-                    else -> null
-                }
-
-                sportType?.let {
-                    val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
-                        matchType ?: args.matchType,
-                        sportType,
-                        league.id
-                    )
-
-                    findNavController().navigate(action)
-                }
+                navGameLeague(league.id)
             }
         }
     }
@@ -92,25 +67,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val outrightCountryAdapter by lazy {
         OutrightCountryAdapter().apply {
             outrightCountryLeagueListener = OutrightCountryLeagueListener { season ->
-                val sportType =
-                    when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
-                        SportType.FOOTBALL.code -> SportType.FOOTBALL
-                        SportType.BASKETBALL.code -> SportType.BASKETBALL
-                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-                        SportType.BADMINTON.code -> SportType.BADMINTON
-                        SportType.TENNIS.code -> SportType.TENNIS
-                        else -> null
-                    }
-
-                sportType?.let {
-                    val action =
-                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightFragment(
-                            sportType,
-                            season.id
-                        )
-
-                    findNavController().navigate(action)
-                }
+                navGameOutright(season.id)
             }
         }
     }
@@ -119,10 +76,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd ->
-                    viewModel.getOddsDetailLive(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.id?.let {
+                        navOddsDetailLive(it)
+                    }
                 },
                 { matchOdd, oddString, odd ->
                     viewModel.updateMatchBetList(matchOdd, oddString, odd)
@@ -283,12 +244,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             initObserve()
             initSocketReceiver()
 
-            viewModel.getGameHallList(args.matchType, true)
-            loading()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.getGameHallList(args.matchType, true)
+        loading()
     }
 
     private fun initObserve() {
@@ -711,15 +676,93 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
+        val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(thirdGameCategory)
+        findNavController().navigate(action)
+    }
+
+    private fun navGameLeague(matchId: String) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        val matchType = when (gameTypeAdapter.data.find {
+            it.isSelected
+        }?.date) {
+            MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
+            else -> null
+        }
+
+        sportType?.let {
+            val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
+                matchType ?: args.matchType,
+                sportType,
+                matchId
+            )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun navGameOutright(matchId: String) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        sportType?.let {
+            val action =
+                GameV3FragmentDirections.actionGameV3FragmentToGameOutrightFragment(
+                    sportType,
+                    matchId
+                )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun navOddsDetailLive(matchId: String) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        sportType?.let {
+            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
+                sportType,
+                matchId,
+                "EU"
+            )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        service.unsubscribeAllHallChannel()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
         game_list.adapter = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        service.unsubscribeAllHallChannel()
     }
 }
