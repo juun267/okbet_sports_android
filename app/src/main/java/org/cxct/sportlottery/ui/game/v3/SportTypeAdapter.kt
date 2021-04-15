@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.v3
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ViewHolderSport -> {
                 val item = dataSport[position]
+                Log.e("Dean" , "SportType Adapter onBindViewHolder name = ${item.name} , isSelected = ${item.isSelected}")
                 holder.bind(item, sportTypeListener)
             }
             is ViewHolderThirdGame -> {

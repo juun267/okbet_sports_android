@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -67,7 +68,7 @@ class GameViewModel(
 
     val token = loginRepository.token
     val userId = loginRepository.userId
-    var mathType: MatchType? = null
+    var matchType: MatchType? = null
 
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
@@ -118,7 +119,7 @@ class GameViewModel(
     val curOddsDetailLiveParams: LiveData<List<String?>>
         get() = _curOddsDetailLiveParams
 
-    val matchTypeCardForParlay: LiveData<MatchType>
+    val matchTypeCardForParlay: LiveData<Event<MatchType>>
         get() = _matchTypeCardForParlay
 
     val isNoHistory: LiveData<Boolean>
@@ -150,7 +151,7 @@ class GameViewModel(
     private val _curOddsDetailParams = MutableLiveData<List<String?>>()
     private val _curOddsDetailLiveParams = MutableLiveData<List<String?>>()
     private val _asStartCount = MutableLiveData<Int>()
-    private val _matchTypeCardForParlay = MutableLiveData<MatchType>()
+    private val _matchTypeCardForParlay = MutableLiveData<Event<MatchType>>()
     private val _isNoHistory = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -219,6 +220,8 @@ class GameViewModel(
         get() = _userMoney
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+
+    var menuEntrance = false
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
@@ -296,7 +299,8 @@ class GameViewModel(
                 it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
                     item.sortNum
                 }
-                _sportMenuResult.postValue(it)
+                Log.e("Dean", "GameViewModel getSportMenu")
+                _sportMenuResult.value = it
             }
         }
     }
@@ -349,19 +353,54 @@ class GameViewModel(
         }
     }
 
-    fun getGameHallList(matchType: MatchType, sportCode: String?) {
-        _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.map {
-            it.isSelected = it.code == sportCode
+    fun getGameHallList(matchType: MatchType, sportCode: String?, isLeftMenu: Boolean = false) {
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.forEach {
+                    it.isSelected = it.code == sportCode
+                }
+            }
+            MatchType.TODAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.forEach {
+                    it.isSelected = it.code == sportCode
+                }
+            }
+            MatchType.EARLY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.forEach {
+                    it.isSelected = it.code == sportCode
+                }
+            }
+            MatchType.OUTRIGHT -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.forEach {
+                    it.isSelected = it.code == sportCode
+                }
+            }
+            else -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.forEach {
+                    it.isSelected = it.code == sportCode
+                }
+            }
         }
-        _matchTypeCardForParlay.postValue(matchType)
+        Log.e("Dean", "this.matchType = ${this.matchType} , matchType = ${matchType}")
+        if (this.matchType != matchType) {
+            menuEntrance = true //標記為卡片或菜單跳轉不同的類別
+        } else {
+            menuEntrance = false
+        }
+        Log.e("Dean", "gaetGameHall menuEntrance = $menuEntrance")
+        if (isLeftMenu) {
+            _sportMenuResult.postValue(_sportMenuResult.value)
+        }
+        _matchTypeCardForParlay.postValue(Event(matchType))
     }
 
-    fun getGameHallList(matchType: MatchType, sportType: SportType) {
-        getGameHallList(matchType, sportType.code)
+    fun getGameHallList(matchType: MatchType, sportType: SportType, isLeftMenu: Boolean = false) {
+        getGameHallList(matchType, sportType.code, isLeftMenu)
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
         updateSportSelectedState(matchType, item)
+        Log.e("Dean", "getGameHallList matchType = $matchType")
         getGameHallList(matchType, true)
     }
 
@@ -369,11 +408,14 @@ class GameViewModel(
         updateDateSelectedState(date)
         getGameHallList(matchType, false, date.date)
 
+        Log.e("Dean", "getGameHallList 2 matchType = $matchType")
         _curDatePosition.postValue(_curDate.value?.indexOf(date))
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
-        mathType = matchType
+        Log.e("Dean", "getGameHallList 22 this.matchType = ${this.matchType} , matchType = ${matchType}")
+        this.matchType = matchType
+        Log.e("Dean", "getGameHallList 222 this.matchType = ${this.matchType}")
         if (isReloadDate) {
             getDateRow(matchType)
 
@@ -418,7 +460,9 @@ class GameViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
-
+                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.forEach {
+                    Log.e("Dean", "getGameHallList PARLAY item name = ${it.name} , item iselected = ${it.isSelected}")
+                }
                 gameType?.let {
                     getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams(), date)
                 }
@@ -556,7 +600,7 @@ class GameViewModel(
             odd.isSelected = true
 
             getBetInfoList(listOf(Odd(winner.id ?: "", winner.odds).apply {
-                matchType = this@GameViewModel.mathType
+                matchType = this@GameViewModel.matchType
             }))
         } else {
             odd.isSelected = false
@@ -572,9 +616,9 @@ class GameViewModel(
         oddString: String,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
-        val isOutright = mathType == MatchType.OUTRIGHT
+        val isOutright = matchType == MatchType.OUTRIGHT
         val result =
-            if (mathType == MatchType.IN_PLAY) _oddsListGameHallResult.value?.peekContent() else _oddsListResult.value?.peekContent()
+            if (matchType == MatchType.IN_PLAY) _oddsListGameHallResult.value?.peekContent() else _oddsListResult.value?.peekContent()
         val match =
             result?.oddsListData?.leagueOdds?.find { leagueOdd ->
                 leagueOdd.matchOdds.contains(
@@ -592,7 +636,7 @@ class GameViewModel(
                 isBetMatchId == null -> {
                     match?.isSelected = true
                     getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                        matchType = this@GameViewModel.mathType
+                        matchType = this@GameViewModel.matchType
                     }))
                 }
                 isBetOddId != null -> {
@@ -608,7 +652,7 @@ class GameViewModel(
             if (betItem == null) {
                 match?.isSelected = true
                 getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                    matchType = this@GameViewModel.mathType
+                    matchType = this@GameViewModel.matchType
                 }))
             } else {
                 match?.isSelected = false
@@ -616,7 +660,7 @@ class GameViewModel(
             }
         }
 
-        if (mathType == MatchType.IN_PLAY) {
+        if (matchType == MatchType.IN_PLAY) {
             _oddsListGameHallResult.value = Event(result)
             _oddsListGameHallLiveResult.value = result
         } else {
@@ -660,7 +704,8 @@ class GameViewModel(
             }
         }
 
-        _sportMenuResult.postValue(result)
+        Log.e("Dean", "GameViewModel updateSportSelectedState")
+        _sportMenuResult.value = result
     }
 
     fun updateMatchOddExpandDetail(matchOdd: MatchOdd) {
@@ -871,7 +916,7 @@ class GameViewModel(
 
     fun getOddsDetail(oddId: String?) {
         var item: Item? = null
-        when (mathType) {
+        when (matchType) {
             MatchType.IN_PLAY -> {
                 item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
                     it.isSelected
@@ -911,7 +956,7 @@ class GameViewModel(
 
     fun getOddsDetailLive(oddId: String?) {
         var item: Item? = null
-        when (mathType) {
+        when (matchType) {
             MatchType.IN_PLAY -> {
                 item = _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
                     it.isSelected
@@ -1309,6 +1354,14 @@ class GameViewModel(
     }
 
     fun sportMenuSelectFirstItem(matchType: MatchType) {
+        if (menuEntrance) {
+            Log.e("Dean", "menu enter")
+            menuEntrance = false
+            return
+        } else {
+            Log.e("Dean", "not menu enter")
+        }
+
 
         val menuData = _sportMenuResult.value?.sportMenuData?.menu
 
