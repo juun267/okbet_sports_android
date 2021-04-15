@@ -40,7 +40,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             sportTypeListener = SportTypeListener {
                 service.unsubscribeAllHallChannel()
 
-                Log.e("Dean", "sportTypeListener name = ${it.name}, isSelected = ${it.isSelected}")
                 viewModel.getGameHallList(args.matchType, it)
                 loading()
             }
@@ -248,7 +247,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             initObserve()
             initSocketReceiver()
 
-            viewModel.getGameHallList(args.matchType, true).apply { Log.e("Dean", "GameV3Fragment onViewCreated match type = ${args.matchType}") }
+            viewModel.getGameHallList(args.matchType, true)
             loading()
 
         } catch (e: Exception) {
@@ -265,10 +264,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initObserve() {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, {
-            it?.sportMenuData?.menu?.early?.items?.forEach { item ->
-                Log.e("Dean", "GameV3Fragment item name = ${item?.name}, item isSelected = ${item?.isSelected}")
-            }
-            Log.e("Dean", "matchType = ${args.matchType}")
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
                     val itemList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
@@ -322,7 +317,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.matchTypeCardForParlay.observe(viewLifecycleOwner, {
             val matchType = it.getContentIfNotHandled()
-            Log.e("Dean", "matchTypeCardForParlay matchType= ${matchType?.name}")
             matchType?.let { matchTypeNotNull ->
                 viewModel.getGameHallList(matchTypeNotNull, true)
             }

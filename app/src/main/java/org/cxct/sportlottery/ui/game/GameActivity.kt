@@ -100,7 +100,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun goToSportGame(sportType: SportType) {
         //規則：看當前在哪種類型賽事，再跳轉到對應類型下的球類賽事
         //若此類型賽事無該種球類比賽，則一律跳轉到“串關”類型的球類賽事
-        Log.e("Dean" , "selectedTabPosition = ${tabLayout.selectedTabPosition} , mSportMenuResult = $mSportMenuResult")
         val matchType = when (tabLayout.selectedTabPosition) {
             1 -> { //滾球盤
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.inPlay?.items ?: listOf()
@@ -116,7 +115,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
             3 -> { //早盤
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.early?.items ?: listOf()
-                Log.e("Dean" , "targetItem = ${itemList.firstOrNull { it.code == sportType.code }} , itemList = $itemList")
                 val targetItem = itemList.firstOrNull { it.code == sportType.code }
                 if (targetItem != null) MatchType.EARLY else MatchType.PARLAY
             }
@@ -242,7 +240,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tabLayout.clearOnTabSelectedListeners()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                Log.e("Dean", "tablayout onTabSelected")
 
                 if (mCloseOddsDetail) {
                     popAllFragment()
@@ -263,10 +260,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                         navGameFragment(MatchType.EARLY)
                     }
                     4 -> {
-                        Log.e("Dean", "gameactivity navGameFragment parlay")
-                        viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.forEach {
-                            Log.e("Dean", "GameActivity name = ${it.name}, isSelected = ${it.isSelected}")
-                        }
                         navGameFragment(MatchType.PARLAY)
                     }
                     5 -> {
@@ -279,10 +272,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                Log.e("Dean" , "tab reselected")
                 popAllFragment()
                 if (tab?.position == 0) {
-                    Log.e("Dean" , "tab reselected tab position = 0")
                     val tabView = tabLayout.getTabAt(0)?.customView
                     tabView?.tv_title?.isSelected = true
                     tabView?.tv_number?.isSelected = true
@@ -352,18 +343,15 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.sportMenuResult.observe(this, {
-            Log.e("Dean", "GameActivity sportMenuResult observe")
             hideLoading()
             updateUiWithResult(it)
         })
 
         viewModel.matchTypeCardForParlay.observe(this, {
             val matchType = it.getContentIfNotHandled()
-            Log.e("Dean", "matchTypeCardForParlay observe outside")
             app_bar_layout.setExpanded(true, false)
             when (matchType) {
                 MatchType.PARLAY -> {
-                    Log.e("Dean", "matchTypeCardForParlay observe 4 select")
                     tabLayout.getTabAt(4)?.select()
                 }
                 MatchType.AT_START -> {

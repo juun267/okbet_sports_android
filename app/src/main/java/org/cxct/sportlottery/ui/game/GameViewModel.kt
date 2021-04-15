@@ -291,7 +291,6 @@ class GameViewModel(
                 it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
                     item.sortNum
                 }
-                Log.e("Dean", "GameViewModel getSportMenu")
                 _sportMenuResult.value = it
             }
         }
@@ -373,13 +372,8 @@ class GameViewModel(
                 }
             }
         }
-        Log.e("Dean", "this.matchType = ${this.matchType} , matchType = ${matchType}")
-        if (this.matchType != matchType) {
-            menuEntrance = true //標記為卡片或菜單跳轉不同的類別
-        } else {
-            menuEntrance = false
-        }
-        Log.e("Dean", "gaetGameHall menuEntrance = $menuEntrance")
+        menuEntrance = this.matchType != matchType //標記為卡片或菜單跳轉不同的類別
+
         if (isLeftMenu) {
             _sportMenuResult.postValue(_sportMenuResult.value)
         }
@@ -392,7 +386,6 @@ class GameViewModel(
 
     fun getGameHallList(matchType: MatchType, item: Item) {
         updateSportSelectedState(matchType, item)
-        Log.e("Dean", "getGameHallList matchType = $matchType")
         getGameHallList(matchType, true)
     }
 
@@ -400,14 +393,11 @@ class GameViewModel(
         updateDateSelectedState(date)
         getGameHallList(matchType, false, date.date)
 
-        Log.e("Dean", "getGameHallList 2 matchType = $matchType")
         _curDatePosition.postValue(_curDate.value?.indexOf(date))
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
-        Log.e("Dean", "getGameHallList 22 this.matchType = ${this.matchType} , matchType = ${matchType}")
         this.matchType = matchType
-        Log.e("Dean", "getGameHallList 222 this.matchType = ${this.matchType}")
         if (isReloadDate) {
             getDateRow(matchType)
 
@@ -452,9 +442,6 @@ class GameViewModel(
                 val gameType = _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
                     it.isSelected
                 }?.code
-                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.forEach {
-                    Log.e("Dean", "getGameHallList PARLAY item name = ${it.name} , item iselected = ${it.isSelected}")
-                }
                 gameType?.let {
                     getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams(), date)
                 }
@@ -696,7 +683,6 @@ class GameViewModel(
             }
         }
 
-        Log.e("Dean", "GameViewModel updateSportSelectedState")
         _sportMenuResult.value = result
     }
 
@@ -1271,11 +1257,8 @@ class GameViewModel(
 
     fun sportMenuSelectFirstItem(matchType: MatchType) {
         if (menuEntrance) {
-            Log.e("Dean", "menu enter")
             menuEntrance = false
             return
-        } else {
-            Log.e("Dean", "not menu enter")
         }
 
 

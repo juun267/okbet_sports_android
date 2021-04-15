@@ -49,7 +49,6 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ViewHolderSport -> {
                 val item = dataSport[position]
-                Log.e("Dean" , "SportType Adapter onBindViewHolder name = ${item.name} , isSelected = ${item.isSelected}")
                 holder.bind(item, sportTypeListener)
             }
             is ViewHolderThirdGame -> {
