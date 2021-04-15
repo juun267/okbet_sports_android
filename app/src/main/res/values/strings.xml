@@ -416,7 +416,7 @@
 
     <!--odds detail-->
     <string name="odds_detail_more">更多</string>
-    <string name="odds_detail_less">更少</string>
+    <string name="odds_detail_less">显示更少</string>
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
