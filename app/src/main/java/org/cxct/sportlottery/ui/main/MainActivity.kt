@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
-import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,6 +43,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         }
 
         private var isPopImageDialog = true //第一次進 APP 才要跳 彈窗圖 dialog
+        const val ARGS_THIRD_GAME_CATE = "key-thirdGameCategory"
     }
 
     private val mSplashViewModel: SplashViewModel by viewModel()
@@ -86,8 +86,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private fun jumpScreen() {
         try {
-            val args: MainActivityArgs by navArgs()
-            val cate = args.thirdGameCate
+            val cate = intent.getSerializableExtra(ARGS_THIRD_GAME_CATE) as ThirdGameCategory
             Timber.d("Jump screen: ${cate.name}")
             when (cate) {
                 ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
