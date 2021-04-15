@@ -51,10 +51,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         gameType = args.sportType.code
         matchId = args.matchId
         oddsType = args.oddsType
-
-        service.subscribeEventChannel(matchId)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,9 +74,14 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         initUI()
         observeData()
         observeSocketData()
-        getData()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        service.subscribeEventChannel(matchId)
+        getData()
+    }
 
     private fun observeSocketData() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
@@ -290,12 +292,15 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.removeBetInfoItem(odd.id)
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        service.unsubscribeEventChannel(matchId)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-        service.unsubscribeEventChannel(matchId)
+
         viewModel.removeOddsDetailPageValue()
     }
-
-
 }

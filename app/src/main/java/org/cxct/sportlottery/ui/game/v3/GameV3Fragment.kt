@@ -244,12 +244,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             initObserve()
             initSocketReceiver()
 
-            viewModel.getGameHallList(args.matchType, true)
-            loading()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.getGameHallList(args.matchType, true)
+        loading()
     }
 
     private fun initObserve() {
@@ -750,15 +754,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        service.unsubscribeAllHallChannel()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
         game_list.adapter = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        service.unsubscribeAllHallChannel()
     }
 }

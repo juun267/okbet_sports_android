@@ -27,6 +27,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.repository.sConfigData
@@ -85,14 +86,26 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         observeData()
         observeSocketData()
         initRecyclerView()
-        getData()
+
         setupWebView(web_view)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        getData()
         setWebView()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        unsubscribeAllHallChannel()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unsubscribeAllHallChannel()
+
         viewModel.removeOddsDetailPageValue()
     }
 
@@ -267,6 +280,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         matchId?.let { matchId ->
             viewModel.getOddsDetailByMatchId(matchId)
         }
+
+        viewModel.getOddsList(args.sportType.code, MatchType.IN_PLAY.postValue)
+        loading()
     }
 
 

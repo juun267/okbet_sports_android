@@ -50,12 +50,17 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         initEvent()
         initObserve()
         observeSocketData()
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         queryData()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onStop() {
+        super.onStop()
+
         unsubscribeAllHallChannel()
     }
 
@@ -190,7 +195,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 scroll_view.smoothScrollTo(0, 0)
 
-                viewModel.getOddsList(select.code.toString(), MatchType.IN_PLAY.postValue)
                 navOddsDetailLive(select.code, select.match?.id, "EU")
             }
         })
