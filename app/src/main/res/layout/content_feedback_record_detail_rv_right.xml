@@ -40,6 +40,19 @@
             tools:text="怎么没有办法投注?下单后没有反应" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorGrayLight"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txv_reply_time"
+            app:layout_constraintTop_toBottomOf="@id/txv_reply"
+            android:text="@string/submit_time" />
+
+        <TextView
             android:id="@+id/txv_reply_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +65,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txv_reply"
-            tools:text="提交时间:2021-02-16 13:34:43" />
+            tools:text="2021-02-16 13:34:43" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

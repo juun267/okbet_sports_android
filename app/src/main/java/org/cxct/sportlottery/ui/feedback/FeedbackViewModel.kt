@@ -131,7 +131,7 @@ class FeedbackViewModel(
 
     fun fbSave(content: String) { //目前只確定使用者會傳意見
         _isLoading.value = true
-        val feedbackSaveRequest = FeedbackSaveRequest(content, 3, 0)
+        val feedbackSaveRequest = FeedbackSaveRequest(content = content)
         viewModelScope.launch {
             doNetwork(androidContext) {
                 feedbackRepository.fbSave(feedbackSaveRequest)
