@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:minHeight="44dp"
-                    android:paddingHorizontal="12sp"
+                    android:paddingHorizontal="26dp"
                     android:paddingVertical="11dp"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize16sp"
@@ -58,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:overScrollMode="never"
                     android:layout_gravity="center_vertical"
                     android:fillViewport="true">
 

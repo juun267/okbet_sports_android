@@ -135,7 +135,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
         setupView.let { view ->
             view.afterTextChanged {
-//                view.eyeVisibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
                 checkFun(it)
             }
         }
