@@ -34,6 +34,7 @@ class TypeTwoSidesAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
+            nameChangeColor = false
             setData(
                 odd, onOddClickListener, betInfoList, curMatchId,
                 if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null

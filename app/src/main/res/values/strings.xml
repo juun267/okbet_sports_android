@@ -36,6 +36,8 @@
     <string name="percent">%</string>
     <string name="error_input_empty">此栏位为必填栏位</string>
     <string name="error_incompatible_format">您输入的字元不符</string>
+    <string name="error_wx_incompatible_format">微信ID格式错误</string>
+
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -50,6 +52,8 @@
     <string name="loading_get_config">正在获取最快地址…</string>
     <string name="error_config">获取平台配置文件失败!</string>
     <string name="find_new_version">发现新版本</string>
+    <string name="version_name">版本 %s</string>
+    <string name="btn_pass">跳过</string>
 
     <!-- Login page -->
     <string name="login_account">登录账号</string>
@@ -423,6 +427,7 @@
 
     <!--money-recharge-->
     <string name="title_bank">选择银行</string>
+    <string name="title_main_account">选择帐户</string>
     <string name="title_name">姓名：</string>
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
@@ -454,8 +459,11 @@
     <string name="ali_recharge_hint">请每次入款前登录会员核对支付宝账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="cft_recharge_hint">请每次入款前登录会员核对财付通账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
+    <string name="title_choose_pay_channel">选择支付渠道</string>
     <string name="title_pay_gap">支付账户</string>
+    <string name="title_choose_pay_gap">选择支付账户</string>
     <string name="title_pay_bank">支付银行</string>
+    <string name="title_choose_pay_bank">选择支付银行</string>
     <string name="title_rebate_fee">返利手续费</string>
     <string name="hint_tip"><font color="#ff4b2c">・温馨提示：%1$s。</font></string>
     <string name="edt_hint_online_pay_money">單筆下限%1$s，上限%2$s</string>
@@ -468,15 +476,16 @@
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
-    <string name="error_recharge_amount">您输入的充值金额格式或数值错误</string>
-    <string name="error_recharge_account">您输入的充值个数或数值错误</string>
+    <string name="error_recharge_amount">充值金额格式或数值错误</string>
+    <string name="error_recharge_account">充值个数或数值错误</string>
     <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
-    <string name="error_wx">您输入的微信格式或数值错误</string>
-    <string name="error_bank_id">您输入的银行卡号格式有错误</string>
-    <string name="error_hashcode">您输入的区块链交易ID格式有错误</string>
+    <string name="error_wx">微信格式或数值错误</string>
+    <string name="error_bank_id">银行卡号格式有错误</string>
+    <string name="error_hashcode">区块链交易ID格式或数值有错误</string>
     <string name="text_money_copy_success">复制成功</string>
 
     <string name="title_currency">协议/币种</string>
+    <string name="title_choose_currency">选择协议/币种</string>
     <string name="txv_recharge_count">充值个数</string>
     <string name="edt_hint_crypto_pay_count">限额最低%1$s个，最高%2$s个</string>
     <string name="hint_rate">・汇率：%1$s</string>
@@ -486,11 +495,13 @@
     <string name="hint_fee_amount">・手续费金额：%1$s RMB</string>
     <string name="hint_feeback_rate">・返利：%1$s </string>
     <string name="hint_feeback_amount">・返利金额：%1$s RMB</string>
-    <string name="txv_recharge_money">・充值金额:%1$s RMB</string>
+    <string name="txv_recharge_money">・充值金额：%1$s RMB</string>
     <string name="title_recharge_account">充值账号</string>
+    <string name="title_choose_recharge_account">选择充值账号</string>
     <string name="title_recharge_address">充币地址:</string>
     <string name="btn_recharge">去充值</string>
     <string name="title_upload_pic">上传支付截图</string>
+    <string name="title_reupload_pic">重新上传支付截图</string>
     <string name="title_click_upload_pic">请点击上传支付成功截图</string>
     <string name="hint_remark">备注：%1$s%</string>
 
