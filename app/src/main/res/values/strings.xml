@@ -551,7 +551,7 @@
     <string name="withdraw_crypto_fee_hint">・提款手续费：%1$s RMB</string>
     <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s RMB</string>
     <string name="hint_please_enter_withdraw_crypto_amount">限额%1$s~%2$s 个</string>
-    <string name="hint_four_number_password">密码为4个数字</string>
+    <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
     <string name="add_credit_card">新增银行卡</string>
