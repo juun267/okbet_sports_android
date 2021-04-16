@@ -215,8 +215,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
     suspend fun logout(): Response<LogoutResult> {
         _isLogin.value = false
-
-        return OneBoSportApi.indexService.logout(LogoutRequest())
+        return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
+            clear()
+        }
     }
 
     private fun updateLoginData(loginData: LoginData?) {

@@ -44,8 +44,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun showDialogLogout(message: String) {
         showTokenPromptDialog(message) {
-            MainActivity.reStart(this)
-            viewModel.doLogoutCleanUser()
+            viewModel.doLogoutCleanUser { MainActivity.reStart(this) }
         }
     }
 
@@ -134,7 +133,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
 
-    fun showErrorPromptDialog(message: String, positiveClickListener: () -> Unit? ){
+    fun showErrorPromptDialog(message: String, positiveClickListener: () -> Unit?) {
         showErrorPromptDialog(getString(R.string.error), message, positiveClickListener)
     }
 
