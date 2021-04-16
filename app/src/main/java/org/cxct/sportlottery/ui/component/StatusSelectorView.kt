@@ -89,19 +89,36 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                 setOnClickListener {
                     bottomSheet.show()
                 }
+
                 val chainStyle = typedArray.getInt(R.styleable.StatusBottomSheetStyle_horizontalChainStyle, STYLE_NULL)
-                if (chainStyle != STYLE_NULL) {
-                    val constrainSet = ConstraintSet()
-                    val chain = IntArray(cl_root.childCount)
-                    constrainSet.apply {
-                        clone(cl_root)
-                        cl_root.children.forEachIndexed { index, view ->
-                            chain[index] = view.id
+                val arrowAtEnd = typedArray.getBoolean(R.styleable.StatusBottomSheetStyle_arrowAtEnd, false)
+
+                val constrainSet = ConstraintSet()
+
+                when {
+                    arrowAtEnd -> {
+                        constrainSet.apply {
+                            clone(cl_root)
+                            setHorizontalBias(R.id.img_arrow, 1f)
+                            applyTo(cl_root)
                         }
-                        createHorizontalChain(ConstraintSet.PARENT_ID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, chain, null, ConstraintSet.CHAIN_SPREAD_INSIDE)
-                        applyTo(cl_root)
+                    }
+                    else -> {
+                        if (chainStyle != STYLE_NULL) {
+                            constrainSet.apply {
+                                val chain = IntArray(cl_root.childCount)
+                                clone(cl_root)
+                                connect(tv_selected.id, ConstraintSet.END, img_arrow.id, ConstraintSet.START, 0)
+                                cl_root.children.forEachIndexed { index, view ->
+                                    chain[index] = view.id
+                                }
+                                createHorizontalChain(ConstraintSet.PARENT_ID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, chain, null, ConstraintSet.CHAIN_SPREAD_INSIDE)
+                                applyTo(cl_root)
+                            }
+                        }
                     }
                 }
+
                 tv_selected.tag = ""
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             }

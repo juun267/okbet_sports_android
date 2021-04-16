@@ -63,6 +63,7 @@
         <attr name="defaultStatusText" format="string" />
         <attr name="defaultBottomSheetTitleText" format="string" />
         <attr name="bottomSheetShowCloseButton" format="boolean" />
+        <attr name="arrowAtEnd" format="boolean" />
         <attr name="horizontalChainStyle" format="enum">
             <enum name="spread" value="0" />
             <enum name="spread_inside" value="1" />
