@@ -268,9 +268,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
         viewModel.withdrawSystemOperation.observe(this, {
             val operation = it.getContentIfNotHandled()
-            if (operation == true) {
-                viewModel.withdrawCheckPermissions()
-            } else if (operation == false) {
+            if (operation == false) {
                 showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
             }
         })

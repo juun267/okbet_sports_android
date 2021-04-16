@@ -52,7 +52,12 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
             val bankWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
             val cryptoWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
 
-            _withdrawSystemOperation.value = Event(bankWithdrawSystemOperation || cryptoWithdrawSystemOperation)
+            val operation = bankWithdrawSystemOperation || cryptoWithdrawSystemOperation
+            _withdrawSystemOperation.value = Event(operation)
+
+            if (operation) {
+                withdrawCheckPermissions()
+            }
         }
         return response
     }
