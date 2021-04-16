@@ -5,8 +5,8 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_odds_detail_game_card.view.*
 import org.cxct.sportlottery.R
@@ -71,7 +71,7 @@ class OddsGameCardAdapter(
         private val awayName: TextView = itemView.findViewById(R.id.txv_away_name)
 
         private val txvTime: TextView = itemView.findViewById(R.id.txv_time)
-        val gameCard: LinearLayout = itemView.findViewById(R.id.ll_game_card)
+        val gameCard: ConstraintLayout = itemView.findViewById(R.id.ll_game_card)
 
 
         fun bind(item: MatchInfo, position: Int) {
