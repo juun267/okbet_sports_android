@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavOptions
@@ -62,11 +61,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 R.id.menu_tennis -> goToSportGame(SportType.TENNIS)
                 R.id.menu_badminton -> goToSportGame(SportType.BADMINTON)
                 R.id.menu_volleyball -> goToSportGame(SportType.VOLLEYBALL)
-                R.id.menu_cg_lottery -> gotToMainActivity(ThirdGameCategory.CGCP)
-                R.id.menu_live_game -> gotToMainActivity(ThirdGameCategory.LIVE)
-                R.id.menu_poker_game -> gotToMainActivity(ThirdGameCategory.QP)
-                R.id.menu_slot_game -> gotToMainActivity(ThirdGameCategory.DZ)
-                R.id.menu_fish_game -> gotToMainActivity(ThirdGameCategory.BY)
+                R.id.menu_cg_lottery -> goToMainActivity(ThirdGameCategory.CGCP)
+                R.id.menu_live_game -> goToMainActivity(ThirdGameCategory.LIVE)
+                R.id.menu_poker_game -> goToMainActivity(ThirdGameCategory.QP)
+                R.id.menu_slot_game -> goToMainActivity(ThirdGameCategory.DZ)
+                R.id.menu_fish_game -> goToMainActivity(ThirdGameCategory.BY)
             }
         }
     }
@@ -132,7 +131,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.getGameHallList(matchType, sportType, true)
     }
 
-    private fun gotToMainActivity(thirdGameCategory: ThirdGameCategory) {
+    private fun goToMainActivity(thirdGameCategory: ThirdGameCategory) {
         val intent = Intent(this, MainActivity::class.java)
             .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
         startActivity(intent)
@@ -141,7 +140,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            gotToMainActivity(ThirdGameCategory.MAIN)
+            goToMainActivity(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
