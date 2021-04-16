@@ -275,6 +275,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="100dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -291,12 +292,12 @@
                     <TextView
                         android:id="@+id/txv_payee"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_weight="1"
                         android:gravity="top"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize14sp"
+                        android:textSize="@dimen/textSize12sp"
                         tools:text="TCZVMNd1D42qcweFSahY2NtWW2DCt8KR7GJ" />
 
                     <TextView
@@ -304,17 +305,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginVertical="5dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:textColor="@color/colorRed"
-                        android:textSize="@dimen/textSize14sp"
+                        android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
                         tools:text="备注 : " />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
                         android:orientation="horizontal">
 
                         <Button
