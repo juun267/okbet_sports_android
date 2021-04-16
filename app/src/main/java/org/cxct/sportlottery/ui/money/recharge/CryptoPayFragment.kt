@@ -155,6 +155,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         refreshCurrencyType(CurrentCurrency)
 
         tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000")
+        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
     }
 
     @SuppressLint("SetTextI18n")

@@ -114,7 +114,8 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         updateMoneyRange()
         refreshCurrencyType(CurrentCurrency)
 
-        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0")
+        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000")
+        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
     }
 
     private fun initButton() {
@@ -294,7 +295,6 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     return@afterTextChanged
                 }
 
-                tv_fee_amount.visibility = View.VISIBLE
                 checkRechargeAccount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_recharge_money.text =
