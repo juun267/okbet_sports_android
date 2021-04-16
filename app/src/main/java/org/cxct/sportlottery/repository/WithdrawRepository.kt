@@ -9,6 +9,8 @@ import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.my.BankMyResult
+import org.cxct.sportlottery.network.money.MoneyRechCfgResult
+import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
@@ -21,6 +23,10 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
             }
             return@map null
         }
+
+    private var _withdrawSystemOperation = MutableLiveData<Event<Boolean>>()
+    val withdrawSystemOperation: LiveData<Event<Boolean>>
+        get() = _withdrawSystemOperation
 
     private var _needToUpdateWithdrawPassword = MutableLiveData<Event<Boolean>>()
     val needToUpdateWithdrawPassword: LiveData<Event<Boolean>> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
@@ -37,6 +43,19 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
     private var _needToBindBankCard = MutableLiveData<Event<Boolean>>()
     val needToBindBankCard: LiveData<Event<Boolean>>
         get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+
+    suspend fun checkWithdrawSystem(): Response<MoneyRechCfgResult> {
+        val response = OneBoSportApi.moneyService.getRechCfg()
+        if (response.isSuccessful) {
+            val withdrawConfig = response.body()?.rechCfg?.uwTypes
+
+            val bankWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
+            val cryptoWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
+
+            _withdrawSystemOperation.value = Event(bankWithdrawSystemOperation || cryptoWithdrawSystemOperation)
+        }
+        return response
+    }
 
     private suspend fun checkNeedUpdatePassWord(): Boolean? {
         return when (userInfoFlow.firstOrNull()?.updatePayPw) {

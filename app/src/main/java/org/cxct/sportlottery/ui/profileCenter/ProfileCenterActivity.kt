@@ -127,7 +127,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
-            viewModel.withdrawCheckPermissions()
+            viewModel.checkWithdrawSystem()
         }
     }
 
@@ -266,6 +266,15 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             updateUI(it)
         })
 
+        viewModel.withdrawSystemOperation.observe(this, {
+            val operation = it.getContentIfNotHandled()
+            if (operation == true) {
+                viewModel.withdrawCheckPermissions()
+            } else if (operation == false) {
+                showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
+            }
+        })
+
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
@@ -365,7 +374,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file,UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
