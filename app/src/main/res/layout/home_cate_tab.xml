@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/tv_number"
-        android:layout_width="34dp"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
         android:background="@drawable/effect_select_fillet_2dp_blue"
         android:gravity="center_horizontal"
