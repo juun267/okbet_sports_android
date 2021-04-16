@@ -52,6 +52,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private var bankPosition = 0
 
+    enum class RechType(val code: String) { BANKTRANSFER("bankTransfer") }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -128,7 +130,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     private fun refreshFieldTitle(){
-        if(mMoneyPayWay?.rechType == "bankTransfer")
+        if(mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
             tv_pay_type.text = String.format(resources.getString(R.string.title_bank))
         else
             tv_pay_type.text = String.format(resources.getString(R.string.title_main_account))
@@ -190,7 +192,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     })
                 lv_bank_item.adapter = bankCardAdapter
 
-                if(mMoneyPayWay?.rechType == "bankTransfer")
+                if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_bank))
                 else
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_main_account))
@@ -227,7 +229,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         var count = 1
 
-        if (mMoneyPayWay?.rechType == "bankTransfer") //銀行卡轉帳 顯示銀行名稱，不用加排序數字
+        if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code) //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
                 val selectBank = CustomImageAdapter.SelectBank(
                     it.rechName.toString(),
@@ -276,7 +278,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
 
         //銀行卡轉帳 UI 特別處理
-        if (mMoneyPayWay?.rechType == "bankTransfer") {
+        if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code) {
             ll_remark.visibility = View.GONE
             ll_qr.visibility = View.GONE
             ll_address.visibility = View.VISIBLE

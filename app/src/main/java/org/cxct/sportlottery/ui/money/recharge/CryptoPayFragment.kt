@@ -92,7 +92,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun initButton() {
         //提交
         btn_submit.setOnClickListener {
-            createMoneyAddRequest()?.let {
+            createMoneyAddRequest().let {
                 viewModel.rechargeCryptoSubmit(
                     it,
                     mMoneyPayWay?.rechType,
@@ -184,6 +184,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         })
     }
 
+    @SuppressLint("CutPasteId")
     private fun setCurrencyBottomSheet() {
         try {
             //支付渠道
@@ -292,12 +293,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.clearnRechargeStatus()
     }
 
-    override fun onResume() {
-        super.onResume()
-        resetEvent()
-        refreshCurrencyType(0)
-    }
-
     //幣種選項
     private fun initBottomSheetData() {
         rechCfgsList = (viewModel.rechargeConfigs.value?.rechCfgs?.filter {
@@ -352,10 +347,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //手續費率/返利
             if(selectRechCfgs?.rebateFee != 0.0 && selectRechCfgs?.rebateFee != null){
                 tv_fee_rate.visibility = View.VISIBLE
-                if (selectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利
-                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee.toString()) + "%"
+                if (selectRechCfgs.rebateFee ?: 0.0 > 0.0) { //返利
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs.rebateFee.toString()) + "%"
                 } else {
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs?.rebateFee ?: 0.0).toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs.rebateFee ?: 0.0).toString()) + "%"
                 }
             } else {
                 tv_fee_rate.visibility = View.GONE
