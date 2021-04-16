@@ -14,11 +14,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoParlayItemBinding
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import java.math.RoundingMode
 
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
     RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
@@ -33,7 +31,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     val sendBetQuotaList: MutableList<Double> = mutableListOf()//用於送出
 
 
-    var oddsType: String = OddsType.EU.value
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -97,7 +95,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 }
                 var win = it.toDouble() * getOdds(parlayOdd, oddsType)
 
-                if(oddsType == OddsType.EU.value){
+                if(oddsType == OddsType.EU){
                     win -= quota
                 }
 

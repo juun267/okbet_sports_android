@@ -33,13 +33,14 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
                 dismiss()
             }
             tv_odd_type_hk?.setOnClickListener {
-                selectOddsType(OddsType.HK.value)
+                selectOddsType(OddsType.HK)
             }
             tv_odd_type_eu?.setOnClickListener {
-                selectOddsType(OddsType.EU.value)
+                selectOddsType(OddsType.EU)
             }
         }
     }
+
 
     private fun initObserver(){
         viewModel.oddsType.observe(viewLifecycleOwner, {
@@ -47,18 +48,20 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
         })
     }
 
+
     private fun getOddsType(){
         viewModel.getOddsType()
     }
 
-    private fun setOddsType(oddsType: String) {
+
+    private fun setOddsType(oddsType: OddsType) {
         context?.let { context ->
             when (oddsType) {
-                OddsType.EU.value -> {
+                OddsType.EU -> {
                     tv_odd_type_hk.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                     tv_odd_type_eu.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
                 }
-                OddsType.HK.value -> {
+                OddsType.HK -> {
                     tv_odd_type_hk.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
                     tv_odd_type_eu.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                 }
@@ -67,7 +70,7 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
     }
 
 
-    private fun selectOddsType(oddsType: String) {
+    private fun selectOddsType(oddsType: OddsType) {
         viewModel.saveOddsType(oddsType)
         dismiss()
     }

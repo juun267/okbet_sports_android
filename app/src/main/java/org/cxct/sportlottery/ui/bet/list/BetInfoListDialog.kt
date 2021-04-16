@@ -25,7 +25,6 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import org.cxct.sportlottery.util.getOddsTypeCode
 
 
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
@@ -44,7 +43,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private var isSubScribe = false
 
 
-    private var oddsType: String = OddsType.EU.value
+    private var oddsType: OddsType = OddsType.EU
 
 
     init {
@@ -222,7 +221,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                 listOf(Odd(betInfoListData.matchOdd.oddsId, getOdds(betInfoListData.matchOdd, oddsType))),
                 listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
                 1,
-                getOddsTypeCode(oddsType)
+                oddsType.code
             ), betInfoListData.matchType
         )
     }
