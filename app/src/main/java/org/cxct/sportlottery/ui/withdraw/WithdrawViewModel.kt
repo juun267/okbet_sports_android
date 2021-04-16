@@ -452,18 +452,9 @@ class WithdrawViewModel(
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
-        _withdrawAmountHint.value = when (dealType) {
-            TransferType.BANK -> {
-                String.format(
-                    androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
-                )
-            }
-            TransferType.CRYPTO -> {
-                String.format(
-                    androidContext.getString(R.string.hint_please_enter_withdraw_crypto_amount), limit.min, limit.max
-                )
-            }
-        }
+        _withdrawAmountHint.value = String.format(
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
+        )
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
