@@ -62,10 +62,24 @@
 
             </LinearLayout>
 
-            <WebView
-                android:id="@+id/web_view"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="292dp">
+
+                <WebView
+                    android:id="@+id/web_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/live_web_preload"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/loading_live_web" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.scwang.smart.refresh.layout.SmartRefreshLayout
                 android:overScrollMode="never"
