@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -505,6 +506,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             leagueAdapter.notifyDataSetChanged()
         })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
+            val oddsType = when (it) {
+                OddsType.EU.value -> OddsType.EU
+                OddsType.HK.value -> OddsType.HK
+                else -> null
+            }
+
+            oddsType?.let {
+                leagueAdapter.oddsType = oddsType
+            }
+        })
     }
 
     private fun initSocketReceiver() {
@@ -570,6 +583,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
                     val leagueOdds = leagueAdapter.data
+                    val oddsType = leagueAdapter.oddsType
 
                     leagueOdds.forEach { leagueOdd ->
                         if (leagueOdd.isExpand) {
@@ -588,27 +602,55 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                             oddSocket?.let { oddSocketNonNull ->
 
-                                                oddNonNull.odds?.let { oddValue ->
-                                                    oddSocketNonNull.odds?.let { oddSocketValue ->
-                                                        when {
-                                                            oddValue > oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.SMALLER.state
-                                                            }
-                                                            oddValue < oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.LARGER.state
-                                                            }
-                                                            oddValue == oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.SAME.state
+                                                when (oddsType) {
+                                                    OddsType.EU -> {
+                                                        oddNonNull.odds?.let { oddValue ->
+                                                            oddSocketNonNull.odds?.let { oddSocketValue ->
+                                                                when {
+                                                                    oddValue > oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SMALLER.state
+                                                                    }
+                                                                    oddValue < oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.LARGER.state
+                                                                    }
+                                                                    oddValue == oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SAME.state
+                                                                    }
+                                                                }
+
                                                             }
                                                         }
 
+                                                        oddNonNull.odds = oddSocketNonNull.odds
+                                                    }
+
+                                                    OddsType.HK -> {
+                                                        oddNonNull.hkOdds?.let { oddValue ->
+                                                            oddSocketNonNull.hkOdds?.let { oddSocketValue ->
+                                                                when {
+                                                                    oddValue > oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SMALLER.state
+                                                                    }
+                                                                    oddValue < oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.LARGER.state
+                                                                    }
+                                                                    oddValue == oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SAME.state
+                                                                    }
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                        oddNonNull.hkOdds = oddSocketNonNull.hkOdds
                                                     }
                                                 }
-
-                                                oddNonNull.odds = oddSocketNonNull.odds
 
                                                 oddNonNull.status = oddSocketNonNull.status
 
