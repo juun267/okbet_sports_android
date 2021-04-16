@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -153,7 +154,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         updateMoneyRange()
         refreshCurrencyType(CurrentCurrency)
 
-        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0")
+        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000")
     }
 
     @SuppressLint("SetTextI18n")
@@ -319,16 +320,16 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //匯率
             tv_rate.text = String.format(
                 getString(R.string.hint_rate),
-                selectRechCfgs?.exchangeRate.toString()
+                ArithUtil.toMoneyFormat(selectRechCfgs?.exchangeRate)
             )
 
             //手續費率/返利
             if(selectRechCfgs?.rebateFee != 0.0 && selectRechCfgs?.rebateFee != null){
                 tv_fee_rate.visibility = View.VISIBLE
                 if (selectRechCfgs.rebateFee ?: 0.0 > 0.0) { //返利
-                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs.rebateFee.toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toMoneyFormat((selectRechCfgs.rebateFee)?.times(100))) + "%"
                 } else {
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs.rebateFee ?: 0.0).toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toMoneyFormat(abs(selectRechCfgs.rebateFee ?: 0.0).times(100))) + "%"
                 }
             } else {
                 tv_fee_rate.visibility = View.GONE
@@ -371,25 +372,24 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 checkRechargeAccount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_recharge_money.text =
-                        String.format(resources.getString(R.string.txv_recharge_money), "0")
+                        String.format(resources.getString(R.string.txv_recharge_money), "0.000")
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
                         tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount), "0")
+                            String.format(getString(R.string.hint_feeback_amount), "0.000")
                     } else {
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0")
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                     }
                 } else {
                     //充值金額
                     tv_recharge_money.text = String.format(
-                        resources.getString(R.string.txv_recharge_money),
-                        it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
+                        resources.getString(R.string.txv_recharge_money), ArithUtil.toMoneyFormat(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0))
                     )
                     //返利/手續費金額
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
                         tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount), (it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+                            String.format(getString(R.string.hint_feeback_amount), ArithUtil.toMoneyFormat((it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)))
                     } else {
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)))
                     }
                 }
 
