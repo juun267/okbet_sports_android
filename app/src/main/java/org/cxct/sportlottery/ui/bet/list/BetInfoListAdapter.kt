@@ -23,13 +23,11 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import java.lang.Exception
-import java.math.RoundingMode
 
 const val NOT_INPLAY: Int = 0
 const val INPLAY: Int = 1
@@ -62,7 +60,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
 
-    var oddsType: String = OddsType.EU.value
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -90,9 +88,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
     private fun getOddState(oldItemOdd: Double, it: Odd): Int {
         val odds = when (oddsType) {
-            OddsType.EU.value -> it.odds
-            OddsType.HK.value -> it.hkOdds
-            else -> 0.0
+            OddsType.EU -> it.odds
+            OddsType.HK -> it.hkOdds
         }
         val newOdd = odds ?: 0.0
         return when {
@@ -159,7 +156,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 }
                 var win = it.toDouble() * getOdds(matchOdd, oddsType)
 
-                if(oddsType == OddsType.EU.value){
+                if(oddsType == OddsType.EU){
                     win -= quota
                 }
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)

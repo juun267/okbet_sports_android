@@ -43,7 +43,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private var isSubScribe = false
 
 
-    private var oddsType: String = OddsType.EU.value
+    private var oddsType: OddsType = OddsType.EU
 
 
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
@@ -302,7 +302,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 matchList,
                 parlayList,
                 1,
-                getOddsTypeCode(oddsType)
+                oddsType.code
             ), MatchType.PARLAY
         )
     }
