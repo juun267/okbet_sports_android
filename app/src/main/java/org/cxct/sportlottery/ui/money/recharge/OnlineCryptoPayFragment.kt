@@ -187,9 +187,11 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         currencyPosition = position
                         refreshCurrencyType(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = currencyBtsAdapter
+                tv_game_type_title.text = String.format(resources.getString(R.string.title_choose_currency))
                 currencyBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }
@@ -211,9 +213,11 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     mAccountBottomSheetList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         refreshAccount(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = accountBtsAdapter
+                tv_game_type_title.text = String.format(resources.getString(R.string.title_choose_recharge_account))
                 accountBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }
@@ -267,8 +271,8 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         et_recharge_account.setHint(
             String.format(
                 getString(R.string.edt_hint_crypto_pay_count),
-                mSelectRechCfgs?.minMoney,
-                mSelectRechCfgs?.maxMoney
+                mSelectRechCfgs?.minMoney?.toInt(),
+                mSelectRechCfgs?.maxMoney?.toInt()
             )
         )
     }
@@ -283,6 +287,18 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         viewModel.apply {
             //充值個數
             et_recharge_account.afterTextChanged {
+                if(it.startsWith("0") && it.length>1){
+                    et_recharge_account.setText(et_recharge_account.getText().replace("0",""))
+                    et_recharge_account.setCursor()
+                    return@afterTextChanged
+                }
+
+                if(et_recharge_account.getText().length > 6){
+                    et_recharge_account.setText(et_recharge_account.getText().substring(0,6))
+                    et_recharge_account.setCursor()
+                    return@afterTextChanged
+                }
+
                 tv_fee_amount.visibility = View.VISIBLE
                 checkRechargeAccount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
@@ -331,5 +347,10 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
     //取得餘額
     private fun getMoney() {
         viewModel.getMoney()
+    }
+
+    private fun resetEvent() {
+        clearFocus()
+        et_recharge_account.setText("")
     }
 }
