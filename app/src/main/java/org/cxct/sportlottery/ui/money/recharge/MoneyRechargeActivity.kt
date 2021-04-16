@@ -106,6 +106,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                 with(customAlertDialog) {
                     setTitle("提示")
                     setMessage(apiResult.msg)
+                    setNegativeButtonText(null)
                 }.let {
                     customAlertDialog.show()
                 }
