@@ -85,7 +85,7 @@ class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
                 .thumbnail(0.5f)
                 .into(mIvBg)
 
-            val logoUrl = GameConfigManager.getThirdGameHallIconUrl(data?.gameCategory, data?.firmCode)
+            val logoUrl = GameConfigManager.getThirdGameLogoIconUrl(data?.gameCategory, data?.firmCode)
             Glide.with(itemView.context)
                 .load(logoUrl)
                 .apply(mRequestOptions)

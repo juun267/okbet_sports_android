@@ -27,6 +27,16 @@ object GameConfigManager {
 
     /**
      * 獲取第三方遊戲 遊戲大廳 icon 資源
+     *
+     *  @param gameCategory: 需轉換成小寫
+     *  @param firmCode: 需轉換成小寫
+     */
+    fun getThirdGameLogoIconUrl(gameCategory: String?, firmCode: String?): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/logo-${firmCode?.toLowerCase(Locale.getDefault())}.png"
+    }
+
+    /**
+     * 獲取第三方遊戲 遊戲大廳 icon 資源
      * 第三層對應 thirdDictMap
      * @param gameCategory: 需轉換成小寫
      */
