@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import kotlinx.android.synthetic.main.dialog_info_center_detail_list.*
 import org.cxct.sportlottery.R

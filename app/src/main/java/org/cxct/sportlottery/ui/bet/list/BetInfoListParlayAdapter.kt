@@ -77,7 +77,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                         binding.tvErrorMessage.text =
                             String.format(
                                 binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
-                                parlayOdd.max.toString()
+                                TextUtil.formatMoneyNoDecimal(parlayOdd.max)
                             )
                         sendOutStatus = false
                     }
@@ -95,12 +95,17 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                         sendOutStatus = true
                     }
                 }
+                var win = it.toDouble() * getOdds(parlayOdd, oddsType)
 
-                winQuotaList[position] = it.toDouble() * getOdds(parlayOdd, oddsType)
+                if(oddsType == OddsType.EU.value){
+                    win -= quota
+                }
+
+                winQuotaList[position] = win
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
                 sendBetQuotaList[position] = it.toDouble()
 
-                binding.tvParlayWinQuota.text = TextUtil.format(it.toDouble() * getOdds(parlayOdd, oddsType))
+                binding.tvParlayWinQuota.text = TextUtil.format(win)
                     .plus(" ")
                     .plus(binding.root.context.getString(R.string.bet_info_list_rmb))
 

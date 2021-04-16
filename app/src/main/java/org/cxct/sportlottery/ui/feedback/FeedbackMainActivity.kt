@@ -55,6 +55,10 @@ class FeedbackMainActivity : BaseOddButtonActivity<FeedbackViewModel>(FeedbackVi
         viewModel.isShowToolbar.observe(this, {
             ll_tab.visibility = it
         })
+
+        viewModel.toolbarName.observe(this, {
+            tv_toolbar_title.text = it
+        })
     }
 
 }

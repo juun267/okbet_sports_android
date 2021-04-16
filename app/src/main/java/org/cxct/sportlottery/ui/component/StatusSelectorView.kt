@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.component
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.StatusBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_sheetLayout, R.layout.dialog_bottom_sheet_custom) }
-    val bottomSheetView: View by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
+    private val bottomSheetView: View by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
     var selectedText: String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
@@ -37,6 +36,13 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         set(value) {
             field = value
             tv_selected.text = value
+        }
+
+    var bottomSheetTitleText: String? = null
+        get() = if (bottomSheetView.sheet_tv_title.text.toString().isEmpty()) typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText) else bottomSheetView.sheet_tv_title.text.toString()
+        set(value) {
+            field = value
+            bottomSheetView.sheet_tv_title.text = value
         }
 
     var selectedTag: String? = ""
@@ -83,19 +89,36 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                 setOnClickListener {
                     bottomSheet.show()
                 }
+
                 val chainStyle = typedArray.getInt(R.styleable.StatusBottomSheetStyle_horizontalChainStyle, STYLE_NULL)
-                if (chainStyle != STYLE_NULL) {
-                    val constrainSet = ConstraintSet()
-                    val chain = IntArray(cl_root.childCount)
-                    constrainSet.apply {
-                        clone(cl_root)
-                        cl_root.children.forEachIndexed { index, view ->
-                            chain[index] = view.id
+                val arrowAtEnd = typedArray.getBoolean(R.styleable.StatusBottomSheetStyle_arrowAtEnd, false)
+
+                val constrainSet = ConstraintSet()
+
+                when {
+                    arrowAtEnd -> {
+                        constrainSet.apply {
+                            clone(cl_root)
+                            setHorizontalBias(R.id.img_arrow, 1f)
+                            applyTo(cl_root)
                         }
-                        createHorizontalChain(ConstraintSet.PARENT_ID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, chain, null, ConstraintSet.CHAIN_SPREAD_INSIDE)
-                        applyTo(cl_root)
+                    }
+                    else -> {
+                        if (chainStyle != STYLE_NULL) {
+                            constrainSet.apply {
+                                val chain = IntArray(cl_root.childCount)
+                                clone(cl_root)
+                                connect(tv_selected.id, ConstraintSet.END, img_arrow.id, ConstraintSet.START, 0)
+                                cl_root.children.forEachIndexed { index, view ->
+                                    chain[index] = view.id
+                                }
+                                createHorizontalChain(ConstraintSet.PARENT_ID, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, chain, null, ConstraintSet.CHAIN_SPREAD_INSIDE)
+                                applyTo(cl_root)
+                            }
+                        }
                     }
                 }
+
                 tv_selected.tag = ""
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             }
@@ -134,10 +157,11 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         itemSelectedListener = listener
     }
 
+
     private fun setBottomSheet(typedArray: TypedArray) {
 
         bottomSheetView.apply {
-            bottomSheetView.sheet_tv_title.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText)
+            bottomSheetView.sheet_tv_title.text = bottomSheetTitleText?:typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultBottomSheetTitleText)
             val isShowCloseButton = typedArray.getBoolean(R.styleable.StatusBottomSheetStyle_bottomSheetShowCloseButton, true)
             sheet_tv_close.visibility = if (isShowCloseButton) View.VISIBLE else View.GONE
             sheet_tv_close.setOnClickListener {
@@ -237,7 +261,7 @@ class StatusSheetAdapter (private val checkedListener: ItemCheckedListener) : Re
             itemView.apply {
                 checkbox.isChecked = data.isChecked
                 checkbox.text = data.showName
-                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.blue2) else ContextCompat.getColor(checkbox.context, R.color.white))
+                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.colorWhite6) else ContextCompat.getColor(checkbox.context, R.color.white))
             }
         }
 

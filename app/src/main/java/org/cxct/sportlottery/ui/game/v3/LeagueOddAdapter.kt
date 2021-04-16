@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
@@ -30,6 +31,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
     var playType: PlayType = PlayType.OU_HDP
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -65,14 +72,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 item,
                 leagueOddListener,
                 isTimerEnable,
-                isTimerDecrease
+                isTimerDecrease,
+                oddsType
             )
             is ViewHolder1x2 -> holder.bind(
                 matchType,
                 item,
                 leagueOddListener,
                 isTimerEnable,
-                isTimerDecrease
+                isTimerDecrease,
+                oddsType
             )
         }
     }
@@ -94,11 +103,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
-            isTimerDecrease: Boolean
+            isTimerDecrease: Boolean,
+            oddsType: OddsType
         ) {
             setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
 
-            setupOddButton(item, leagueOddListener)
+            setupOddButton(item, leagueOddListener, oddsType)
 
             setupLiveButton(item, matchType, leagueOddListener)
 
@@ -122,6 +132,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 View.VISIBLE
             } else {
                 View.INVISIBLE
+            }
+
+            itemView.game_score_home.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            itemView.game_score_away.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
             }
 
             when (matchType) {
@@ -184,7 +206,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        private fun setupOddButton(
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            oddsType: OddsType
+        ) {
             val oddListHDP = item.odds[PlayType.HDP.code]
             val oddListOU = item.odds[PlayType.OU.code]
 
@@ -216,10 +242,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddListHDP[0]?.spread
                 }
 
-                odd_hdp_bottom_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
-                    ""
-                } else {
-                    oddListHDP[0]?.odds?.let { TextUtil.formatForOdd(it) }
+                odd_hdp_bottom_text.text = when {
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddListHDP[0]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddListHDP[0]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
                 }
 
                 setOnClickListener {
@@ -259,10 +293,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddListHDP[1]?.spread
                 }
 
-                odd_hdp_bottom_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
-                    ""
-                } else {
-                    oddListHDP[1]?.odds?.let { TextUtil.formatForOdd(it) }
+                odd_hdp_bottom_text.text = when {
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddListHDP[1]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddListHDP[1]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
                 }
 
                 setOnClickListener {
@@ -304,10 +346,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddListOU[0]?.spread
                 }
 
-                odd_ou_bottom_text.text = if (oddListOU == null || oddListOU.size < 2) {
-                    ""
-                } else {
-                    oddListOU[0]?.odds?.let { TextUtil.formatForOdd(it) }
+                odd_ou_bottom_text.text = when {
+                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddListOU[0]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddListOU[0]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
                 }
 
                 setOnClickListener {
@@ -349,10 +399,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddListOU[1]?.spread
                 }
 
-                odd_ou_bottom_text.text = if (oddListOU == null || oddListOU.size < 2) {
-                    ""
-                } else {
-                    oddListOU[1]?.odds?.let { TextUtil.formatForOdd(it) }
+
+                odd_ou_bottom_text.text = when {
+                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddListOU[1]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddListOU[1]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
                 }
 
                 setOnClickListener {
@@ -382,11 +441,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
-            isTimerDecrease: Boolean
+            isTimerDecrease: Boolean,
+            oddsType: OddsType
         ) {
             setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
 
-            setupOddButton(item, leagueOddListener)
+            setupOddButton(item, leagueOddListener, oddsType)
 
             setupLiveButton(item, matchType, leagueOddListener)
 
@@ -410,6 +470,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 View.VISIBLE
             } else {
                 View.INVISIBLE
+            }
+
+            itemView.game_score_home_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            itemView.game_score_away_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
             }
 
             when (matchType) {
@@ -470,7 +542,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupOddButton(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        private fun setupOddButton(
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            oddsType: OddsType
+        ) {
             val oddList1X2 = item.odds[PlayType.X12.code]
 
             itemView.match_odd_1.apply {
@@ -496,10 +572,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 odd_1x2_top_text.text = "1"
 
-                odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 2) {
-                    ""
-                } else {
-                    oddList1X2[0]?.odds?.let { TextUtil.formatForOdd(it) }
+                odd_1x2_bottom_text.text = when {
+                    (oddList1X2 != null && oddList1X2.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddList1X2[0]?.odds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    (oddList1X2 != null && oddList1X2.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddList1X2[0]?.hkOdds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    else -> ""
                 }
 
                 setOnClickListener {
@@ -548,10 +628,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 odd_1x2_top_text.text = "X"
 
-                odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 3) {
-                    ""
-                } else {
-                    oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
+                odd_1x2_bottom_text.text = when {
+                    (oddList1X2 != null && oddList1X2.size >= 3 && oddsType == OddsType.EU) -> {
+                        oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    (oddList1X2 != null && oddList1X2.size >= 3 && oddsType == OddsType.HK) -> {
+                        oddList1X2[1]?.hkOdds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    else -> ""
                 }
 
                 setOnClickListener {
@@ -608,12 +692,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 odd_1x2_top_text.text = "2"
 
-                odd_1x2_bottom_text.text = if (oddList1X2 == null || oddList1X2.size < 2) {
-                    ""
-                } else if (oddList1X2.size == 2) {
-                    oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
-                } else {
-                    oddList1X2[2]?.odds?.let { TextUtil.formatForOdd(it) }
+                odd_1x2_bottom_text.text = when {
+                    (oddList1X2 != null && oddList1X2.size == 2 && oddsType == OddsType.EU) -> {
+                        oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    (oddList1X2 != null && oddList1X2.size == 2 && oddsType == OddsType.HK) -> {
+                        oddList1X2[1]?.hkOdds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    (oddList1X2 != null && oddList1X2.size > 2 && oddsType == OddsType.EU) -> {
+                        oddList1X2[2]?.odds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    (oddList1X2 != null && oddList1X2.size > 2 && oddsType == OddsType.HK) -> {
+                        oddList1X2[2]?.hkOdds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    else -> ""
                 }
 
                 setOnClickListener {

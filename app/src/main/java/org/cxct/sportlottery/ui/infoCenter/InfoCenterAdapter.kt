@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setDateTime
 
 class InfoCenterAdapter(private val clickListener: ItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -59,7 +60,7 @@ class InfoCenterAdapter(private val clickListener: ItemClickListener) : Recycler
         fun bind(item: InfoCenterData, clickListener: ItemClickListener) {
             txvIndex.text = (adapterPosition + 1).toString()
             txvTitle.text = item.title
-            txvTime.text = item.addDate?.toLong()?.let { TimeUtil.stampToDate(it) }
+            txvTime.setDateTime(item.addDate?.toLong())
             llTitle.setOnClickListener {
                 clickListener.onClick(item)
             }

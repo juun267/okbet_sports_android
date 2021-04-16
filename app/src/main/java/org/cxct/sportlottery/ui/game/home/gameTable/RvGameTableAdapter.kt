@@ -141,7 +141,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if (data.itemType == ItemType.FOOTER) {
                     line_item.visibility = View.GONE
                     card_footer.visibility = View.VISIBLE
-                    line_footer.visibility = View.VISIBLE
+                    line_footer.visibility = if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
                 } else {
                     line_item.visibility = View.VISIBLE
                     card_footer.visibility = View.GONE

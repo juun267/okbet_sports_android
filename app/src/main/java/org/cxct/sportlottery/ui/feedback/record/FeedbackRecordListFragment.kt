@@ -80,6 +80,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     ): View? {
         viewModel.showToolbar(true)
         viewModel.getFbQueryList(isReload = true, currentTotalCount = 0)//首次進來跟點選查詢都重新撈資料
+        viewModel.setToolbarName(getString(R.string.feedback_toolbar_title))
         return inflater.inflate(R.layout.fragment_feedback_record_list, container, false)
     }
 

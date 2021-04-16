@@ -107,7 +107,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private fun setupSearch(view: View) {
         view.date_range_selector.btn_search.setOnClickListener {
             viewModel.getUserWithdrawList(true)
-            loading()
         }
     }
 
@@ -129,8 +128,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 withdrawLogAdapter.data = list
                 setupNoRecordView(list.isEmpty())
             }
-
-            hideLoading()
         })
 
         viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner, Observer {
@@ -148,7 +145,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.getUserWithdrawList(true)
-        loading()
     }
 
     private fun setupNoRecordView(visible: Boolean) {

@@ -144,7 +144,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 when {
                     quota > parlayOdd.max -> {
                         inputError = true
-                        binding.tvErrorMessage.text = String.format(binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit), parlayOdd.max.toString())
+                        binding.tvErrorMessage.text = String.format(binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit), TextUtil.formatMoneyNoDecimal(parlayOdd.max))
                         binding.etBet.setBackgroundResource(R.drawable.bg_radius_4_edittext_error)
                     }
                     quota < parlayOdd.min -> {
@@ -157,7 +157,11 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
                     }
                 }
-                val win = ArithUtil.round(it.toDouble() * getOdds(matchOdd, oddsType), 3, RoundingMode.HALF_UP).toDouble()
+                var win = TextUtil.format(it.toDouble() * getOdds(matchOdd, oddsType)).toDouble()
+
+                if(oddsType == OddsType.EU.value){
+                    win -= quota
+                }
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)
                 binding.betInfoAction.tv_win_quota.text = TextUtil.format(win)
 

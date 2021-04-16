@@ -97,6 +97,6 @@
         app:layout_constraintTop_toTopOf="@id/game_filter_back_row"
         app:queryBackground="@color/transparent"
         app:queryHint="@string/game_filter_row_search_hint"
-        app:searchIcon="@drawable/ic_magnifyingglass" />
+        app:searchIcon="@drawable/ic_iconsearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

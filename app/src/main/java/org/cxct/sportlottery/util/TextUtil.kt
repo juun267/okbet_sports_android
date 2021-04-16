@@ -23,6 +23,11 @@ object TextUtil {
         return df.format(ArithUtil.toMoneyFormat(int.toDouble()).toDouble())
     }
 
+    fun formatMoneyNoDecimal(int: Int): String {
+        val df = DecimalFormat("###,###,###,##0")
+        return df.format(int)
+    }
+
     fun formatForOdd(any: Any):String{
         val df = DecimalFormat("###,###,###,##0.000")
         return df.format(any)

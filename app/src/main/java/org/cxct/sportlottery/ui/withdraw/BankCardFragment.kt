@@ -122,9 +122,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
 
-        //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
-        et_withdrawal_password.eyeVisibility = View.GONE
-
     }
 
     private fun showHideTab() {
@@ -201,7 +198,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
         setupView.let { view ->
             view.afterTextChanged {
-                view.eyeVisibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
                 checkFun(it)
             }
         }

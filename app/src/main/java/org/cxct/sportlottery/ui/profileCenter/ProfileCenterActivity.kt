@@ -98,6 +98,11 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         initSocketObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getMoney()
+    }
+
     private fun setupHeadButton() {
         iv_head.setOnClickListener {
             AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
@@ -113,7 +118,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
     }
 
     private fun setupBalance() {
-        getMoney()
         btn_refresh_money.setOnClickListener {
             getMoney()
         }
@@ -127,7 +131,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
-            viewModel.withdrawCheckPermissions()
+            viewModel.checkWithdrawSystem()
         }
     }
 
@@ -146,10 +150,12 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupLogout() {
         btn_logout.setOnClickListener {
-            viewModel.logout()
-            run {
-                MainActivity.reStart(this)
+            viewModel.doLogoutCleanUser {
+                run {
+                    MainActivity.reStart(this)
+                }
             }
+
         }
     }
 
@@ -266,6 +272,13 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             updateUI(it)
         })
 
+        viewModel.withdrawSystemOperation.observe(this, {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false) {
+                showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
+            }
+        })
+
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
@@ -365,7 +378,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file,UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 

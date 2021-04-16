@@ -1,13 +1,12 @@
 package org.cxct.sportlottery.ui.game.v3
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.*
@@ -19,26 +18,12 @@ import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 
-
-private const val ARG_SPORT_TYPE = "sportType"
-private const val ARG_EVENT_ID = "eventId"
 
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
-    companion object {
-        fun newInstance(sportType: String, eventId: String) =
-            GameOutrightFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_SPORT_TYPE, sportType)
-                    putString(ARG_EVENT_ID, eventId)
-                }
-            }
-    }
-
-    private var sportType: String? = null
-
-    private var eventId: String? = null
+    private val args: GameOutrightFragmentArgs by navArgs()
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
@@ -46,17 +31,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 viewModel.updateOutrightOddsSelectedState(it)
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            sportType = it.getString(ARG_SPORT_TYPE)
-            eventId = it.getString(ARG_EVENT_ID)
-        }
-
-        service.subscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 
     override fun onCreateView(
@@ -75,7 +49,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             isSearchViewVisible = false
 
             backClickListener = View.OnClickListener {
-                backEvent()
+                findNavController().navigateUp()
             }
         }
     }
@@ -108,8 +82,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        service.subscribeHallChannel(args.sportType.code, CateMenuCode.OUTRIGHT.code, args.eventId)
+
+        viewModel.getOutrightOddsList(args.eventId)
+        loading()
+    }
+
     private fun initObserve() {
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
@@ -145,6 +129,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
             outrightOddAdapter.notifyDataSetChanged()
         })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
+            val oddsType = when (it) {
+                OddsType.EU.value -> OddsType.EU
+                OddsType.HK.value -> OddsType.HK
+                else -> null
+            }
+
+            oddsType?.let {
+                outrightOddAdapter.oddsType = oddsType
+            }
+        })
     }
 
     private fun initSocketReceiver() {
@@ -153,6 +149,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
 
                     val odds = outrightOddAdapter.data.filterIsInstance<Odd>()
+                    val oddsType = outrightOddAdapter.oddsType
 
                     odds.forEach { odd ->
                         oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
@@ -162,27 +159,56 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                             }
 
                             oddSocket?.let { oddSocketNonNull ->
-                                odd.odds?.let { oddValue ->
-                                    oddSocketNonNull.odds?.let { oddSocketValue ->
-                                        when {
-                                            oddValue > oddSocketValue -> {
-                                                odd.oddState =
-                                                    OddState.SMALLER.state
-                                            }
-                                            oddValue < oddSocketValue -> {
-                                                odd.oddState =
-                                                    OddState.LARGER.state
-                                            }
-                                            oddValue == oddSocketValue -> {
-                                                odd.oddState =
-                                                    OddState.SAME.state
+
+                                when (oddsType) {
+                                    OddsType.EU -> {
+                                        odd.odds?.let { oddValue ->
+                                            oddSocketNonNull.odds?.let { oddSocketValue ->
+                                                when {
+                                                    oddValue > oddSocketValue -> {
+                                                        odd.oddState =
+                                                            OddState.SMALLER.state
+                                                    }
+                                                    oddValue < oddSocketValue -> {
+                                                        odd.oddState =
+                                                            OddState.LARGER.state
+                                                    }
+                                                    oddValue == oddSocketValue -> {
+                                                        odd.oddState =
+                                                            OddState.SAME.state
+                                                    }
+                                                }
+
                                             }
                                         }
 
+                                        odd.odds = oddSocketNonNull.odds
+                                    }
+
+                                    OddsType.HK -> {
+                                        odd.hkOdds?.let { oddValue ->
+                                            oddSocketNonNull.hkOdds?.let { oddSocketValue ->
+                                                when {
+                                                    oddValue > oddSocketValue -> {
+                                                        odd.oddState =
+                                                            OddState.SMALLER.state
+                                                    }
+                                                    oddValue < oddSocketValue -> {
+                                                        odd.oddState =
+                                                            OddState.LARGER.state
+                                                    }
+                                                    oddValue == oddSocketValue -> {
+                                                        odd.oddState =
+                                                            OddState.SAME.state
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                        odd.hkOdds = oddSocketNonNull.hkOdds
                                     }
                                 }
-
-                                odd.odds = oddSocketNonNull.odds
 
                                 odd.status = oddSocketNonNull.status
 
@@ -221,43 +247,17 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
-                service.subscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+                service.subscribeHallChannel(
+                    args.sportType.code,
+                    CateMenuCode.OUTRIGHT.code,
+                    args.eventId
+                )
             }
         })
     }
 
-    private fun backEvent() {
-        val animation: Animation =
-            AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
-        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
-        animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                parentFragmentManager.popBackStack()
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
-        this.view?.startAnimation(animation)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
-                backEvent()
-                return@OnKeyListener true
-            }
-            false
-        })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
 
         service.unsubscribeAllHallChannel()
     }

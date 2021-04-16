@@ -42,6 +42,10 @@ class FeedbackViewModel(
         get() = _isShowToolbar
     private var _isShowToolbar = MutableLiveData<Int>().apply { this.value = View.VISIBLE }
 
+    val toolbarName: LiveData<String>
+        get() = _toolbarName
+    private val _toolbarName = MutableLiveData<String>()
+
     //意見反饋清單
     val feedbackList: LiveData<MutableList<FeedBackRows>?>
         get() = _feedbackList
@@ -80,6 +84,9 @@ class FeedbackViewModel(
     private var mIsGettingData = false //判斷請求任務是否進行中
     private var mNeedMoreLoading = false //資料判斷滑到底是否需要繼續加載
 
+    fun setToolbarName(name: String) {
+        _toolbarName.value = name
+    }
 
     //API
     fun getFbQueryList(
@@ -131,7 +138,7 @@ class FeedbackViewModel(
 
     fun fbSave(content: String) { //目前只確定使用者會傳意見
         _isLoading.value = true
-        val feedbackSaveRequest = FeedbackSaveRequest(content, 3, 0)
+        val feedbackSaveRequest = FeedbackSaveRequest(content = content)
         viewModelScope.launch {
             doNetwork(androidContext) {
                 feedbackRepository.fbSave(feedbackSaveRequest)

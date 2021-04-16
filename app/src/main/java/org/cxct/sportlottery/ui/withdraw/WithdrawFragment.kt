@@ -62,6 +62,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             clearIsShow = false
             getAllIsShow = true
         }
+        block_tab.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
     }
 
     private fun initEvent() {
@@ -76,16 +77,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupDealView(type: TransferType) {
         when (type) {
             TransferType.BANK -> {
-                tab_bank_card.isSelected = true
-                tab_crypto.isSelected = false
-
                 tv_channel_select.text = getString(R.string.select_bank)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_amount))
             }
             TransferType.CRYPTO -> {
-                tab_bank_card.isSelected = false
-                tab_crypto.isSelected = true
-
                 tv_channel_select.text = getString(R.string.currency_protocol)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_number))
             }
@@ -117,7 +112,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
 
         et_withdrawal_amount.getAllButton {
-            it.setText(viewModel.getWithdrawAmountLimit().max.toString())
+            it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
@@ -135,7 +130,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
         setupView.let { view ->
             view.afterTextChanged {
-                view.eyeVisibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
                 checkFun(it)
             }
         }
@@ -184,11 +178,17 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
             val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
 
+            tab_bank_card.visibility = if (bankCardExist == true) View.VISIBLE else View.GONE
+            tab_crypto.visibility = if (cryptoCardExist == true) View.VISIBLE else View.GONE
+            block_tab.visibility = View.VISIBLE
+
             when {
                 bankCardExist == true -> {
+                    tab_bank_card.isChecked = true
                     viewModel.setDealType(TransferType.BANK)
                 }
                 cryptoCardExist == true -> {
+                    tab_crypto.isChecked = true
                     viewModel.setDealType(TransferType.CRYPTO)
                 }
                 else -> {
