@@ -367,6 +367,13 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.userInfo.observe(this, {
             updateAvatar(it?.iconUrl)
         })
+
+        viewModel.systemDelete.observe(this, {
+            if (it) {
+                showErrorPromptDialog(getString(R.string.prompt),getString(R.string.bet_info_system_close_incompatible_item)){}
+            }
+        })
+
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
