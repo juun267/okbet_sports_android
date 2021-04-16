@@ -131,7 +131,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
-            viewModel.withdrawCheckPermissions()
+            viewModel.checkWithdrawSystem()
         }
     }
 
@@ -270,6 +270,13 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
         viewModel.userInfo.observe(this, Observer {
             updateUI(it)
+        })
+
+        viewModel.withdrawSystemOperation.observe(this, {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false) {
+                showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
+            }
         })
 
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {

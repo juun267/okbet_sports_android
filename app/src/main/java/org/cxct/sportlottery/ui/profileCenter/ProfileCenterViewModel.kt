@@ -31,6 +31,8 @@ class ProfileCenterViewModel(
     val userMoney: LiveData<String?>
         get() = _userMoney
 
+    val withdrawSystemOperation =
+        withdrawRepository.withdrawSystemOperation
     val needToUpdateWithdrawPassword =
         withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
     val settingNeedToUpdateWithdrawPassword =
@@ -59,6 +61,15 @@ class ProfileCenterViewModel(
     fun getUserInfo() {
         viewModelScope.launch {
             userInfoRepository.getUserInfo()
+        }
+    }
+
+    //提款功能是否啟用
+    fun checkWithdrawSystem() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkWithdrawSystem()
+            }
         }
     }
 
