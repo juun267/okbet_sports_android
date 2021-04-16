@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
 
-class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
+class RvBYAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
     private var mDataList: MutableList<GameItemData> = mutableListOf()
@@ -27,27 +27,40 @@ class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    private enum class ViewType { LEFT, RIGHT }
+    private enum class ViewType { HEADER, LEFT, RIGHT }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
-        val layout = when (viewType) {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ViewType.HEADER.ordinal -> {
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_by_game_rv_header, viewGroup, false)
+                HeaderViewHolder(layout)
+            }
             ViewType.LEFT.ordinal -> {
-                LayoutInflater.from(viewGroup.context).inflate(R.layout.content_by_game_rv_left, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_by_game_rv_left, viewGroup, false)
+                ItemViewHolder(layout)
             }
             else -> {
-                LayoutInflater.from(viewGroup.context).inflate(R.layout.content_by_game_rv_right, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_by_game_rv_right, viewGroup, false)
+                ItemViewHolder(layout)
             }
         }
-        return ItemViewHolder(layout)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val data = mDataList[position].thirdGameData
-        holder.bind(position, data)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ItemViewHolder -> {
+                val data = mDataList[position].thirdGameData
+                holder.bind(position, data)
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position % 2 == 0) ViewType.LEFT.ordinal else ViewType.RIGHT.ordinal
+        return when {
+            position == 0 -> ViewType.HEADER.ordinal
+            position % 2 == 1 -> ViewType.LEFT.ordinal
+            else -> ViewType.RIGHT.ordinal
+        }
     }
 
     override fun getItemCount(): Int {
@@ -59,8 +72,9 @@ class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
         Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 
-    fun setData(newDataList: MutableList<GameItemData>?) {
-        mDataList = newDataList ?: mutableListOf() //若 newDataList == null，則給一個空 list
+    fun setData(newDataList: List<GameItemData>?) {
+        mDataList = mutableListOf(GameItemData(null)) //開頭添加一項為 Header
+        newDataList?.let { mDataList.addAll(it) }
         notifyDataSetChanged()
     }
 
@@ -69,6 +83,7 @@ class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
         mOnSelectThirdGameListener = onSelectItemListener
     }
 
+    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mIvBg: ImageView = itemView.findViewById(R.id.iv_bg)
@@ -77,7 +92,7 @@ class RvBYAdapter : RecyclerView.Adapter<RvBYAdapter.ItemViewHolder>() {
         private val mTvTitle: TextView = itemView.findViewById(R.id.tv_title)
 
         fun bind(position: Int, data: ThirdDictValues?) {
-            val bgCode = (position + 1).toString()
+            val bgCode = position.toString()
             val bgUrl = GameConfigManager.getThirdGameHallIconUrl(data?.gameCategory, bgCode)
             Glide.with(itemView.context)
                 .load(bgUrl)
