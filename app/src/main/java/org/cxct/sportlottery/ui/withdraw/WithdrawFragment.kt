@@ -117,7 +117,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
 
         et_withdrawal_amount.getAllButton {
-            it.setText(viewModel.getWithdrawAmountLimit().max.toString())
+            it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }

@@ -206,6 +206,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 }
             }
         }
+
+        menu_profile_center.visibility = if (testFlag == TestFlag.GUEST) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
     }
 
     /**

@@ -193,7 +193,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged {
-            if (inputType != 0x00000081) {
+            if (inputType != 0x00000081 && inputType != 0x00000012) {
                 clearIsShow = it.isNotEmpty()
             }
             afterTextChanged.invoke(it)
