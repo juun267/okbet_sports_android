@@ -117,10 +117,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
 
         et_withdrawal_amount.getAllButton {
-            when (withdrawBankCardData?.transferType) {
-                TransferType.BANK -> it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
-                else -> it.setText(viewModel.getWithdrawAmountLimit().max.toString())
-            }
+            it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
