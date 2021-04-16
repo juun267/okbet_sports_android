@@ -389,7 +389,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         tv_fee_amount.text =
                             String.format(getString(R.string.hint_feeback_amount), ArithUtil.toMoneyFormat((it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)))
                     } else {
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)))
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))))
                     }
                 }
 
