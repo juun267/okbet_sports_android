@@ -130,9 +130,9 @@ class WithdrawViewModel(
     private var myWithdrawCardList: List<BankCardList>? = null
 
     //資金卡片是否可以繼續增加(銀行卡、虛擬幣)
-    val addMoneyCardSwitch: LiveData<Boolean>
+    val addMoneyCardSwitch: LiveData<TransferTypeAddSwitch>
         get() = _addMoneyCardSwitch
-    private var _addMoneyCardSwitch = MutableLiveData<Boolean>()
+    private var _addMoneyCardSwitch = MutableLiveData<TransferTypeAddSwitch>()
 
     data class MoneyCardExist(val transferType: TransferType, val exist: Boolean)
 
@@ -147,6 +147,8 @@ class WithdrawViewModel(
     private var cardConfig: MoneyRechCfg.DetailList? = null
 
     private var dealType: TransferType = TransferType.BANK
+
+    data class TransferTypeAddSwitch(val bankTransfer: Boolean, val cryptoTransfer: Boolean)
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
@@ -441,7 +443,10 @@ class WithdrawViewModel(
                 amountLimit.min,
                 amountLimit.max
             ) -> {
-                androidContext.getString(R.string.error_withdraw_amount)
+                when (dealType) {
+                    TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
+                    TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
+                }
             }
             else -> {
                 ""
@@ -452,18 +457,9 @@ class WithdrawViewModel(
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
-        _withdrawAmountHint.value = when (dealType) {
-            TransferType.BANK -> {
-                String.format(
-                    androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
-                )
-            }
-            TransferType.CRYPTO -> {
-                String.format(
-                    androidContext.getString(R.string.hint_please_enter_withdraw_crypto_amount), limit.min, limit.max
-                )
-            }
-        }
+        _withdrawAmountHint.value = String.format(
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
+        )
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
@@ -601,11 +597,7 @@ class WithdrawViewModel(
             bankCardCount == null -> true
             else -> bankCardCount < bankCardCountLimit
         }
-        _addMoneyCardSwitch.value = when {
-            showAddCryptoCard -> true
-            showAddBankCard -> true
-            else -> false
-        }
+        _addMoneyCardSwitch.value = TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard)
     }
 
     data class CryptoCardCountLimit(val channel: String, var count: Int, var canBind: Boolean? = null)

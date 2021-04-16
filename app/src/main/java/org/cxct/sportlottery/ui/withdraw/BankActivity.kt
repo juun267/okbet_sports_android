@@ -63,7 +63,7 @@ class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel:
 
     private fun setupBackButton() {
         btn_back.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 

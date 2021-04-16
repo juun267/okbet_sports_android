@@ -30,7 +30,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             notifyDataSetChanged()
         }
 
-    var addSwitch = true
+    var transferAddSwitch = WithdrawViewModel.TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false)
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -52,7 +52,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     override fun getItemCount(): Int {
-        return if (addSwitch) {
+        return if (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer) {
             bankList.size + 1
         } else {
             bankList.size
@@ -64,7 +64,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             bankList.isEmpty() -> {
                 CardType.NO_CARD_ADD.ordinal
             }
-            position == bankList.size && addSwitch -> {
+            position == bankList.size && (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer) -> {
                 CardType.ADD.ordinal
             }
             else -> {
@@ -86,7 +86,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 holder.bind(bankList[position], mBankListClickListener)
             }
             is LastViewHolder -> {
-                holder.bind(mBankListClickListener)
+                holder.bind(transferAddSwitch, mBankListClickListener)
             }
             is NoCardAddViewHolder -> {
                 holder.bind(mBankListClickListener)
@@ -154,11 +154,20 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class LastViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(mBankListClickListener: BankListClickListener) {
-            itemView.cv_add.setOnClickListener {
-                mBankListClickListener.onAdd()
+        fun bind(transferAddSwitch: WithdrawViewModel.TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
+            itemView.apply {
+                tv_add_more_card.text = transferAddSwitch.run {
+                    when {
+                        cryptoTransfer && bankTransfer -> context.getString(R.string.add_credit_or_virtual)
+                        cryptoTransfer -> context.getString(R.string.add_crypto_card)
+                        bankTransfer -> context.getString(R.string.add_credit_card)
+                        else -> context.getString(R.string.add_new)
+                    }
+                }
+                cv_add.setOnClickListener {
+                    mBankListClickListener.onAdd()
+                }
             }
-
         }
 
         companion object {
