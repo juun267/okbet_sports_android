@@ -154,7 +154,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
                     }
                 }
-                var win = TextUtil.format(it.toDouble() * getOdds(matchOdd, oddsType)).toDouble()
+                var win = it.toDouble() * getOdds(matchOdd, oddsType)
 
                 if(oddsType == OddsType.EU){
                     win -= quota
