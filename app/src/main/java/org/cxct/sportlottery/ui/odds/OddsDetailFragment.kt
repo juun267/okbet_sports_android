@@ -183,7 +183,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                val strTime = TimeUtil.stampToDate(time.toLong())
+                val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
                 val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
                 val startPosition = strTime.length - TIME_LENGTH
                 val endPosition = strTime.length
