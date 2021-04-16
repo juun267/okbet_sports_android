@@ -131,13 +131,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
-            val oddsType = when (it) {
-                OddsType.EU.value -> OddsType.EU
-                OddsType.HK.value -> OddsType.HK
-                else -> null
-            }
-
-            oddsType?.let {
+            it?.let { oddsType ->
                 outrightOddAdapter.oddsType = oddsType
             }
         })

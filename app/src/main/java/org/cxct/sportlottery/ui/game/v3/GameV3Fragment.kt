@@ -508,13 +508,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
-            val oddsType = when (it) {
-                OddsType.EU.value -> OddsType.EU
-                OddsType.HK.value -> OddsType.HK
-                else -> null
-            }
-
-            oddsType?.let {
+            it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
             }
         })

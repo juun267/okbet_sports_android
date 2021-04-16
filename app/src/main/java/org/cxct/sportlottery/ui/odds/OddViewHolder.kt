@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.odds
 
 import android.view.Gravity
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.OddButtonHighLight
 import org.cxct.sportlottery.util.getOdds
@@ -44,7 +43,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         betInfoList: MutableList<BetInfoListData>,
         curMatchId: String?,
         spreadType: Int,
-        oddsType: String,
+        oddsType: OddsType,
         gameType: String?
     ) {
 
@@ -121,7 +120,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     }
 
 
-    private fun setOdds(odd: Odd, oddsType: String) {
+    private fun setOdds(odd: Odd, oddsType: OddsType) {
         tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
     }
 

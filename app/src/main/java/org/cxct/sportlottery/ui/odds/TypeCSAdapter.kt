@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class TypeCSAdapter(
     private val oddsList: List<Odd>, private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val curMatchId: String?,
-    private val oddsType: String
+    private val oddsType: OddsType
 ) :
     RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
 

@@ -49,7 +49,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
 
-    var oddsType: String = OddsType.EU.value
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -442,9 +442,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     private fun getOddState(oldItemOdd: Double, it: Odd): Int {
 
         val odds = when (oddsType) {
-            OddsType.EU.value -> it.odds
-            OddsType.HK.value -> it.hkOdds
-            else -> 0.0
+            OddsType.EU -> it.odds
+            OddsType.HK -> it.hkOdds
         }
         val newOdd = odds ?: 0.0
 
