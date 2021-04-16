@@ -28,6 +28,10 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
     val withdrawSystemOperation: LiveData<Event<Boolean>>
         get() = _withdrawSystemOperation
 
+    private var _rechargeSystemOperation = MutableLiveData<Event<Boolean>>()
+    val rechargeSystemOperation: LiveData<Event<Boolean>>
+        get() = _rechargeSystemOperation
+
     private var _needToUpdateWithdrawPassword = MutableLiveData<Event<Boolean>>()
     val needToUpdateWithdrawPassword: LiveData<Event<Boolean>> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
         get() = _needToUpdateWithdrawPassword
@@ -58,6 +62,17 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
             if (operation) {
                 withdrawCheckPermissions()
             }
+        }
+        return response
+    }
+
+    suspend fun checkRechargeSystem(): Response<MoneyRechCfgResult> {
+        val response = OneBoSportApi.moneyService.getRechCfg()
+        if (response.isSuccessful) {
+            val withdrawList = response.body()?.rechCfg?.rechTypes
+
+            val operation = withdrawList?.size ?: 0 > 0
+            _rechargeSystemOperation.value = Event(operation)
         }
         return response
     }

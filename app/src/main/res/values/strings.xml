@@ -426,6 +426,7 @@
     <string name="bottom_sheet_close">关闭</string>
 
     <!--money-recharge-->
+    <string name="message_recharge_maintain">充值相关系统升级中,请稍等</string>
     <string name="title_bank">选择银行</string>
     <string name="title_main_account">选择帐户</string>
     <string name="title_name">姓名：</string>
