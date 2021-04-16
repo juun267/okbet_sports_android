@@ -56,17 +56,10 @@
     "onlineType": "8"
   },
   {
-    "title": "微信转账",
-    "subtitle": "微信转账支付",
-    "image": "ic_wechat_pay",
-    "rechType": "weixin",
-    "onlineType": "0"
-  },
-  {
-    "title": "支付宝转账",
-    "subtitle": "支付宝转账支付",
-    "image": "ic_alipay",
-    "rechType": "alipay",
+    "title": "银行卡转账",
+    "subtitle": "线下入款，您的首选",
+    "image": "ic_bank_atm",
+    "rechType": "bankTransfer",
     "onlineType": "0"
   },
   {
@@ -77,10 +70,17 @@
     "onlineType": "0"
   },
   {
-    "title": "银行卡转账",
-    "subtitle": "线下入款，您的首选",
-    "image": "ic_bank_atm",
-    "rechType": "bankTransfer",
+    "title": "支付宝转账",
+    "subtitle": "支付宝转账支付",
+    "image": "ic_alipay",
+    "rechType": "alipay",
+    "onlineType": "0"
+  },
+  {
+    "title": "微信转账",
+    "subtitle": "微信转账支付",
+    "image": "ic_wechat_pay",
+    "rechType": "weixin",
     "onlineType": "0"
   },
   {
@@ -91,7 +91,7 @@
     "onlineType": "0"
   },
   {
-    "title": "虚拟币",
+    "title": "虚拟币转账",
     "subtitle": "虚拟币支付",
     "image": "ic_crypto_pay",
     "rechType": "cryptoPay",

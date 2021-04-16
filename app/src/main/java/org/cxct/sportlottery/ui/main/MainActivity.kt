@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
-import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
@@ -43,7 +41,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             context.startActivity(intent)
         }
 
-        private var isPopImageDialog = true //第一次進 APP 才要跳 彈窗圖 dialog
+        const val ARGS_THIRD_GAME_CATE = "key-thirdGameCategory"
     }
 
     private val mSplashViewModel: SplashViewModel by viewModel()
@@ -60,7 +58,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         initToolBar()
         initMenu()
         initBottomNav()
-        getPopImage()
         initObserve()
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
@@ -86,8 +83,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
     private fun jumpScreen() {
         try {
-            val args: MainActivityArgs by navArgs()
-            val cate = args.thirdGameCate
+            val cate = intent.getSerializableExtra(ARGS_THIRD_GAME_CATE) as ThirdGameCategory
             Timber.d("Jump screen: ${cate.name}")
             when (cate) {
                 ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
@@ -181,10 +177,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
     }
 
-    private fun getPopImage() {
-        viewModel.getPopImage()
-    }
-
     private fun getMsgDialog() {
         viewModel.getAnnouncement()
     }
@@ -197,11 +189,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
         viewModel.userInfo.observe(this, {
             updateAvatar(it?.iconUrl)
-        })
-
-        //彈窗圖
-        viewModel.popImageList.observe(this, {
-            setPopImage(it ?: listOf())
         })
 
         //公告彈窗
@@ -223,14 +210,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
-        }
-    }
-
-    //彈窗圖
-    private fun setPopImage(popImageList: List<ImageData>) {
-        if (isPopImageDialog) {
-            isPopImageDialog = false
-            PopImageDialog(this, popImageList).show()
         }
     }
 

@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.game.v3
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,7 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -244,6 +247,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             initObserve()
             initSocketReceiver()
 
+            viewModel.getGameHallList(args.matchType, true)
+            loading()
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -257,7 +263,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.sportMenuResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.sportMenuResult.observe(this.viewLifecycleOwner, {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
                     val itemList = it?.sportMenuData?.menu?.inPlay?.items ?: listOf()
@@ -306,6 +312,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     game_filter_row.sportName =
                         itemList.find { sportType -> sportType.isSelected }?.name
                 }
+            }
+        })
+
+        viewModel.matchTypeCardForParlay.observe(viewLifecycleOwner, {
+            val matchType = it.getContentIfNotHandled()
+            matchType?.let { matchTypeNotNull ->
+                viewModel.getGameHallList(matchTypeNotNull, true)
             }
         })
 
@@ -677,8 +690,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
-        val action = GameV3FragmentDirections.actionGameV3FragmentToMainActivity(thirdGameCategory)
-        findNavController().navigate(action)
+        val intent = Intent(activity, MainActivity::class.java)
+            .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+        startActivity(intent)
     }
 
     private fun navGameLeague(matchId: String) {

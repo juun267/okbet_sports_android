@@ -56,10 +56,6 @@ class ProfileCenterViewModel(
         }
     }
 
-    fun logout() {
-        doLogoutCleanUser()
-    }
-
     fun getUserInfo() {
         viewModelScope.launch {
             userInfoRepository.getUserInfo()

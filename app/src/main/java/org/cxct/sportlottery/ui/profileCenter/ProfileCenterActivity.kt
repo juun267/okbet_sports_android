@@ -150,10 +150,12 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupLogout() {
         btn_logout.setOnClickListener {
-            viewModel.logout()
-            run {
-                MainActivity.reStart(this)
+            viewModel.doLogoutCleanUser {
+                run {
+                    MainActivity.reStart(this)
+                }
             }
+
         }
     }
 

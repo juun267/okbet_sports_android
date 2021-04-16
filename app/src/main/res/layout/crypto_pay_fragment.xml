@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:cvHint="@string/hint_transaction_id"
-            app:cvInputType="number"
+            app:cvInputType="text"
             app:cvTitle="@string/title_transaction_id" />
 
         <!-- 充值時間 -->
@@ -286,7 +286,8 @@
                         android:gravity="top"
                         android:text="@string/title_recharge_address"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txv_payee"

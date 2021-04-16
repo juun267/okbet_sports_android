@@ -15,9 +15,9 @@ import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
-import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import java.math.RoundingMode
 import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -156,6 +156,18 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.apply {
             //充值金額
             et_recharge_online_amount.afterTextChanged {
+                if(it.startsWith("0") && it.length > 1){
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().replace("0",""))
+                    et_recharge_online_amount.setCursor()
+                    return@afterTextChanged
+                }
+
+                if(et_recharge_online_amount.getText().length > 6){
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().substring(0,6))
+                    et_recharge_online_amount.setCursor()
+                    return@afterTextChanged
+                }
+
                 checkRcgOnlineAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
@@ -179,8 +191,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun getAmountLimitHint(): String {
         return String.format(
             getString(R.string.edt_hint_deposit_money),
-            ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney),
-            ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney)
+            ArithUtil.round(mSelectRechCfgs?.minMoney ?: 0.00,2, RoundingMode.HALF_UP),
+            ArithUtil.round(mSelectRechCfgs?.maxMoney ?: 999999.00,2, RoundingMode.HALF_UP)
         )
     }
 
@@ -214,7 +226,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payGapBottomSheet = BottomSheetDialog(this.requireContext())
             payGapBottomSheet.apply {
                 setContentView(bottomSheetView)
-                setTitle(R.string.choose_gap_type)
                 payGapAdapter = BankBtsAdapter(
                     lv_bank_item.context,
                     payRoadSpannerList,
@@ -223,6 +234,12 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         payGapBottomSheet.dismiss()
                     })
                 lv_bank_item.adapter = payGapAdapter
+
+                if (mMoneyPayWay?.onlineType == OnlineType.ONLINE.type)
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
+                else
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_gap))
+
                 payGapBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }
@@ -255,6 +272,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         dismiss()
                     })
                 lv_bank_item.adapter = bankCardAdapter
+                tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_bank))
                 bankBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }
