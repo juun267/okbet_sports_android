@@ -87,7 +87,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
 
         viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner, Observer {
-            mBankListAdapter.addSwitch = it
+            mBankListAdapter.transferAddSwitch = it
         })
     }
 
