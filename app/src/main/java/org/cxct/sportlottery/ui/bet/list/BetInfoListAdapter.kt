@@ -157,7 +157,11 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
                     }
                 }
-                val win = ArithUtil.round(it.toDouble() * getOdds(matchOdd, oddsType), 3, RoundingMode.HALF_UP).toDouble()
+                var win = TextUtil.format(it.toDouble() * getOdds(matchOdd, oddsType)).toDouble()
+
+                if(oddsType == OddsType.EU.value){
+                    win -= quota
+                }
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)
                 binding.betInfoAction.tv_win_quota.text = TextUtil.format(win)
 
