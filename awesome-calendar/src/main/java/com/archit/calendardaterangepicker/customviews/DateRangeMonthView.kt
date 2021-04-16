@@ -151,7 +151,6 @@ internal class DateRangeMonthView : LinearLayout {
                 maxSelectedDate.add(Calendar.DATE, calendarStyleAttr.fixedDaysSelectionNumber)
             }
         }
-        Log.e("Dean", "after  minSelectedDate = $minSelectedDate , maxSelectedDate = $maxSelectedDate")
         dateRangeCalendarManager.setSelectedDateRange(minSelectedDate, maxSelectedDate)
         drawCalendarForMonth(currentCalendarMonth)
         Log.i(LOG_TAG, "Time: " + selectedDate.time.toString())
