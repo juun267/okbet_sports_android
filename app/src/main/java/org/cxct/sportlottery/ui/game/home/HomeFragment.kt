@@ -184,7 +184,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        drawer_in_play.setCount(result.matchPreloadData?.num?.toString())
+        val inPlayCount = result.matchPreloadData?.num?: 0
+        drawer_in_play.setCount(inPlayCount.toString())
         drawer_in_play.setRvGameData(result.matchPreloadData)
         drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {

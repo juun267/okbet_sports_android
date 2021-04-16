@@ -15,6 +15,7 @@ import org.cxct.sportlottery.util.JumpUtil
 /**
  * 顯示彈窗圖片資料
  */
+//20210414 紀錄：體育暫不使用首頁彈窗圖功能
 class PopImageDialog(context: Context, val imageDataList: List<ImageData>) : AlertDialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -94,7 +94,7 @@ class MainViewModel(
         }
     }
 
-    //獲取彈窗圖
+    //獲取彈窗圖 //20210414 紀錄：體育暫不使用首頁彈窗圖功能
     fun getPopImage() {
         //H5彈窗圖: imageType = 7
         sConfigData?.imageList?.filter { it.imageType == 7 }.apply {
