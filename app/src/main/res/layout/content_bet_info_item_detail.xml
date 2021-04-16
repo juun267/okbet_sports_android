@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SpUsage">
+    tools:ignore="SpUsage,ContentDescription,HardcodedText">
 
     <data>
 
@@ -25,30 +25,28 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="7dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="7dp"
             android:paddingEnd="14dp">
 
             <ImageView
                 android:id="@+id/iv_bet_type"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="2dp"
                 android:src="@drawable/ic_bet_type" />
 
-            <!--確認是不是需要parlayType-->
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginStart="6dp"
-                android:letterSpacing="0.094"
                 android:layout_toStartOf="@+id/iv_delete"
                 android:layout_toEndOf="@+id/iv_bet_type"
+                android:letterSpacing="0.094"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
@@ -59,7 +57,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="2dp"
                 android:src="@drawable/ic_bet_delete" />
 
 
@@ -76,12 +74,12 @@
                 android:id="@+id/tv_odds_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
                 android:text="@{matchOdd.playName}"
                 android:textColor="@color/colorGray"
-                android:letterSpacing="0.1"
-                android:textStyle="bold"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="皇家马德里"/>
+                android:textStyle="bold"
+                tools:text="皇家马德里" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -95,18 +93,18 @@
                     android:layout_marginEnd="4dp"
                     android:text="@{matchOdd.spread}"
                     android:textColor="@color/colorOrange"
-                    android:textStyle="bold"
                     android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
                     tools:text="+0/0.5" />
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/textSize14sp"
                     android:layout_marginEnd="4dp"
-                    android:textStyle="bold"
-                    android:text="\＠"/>
+                    android:text="\＠"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_odds"
@@ -134,8 +132,8 @@
                 android:id="@+id/tv_match"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGrayLight"
                 android:letterSpacing="0.05"
+                android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="纽卡斯尔  vs  切尔西" />
 
