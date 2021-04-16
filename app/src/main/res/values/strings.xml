@@ -523,7 +523,8 @@
     <string name="select_bank_card">选择银行卡</string>
     <string name="select_crypto_card">选择虚拟币</string>
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
-    <string name="error_withdraw_amount">提款金额格式或数值错误</string>
+    <string name="error_withdraw_amount_bank">提款金额格式或数值错误</string>
+    <string name="error_withdraw_amount_crypto">充值个数格式或数值错误</string>
     <string name="error_withdraw_amount_bigger_than_balance">提款金额大于账号余额</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_complete_profile_info">完善个人资料</string>

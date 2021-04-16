@@ -441,7 +441,10 @@ class WithdrawViewModel(
                 amountLimit.min,
                 amountLimit.max
             ) -> {
-                androidContext.getString(R.string.error_withdraw_amount)
+                when (dealType) {
+                    TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
+                    TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
+                }
             }
             else -> {
                 ""
