@@ -328,7 +328,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 this.zalo = zalo
             if (sConfigData?.enableFacebook == FLAG_OPEN)
                 this.facebook = facebook
-            if (sConfigData?.whatsApp == FLAG_OPEN)
+            if (sConfigData?.enableWhatsApp == FLAG_OPEN)
                 this.whatsapp = whatsApp
             if (sConfigData?.enableTelegram == FLAG_OPEN)
                 this.telegram = telegram

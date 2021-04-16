@@ -259,13 +259,31 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         if (!mBankCardStatus) {
             tab_bank_card.setOnClickListener {
                 transferType = TransferType.BANK
+                clearBankInputFiled()
                 changeTransferType(transferType)
             }
             tab_crypto.setOnClickListener {
                 transferType = TransferType.CRYPTO
+                clearCryptoInputFiled()
                 changeTransferType(transferType)
             }
         }
+    }
+
+    private fun clearBankInputFiled() {
+        et_create_name.resetText()
+        et_bank_card_number.resetText()
+        et_network_point.resetText()
+        et_withdrawal_password.resetText()
+        mBankSelectorAdapter.initSelectStatus()
+        clearFocus()
+    }
+
+    private fun clearCryptoInputFiled() {
+        et_wallet.resetText()
+        et_withdrawal_password.resetText()
+        protocolAdapter.initSelectStatus()
+        clearFocus()
     }
 
     private fun changeTransferType(type: TransferType) {
@@ -535,6 +553,15 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
                 return ThirdGamesItemViewHolder(view)
             }
         }
+    }
+
+    fun initSelectStatus() {
+        dataCheckedList.forEachIndexed { index, _ ->
+            dataCheckedList[index] = index == 0
+        }
+        selectedListener.onSelected(dataList[0])
+        notifyItemChanged(selectedPosition)
+        notifyItemChanged(0)
     }
 
 }

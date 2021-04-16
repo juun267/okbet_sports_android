@@ -19,8 +19,8 @@ class TypeOneListAdapter(
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val curMatchId: String?,
-    private val isSCO: Boolean,
-    private val onMoreClickListener: OnMoreClickListener
+    private val onMoreClickListener: OnMoreClickListener,
+    private val oddsType: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -30,6 +30,11 @@ class TypeOneListAdapter(
 
 
     private val oddsList = oddsDetail.oddArrayList
+
+
+    private fun checkKey(type: String, value: String): Boolean {
+        return type == value || type.contains(value)
+    }
 
 
     override fun getItemViewType(position: Int): Int {
@@ -45,7 +50,7 @@ class TypeOneListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
-            else -> MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_more_item, parent, false))
+            else -> MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_more_item, parent, false))
         }
     }
 
@@ -53,7 +58,7 @@ class TypeOneListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> holder.bindModel(oddsList[position])
-            is MoreViewHolder -> holder.bind(isSCO)
+            is MoreViewHolder -> holder.bind()
         }
     }
 
@@ -65,21 +70,23 @@ class TypeOneListAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(originOdd: Odd) {
-            setData(originOdd, onOddClickListener, betInfoList, curMatchId,
-                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM
+            nameChangeColor = false
+            setData(
+                originOdd, onOddClickListener, betInfoList, curMatchId,
+                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
             )
         }
     }
 
 
     inner class MoreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val tvCountControl: TextView = itemView.findViewById(R.id.tv_count_control)
-        fun bind(isSCO: Boolean) {
-            tvCountControl.apply {
+        private val tvExpandControl: TextView = itemView.findViewById(R.id.tv_expand_control)
+        fun bind() {
+            tvExpandControl.apply {
                 setOnClickListener {
                     onMoreClickListener.click()
                 }
-                visibility = if (isSCO && oddsList.size > OVER_COUNT) {
+                visibility = if (oddsList.size > OVER_COUNT) {
                     View.VISIBLE
                 } else {
                     View.GONE

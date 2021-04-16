@@ -12,7 +12,8 @@ class TypeTwoSidesAdapter(
     private val oddsList: List<Odd>,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?
+    private val curMatchId: String?,
+    private val oddsType: String
 ) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
 
 
@@ -33,9 +34,10 @@ class TypeTwoSidesAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
+            nameChangeColor = false
             setData(
                 odd, onOddClickListener, betInfoList, curMatchId,
-                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM
+                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
             )
         }
     }

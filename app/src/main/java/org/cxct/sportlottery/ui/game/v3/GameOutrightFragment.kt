@@ -1,13 +1,12 @@
 package org.cxct.sportlottery.ui.game.v3
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.*
@@ -21,24 +20,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 
 
-private const val ARG_SPORT_TYPE = "sportType"
-private const val ARG_EVENT_ID = "eventId"
-
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
-    companion object {
-        fun newInstance(sportType: String, eventId: String) =
-            GameOutrightFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_SPORT_TYPE, sportType)
-                    putString(ARG_EVENT_ID, eventId)
-                }
-            }
-    }
-
-    private var sportType: String? = null
-
-    private var eventId: String? = null
+    private val args: GameOutrightFragmentArgs by navArgs()
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
@@ -46,17 +30,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 viewModel.updateOutrightOddsSelectedState(it)
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            sportType = it.getString(ARG_SPORT_TYPE)
-            eventId = it.getString(ARG_EVENT_ID)
-        }
-
-        service.subscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
     }
 
     override fun onCreateView(
@@ -75,7 +48,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             isSearchViewVisible = false
 
             backClickListener = View.OnClickListener {
-                backEvent()
+                findNavController().navigateUp()
             }
         }
     }
@@ -108,8 +81,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        service.subscribeHallChannel(args.sportType.code, CateMenuCode.OUTRIGHT.code, args.eventId)
+
+        viewModel.getOutrightOddsList(args.eventId)
+        loading()
+    }
+
     private fun initObserve() {
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
@@ -132,6 +115,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     outrightOddAdapter.data = matchOdd?.displayList ?: listOf()
                 }
             }
+        })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+            val odds = outrightOddAdapter.data.filterIsInstance<Odd>()
+
+            odds.forEach { odd ->
+                odd.isSelected = it.any {
+                    it.matchOdd.oddsId == odd.id
+                }
+            }
+
+            outrightOddAdapter.notifyDataSetChanged()
         })
     }
 
@@ -209,43 +204,17 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
-                service.subscribeHallChannel(sportType, CateMenuCode.OUTRIGHT.code, eventId)
+                service.subscribeHallChannel(
+                    args.sportType.code,
+                    CateMenuCode.OUTRIGHT.code,
+                    args.eventId
+                )
             }
         })
     }
 
-    private fun backEvent() {
-        val animation: Animation =
-            AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
-        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
-        animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                parentFragmentManager.popBackStack()
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
-        this.view?.startAnimation(animation)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
-                backEvent()
-                return@OnKeyListener true
-            }
-            false
-        })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
 
         service.unsubscribeAllHallChannel()
     }

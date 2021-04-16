@@ -50,16 +50,16 @@
                     android:layout_marginStart="12dp"
                     android:ems="4"
                     android:text="@string/title_pay_gap"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="" />
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <ImageView
                     android:id="@+id/iv_gap_icon"
@@ -113,16 +113,16 @@
                     android:layout_marginStart="12dp"
                     android:ems="4"
                     android:text="@string/title_pay_bank"
-                    android:textColor="@color/gray4"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="" />
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/bright_gray" />
+                    android:background="@color/colorWhite6" />
                 
                 <ImageView
                     android:id="@+id/iv_bank_icon"

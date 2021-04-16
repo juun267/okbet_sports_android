@@ -39,8 +39,8 @@
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
-    <string name="btn_confirm">确定</string>
-    <string name="btn_determine">确定</string>
+    <string name="btn_confirm">确认</string>
+    <string name="btn_determine">确认</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_retry">重试</string>
     <string name="btn_download">下载</string>
@@ -176,6 +176,7 @@
     <string name="member_level">会员层级</string>
     <string name="game_settlement">赛果结算</string>
     <string name="version_update">版本更新</string>
+    <string name="odds_type">盘口-%s</string>
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号 Ver %s</string>
 
@@ -286,7 +287,7 @@
     <!-- Setting password page-->
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
-    <string name="current_login_password">当前密码</string>
+    <string name="current_login_password">当前登录密码</string>
     <string name="current_withdrawal_password">当前提款密码</string>
     <string name="hint_current_login_password">请输入登录密码</string>
     <string name="hint_current_withdrawal_password">请输入提款密码</string>
@@ -379,6 +380,7 @@
     <!--game hall-->
     <string name="match_type_row_in_play">滚球</string>
     <string name="match_type_row_at_start">即将开赛</string>
+    <string name="at_start_remain_minute">%s分钟</string>
     <string name="match_type_row_btn_double">1 X 2</string>
     <string name="match_type_row_btn_bs">让球 ＆ 大小</string>
     <string name="game_filter_row_search_hint">请输入联赛名称</string>
@@ -405,16 +407,16 @@
 
     <!--odds detail-->
     <string name="odds_detail_more">更多</string>
-    <string name="odds_detail_less">更少</string>
+    <string name="odds_detail_less">显示更少</string>
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
 
     <!--money-recharge-->
     <string name="title_bank">选择银行</string>
-    <string name="title_name">姓名:</string>
-    <string name="title_account">账号:</string>
-    <string name="title_address">地址:</string>
+    <string name="title_name">姓名：</string>
+    <string name="title_account">账号：</string>
+    <string name="title_address">地址：</string>
     <string name="title_deposit_money">充值金额</string>
     <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
     <string name="title_real_name">认证姓名</string>
@@ -435,7 +437,7 @@
     <string name="title_fee_amount">・手续费金额：</string>
     <string name="title_rebate_rate">・返利：</string>
     <string name="title_rebate_amount">・返利金额：</string>
-    <string name="title_remark">备注:</string>
+    <string name="title_remark">备注：</string>
     <string name="title_tips">・温馨提示：</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
@@ -507,7 +509,7 @@
     <string name="please_complete_profile_info">完善个人资料</string>
     <string name="please_setting_bank_card">请先设置银行卡</string>
     <string name="go_to_setting">前往设置</string>
-    <string name="choose_gap_type">选择支付帐号</string>
+    <string name="choose_gap_type">选择支付账号</string>
     <!--  prompt message  -->
     <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
     <string name="title_withdraw_success">提款成功</string>
@@ -604,12 +606,13 @@
     <string name="recharge_state_all">全部订单状态</string>
 
     <string name="recharge_channel_all">全部渠道类型</string>
-    <string name="recharge_channel_online">在线充值</string>
-    <string name="recharge_channel_bank">银行卡转帐</string>
-    <string name="recharge_channel_alipay">支付宝转帐</string>
-    <string name="recharge_channel_weixin">微信转帐</string>
-    <string name="recharge_channel_cft">财付通转帐</string>
-    <string name="recharge_channel_admin">后台加钱</string>
+    <string name="recharge_channel_online">在线支付</string>
+    <string name="recharge_channel_bank">银行卡转账</string>
+    <string name="recharge_channel_alipay">支付宝转账</string>
+    <string name="recharge_channel_weixin">微信转账</string>
+    <string name="recharge_channel_cft">财付通转账</string>
+    <string name="recharge_channel_crypto">虚拟币转账</string>
+    <string name="recharge_channel_admin">系统加钱</string>
 
     <string name="recharge_log_order_time">订单时间</string>
     <string name="recharge_log_recharge_amount">充值金额</string>
@@ -626,6 +629,7 @@
     <string name="withdraw_log_type_all">全部渠道类型</string>
     <string name="withdraw_log_type_bank_trans">银行提款</string>
     <string name="withdraw_log_type_admin">后台扣款</string>
+    <string name="withdraw_log_crypto_transfer">虚拟币提款</string>
 
     <string name="log_detail_title">查看详情</string>
     <string name="log_detail_trans_num_sub">交易编号：</string>
@@ -674,7 +678,7 @@
 
 
     <string name="one_key_recovery">一键回收</string>
-    <string name="platform_account_money">平台帐户余额</string>
+    <string name="platform_account_money">平台账户余额</string>
     <string name="one_button_click_will_recycle_all_money_into_account">・一键回收将所有其他账户余额转入平台账户。</string>
     <string name="out_account">转出账户</string>
     <string name="in_account">转入账户</string>
@@ -686,6 +690,8 @@
     <string name="transfer_platform">转换平台</string>
     <string name="finance_rmb">%s RMB</string>
     <string name="recycle_success">回收成功</string>
+    <string name="transfer_money_succeed">额度转换成功</string>
+
 
     <string name="third_game_df">德丰捕鱼</string>
     <string name="third_game_sbty">沙巴体育</string>
@@ -737,5 +743,14 @@
     <string name="third_game_ky">开元棋牌</string>
     <string name="choose_title">选择状态</string>
 
+    <!--odd type-->
+    <string name="odd_type_title">盘口类型</string>
+    <string name="odd_type_eu">欧洲盘</string>
+    <string name="odd_type_hk">香港盘</string>
+
     <string name="handicap">盘口</string>
+    <string name="choose_method">选择渠道</string>
+    <string name="choose_order">选择订单</string>
+    <string name="submit_time">提交时间:</string>
+    <string name="feedback_time">反馈时间:</string>
 </resources>

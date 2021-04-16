@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout
@@ -29,54 +28,30 @@ import org.cxct.sportlottery.util.TimeUtil
 
 @Suppress("DEPRECATION")
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    Animation.AnimationListener, OnOddClickListener {
+    OnOddClickListener {
 
+    private val args: OddsDetailFragmentArgs by navArgs()
 
     companion object {
-
         const val TIME_LENGTH = 5
-
-        const val GAME_TYPE = "gameType"
-        const val TYPE_NAME = "typeName"//leagueName
-        const val MATCH_ID = "matchId"
-        const val ODDS_TYPE = "oddsType"
-
-        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
-            OddsDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(GAME_TYPE, gameType)
-                    putString(TYPE_NAME, typeName)
-                    putString(MATCH_ID, matchId)
-                    putString(ODDS_TYPE, oddsType)
-                }
-            }
     }
 
-
-    private var gameType: String? = null
-    private var typeName: String? = null
     var matchId: String? = null
+    private var gameType: String? = null
     private var oddsType: String? = null
 
-
     private lateinit var dataBinding: FragmentOddsDetailBinding
-
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            gameType = it.getString(GAME_TYPE)
-            typeName = it.getString(TYPE_NAME)
-            matchId = it.getString(MATCH_ID)
-            oddsType = it.getString(ODDS_TYPE)
-        }
 
-        service.subscribeEventChannel(matchId)
+        gameType = args.sportType.code
+        matchId = args.matchId
+        oddsType = args.oddsType
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,9 +74,14 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         initUI()
         observeData()
         observeSocketData()
-        getData()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        service.subscribeEventChannel(matchId)
+        getData()
+    }
 
     private fun observeSocketData() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
@@ -136,7 +116,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = gameType?.let { OddsDetailListAdapter(this@OddsDetailFragment, it) }
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
@@ -275,6 +255,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            oddsDetailListAdapter?.oddsType = it
+        })
+
     }
 
 
@@ -295,6 +279,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         getData()
     }
 
+    fun back() {
+        findNavController().navigateUp()
+    }
 
     override fun getBetInfoList(odd: Odd) {
         viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
@@ -305,69 +292,15 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.removeBetInfoItem(odd.id)
     }
 
+    override fun onStop() {
+        super.onStop()
 
-    fun back() {
-        //比照h5特別處理退出動畫
-        val animation: Animation =
-            AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
-        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
-        animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                parentFragmentManager.popBackStack()
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
-        this.view?.startAnimation(animation)
+        service.unsubscribeEventChannel(matchId)
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        requireView().isFocusableInTouchMode = true
-        requireView().requestFocus()
-        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
-                back()
-                return@OnKeyListener true
-            }
-            false
-        })
-    }
-
-
-    override fun onAnimationRepeat(animation: Animation?) {
-    }
-
-
-    override fun onAnimationEnd(animation: Animation?) {
-    }
-
-
-    override fun onAnimationStart(animation: Animation?) {
-    }
-
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        return if (enter) {
-            val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
-            anim.setAnimationListener(this)
-            anim
-        } else {
-            null
-        }
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
-        service.unsubscribeEventChannel(matchId)
+
         viewModel.removeOddsDetailPageValue()
     }
-
-
 }

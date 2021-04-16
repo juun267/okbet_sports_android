@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.finance
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +97,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupSearch(view: View) {
         view.date_range_selector.setOnClickSearchListener {
-            viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
+            viewModel.getUserRechargeList(true, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
         }
     }
 
@@ -118,7 +119,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 rechargeLogAdapter.data = list
                 setupNoRecordView(list.isEmpty())
             }
-            hideLoading()
         })
 
         viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
@@ -136,7 +136,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.getUserRechargeList(true)
-        loading()
     }
 
     private fun setupNoRecordView(visible: Boolean) {

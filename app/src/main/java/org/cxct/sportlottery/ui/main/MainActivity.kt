@@ -3,10 +3,8 @@ package org.cxct.sportlottery.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
@@ -66,8 +64,9 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         initObserve()
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
-        if (mSplashViewModel.isNeedGetHost())
-            mSplashViewModel.getHost()
+        //20210414修改邏輯, 若local host可以使用, 就直接使用, 若無法使用才getHost取得可以使用之域名
+        /*if (mSplashViewModel.isNeedGetHost())
+            mSplashViewModel.getHost()*/
     }
 
     override fun onBackPressed() {
@@ -132,7 +131,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             //選單選擇結束要收起選單
             val menuFrag =
                 supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
-            menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
+            menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
         } catch (e: Exception) {
@@ -187,26 +186,26 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun getMsgDialog() {
-        viewModel.getMsgDialog()
+        viewModel.getAnnouncement()
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this, Observer {
+        viewModel.isLogin.observe(this, {
             getMsgDialog() //登入/登出刷新彈窗公告
             updateUiWithLogin(it)
         })
 
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this, {
             updateAvatar(it?.iconUrl)
         })
 
         //彈窗圖
-        viewModel.popImageList.observe(this, Observer {
+        viewModel.popImageList.observe(this, {
             setPopImage(it ?: listOf())
         })
 
         //公告彈窗
-        viewModel.messageDialogResult.observe(this, Observer { it ->
+        viewModel.promoteNoticeResult.observe(this, {
             it.getContentIfNotHandled()?.let { result ->
                 setNewsDialog(result)
             }

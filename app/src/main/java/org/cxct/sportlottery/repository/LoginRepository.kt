@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
 import retrofit2.Response
 
@@ -27,6 +28,7 @@ const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
 const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
+const val KEY_ODDS_TYPE = "oddsType"
 
 const val KEY_USER_ID = "user_id"
 
@@ -34,6 +36,8 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
+
+    val mOddsType = MutableLiveData<String>()
 
     val isLogin: LiveData<Boolean>
         get() = _isLogin
@@ -105,6 +109,15 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         set(value) {
             with(sharedPref.edit()) {
                 putBoolean(KEY_REMEMBER_PWD, value)
+                commit()
+            }
+        }
+
+    var sOddsType
+        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.EU.value)
+        set(value) {
+            with(sharedPref.edit()) {
+                putString(KEY_ODDS_TYPE, value)
                 commit()
             }
         }
@@ -201,7 +214,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     }
 
     suspend fun logout(): Response<LogoutResult> {
-        _isLogin.postValue(false)
+        _isLogin.value = false
 
         return OneBoSportApi.indexService.logout(LogoutRequest())
     }
@@ -222,9 +235,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     suspend fun clear() {
         with(sharedPref.edit()) {
             remove(KEY_TOKEN)
+            remove(KEY_ODDS_TYPE)
             apply()
         }
-
         clearUserInfo()
     }
 
