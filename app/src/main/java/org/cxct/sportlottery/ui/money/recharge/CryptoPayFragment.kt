@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants.httpFormat
+import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -62,7 +64,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private var filterRechCfgsList = HashMap<String?,ArrayList<MoneyRechCfg.RechConfig>>()
 
-    private var currencyPosition = 0
+    private var CurrentCurrency = ""
 
     private var voucherUrl:String? = null
 
@@ -150,9 +152,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         calendarBottomSheet()
         getMoney()
         updateMoneyRange()
-        refreshCurrencyType(0)
+        refreshCurrencyType(CurrentCurrency)
 
-        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0")
+        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000")
     }
 
     @SuppressLint("SetTextI18n")
@@ -198,9 +200,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 currencyBtsAdapter = BankBtsAdapter(
                     lv_bank_item.context,
                     mCurrencyBottomSheetList,
-                    BankBtsAdapter.BankAdapterListener { _, position ->
-                        currencyPosition = position
-                        refreshCurrencyType(position)
+                    BankBtsAdapter.BankAdapterListener { bankCard, _ ->
+                        CurrentCurrency = bankCard.bankName.toString()
+                        refreshCurrencyType(CurrentCurrency)
                         resetEvent()
                         dismiss()
                     })
@@ -210,32 +212,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     this.dismiss()
                 }
             }
-            //支付帳號
-            val accountContentView: ViewGroup? =
-                activity?.window?.decorView?.findViewById(android.R.id.content)
-            val accountBottomSheetView =
-                layoutInflater.inflate(
-                    R.layout.dialog_bottom_sheet_bank_card,
-                    accountContentView,
-                    false
-                )
-            accountBottomSheet = BottomSheetDialog(this.requireContext())
-            accountBottomSheet.apply {
-                setContentView(accountBottomSheetView)
-                accountBtsAdapter = BankBtsAdapter(
-                    lv_bank_item.context,
-                    mAccountBottomSheetList,
-                    BankBtsAdapter.BankAdapterListener { _, position ->
-                        refreshAccount(position)
-                        dismiss()
-                    })
-                lv_bank_item.adapter = accountBtsAdapter
-                tv_game_type_title.text = String.format(resources.getString(R.string.title_choose_recharge_account))
-                accountBottomSheet.btn_close.setOnClickListener {
-                    this.dismiss()
-                }
-            }
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -300,7 +276,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         } ?: mutableListOf()) as MutableList<MoneyRechCfg.RechConfig>
 
         //幣種
-        if (mMoneyPayWay?.rechType == "cryptoPay") {
+        if (mMoneyPayWay?.rechType == RechType.CRYPTOPAY.code) {
             filterRechCfgsList = rechCfgsList.groupBy { it.prodName } as HashMap<String?, ArrayList<MoneyRechCfg.RechConfig>>
             filterRechCfgsList.forEach{
                 val selectCurrency = CustomImageAdapter.SelectBank(
@@ -310,6 +286,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 mCurrencyBottomSheetList.add(selectCurrency)
             }
         }
+        //預設幣種
+        CurrentCurrency = filterRechCfgsList.keys.first().toString()
+
         rechCfgsList[0].prodName?.let { getAccountBottomSheetList(it) }
 
     }
@@ -341,16 +320,16 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //匯率
             tv_rate.text = String.format(
                 getString(R.string.hint_rate),
-                selectRechCfgs?.exchangeRate.toString()
+                ArithUtil.toMoneyFormat(selectRechCfgs?.exchangeRate)
             )
 
             //手續費率/返利
             if(selectRechCfgs?.rebateFee != 0.0 && selectRechCfgs?.rebateFee != null){
                 tv_fee_rate.visibility = View.VISIBLE
                 if (selectRechCfgs.rebateFee ?: 0.0 > 0.0) { //返利
-                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs.rebateFee.toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toMoneyFormat((selectRechCfgs.rebateFee)?.times(100))) + "%"
                 } else {
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs.rebateFee ?: 0.0).toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toMoneyFormat(abs(selectRechCfgs.rebateFee ?: 0.0).times(100))) + "%"
                 }
             } else {
                 tv_fee_rate.visibility = View.GONE
@@ -393,25 +372,24 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 checkRechargeAccount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_recharge_money.text =
-                        String.format(resources.getString(R.string.txv_recharge_money), "0")
+                        String.format(resources.getString(R.string.txv_recharge_money), "0.000")
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
                         tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount), "0")
+                            String.format(getString(R.string.hint_feeback_amount), "0.000")
                     } else {
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0")
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                     }
                 } else {
                     //充值金額
                     tv_recharge_money.text = String.format(
-                        resources.getString(R.string.txv_recharge_money),
-                        it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
+                        resources.getString(R.string.txv_recharge_money), ArithUtil.toMoneyFormat(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0))
                     )
                     //返利/手續費金額
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
                         tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount), (it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+                            String.format(getString(R.string.hint_feeback_amount), ArithUtil.toMoneyFormat((it.toDouble().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)))
                     } else {
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)))
                     }
                 }
 
@@ -558,15 +536,15 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
     }
 
-    private fun refreshCurrencyType(position: Int) {
-        if (rechCfgsList.size > 0) {
-            mSelectRechCfgs = rechCfgsList[position]
-            refreshSelectRechCfgs(mSelectRechCfgs)
+    //切換幣種
+    private fun refreshCurrencyType(currency: String) {
+        if (filterRechCfgsList[currency]?.size ?: 0 > 0) {
+            mSelectRechCfgs=filterRechCfgsList[currency]?.get(0)//預設帶入第一筆帳戶資料
             getMoney()
             updateMoneyRange()
             //更新充值帳號
             getAccountBottomSheetList(mSelectRechCfgs?.prodName ?: "")
-            refreshAccount(0)
+            refreshAccount(0)//預設帶入第一筆帳戶資料
 
             txv_currency.text = mSelectRechCfgs?.prodName ?: ""
         } else {
@@ -574,9 +552,12 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
     }
 
+    //更新充值帳號
     private fun refreshAccount(position: Int) {
         if (mAccountBottomSheetList.size > 0) {
             txv_account.text = mAccountBottomSheetList[position].bankName
         }
+        mSelectRechCfgs=filterRechCfgsList[CurrentCurrency]?.get(position)
+        refreshSelectRechCfgs(mSelectRechCfgs)
     }
 }

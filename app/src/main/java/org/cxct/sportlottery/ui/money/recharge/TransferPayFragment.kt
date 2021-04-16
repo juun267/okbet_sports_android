@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
+import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
@@ -51,8 +52,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private lateinit var bankCardAdapter: BankBtsAdapter
 
     private var bankPosition = 0
-
-    enum class RechType(val code: String) { BANKTRANSFER("bankTransfer") }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
