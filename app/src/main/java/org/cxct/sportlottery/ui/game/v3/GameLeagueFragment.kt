@@ -287,14 +287,27 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+
+                    @Suppress("NAME_SHADOWING")
+                    val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                        oddTypeSocketMapEntry.value.toMutableList()
+                    }
+
                     val leagueOdds = leagueAdapter.data
                     val oddsType = leagueAdapter.oddsType
 
                     leagueOdds.forEach { leagueOdd ->
                         if (leagueOdd.isExpand) {
 
-                            leagueOdd.matchOdds.forEach { matchOdd ->
-                                matchOdd.odds.forEach { oddTypeMap ->
+                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                            }
+
+                            if (updateMatchOdd?.odds.isNullOrEmpty()) {
+                                updateMatchOdd?.odds = oddTypeSocketMap.toMutableMap()
+
+                            } else {
+                                updateMatchOdd?.odds?.forEach { oddTypeMap ->
 
                                     val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
                                     val odds = oddTypeMap.value
@@ -302,7 +315,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                     odds.forEach { odd ->
                                         odd?.let { oddNonNull ->
                                             val oddSocket = oddsSocket?.find { oddSocket ->
-                                                oddSocket.id == odd.id
+                                                oddSocket?.id == odd.id
                                             }
 
                                             oddSocket?.let { oddSocketNonNull ->

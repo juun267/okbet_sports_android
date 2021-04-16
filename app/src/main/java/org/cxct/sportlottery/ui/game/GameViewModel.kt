@@ -900,42 +900,10 @@ class GameViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
-    private val _updateOddList = MutableLiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>()
+    private val _updateOddList =
+        MutableLiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>()
     val updateOddList: LiveData<MutableList<org.cxct.sportlottery.network.odds.list.Odd>>
         get() = _updateOddList
-
-
-    fun updateOdd(it: OddsChangeEvent) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-        for ((_, value) in it.odds ?: mapOf()) {
-            newList.addAll(value)
-        }
-        val status = newList.find { odd ->
-            odd.status == BetStatus.LOCKED.code || odd.status == BetStatus.DEACTIVATED.code
-        }
-        if (status == null) {
-            updateBetInfoListByOddChange(newList)
-        } else {
-            updateOddStatus(newList)
-            val list: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-            it.odds?.forEach { map ->
-                val value = map.value
-                value.forEach { odd ->
-                    val newOdd = Odd(
-                        odd.id,
-                        odd.odds,
-                        odd.hkOdds,
-                        odd.producerId,
-                        odd.spread,
-                        odd.status,
-                    )
-                    newOdd.oddState = odd.oddState
-                    list.add(newOdd)
-                }
-            }
-            _updateOddList.postValue(list)
-        }
-    }
 
     private fun updateOddStatus(newList: List<org.cxct.sportlottery.network.odds.list.Odd>) {
         newList.forEach { newItem ->
