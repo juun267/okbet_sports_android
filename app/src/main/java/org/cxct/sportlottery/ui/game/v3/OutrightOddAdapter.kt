@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.itemview_outright_oddv3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 
 class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -18,6 +19,12 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     var data = listOf<Any>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -47,7 +54,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is OddViewHolder -> {
                 val item = data[position] as Odd
-                holder.bind(item, outrightOddListener)
+                holder.bind(item, outrightOddListener, oddsType)
             }
         }
 
@@ -57,7 +64,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class OddViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Odd, outrightOddListener: OutrightOddListener?) {
+        fun bind(item: Odd, outrightOddListener: OutrightOddListener?, oddsType: OddsType) {
             itemView.outright_odd_name.text = item.spread
 
             itemView.outright_odd_btn.apply {
@@ -75,7 +82,14 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 oddStatus = item.oddState
 
-                odd_outright_text.text = item.odds?.let { TextUtil.formatForOdd(it) }
+                odd_outright_text.text = when (oddsType) {
+                    OddsType.EU -> {
+                        item.odds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    OddsType.HK -> {
+                        item.hkOdds?.let { TextUtil.formatForOdd(it) }
+                    }
+                }
 
                 setOnClickListener {
                     outrightOddListener?.onClickBet(item)

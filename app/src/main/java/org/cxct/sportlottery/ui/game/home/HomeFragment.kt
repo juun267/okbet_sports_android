@@ -22,6 +22,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
@@ -50,12 +51,17 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         initEvent()
         initObserve()
         observeSocketData()
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         queryData()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onStop() {
+        super.onStop()
+
         unsubscribeAllHallChannel()
     }
 
@@ -85,28 +91,23 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         card_lottery.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.CGCP)
-            findNavController().navigate(action)
+            navThirdGame(ThirdGameCategory.CGCP)
         }
 
         card_live.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.LIVE)
-            findNavController().navigate(action)
+            navThirdGame(ThirdGameCategory.LIVE)
         }
 
         card_poker.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.QP)
-            findNavController().navigate(action)
+            navThirdGame(ThirdGameCategory.QP)
         }
 
         card_slot.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.DZ)
-            findNavController().navigate(action)
+            navThirdGame(ThirdGameCategory.DZ)
         }
 
         card_fishing.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToMainActivity(ThirdGameCategory.BY)
-            findNavController().navigate(action)
+            navThirdGame(ThirdGameCategory.BY)
         }
 
         card_game_result.setOnClickListener {
@@ -116,6 +117,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         card_update.setOnClickListener {
             startActivity(Intent(activity, VersionUpdateActivity::class.java))
         }
+    }
+
+    private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
+        val intent = Intent(activity, MainActivity::class.java)
+            .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+        startActivity(intent)
     }
 
     private fun subscribeHallChannel(code: String, match: Match) {
@@ -156,11 +163,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateUI(gameCateList: List<GameCateData>?) {
         val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
-        val lotteryCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size }?: 0
-        val liveCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size }?: 0
-        val pokerCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.sumBy { it.gameList.size }?: 0
-        val slotCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.DZ }?.tabDataList?.sumBy { it.gameList.size }?: 0
-        val fishingCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.BY }?.tabDataList?.sumBy { it.gameList.size }?: 0
+        val lotteryCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val liveCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val pokerCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val slotCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.DZ }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val fishingCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.BY }?.tabDataList?.sumBy { it.gameList.size } ?: 0
 
         card_lottery.visibility = if (isShowThirdGame && lotteryCount > 0) View.VISIBLE else View.GONE
         card_live.visibility = if (isShowThirdGame && liveCount > 0) View.VISIBLE else View.GONE
@@ -179,7 +186,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        drawer_in_play.setCount(result.matchPreloadData?.num?.toString())
+        val inPlayCount = result.matchPreloadData?.num?: 0
+        drawer_in_play.setCount(inPlayCount.toString())
         drawer_in_play.setRvGameData(result.matchPreloadData)
         drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
@@ -190,8 +198,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 scroll_view.smoothScrollTo(0, 0)
 
-                viewModel.getOddsDetailLive(select)
-                viewModel.getOddsList(select.code.toString(),MatchType.IN_PLAY.postValue)
+                navOddsDetailLive(select.code, select.match?.id, "EU")
             }
         })
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
@@ -200,5 +207,30 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 viewModel.getGameHallList(MatchType.IN_PLAY, select.code)
             }
         })
+    }
+
+    private fun navOddsDetailLive(sportTypeCode: String?, matchId: String?, oddsType: String?) {
+        val sportType = when (sportTypeCode) {
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            SportType.TENNIS.code -> SportType.TENNIS
+            else -> null
+        }
+
+        sportType?.let {
+            matchId?.let {
+                oddsType?.let {
+                    val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                        sportType,
+                        matchId,
+                        oddsType
+                    )
+
+                    findNavController().navigate(action)
+                }
+            }
+        }
     }
 }

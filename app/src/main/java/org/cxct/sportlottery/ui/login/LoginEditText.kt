@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
@@ -181,6 +182,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
+    fun setDigits(input:String) {
+        et_input.keyListener = DigitsKeyListener.getInstance(input)
+    }
+
     fun resetText() {
         et_input.setText("")
         setError(null)
@@ -188,11 +193,15 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged {
-            if (inputType != 0x00000081) {
+            if (inputType != 0x00000081 && inputType != 0x00000012) {
                 clearIsShow = it.isNotEmpty()
             }
             afterTextChanged.invoke(it)
         }
+    }
+
+    fun setCursor(){
+        et_input.setSelection(et_input.text.length)
     }
 
     fun getAllButton(clickGetAll: (EditText) -> Unit) {

@@ -10,5 +10,6 @@
     android:paddingBottom="10dp"
     android:textColor="@color/colorRedDark"
     android:textSize="@dimen/textSize16sp"
+    android:textStyle="bold"
     tools:context=".ui.game.home.gameTable.RvGameTableAdapter"
     tools:text="@string/soccer" />

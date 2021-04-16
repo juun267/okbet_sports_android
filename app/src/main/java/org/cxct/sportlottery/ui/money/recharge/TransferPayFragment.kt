@@ -29,6 +29,7 @@ import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
+import java.math.RoundingMode
 import java.util.*
 import kotlin.math.abs
 
@@ -50,6 +51,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private lateinit var bankCardAdapter: BankBtsAdapter
 
     private var bankPosition = 0
+
+    enum class RechType(val code: String) { BANKTRANSFER("bankTransfer") }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,6 +126,14 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         getMoney()
         updateMoneyRange()
         getBankType(0)
+        refreshFieldTitle()
+    }
+
+    private fun refreshFieldTitle(){
+        if(mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
+            tv_pay_type.text = String.format(resources.getString(R.string.title_bank))
+        else
+            tv_pay_type.text = String.format(resources.getString(R.string.title_main_account))
     }
 
     @SuppressLint("SetTextI18n")
@@ -176,9 +187,16 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                         bankPosition = position
                         //更新銀行
                         getBankType(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = bankCardAdapter
+
+                if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_bank))
+                else
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_main_account))
+
                 bankBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
                 }
@@ -211,7 +229,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         var count = 1
 
-        if (mMoneyPayWay?.rechType == "bankTransfer") //銀行卡轉帳 顯示銀行名稱，不用加排序數字
+        if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code) //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
                 val selectBank = CustomImageAdapter.SelectBank(
                     it.rechName.toString(),
@@ -260,7 +278,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
 
         //銀行卡轉帳 UI 特別處理
-        if (mMoneyPayWay?.rechType == "bankTransfer") {
+        if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code) {
             ll_remark.visibility = View.GONE
             ll_qr.visibility = View.GONE
             ll_address.visibility = View.VISIBLE
@@ -353,6 +371,18 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.apply {
             //充值金額
             et_recharge_amount.afterTextChanged {
+                if(it.startsWith("0") && it.length>1){
+                    et_recharge_amount.setText(et_recharge_amount.getText().replace("0",""))
+                    et_recharge_amount.setCursor()
+                    return@afterTextChanged
+                }
+
+                if(et_recharge_amount.getText().length > 6){
+                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0,6))
+                    et_recharge_amount.setCursor()
+                    return@afterTextChanged
+                }
+
                 checkRechargeAmount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
@@ -442,8 +472,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_deposit_money),
-                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney ?: 0.0),
-                ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney ?: 999999.0)
+                ArithUtil.round(mSelectRechCfgs?.minMoney ?: 0.00,2, RoundingMode.HALF_UP),
+                ArithUtil.round(mSelectRechCfgs?.maxMoney ?: 999999.00,2, RoundingMode.HALF_UP)
             )
         )
     }

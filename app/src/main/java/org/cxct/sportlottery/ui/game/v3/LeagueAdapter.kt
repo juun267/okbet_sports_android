@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -35,6 +36,12 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
 
     var playType: PlayType = PlayType.OU_HDP
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -88,7 +95,8 @@ class LeagueAdapter(private val matchType: MatchType) :
                     sportType,
                     playType,
                     leagueOddListener,
-                    itemExpandListener
+                    itemExpandListener,
+                    oddsType
                 )
             }
         }
@@ -124,11 +132,12 @@ class LeagueAdapter(private val matchType: MatchType) :
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
             itemExpandListener: ItemExpandListener?,
+            oddsType: OddsType
         ) {
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupLeagueOddList(item, sportType, playType, leagueOddListener)
+            setupLeagueOddList(item, sportType, playType, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, sportType, itemExpandListener)
         }
 
@@ -137,6 +146,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
+            oddsType: OddsType
         ) {
             itemView.league_odd_list.apply {
                 adapter = leagueOddAdapter.apply {
@@ -149,6 +159,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                     this.playType = playType
                     this.isTimerDecrease = (sportType == SportType.BASKETBALL)
                     this.leagueOddListener = leagueOddListener
+                    this.oddsType = oddsType
                 }
             }
         }

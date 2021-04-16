@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.base
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,8 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
     private var oddListDialog: DialogFragment? = null
     private var floatButtonView: View? = null
 
+    private var firstBet: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.betInfoRepository.isParlayPage.observe(this, {
@@ -64,6 +67,9 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
+
+            if (it.size == 0) firstBet = true
+
             when {
                 it.isNullOrEmpty() -> {
                     updateOddButton(false, null)
@@ -73,6 +79,13 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                 }
                 oddListDialog is BetInfoListDialog -> {
                     updateOddButton(true, it.size)
+                    if (firstBet && it.size == 1) {
+                        firstBet = false
+                        oddListDialog?.show(
+                            supportFragmentManager,
+                            BaseOddButtonActivity::class.java.simpleName
+                        )
+                    }
                 }
             }
         })
