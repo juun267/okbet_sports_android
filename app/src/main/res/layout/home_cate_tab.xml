@@ -13,6 +13,7 @@
         android:layout_marginBottom="3dp"
         android:textColor="@color/color_select_blue_black"
         android:textSize="@dimen/textSize15sp"
+        android:textStyle="bold"
         tools:text="全部" />
 
     <TextView
@@ -24,6 +25,7 @@
         android:paddingEnd="4dp"
         android:textColor="@color/color_select_white_gray"
         android:textSize="@dimen/textSize12sp"
+        android:textStyle="bold"
         tools:text="643" />
 
 </LinearLayout>
