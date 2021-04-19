@@ -339,6 +339,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 img_qr.visibility = View.VISIBLE
                 Glide.with(this).load(selectRechCfgs?.qrCode).into(img_qr)
             }
+            //充值個數hint
+            updateMoneyRange()
+
             //匯率
             tv_rate.text = String.format(
                 getString(R.string.hint_rate),

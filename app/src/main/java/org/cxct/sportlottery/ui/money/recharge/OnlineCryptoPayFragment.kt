@@ -255,6 +255,8 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
             } else {
                 tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs?.rebateFee ?: 0.0).times(100).toString()) + "%"
             }
+            //充值個數限制
+            updateMoneyRange()
 
         } catch (e: Exception) {
             e.printStackTrace()
