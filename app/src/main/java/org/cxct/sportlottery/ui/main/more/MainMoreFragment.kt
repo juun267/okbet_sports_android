@@ -59,6 +59,20 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         view_pager.adapter = Vp2FragmentAdapter(gameFragList, this)
         view_pager.isUserInputEnabled = false //關閉 viewPager2 左右滑動功能
 
+        //選中字體加粗
+        tab_layout.clearOnTabSelectedListeners()
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.customView?.findViewById<TextView>(R.id.tv_title)?.setTypeface(null, Typeface.BOLD)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab?.customView?.findViewById<TextView>(R.id.tv_title)?.setTypeface(null, Typeface.NORMAL)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
         //tabLayout、viewPager2 綁定 //tab 依照 viewPager2 動態生成
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->
             try {
@@ -79,20 +93,6 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 e.printStackTrace()
             }
         }.attach()
-
-        //選中字體加粗
-        tab_layout.clearOnTabSelectedListeners()
-        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.customView?.findViewById<TextView>(R.id.tv_title)?.setTypeface(null, Typeface.BOLD)
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                tab?.customView?.findViewById<TextView>(R.id.tv_title)?.setTypeface(null, Typeface.NORMAL)
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
     }
 
     private fun createGameFragList(cateDataList: List<GameCateData>?): List<Fragment> {
