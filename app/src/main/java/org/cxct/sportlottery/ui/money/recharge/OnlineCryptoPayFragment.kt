@@ -207,6 +207,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     mAccountBottomSheetList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         refreshAccount(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = accountBtsAdapter
