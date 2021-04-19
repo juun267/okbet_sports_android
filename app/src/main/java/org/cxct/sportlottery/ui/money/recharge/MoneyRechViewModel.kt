@@ -89,6 +89,11 @@ class MoneyRechViewModel(
         get() = _hashCodeErrorMsg
     private var _hashCodeErrorMsg = MutableLiveData<String>()
 
+    //支付截圖錯誤訊息
+    val voucherPathErrorMsg: LiveData<String>
+        get() = _voucherPathErrorMsg
+    private var _voucherPathErrorMsg = MutableLiveData<String>()
+
     //暱稱錯誤訊息
     val nickNameErrorMsg: LiveData<String>
         get() = _nickNameErrorMsg
@@ -240,6 +245,7 @@ class MoneyRechViewModel(
             MoneyType.CRYPTO_TYPE.code ->{
                 checkHashCode(moneyAddRequest.txHashCode ?: "")
                 checkRechargeAccount(moneyAddRequest.depositMoney.toString() , rechConfig)
+                checkScreenShot(moneyAddRequest.voucherPath)
             }
         }
         checkRechargeAmount(moneyAddRequest.depositMoney.toString(), rechConfig)
@@ -406,6 +412,20 @@ class MoneyRechViewModel(
             }
             else -> {
                 ""
+            }
+        }
+    }
+
+    //驗證支付截圖
+    fun checkScreenShot(voucherPath:String?){
+        viewModelScope.launch {
+            _voucherPathErrorMsg.value = when {
+                voucherPath.isNullOrEmpty() -> {
+                    androidContext.getString(R.string.title_upload_pic_plz)
+                }
+                else -> {
+                    ""
+                }
             }
         }
     }

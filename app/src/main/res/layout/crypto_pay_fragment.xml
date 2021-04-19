@@ -365,7 +365,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cv_upload"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/effect_edittext_bg">
 
                 <TextView
                     android:id="@+id/tv_upload"
@@ -384,6 +385,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
+                    android:color="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="@null"
                     app:contentPaddingLeft="10dp"
