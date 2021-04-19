@@ -444,7 +444,7 @@
     <string name="edt_hint_bank_account">12-19位数内的银行卡号</string>
     <string name="title_recharge_time">充值时间</string>
     <string name="title_current_money">当前余额</string>
-    <string name="btn_submit">提交申请</string>
+    <string name="btn_submit">提交</string>
     <string name="btn_copy">复制</string>
     <string name="title_qr_pay">扫码支付：</string>
     <string name="title_hint_qr_pay">扫一扫快捷支付，如有疑问请及时联系客服！</string>
