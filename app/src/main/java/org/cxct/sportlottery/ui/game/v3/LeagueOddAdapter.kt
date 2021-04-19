@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -31,6 +32,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
     var playType: PlayType = PlayType.OU_HDP
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var sportType: SportType? = null
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -73,7 +80,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 leagueOddListener,
                 isTimerEnable,
                 isTimerDecrease,
-                oddsType
+                oddsType,
+                sportType
             )
             is ViewHolder1x2 -> holder.bind(
                 matchType,
@@ -104,11 +112,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             isTimerDecrease: Boolean,
-            oddsType: OddsType
+            oddsType: OddsType,
+            sportType: SportType?
         ) {
             setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
 
-            setupOddButton(item, leagueOddListener, oddsType)
+            setupOddButton(item, leagueOddListener, oddsType, sportType)
 
             setupLiveButton(item, matchType, leagueOddListener)
 
@@ -209,10 +218,34 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupOddButton(
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType
+            oddsType: OddsType,
+            sportType: SportType?
         ) {
             val oddListHDP = item.odds[PlayType.HDP.code]
             val oddListOU = item.odds[PlayType.OU.code]
+
+            when (sportType) {
+                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    itemView.match_play_type_column1.text =
+                        itemView.context.getString(R.string.ou_hdp_hdp_title)
+                    itemView.match_play_type_column2.text =
+                        itemView.context.getString(R.string.ou_hdp_ou_title)
+                }
+
+                SportType.TENNIS -> {
+                    itemView.match_play_type_column1.text =
+                        itemView.context.getString(R.string.ou_hdp_1x2_title)
+                    itemView.match_play_type_column2.text =
+                        itemView.context.getString(R.string.ou_hdp_hdp_title_tennis)
+                }
+
+                SportType.BADMINTON, SportType.VOLLEYBALL -> {
+                    itemView.match_play_type_column1.text =
+                        itemView.context.getString(R.string.ou_hdp_1x2_title)
+                    itemView.match_play_type_column2.text =
+                        itemView.context.getString(R.string.ou_hdp_hdp_title_v_b)
+                }
+            }
 
             itemView.match_odd_hdp_home.apply {
 

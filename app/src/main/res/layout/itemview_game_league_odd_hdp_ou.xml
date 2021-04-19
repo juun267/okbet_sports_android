@@ -102,7 +102,7 @@
         app:layout_constraintTop_toTopOf="@id/match_row" />
 
     <TextView
-        android:id="@+id/match_ou_column"
+        android:id="@+id/match_play_type_column2"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
@@ -115,6 +115,7 @@
         app:layout_constraintTop_toTopOf="@id/match_row" />
 
     <TextView
+        android:id="@+id/match_play_type_column1"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
@@ -123,7 +124,7 @@
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="@id/match_row"
-        app:layout_constraintEnd_toStartOf="@id/match_ou_column"
+        app:layout_constraintEnd_toStartOf="@id/match_play_type_column2"
         app:layout_constraintTop_toTopOf="@id/match_row" />
 
     <View

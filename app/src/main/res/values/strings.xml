@@ -406,6 +406,9 @@
     <string name="outright_row_entrance">冠军盘口</string>
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
+    <string name="ou_hdp_hdp_title_tennis">让盘</string>
+    <string name="ou_hdp_hdp_title_v_b">让分</string>
+    <string name="ou_hdp_1x2_title">独赢</string>
     <string name="detail_outright_upper_bar_title">冠军</string>
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
