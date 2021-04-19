@@ -46,6 +46,11 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         else -> {
                             matchOdd.matchInfo?.id?.let {
                                 navOddsDetail(it)
+                                /*
+                                 * UI上呈現只會有一項,故直接使用data[0]
+                                 * 添加至投注細項(更多)
+                                 */
+                                viewModel.setOddsDetailMoreList(this.data[0].matchOdds)
                             }
                         }
                     }

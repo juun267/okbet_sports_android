@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Handler
@@ -33,6 +34,7 @@ const val NOT_INPLAY: Int = 0
 const val INPLAY: Int = 1
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
+@SuppressLint("SetTextI18n")
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
@@ -127,8 +129,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
             if (TextUtils.isEmpty(it)) {
                 binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
-                binding.betInfoAction.tv_bet_quota.text = "0"
-                binding.betInfoAction.tv_win_quota.text = "0"
+                binding.betInfoAction.tv_bet_quota.text = "0.000"
+                binding.betInfoAction.tv_win_quota.text = "0.000"
                 binding.tvErrorMessage.visibility = View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = 11.dp
                 binding.betInfoAction.tv_bet.apply {

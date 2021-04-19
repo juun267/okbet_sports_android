@@ -234,8 +234,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             e.printStackTrace()
         }
 
-        viewModel.isParlayPage(false)
-
         tabLayout.clearOnTabSelectedListeners()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -423,6 +421,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun queryData() {
         getAnnouncement()
         getSportMenu()
+        viewModel.isParlayPage(false)
     }
 
     private fun getAnnouncement() {

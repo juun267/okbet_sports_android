@@ -58,7 +58,7 @@
                 android:layout_height="16dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="2dp"
-                android:src="@drawable/ic_bet_delete" />
+                android:src="@drawable/ic_bet_delete_" />
 
 
         </RelativeLayout>

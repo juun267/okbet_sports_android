@@ -26,7 +26,7 @@ fun getOdds(matchOdd: MatchOdd, oddsType: OddsType): Double {
 fun getOdds(parlayOdd: ParlayOdd, oddsType: OddsType): Double {
     return when (oddsType) {
         OddsType.EU -> parlayOdd.odds
-        OddsType.HK -> parlayOdd.hkOdds
+        OddsType.HK -> parlayOdd.hkOdds?:0.0
     }
 }
 

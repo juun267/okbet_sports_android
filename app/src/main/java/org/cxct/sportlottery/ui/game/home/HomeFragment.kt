@@ -191,13 +191,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_in_play.setRvGameData(result.matchPreloadData)
         drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
-                //使用於投注細項 -> [更多]
-                val selectData =
-                    result.matchPreloadData?.datas?.find { data -> select.code == data.code }
-                selectData?.matchs?.let { list -> viewModel.setOddsDetailMoreList(list) }
-
                 scroll_view.smoothScrollTo(0, 0)
-
                 navOddsDetailLive(select.code, select.match?.id, "EU")
             }
         })
