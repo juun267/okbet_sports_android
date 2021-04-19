@@ -149,7 +149,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                         oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
 
                             val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
-                                oddSocket.id == odd.id
+                                oddSocket?.id == odd.id
                             }
 
                             oddSocket?.let { oddSocketNonNull ->
