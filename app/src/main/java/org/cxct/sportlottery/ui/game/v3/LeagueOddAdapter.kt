@@ -347,6 +347,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> ""
                 }
 
+                odd_1x2_top_text.visibility = View.GONE
+
                 odd_1x2_bottom_text.text = when {
                     (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
                         oddList1x2[0]?.odds?.let {
@@ -481,6 +483,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                     else -> ""
                 }
+
+                odd_1x2_top_text.visibility = View.GONE
 
                 odd_1x2_bottom_text.text = when {
                     (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
