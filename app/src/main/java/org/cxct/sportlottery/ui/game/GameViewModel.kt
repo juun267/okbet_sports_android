@@ -1046,7 +1046,7 @@ class GameViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
 
-        if (betInfoRepository.betList.size >= 10) {
+        if (betInfoRepository.betList.size >= 10 || betInfoRepository.betList.size == 0) {
             return
         }
 
@@ -1064,6 +1064,11 @@ class GameViewModel(
     }
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
+
+        if (betInfoRepository.betList.size >= 10 || betInfoRepository.betList.size == 0) {
+            return
+        }
+
         val sendList: MutableList<Odd> = mutableListOf()
         betInfoRepository.betList.let { list ->
 
