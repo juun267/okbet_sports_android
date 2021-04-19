@@ -220,7 +220,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             oddsType: OddsType,
             sportType: SportType?
         ) {
-            val oddListHDP = item.odds[PlayType.HDP.code]
+            val oddListHDP = when (sportType) {
+                SportType.TENNIS -> {
+                    item.odds[PlayType.SET_HDP.code]
+                }
+                else -> {
+                    item.odds[PlayType.HDP.code]
+                }
+            }
             val oddListOU = item.odds[PlayType.OU.code]
             val oddList1x2 = item.odds[PlayType.X12.code]
 
@@ -651,7 +658,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                         }
 
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        SportType.TENNIS -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[0]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.SET_HDP.code, odd)
+                                }
+                            }
+                        }
+
+                        SportType.VOLLEYBALL, SportType.BADMINTON -> {
                             if (oddListHDP != null && oddListHDP.size >= 2) {
                                 oddListHDP[0]?.let { odd ->
                                     leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
@@ -792,7 +807,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                         }
 
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        SportType.TENNIS -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[1]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.SET_HDP.code, odd)
+                                }
+                            }
+                        }
+                        
+                        SportType.VOLLEYBALL, SportType.BADMINTON -> {
                             if (oddListHDP != null && oddListHDP.size >= 2) {
                                 oddListHDP[1]?.let { odd ->
                                     leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
