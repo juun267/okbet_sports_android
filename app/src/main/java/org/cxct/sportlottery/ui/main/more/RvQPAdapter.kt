@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
 
-class RvQPAdapter : RecyclerView.Adapter<RvQPAdapter.ItemViewHolder>() {
+class RvQPAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
     private var mDataList: MutableList<GameItemData> = mutableListOf()
@@ -26,14 +26,35 @@ class RvQPAdapter : RecyclerView.Adapter<RvQPAdapter.ItemViewHolder>() {
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
-        val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_live_game_rv, viewGroup, false)
-        return ItemViewHolder(layout)
+    private enum class ViewType { HEADER, ITEM }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ViewType.HEADER.ordinal -> {
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_qp_game_rv_header, viewGroup, false)
+                HeaderViewHolder(layout)
+            }
+            else -> {
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_live_game_rv, viewGroup, false)
+                ItemViewHolder(layout)
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val data = mDataList[position].thirdGameData
-        holder.bind(data)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ItemViewHolder -> {
+                val data = mDataList[position].thirdGameData
+                holder.bind(data)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            0 -> ViewType.HEADER.ordinal
+            else -> ViewType.ITEM.ordinal
+        }
     }
 
     override fun getItemCount(): Int {
@@ -45,8 +66,9 @@ class RvQPAdapter : RecyclerView.Adapter<RvQPAdapter.ItemViewHolder>() {
         Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 
-    fun setData(newDataList: MutableList<GameItemData>?) {
-        mDataList = newDataList ?: mutableListOf() //若 newDataList == null，則給一個空 list
+    fun setData(newDataList: List<GameItemData>?) {
+        mDataList = mutableListOf(GameItemData(null)) //開頭添加一項為 Header
+        newDataList?.let { mDataList.addAll(it) }
         notifyDataSetChanged()
     }
 
@@ -55,6 +77,7 @@ class RvQPAdapter : RecyclerView.Adapter<RvQPAdapter.ItemViewHolder>() {
         mOnSelectThirdGameListener = onSelectItemListener
     }
 
+    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mIvImage: ImageView = itemView.findViewById(R.id.btn_game)
