@@ -52,6 +52,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
+const val BET_INFO_MAX_COUNT = 10
 class GameViewModel(
     private val androidContext: Context,
     userInfoRepository: UserInfoRepository,
@@ -1046,7 +1047,7 @@ class GameViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
 
-        if (betInfoRepository.betList.size >= 10) {
+        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
             return
         }
 
@@ -1065,7 +1066,7 @@ class GameViewModel(
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
 
-        if (betInfoRepository.betList.size >= 10) {
+        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
             return
         }
 
