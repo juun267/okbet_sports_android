@@ -27,6 +27,7 @@
             android:layout_weight="1"
             app:defaultStatusText="@string/recharge_state_all"
             app:defaultBottomSheetTitleText="@string/choose_order"
+            app:arrowAtEnd="true"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
         <View
@@ -43,6 +44,7 @@
             android:layout_weight="1"
             app:defaultStatusText="@string/recharge_channel_all"
             app:defaultBottomSheetTitleText="@string/choose_method"
+            app:arrowAtEnd="true"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
     </LinearLayout>

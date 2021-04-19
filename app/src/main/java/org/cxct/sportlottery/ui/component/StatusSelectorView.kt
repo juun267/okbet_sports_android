@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.content_bottom_sheet_other_bet_record_item
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import java.util.*
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
@@ -66,6 +67,15 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         get() = sheetAdapter?.dataList
         set(value) {
             field = value
+
+            sheet_rv_more?.apply {
+                if (value?.size?:1 < 3) {
+                    val params: ViewGroup.LayoutParams = sheet_rv_more.layoutParams
+                    params.height = 48.dp * (value?.size?:1)
+                    sheet_rv_more.layoutParams = params
+                }
+            }
+
             sheetAdapter?.dataList = value ?: listOf()
             sheetAdapter?.notifyDataSetChanged()
         }
@@ -192,7 +202,7 @@ data class StatusSheetData(val code: String?, val showName: String?) {
     var isChecked = false
 }
 
-class StatusSheetAdapter (private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class StatusSheetAdapter(private val checkedListener: ItemCheckedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mPreviousItem: String? = null
 

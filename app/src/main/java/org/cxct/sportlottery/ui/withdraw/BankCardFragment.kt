@@ -555,7 +555,11 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
         dataCheckedList.forEachIndexed { index, _ ->
             dataCheckedList[index] = index == 0
         }
-        selectedListener.onSelected(dataList[0])
+        if (dataList.isNotEmpty()) {
+            dataList[0].let {
+                selectedListener.onSelected(it)
+            }
+        }
         notifyItemChanged(selectedPosition)
         notifyItemChanged(0)
     }
