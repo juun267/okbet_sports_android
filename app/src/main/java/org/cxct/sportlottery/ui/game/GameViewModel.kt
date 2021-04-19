@@ -236,6 +236,7 @@ class GameViewModel(
                 listWithOutOutright.add(it.matchOdd.oddsId)
             }
         }
+        if(listWithOutOutright.size>0)_systemDelete.postValue(true)
         listWithOutOutright.forEach {
             removeBetInfoItem(it)
         }
