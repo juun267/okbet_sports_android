@@ -211,9 +211,9 @@ class GameViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
-    private val _syetemDelete = MutableLiveData<Boolean>()
+    private val _systemDelete = MutableLiveData<Boolean>()
     val systemDelete: LiveData<Boolean>
-        get() = _syetemDelete
+        get() = _systemDelete
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
@@ -1046,7 +1046,7 @@ class GameViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
 
-        if (betInfoRepository.betList.size >= 10 || betInfoRepository.betList.size == 0) {
+        if (betInfoRepository.betList.size >= 10) {
             return
         }
 
@@ -1065,7 +1065,7 @@ class GameViewModel(
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
 
-        if (betInfoRepository.betList.size >= 10 || betInfoRepository.betList.size == 0) {
+        if (betInfoRepository.betList.size >= 10) {
             return
         }
 
@@ -1082,7 +1082,7 @@ class GameViewModel(
             run loop@{
                 groupList.forEach {
                     if (it.value.size>1){
-                        _syetemDelete.postValue(true)
+                        _systemDelete.postValue(true)
                         return@loop
                     }
                 }
