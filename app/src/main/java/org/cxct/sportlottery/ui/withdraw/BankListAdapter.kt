@@ -30,7 +30,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             notifyDataSetChanged()
         }
 
-    var transferAddSwitch = WithdrawViewModel.TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false)
+    var transferAddSwitch = TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false)
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -89,7 +89,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 holder.bind(transferAddSwitch, mBankListClickListener)
             }
             is NoCardAddViewHolder -> {
-                holder.bind(mBankListClickListener)
+                holder.bind(transferAddSwitch, mBankListClickListener)
             }
         }
     }
@@ -154,7 +154,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class LastViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(transferAddSwitch: WithdrawViewModel.TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
+        fun bind(transferAddSwitch: TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
             itemView.apply {
                 tv_add_more_card.text = transferAddSwitch.run {
                     when {
@@ -165,7 +165,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                     }
                 }
                 cv_add.setOnClickListener {
-                    mBankListClickListener.onAdd()
+                    mBankListClickListener.onAdd(transferAddSwitch)
                 }
             }
         }
@@ -181,9 +181,9 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class NoCardAddViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(mBankListClickListener: BankListClickListener) {
+        fun bind(transferAddSwitch: TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
             itemView.cv_add_no_card.setOnClickListener {
-                mBankListClickListener.onAdd()
+                mBankListClickListener.onAdd(transferAddSwitch)
             }
 
         }
@@ -199,8 +199,12 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 }
 
-class BankListClickListener(private val editBankListener: (bankCard: BankCardList) -> Unit, private val editCryptoListener: (cryptoCard: BankCardList) -> Unit, private val addListener: () -> Unit) {
+class BankListClickListener(
+    private val editBankListener: (bankCard: BankCardList) -> Unit,
+    private val editCryptoListener: (cryptoCard: BankCardList) -> Unit,
+    private val addListener: (transferAddSwitch: TransferTypeAddSwitch) -> Unit
+) {
     fun onBankEdit(bankCard: BankCardList) = editBankListener(bankCard)
     fun onCryptoEdit(cryptoCard: BankCardList) = editCryptoListener(cryptoCard)
-    fun onAdd() = addListener()
+    fun onAdd(transferAddSwitch: TransferTypeAddSwitch) = addListener(transferAddSwitch)
 }

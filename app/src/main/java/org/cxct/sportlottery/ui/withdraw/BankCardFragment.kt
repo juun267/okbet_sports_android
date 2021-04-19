@@ -38,6 +38,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
+    private val mAddSwitch: TransferTypeAddSwitch? by lazy { args.transferTypeAddSwitch } //是否可新增資金卡
 
     private val protocolAdapter by lazy {
         ProtocolAdapter(OnSelectProtocol {
@@ -129,6 +130,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             block_transfer_type.visibility = View.GONE
         } else {
             block_transfer_type.visibility = View.VISIBLE
+        }
+
+        mAddSwitch?.apply {
+            tab_bank_card.visibility = if (bankTransfer) View.VISIBLE else View.GONE
+            tab_crypto.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
+            block_transfer_type.visibility = if (!(bankTransfer && cryptoTransfer)) View.GONE else View.VISIBLE
         }
     }
 
