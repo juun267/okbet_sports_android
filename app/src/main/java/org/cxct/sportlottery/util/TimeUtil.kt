@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import android.os.Build
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -43,12 +44,25 @@ object TimeUtil {
     }
 
     fun stampToDateHMSTimeZone(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
-        val currentLocalTime = calendar.time
-        val timeZoneFormat = SimpleDateFormat("X")
-        val timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
-        return simpleDateFormat.format(Date(time)) + " (GMT+" + timeZoneGTM + ")"
+        try {
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
+            val currentLocalTime = calendar.time
+            //Android 6.0以下會Crash
+            val timeZoneFormat: SimpleDateFormat?
+            val timeZoneGTM: Int?
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                timeZoneFormat = SimpleDateFormat("Z")
+                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
+            } else {
+                timeZoneFormat = SimpleDateFormat("X")
+                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
+            }
+            return simpleDateFormat.format(Date(time)) + " (GMT+" + timeZoneGTM + ")"
+        }catch (e:Exception){
+            e.printStackTrace()
+            return ""
+        }
     }
 
     @JvmStatic
