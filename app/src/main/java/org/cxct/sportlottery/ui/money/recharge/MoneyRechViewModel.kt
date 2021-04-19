@@ -187,15 +187,15 @@ class MoneyRechViewModel(
     }
 
     //在線支付
-    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, bankCode: String?) {
-        checkRcgOnlineAmount(depositMoney.toString(), mSelectRechCfgs)
+    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: String, bankCode: String?) {
+        checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "bankCode" to (bankCode ?: ""),
-                "depositMoney" to depositMoney.toString()
+                "depositMoney" to depositMoney
             )
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
@@ -205,8 +205,8 @@ class MoneyRechViewModel(
     }
 
     //在線支付 - 虛擬幣 //TODO Bill 確認API參數
-    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: Int, payee: String?,payeeName: String?) {
-        checkRcgOnlineAccount(depositMoney.toString(), mSelectRechCfgs)
+    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: String, payee: String?,payeeName: String?) {
+        checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
@@ -214,7 +214,7 @@ class MoneyRechViewModel(
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "payee" to (payee ?: ""),
                 "payeeName" to (payeeName ?: ""),
-                "depositMoney" to depositMoney.toString()
+                "depositMoney" to depositMoney
             )
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
@@ -250,7 +250,7 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAmountMsg.value = when {
-            rechargeAmount.isEmpty() -> {
+            rechargeAmount.isNullOrEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
@@ -271,7 +271,7 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAccountMsg.value = when {
-            rechargeAmount.isEmpty()  -> {
+            rechargeAmount.isNullOrEmpty()  -> {
                 androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(
@@ -308,12 +308,12 @@ class MoneyRechViewModel(
         }
     }
 
-    //在線充值金額
-    fun checkRcgOnlineAccount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+    //在線充值 虛擬幣充值個數認證
+    private fun checkRcgOnlineAccount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAccountMsg.value = when {
-            rechargeAmount.isEmpty() -> {
+            rechargeAmount.isNullOrEmpty()-> {
                 androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyRechargeAmount(

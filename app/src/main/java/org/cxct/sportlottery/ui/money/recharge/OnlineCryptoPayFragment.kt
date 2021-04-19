@@ -121,13 +121,13 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
     private fun initButton() {
         btn_submit.setOnClickListener {
             val depositMoney = if (et_recharge_account.getText().isNotEmpty()) {
-                et_recharge_account.getText().toInt()
+                et_recharge_account.getText()
             } else {
-                0
+                ""
             }
 
-            var payee = txv_currency.text.toString()
-            var payeeName = txv_account.text.toString()
+            val payee = txv_currency.text.toString()
+            val payeeName = txv_account.text.toString()
             viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, payee, payeeName)
         }
 

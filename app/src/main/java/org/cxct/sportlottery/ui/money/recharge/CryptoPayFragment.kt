@@ -519,9 +519,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             rechCfgId = mSelectRechCfgs?.id ?: 0,
             bankCode = null,
             depositMoney = if (et_recharge_account.getText().isNotEmpty()) {
-                et_recharge_account.getText().toInt()
+                et_recharge_account.getText()
             } else {
-                0
+                ""
             },
             payer = null,
             payerName = "",
