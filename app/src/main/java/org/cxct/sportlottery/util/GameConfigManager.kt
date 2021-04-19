@@ -26,6 +26,16 @@ object GameConfigManager {
     }
 
     /**
+     * 獲取第三方遊戲 遊戲大廳 icon 資源 (電子 tab icon 使用)
+     * 第二層對應 gameFirmMap
+     *  @param gameCategory: 需轉換成小寫
+     *  @param firmCode: 需轉換成小寫
+     */
+    fun getThirdGameHallDZIconUrl(gameCategory: String?, firmCode: String?): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/game-hall-vision__${firmCode?.toLowerCase(Locale.getDefault())}_active.png"
+    }
+
+    /**
      * 獲取第三方遊戲 遊戲大廳 icon 資源
      *
      *  @param gameCategory: 需轉換成小寫
