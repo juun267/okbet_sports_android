@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.network.bank.my
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.network.money.TransferType
-import java.io.Serializable
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class BankCardList(
     @Json(name = "addTime")
@@ -28,6 +30,6 @@ data class BankCardList(
     val uwType: String,
     @Json(name = "bankCode")
     val bankCode: String,
-) : Serializable {
+) : Parcelable {
     var transferType: TransferType = TransferType.BANK
 }
