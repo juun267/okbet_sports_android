@@ -146,7 +146,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 e.printStackTrace()
             }
         }
-        et_transaction_id.setDigits("0123456789.xX_-@")
+        et_transaction_id.setDigits("0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-@.")
     }
 
     private fun initView() {
