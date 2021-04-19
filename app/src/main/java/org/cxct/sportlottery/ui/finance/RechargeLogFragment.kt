@@ -43,7 +43,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getUserRechargeList(false)
+                if (viewModel.isFinalPage.value == false) {
+                    viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
+                }
                 scrollToTopControl(firstVisibleItemPosition)
             }
         }
@@ -63,7 +65,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
@@ -86,8 +88,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupRechargeLogList(view: View) {
         view.rvlist.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = rechargeLogAdapter
@@ -104,7 +105,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner,  {
+        viewModel.isLoading.observe(this.viewLifecycleOwner, {
             if (it) {
                 loading()
             } else {
@@ -124,10 +125,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
             if (logDetailDialog.dialog?.isShowing != true) {
 
-                logDetailDialog.show(
-                    parentFragmentManager,
-                    RechargeLogFragment::class.java.simpleName
-                )
+                logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
             }
         })
 
