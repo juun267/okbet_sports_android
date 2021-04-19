@@ -1047,7 +1047,7 @@ class GameViewModel(
 
     fun getBetInfoList(oddsList: List<Odd>) {
 
-        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
+        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT) {
             return
         }
 
@@ -1066,7 +1066,7 @@ class GameViewModel(
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
 
-        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
+        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT) {
             return
         }
 
