@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.MenuLeftFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
@@ -158,6 +159,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         btn_register.setOnClickListener {
             startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
         }
+
+        tv_odds_type.setOnClickListener {
+            ChangeOddsTypeDialog().show(supportFragmentManager, null)
+        }
+
     }
 
     private fun initMenu() {
@@ -372,6 +378,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        viewModel.oddsType.observe(this, {
+            tv_odds_type.text = getString(it.res)
+        })
+
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
@@ -380,11 +390,13 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
             iv_head.visibility = View.VISIBLE
+            tv_odds_type.visibility = View.VISIBLE
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
+            tv_odds_type.visibility = View.GONE
         }
     }
 
@@ -421,7 +433,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun queryData() {
         getAnnouncement()
         getSportMenu()
-        viewModel.isParlayPage(false)
+        defaultPage()
     }
 
     private fun getAnnouncement() {
@@ -431,6 +443,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun getSportMenu() {
         loading()
         viewModel.getSportMenu()
+    }
+
+    private fun defaultPage(){
+        viewModel.isParlayPage(false)
     }
 
     private fun popAllFragment() {
