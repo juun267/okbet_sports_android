@@ -386,7 +386,7 @@ class WithdrawViewModel(
 
     fun checkCreateName(createName: String) {
         _createNameErrorMsg.value = when {
-            createName.isEmpty() -> androidContext.getString(R.string.error_create_name_empty)
+            createName.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyCreateName(createName) -> {
                 androidContext.getString(R.string.error_incompatible_format)
             }
@@ -396,7 +396,7 @@ class WithdrawViewModel(
 
     fun checkBankCardNumber(bankCardNumber: String) {
         _bankCardNumberMsg.value = when {
-            bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_bank_card_number_empty)
+            bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyBankCardNumber(bankCardNumber) -> {
                 androidContext.getString(R.string.error_bank_card_number)
             }
@@ -406,7 +406,7 @@ class WithdrawViewModel(
 
     fun checkNetWorkPoint(networkPoint: String) {
         _networkPointMsg.value = when {
-            networkPoint.isEmpty() -> androidContext.getString(R.string.error_network_point_empty)
+            networkPoint.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyNetworkPoint(networkPoint) -> {
                 androidContext.getString(R.string.error_network_point)
             }
@@ -416,7 +416,7 @@ class WithdrawViewModel(
 
     fun checkWalletAddress(walletAddress: String) {
         _walletAddressMsg.value = when {
-            walletAddress.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
+            walletAddress.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyCryptoWalletAddress(walletAddress) -> androidContext.getString(R.string.error_wallet_address)
             else -> ""
         }
@@ -424,7 +424,7 @@ class WithdrawViewModel(
 
     fun checkWithdrawPassword(withdrawPassword: String) {
         _withdrawPasswordMsg.value = when {
-            withdrawPassword.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
+            withdrawPassword.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWithdrawPassword(withdrawPassword) -> {
                 androidContext.getString(R.string.error_withdraw_password)
             }
