@@ -276,7 +276,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun clearBankInputFiled() {
-        et_create_name.resetText()
         et_bank_card_number.resetText()
         et_network_point.resetText()
         et_withdrawal_password.resetText()
