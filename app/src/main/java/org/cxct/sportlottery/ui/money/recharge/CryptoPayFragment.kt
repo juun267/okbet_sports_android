@@ -382,6 +382,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 getString(R.string.hint_remark),
                 selectRechCfgs?.remark
             )
+
+            //更新充值金額&手續費金額
+            refreshMoneyDetail(et_recharge_amount.getText())
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -404,48 +408,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 }
 
                 checkRechargeAccount(it, mSelectRechCfgs)
-                if (it.isEmpty() || it.isBlank()) {
-                    tv_recharge_money.text =
-                        String.format(resources.getString(R.string.txv_recharge_money), "0.000")
-                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
-                        tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount), "0.000")
-                    } else {
-                        tv_fee_amount.text =
-                            String.format(getString(R.string.hint_fee_amount), "0.000")
-                    }
-                } else {
-                    //充值金額
-                    tv_recharge_money.text = String.format(
-                        resources.getString(R.string.txv_recharge_money),
-                        ArithUtil.toMoneyFormat(
-                            it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
-                        )
-                    )
-                    //返利/手續費金額
-                    if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
-                        tv_fee_amount.text =
-                            String.format(
-                                getString(R.string.hint_feeback_amount),
-                                ArithUtil.toMoneyFormat(
-                                    (it.toDouble()
-                                        .times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(
-                                            mSelectRechCfgs?.rebateFee ?: 0.0
-                                        )
-                                )
-                            )
-                    } else {
-                        tv_fee_amount.text = String.format(
-                            getString(R.string.hint_fee_amount),
-                            ArithUtil.toMoneyFormat(
-                                abs(
-                                    it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
-                                        .times(mSelectRechCfgs?.rebateFee ?: 0.0)
-                                )
-                            )
-                        )
-                    }
-                }
+
+                refreshMoneyDetail(it)
 
                 if (mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
                     tv_fee_rate.visibility = View.GONE
@@ -454,6 +418,52 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     tv_fee_rate.visibility = View.VISIBLE
                     tv_fee_amount.visibility = View.VISIBLE
                 }
+            }
+        }
+    }
+
+    //更新充值金額&手續費金額
+    private fun refreshMoneyDetail(rechargeAmount:String){
+        if (rechargeAmount.isEmpty() || rechargeAmount.isBlank()) {
+            tv_recharge_money.text =
+                String.format(resources.getString(R.string.txv_recharge_money), "0.000")
+            if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
+                tv_fee_amount.text =
+                    String.format(getString(R.string.hint_feeback_amount), "0.000")
+            } else {
+                tv_fee_amount.text =
+                    String.format(getString(R.string.hint_fee_amount), "0.000")
+            }
+        } else {
+            //充值金額
+            tv_recharge_money.text = String.format(
+                resources.getString(R.string.txv_recharge_money),
+                ArithUtil.toMoneyFormat(
+                    rechargeAmount.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
+                )
+            )
+            //返利/手續費金額
+            if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
+                tv_fee_amount.text =
+                    String.format(
+                        getString(R.string.hint_feeback_amount),
+                        ArithUtil.toMoneyFormat(
+                            (rechargeAmount.toDouble()
+                                .times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(
+                                    mSelectRechCfgs?.rebateFee ?: 0.0
+                                )
+                        )
+                    )
+            } else {
+                tv_fee_amount.text = String.format(
+                    getString(R.string.hint_fee_amount),
+                    ArithUtil.toMoneyFormat(
+                        abs(
+                            rechargeAmount.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
+                                .times(mSelectRechCfgs?.rebateFee ?: 0.0)
+                        )
+                    )
+                )
             }
         }
     }
