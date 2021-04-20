@@ -168,9 +168,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_rate"
             android:textColor="@color/orangeRed"
-            android:textSize="@dimen/textSize12sp"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
+            android:textSize="@dimen/textSize12sp" />
 
 
 

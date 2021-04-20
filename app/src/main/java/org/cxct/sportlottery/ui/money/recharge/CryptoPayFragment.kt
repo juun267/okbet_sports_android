@@ -165,7 +165,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         else
             tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
 
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -357,22 +356,17 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             )
 
             //手續費率/返利
-            if (selectRechCfgs?.rebateFee != 0.0 && selectRechCfgs?.rebateFee != null) {
-                tv_fee_rate.visibility = View.VISIBLE
-                if (selectRechCfgs.rebateFee ?: 0.0 > 0.0) { //返利
-                    tv_fee_rate.text = String.format(
-                        getString(R.string.hint_feeback_rate),
-                        (selectRechCfgs.rebateFee)?.times(100)
-                    ) + "%"
-                } else {
-                    tv_fee_rate.text = String.format(
-                        getString(R.string.hint_fee_rate),
-                        ArithUtil.toBonusMoneyFormat(ArithUtil.mul(abs(selectRechCfgs.rebateFee ?: 0.0),100.0))
-                    ) + "%"
+            when{
+                selectRechCfgs?.rebateFee ==  0.0 || selectRechCfgs?.rebateFee == null -> {
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), 0) + "%"
+                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
-            } else {
-                tv_fee_rate.visibility = View.GONE
-                tv_fee_amount.visibility = View.GONE
+                selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee?.times(100).toString()) + "%"
+                }
+                else ->{
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs?.rebateFee ?: 0.0), 100.0)) + "%"
+                }
             }
 
             //充幣地址
@@ -396,6 +390,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //充值個數
@@ -417,11 +412,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 refreshMoneyDetail(it)
 
                 if (mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
-                    tv_fee_rate.visibility = View.GONE
-                    tv_fee_amount.visibility = View.GONE
-                } else {
-                    tv_fee_rate.visibility = View.VISIBLE
-                    tv_fee_amount.visibility = View.VISIBLE
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), 0) + "%"
+                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
             }
         }
