@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil.stampToDateHMS
 
 class BankListAdapter(private val mBankListClickListener: BankListClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -99,7 +100,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             itemView.apply {
                 iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
                 tv_bank_name.text = data.bankName
-                tv_name.text = fullName
+                tv_name.text = TextUtil.maskFullName(fullName)
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
                 if (sConfigData?.enableModifyBank == "1") {

@@ -75,6 +75,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
+            view.et_input.isEnabled = typedArray.getBoolean(R.styleable.CustomView_cvEnable, true).apply {
+                if (this)
+                    clearIsShow = false
+            }
+
             view.tv_start.visibility = typedArray.getInt(R.styleable.CustomView_necessarySymbol, 0x00000008) //預設隱藏 需要再打開
             view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
             view.btn_clear.visibility = View.GONE
@@ -182,7 +187,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
-    fun setDigits(input:String) {
+    fun setDigits(input: String) {
         et_input.keyListener = DigitsKeyListener.getInstance(input)
     }
 
@@ -193,14 +198,14 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged {
-            if (inputType != 0x00000081 && inputType != 0x00000012) {
+            if (inputType != 0x00000081 && inputType != 0x00000012 && et_input.isEnabled) {
                 clearIsShow = it.isNotEmpty()
             }
             afterTextChanged.invoke(it)
         }
     }
 
-    fun setCursor(){
+    fun setCursor() {
         et_input.setSelection(et_input.text.length)
     }
 

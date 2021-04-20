@@ -47,4 +47,9 @@ object TextUtil {
         return str.replace("C", "串")
     }
 
+    fun maskFullName(fullName: String): String {
+        val stringBuffer = StringBuffer().append(fullName[0])
+        for (i in 0 until fullName.length - 1) stringBuffer.append('*')
+        return stringBuffer.toString()
+    }
 }

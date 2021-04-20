@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
@@ -119,7 +120,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         showHideTab()
         sv_protocol.setAdapter(protocolAdapter)
 
-        initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
 
@@ -177,7 +177,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //開戶名
-            setupClearButtonVisibility(et_create_name) { checkCreateName(it) }
+            //真實姓名為空時才可進行編輯see userInfo.observe
 
             //銀行卡號
             setupClearButtonVisibility(et_bank_card_number) { checkBankCardNumber(it) }
@@ -227,7 +227,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             subAddress = et_network_point.getText(),
                             cardNo = et_bank_card_number.getText(),
                             fundPwd = et_withdrawal_password.getText(),
-                            fullName = et_create_name.getText(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
                             bankCode = args.editBankCard?.bankCode.toString()
@@ -333,9 +332,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 hideLoading()
         })
 
-        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
-            if (mBankCardStatus)
-                it?.fullName?.let { fullName -> if (fullName.isNotEmpty()) et_create_name.setText(fullName) }
+        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+            it?.fullName?.let { fullName -> if (fullName.isNotEmpty()) et_create_name.setText(TextUtil.maskFullName(fullName)) } ?: run {
+                setupClearButtonVisibility(et_create_name) { inputFullName -> viewModel.checkCreateName(inputFullName) }
+            }
         })
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
