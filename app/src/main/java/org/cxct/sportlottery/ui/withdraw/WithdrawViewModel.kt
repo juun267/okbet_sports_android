@@ -148,7 +148,6 @@ class WithdrawViewModel(
 
     private var dealType: TransferType = TransferType.BANK
 
-    data class TransferTypeAddSwitch(val bankTransfer: Boolean, val cryptoTransfer: Boolean)
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
