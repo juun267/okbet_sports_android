@@ -354,12 +354,12 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (selectRechCfgs.rebateFee ?: 0.0 > 0.0) { //返利
                     tv_fee_rate.text = String.format(
                         getString(R.string.hint_feeback_rate),
-                        ArithUtil.toMoneyFormat((selectRechCfgs.rebateFee)?.times(100))
+                        (selectRechCfgs.rebateFee)?.times(100)
                     ) + "%"
                 } else {
                     tv_fee_rate.text = String.format(
                         getString(R.string.hint_fee_rate),
-                        ArithUtil.toMoneyFormat(abs(selectRechCfgs.rebateFee ?: 0.0).times(100))
+                        ArithUtil.toBonusMoneyFormat(ArithUtil.mul(abs(selectRechCfgs.rebateFee ?: 0.0),100.0))
                     ) + "%"
                 }
             } else {

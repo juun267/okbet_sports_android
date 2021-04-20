@@ -253,7 +253,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
             if (selectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利
                 tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee?.times(100).toString()) + "%"
             } else {
-                tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs?.rebateFee ?: 0.0).times(100).toString()) + "%"
+                tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs?.rebateFee ?: 0.0), 100.0)) + "%"
             }
             //充值個數限制
             updateMoneyRange()
