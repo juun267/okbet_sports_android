@@ -195,6 +195,7 @@ class FinanceViewModel(
     }
 
     fun getUserRechargeList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
+        if (isFinalPage.value == true) return
         loading()
         val rechType = rechargeChannelList.find {
             it.isChecked
@@ -263,9 +264,8 @@ class FinanceViewModel(
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
     ) {
+        if (isFinalPage.value == true) return
         loading()
-
-
         val checkStatus = withdrawStateList.find {
             it.isChecked
         }?.code?.toIntOrNull()

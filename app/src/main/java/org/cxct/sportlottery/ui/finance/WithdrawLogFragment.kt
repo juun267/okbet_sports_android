@@ -44,9 +44,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                if (viewModel.isFinalPage.value == false) {
-                    viewModel.getUserWithdrawList(false, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
-                }
+                viewModel.getUserWithdrawList(false, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
                 scrollToTopControl(firstVisibleItemPosition)
             }
         }
