@@ -267,6 +267,9 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                 }
             }
 
+            //備註
+            tv_hint.text = selectRechCfgs?.remark
+
             //充值個數限制
             updateMoneyRange()
 
