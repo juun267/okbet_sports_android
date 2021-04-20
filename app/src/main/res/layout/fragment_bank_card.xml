@@ -113,6 +113,7 @@
                     android:id="@+id/et_create_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cvEnable="false"
                     app:cvHint="@string/hint_please_enter_create_name"
                     app:cvInputType="text"
                     app:cvTitle="@string/create_name"
