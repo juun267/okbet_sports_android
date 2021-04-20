@@ -15,8 +15,8 @@ import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
-import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.tv_money
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
+import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.network.Constants
@@ -76,6 +76,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
     private fun initUI() {
         iv_close.setOnClickListener { dismiss() }
+        tv_clean.setOnClickListener { viewModel.removeBetInfoAll() }
         tv_add_more.setOnClickListener { dismiss() }
         tv_bet.setOnClickListener(object : OnForbidClickListener() {
             override fun forbidClick(view: View?) {

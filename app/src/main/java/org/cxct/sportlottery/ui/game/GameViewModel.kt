@@ -1161,6 +1161,10 @@ class GameViewModel(
         }
     }
 
+    fun removeBetInfoAll(){
+        betInfoRepository.clear()
+    }
+
     fun getOddsDetailByMatchId(matchId: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {

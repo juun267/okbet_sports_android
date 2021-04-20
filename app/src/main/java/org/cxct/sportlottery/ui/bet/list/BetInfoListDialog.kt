@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
+import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
@@ -73,6 +74,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private fun initUI() {
         iv_close.setOnClickListener {
             dismiss()
+        }
+
+        tv_clean.setOnClickListener {
+            viewModel.removeBetInfoAll()
         }
 
         betInfoListAdapter = BetInfoListAdapter(requireContext(), this@BetInfoListDialog)
