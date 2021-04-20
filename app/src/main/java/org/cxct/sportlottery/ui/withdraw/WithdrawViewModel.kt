@@ -141,6 +141,11 @@ class WithdrawViewModel(
         get() = _moneyCardExist
     private var _moneyCardExist = MutableLiveData<Set<MoneyCardExist>>()
 
+    //可被增加的虛擬幣卡列表
+    val addCryptoCardList: LiveData<List<MoneyRechCfg.DetailList>>
+        get() = _addCryptoCardList
+    private var _addCryptoCardList = MutableLiveData<List<MoneyRechCfg.DetailList>>()
+
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
     //資金卡片config
@@ -350,6 +355,7 @@ class WithdrawViewModel(
         _bankCardNumberMsg = MutableLiveData()
         _networkPointMsg = MutableLiveData()
         _withdrawPasswordMsg = MutableLiveData()
+        _walletAddressMsg = MutableLiveData()
     }
 
     private fun checkBankCardData(): Boolean {
@@ -632,6 +638,26 @@ class WithdrawViewModel(
             }
         }
         return cryptoCardCountLimitList
+    }
+
+    /**
+     * 獲取虛擬幣新增或編輯銀行卡可選列表
+     */
+    fun getCryptoBindList(modifyMoneyCard: BankCardList? = null) {
+        val cryptoCanBind = checkCryptoCanBind()
+        val modifyMoneyChannel = modifyMoneyCard?.bankName
+
+        val cryptoCanBindList: MutableList<MoneyRechCfg.DetailList> = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.toMutableList() ?: mutableListOf()
+
+        cryptoCanBind.forEach { canBindData ->
+            if (canBindData.canBind == false) {
+                if (modifyMoneyChannel != canBindData.channel) {
+                    val removeData = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == canBindData.channel }
+                    cryptoCanBindList.remove(removeData)
+                }
+            }
+        }
+        _addCryptoCardList.value = cryptoCanBindList
     }
 
     fun resetWithdrawPage() {

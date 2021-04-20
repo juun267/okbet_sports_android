@@ -120,6 +120,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         showHideTab()
         sv_protocol.setAdapter(protocolAdapter)
 
+        viewModel.getCryptoBindList(args.editBankCard)
+
+        initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
 
@@ -340,12 +343,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
+        })
 
-            val protocolList = rechCfgData.uwTypes.find { it.type == TransferType.CRYPTO.type }?.detailList
-            protocolList?.let { list ->
-                protocolAdapter.dataList = list
-                setCryptoProtocol(list.first())
-            }
+        viewModel.addCryptoCardList.observe(this.viewLifecycleOwner, {
+            protocolAdapter.dataList = it
+            val modifyMoneyCardDetail = it.find { list -> list.contract == args.editBankCard?.bankName }
+            setCryptoProtocol(modifyMoneyCardDetail ?: it.first())
         })
 
 
