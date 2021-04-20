@@ -232,13 +232,13 @@ class WithdrawViewModel(
         getWithdrawHint()
     }
 
-    fun addBankCard(bankName: String, subAddress: String? = null, cardNo: String, fundPwd: String, fullName: String? = null, id: String?, uwType: String, bankCode: String? = null) {
-        if (checkInputBankCardData(fullName, cardNo, subAddress, fundPwd, uwType)) {
+    fun addBankCard(bankName: String, subAddress: String? = null, cardNo: String, fundPwd: String, id: String?, uwType: String, bankCode: String? = null) {
+        if (checkInputBankCardData(userInfo.value?.fullName, cardNo, subAddress, fundPwd, uwType)) {
             viewModelScope.launch {
                 loading()
                 doNetwork(androidContext) {
                     val userId = userInfoRepository.userInfo.firstOrNull()?.userId.toString()
-                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userId, uwType, bankCode))
+                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, userInfo.value?.fullName, id, userId, uwType, bankCode))
                 }?.let { result ->
                     _bankAddResult.value = result
                     hideLoading()
