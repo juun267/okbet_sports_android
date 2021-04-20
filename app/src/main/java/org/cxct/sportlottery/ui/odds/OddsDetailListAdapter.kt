@@ -418,10 +418,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                     //如果是球員 忽略名字替換
                     if (!checkKey(oddsDetail.gameType, GameType.SCO.value)) {
-                        oldOddData.name = newOddData.name
+                        if(newOddData.name?.isNotEmpty() == true){
+                            oldOddData.name = newOddData.name
+                        }
                     }
 
-                    oldOddData.extInfo = newOddData.extInfo
+                    if(newOddData.extInfo?.isNotEmpty() == true){
+                        oldOddData.extInfo = newOddData.extInfo
+                    }
+
                     oldOddData.spread = newOddData.spread
 
                     //先判斷大小
