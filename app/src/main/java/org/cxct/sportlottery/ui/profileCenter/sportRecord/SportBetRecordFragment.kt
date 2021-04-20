@@ -29,7 +29,7 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
 
     private val betStatusList by lazy {
         listOf(StatusSheetData("01234567", context?.getString(R.string.all_order)),
-//               StatusSheetData("01", context?.getString(R.string.not_settled_order)),
+               StatusSheetData("01", context?.getString(R.string.not_settled_order)),
                StatusSheetData("234567", context?.getString(R.string.settled_order)))
     }
 
