@@ -453,7 +453,7 @@
     <string name="title_rebate_rate">・返利：</string>
     <string name="title_rebate_amount">・返利金额：</string>
     <string name="title_remark">备注：</string>
-    <string name="title_tips">・温馨提示：</string>
+    <string name="title_tips">・备注：</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
     <string name="wx_recharge_hint">请每次入款前登录会员核对微信账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
