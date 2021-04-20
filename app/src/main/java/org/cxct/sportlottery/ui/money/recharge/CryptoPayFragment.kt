@@ -168,7 +168,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         //充值個數訊息
         viewModel.rechargeAccountMsg.observe(viewLifecycleOwner, {
-            et_recharge_account.setError(it)
+            et_recharge_amount.setError(it)
         })
 
         //區塊鏈交易ID訊息
@@ -278,7 +278,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     //重置畫面事件
     private fun resetEvent() {
         clearFocus()
-        et_recharge_account.setText("")
+        et_recharge_amount.setText("")
         et_transaction_id.setText("")
         tv_upload.text = String.format(resources.getString(R.string.title_upload_pic))
         tv_click.visibility = View.VISIBLE
@@ -390,16 +390,16 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun setupTextChangeEvent() {
         viewModel.apply {
             //充值個數
-            et_recharge_account.afterTextChanged {
+            et_recharge_amount.afterTextChanged {
                 if (it.startsWith("0") && it.length > 1) {
-                    et_recharge_account.setText(et_recharge_account.getText().replace("0", ""))
-                    et_recharge_account.setCursor()
+                    et_recharge_amount.setText(et_recharge_amount.getText().replace("0", ""))
+                    et_recharge_amount.setCursor()
                     return@afterTextChanged
                 }
 
-                if (et_recharge_account.getText().length > 6) {
-                    et_recharge_account.setText(et_recharge_account.getText().substring(0, 6))
-                    et_recharge_account.setCursor()
+                if (et_recharge_amount.getText().length > 6) {
+                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 6))
+                    et_recharge_amount.setCursor()
                     return@afterTextChanged
                 }
 
@@ -461,7 +461,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun setupFocusEvent() {
         viewModel.apply {
             //充值個數
-            setupEditTextFocusEvent(et_recharge_account) {
+            setupEditTextFocusEvent(et_recharge_amount) {
                 checkRechargeAccount(
                     it,
                     mSelectRechCfgs
@@ -563,7 +563,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //修改hint
     private fun updateMoneyRange() {
-        et_recharge_account.setHint(
+        et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_crypto_pay_count),
                 mSelectRechCfgs?.minMoney?.toInt(),
@@ -577,8 +577,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         return MoneyAddRequest(
             rechCfgId = mSelectRechCfgs?.id ?: 0,
             bankCode = null,
-            depositMoney = if (et_recharge_account.getText().isNotEmpty()) {
-                et_recharge_account.getText()
+            depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
+                et_recharge_amount.getText()
             } else {
                 ""
             },

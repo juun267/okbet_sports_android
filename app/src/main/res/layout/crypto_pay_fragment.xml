@@ -71,7 +71,7 @@
 
         <!-- 充值個數 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_recharge_account"
+            android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
