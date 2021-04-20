@@ -115,7 +115,11 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         refreshCurrencyType(CurrentCurrency)
 
         tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000")
-        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
+
+        if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0)  //返利
+            tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), "0.000")
+        else
+            tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
     }
 
     private fun initButton() {
