@@ -249,9 +249,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             initObserve()
             initSocketReceiver()
 
-            viewModel.getGameHallList(args.matchType, true)
-            loading()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
