@@ -150,6 +150,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initView() {
+        resetEvent()
         setupTextChangeEvent()
         setupFocusEvent()
         calendarBottomSheet()
@@ -195,13 +196,15 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         //上傳支付截圖
         viewModel.voucherUrlResult.observe(viewLifecycleOwner, {
-            Glide.with(this).load(it).into(img_screen_shot)
-            ic_screen_shot.visibility = View.GONE
-            img_screen_shot.visibility = View.VISIBLE
-            tv_click.visibility = View.GONE
-            tv_upload.text = String.format(resources.getString(R.string.title_reupload_pic))
-            voucherUrl = it
-            viewModel.checkScreenShot(voucherUrl)
+            it.getContentIfNotHandled()?.let { result ->
+                Glide.with(this).load(result).into(img_screen_shot)
+                ic_screen_shot.visibility = View.GONE
+                img_screen_shot.visibility = View.VISIBLE
+                tv_click.visibility = View.GONE
+                tv_upload.text = String.format(resources.getString(R.string.title_reupload_pic))
+                voucherUrl = it.toString()
+                viewModel.checkScreenShot(voucherUrl)
+            }
         })
     }
 

@@ -22,6 +22,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
@@ -115,7 +116,7 @@ class MoneyRechViewModel(
     private var _bankIDErrorMsg = MutableLiveData<String>()
 
     //上傳支付截圖
-    val voucherUrlResult: LiveData<String?> = avatarRepository.voucherUrlResult
+    val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
 
     //獲取充值的基礎配置
     fun getRechCfg() {
