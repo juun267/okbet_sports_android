@@ -76,7 +76,7 @@ class BYFragment(private val gameCateData: GameCateData) : BaseFragment<MainView
     private val mItemDecoration = object : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
             val position = parent.getChildAdapterPosition(view)
-            if (position != 0) outRect.top = MetricsUtil.convertDpToPixel(-86f, context).toInt()
+            if (position > 1) outRect.top = MetricsUtil.convertDpToPixel(-86f, context).toInt()
         }
     }
 }

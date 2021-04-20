@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.AppCompatCheckBox xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/checkbox_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/checkbox_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:button="@null"
-        android:gravity="center"
-        android:paddingVertical="12dp"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize12sp"
-        android:textStyle="bold"
-        tools:text="平台名稱" />
-</LinearLayout>
+    android:layout_height="48dp"
+    android:button="@null"
+    android:gravity="center"
+    android:paddingVertical="12dp"
+    android:textColor="@color/colorBlackLight"
+    android:textSize="@dimen/textSize12sp"
+    android:textStyle="bold"
+    tools:text="平台名稱" />

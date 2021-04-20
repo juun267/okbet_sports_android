@@ -406,6 +406,9 @@
     <string name="outright_row_entrance">冠军盘口</string>
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
+    <string name="ou_hdp_hdp_title_tennis">让盘</string>
+    <string name="ou_hdp_hdp_title_v_b">让分</string>
+    <string name="ou_hdp_1x2_title">独赢</string>
     <string name="detail_outright_upper_bar_title">冠军</string>
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
@@ -710,7 +713,7 @@
     <string name="out_account">转出账户</string>
     <string name="in_account">转入账户</string>
     <string name="transfer_money">转换金额</string>
-    <string name="please_input_money">请输入金额</string>
+    <string name="transfer_money_minimum">限额1.000以上</string>
     <string name="confirm_transform">确认转换</string>
     <string name="plat_money">平台余额</string>
     <string name="money">金额</string>
@@ -780,4 +783,5 @@
     <string name="choose_order">选择订单</string>
     <string name="submit_time">提交时间:</string>
     <string name="feedback_time">反馈时间:</string>
+    <string name="not_reply_yet">尚未反馈</string>
 </resources>

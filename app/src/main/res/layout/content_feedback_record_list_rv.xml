@@ -25,6 +25,7 @@
             android:paddingHorizontal="4dp"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
+            android:text="@string/not_reply_yet"
             tools:text="2020-12-12 19:58:00" />
 
         <TextView
