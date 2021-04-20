@@ -36,7 +36,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 
 
 @Suppress("DEPRECATION")
@@ -133,29 +132,38 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             if (it == null) return@Observer
         })
 
-        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
+        receiver.oddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
             val newList = arrayListOf<OddsDetailListData>()
-
             it.odds?.forEach { map ->
                 val key = map.key
                 val value = map.value
                 val filteredOddList = mutableListOf<Odd>()
-                value.odds?.forEach { odd ->
-                    if (odd != null)
-                        filteredOddList.add(odd)
+
+                value.forEach { odd ->
+                    if (odd != null) {
+                        val detailOdd = Odd(
+                            null,
+                            odd.id,
+                            null,
+                            odd.odds,
+                            odd.hkOdds,
+                            odd.producerId,
+                            odd.spread,
+                            odd.status
+                        )
+                        filteredOddList.add(detailOdd)
+                    }
                 }
                 newList.add(
                     OddsDetailListData(
                         key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
+                        mutableListOf(),
+                        "",
                         filteredOddList
                     )
                 )
             }
-
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
 
