@@ -29,9 +29,11 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/fishing_logo_bubble"
         android:contentDescription="@null"
+        android:padding="7dp"
         android:src="@drawable/ic_image_load"
         app:layout_constraintBottom_toTopOf="@id/tv_title"
         app:layout_constraintEnd_toEndOf="@id/tv_title"
