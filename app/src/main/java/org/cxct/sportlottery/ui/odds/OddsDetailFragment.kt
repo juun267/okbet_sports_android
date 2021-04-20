@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -249,9 +250,11 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
-            val eventResult = it.peekContent()
-            if (eventResult?.success != true) {
-                showErrorPromptDialog(getString(R.string.prompt), eventResult?.msg ?: getString(R.string.unknown_error)) {}
+            val eventResult = it.getContentIfNotHandled()
+            eventResult?.success?.let { success ->
+                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
+                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
+                }
             }
         })
 

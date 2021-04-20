@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
@@ -140,7 +141,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, { it ->
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
-                if (!success) {
+                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
                     showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
                 }
             }
@@ -272,9 +273,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun getSubscribingInOddsDetail(): String? {
-        var matchId: String ?= null
+        var matchId: String? = null
         val oddsDetail = parentFragmentManager.findFragmentByTag(GameActivity.Page.ODDS_DETAIL.name)
-        if(oddsDetail?.isAdded == true){
+        if (oddsDetail?.isAdded == true) {
             matchId = (oddsDetail as OddsDetailFragment).matchId
         }
         return matchId
