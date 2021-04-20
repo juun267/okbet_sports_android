@@ -354,11 +354,19 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
             if (result.success) {
                 if (mBankCardStatus) {
-                    ToastUtil.showToast(context, getString(R.string.text_bank_card_modify_success))
+                    val promptMessage = when (transferType) {
+                        TransferType.BANK -> getString(R.string.text_bank_card_modify_success)
+                        TransferType.CRYPTO -> getString(R.string.text_crypto_modify_success)
+                    }
+                    ToastUtil.showToast(context, promptMessage)
                     mNavController.popBackStack()
                 } else {
                     //綁定成功後回至銀行卡列表bank card list
-                    showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_add_success)) {
+                    val promptMessage = when (transferType) {
+                        TransferType.BANK -> getString(R.string.text_bank_card_add_success)
+                        TransferType.CRYPTO -> getString(R.string.text_crypto_add_success)
+                    }
+                    showPromptDialog(getString(R.string.prompt), promptMessage) {
                         mNavController.popBackStack()
                     }
                 }
@@ -370,7 +378,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer
         { result ->
             if (result.success) {
-                showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_delete_success)) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
+                val promptMessage = when (transferType) {
+                    TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
+                    TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
+                }
+                showPromptDialog(getString(R.string.prompt), promptMessage) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
                 showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
             }
