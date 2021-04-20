@@ -582,7 +582,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                             }
 
                                             oddSocket?.let { oddSocketNonNull ->
-
                                                 when (oddsType) {
                                                     OddsType.EU -> {
                                                         oddNonNull.odds?.let { oddValue ->
@@ -601,11 +600,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                                                             OddState.SAME.state
                                                                     }
                                                                 }
-
                                                             }
                                                         }
-
-                                                        oddNonNull.odds = oddSocketNonNull.odds
                                                     }
 
                                                     OddsType.HK -> {
@@ -625,13 +621,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                                                             OddState.SAME.state
                                                                     }
                                                                 }
-
                                                             }
                                                         }
-
-                                                        oddNonNull.hkOdds = oddSocketNonNull.hkOdds
                                                     }
                                                 }
+
+                                                oddNonNull.odds = oddSocketNonNull.odds
+                                                oddNonNull.hkOdds = oddSocketNonNull.hkOdds
 
                                                 oddNonNull.status = oddSocketNonNull.status
 

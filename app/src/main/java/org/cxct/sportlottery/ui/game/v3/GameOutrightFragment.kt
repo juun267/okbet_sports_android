@@ -153,7 +153,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                             }
 
                             oddSocket?.let { oddSocketNonNull ->
-
                                 when (oddsType) {
                                     OddsType.EU -> {
                                         odd.odds?.let { oddValue ->
@@ -172,11 +171,8 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                                                             OddState.SAME.state
                                                     }
                                                 }
-
                                             }
                                         }
-
-                                        odd.odds = oddSocketNonNull.odds
                                     }
 
                                     OddsType.HK -> {
@@ -196,13 +192,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                                                             OddState.SAME.state
                                                     }
                                                 }
-
                                             }
                                         }
-
-                                        odd.hkOdds = oddSocketNonNull.hkOdds
                                     }
                                 }
+
+                                odd.odds = oddSocketNonNull.odds
+                                odd.hkOdds = oddSocketNonNull.hkOdds
 
                                 odd.status = oddSocketNonNull.status
 
