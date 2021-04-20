@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.component
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.content_bottom_sheet_other_bet_record_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.DisplayUtil.px
 import java.util.*
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
@@ -67,14 +70,6 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         get() = sheetAdapter?.dataList
         set(value) {
             field = value
-
-            sheet_rv_more?.apply {
-                if (value?.size?:1 < 3) {
-                    val params: ViewGroup.LayoutParams = sheet_rv_more.layoutParams
-                    params.height = 48.dp * (value?.size?:1)
-                    sheet_rv_more.layoutParams = params
-                }
-            }
 
             sheetAdapter?.dataList = value ?: listOf()
             sheetAdapter?.notifyDataSetChanged()
@@ -189,6 +184,17 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
             sheet_rv_more.adapter = sheetAdapter
 
+            sheetAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
+                override fun onChanged() {
+                    super.onChanged()
+                    val count = sheetAdapter?.itemCount
+                    if (count?:1 < 3) {
+                        val params: ViewGroup.LayoutParams = sheet_rv_more.layoutParams
+                        params.height = 48.dp * (count?:1)
+                        sheet_rv_more.layoutParams = params
+                    }
+                }
+            })
         }
 
         bottomSheet.setContentView(bottomSheetView)
