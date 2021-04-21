@@ -171,7 +171,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/refactor_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/colorWhite"
             android:overScrollMode="never"
             android:visibility="visible"
