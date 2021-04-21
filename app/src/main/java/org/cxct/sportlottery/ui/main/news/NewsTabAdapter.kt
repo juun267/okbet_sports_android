@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main.news
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +72,10 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
                 txv_tab.text = data.title
                 itemView.setOnClickListener { selectItem(layoutPosition) }
                 itemView.isSelected = mSelectedPosition == layoutPosition //選中改變背景
+
+                //被選中時字體加粗
+                val typeface = if (itemView.isSelected) Typeface.BOLD else Typeface.NORMAL
+                txv_tab.setTypeface(null, typeface)
             }
         }
     }
