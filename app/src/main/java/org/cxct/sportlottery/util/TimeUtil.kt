@@ -32,6 +32,12 @@ object TimeUtil {
     }
 
     @JvmStatic
+    fun stampToDateInOddsDetail(time: Long): String {
+        val simpleDateFormat = SimpleDateFormat("MM-dd  HH:mm")
+        return simpleDateFormat.format(Date(time))
+    }
+
+    @JvmStatic
     fun stampToDateHMS(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
         return simpleDateFormat.format(Date(time))

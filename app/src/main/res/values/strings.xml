@@ -90,7 +90,7 @@
     <string name="error_confirm_password">两次密码输入不一致</string>
     <string name="withdrawal_pwd">取款密码</string>
     <string name="hint_withdrawal_pwd">密码为4个数字</string>
-    <string name="error_withdrawal_pwd">密码须为4个数字的组合</string>
+    <string name="error_withdrawal_pwd">您输入的密码错误</string>
     <string name="phone_number">手机号码</string>
     <string name="hint_phone_number">请输入手机号码</string>
     <string name="error_phone_number">手机号码格式错误</string>
@@ -406,6 +406,9 @@
     <string name="outright_row_entrance">冠军盘口</string>
     <string name="ou_hdp_ou_title">大小</string>
     <string name="ou_hdp_hdp_title">让球</string>
+    <string name="ou_hdp_hdp_title_tennis">让盘</string>
+    <string name="ou_hdp_hdp_title_v_b">让分</string>
+    <string name="ou_hdp_1x2_title">独赢</string>
     <string name="detail_outright_upper_bar_title">冠军</string>
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
@@ -436,7 +439,7 @@
     <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
-    <string name="edt_hint_real_name">中文长度2-20字</string>
+    <string name="edt_hint_real_name">姓名须与银行户口一致</string>
     <string name="edt_hint_nick_name">中英文长度2-6字</string>
     <string name="title_wx_id">微信号</string>
     <string name="edt_hint_wx_id">请输入微信ID</string>\
@@ -525,16 +528,18 @@
     <string name="select_bank_card">选择银行卡</string>
     <string name="select_crypto_card">选择虚拟币</string>
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
-    <string name="error_withdraw_amount">提款金额格式或数值错误</string>
+    <string name="error_withdraw_amount_bank">提款金额格式或数值错误</string>
+    <string name="error_withdraw_amount_crypto">充值个数格式或数值错误</string>
     <string name="error_withdraw_amount_bigger_than_balance">提款金额大于账号余额</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_complete_profile_info">完善个人资料</string>
     <string name="please_setting_bank_card">请先设置银行卡</string>
+    <string name="please_setting_crypto">请先设置虚拟币</string>
     <string name="go_to_setting">前往设置</string>
     <string name="choose_gap_type">选择支付账号</string>
     <!--  prompt message  -->
     <string name="message_withdraw_maintain">提款相关系统升级中,请稍等</string>
-    <string name="text_money_get_success">提现成功，请等待客服人员审核</string>
+    <string name="text_money_get_success">提款成功，请等待客服人员审核</string>
     <string name="title_withdraw_success">提款成功</string>
     <string name="title_withdraw_fail">提款失败</string>
     <!--  BankList  -->
@@ -553,7 +558,7 @@
     <string name="withdraw_crypto_fee_hint">・提款手续费：%1$s RMB</string>
     <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s RMB</string>
     <string name="hint_please_enter_withdraw_crypto_amount">限额%1$s~%2$s 个</string>
-    <string name="hint_four_number_password">密码为4个数字</string>
+    <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
     <string name="add_credit_card">新增银行卡</string>
@@ -575,7 +580,7 @@
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_create_name_empty">开户名为必填栏位</string>
-    <string name="error_bank_card_number">您输入的银行卡号格式有错误</string>
+    <string name="error_bank_card_number">银行卡号格式有错误</string>
     <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
     <string name="error_network_point">您输入的开户网点格式有错误</string>
     <string name="error_network_point_empty">开户网点为必填栏位</string>
@@ -584,8 +589,11 @@
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
     <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
+    <string name="text_crypto_delete_success">虚拟币删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
+    <string name="text_crypto_add_success">虚拟币绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
+    <string name="text_crypto_modify_success">编辑虚拟币成功</string>
     <string name="text_bank_card_delete_fail">删除银行卡失败</string>
     <string name="text_bank_card_add_fail">新增银行卡失败</string>
     <string name="text_bank_card_modify_fail">编辑银行卡失败</string>
@@ -614,6 +622,7 @@
     <string name="bet_info_current_money">余额:%s</string>
     <string name="bet_info_in_play_score">滚球&#160;&#160;%1$s&#160;(%2$s:%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">您选择的部分玩法不适用于串关规则的玩法,系统已帮您自动取消</string>
+    <string name="bet_info_list_clean">一键清空</string>
 
 
     <!-- finance -->
@@ -709,7 +718,7 @@
     <string name="out_account">转出账户</string>
     <string name="in_account">转入账户</string>
     <string name="transfer_money">转换金额</string>
-    <string name="please_input_money">请输入金额</string>
+    <string name="transfer_money_minimum">限额1.000以上</string>
     <string name="confirm_transform">确认转换</string>
     <string name="plat_money">平台余额</string>
     <string name="money">金额</string>
@@ -779,4 +788,5 @@
     <string name="choose_order">选择订单</string>
     <string name="submit_time">提交时间:</string>
     <string name="feedback_time">反馈时间:</string>
+    <string name="not_reply_yet">尚未反馈</string>
 </resources>

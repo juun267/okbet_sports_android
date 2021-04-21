@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.util
 
-import androidx.core.graphics.drawable.toDrawable
+import java.math.RoundingMode
 import java.text.DecimalFormat
 
 object TextUtil {
@@ -28,18 +28,28 @@ object TextUtil {
         return df.format(int)
     }
 
-    fun formatForOdd(any: Any):String{
+    fun formatForOdd(any: Any): String {
         val df = DecimalFormat("###,###,###,##0.000")
         return df.format(any)
     }
 
-    fun formatForBetHint(any: Any):String{
+    fun formatForVipRebates(any: Any): String {
+        val df = DecimalFormat("#.# %").apply { roundingMode = RoundingMode.HALF_UP }
+        return df.format(any)
+    }
+
+    fun formatForBetHint(any: Any): String {
         val df = DecimalFormat("###,###,###,###")
         return df.format(any)
     }
 
-    fun replaceParlayByC(str: String):String{
+    fun replaceParlayByC(str: String): String {
         return str.replace("C", "串")
     }
 
+    fun maskFullName(fullName: String): String {
+        val stringBuffer = StringBuffer().append(fullName[0])
+        for (i in 0 until fullName.length - 1) stringBuffer.append('*')
+        return stringBuffer.toString()
+    }
 }

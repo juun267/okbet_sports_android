@@ -15,8 +15,8 @@ import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
-import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.tv_money
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
+import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.network.Constants
@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
@@ -43,7 +44,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private var isSubScribe = false
 
 
-    private var oddsType: String = OddsType.EU.value
+    private var oddsType: OddsType = OddsType.EU
 
 
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
@@ -76,6 +77,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
     private fun initUI() {
         iv_close.setOnClickListener { dismiss() }
+        tv_clean.setOnClickListener { viewModel.removeBetInfoAll() }
         tv_add_more.setOnClickListener { dismiss() }
         tv_bet.setOnClickListener(object : OnForbidClickListener() {
             override fun forbidClick(view: View?) {
@@ -139,7 +141,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, { it ->
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
-                if (!success) {
+                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
                     showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
                 }
             }
@@ -271,9 +273,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun getSubscribingInOddsDetail(): String? {
-        var matchId: String ?= null
+        var matchId: String? = null
         val oddsDetail = parentFragmentManager.findFragmentByTag(GameActivity.Page.ODDS_DETAIL.name)
-        if(oddsDetail?.isAdded == true){
+        if (oddsDetail?.isAdded == true) {
             matchId = (oddsDetail as OddsDetailFragment).matchId
         }
         return matchId
@@ -302,7 +304,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 matchList,
                 parlayList,
                 1,
-                getOddsTypeCode(oddsType)
+                oddsType.code
             ), MatchType.PARLAY
         )
     }

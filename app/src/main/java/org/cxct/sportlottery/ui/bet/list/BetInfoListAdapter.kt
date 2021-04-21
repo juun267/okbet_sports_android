@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Handler
@@ -23,18 +24,17 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import java.lang.Exception
-import java.math.RoundingMode
 
 const val NOT_INPLAY: Int = 0
 const val INPLAY: Int = 1
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
+@SuppressLint("SetTextI18n")
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
@@ -62,7 +62,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
 
-    var oddsType: String = OddsType.EU.value
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -90,9 +90,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
     private fun getOddState(oldItemOdd: Double, it: Odd): Int {
         val odds = when (oddsType) {
-            OddsType.EU.value -> it.odds
-            OddsType.HK.value -> it.hkOdds
-            else -> 0.0
+            OddsType.EU -> it.odds
+            OddsType.HK -> it.hkOdds
         }
         val newOdd = odds ?: 0.0
         return when {
@@ -130,8 +129,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
             if (TextUtils.isEmpty(it)) {
                 binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
-                binding.betInfoAction.tv_bet_quota.text = "0"
-                binding.betInfoAction.tv_win_quota.text = "0"
+                binding.betInfoAction.tv_bet_quota.text = "0.000"
+                binding.betInfoAction.tv_win_quota.text = "0.000"
                 binding.tvErrorMessage.visibility = View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = 11.dp
                 binding.betInfoAction.tv_bet.apply {
@@ -157,9 +156,9 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
                     }
                 }
-                var win = TextUtil.format(it.toDouble() * getOdds(matchOdd, oddsType)).toDouble()
+                var win = it.toDouble() * getOdds(matchOdd, oddsType)
 
-                if(oddsType == OddsType.EU.value){
+                if(oddsType == OddsType.EU){
                     win -= quota
                 }
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)

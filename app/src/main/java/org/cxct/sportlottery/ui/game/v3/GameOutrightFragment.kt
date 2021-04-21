@@ -131,13 +131,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
-            val oddsType = when (it) {
-                OddsType.EU.value -> OddsType.EU
-                OddsType.HK.value -> OddsType.HK
-                else -> null
-            }
-
-            oddsType?.let {
+            it?.let { oddsType ->
                 outrightOddAdapter.oddsType = oddsType
             }
         })
@@ -155,11 +149,10 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                         oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
 
                             val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
-                                oddSocket.id == odd.id
+                                oddSocket?.id == odd.id
                             }
 
                             oddSocket?.let { oddSocketNonNull ->
-
                                 when (oddsType) {
                                     OddsType.EU -> {
                                         odd.odds?.let { oddValue ->
@@ -178,11 +171,8 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                                                             OddState.SAME.state
                                                     }
                                                 }
-
                                             }
                                         }
-
-                                        odd.odds = oddSocketNonNull.odds
                                     }
 
                                     OddsType.HK -> {
@@ -202,13 +192,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                                                             OddState.SAME.state
                                                     }
                                                 }
-
                                             }
                                         }
-
-                                        odd.hkOdds = oddSocketNonNull.hkOdds
                                     }
                                 }
+
+                                odd.odds = oddSocketNonNull.odds
+                                odd.hkOdds = oddSocketNonNull.hkOdds
 
                                 odd.status = oddSocketNonNull.status
 

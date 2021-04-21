@@ -129,7 +129,11 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
                 matchResultDiffAdapter.gameType = gameType
-                matchResultDiffAdapter.submitList(it)
+                if (it.isEmpty()) {
+                    matchResultDiffAdapter.submitList(listOf(MatchResultData(ListType.NO_DATA)))
+                } else {
+                    matchResultDiffAdapter.submitList(it)
+                }
             })
 
             //更新聯賽列表

@@ -5,5 +5,6 @@ enum class PlayType(val code: String) {
     X12("1X2"),
     OU("O/U"),
     HDP("HDP"),
+    SET_HDP("SET-HDP"),
     OUTRIGHT("OUTRIGHT")
 }

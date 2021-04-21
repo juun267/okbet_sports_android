@@ -28,6 +28,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.repository.sConfigData
@@ -35,7 +36,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 
 
 @Suppress("DEPRECATION")
@@ -132,29 +132,38 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             if (it == null) return@Observer
         })
 
-        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
+        receiver.oddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
             val newList = arrayListOf<OddsDetailListData>()
-
             it.odds?.forEach { map ->
                 val key = map.key
                 val value = map.value
                 val filteredOddList = mutableListOf<Odd>()
-                value.odds?.forEach { odd ->
-                    if (odd != null)
-                        filteredOddList.add(odd)
+
+                value.forEach { odd ->
+                    if (odd != null) {
+                        val detailOdd = Odd(
+                            null,
+                            odd.id,
+                            null,
+                            odd.odds,
+                            odd.hkOdds,
+                            odd.producerId,
+                            odd.spread,
+                            odd.status
+                        )
+                        filteredOddList.add(detailOdd)
+                    }
                 }
                 newList.add(
                     OddsDetailListData(
                         key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
+                        mutableListOf(),
+                        "",
                         filteredOddList
                     )
                 )
             }
-
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
 
@@ -225,12 +234,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
-            val eventResult = it.peekContent()
-            if (eventResult?.success != true) {
-                showErrorPromptDialog(
-                    getString(R.string.prompt),
-                    eventResult?.msg ?: getString(R.string.unknown_error)
-                ) {}
+            val eventResult = it.getContentIfNotHandled()
+            eventResult?.success?.let { success ->
+                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
+                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
+                }
             }
         })
 

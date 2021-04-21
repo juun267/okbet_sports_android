@@ -20,6 +20,11 @@
             <argument
                 android:name="transferType"
                 app:argType="org.cxct.sportlottery.network.money.TransferType" />
+            <argument
+                android:name="transferTypeAddSwitch"
+                android:defaultValue="@null"
+                app:argType="org.cxct.sportlottery.ui.withdraw.TransferTypeAddSwitch"
+                app:nullable="true"/>
         </action>
     </fragment>
     <fragment
@@ -35,6 +40,11 @@
         <argument
             android:name="transferType"
             app:argType="org.cxct.sportlottery.network.money.TransferType" />
+        <argument
+            android:name="transferTypeAddSwitch"
+            android:defaultValue="@null"
+            app:argType="org.cxct.sportlottery.ui.withdraw.TransferTypeAddSwitch"
+            app:nullable="true"/>
     </fragment>
 
 </navigation>

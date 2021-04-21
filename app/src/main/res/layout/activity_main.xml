@@ -41,6 +41,8 @@
                 android:background="@color/colorWhite"
                 android:elevation="0dp"
                 app:itemIconTint="@color/selector_blue_silver"
+                app:itemTextAppearanceActive="@style/bottom_nav_title_active"
+                app:itemTextAppearanceInactive="@style/bottom_nav_title_inactive"
                 app:itemTextColor="@color/selector_blue_silver"
                 app:labelVisibilityMode="labeled"
                 app:menu="@menu/bottom_navigation_menu" />

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
+import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
@@ -25,7 +26,6 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import org.cxct.sportlottery.util.getOddsTypeCode
 
 
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
@@ -44,7 +44,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private var isSubScribe = false
 
 
-    private var oddsType: String = OddsType.EU.value
+    private var oddsType: OddsType = OddsType.EU
 
 
     init {
@@ -74,6 +74,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private fun initUI() {
         iv_close.setOnClickListener {
             dismiss()
+        }
+
+        tv_clean.setOnClickListener {
+            viewModel.removeBetInfoAll()
         }
 
         betInfoListAdapter = BetInfoListAdapter(requireContext(), this@BetInfoListDialog)
@@ -222,7 +226,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                 listOf(Odd(betInfoListData.matchOdd.oddsId, getOdds(betInfoListData.matchOdd, oddsType))),
                 listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
                 1,
-                getOddsTypeCode(oddsType)
+                oddsType.code
             ), betInfoListData.matchType
         )
     }

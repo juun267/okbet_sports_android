@@ -1,12 +1,15 @@
 package org.cxct.sportlottery.ui.main.more
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_main_more.*
 import kotlinx.android.synthetic.main.main_tab.view.*
@@ -55,6 +58,20 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameFragList = createGameFragList(gameCateFilterList)
         view_pager.adapter = Vp2FragmentAdapter(gameFragList, this)
         view_pager.isUserInputEnabled = false //關閉 viewPager2 左右滑動功能
+
+        //選中字體加粗
+        tab_layout.clearOnTabSelectedListeners()
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.customView?.findViewById<TextView>(R.id.tv_title)?.setTypeface(null, Typeface.BOLD)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab?.customView?.findViewById<TextView>(R.id.tv_title)?.setTypeface(null, Typeface.NORMAL)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
 
         //tabLayout、viewPager2 綁定 //tab 依照 viewPager2 動態生成
         TabLayoutMediator(tab_layout, view_pager) { tab, position ->

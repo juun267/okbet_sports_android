@@ -9,9 +9,12 @@ import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import kotlinx.android.synthetic.main.content_rv_bank_list_new_no_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil.stampToDateHMS
 
 class BankListAdapter(private val mBankListClickListener: BankListClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -30,7 +33,13 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             notifyDataSetChanged()
         }
 
-    var addSwitch = true
+    var moneyConfig: MoneyRechCfgData? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var transferAddSwitch = TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false)
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -52,7 +61,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     override fun getItemCount(): Int {
-        return if (addSwitch) {
+        return if (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer) {
             bankList.size + 1
         } else {
             bankList.size
@@ -64,7 +73,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             bankList.isEmpty() -> {
                 CardType.NO_CARD_ADD.ordinal
             }
-            position == bankList.size && addSwitch -> {
+            position == bankList.size && (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer) -> {
                 CardType.ADD.ordinal
             }
             else -> {
@@ -80,29 +89,31 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is BankItemViewHolder -> {
-                holder.bind(bankList[position], fullName, mBankListClickListener)
+                holder.bind(bankList[position], fullName, moneyConfig, mBankListClickListener)
             }
             is CryptoItemViewHolder -> {
-                holder.bind(bankList[position], mBankListClickListener)
+                holder.bind(bankList[position], moneyConfig, mBankListClickListener)
             }
             is LastViewHolder -> {
-                holder.bind(mBankListClickListener)
+                holder.bind(transferAddSwitch, mBankListClickListener)
             }
             is NoCardAddViewHolder -> {
-                holder.bind(mBankListClickListener)
+                holder.bind(transferAddSwitch, mBankListClickListener)
             }
         }
     }
 
     class BankItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(data: BankCardList, fullName: String, mBankListClickListener: BankListClickListener) {
+        fun bind(data: BankCardList, fullName: String, moneyConfig: MoneyRechCfgData?, mBankListClickListener: BankListClickListener) {
+            val bankOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+
             itemView.apply {
                 iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
                 tv_bank_name.text = data.bankName
-                tv_name.text = fullName
+                tv_name.text = TextUtil.maskFullName(fullName)
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
-                if (sConfigData?.enableModifyBank == "1") {
+                if (sConfigData?.enableModifyBank == "1" && bankOpen) {
                     img_edit_bank.apply {
                         visibility = View.VISIBLE
                         setOnClickListener {
@@ -125,13 +136,15 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class CryptoItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(data: BankCardList, mBankListClickListener: BankListClickListener) {
+        fun bind(data: BankCardList, moneyConfig: MoneyRechCfgData?, mBankListClickListener: BankListClickListener) {
+            val cryptoOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
+
             itemView.apply {
                 iv_bank_icon.setImageResource(MoneyManager.getCryptoIconByCryptoName(data.bankName))
                 tv_bank_name.text = data.bankName
-                tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
+                tv_tail_number.text = if (data.cardNo.length > 4) data.cardNo.substring(data.cardNo.length - 4) else data.cardNo //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
-                if (sConfigData?.enableModifyBank == "1") {
+                if (sConfigData?.enableModifyBank == "1" && cryptoOpen) {
                     img_edit_bank.apply {
                         visibility = View.VISIBLE
                         setOnClickListener {
@@ -154,11 +167,20 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class LastViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(mBankListClickListener: BankListClickListener) {
-            itemView.cv_add.setOnClickListener {
-                mBankListClickListener.onAdd()
+        fun bind(transferAddSwitch: TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
+            itemView.apply {
+                tv_add_more_card.text = transferAddSwitch.run {
+                    when {
+                        cryptoTransfer && bankTransfer -> context.getString(R.string.add_credit_or_virtual)
+                        cryptoTransfer -> context.getString(R.string.add_crypto_card)
+                        bankTransfer -> context.getString(R.string.add_credit_card)
+                        else -> context.getString(R.string.add_new)
+                    }
+                }
+                cv_add.setOnClickListener {
+                    mBankListClickListener.onAdd(transferAddSwitch)
+                }
             }
-
         }
 
         companion object {
@@ -172,9 +194,9 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class NoCardAddViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(mBankListClickListener: BankListClickListener) {
+        fun bind(transferAddSwitch: TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
             itemView.cv_add_no_card.setOnClickListener {
-                mBankListClickListener.onAdd()
+                mBankListClickListener.onAdd(transferAddSwitch)
             }
 
         }
@@ -190,8 +212,12 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 }
 
-class BankListClickListener(private val editBankListener: (bankCard: BankCardList) -> Unit, private val editCryptoListener: (cryptoCard: BankCardList) -> Unit, private val addListener: () -> Unit) {
+class BankListClickListener(
+    private val editBankListener: (bankCard: BankCardList) -> Unit,
+    private val editCryptoListener: (cryptoCard: BankCardList) -> Unit,
+    private val addListener: (transferAddSwitch: TransferTypeAddSwitch) -> Unit
+) {
     fun onBankEdit(bankCard: BankCardList) = editBankListener(bankCard)
     fun onCryptoEdit(cryptoCard: BankCardList) = editCryptoListener(cryptoCard)
-    fun onAdd() = addListener()
+    fun onAdd(transferAddSwitch: TransferTypeAddSwitch) = addListener(transferAddSwitch)
 }
