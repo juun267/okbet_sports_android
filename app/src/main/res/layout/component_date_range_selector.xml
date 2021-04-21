@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="42dp"
     android:background="@color/colorWhite1"
@@ -14,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:maxWidth="135dp"
-        android:background="@drawable/spinner_gray_5dp"
+        android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/date_selector_until"
@@ -26,12 +27,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:hint="@string/start_date"
-        android:textColorHint="@color/colorGrayDark"
         android:textColor="@color/colorBlackLight"
+        android:textColorHint="@color/colorGrayDark"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@id/ll_start_date"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/ll_start_date"
         app:layout_constraintTop_toTopOf="@id/ll_start_date" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_margin="11dp"
+        android:src="@drawable/ic_arrow_down_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_start_date"
+        app:layout_constraintEnd_toEndOf="@+id/ll_start_date"
+        app:layout_constraintTop_toTopOf="@+id/ll_start_date" />
 
     <TextView
         android:id="@+id/date_selector_until"
@@ -52,10 +65,11 @@
         android:layout_height="32dp"
         android:maxWidth="135dp"
         app:layout_constraintHorizontal_weight="2"
-        android:background="@drawable/spinner_gray_5dp"
+        android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
         app:layout_constraintEnd_toStartOf="@id/btn_search"
         app:layout_constraintStart_toEndOf="@id/date_selector_until"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/tv_end_date"
@@ -63,12 +77,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:hint="@string/end_date"
-        android:textSize="13sp"
-        android:textColorHint="@color/colorGrayDark"
         android:textColor="@color/colorBlackLight"
+        android:textColorHint="@color/colorGrayDark"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@id/ll_end_date"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/ll_end_date"
         app:layout_constraintTop_toTopOf="@id/ll_end_date" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_margin="11dp"
+        android:src="@drawable/ic_arrow_down_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_end_date"
+        app:layout_constraintEnd_toEndOf="@+id/ll_end_date"
+        app:layout_constraintTop_toTopOf="@+id/ll_end_date" />
 
     <Button
         android:id="@+id/btn_search"
