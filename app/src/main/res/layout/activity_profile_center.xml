@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
+    tools:ignore="spUsage"
     tools:context=".ui.profileCenter.ProfileCenterActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,7 +102,7 @@
             android:layout_marginStart="12dp"
             android:gravity="center_vertical"
             android:text="@string/account_balance"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -109,11 +110,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:ellipsize="end"
+            android:paddingEnd="6dp"
+            android:paddingStart="0dp"
             android:gravity="center_vertical"
             android:maxWidth="120dp"
             android:maxLines="1"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="16dp"
@@ -125,10 +127,9 @@
             android:id="@+id/tv_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
             android:gravity="center_vertical"
             android:text="@string/bet_info_list_rmb"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp" />
 
         <ImageButton
