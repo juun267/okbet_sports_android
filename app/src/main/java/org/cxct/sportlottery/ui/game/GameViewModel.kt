@@ -123,7 +123,6 @@ class GameViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
-    private val _oddsListGameHallLiveResult = MutableLiveData<OddsListResult?>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
@@ -643,7 +642,6 @@ class GameViewModel(
 
         if (matchType == MatchType.IN_PLAY) {
             _oddsListGameHallResult.value = Event(result)
-            _oddsListGameHallLiveResult.value = result
         } else {
             _oddsListResult.value = Event(result)
         }
