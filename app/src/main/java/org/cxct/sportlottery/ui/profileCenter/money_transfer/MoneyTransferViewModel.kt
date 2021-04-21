@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -210,6 +211,7 @@ class MoneyTransferViewModel(
     private fun setRecordInSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
         list.add(StatusSheetData(platCode, androidContext.getString(R.string.all_in_plat)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }
@@ -221,6 +223,7 @@ class MoneyTransferViewModel(
     private fun setRecordOutSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
         list.add(StatusSheetData(platCode, androidContext.getString(R.string.all_out_plat)))
+        list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
         }
@@ -241,10 +244,10 @@ class MoneyTransferViewModel(
     fun filterRecordList(plat: PLAT, filterPlat: String?) {
         if (plat == PLAT.IN_PLAT) {
             val list = defaultRecordInList.filter { it.showName != filterPlat }
-            _recordInPlatSheetList.value = list ?: listOf()
+            _recordInPlatSheetList.value = list
         } else {
             val list = defaultRecordOutList.filter { it.showName != filterPlat }
-            _recordOutPlatSheetList.value = list ?: listOf()
+            _recordOutPlatSheetList.value = list
         }
     }
 

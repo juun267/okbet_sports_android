@@ -20,8 +20,7 @@ import kotlinx.android.synthetic.main.content_bottom_sheet_other_bet_record_item
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.DisplayUtil.px
+import org.cxct.sportlottery.util.MetricsUtil.convertDpToPixel
 import java.util.*
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
@@ -187,12 +186,12 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             sheetAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
                 override fun onChanged() {
                     super.onChanged()
-                    val count = sheetAdapter?.itemCount
-                    if (count?:1 < 3) {
-                        val params: ViewGroup.LayoutParams = sheet_rv_more.layoutParams
-                        params.height = 48.dp * (count?:1)
-                        sheet_rv_more.layoutParams = params
-                    }
+                    Log.e(">>>", "onChanged, dataList?.size = ${dataList?.size}")
+                    val count = if (dataList?.size ?: 1 < 3) dataList?.size else 3
+                    Log.e(">>>", "count = $count")
+                    val params: ViewGroup.LayoutParams = sheet_rv_more.layoutParams
+                    params.height = convertDpToPixel(48f * (count ?: 1), context).toInt()
+                    sheet_rv_more.layoutParams = params
                 }
             })
         }
