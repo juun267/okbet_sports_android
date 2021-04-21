@@ -418,8 +418,8 @@
 
     <string name="total_bet_amount">总投注额：</string>
     <string name="win_lose">赢 / 输 (RMB)</string>
-    <string name="no_any_bet_record">暂无任何投注纪录</string>
-    <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
+    <string name="no_any_bet_record">暂无任何投注记录</string>
+    <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注记录呢～</string>
 
     <!--odds detail-->
     <string name="odds_detail_more">更多</string>
@@ -625,9 +625,9 @@
 
     <!-- finance -->
     <string name="finance">资金明细</string>
-    <string name="record_recharge">充值纪录</string>
+    <string name="record_recharge">充值记录</string>
     <string name="record_withdrawal">提款记录</string>
-    <string name="record_red_envelope">红包纪录</string>
+    <string name="record_red_envelope">红包记录</string>
     <string name="record_conversion">转换记录</string>
     <string name="record_reward">打賞紀錄</string>
 
@@ -682,7 +682,7 @@
     <string name="feedback_toolbar_title">建议反馈</string>
     <string name="feedback_detail">反馈详情</string>
     <string name="feedback_tabName_problem">问题与建议</string>
-    <string name="feedback_tabName_record">反馈纪录</string>
+    <string name="feedback_tabName_record">反馈记录</string>
     <string name="feedback_description">如果您对游戏或者平台有好的建议或者发现Bug可以进行提交，官方客服会在48小时内进行回复。我们会及时修正Bug或参考您的反馈不断优化我们的产品和服务。 (若同样建议或Bug有多人反馈,奖金将会发给最先反馈者,记得发现问题第一时间反馈喔)</string>
     <string name="feedback_description_money">如果建议被采用或者Bug经核实，最高奖励人民币3000元(或其他的等值币种)。</string>
     <string name="feedback_submit_enter">提交建议</string>
