@@ -120,6 +120,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         showHideTab()
         sv_protocol.setAdapter(protocolAdapter)
 
+        viewModel.getCryptoBindList(args.editBankCard)
+
+        initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
 
@@ -273,7 +276,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun clearBankInputFiled() {
-        et_create_name.resetText()
         et_bank_card_number.resetText()
         et_network_point.resetText()
         et_withdrawal_password.resetText()
@@ -340,23 +342,31 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
+        })
 
-            val protocolList = rechCfgData.uwTypes.find { it.type == TransferType.CRYPTO.type }?.detailList
-            protocolList?.let { list ->
-                protocolAdapter.dataList = list
-                setCryptoProtocol(list.first())
-            }
+        viewModel.addCryptoCardList.observe(this.viewLifecycleOwner, {
+            protocolAdapter.dataList = it
+            val modifyMoneyCardDetail = it.find { list -> list.contract == args.editBankCard?.bankName }
+            setCryptoProtocol(modifyMoneyCardDetail ?: it.first())
         })
 
 
         viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
             if (result.success) {
                 if (mBankCardStatus) {
-                    ToastUtil.showToast(context, getString(R.string.text_bank_card_modify_success))
+                    val promptMessage = when (transferType) {
+                        TransferType.BANK -> getString(R.string.text_bank_card_modify_success)
+                        TransferType.CRYPTO -> getString(R.string.text_crypto_modify_success)
+                    }
+                    ToastUtil.showToast(context, promptMessage)
                     mNavController.popBackStack()
                 } else {
                     //綁定成功後回至銀行卡列表bank card list
-                    showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_add_success)) {
+                    val promptMessage = when (transferType) {
+                        TransferType.BANK -> getString(R.string.text_bank_card_add_success)
+                        TransferType.CRYPTO -> getString(R.string.text_crypto_add_success)
+                    }
+                    showPromptDialog(getString(R.string.prompt), promptMessage) {
                         mNavController.popBackStack()
                     }
                 }
@@ -368,7 +378,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer
         { result ->
             if (result.success) {
-                showPromptDialog(getString(R.string.prompt), getString(R.string.text_bank_card_delete_success)) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
+                val promptMessage = when (transferType) {
+                    TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
+                    TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
+                }
+                showPromptDialog(getString(R.string.prompt), promptMessage) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
                 showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
             }

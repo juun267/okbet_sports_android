@@ -141,6 +141,11 @@ class WithdrawViewModel(
         get() = _moneyCardExist
     private var _moneyCardExist = MutableLiveData<Set<MoneyCardExist>>()
 
+    //可被增加的虛擬幣卡列表
+    val addCryptoCardList: LiveData<List<MoneyRechCfg.DetailList>>
+        get() = _addCryptoCardList
+    private var _addCryptoCardList = MutableLiveData<List<MoneyRechCfg.DetailList>>()
+
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
     //資金卡片config
@@ -350,6 +355,7 @@ class WithdrawViewModel(
         _bankCardNumberMsg = MutableLiveData()
         _networkPointMsg = MutableLiveData()
         _withdrawPasswordMsg = MutableLiveData()
+        _walletAddressMsg = MutableLiveData()
     }
 
     private fun checkBankCardData(): Boolean {
@@ -380,7 +386,7 @@ class WithdrawViewModel(
 
     fun checkCreateName(createName: String) {
         _createNameErrorMsg.value = when {
-            createName.isEmpty() -> androidContext.getString(R.string.error_create_name_empty)
+            createName.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyCreateName(createName) -> {
                 androidContext.getString(R.string.error_incompatible_format)
             }
@@ -390,7 +396,7 @@ class WithdrawViewModel(
 
     fun checkBankCardNumber(bankCardNumber: String) {
         _bankCardNumberMsg.value = when {
-            bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_bank_card_number_empty)
+            bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyBankCardNumber(bankCardNumber) -> {
                 androidContext.getString(R.string.error_bank_card_number)
             }
@@ -400,7 +406,7 @@ class WithdrawViewModel(
 
     fun checkNetWorkPoint(networkPoint: String) {
         _networkPointMsg.value = when {
-            networkPoint.isEmpty() -> androidContext.getString(R.string.error_network_point_empty)
+            networkPoint.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyNetworkPoint(networkPoint) -> {
                 androidContext.getString(R.string.error_network_point)
             }
@@ -410,7 +416,7 @@ class WithdrawViewModel(
 
     fun checkWalletAddress(walletAddress: String) {
         _walletAddressMsg.value = when {
-            walletAddress.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
+            walletAddress.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyCryptoWalletAddress(walletAddress) -> androidContext.getString(R.string.error_wallet_address)
             else -> ""
         }
@@ -418,7 +424,7 @@ class WithdrawViewModel(
 
     fun checkWithdrawPassword(withdrawPassword: String) {
         _withdrawPasswordMsg.value = when {
-            withdrawPassword.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
+            withdrawPassword.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWithdrawPassword(withdrawPassword) -> {
                 androidContext.getString(R.string.error_withdraw_password)
             }
@@ -632,6 +638,26 @@ class WithdrawViewModel(
             }
         }
         return cryptoCardCountLimitList
+    }
+
+    /**
+     * 獲取虛擬幣新增或編輯銀行卡可選列表
+     */
+    fun getCryptoBindList(modifyMoneyCard: BankCardList? = null) {
+        val cryptoCanBind = checkCryptoCanBind()
+        val modifyMoneyChannel = modifyMoneyCard?.bankName
+
+        val cryptoCanBindList: MutableList<MoneyRechCfg.DetailList> = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.toMutableList() ?: mutableListOf()
+
+        cryptoCanBind.forEach { canBindData ->
+            if (canBindData.canBind == false) {
+                if (modifyMoneyChannel != canBindData.channel) {
+                    val removeData = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == canBindData.channel }
+                    cryptoCanBindList.remove(removeData)
+                }
+            }
+        }
+        _addCryptoCardList.value = cryptoCanBindList
     }
 
     fun resetWithdrawPage() {

@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import kotlinx.android.synthetic.main.content_rv_bank_list_new_no_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
+import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MoneyManager
@@ -26,6 +28,12 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
         }
 
     var fullName = ""
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var moneyConfig: MoneyRechCfgData? = null
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -81,10 +89,10 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is BankItemViewHolder -> {
-                holder.bind(bankList[position], fullName, mBankListClickListener)
+                holder.bind(bankList[position], fullName, moneyConfig, mBankListClickListener)
             }
             is CryptoItemViewHolder -> {
-                holder.bind(bankList[position], mBankListClickListener)
+                holder.bind(bankList[position], moneyConfig, mBankListClickListener)
             }
             is LastViewHolder -> {
                 holder.bind(transferAddSwitch, mBankListClickListener)
@@ -96,14 +104,16 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class BankItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(data: BankCardList, fullName: String, mBankListClickListener: BankListClickListener) {
+        fun bind(data: BankCardList, fullName: String, moneyConfig: MoneyRechCfgData?, mBankListClickListener: BankListClickListener) {
+            val bankOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+
             itemView.apply {
                 iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
                 tv_bank_name.text = data.bankName
                 tv_name.text = TextUtil.maskFullName(fullName)
                 tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
-                if (sConfigData?.enableModifyBank == "1") {
+                if (sConfigData?.enableModifyBank == "1" && bankOpen) {
                     img_edit_bank.apply {
                         visibility = View.VISIBLE
                         setOnClickListener {
@@ -126,13 +136,15 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     class CryptoItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(data: BankCardList, mBankListClickListener: BankListClickListener) {
+        fun bind(data: BankCardList, moneyConfig: MoneyRechCfgData?, mBankListClickListener: BankListClickListener) {
+            val cryptoOpen = moneyConfig?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
+
             itemView.apply {
                 iv_bank_icon.setImageResource(MoneyManager.getCryptoIconByCryptoName(data.bankName))
                 tv_bank_name.text = data.bankName
                 tv_tail_number.text = if (data.cardNo.length > 4) data.cardNo.substring(data.cardNo.length - 4) else data.cardNo //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
-                if (sConfigData?.enableModifyBank == "1") {
+                if (sConfigData?.enableModifyBank == "1" && cryptoOpen) {
                     img_edit_bank.apply {
                         visibility = View.VISIBLE
                         setOnClickListener {

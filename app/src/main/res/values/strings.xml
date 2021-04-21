@@ -578,7 +578,7 @@
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_create_name_empty">开户名为必填栏位</string>
-    <string name="error_bank_card_number">您输入的银行卡号格式有错误</string>
+    <string name="error_bank_card_number">银行卡号格式有错误</string>
     <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
     <string name="error_network_point">您输入的开户网点格式有错误</string>
     <string name="error_network_point_empty">开户网点为必填栏位</string>
@@ -587,8 +587,11 @@
     <string name="error_withdraw_password_empty">提款密码为必填栏位</string>
     <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
+    <string name="text_crypto_delete_success">虚拟币删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
+    <string name="text_crypto_add_success">虚拟币绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
+    <string name="text_crypto_modify_success">编辑虚拟币成功</string>
     <string name="text_bank_card_delete_fail">删除银行卡失败</string>
     <string name="text_bank_card_add_fail">新增银行卡失败</string>
     <string name="text_bank_card_modify_fail">编辑银行卡失败</string>

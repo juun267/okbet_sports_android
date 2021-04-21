@@ -69,6 +69,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
+            mBankListAdapter.moneyConfig = it
             viewModel.checkBankCardCount()
         })
 
