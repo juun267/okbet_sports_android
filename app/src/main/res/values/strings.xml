@@ -429,6 +429,7 @@
     <string name="bottom_sheet_close">关闭</string>
 
     <!--money-recharge-->
+    <string name="message_recharge_maintain">充值相关系统升级中,请稍等</string>
     <string name="title_bank">选择银行</string>
     <string name="title_main_account">选择帐户</string>
     <string name="title_name">姓名：</string>
@@ -446,7 +447,7 @@
     <string name="edt_hint_bank_account">12-19位数内的银行卡号</string>
     <string name="title_recharge_time">充值时间</string>
     <string name="title_current_money">当前余额</string>
-    <string name="btn_submit">提交申请</string>
+    <string name="btn_submit">提交</string>
     <string name="btn_copy">复制</string>
     <string name="title_qr_pay">扫码支付：</string>
     <string name="title_hint_qr_pay">扫一扫快捷支付，如有疑问请及时联系客服！</string>
@@ -455,7 +456,7 @@
     <string name="title_rebate_rate">・返利：</string>
     <string name="title_rebate_amount">・返利金额：</string>
     <string name="title_remark">备注：</string>
-    <string name="title_tips">・温馨提示：</string>
+    <string name="title_tips">・备注：</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
     <string name="wx_recharge_hint">请每次入款前登录会员核对微信账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
@@ -504,9 +505,10 @@
     <string name="title_recharge_address">充币地址:</string>
     <string name="btn_recharge">去充值</string>
     <string name="title_upload_pic">上传支付截图</string>
+    <string name="title_upload_pic_plz">请上传支付截图</string>
     <string name="title_reupload_pic">重新上传支付截图</string>
     <string name="title_click_upload_pic">请点击上传支付成功截图</string>
-    <string name="hint_remark">备注：%1$s%</string>
+    <string name="hint_remark">备注：%1$s</string>
 
 
 

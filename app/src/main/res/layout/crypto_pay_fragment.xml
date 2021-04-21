@@ -71,7 +71,7 @@
 
         <!-- 充值個數 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_recharge_account"
+            android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -178,9 +178,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_rate"
             android:textColor="@color/colorRed"
-            android:textSize="@dimen/textSize12sp"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
+            android:textSize="@dimen/textSize12sp" />
 
         <TextView
             android:id="@+id/tv_fee_amount"
@@ -189,9 +187,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_amount"
             android:textColor="@color/colorRed"
-            android:textSize="@dimen/textSize12sp"
-            android:visibility="invisible"
-            tools:visibility="visible" />
+            android:textSize="@dimen/textSize12sp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_account"
@@ -277,6 +273,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="100dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -293,12 +290,12 @@
                     <TextView
                         android:id="@+id/txv_payee"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="top"
                         android:layout_weight="1"
                         android:gravity="top"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize14sp"
+                        android:textSize="@dimen/textSize12sp"
                         tools:text="TCZVMNd1D42qcweFSahY2NtWW2DCt8KR7GJ" />
 
                     <TextView
@@ -306,17 +303,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginVertical="5dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:textColor="@color/colorRed"
-                        android:textSize="@dimen/textSize14sp"
+                        android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
                         tools:text="备注 : " />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
                         android:orientation="horizontal">
 
                         <Button
@@ -365,7 +363,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cv_upload"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/effect_edittext_bg">
 
                 <TextView
                     android:id="@+id/tv_upload"
@@ -384,6 +383,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
+                    android:color="@color/colorWhite"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="@null"
                     app:contentPaddingLeft="10dp"

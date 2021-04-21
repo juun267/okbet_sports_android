@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.util
 
-import android.util.Log
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -95,5 +94,17 @@ object ArithUtil {
         val decimalSubject = BigDecimal(paramsS ?: 0.0)
         val decimalObject = BigDecimal(paramsO ?: 0.0)
         return round((decimalSubject - decimalObject).toDouble(), 3, RoundingMode.FLOOR).toDouble()
+    }
+
+    /**
+     * 提供精确的乘法运算。
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 两个参数的积
+     */
+    fun mul(v1: Double, v2: Double): Double {
+        val b1 = BigDecimal(java.lang.Double.toString(v1))
+        val b2 = BigDecimal(java.lang.Double.toString(v2))
+        return b1.multiply(b2).toDouble()
     }
 }

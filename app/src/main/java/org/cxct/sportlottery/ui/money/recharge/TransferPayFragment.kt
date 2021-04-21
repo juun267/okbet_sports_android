@@ -485,9 +485,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = mBottomSheetList[bankPosition].bankName.toString(),
                     depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                        et_recharge_amount.getText().toInt()
+                        et_recharge_amount.getText()
                     } else {
-                        0
+                        ""
                     },
                     payer = et_bank_account.getText(),
                     payerName = et_name.getText(),
@@ -502,9 +502,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,
                     depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                        et_recharge_amount.getText().toInt()
+                        et_recharge_amount.getText()
                     } else {
-                        0
+                        ""
                     },
                     payer = null,
                     payerName = et_wx_id.getText(),
@@ -519,9 +519,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,
                     depositMoney = if (et_recharge_amount.getText().isNotEmpty()) {
-                        et_recharge_amount.getText().toInt()
+                        et_recharge_amount.getText()
                     } else {
-                        0
+                        ""
                     },
                     payer = null,
                     payerName = et_nickname.getText(),
