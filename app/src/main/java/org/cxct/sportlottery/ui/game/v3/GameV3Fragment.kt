@@ -706,16 +706,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         sportTypeAdapter.dataSport = sportTypeList
 
-        leagueAdapter.playType = PlayType.OU_HDP
-
         game_filter_row.apply {
             sportName = selectedSportType?.name
 
             isPlayTypeVisible =
                 (selectedSportType?.code == SportType.FOOTBALL.code) || (selectedSportType?.code == SportType.BASKETBALL.code)
-
-            playType = PlayType.OU_HDP
         }
+
+        viewModel.setPlayType(PlayType.OU_HDP)
     }
 
     private fun clearSearchView() {
