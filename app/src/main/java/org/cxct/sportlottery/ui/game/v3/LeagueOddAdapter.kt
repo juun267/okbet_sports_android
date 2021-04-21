@@ -124,6 +124,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.match_play_type_block.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item)
             }
+
+            itemView.match_odd_block_info.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item)
+            }
         }
 
         private fun setupMatchInfo(
@@ -807,6 +811,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block_1x2.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item)
+            }
+
+            itemView.match_odd_block_info_1x2.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item)
             }
         }

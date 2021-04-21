@@ -379,7 +379,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
 
-                live_web_preload.visibility = View.INVISIBLE
+                live_web_preload?.visibility = View.INVISIBLE
                 view?.visibility = View.VISIBLE
             }
 

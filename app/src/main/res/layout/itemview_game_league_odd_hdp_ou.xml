@@ -228,4 +228,13 @@
         app:layout_constraintTop_toTopOf="@id/match_odd_column2_away"
         tools:text="利物浦" />
 
+    <View
+        android:id="@+id/match_odd_block_info"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/match_play_type_block"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/match_row" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
