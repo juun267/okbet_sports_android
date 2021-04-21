@@ -534,7 +534,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                         matchClockCO.matchTime
                                     }
                                     SportType.BASKETBALL.code -> {
-                                        matchClockCO.remainingTime
+                                        matchClockCO.remainingTimeInPeriod
                                     }
                                     else -> null
                                 }
