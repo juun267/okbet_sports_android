@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.itemview_game_league_odd_1x2.view.*
 import kotlinx.android.synthetic.main.itemview_game_league_odd_hdp_ou.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -516,6 +517,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> null
                 }
 
+                ouType = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        OUType.O_TYPE
+                    }
+                    else -> null
+                }
+
                 isSelected = when (sportType) {
                     SportType.FOOTBALL, SportType.BASKETBALL -> {
                         oddListOU?.get(0)?.isSelected ?: false
@@ -649,6 +657,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                     SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
                         PlayType.HDP
+                    }
+                    else -> null
+                }
+
+                ouType = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        OUType.U_TYPE
                     }
                     else -> null
                 }
