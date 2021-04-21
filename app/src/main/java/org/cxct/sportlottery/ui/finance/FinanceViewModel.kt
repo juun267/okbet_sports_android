@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 const val pageSize = 20
@@ -247,7 +248,7 @@ class FinanceViewModel(
                 it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
 
-                it.displayMoney = ArithUtil.toMoneyFormat(it.rechMoney)
+                it.displayMoney = TextUtil.formatMoney(it.rechMoney)
             }
 
             result?.total?.let {
@@ -318,8 +319,8 @@ class FinanceViewModel(
                     it.operatorDateAndTime = TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
-                it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
-                it.displayFee = ArithUtil.toMoneyFormat(it.fee)
+                it.displayMoney = TextUtil.formatMoney(it.applyMoney?:0.0)
+                it.displayFee = TextUtil.formatMoney(it.fee?:0.0)
             }
 
             result?.total?.let {
