@@ -7,17 +7,20 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoParlayItemBinding
+import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
+@SuppressLint("ClickableViewAccessibility")
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
     RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
 
@@ -185,6 +188,10 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.etBet.addTextChangedListener(tw)
             binding.etBet.tag = tw
 
+            binding.etBet.setOnTouchListener { v, event ->
+                onTotalQuotaListener.onShowKeyboard(binding.etBet)
+                false
+            }
 
             binding.executePendingBindings()
 
@@ -207,6 +214,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     interface OnTotalQuotaListener {
         fun count(totalWin: Double, totalBet: Double)
         fun sendOutStatus(parlayOddList: MutableList<ParlayOdd>)
+        fun onShowKeyboard(editText: EditText)
     }
 
 
