@@ -474,7 +474,7 @@ class MoneyRechViewModel(
             return false
         return true
     }
-    //TODO Bill
+    
     private fun checkTransferPayCryptoInput(): Boolean {
         if (!rechargeAccountMsg.value.isNullOrEmpty())
             return false
