@@ -269,7 +269,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                             matchClockCO.matchTime
                                         }
                                         SportType.BASKETBALL.code -> {
-                                            matchClockCO.remainingTime
+                                            matchClockCO.remainingTimeInPeriod
                                         }
                                         else -> null
                                     }
