@@ -1,10 +1,19 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +24,7 @@ import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
@@ -23,11 +33,12 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.util.KeyBoardUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
-
+@SuppressLint("SetTextI18n")
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     BetInfoListAdapter.OnItemClickListener {
 
@@ -45,6 +56,9 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private var oddsType: OddsType = OddsType.EU
+
+
+    private var keyboard: KeyBoardUtil? = null
 
 
     init {
@@ -80,6 +94,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             viewModel.removeBetInfoAll()
         }
 
+        tv_close.setOnClickListener {
+            keyboard?.hideKeyboard()
+        }
+
         betInfoListAdapter = BetInfoListAdapter(requireContext(), this@BetInfoListDialog)
 
         rv_bet_list.apply {
@@ -92,6 +110,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                 )
             )
         }
+
+        keyboard = KeyBoardUtil(kv_keyboard, ll_keyboard)
     }
 
 
@@ -248,6 +268,37 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
     override fun onRegisterClick() {
         context?.startActivity(Intent(context, RegisterActivity::class.java))
+    }
+
+
+    override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
+
+        val colorOrange = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+
+
+        val playName = SpannableString(matchOdd.playName)
+        playName.setSpan(StyleSpan(Typeface.BOLD), 0, matchOdd.playName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val spreadEnd = matchOdd.spread.length + 2
+        val spread = SpannableString("  ${matchOdd.spread}")
+        spread.setSpan(ForegroundColorSpan(colorOrange),0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spread.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val oddsEnd = getOdds(matchOdd, oddsType).toString().length + 3
+        val odds = SpannableString(" @ ${getOdds(matchOdd, oddsType)}")
+        odds.setSpan(ForegroundColorSpan(colorOrange), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        odds.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val builder = SpannableStringBuilder()
+
+        builder.append("${matchOdd.playCateName} - ")
+        builder.append(playName)
+        builder.append(spread)
+        builder.append(odds)
+
+        tv_match_info.text = builder
+
+        keyboard?.showKeyboard(editText)
     }
 
 

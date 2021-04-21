@@ -509,10 +509,6 @@
     <string name="hint_remark">备注：%1$s%</string>
 
 
-
-
-
-
     <!--  Withdraw  -->
     <string name="bank_card">银行卡</string>
     <string name="crypto">虚拟币</string>
@@ -787,4 +783,12 @@
     <string name="submit_time">提交时间:</string>
     <string name="feedback_time">反馈时间:</string>
     <string name="not_reply_yet">尚未反馈</string>
+
+    <!--keyboard-->
+    <string name="keyboard_code_delete">-999</string>
+    <string name="keyboard_code_insert_0">48</string>
+    <string name="keyboard_code_insert_00">-48</string>
+    <string name="keyboard_code_plus_100">-100</string>
+    <string name="keyboard_code_plus_1000">-1000</string>
+    <string name="keyboard_code_plus_10000">-10000</string>
 </resources>
