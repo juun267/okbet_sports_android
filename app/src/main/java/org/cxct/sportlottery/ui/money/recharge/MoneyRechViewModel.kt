@@ -22,6 +22,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
@@ -174,7 +175,13 @@ class MoneyRechViewModel(
     fun rechargeCryptoSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         checkAll(moneyAddRequest, rechType, rechConfig)
         if (checkTransferPayCryptoInput()) {
-            rechargeAdd(moneyAddRequest)
+            rechargeAdd(
+                moneyAddRequest,
+                ArithUtil.mul(
+                    (moneyAddRequest.depositMoney ?: "0.0").toString().toDouble(),
+                    (rechConfig?.exchangeRate ?: 0.0)
+                ).toString()
+            )
         }
     }
 
@@ -186,6 +193,19 @@ class MoneyRechViewModel(
                     moneyRepository.rechargeAdd(moneyAddRequest)
                 }.let {
                     it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
+                    _apiResult.value = it
+                }
+            }
+        }
+    }
+    //虛擬幣的充值 最後顯示的RMB要自己換算
+    private fun rechargeAdd(moneyAddRequest: MoneyAddRequest, rechargeMoney:String) {
+        if (checkTransferPayInput()) {
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    moneyRepository.rechargeAdd(moneyAddRequest)
+                }.let {
+                    it?.result = rechargeMoney//金額帶入result
                     _apiResult.value = it
                 }
             }
