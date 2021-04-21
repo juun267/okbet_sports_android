@@ -593,7 +593,6 @@ class GameViewModel(
 
     fun updateMatchBetList(
         matchOdd: MatchOdd,
-        oddString: String,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
         if (betInfoRepository._isParlayPage.value == true) {

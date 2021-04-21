@@ -369,7 +369,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         SportType.FOOTBALL, SportType.BASKETBALL -> {
                             if (oddListHDP != null && oddListHDP.size >= 2) {
                                 oddListHDP[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
@@ -377,7 +377,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
                             if (oddList1x2 != null && oddList1x2.size >= 2) {
                                 oddList1x2[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
@@ -494,7 +494,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         SportType.FOOTBALL, SportType.BASKETBALL -> {
                             if (oddListHDP != null && oddListHDP.size >= 2) {
                                 oddListHDP[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
@@ -502,7 +502,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
                             if (oddList1x2 != null && oddList1x2.size >= 2) {
                                 oddList1x2[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
@@ -630,23 +630,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         SportType.FOOTBALL, SportType.BASKETBALL -> {
                             if (oddListOU != null && oddListOU.size >= 2) {
                                 oddListOU[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
 
-                        SportType.TENNIS -> {
+                        SportType.VOLLEYBALL, SportType.BADMINTON, SportType.TENNIS -> {
                             if (oddListHDP != null && oddListHDP.size >= 2) {
                                 oddListHDP[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.SET_HDP.code, odd)
-                                }
-                            }
-                        }
-
-                        SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            if (oddListHDP != null && oddListHDP.size >= 2) {
-                                oddListHDP[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
@@ -774,23 +766,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         SportType.FOOTBALL, SportType.BASKETBALL -> {
                             if (oddListOU != null && oddListOU.size >= 2) {
                                 oddListOU[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
 
-                        SportType.TENNIS -> {
+                        SportType.VOLLEYBALL, SportType.BADMINTON, SportType.TENNIS -> {
                             if (oddListHDP != null && oddListHDP.size >= 2) {
                                 oddListHDP[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.SET_HDP.code, odd)
-                                }
-                            }
-                        }
-
-                        SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            if (oddListHDP != null && oddListHDP.size >= 2) {
-                                oddListHDP[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                    leagueOddListener?.onClickBet(item, odd)
                                 }
                             }
                         }
@@ -962,7 +946,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnClickListener {
                     if (oddList1X2 != null && oddList1X2.size >= 2) {
                         oddList1X2[0]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                            leagueOddListener?.onClickBet(item, odd)
                         }
                     }
                 }
@@ -1016,7 +1000,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnClickListener {
                     if (oddList1X2 != null && oddList1X2.size >= 3) {
                         oddList1X2[1]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                            leagueOddListener?.onClickBet(item, odd)
                         }
                     }
                 }
@@ -1087,11 +1071,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnClickListener {
                     if (oddList1X2 != null && oddList1X2.size == 2) {
                         oddList1X2[1]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                            leagueOddListener?.onClickBet(item, odd)
                         }
                     } else if (oddList1X2 != null && oddList1X2.size >= 3) {
                         oddList1X2[2]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                            leagueOddListener?.onClickBet(item, odd)
                         }
                     }
                 }
@@ -1165,7 +1149,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 class LeagueOddListener(
     val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerPlayType: (item: MatchOdd) -> Unit,
-    val clickListenerBet: (matchOdd: MatchOdd, oddString: String, odd: Odd) -> Unit
+    val clickListenerBet: (matchOdd: MatchOdd, odd: Odd) -> Unit
 ) {
     fun onClickLive(item: MatchOdd) =
         clickListenerLive(item)
@@ -1173,6 +1157,6 @@ class LeagueOddListener(
     fun onClickPlayType(item: MatchOdd) =
         clickListenerPlayType(item)
 
-    fun onClickBet(matchOdd: MatchOdd, oddString: String, odd: Odd) =
-        clickListenerBet(matchOdd, oddString, odd)
+    fun onClickBet(matchOdd: MatchOdd, odd: Odd) =
+        clickListenerBet(matchOdd, odd)
 }
