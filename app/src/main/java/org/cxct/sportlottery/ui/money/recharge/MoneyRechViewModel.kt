@@ -92,9 +92,9 @@ class MoneyRechViewModel(
     private var _hashCodeErrorMsg = MutableLiveData<String>()
 
     //支付截圖錯誤訊息
-    val voucherPathErrorMsg: LiveData<String>
+    val voucherPathErrorMsg: LiveData<Event<String>>
         get() = _voucherPathErrorMsg
-    private var _voucherPathErrorMsg = MutableLiveData<String>()
+    private var _voucherPathErrorMsg = MutableLiveData<Event<String>>()
 
     //暱稱錯誤訊息
     val nickNameErrorMsg: LiveData<String>
@@ -438,14 +438,14 @@ class MoneyRechViewModel(
     }
 
     //驗證支付截圖
-    fun checkScreenShot(voucherPath:String?){
+    private fun checkScreenShot(voucherPath:String?){
         viewModelScope.launch {
             _voucherPathErrorMsg.value = when {
                 voucherPath.isNullOrEmpty() -> {
-                    androidContext.getString(R.string.title_upload_pic_plz)
+                    Event(androidContext.getString(R.string.title_upload_pic_plz))
                 }
                 else -> {
-                    ""
+                    Event("")
                 }
             }
         }

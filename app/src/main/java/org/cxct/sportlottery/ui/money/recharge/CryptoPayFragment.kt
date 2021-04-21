@@ -187,14 +187,16 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         })
         //支付截圖錯誤訊息
         viewModel.voucherPathErrorMsg.observe(viewLifecycleOwner, {
-            if (!it.isNullOrEmpty()) {
-                cv_upload.isActivated = true
-                tv_upload.text = it
-                tv_upload.setTextColor(resources.getColor(R.color.colorRedDark))
-            } else {
-                cv_upload.isActivated = false
-                tv_upload.text = resources.getString(R.string.title_reupload_pic)
-                tv_upload.setTextColor(resources.getColor(R.color.colorBlackLight))
+            it.getContentIfNotHandled()?.let { url ->
+                if (!url.isNullOrEmpty()) {
+                    cv_upload.isActivated = true
+                    tv_upload.text = url
+                    tv_upload.setTextColor(resources.getColor(R.color.colorRedDark))
+                } else {
+                    cv_upload.isActivated = false
+                    tv_upload.text = resources.getString(R.string.title_reupload_pic)
+                    tv_upload.setTextColor(resources.getColor(R.color.colorBlackLight))
+                }
             }
         })
 
@@ -206,10 +208,22 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 img_screen_shot.visibility = View.VISIBLE
                 tv_click.visibility = View.GONE
                 tv_upload.text = String.format(resources.getString(R.string.title_reupload_pic))
-                voucherUrl = it.toString()
-                viewModel.checkScreenShot(voucherUrl)
+                voucherUrl = result
+                checkVoucherUrl(voucherUrl.toString())
             }
         })
+    }
+
+    private fun  checkVoucherUrl(url:String){
+        if (url.isNotEmpty()) {
+            cv_upload.isActivated = false
+            tv_upload.text = resources.getString(R.string.title_reupload_pic)
+            tv_upload.setTextColor(resources.getColor(R.color.colorBlackLight))
+        } else {
+            cv_upload.isActivated = true
+            tv_upload.text = resources.getString(R.string.title_upload_pic_plz)
+            tv_upload.setTextColor(resources.getColor(R.color.colorRedDark))
+        }
     }
 
     @SuppressLint("CutPasteId")
