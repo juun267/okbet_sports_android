@@ -46,6 +46,11 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         else -> {
                             matchOdd.matchInfo?.id?.let {
                                 navOddsDetail(it)
+                                /*
+                                 * UI上呈現只會有一項,故直接使用data[0]
+                                 * 添加至投注細項(更多)
+                                 */
+                                viewModel.setOddsDetailMoreList(this.data[0].matchOdds)
                             }
                         }
                     }
@@ -207,13 +212,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
-            val oddsType = when (it) {
-                OddsType.EU.value -> OddsType.EU
-                OddsType.HK.value -> OddsType.HK
-                else -> null
-            }
-
-            oddsType?.let {
+            it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
             }
         })
@@ -287,14 +286,27 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+
+                    @Suppress("NAME_SHADOWING")
+                    val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                        oddTypeSocketMapEntry.value.toMutableList()
+                    }
+
                     val leagueOdds = leagueAdapter.data
                     val oddsType = leagueAdapter.oddsType
 
                     leagueOdds.forEach { leagueOdd ->
                         if (leagueOdd.isExpand) {
 
-                            leagueOdd.matchOdds.forEach { matchOdd ->
-                                matchOdd.odds.forEach { oddTypeMap ->
+                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                            }
+
+                            if (updateMatchOdd?.odds.isNullOrEmpty()) {
+                                updateMatchOdd?.odds = oddTypeSocketMap.toMutableMap()
+
+                            } else {
+                                updateMatchOdd?.odds?.forEach { oddTypeMap ->
 
                                     val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
                                     val odds = oddTypeMap.value
@@ -302,11 +314,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                     odds.forEach { odd ->
                                         odd?.let { oddNonNull ->
                                             val oddSocket = oddsSocket?.find { oddSocket ->
-                                                oddSocket.id == odd.id
+                                                oddSocket?.id == odd.id
                                             }
 
                                             oddSocket?.let { oddSocketNonNull ->
-
                                                 when (oddsType) {
                                                     OddsType.EU -> {
                                                         oddNonNull.odds?.let { oddValue ->
@@ -325,11 +336,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                                                             OddState.SAME.state
                                                                     }
                                                                 }
-
                                                             }
                                                         }
-
-                                                        oddNonNull.odds = oddSocketNonNull.odds
                                                     }
 
                                                     OddsType.HK -> {
@@ -349,13 +357,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                                                             OddState.SAME.state
                                                                     }
                                                                 }
-
                                                             }
                                                         }
-
-                                                        oddNonNull.hkOdds = oddSocketNonNull.hkOdds
                                                     }
                                                 }
+
+                                                oddNonNull.odds = oddSocketNonNull.odds
+                                                oddNonNull.hkOdds = oddSocketNonNull.hkOdds
 
                                                 oddNonNull.status = oddSocketNonNull.status
 

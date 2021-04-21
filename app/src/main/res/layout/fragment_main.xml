@@ -147,9 +147,8 @@
                         <org.cxct.sportlottery.ui.main.MainGamePager
                             android:id="@+id/lotteryGamePager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="120dp"
                             android:layout_marginBottom="25dp"
-                            android:minHeight="120dp"
                             app:cvSpanCount="1" />
 
                         <org.cxct.sportlottery.ui.main.MainLabel
@@ -162,9 +161,8 @@
                         <org.cxct.sportlottery.ui.main.MainGamePager
                             android:id="@+id/liveGamePager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="140dp"
                             android:layout_marginBottom="25dp"
-                            android:minHeight="140dp"
                             app:cvSpanCount="3" />
 
                         <org.cxct.sportlottery.ui.main.MainLabel
@@ -177,9 +175,8 @@
                         <org.cxct.sportlottery.ui.main.MainGamePager
                             android:id="@+id/pokerGamePager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="140dp"
                             android:layout_marginBottom="25dp"
-                            android:minHeight="140dp"
                             app:cvSpanCount="1" />
 
                         <org.cxct.sportlottery.ui.main.MainLabel
@@ -192,9 +189,8 @@
                         <org.cxct.sportlottery.ui.main.MainGamePager
                             android:id="@+id/slotGamePager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="120dp"
                             android:layout_marginBottom="25dp"
-                            android:minHeight="120dp"
                             app:cvSpanCount="2" />
 
                         <org.cxct.sportlottery.ui.main.MainLabel
@@ -207,9 +203,8 @@
                         <org.cxct.sportlottery.ui.main.MainGamePager
                             android:id="@+id/fishingGamePager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="120dp"
                             android:layout_marginBottom="25dp"
-                            android:minHeight="120dp"
                             app:cvSpanCount="2" />
 
                     </LinearLayout>

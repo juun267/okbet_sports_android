@@ -32,6 +32,25 @@ class GameFilterRow @JvmOverloads constructor(
             }
         }
 
+    var isPlayTypeVisible: Boolean? = null
+        set(value) {
+            field = value
+
+            field?.let {
+                game_filter_1x2.visibility = if (it) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                game_filter_ou.visibility = if (it) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+        }
+
     var playType: PlayType? = null
         set(value) {
             field = value

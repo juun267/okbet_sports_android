@@ -49,7 +49,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
 
-    var oddsType: String = OddsType.EU.value
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -418,10 +418,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                     //如果是球員 忽略名字替換
                     if (!checkKey(oddsDetail.gameType, GameType.SCO.value)) {
-                        oldOddData.name = newOddData.name
+                        if(newOddData.name?.isNotEmpty() == true){
+                            oldOddData.name = newOddData.name
+                        }
                     }
 
-                    oldOddData.extInfo = newOddData.extInfo
+                    if(newOddData.extInfo?.isNotEmpty() == true){
+                        oldOddData.extInfo = newOddData.extInfo
+                    }
+
                     oldOddData.spread = newOddData.spread
 
                     //先判斷大小
@@ -442,9 +447,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     private fun getOddState(oldItemOdd: Double, it: Odd): Int {
 
         val odds = when (oddsType) {
-            OddsType.EU.value -> it.odds
-            OddsType.HK.value -> it.hkOdds
-            else -> 0.0
+            OddsType.EU -> it.odds
+            OddsType.HK -> it.hkOdds
         }
         val newOdd = odds ?: 0.0
 

@@ -130,9 +130,9 @@ class WithdrawViewModel(
     private var myWithdrawCardList: List<BankCardList>? = null
 
     //資金卡片是否可以繼續增加(銀行卡、虛擬幣)
-    val addMoneyCardSwitch: LiveData<Boolean>
+    val addMoneyCardSwitch: LiveData<TransferTypeAddSwitch>
         get() = _addMoneyCardSwitch
-    private var _addMoneyCardSwitch = MutableLiveData<Boolean>()
+    private var _addMoneyCardSwitch = MutableLiveData<TransferTypeAddSwitch>()
 
     data class MoneyCardExist(val transferType: TransferType, val exist: Boolean)
 
@@ -141,12 +141,18 @@ class WithdrawViewModel(
         get() = _moneyCardExist
     private var _moneyCardExist = MutableLiveData<Set<MoneyCardExist>>()
 
+    //可被增加的虛擬幣卡列表
+    val addCryptoCardList: LiveData<List<MoneyRechCfg.DetailList>>
+        get() = _addCryptoCardList
+    private var _addCryptoCardList = MutableLiveData<List<MoneyRechCfg.DetailList>>()
+
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
     //資金卡片config
     private var cardConfig: MoneyRechCfg.DetailList? = null
 
     private var dealType: TransferType = TransferType.BANK
+
 
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
@@ -231,13 +237,13 @@ class WithdrawViewModel(
         getWithdrawHint()
     }
 
-    fun addBankCard(bankName: String, subAddress: String? = null, cardNo: String, fundPwd: String, fullName: String? = null, id: String?, uwType: String, bankCode: String? = null) {
-        if (checkInputBankCardData(fullName, cardNo, subAddress, fundPwd, uwType)) {
+    fun addBankCard(bankName: String, subAddress: String? = null, cardNo: String, fundPwd: String, id: String?, uwType: String, bankCode: String? = null) {
+        if (checkInputBankCardData(userInfo.value?.fullName, cardNo, subAddress, fundPwd, uwType)) {
             viewModelScope.launch {
                 loading()
                 doNetwork(androidContext) {
                     val userId = userInfoRepository.userInfo.firstOrNull()?.userId.toString()
-                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, fullName, id, userId, uwType, bankCode))
+                    OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, userInfo.value?.fullName, id, userId, uwType, bankCode))
                 }?.let { result ->
                     _bankAddResult.value = result
                     hideLoading()
@@ -349,6 +355,7 @@ class WithdrawViewModel(
         _bankCardNumberMsg = MutableLiveData()
         _networkPointMsg = MutableLiveData()
         _withdrawPasswordMsg = MutableLiveData()
+        _walletAddressMsg = MutableLiveData()
     }
 
     private fun checkBankCardData(): Boolean {
@@ -379,7 +386,7 @@ class WithdrawViewModel(
 
     fun checkCreateName(createName: String) {
         _createNameErrorMsg.value = when {
-            createName.isEmpty() -> androidContext.getString(R.string.error_create_name_empty)
+            createName.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyCreateName(createName) -> {
                 androidContext.getString(R.string.error_incompatible_format)
             }
@@ -389,7 +396,7 @@ class WithdrawViewModel(
 
     fun checkBankCardNumber(bankCardNumber: String) {
         _bankCardNumberMsg.value = when {
-            bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_bank_card_number_empty)
+            bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyBankCardNumber(bankCardNumber) -> {
                 androidContext.getString(R.string.error_bank_card_number)
             }
@@ -399,7 +406,7 @@ class WithdrawViewModel(
 
     fun checkNetWorkPoint(networkPoint: String) {
         _networkPointMsg.value = when {
-            networkPoint.isEmpty() -> androidContext.getString(R.string.error_network_point_empty)
+            networkPoint.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyNetworkPoint(networkPoint) -> {
                 androidContext.getString(R.string.error_network_point)
             }
@@ -409,7 +416,7 @@ class WithdrawViewModel(
 
     fun checkWalletAddress(walletAddress: String) {
         _walletAddressMsg.value = when {
-            walletAddress.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
+            walletAddress.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyCryptoWalletAddress(walletAddress) -> androidContext.getString(R.string.error_wallet_address)
             else -> ""
         }
@@ -417,7 +424,7 @@ class WithdrawViewModel(
 
     fun checkWithdrawPassword(withdrawPassword: String) {
         _withdrawPasswordMsg.value = when {
-            withdrawPassword.isEmpty() -> androidContext.getString(R.string.error_withdraw_password_empty)
+            withdrawPassword.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWithdrawPassword(withdrawPassword) -> {
                 androidContext.getString(R.string.error_withdraw_password)
             }
@@ -441,7 +448,10 @@ class WithdrawViewModel(
                 amountLimit.min,
                 amountLimit.max
             ) -> {
-                androidContext.getString(R.string.error_withdraw_amount)
+                when (dealType) {
+                    TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
+                    TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
+                }
             }
             else -> {
                 ""
@@ -452,18 +462,9 @@ class WithdrawViewModel(
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
-        _withdrawAmountHint.value = when (dealType) {
-            TransferType.BANK -> {
-                String.format(
-                    androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
-                )
-            }
-            TransferType.CRYPTO -> {
-                String.format(
-                    androidContext.getString(R.string.hint_please_enter_withdraw_crypto_amount), limit.min, limit.max
-                )
-            }
-        }
+        _withdrawAmountHint.value = String.format(
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
+        )
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
@@ -601,11 +602,7 @@ class WithdrawViewModel(
             bankCardCount == null -> true
             else -> bankCardCount < bankCardCountLimit
         }
-        _addMoneyCardSwitch.value = when {
-            showAddCryptoCard -> true
-            showAddBankCard -> true
-            else -> false
-        }
+        _addMoneyCardSwitch.value = TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard)
     }
 
     data class CryptoCardCountLimit(val channel: String, var count: Int, var canBind: Boolean? = null)
@@ -641,6 +638,26 @@ class WithdrawViewModel(
             }
         }
         return cryptoCardCountLimitList
+    }
+
+    /**
+     * 獲取虛擬幣新增或編輯銀行卡可選列表
+     */
+    fun getCryptoBindList(modifyMoneyCard: BankCardList? = null) {
+        val cryptoCanBind = checkCryptoCanBind()
+        val modifyMoneyChannel = modifyMoneyCard?.bankName
+
+        val cryptoCanBindList: MutableList<MoneyRechCfg.DetailList> = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.toMutableList() ?: mutableListOf()
+
+        cryptoCanBind.forEach { canBindData ->
+            if (canBindData.canBind == false) {
+                if (modifyMoneyChannel != canBindData.channel) {
+                    val removeData = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == canBindData.channel }
+                    cryptoCanBindList.remove(removeData)
+                }
+            }
+        }
+        _addCryptoCardList.value = cryptoCanBindList
     }
 
     fun resetWithdrawPage() {

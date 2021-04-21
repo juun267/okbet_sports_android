@@ -169,8 +169,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     }
 
-    private fun setupOddsType(oddsType: String) {
-        menu_odds_type.text = getString(R.string.odds_type, oddsType)
+    private fun setupOddsType(oddsType: OddsType) {
+        menu_odds_type.text = getString(R.string.odds_type, getString(oddsType.res))
     }
 
     private fun setupSelectLanguage() {

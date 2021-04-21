@@ -49,7 +49,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             ListType.FIRST_ITEM_BM.ordinal -> BmDetailFirstItemViewHolder.from(parent)
             ListType.FIRST_ITEM_VB.ordinal -> VbDetailFirstItemViewHolder.from(parent)
             ListType.DETAIL.ordinal -> DetailItemViewHolder.from(parent)
-            else -> MatchViewHolder.from(parent)
+            else -> NoDataViewHolder.from(parent)
         }
     }
 
@@ -640,6 +640,19 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             itemView.apply {
                 tv_play_cate_name.text = "${detailData?.playCateName} ${detailData?.spread}"
                 tv_play_name.text = detailData?.playName
+            }
+        }
+    }
+
+    //無資料
+    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(parent: ViewGroup): NoDataViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_game_no_record, parent, false)
+
+                return NoDataViewHolder(view)
             }
         }
     }

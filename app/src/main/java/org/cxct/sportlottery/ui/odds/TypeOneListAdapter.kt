@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.menu.OddsType
 
 
 const val MORE_ITEM = 1
@@ -20,7 +21,7 @@ class TypeOneListAdapter(
     private val betInfoList: MutableList<BetInfoListData>,
     private val curMatchId: String?,
     private val onMoreClickListener: OnMoreClickListener,
-    private val oddsType: String
+    private val oddsType: OddsType
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -30,11 +31,6 @@ class TypeOneListAdapter(
 
 
     private val oddsList = oddsDetail.oddArrayList
-
-
-    private fun checkKey(type: String, value: String): Boolean {
-        return type == value || type.contains(value)
-    }
 
 
     override fun getItemViewType(position: Int): Int {

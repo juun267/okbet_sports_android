@@ -38,7 +38,7 @@
 
     <!-- //== 以下不在 v3 color guideline 定義內，但有使用==//-->
     <color name="blue7">#35485C</color>
-
+    <color name="float_blue">#991053AF</color>
     <!-- ======================================= -->
 
 

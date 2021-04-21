@@ -135,7 +135,7 @@
                 android:id="@+id/menu_odds_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_icontrend"
+                app:cvIcon="@drawable/ic_odds_type_light"
                 app:cvTitle="@string/odds_type" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem

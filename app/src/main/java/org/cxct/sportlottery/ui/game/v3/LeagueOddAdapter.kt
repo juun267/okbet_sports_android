@@ -11,8 +11,9 @@ import kotlinx.android.synthetic.main.itemview_game_league_odd_1x2.view.*
 import kotlinx.android.synthetic.main.itemview_game_league_odd_hdp_ou.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -31,6 +32,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
     var playType: PlayType = PlayType.OU_HDP
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var sportType: SportType? = null
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -73,7 +80,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 leagueOddListener,
                 isTimerEnable,
                 isTimerDecrease,
-                oddsType
+                oddsType,
+                sportType
             )
             is ViewHolder1x2 -> holder.bind(
                 matchType,
@@ -104,15 +112,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             isTimerDecrease: Boolean,
-            oddsType: OddsType
+            oddsType: OddsType,
+            sportType: SportType?
         ) {
             setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
 
-            setupOddButton(item, leagueOddListener, oddsType)
+            setupOddButton(item, leagueOddListener, oddsType, sportType)
 
             setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item)
+            }
+
+            itemView.match_odd_block_info.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item)
             }
         }
@@ -209,30 +222,108 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupOddButton(
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType
+            oddsType: OddsType,
+            sportType: SportType?
         ) {
-            val oddListHDP = item.odds[PlayType.HDP.code]
+            val oddListHDP = when (sportType) {
+                SportType.TENNIS -> {
+                    item.odds[PlayType.SET_HDP.code]
+                }
+                else -> {
+                    item.odds[PlayType.HDP.code]
+                }
+            }
             val oddListOU = item.odds[PlayType.OU.code]
+            val oddList1x2 = item.odds[PlayType.X12.code]
 
-            itemView.match_odd_hdp_home.apply {
+            itemView.match_play_type_column1.text = when (sportType) {
+                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    itemView.context.getString(R.string.ou_hdp_hdp_title)
+                }
+                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                    itemView.context.getString(R.string.ou_hdp_1x2_title)
+                }
+                else -> ""
+            }
 
-                playType = PlayType.HDP
+            itemView.match_play_type_column2.text = when (sportType) {
+                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    itemView.context.getString(R.string.ou_hdp_ou_title)
+                }
+                SportType.TENNIS -> {
+                    itemView.context.getString(R.string.ou_hdp_hdp_title_tennis)
+                }
+                SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                    itemView.context.getString(R.string.ou_hdp_hdp_title_v_b)
+                }
+                else -> ""
+            }
 
-                visibility = if (oddListHDP == null || oddListHDP.size < 2) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
+            itemView.match_odd_column1_home.apply {
+                playType = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        PlayType.HDP
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        PlayType.X12
+                    }
+                    else -> null
                 }
 
-                isSelected = oddListHDP?.get(0)?.isSelected ?: false
+                isSelected = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListHDP?.get(0)?.isSelected ?: false
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddList1x2?.get(0)?.isSelected ?: false
+                    }
+                    else -> {
+                        false
+                    }
+                }
 
-                betStatus = oddListHDP?.get(0)?.status
+                betStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        if (oddListHDP == null || oddListHDP.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddListHDP[0]?.status
+                        }
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        if (oddList1x2 == null || oddList1x2.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddList1x2[0]?.status
+                        }
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
-                oddStatus = oddListHDP?.get(0)?.oddState
+                oddStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListHDP?.get(0)?.oddState
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddList1x2?.get(0)?.oddState
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
-                        oddListHDP?.get(0)?.oddState = OddState.SAME.state
+                        when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                oddListHDP?.get(0)?.oddState = OddState.SAME.state
+                            }
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                oddList1x2?.get(0)?.oddState = OddState.SAME.state
+                            }
+                        }
                     }
                 }
 
@@ -256,34 +347,108 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> ""
                 }
 
+                odd_1x2_top_text.visibility = View.GONE
+
+                odd_1x2_bottom_text.text = when {
+                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddList1x2[0]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddList1x2[0]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
+                }
+
                 setOnClickListener {
-                    if (oddListHDP != null && oddListHDP.size >= 2) {
-                        oddListHDP[0]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                    when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[0]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                }
+                            }
+                        }
+
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            if (oddList1x2 != null && oddList1x2.size >= 2) {
+                                oddList1x2[0]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            itemView.match_odd_hdp_away.apply {
-
-                playType = PlayType.HDP
-
-                visibility = if (oddListHDP == null || oddListHDP.size < 2) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
+            itemView.match_odd_column1_away.apply {
+                playType = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        PlayType.HDP
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        PlayType.X12
+                    }
+                    else -> null
                 }
 
-                isSelected = oddListHDP?.get(1)?.isSelected ?: false
+                isSelected = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListHDP?.get(1)?.isSelected ?: false
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddList1x2?.get(1)?.isSelected ?: false
+                    }
+                    else -> {
+                        false
+                    }
+                }
 
-                betStatus = oddListHDP?.get(1)?.status
+                betStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        if (oddListHDP == null || oddListHDP.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddListHDP[1]?.status
+                        }
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        if (oddList1x2 == null || oddList1x2.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddList1x2[1]?.status
+                        }
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
-                oddStatus = oddListHDP?.get(1)?.oddState
+                oddStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListHDP?.get(1)?.oddState
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddList1x2?.get(1)?.oddState
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
-                        oddListHDP?.get(1)?.oddState = OddState.SAME.state
+                        when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                oddListHDP?.get(1)?.oddState = OddState.SAME.state
+                            }
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                oddList1x2?.get(1)?.oddState = OddState.SAME.state
+                            }
+                        }
                     }
                 }
 
@@ -307,36 +472,108 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> ""
                 }
 
+                odd_1x2_top_text.visibility = View.GONE
+
+                odd_1x2_bottom_text.text = when {
+                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddList1x2[1]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddList1x2[1]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
+                }
+
                 setOnClickListener {
-                    if (oddListHDP != null && oddListHDP.size >= 2) {
-                        oddListHDP[1]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                    when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[1]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                }
+                            }
+                        }
+
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            if (oddList1x2 != null && oddList1x2.size >= 2) {
+                                oddList1x2[1]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.X12.code, odd)
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            itemView.match_odd_ou_home.apply {
-
-                playType = PlayType.OU
-
-                ouType = OUType.O_TYPE
-
-                visibility = if (oddListOU == null || oddListOU.size < 2) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
+            itemView.match_odd_column2_home.apply {
+                playType = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        PlayType.OU
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        PlayType.HDP
+                    }
+                    else -> null
                 }
 
-                isSelected = oddListOU?.get(0)?.isSelected ?: false
+                isSelected = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListOU?.get(0)?.isSelected ?: false
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddListHDP?.get(0)?.isSelected ?: false
+                    }
+                    else -> {
+                        false
+                    }
+                }
 
-                betStatus = oddListOU?.get(0)?.status
+                betStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        if (oddListOU == null || oddListOU.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddListOU[0]?.status
+                        }
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        if (oddListHDP == null || oddListHDP.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddListHDP[0]?.status
+                        }
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
-                oddStatus = oddListOU?.get(0)?.oddState
+                oddStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListOU?.get(0)?.oddState
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddListHDP?.get(0)?.oddState
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
-                        oddListOU?.get(0)?.oddState = OddState.SAME.state
+                        when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                oddListOU?.get(0)?.oddState = OddState.SAME.state
+                            }
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                oddListHDP?.get(0)?.oddState = OddState.SAME.state
+                            }
+                        }
                     }
                 }
 
@@ -360,36 +597,120 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> ""
                 }
 
+                odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
+                    ""
+                } else {
+                    oddListHDP[0]?.spread
+                }
+
+                odd_hdp_bottom_text.text = when {
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddListHDP[0]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddListHDP[0]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
+                }
+
                 setOnClickListener {
-                    if (oddListOU != null && oddListOU.size >= 2) {
-                        oddListOU[0]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                    when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            if (oddListOU != null && oddListOU.size >= 2) {
+                                oddListOU[0]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                                }
+                            }
+                        }
+
+                        SportType.TENNIS -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[0]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.SET_HDP.code, odd)
+                                }
+                            }
+                        }
+
+                        SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[0]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            itemView.match_odd_ou_away.apply {
-
-                playType = PlayType.OU
-
-                ouType = OUType.U_TYPE
-
-                visibility = if (oddListOU == null || oddListOU.size < 2) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
+            itemView.match_odd_column2_away.apply {
+                playType = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        PlayType.OU
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        PlayType.HDP
+                    }
+                    else -> null
                 }
 
-                isSelected = oddListOU?.get(1)?.isSelected ?: false
+                isSelected = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListOU?.get(1)?.isSelected ?: false
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddListHDP?.get(1)?.isSelected ?: false
+                    }
+                    else -> {
+                        false
+                    }
+                }
 
-                betStatus = oddListOU?.get(1)?.status
+                betStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        if (oddListOU == null || oddListOU.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddListOU[1]?.status
+                        }
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        if (oddListHDP == null || oddListHDP.size < 2) {
+                            BetStatus.LOCKED.code
+                        } else {
+                            oddListHDP[1]?.status
+                        }
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
-                oddStatus = oddListOU?.get(1)?.oddState
+                oddStatus = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        oddListOU?.get(1)?.oddState
+                    }
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        oddListHDP?.get(1)?.oddState
+                    }
+                    else -> {
+                        null
+                    }
+                }
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
-                        oddListOU?.get(1)?.oddState = OddState.SAME.state
+                        when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                oddListOU?.get(1)?.oddState = OddState.SAME.state
+                            }
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                oddListHDP?.get(1)?.oddState = OddState.SAME.state
+                            }
+                        }
                     }
                 }
 
@@ -398,7 +719,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 } else {
                     oddListOU[1]?.spread
                 }
-
 
                 odd_ou_bottom_text.text = when {
                     (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.EU) -> {
@@ -414,10 +734,50 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> ""
                 }
 
+                odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
+                    ""
+                } else {
+                    oddListHDP[1]?.spread
+                }
+
+                odd_hdp_bottom_text.text = when {
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
+                        oddListHDP[1]?.odds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
+                        oddListHDP[1]?.hkOdds?.let {
+                            TextUtil.formatForOdd(it)
+                        }
+                    }
+                    else -> ""
+                }
+
                 setOnClickListener {
-                    if (oddListOU != null && oddListOU.size >= 2) {
-                        oddListOU[1]?.let { odd ->
-                            leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                    when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            if (oddListOU != null && oddListOU.size >= 2) {
+                                oddListOU[1]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.OU.code, odd)
+                                }
+                            }
+                        }
+
+                        SportType.TENNIS -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[1]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.SET_HDP.code, odd)
+                                }
+                            }
+                        }
+
+                        SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            if (oddListHDP != null && oddListHDP.size >= 2) {
+                                oddListHDP[1]?.let { odd ->
+                                    leagueOddListener?.onClickBet(item, PlayType.HDP.code, odd)
+                                }
+                            }
                         }
                     }
                 }
@@ -451,6 +811,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block_1x2.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item)
+            }
+
+            itemView.match_odd_block_info_1x2.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item)
             }
         }
@@ -552,15 +916,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.match_odd_1.apply {
                 playType = PlayType.X12
 
-                visibility = if (oddList1X2 == null || oddList1X2.size < 2) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-
                 isSelected = oddList1X2?.get(0)?.isSelected ?: false
 
-                betStatus = oddList1X2?.get(0)?.status
+                betStatus = if (oddList1X2 == null || oddList1X2.size < 2) {
+                    BetStatus.LOCKED.code
+                } else {
+                    oddList1X2[0]?.status
+                }
 
                 oddStatus = oddList1X2?.get(0)?.oddState
 
@@ -594,22 +956,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.match_odd_x.apply {
                 playType = PlayType.X12
 
-                visibility = if (oddList1X2 == null || oddList1X2.size < 3) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-
                 isSelected = if (oddList1X2 != null && oddList1X2.size >= 3) {
                     oddList1X2[1]?.isSelected ?: false
                 } else {
                     false
                 }
 
-                betStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
-                    oddList1X2[1]?.status
-                } else {
-                    null
+                betStatus = when {
+                    (oddList1X2 == null || oddList1X2.size < 3) -> {
+                        BetStatus.LOCKED.code
+                    }
+                    (oddList1X2.size >= 3) -> {
+                        oddList1X2[1]?.status
+                    }
+                    else -> null
                 }
 
                 oddStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
@@ -650,12 +1010,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.match_odd_2.apply {
                 playType = PlayType.X12
 
-                visibility = if (oddList1X2 == null || oddList1X2.size < 2) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-
                 isSelected = if (oddList1X2 != null && oddList1X2.size == 2) {
                     oddList1X2[1]?.isSelected ?: false
                 } else if (oddList1X2 != null && oddList1X2.size >= 3) {
@@ -664,12 +1018,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     false
                 }
 
-                betStatus = if (oddList1X2 != null && oddList1X2.size == 2) {
-                    oddList1X2[1]?.status
-                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
-                    oddList1X2[2]?.status
-                } else {
-                    null
+                betStatus = when {
+                    (oddList1X2 == null || oddList1X2.size < 2) -> {
+                        BetStatus.LOCKED.code
+                    }
+                    (oddList1X2.size == 2) -> {
+                        oddList1X2[1]?.status
+                    }
+                    (oddList1X2.size >= 3) -> {
+                        oddList1X2[2]?.status
+                    }
+                    else -> {
+                        null
+                    }
                 }
 
                 oddStatus = if (oddList1X2 != null && oddList1X2.size == 2) {

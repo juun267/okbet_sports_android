@@ -52,7 +52,7 @@ class RvDZTabAdapter(var mSelectPosition: Int) : RecyclerView.Adapter<RvDZTabAda
         private val mIvImage: ImageView = itemView.findViewById(R.id.iv_image)
 
         fun bind(position: Int, data: GameTabData?) {
-            val iconUrl = GameConfigManager.getThirdGameHallIconUrl(data?.gameCategory?.code, data?.gameFirm?.firmCode)
+            val iconUrl = GameConfigManager.getThirdGameHallDZIconUrl(data?.gameCategory?.code, data?.gameFirm?.firmCode)
             Glide.with(itemView.context)
                 .load(iconUrl)
                 .apply(mRequestOptions)

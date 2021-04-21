@@ -268,7 +268,16 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
         }).apply {
             setTipsTitle(R.string.withdraw_setting)
-            setTipsContent(R.string.please_setting_bank_card)
+            setTipsContent(
+                when (transferType) {
+                    TransferType.CRYPTO -> {
+                        R.string.please_setting_crypto
+                    }
+                    else -> {
+                        R.string.please_setting_bank_card
+                    }
+                }
+            )
             show(this@WithdrawFragment.parentFragmentManager, "")
         }
     }

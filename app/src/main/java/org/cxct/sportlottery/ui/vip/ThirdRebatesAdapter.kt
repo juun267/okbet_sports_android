@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.vip.thirdRebates.Debate
 import org.cxct.sportlottery.ui.vip.ThirdRebatesAdapter.Companion.FORM_EVEN_BACKGROUND_RES
 import org.cxct.sportlottery.ui.vip.ThirdRebatesAdapter.Companion.FORM_ODD_BACKGROUND_RES
 import org.cxct.sportlottery.ui.vip.ThirdRebatesAdapter.Companion.FORM_TITLE_BACKGROUND_RES
+import org.cxct.sportlottery.util.TextUtil
 
 class ThirdRebatesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -82,7 +83,7 @@ class ThirdRebatesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.apply {
                 tv_bet_min.text = isNullToSetUnlimited(context, data.minMoney)
                 tv_bet_max.text = isNullToSetUnlimited(context, data.maxMoney)
-                tv_rebates_rate.text = "${data.debate?.times(100)?.toLong()} ${context.getString(R.string.percent)}"
+                tv_rebates_rate.text = "${TextUtil.formatForVipRebates(data.debate ?: 0.0)}"
                 tv_rebates.text = isNullToSetUnlimited(context, data.maxDebateMoney)
             }
         }

@@ -38,11 +38,11 @@ class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel:
         modifyType?.let { type ->
             when (type) {
                 TransferType.BANK -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
                     mNavController.navigate(action)
                 }
                 TransferType.CRYPTO -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
                     mNavController.navigate(action)
                 }
             }
@@ -63,7 +63,7 @@ class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel:
 
     private fun setupBackButton() {
         btn_back.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 

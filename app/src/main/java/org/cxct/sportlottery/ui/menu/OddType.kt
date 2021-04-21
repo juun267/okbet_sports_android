@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.menu
 
-enum class OddsType(val code: String, val value: String) {
-    HK("HK", "香港盘"),
-    EU("EU","欧洲盘"),
+import org.cxct.sportlottery.R
+
+enum class OddsType(val code: String, val res: Int) {
+    HK("HK", R.string.odd_type_hk),
+    EU("EU", R.string.odd_type_eu)
 }
