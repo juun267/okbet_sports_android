@@ -7,11 +7,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.listener.OnTimeSelectListener
+import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
@@ -68,6 +74,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private var voucherUrl: String? = null
 
+    private lateinit var mPvTime: TimePickerView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,6 +95,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         initView()
         initButton()
         initObserve()
+        initTimePicker()
         setCurrencyBottomSheet()
         setAccountBottomSheet()
     }
@@ -104,8 +113,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
         //選取日曆
         cv_recharge_time.setOnClickListener {
-            calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
-            calendarBottomSheet.show()
+//            calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
+//            calendarBottomSheet.show()
+            mPvTime.show()
         }
         //選擇幣種
         cv_currency.setOnClickListener {
@@ -212,6 +222,43 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 checkVoucherUrl(voucherUrl.toString())
             }
         })
+    }
+
+    private fun initTimePicker() {
+        var yesterday = Calendar.getInstance()
+        yesterday.add(Calendar.DAY_OF_MONTH, -7)
+        var tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DAY_OF_MONTH, +7)
+        mPvTime = TimePickerBuilder(activity,
+            OnTimeSelectListener { date, _ ->
+                try {
+                    txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(date)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            })
+            .setRangDate(yesterday, tomorrow)
+            .setDate(TimeUtil.toCalendar(Date()))
+            .setTimeSelectChangeListener {  }
+            .setType(booleanArrayOf(true, true, true, true, true, false))
+            .isDialog(true)
+            .addOnCancelClickListener { }
+            .build() as TimePickerView
+
+        val params = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.BOTTOM)
+
+        params.leftMargin = 0
+        params.rightMargin = 0
+        mPvTime.dialogContainerLayout.layoutParams = params
+        val dialogWindow = mPvTime.dialog.window
+        if (dialogWindow != null) {
+            dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim)
+            dialogWindow.setGravity(Gravity.BOTTOM)
+            dialogWindow.setDimAmount(0.1f)
+        }
     }
 
     private fun  checkVoucherUrl(url:String){
