@@ -580,6 +580,7 @@
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_create_name_empty">开户名为必填栏位</string>
+    <string name="error_create_name">姓名为2-20个中文组合</string>
     <string name="error_bank_card_number">银行卡号格式有错误</string>
     <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
     <string name="error_network_point">您输入的开户网点格式有错误</string>
