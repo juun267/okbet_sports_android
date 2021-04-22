@@ -305,6 +305,7 @@
                 android:name="oddsType"
                 app:argType="string" />
         </action>
+
         <action
             android:id="@+id/action_oddsDetailLiveFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
@@ -323,6 +324,15 @@
             <argument
                 android:name="oddsType"
                 app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
     </fragment>
 
