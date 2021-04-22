@@ -24,7 +24,16 @@ fun TextView.setDate(timeStamp: Long?) {
 
 @BindingAdapter("gameStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setGameStatus(status: Int?) {
+    text = when (status) {
+        0 -> context.getString(R.string.not_start_yet)
+        1 -> context.getString(R.string.game_playing)
+        2 -> context.getString(R.string.ended)
+        3 -> context.getString(R.string.suspend)
+        4 -> context.getString(R.string.canceled)
+        else -> ""
+    }
 }
+
 @BindingAdapter("status")
 fun TextView.setStatus(status: Int?) {
     status?.let {
@@ -39,6 +48,27 @@ fun TextView.setStatus(status: Int?) {
             7 -> context.getString(R.string.canceled) //已取消
             else -> ""
         }
+    }
+}
+
+//@BindingAdapter("statusMoney")
+@BindingAdapter("betStatus", "betStatusMoney")
+fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
+    status?.let {
+        text = when (status) {
+            0, 1 -> context.getString(R.string.nothing)
+            2, 3 -> "+${money}"
+            4, 5 -> "$money"
+            else -> context.getString(R.string.draw_or_cancel)
+        }
+
+        val color = when (status) {
+            0, 1, 6, 7 -> R.color.colorGrayDark
+            2, 3 -> R.color.colorGreen
+            else -> R.color.colorRed
+        }
+
+        this.setTextColor(ContextCompat.getColor(context, color))
     }
 }
 
@@ -129,7 +159,7 @@ val gameNameMap: Map<String?, Int> = mapOf(
 fun TextView.setPlatName(platCode: String?) {
 
     platCode?.let {
-        text = if (gameNameMap[it]!= null) {
+        text = if (gameNameMap[it] != null) {
             gameNameMap[it]?.let { it1 -> context.getString(it1) }
         } else {
             platCode

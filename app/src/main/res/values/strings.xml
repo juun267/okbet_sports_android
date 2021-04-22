@@ -385,7 +385,7 @@
     <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s  vs  %s (客)</string>
-    <string name="bet_item">投注项目 - %s</string>
+    <string name="bet_item">投注项目 - </string>
     <string name="nothing">--</string>
     <string name="draw_or_cancel">0.000</string>
 
