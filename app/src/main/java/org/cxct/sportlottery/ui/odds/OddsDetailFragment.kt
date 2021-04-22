@@ -110,6 +110,13 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
+
+        receiver.producerUp.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            service.unsubscribeAllEventChannel()
+            service.subscribeEventChannel(matchId)
+        })
+
     }
 
 
