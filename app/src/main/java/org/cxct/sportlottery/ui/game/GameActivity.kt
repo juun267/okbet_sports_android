@@ -328,32 +328,19 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     override fun onBackPressed() {
-        if (mNavController.currentDestination?.id == R.id.gameLeagueFragment) {
-            mNavController.navigateUp()
-            return
-        }
+        when (mNavController.currentDestination?.id) {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
+                mNavController.navigateUp()
+            }
 
-        if (mNavController.currentDestination?.id == R.id.gameOutrightFragment) {
-            mNavController.navigateUp()
-            return
-        }
+            R.id.gameV3Fragment -> {
+                tabLayout.getTabAt(0)?.select()
+            }
 
-        if (mNavController.currentDestination?.id == R.id.oddsDetailFragment) {
-            mNavController.navigateUp()
-            return
+            else -> {
+                super.onBackPressed()
+            }
         }
-
-        if (mNavController.currentDestination?.id == R.id.oddsDetailLiveFragment) {
-            mNavController.navigateUp()
-            return
-        }
-
-        if (mNavController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
-            tabLayout.getTabAt(0)?.select()
-            return
-        }
-
-        super.onBackPressed()
     }
 
     private fun initObserve() {
