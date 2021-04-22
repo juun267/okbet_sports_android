@@ -55,4 +55,11 @@ object MetricsUtil {
     fun getMenuWidth(): Int {
         return (getScreenWidth() * 0.6).toInt()
     }
+
+    fun getStatusBarHeight(): Int {
+        val rid = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android")
+        return if (rid > 0) Resources.getSystem().getDimensionPixelSize(rid) else 0
+
+    }
+
 }
