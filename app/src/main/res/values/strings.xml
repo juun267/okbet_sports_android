@@ -322,6 +322,7 @@
     <string name="current_versionIs_the_latest_version">当前版本为最新版</string>
     <string name="external_download">外部下载</string>
     <string name="update_new">更新</string>
+    <string name="install">安装</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
