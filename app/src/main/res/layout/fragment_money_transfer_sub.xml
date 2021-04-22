@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:horizontalChainStyle="spread_inside"
-                app:defaultBottomSheetTitleText="@string/out_account"/>
+                app:defaultBottomSheetTitleText="@string/select_plat"/>
 
         </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:horizontalChainStyle="spread_inside"
-                app:defaultBottomSheetTitleText="@string/in_account"/>
+                app:defaultBottomSheetTitleText="@string/select_plat"/>
 
         </LinearLayout>
 

@@ -63,7 +63,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.getAllBalance()
         viewModel.queryTransfers()
-        viewModel.setToolbarName(getString(R.string.record_conversion))
+        viewModel.setToolbarName(getString(R.string.account_transfer))
 
         return inflater.inflate(R.layout.fragment_money_transfer_record, container, false)
     }

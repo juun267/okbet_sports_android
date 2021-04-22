@@ -137,6 +137,13 @@ fun TextView.setPlatName(platCode: String?) {
     }
 }
 
+@BindingAdapter("oddFormat")
+fun TextView.setOddFormat(odd: Double?) {
+    odd?.let {
+        text = "@${TextUtil.formatForOdd(it)}"
+    }
+}
+
 
 @BindingAdapter("moneyColor")
 fun TextView.setMoneyColor(profit: Double = 0.0) {

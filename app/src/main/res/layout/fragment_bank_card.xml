@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/frame_bank_list_selector"
+                    android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingStart="10dp"
@@ -101,12 +101,22 @@
                         android:id="@+id/tv_bank_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="28dp"
                         android:layout_weight="1"
                         android:gravity="start|center_vertical"
                         android:text="@string/select_bank"
                         android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize12sp" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="11dp"
+                        android:src="@drawable/ic_arrow_down_gray"
+                        app:layout_constraintBottom_toBottomOf="@+id/ll_start_date"
+                        app:layout_constraintEnd_toEndOf="@+id/ll_start_date"
+                        app:layout_constraintTop_toTopOf="@+id/ll_start_date" />
+
                 </LinearLayout>
                 <!-- 開戶名 -->
                 <org.cxct.sportlottery.ui.login.LoginEditText
@@ -184,6 +194,7 @@
                             android:layout_marginEnd="8dp"
                             app:defaultBottomSheetTitleText="@string/select_currency_protocol"
                             app:horizontalChainStyle="spread_inside" />
+
                     </LinearLayout>
 
 

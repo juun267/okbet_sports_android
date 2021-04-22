@@ -66,8 +66,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
             typedArray.getInt(R.styleable.CustomView_cvEms, -1).let {
-                if (it != -1) {
+                if (it > 0) {
                     view.et_input.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(it))
+                }
+            }
+            typedArray.getInt(R.styleable.CustomView_cvTitleMinEms, -1).let {
+                if (it > 0) {
+                    view.tv_title.minEms = it
                 }
             }
             view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
