@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.common
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -8,11 +7,12 @@ import android.graphics.Paint
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
 import android.util.AttributeSet
+import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 
-@SuppressLint("UseCompatLoadingForDrawables", "DrawAllocation")
 class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView(context, attrs) {
 
+    var paint: Paint = Paint()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -26,7 +26,6 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
                 } else {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_number)
                 }
-                val paint = Paint()
                 paint.textAlign = Paint.Align.CENTER
                 paint.textSize = 36f
                 paint.color = Color.BLACK
@@ -44,9 +43,9 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
 
 
     private fun setDrawable(canvas: Canvas, key: Keyboard.Key, res: Int) {
-        val drawable = resources.getDrawable(res)
-        drawable.setBounds(key.x, key.y, key.x + key.width, key.y + key.height)
-        drawable.draw(canvas)
+        val drawable = ContextCompat.getDrawable(context, res)
+        drawable?.setBounds(key.x, key.y, key.x + key.width, key.y + key.height)
+        drawable?.draw(canvas)
     }
 
 
