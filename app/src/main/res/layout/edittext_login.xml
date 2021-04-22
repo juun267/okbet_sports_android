@@ -43,6 +43,7 @@
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold"
+                android:typeface="monospace"
                 app:autoSizeMaxTextSize="13dp"
                 app:autoSizeMinTextSize="6dp"
                 app:autoSizeTextType="uniform"

@@ -19,6 +19,7 @@
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
         <attr name="cvEms" format="integer" />
+        <attr name="cvTitleMinEms" format="integer" />
         <attr name="necessarySymbol">
             <!-- Visible on screen; the default value. -->
             <enum name="visible" value="0x00000000" />
