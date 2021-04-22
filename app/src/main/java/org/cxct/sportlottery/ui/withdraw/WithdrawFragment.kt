@@ -177,9 +177,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.moneyCardExist.observe(this.viewLifecycleOwner, Observer { moneyCardSet ->
             val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
             val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
-
-            tab_bank_card.visibility = if (bankCardExist == true) View.VISIBLE else View.GONE
-            tab_crypto.visibility = if (cryptoCardExist == true) View.VISIBLE else View.GONE
+            
             block_tab.visibility = View.VISIBLE
 
             when {
