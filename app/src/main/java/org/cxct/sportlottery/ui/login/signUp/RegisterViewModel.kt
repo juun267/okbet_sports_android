@@ -169,9 +169,9 @@ class RegisterViewModel(
     private fun checkLoginPassword(context: Context, password: String?): String? {
         return when {
             password.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> context.getString(R.string.error_password_format)
+            !VerifyConstUtil.verifyPwdFormat(password) -> context.getString(R.string.error_register_password)
             password.length !in 6..20 -> context.getString(R.string.error_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_register_password)
             else -> null
         }
     }
