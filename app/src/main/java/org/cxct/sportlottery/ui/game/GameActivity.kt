@@ -300,7 +300,12 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment -> {
+            R.id.gameLeagueFragment -> {
+                val action =
+                    GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
+                mNavController.navigate(action)
+            }
+            R.id.gameOutrightFragment -> {
                 mNavController.popBackStack(R.id.gameV3Fragment, false)
             }
             R.id.oddsDetailFragment -> {
@@ -309,7 +314,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
-                val action =  OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(matchType)
+                val action =
+                    OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
+                        matchType
+                    )
                 mNavController.navigate(action)
             }
         }
