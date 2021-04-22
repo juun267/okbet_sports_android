@@ -161,7 +161,7 @@ class RegisterViewModel(
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
                 context.getString(R.string.error_member_account)
             }
-            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_member_account)
             else -> null
         }
     }
