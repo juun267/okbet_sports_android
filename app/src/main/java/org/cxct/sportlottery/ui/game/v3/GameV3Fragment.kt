@@ -86,8 +86,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
                 },
                 { matchOdd ->
-                    matchOdd.matchInfo?.id?.let {
-                        navOddsDetailLive(it)
+                    when (args.matchType) {
+                        MatchType.IN_PLAY -> {
+                            matchOdd.matchInfo?.id?.let {
+                                navOddsDetailLive(it)
+                            }
+                        }
+                        MatchType.AT_START -> {
+                            matchOdd.matchInfo?.id?.let {
+                                navOddsDetail(it)
+                            }
+                        }
+                        else -> {
+                        }
                     }
                 },
                 { matchOdd, oddString, odd ->
@@ -793,6 +804,28 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         sportType?.let {
             val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
+                sportType,
+                matchId,
+                "EU"
+            )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun navOddsDetail(matchId: String) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        sportType?.let {
+            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
                 sportType,
                 matchId,
                 "EU"
