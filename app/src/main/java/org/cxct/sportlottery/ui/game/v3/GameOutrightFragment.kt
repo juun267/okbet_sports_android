@@ -147,6 +147,12 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                     odds.forEach { odd ->
                         oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
+                            oddTypeSocketMapEntry.value.onEach { odd ->
+                                odd?.isSelected =
+                                    viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd?.id
+                                    }
+                            }
 
                             val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
                                 oddSocket?.id == odd.id

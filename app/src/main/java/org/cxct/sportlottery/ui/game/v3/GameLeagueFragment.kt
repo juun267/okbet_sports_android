@@ -55,8 +55,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
                 },
-                { matchOdd, oddString, odd ->
-                    viewModel.updateMatchBetList(matchOdd, oddString, odd)
+                { matchOdd, odd ->
+                    viewModel.updateMatchBetList(matchOdd, odd)
                 }
             )
 
@@ -289,7 +289,12 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                     @Suppress("NAME_SHADOWING")
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                        oddTypeSocketMapEntry.value.toMutableList()
+                        oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
+                            odd?.isSelected =
+                                viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                        }
                     }
 
                     val leagueOdds = leagueAdapter.data
