@@ -219,9 +219,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initTimePicker() {
-        var yesterday = Calendar.getInstance()
+        val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.DAY_OF_MONTH, -7)
-        var tomorrow = Calendar.getInstance()
+        val tomorrow = Calendar.getInstance()
         tomorrow.add(Calendar.DAY_OF_MONTH, +7)
         dateTimePicker = TimePickerBuilder(activity,
             OnTimeSelectListener { date, _ ->
@@ -418,10 +418,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
                 selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee?.times(100).toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs.rebateFee?.times(100).toString()) + "%"
                 }
                 else ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs?.rebateFee ?: 0.0), 100.0)) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs.rebateFee ?: 0.0), 100.0)) + "%"
                 }
             }
 
