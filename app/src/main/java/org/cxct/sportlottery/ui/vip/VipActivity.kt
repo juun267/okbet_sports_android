@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.util.TextUtil
 
 class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
@@ -151,7 +152,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
     private fun setupViewByUserInfo(userInfo: UserInfoData) {
         userInfo.let { user ->
-            tv_greet.text = if (user.fullName.isNullOrEmpty()) user.nickName else user.fullName
+            tv_greet.text = if (user.nickName.isNotEmpty()) user.nickName else (TextUtil.maskUserName(user.userName))
         }
     }
 

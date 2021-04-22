@@ -52,4 +52,8 @@ object TextUtil {
         for (i in 0 until fullName.length - 1) stringBuffer.append('*')
         return stringBuffer.toString()
     }
+
+    fun maskUserName(userName: String): String {
+        return StringBuffer().append(userName.substring(0, 2)).append("***").append(userName.substring(userName.length - 2, userName.length)).toString()
+    }
 }
