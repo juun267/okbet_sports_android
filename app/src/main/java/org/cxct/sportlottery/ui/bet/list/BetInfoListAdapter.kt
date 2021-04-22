@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -34,7 +35,7 @@ const val NOT_INPLAY: Int = 0
 const val INPLAY: Int = 1
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
-@SuppressLint("SetTextI18n")
+@SuppressLint("SetTextI18n", "ClickableViewAccessibility")
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
@@ -143,7 +144,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 when {
                     quota > parlayOdd.max -> {
                         inputError = true
-                        binding.tvErrorMessage.text = String.format(binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit), TextUtil.formatMoneyNoDecimal(parlayOdd.max))
+                        binding.tvErrorMessage.text =
+                            String.format(binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit), TextUtil.formatMoneyNoDecimal(parlayOdd.max))
                         binding.etBet.setBackgroundResource(R.drawable.bg_radius_4_edittext_error)
                     }
                     quota < parlayOdd.min -> {
@@ -158,7 +160,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 }
                 var win = it.toDouble() * getOdds(matchOdd, oddsType)
 
-                if(oddsType == OddsType.EU){
+                if (oddsType == OddsType.EU) {
                     win -= quota
                 }
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)
@@ -206,6 +208,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             }
 
         }
+
 
         fun bind(mBetInfoList: BetInfoListData, position: Int) {
 
@@ -297,6 +300,12 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.etBet.onFocusChangeListener = fc
             binding.etBet.addTextChangedListener(tw)
             binding.etBet.tag = tw
+
+            binding.etBet.setOnTouchListener { v, event ->
+                onItemClickListener.onShowKeyboard(binding.etBet, matchOdd)
+                false
+            }
+
 
             when (matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
@@ -398,6 +407,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         fun onBetClick(betInfoListData: BetInfoListData, stake: Double)
         fun onAddMoreClick(betInfoList: BetInfoListData)
         fun onRegisterClick()
+        fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd)
     }
 
 

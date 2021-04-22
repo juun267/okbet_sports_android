@@ -180,6 +180,8 @@
 
         </LinearLayout>
 
+        <include layout="@layout/view_bet_info_keyboard" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
