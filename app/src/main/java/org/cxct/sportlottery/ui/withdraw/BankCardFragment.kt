@@ -197,21 +197,20 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupClearButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
-        setupView.let { view ->
-            view.afterTextChanged {
-                view.clearIsShow = it.isNotEmpty()
-                checkFun.invoke(it)
-            }
+        setupView.setEditTextOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus)
+                checkFun.invoke(setupView.getText())
         }
     }
 
+
     private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
-        setupView.let { view ->
-            view.afterTextChanged {
-                checkFun(it)
-            }
+        setupView.setEditTextOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus)
+                checkFun(setupView.getText())
         }
     }
+
 
     private fun setupClickEvent() {
         tabClickEvent()
