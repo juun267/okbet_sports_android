@@ -46,7 +46,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var gameType: String? = null
     private var matchId: String? = null
-    private var oddsType: String? = null
 
     private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
 
@@ -61,7 +60,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         gameType = args.sportType.code
         matchId = args.matchId
-        oddsType = args.oddsType
     }
 
     override fun onCreateView(
