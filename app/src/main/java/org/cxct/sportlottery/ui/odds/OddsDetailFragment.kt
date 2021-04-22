@@ -39,7 +39,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     var matchId: String? = null
     private var gameType: String? = null
-    private var oddsType: String? = null
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
@@ -51,7 +50,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         gameType = args.sportType.code
         matchId = args.matchId
-        oddsType = args.oddsType
     }
 
     override fun onCreateView(

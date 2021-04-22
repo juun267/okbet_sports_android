@@ -107,10 +107,6 @@
             <argument
                 android:name="matchId"
                 app:argType="string" />
-
-            <argument
-                android:name="oddsType"
-                app:argType="string" />
         </action>
 
         <action
@@ -163,10 +159,6 @@
 
             <argument
                 android:name="matchId"
-                app:argType="string" />
-
-            <argument
-                android:name="oddsType"
                 app:argType="string" />
         </action>
 
@@ -234,10 +226,6 @@
             android:name="matchId"
             app:argType="string" />
 
-        <argument
-            android:name="oddsType"
-            app:argType="string" />
-
         <action
             android:id="@+id/action_oddsDetailFragment_self"
             app:destination="@id/oddsDetailFragment"
@@ -251,10 +239,6 @@
 
             <argument
                 android:name="matchId"
-                app:argType="string" />
-
-            <argument
-                android:name="oddsType"
                 app:argType="string" />
         </action>
 
@@ -337,10 +321,6 @@
 
             <argument
                 android:name="matchId"
-                app:argType="string" />
-
-            <argument
-                android:name="oddsType"
                 app:argType="string" />
         </action>
 
