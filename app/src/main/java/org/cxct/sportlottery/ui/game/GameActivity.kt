@@ -306,7 +306,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 mNavController.navigate(action)
             }
             R.id.gameOutrightFragment -> {
-                mNavController.popBackStack(R.id.gameV3Fragment, false)
+                val action =
+                    GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
             }
             R.id.oddsDetailFragment -> {
                 val action =
