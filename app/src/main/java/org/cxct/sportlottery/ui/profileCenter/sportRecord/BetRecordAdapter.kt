@@ -83,8 +83,8 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
             binding.clickListener = clickListener
             binding.textUtil = TextUtil
 
-            binding.llRowsContent.visibility = if (data.parlayType == "1C1") View.VISIBLE else View.GONE
-            binding.tvParlayType.visibility = if (data.parlayType == "1C1") View.GONE else View.VISIBLE
+            binding.llRowsContent.visibility = if (data.parlayType == "1C1"|| data.parlayType == "OUTRIGHT") View.VISIBLE else View.GONE
+            binding.tvParlayType.visibility = if (data.parlayType == "1C1" || data.parlayType == "OUTRIGHT") View.GONE else View.VISIBLE
 
             binding.executePendingBindings()
 
