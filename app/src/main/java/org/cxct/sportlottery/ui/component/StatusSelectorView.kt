@@ -186,9 +186,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
             sheetAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
                 override fun onChanged() {
                     super.onChanged()
-                    Log.e(">>>", "onChanged, dataList?.size = ${dataList?.size}")
                     val count = if (dataList?.size ?: 1 < 3) dataList?.size else 3
-                    Log.e(">>>", "count = $count")
                     val params: ViewGroup.LayoutParams = sheet_rv_more.layoutParams
                     params.height = convertDpToPixel(48f * (count ?: 1), context).toInt()
                     sheet_rv_more.layoutParams = params

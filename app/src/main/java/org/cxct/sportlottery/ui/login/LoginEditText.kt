@@ -70,7 +70,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
                     view.et_input.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(it))
                 }
             }
-            typedArray.getInt(R.styleable.CustomView_cvTitleMinEms, 5).let {
+            typedArray.getInt(R.styleable.CustomView_cvTitleMinEms, -1).let {
                 if (it != -1) {
                     view.tv_title.minEms = it
                 }
