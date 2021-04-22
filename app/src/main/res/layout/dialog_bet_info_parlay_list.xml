@@ -180,63 +180,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_keyboard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorWhite"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@color/colorWhite2">
-
-                <TextView
-                    android:id="@+id/tv_match_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="40dp"
-                    android:letterSpacing="0.1"
-                    android:textColor="@color/colorBlackLight"
-                    android:textSize="@dimen/textSize14sp"
-                    android:layout_toStartOf="@+id/tv_close"
-                    android:layout_alignParentStart="true"
-                    tools:text="让球 - 皇家马德里 +0/0.5 @ 1.85" />
-
-                <TextView
-                    android:id="@+id/tv_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="@string/bottom_sheet_close"
-                    android:textColor="@color/colorGrayLight"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </RelativeLayout>
-
-            <org.cxct.sportlottery.ui.common.CustomKeyBoardView
-                android:id="@+id/kv_keyboard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:background="@color/colorWhite"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:keyBackground="@drawable/bg_frame_6dp_white" />
-
-        </LinearLayout>
+        <include layout="@layout/view_bet_info_keyboard" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -16,10 +16,8 @@ import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
-import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.kv_keyboard
-import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.ll_keyboard
-import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.tv_close
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
+import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
