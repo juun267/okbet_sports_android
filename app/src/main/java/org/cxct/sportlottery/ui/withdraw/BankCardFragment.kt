@@ -322,8 +322,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun setCryptoProtocol(protocol: MoneyRechCfg.DetailList) {
-        sv_protocol.selectedText = protocol.contract
+    private fun setCryptoProtocol(protocol: MoneyRechCfg.DetailList?) {
+        protocol?.contract?.let { sv_protocol.selectedText = it }
     }
 
     private fun setupObserve() {
@@ -347,7 +347,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.addCryptoCardList.observe(this.viewLifecycleOwner, {
             protocolAdapter.dataList = it
             val modifyMoneyCardDetail = it.find { list -> list.contract == args.editBankCard?.bankName }
-            setCryptoProtocol(modifyMoneyCardDetail ?: it.first())
+            setCryptoProtocol(modifyMoneyCardDetail ?: it.firstOrNull())
         })
 
 
