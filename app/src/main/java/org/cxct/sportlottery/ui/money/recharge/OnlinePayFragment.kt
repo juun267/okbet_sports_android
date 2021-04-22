@@ -101,9 +101,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             }
 
             val depositMoney = if (et_recharge_online_amount.getText().isNotEmpty()) {
-                et_recharge_online_amount.getText().toInt()
+                et_recharge_online_amount.getText()
             } else {
-                0
+                ""
             }
             viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode)
         }

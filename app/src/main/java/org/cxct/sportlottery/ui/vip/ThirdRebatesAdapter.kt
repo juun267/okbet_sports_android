@@ -118,7 +118,7 @@ class TitleViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
 
             itemData.apply {
                 val vipLevel = Level.values().find { it.levelRequirement.levelId == userLevelId }?.levelRequirement?.level?.let { context.getString(it) } ?: ""
-                tv_level.text = "$vipLevel$userLevelName"
+                tv_level.text = "$vipLevel $userLevelName"
             }
         }
     }

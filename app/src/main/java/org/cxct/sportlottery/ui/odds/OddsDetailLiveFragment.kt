@@ -55,6 +55,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var oddsGameCardAdapter: OddsGameCardAdapter? = null
 
+    private var sport = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,6 +175,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         receiver.matchClock.observe(viewLifecycleOwner, Observer {
             oddsGameCardAdapter?.updateGameCard(it?.matchClockCO)
         })
+
+        receiver.producerUp.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            service.unsubscribeAllHallChannel()
+            matchOddList.forEach { matchOddList ->
+                subscribeHallChannel(sport, matchOddList?.id)
+            }
+        })
     }
 
 
@@ -246,7 +255,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             hideLoading()
             unsubscribeAllHallChannel()
 
-            var sport = ""
             it.peekContent()?.let { oddsListResult ->
                 if (oddsListResult.success) {
                     oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->

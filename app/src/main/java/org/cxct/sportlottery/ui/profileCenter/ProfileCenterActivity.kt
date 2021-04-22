@@ -125,7 +125,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
-            startActivity(Intent(this, MoneyRechargeActivity::class.java))
+            viewModel.checkRechargeSystem()
         }
     }
 
@@ -277,6 +277,15 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             if (operation == false) {
                 showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
             }
+        })
+
+        viewModel.rechargeSystemOperation.observe(this, {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false)
+                showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
+            else
+                startActivity(Intent(this, MoneyRechargeActivity::class.java))
+
         })
 
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
