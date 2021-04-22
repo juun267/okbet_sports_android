@@ -13,6 +13,8 @@ import org.cxct.sportlottery.util.TextUtil
 
 class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetRecordViewModel::class) {
 
+    var rvAdapter = BetDetailAdapter()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: DialogBetRecordDetailListBinding =
             DataBindingUtil.inflate(inflater, R.layout.dialog_bet_record_detail_list, container, false)
@@ -34,10 +36,15 @@ class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetR
         }
 
         initRv()
+
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            rvAdapter.oddsType = it
+        })
+
     }
 
     private fun initRv() {
-        val rvAdapter = BetDetailAdapter()
+        rvAdapter = BetDetailAdapter()
         rv_detail.adapter = rvAdapter
         rvAdapter.submitList(data.matchOdds)
     }
