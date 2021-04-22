@@ -295,6 +295,7 @@
     <!-- Modify Profile Info page-->
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2-6字</string>
+    <string name="error_nickname">昵称为2~6个中英文组合</string>
     <string name="error_nickname_empty">昵称不能为空</string>
 
     <!-- Setting password page-->
