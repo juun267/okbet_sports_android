@@ -19,6 +19,7 @@ import kotlin.reflect.KClass
 const val SP_NAME = "button_position"
 const val POSITION_X = "position_x"
 const val POSITION_Y = "position_y"
+const val FIRST_BET = "first_bet"
 
 abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T>) :
     BaseSocketActivity<T>(clazz) {
@@ -46,10 +47,18 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         return mSharedPreferences?.getFloat(POSITION_Y, -1f)
     }
 
+    private fun saveFirstBetFlag(boolean: Boolean) {
+        mSharedPreferences?.edit()
+            ?.putBoolean(FIRST_BET, boolean)
+            ?.apply()
+    }
+
+    private fun getFirstBetFlag(): Boolean? {
+        return mSharedPreferences?.getBoolean(FIRST_BET, true)
+    }
+
     private var oddListDialog: DialogFragment? = null
     private var floatButtonView: View? = null
-
-    private var firstBet: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +77,7 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
 
-            if (it.size == 0) firstBet = true
+            if (it.size == 0) saveFirstBetFlag(true)
 
             when {
                 it.isNullOrEmpty() -> {
@@ -79,8 +88,8 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                 }
                 oddListDialog is BetInfoListDialog -> {
                     updateOddButton(true, it.size)
-                    if (firstBet && it.size == 1) {
-                        firstBet = false
+                    if (getFirstBetFlag() == true && it.size == 1) {
+                        saveFirstBetFlag(false)
                         oddListDialog?.show(
                             supportFragmentManager,
                             BaseOddButtonActivity::class.java.simpleName
