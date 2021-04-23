@@ -7,11 +7,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.archit.calendardaterangepicker.customviews.CalendarListener
-import com.archit.calendardaterangepicker.customviews.DateSelectedType
+import android.widget.FrameLayout
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.listener.OnTimeSelectListener
+import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
@@ -44,8 +47,6 @@ import kotlin.math.abs
 
 class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
-    lateinit var calendarBottomSheet: BottomSheetDialog
-
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
@@ -68,6 +69,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private var voucherUrl: String? = null
 
+    private lateinit var dateTimePicker: TimePickerView
+
+    var depositDate = Date()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,6 +92,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         initView()
         initButton()
         initObserve()
+        initTimePicker()
         setCurrencyBottomSheet()
         setAccountBottomSheet()
     }
@@ -104,8 +110,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
         //選取日曆
         cv_recharge_time.setOnClickListener {
-            calendarBottomSheet.tv_calendar_title.text = getString(R.string.start_date)
-            calendarBottomSheet.show()
+            dateTimePicker.show()
         }
         //選擇幣種
         cv_currency.setOnClickListener {
@@ -153,7 +158,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         resetEvent()
         setupTextChangeEvent()
         setupFocusEvent()
-        calendarBottomSheet()
         getMoney()
         updateMoneyRange()
         refreshCurrencyType(CurrentCurrency)
@@ -212,6 +216,44 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 checkVoucherUrl(voucherUrl.toString())
             }
         })
+    }
+
+    private fun initTimePicker() {
+        val yesterday = Calendar.getInstance()
+        yesterday.add(Calendar.DAY_OF_MONTH, -7)
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DAY_OF_MONTH, +7)
+        dateTimePicker = TimePickerBuilder(activity,
+            OnTimeSelectListener { date, _ ->
+                try {
+                    depositDate = date
+                    txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(date)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            })
+            .setRangDate(yesterday, tomorrow)
+            .setDate(TimeUtil.toCalendar(Date()))
+            .setTimeSelectChangeListener {  }
+            .setType(booleanArrayOf(true, true, true, true, true, false))
+            .isDialog(true)
+            .addOnCancelClickListener { }
+            .build() as TimePickerView
+
+        val params = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.BOTTOM)
+
+        params.leftMargin = 0
+        params.rightMargin = 0
+        dateTimePicker.dialogContainerLayout.layoutParams = params
+        val dialogWindow = dateTimePicker.dialog.window
+        if (dialogWindow != null) {
+            dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim)
+            dialogWindow.setGravity(Gravity.BOTTOM)
+            dialogWindow.setDimAmount(0.1f)
+        }
     }
 
     private fun  checkVoucherUrl(url:String){
@@ -376,10 +418,10 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
                 selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee?.times(100).toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs.rebateFee?.times(100).toString()) + "%"
                 }
                 else ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs?.rebateFee ?: 0.0), 100.0)) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs.rebateFee ?: 0.0), 100.0)) + "%"
                 }
             }
 
@@ -540,43 +582,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.uploadImage(uploadImgRequest)
     }
 
-    //日曆
-    @SuppressLint("InflateParams")
-    private fun calendarBottomSheet() {
-        val bottomSheetView =
-            layoutInflater.inflate(R.layout.dialog_bottom_sheet_calendar_single, null)
-        calendarBottomSheet = BottomSheetDialog(this.requireContext())
-        calendarBottomSheet.setContentView(bottomSheetView)
-        calendarBottomSheet.calendar.setSelectableDateRange(
-            getDateInCalendar(7).first,
-            getDateInCalendar(7).second
-        )
-        calendarBottomSheet.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(
-                dateSelectedType: DateSelectedType,
-                startDate: Calendar
-            ) {
-                calendarBottomSheet.dismiss()
-            }
-
-            override fun onDateRangeSelected(
-                dateSelectedType: DateSelectedType,
-                startDate: Calendar,
-                endDate: Calendar
-            ) {
-                txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(startDate.timeInMillis)
-                calendarBottomSheet.dismiss()
-            }
-        })
-    }
-
-    private fun getDateInCalendar(minusDays: Int? = 0): Pair<Calendar, Calendar> { //<startDate, EndDate>
-        val todayCalendar = TimeUtil.getTodayEndTimeCalendar()
-        val minusDaysCalendar = TimeUtil.getTodayStartTimeCalendar()
-        if (minusDays != null) minusDaysCalendar.add(Calendar.DATE, -minusDays)
-        return Pair(minusDaysCalendar, todayCalendar)
-    }
-
     //取得餘額
     private fun getMoney() {
         viewModel.getMoney()
@@ -607,8 +612,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payerName = "",
             payerBankName = null,
             payerInfo = null,
-            depositDate = calendarBottomSheet.calendar.startDate?.timeInMillis
-                ?: Date().time
+            depositDate = depositDate.time
         ).apply {
             payee = txv_payee.text.toString()//充幣地址
             payeeName = txv_account.text.toString()//火幣網
