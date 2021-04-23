@@ -93,10 +93,12 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                     updateOddButton(true, it.size)
                     if (getFirstBetFlag() == true && it.size == 1) {
                         saveFirstBetFlag(false)
-                        oddListDialog?.show(
-                            supportFragmentManager,
-                            BaseOddButtonActivity::class.java.simpleName
-                        )
+                        if(oddListDialog?.isAdded == false) {
+                            oddListDialog?.show(
+                                supportFragmentManager,
+                                BaseOddButtonActivity::class.java.simpleName
+                            )
+                        }
                     }
                 }
             }
