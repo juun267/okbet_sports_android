@@ -228,6 +228,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         var count = 1
 
+
         if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code) //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
                 val selectBank = CustomImageAdapter.SelectBank(
@@ -237,12 +238,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 mBottomSheetList.add(selectBank)
             }
         else {
-
             if (rechCfgsList.size > 1)
                 rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
-                            it.rechName + " " + count++,
+                            viewModel.getPayTypeName(it.rechType) + " " + count++,
                             getBankAccountIcon(it.rechType ?: "")
                         )
                     mBottomSheetList.add(selectBank)
@@ -251,7 +251,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 rechCfgsList.forEach {
                     val selectBank =
                         CustomImageAdapter.SelectBank(
-                            it.rechName + "",
+                            viewModel.getPayTypeName(it.rechType) + "",
                             getBankAccountIcon(it.rechType ?: "")
                         )
                     mBottomSheetList.add(selectBank)

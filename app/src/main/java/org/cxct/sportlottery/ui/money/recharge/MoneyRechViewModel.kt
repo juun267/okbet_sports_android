@@ -516,4 +516,14 @@ class MoneyRechViewModel(
             }
         }
     }
+
+    //充值帳戶選單名稱
+    fun getPayTypeName(rechType: String?): String {
+        return when (rechType) {
+            "alipay" -> androidContext.resources.getString(R.string.online_alipay)
+            "weixin" -> androidContext.resources.getString(R.string.online_weixin)
+            "cft" -> androidContext.resources.getString(R.string.online_cft)
+            else -> ""
+        }
+    }
 }
