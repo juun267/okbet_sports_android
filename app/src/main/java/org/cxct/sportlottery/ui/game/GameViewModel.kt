@@ -591,38 +591,14 @@ class GameViewModel(
         _outrightOddsListResult.postValue(Event(result))
     }
 
-    fun updateMatchBetList(
-        matchOdd: MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
-    ) {
-        if (betInfoRepository._isParlayPage.value == true) {
-            val isBetMatchId =
-                betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
-            val isBetOddId = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
-
-            when {
-                isBetMatchId == null -> {
-                    getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                        matchType = this@GameViewModel.matchType
-                    }))
-                }
-                isBetOddId != null -> {
-                    odd.id?.let { removeBetInfoItem(it) }
-                }
-                else -> {
-                    return
-                }
-            }
+    fun updateMatchBetList(odd: org.cxct.sportlottery.network.odds.list.Odd) {
+        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+        if (betItem == null) {
+            getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
+                matchType = this@GameViewModel.matchType
+            }))
         } else {
-            val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
-
-            if (betItem == null) {
-                getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                    matchType = this@GameViewModel.matchType
-                }))
-            } else {
-                odd.id?.let { removeBetInfoItem(it) }
-            }
+            odd.id?.let { removeBetInfoItem(it) }
         }
     }
 
@@ -987,7 +963,7 @@ class GameViewModel(
         else Timber.e("不執行 betInfo request")
     }
 
-    private fun removeOddByMsg(result: BaseResult){
+    private fun removeOddByMsg(result: BaseResult) {
         if (result.code == HttpError.BET_INFO_CLOSE.code) {
             val array = JsonMapUtil.toList(JSONArray(result.msg))
             array.forEach {
@@ -1008,7 +984,7 @@ class GameViewModel(
             }
             result?.success?.let {
                 if (it) {
-                    betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
+                    betInfoRepository.getCurrentBetInfoList()
                 } else {
                     removeOddByMsg(result)
                 }
