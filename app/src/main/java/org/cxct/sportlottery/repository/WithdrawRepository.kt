@@ -44,6 +44,10 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
     val needToCompleteProfileInfo: LiveData<Event<Boolean>> //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
         get() = _needToCompleteProfileInfo
 
+    private var _settingNeedToCompleteProfileInfo = MutableLiveData<Event<Boolean>>()
+    val settingNeedToCompleteProfileInfo: LiveData<Event<Boolean>> //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+        get() = _settingNeedToCompleteProfileInfo
+
     private var _needToBindBankCard = MutableLiveData<Event<Boolean>>()
     val needToBindBankCard: LiveData<Event<Boolean>>
         get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
@@ -90,9 +94,15 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
         this.checkNeedUpdatePassWord()?.let { _needToUpdateWithdrawPassword.value = Event(it) }
     }
 
-    //提款設置判斷權限
+    //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
     suspend fun settingCheckPermissions() {
-        this.checkNeedUpdatePassWord()?.let { _settingNeedToUpdateWithdrawPassword.value = Event(it) }
+        this.checkNeedUpdatePassWord()?.let {
+            if (it) {
+                _settingNeedToUpdateWithdrawPassword.value = Event(it)
+            } else {
+                checkSettingProfileInfoComplete()
+            }
+        }
     }
 
     /**
@@ -100,6 +110,22 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     suspend fun checkProfileInfoComplete() {
+        _needToCompleteProfileInfo.value = Event(verifyProfileInfoComplete())
+    }
+
+    //提款設置用
+    private suspend fun checkSettingProfileInfoComplete() {
+        verifyProfileInfoComplete().let { verify ->
+            /*if (verify) {
+                _settingNeedToCompleteProfileInfo.value = Event(verify)
+            } else {
+
+            }*/
+            _settingNeedToCompleteProfileInfo.value = Event(verify)
+        }
+    }
+
+    private suspend fun verifyProfileInfoComplete(): Boolean {
         val userInfo = userInfoFlow.firstOrNull()
         var complete = false
         sConfigData?.apply {
@@ -112,7 +138,7 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
                 complete = true
             }
         }
-        _needToCompleteProfileInfo.value = Event(complete)
+        return complete
     }
 
     suspend fun checkBankCardPermissions(): Response<BankMyResult> {
