@@ -231,6 +231,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     payRoadSpannerList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         getPayGap(position)
+                        resetEvent()
                         payGapBottomSheet.dismiss()
                     })
                 lv_bank_item.adapter = payGapAdapter
@@ -269,6 +270,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                         view.iv_bank_icon.setImageResource(it.bankIcon ?: 0)
                         view.txv_pay_bank.text = it.bankName.toString()
                         bankPosition = position
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = bankCardAdapter
@@ -337,4 +339,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
     }
 
+    //重置畫面事件
+    private fun resetEvent() {
+        et_recharge_online_amount.setText("")
+    }
 }
