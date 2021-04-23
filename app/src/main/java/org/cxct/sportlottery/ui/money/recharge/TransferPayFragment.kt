@@ -176,6 +176,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.apiResult.observe(viewLifecycleOwner,  {
             if (it.success) {
                 resetEvent()
+                getBankType(0)
             }
         })
     }
@@ -225,7 +226,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         et_name.setText("")
         et_bank_account.setText("")
         et_nickname.setText("")
-        getBankType(0)
 
         viewModel.clearnRechargeStatus()
     }
