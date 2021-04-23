@@ -73,9 +73,10 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
     suspend fun checkRechargeSystem(): Response<MoneyRechCfgResult> {
         val response = OneBoSportApi.moneyService.getRechCfg()
         if (response.isSuccessful) {
-            val withdrawList = response.body()?.rechCfg?.rechTypes
+            val rechTypesList = response.body()?.rechCfg?.rechTypes //玩家層級擁有的充值方式
+            val rechCfgsList = response.body()?.rechCfg?.rechCfgs  //後台有開的充值方式
+            val operation = (rechTypesList?.size ?: 0 > 0) && (rechCfgsList?.size ?: 0 > 0)
 
-            val operation = withdrawList?.size ?: 0 > 0
             _rechargeSystemOperation.value = Event(operation)
         }
         return response
