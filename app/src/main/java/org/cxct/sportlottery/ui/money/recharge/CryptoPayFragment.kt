@@ -372,14 +372,14 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //手續費率/返利
             when{
                 selectRechCfgs?.rebateFee ==  0.0 || selectRechCfgs?.rebateFee == null -> {
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), 0) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
                     tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
                 selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee?.times(100).toString()) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toMoneyFormat(selectRechCfgs.rebateFee?.times(100))) + "%"
                 }
                 else ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs?.rebateFee ?: 0.0), 100.0)) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toMoneyFormat(ArithUtil.mul(abs(selectRechCfgs.rebateFee ?: 0.0), 100.0))) + "%"
                 }
             }
 
@@ -426,7 +426,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 refreshMoneyDetail(it)
 
                 if (mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), 0) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
                     tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
             }
