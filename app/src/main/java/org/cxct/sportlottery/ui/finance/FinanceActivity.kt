@@ -21,8 +21,6 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
 
         setContentView(R.layout.activity_finance)
 
-        setupToolbarBack()
-
         viewModel.recordType.observe(this, Observer {
             setupToolbarTitle(it)
 
@@ -59,12 +57,6 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
     private fun setupToolbarTitle(title: String) {
         tv_toolbar_title.text = title
 
-    }
-
-    private fun setupToolbarBack() {
-        btn_toolbar_back.setOnClickListener {
-            finish()
-        }
     }
 
     private fun navRechargeLogFragment(type: String) {

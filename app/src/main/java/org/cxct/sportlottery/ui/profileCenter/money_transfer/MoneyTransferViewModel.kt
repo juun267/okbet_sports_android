@@ -38,6 +38,7 @@ class MoneyTransferViewModel(
         IN_PLAT, OUT_PLAT
     }
 
+    val allPlat = "ALL_PLAT"
     val platCode = "CG"
 
     val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
@@ -210,7 +211,7 @@ class MoneyTransferViewModel(
 
     private fun setRecordInSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(platCode, androidContext.getString(R.string.all_in_plat)))
+        list.add(StatusSheetData(allPlat, androidContext.getString(R.string.all_in_plat)))
         list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
@@ -222,7 +223,7 @@ class MoneyTransferViewModel(
 
     private fun setRecordOutSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
-        list.add(StatusSheetData(platCode, androidContext.getString(R.string.all_out_plat)))
+        list.add(StatusSheetData(allPlat, androidContext.getString(R.string.all_out_plat)))
         list.add(StatusSheetData(platCode, androidContext.getString(R.string.plat_money)))
         resultList.forEach {
             list.add(StatusSheetData(it.code, it.showName))
@@ -234,10 +235,10 @@ class MoneyTransferViewModel(
     fun filterSubList(plat: PLAT, filterPlat: String?) {
         if (plat == PLAT.IN_PLAT) {
             val list = defaultSubInList.filter { it.showName != filterPlat }
-            _subInPlatSheetList.value = list ?: listOf()
+            _subInPlatSheetList.value = list
         } else {
             val list = defaultSubOutList.filter { it.showName != filterPlat }
-            _subOutPlatSheetList.value = list ?: listOf()
+            _subOutPlatSheetList.value = list
         }
     }
 
@@ -303,8 +304,15 @@ class MoneyTransferViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                val firmFilter = { item: String? -> if (item == platCode) null else item }
-                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page, PAGE_SIZE, startTime, endTime, firmFilter(firmTypeIn), firmFilter(firmTypeOut), status?.toIntOrNull()))
+                val firmFilter = { item: String? -> if (item == allPlat || item.isNullOrEmpty()) null else item }
+
+                OneBoSportApi.thirdGameService.queryTransfers(QueryTransfersRequest(page,
+                                                                                    PAGE_SIZE,
+                                                                                    startTime,
+                                                                                    endTime,
+                                                                                    firmFilter(firmTypeIn),
+                                                                                    firmFilter(firmTypeOut),
+                                                                                    status?.toIntOrNull()))
             }?.let { result ->
                 hideLoading()
                 isLoading = false

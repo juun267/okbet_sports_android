@@ -23,7 +23,7 @@ import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.ui.finance.df.UWType
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 const val pageSize = 20
@@ -35,6 +35,8 @@ class FinanceViewModel(
     infoCenterRepository: InfoCenterRepository,
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
+    val allTag = "ALL"
+
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
 
@@ -42,7 +44,7 @@ class FinanceViewModel(
         get() = _userMoney
 
     val userRechargeListResult: LiveData<RechargeListResult?>
-        get() = _userRechargeResult
+        get() = _userRechargeListResult
 
     val userWithdrawListResult: LiveData<WithdrawListResult?>
         get() = _userWithdrawResult
@@ -99,59 +101,11 @@ class FinanceViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
     private val _userMoney = MutableLiveData<Double?>()
-    private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
+    private val _userRechargeListResult = MutableLiveData<RechargeListResult?>()
     private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
 
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
-
-    val rechargeStateList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
-        when (it) {
-            androidContext.getString(R.string.recharge_state_processing) -> {
-                StatusSheetData(Status.PROCESSING.code.toString(), it)
-            }
-            androidContext.getString(R.string.recharge_state_success) -> {
-                StatusSheetData(Status.SUCCESS.code.toString(), it)
-
-            }
-            androidContext.getString(R.string.recharge_state_failed) -> {
-                StatusSheetData(Status.FAILED.code.toString(), it)
-            }
-            else -> {
-                StatusSheetData(null, it).apply { isChecked = true }
-            }
-        }
-    }
-
-
-    val rechargeChannelList = androidContext.resources.getStringArray(R.array.recharge_channel_array).map {
-        when (it) {
-            androidContext.getString(R.string.recharge_channel_online) -> {
-                StatusSheetData(RechType.ONLINE_PAYMENT.type, it)
-            }
-            androidContext.getString(R.string.recharge_channel_bank) -> {
-                StatusSheetData(RechType.BANK_TRANSFER.type, it)
-            }
-            androidContext.getString(R.string.recharge_channel_alipay) -> {
-                StatusSheetData(RechType.ALIPAY.type, it)
-            }
-            androidContext.getString(R.string.recharge_channel_weixin) -> {
-                StatusSheetData(RechType.WEIXIN.type, it)
-            }
-            androidContext.getString(R.string.recharge_channel_cft) -> {
-                StatusSheetData(RechType.CFT.type, it)
-            }
-            androidContext.getString(R.string.recharge_channel_admin) -> {
-                StatusSheetData(RechType.ADMIN_ADD_MONEY.type, it)
-            }
-            androidContext.getString(R.string.recharge_channel_crypto) -> {
-                StatusSheetData(RechType.CRYPTO.type, it)
-            }
-            else -> {
-                StatusSheetData(null, it).apply { isChecked = true }
-            }
-        }
-    }
 
     private val _withdrawLogDetail = MutableLiveData<org.cxct.sportlottery.network.withdraw.list.Row>()
     private val _rechargeLogDetail = MutableLiveData<Row>()
@@ -194,20 +148,15 @@ class FinanceViewModel(
         _isLoading.postValue(false)
     }
 
-    fun getUserRechargeList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime) {
-        if (isFinalPage.value == true) return
+    fun getUserRechargeList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime, status: String ?= null, rechType: String ?= null) {
+        if (!isFirstFetch && isFinalPage.value == true) return
         loading()
-        val rechType = rechargeChannelList.find {
-            it.isChecked
-        }?.code
 
-        val status = rechargeStateList.find {
-            it.isChecked
-        }?.code?.toIntOrNull()
+        val filter = { item: String? -> if (item == allTag) null else item }
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getUserRechargeList(RechargeListRequest(rechType = rechType, status = status, startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
+                OneBoSportApi.moneyService.getUserRechargeList(RechargeListRequest(rechType = filter(rechType), status =  filter(status)?.toIntOrNull(), startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
             }
 
             result.apply {
@@ -247,14 +196,14 @@ class FinanceViewModel(
                 it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
 
-                it.displayMoney = ArithUtil.toMoneyFormat(it.rechMoney)
+                it.displayMoney = TextUtil.formatMoney(it.rechMoney)
             }
 
             result?.total?.let {
                 _isFinalPage.postValue(page * pageSize >= it)
             }
 
-            _userRechargeResult.postValue(result)
+            _userRechargeListResult.postValue(result)
             hideLoading()
         }
     }
@@ -318,8 +267,8 @@ class FinanceViewModel(
                     it.operatorDateAndTime = TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
-                it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
-                it.displayFee = ArithUtil.toMoneyFormat(it.fee)
+                it.displayMoney = TextUtil.formatMoney(it.applyMoney?:0.0)
+                it.displayFee = TextUtil.formatMoney(it.fee?:0.0)
             }
 
             result?.total?.let {

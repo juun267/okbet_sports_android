@@ -90,7 +90,6 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
         layout_total.tv_total.text = getString(R.string.total_bet_amount)
         status_selector.setCloseBtnText(getString(R.string.cancel_select))
         status_selector.dataList = betStatusList
-        status_selector.selectedTag = betStatusList.firstOrNull()?.code
     }
 
     private fun initOnclick() {
