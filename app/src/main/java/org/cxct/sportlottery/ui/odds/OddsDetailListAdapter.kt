@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_odds_detail_list_single.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -41,6 +43,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     var awayName: String? = null
 
+    var sportCode: String? = null
 
     var updatedOddsDetailDataList = ArrayList<OddsDetailListData>()
         set(value) {
@@ -127,7 +130,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         SINGLE_OT_2("1X2-INCL-OT", 39),
         SINGLE_SEG_2("1X2-SEG", 40),
 
-        HWMG_SINGLE("HWMG&1X2", 41)
+        HWMG_SINGLE("HWMG&1X2", 41),
+
+        HDP_ONE_LIST("HDP", 42)
 
     }
 
@@ -137,7 +142,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         val type = oddsDetailDataList[position].gameType
 
         when {
-            checkKey(type, GameType.HDP.value) -> return GameType.HDP.type
+            checkKey(type, GameType.HDP.value) -> {
+
+                when(sportCode){
+                    SportType.FOOTBALL.code,
+                    SportType.BASKETBALL.code ->  return GameType.HDP.type
+                    else -> return GameType.HDP_ONE_LIST.type
+                }
+
+
+            }
 
             type == GameType.OU.value -> return GameType.OU.type
 
@@ -286,6 +300,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.SINGLE_OT_2.type -> LayoutType.SINGLE_2_ITEM.layout
             GameType.SINGLE_SEG_2.type -> LayoutType.SINGLE_2_ITEM.layout
 
+            GameType.HDP_ONE_LIST.type -> LayoutType.ONE_LIST.layout
+
             else -> LayoutType.ONE_LIST.layout
 
         }
@@ -416,12 +432,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                     //如果是球員 忽略名字替換
                     if (!checkKey(oddsDetail.gameType, GameType.SCO.value)) {
-                        if(newOddData.name?.isNotEmpty() == true){
+                        if (newOddData.name?.isNotEmpty() == true) {
                             oldOddData.name = newOddData.name
                         }
                     }
 
-                    if(newOddData.extInfo?.isNotEmpty() == true){
+                    if (newOddData.extInfo?.isNotEmpty() == true) {
                         oldOddData.extInfo = newOddData.extInfo
                     }
 
@@ -561,6 +577,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.WEH.type,
                 GameType.CLSH.type -> forChangeHDP(oddsDetail)
 
+                GameType.HDP_ONE_LIST.type,
                 GameType.SCO.type,
                 GameType.DC_OU.type,
                 GameType.SINGLE_BTS.type,
@@ -648,6 +665,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                         val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
                         val vCover = itemView.findViewById<ImageView>(R.id.iv_disable_cover)
+                        val tvOther = itemView.findViewById<TextView>(R.id.tv_other)
+
+                        tvOther.text = itemView.context.getString(R.string.odds_detail_cs_other)
 
                         tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 

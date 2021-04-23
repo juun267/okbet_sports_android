@@ -44,7 +44,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
-    private var gameType: String? = null
+    private var mSportCode: String? = null
     private var matchId: String? = null
 
     private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
@@ -59,7 +59,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        gameType = args.sportType.code
+        mSportCode = args.sportType.code
         matchId = args.matchId
     }
 
@@ -188,7 +188,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment)
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
+            sportCode = mSportCode
+        }
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
@@ -287,8 +289,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun getData() {
-        gameType?.let { gameType ->
-            viewModel.getPlayCateList(gameType)
+        mSportCode?.let { mSportCode ->
+            viewModel.getPlayCateList(mSportCode)
         }
 
         matchId?.let { matchId ->
@@ -297,13 +299,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.getOddsList(args.sportType.code, MatchType.IN_PLAY.postValue)
         loading()
-    }
-
-
-    fun refreshData(gameType: String?, matchId: String?) {
-        this.gameType = gameType
-        this.matchId = matchId
-        getData()
     }
 
 

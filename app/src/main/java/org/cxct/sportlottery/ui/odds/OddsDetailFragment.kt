@@ -39,7 +39,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     var matchId: String? = null
-    private var gameType: String? = null
+    private var mSportCode: String? = null
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
@@ -49,7 +49,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        gameType = args.sportType.code
+        mSportCode = args.sportType.code
         matchId = args.matchId
     }
 
@@ -123,7 +123,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
+            sportCode = mSportCode
+        }
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
@@ -274,8 +276,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
 
     private fun getData() {
-        gameType?.let { gameType ->
-            viewModel.getPlayCateList(gameType)
+        mSportCode?.let { mSportCode ->
+            viewModel.getPlayCateList(mSportCode)
         }
 
         matchId?.let { matchId ->
@@ -283,12 +285,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
-
-    fun refreshData(gameType: String?, matchId: String?) {
-        this.gameType = gameType
-        this.matchId = matchId
-        getData()
-    }
 
     fun back() {
         findNavController().navigateUp()
