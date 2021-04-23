@@ -248,6 +248,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     popAllFragment()
                 }
                 viewModel.isParlayPage(tab?.position == 4)
+                viewModel.getSportMenu()
 
                 when (tab?.position) {
                     0 -> {
@@ -287,9 +288,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun navGameFragment(matchType: MatchType) {
-
-        viewModel.sportMenuSelectFirstItem(matchType)
-
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
