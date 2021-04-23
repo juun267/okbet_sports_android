@@ -625,6 +625,7 @@
     <string name="bet_info_in_play_score">滚球&#160;&#160;%1$s&#160;(%2$s:%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">您选择的部分玩法不适用于串关规则的玩法,系统已帮您自动取消</string>
     <string name="bet_info_list_clean">一键清空</string>
+    <string name="bet_info_bet_balance_insufficient">余额不足</string>
 
 
     <!-- finance -->

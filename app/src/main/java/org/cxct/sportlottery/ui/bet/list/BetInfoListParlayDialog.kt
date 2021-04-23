@@ -52,6 +52,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private var keyboard: KeyBoardUtil? = null
 
 
+    private var money: Double = 0.0
+
+
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
     private lateinit var parlayAdapter: BetInfoListParlayAdapter
 
@@ -296,6 +299,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun setMoney(money: Double) {
+        this.money = money
         tv_money.text = getString(R.string.bet_info_current_money, TextUtil.formatMoney(money))
     }
 
@@ -310,6 +314,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             if (parlayAdapter.sendBetQuotaList[i] > 0) {
                 parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.sendBetQuotaList[i]))
             }
+        }
+
+        if (parlayAdapter.sendBetQuotaList.sum() > money) {
+            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            return
         }
 
         viewModel.addBet(
