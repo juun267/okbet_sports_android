@@ -456,6 +456,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
 
             game_no_record.apply {
                 setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
