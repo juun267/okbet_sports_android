@@ -9,20 +9,18 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
 import java.util.*
@@ -30,7 +28,6 @@ import java.util.*
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class) {
 
     private var mSmsTimer: Timer? = null
-    private var mIsExistAccount = false //判斷是帳號是否註冊過
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,148 +62,112 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         stopSmeTimer()
     }
 
-    private fun checkInputData(): Boolean {
-        return viewModel.checkInputData(
-            context = this,
-            inviteCode = et_recommend_code.getText(),
-            memberAccount = et_member_account.getText(),
-            isExistAccount = mIsExistAccount,
-            loginPassword = et_login_password.getText(),
-            confirmPassword = et_confirm_password.getText(),
-            fullName = et_full_name.getText(),
-            fundPwd = et_withdrawal_pwd.getText(),
-            qq = et_qq.getText(),
-            phone = et_phone.getText(),
-            email = et_mail.getText(),
-            weChat = et_we_chat.getText(),
-            zalo = et_zalo.getText(),
-            facebook = et_facebook.getText(),
-            whatsApp = et_whats_app.getText(),
-            telegram = et_telegram.getText(),
-            validCode = et_verification_code.getText(),
-            securityCode = et_sms_valid_code.getText(),
-            checkAgreement = cb_agreement.isChecked
-        )
-    }
-
     private fun setupBackButton() {
         btn_back.setOnClickListener { finish() }
     }
 
-    private fun setupRecommendCode() {
-        et_recommend_code.setNecessarySymbolVisibility(if (sConfigData?.enableInviteCode == FLAG_OPEN) View.VISIBLE else View.INVISIBLE)
-        et_recommend_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+    private fun setupEditTextFocusListener(editText: LoginEditText, doFun: (inputText: String) -> Unit) {
+        editText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
-                checkInputData()
+                doFun.invoke(editText.getText())
+        }
+    }
+
+    private fun setupRecommendCode() {
+        et_recommend_code.apply {
+            setNecessarySymbolVisibility(if (sConfigData?.enableInviteCode == FLAG_OPEN) View.VISIBLE else View.INVISIBLE)
+            setupEditTextFocusListener(this) { viewModel.checkInviteCode(it) }
         }
     }
 
     private fun setupMemberAccount() {
-        et_member_account.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkAccountExist(et_member_account.getText())
-        }
+        setupEditTextFocusListener(et_member_account) { viewModel.checkAccountExist(it) }
     }
 
     private fun setupLoginPassword() {
-        et_login_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        setupEditTextFocusListener(et_login_password) { viewModel.checkLoginPassword(it) }
     }
 
     private fun setupConfirmPassword() {
-        et_confirm_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        setupEditTextFocusListener(et_confirm_password) { viewModel.checkConfirmPassword(et_login_password.getText(), it) }
     }
 
     private fun setupFullName() {
-        et_full_name.visibility = if (sConfigData?.enableFullName == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_full_name.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_full_name.visibility = if (sConfigData?.enableFullName == FLAG_OPEN) {
+            setupEditTextFocusListener(et_full_name) { viewModel.checkFullName(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupWithdrawalPassword() {
-        et_withdrawal_pwd.visibility = if (sConfigData?.enableFundPwd == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_withdrawal_pwd.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_withdrawal_pwd.visibility = if (sConfigData?.enableFundPwd == FLAG_OPEN) {
+            setupEditTextFocusListener(et_withdrawal_pwd) { viewModel.checkFundPwd(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupQQ() {
-        et_qq.visibility = if (sConfigData?.enableQQ == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_qq.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_qq.visibility = if (sConfigData?.enableQQ == FLAG_OPEN) {
+            setupEditTextFocusListener(et_qq) { viewModel.checkQQ(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupPhone() {
-        et_phone.visibility = if (sConfigData?.enablePhone == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_phone.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_phone.visibility = if (sConfigData?.enablePhone == FLAG_OPEN) {
+            setupEditTextFocusListener(et_phone) { viewModel.checkPhone(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupMail() {
-        et_mail.visibility = if (sConfigData?.enableEmail == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_mail.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_mail.visibility = if (sConfigData?.enableEmail == FLAG_OPEN) {
+            setupEditTextFocusListener(et_mail) { viewModel.checkEmail(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupWeChat() {
-        et_we_chat.visibility = if (sConfigData?.enableWechat == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_we_chat.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_we_chat.visibility = if (sConfigData?.enableWechat == FLAG_OPEN) {
+            setupEditTextFocusListener(et_we_chat) { viewModel.checkWeChat(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupZalo() {
-        et_zalo.visibility = if (sConfigData?.enableZalo == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_zalo.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_zalo.visibility = if (sConfigData?.enableZalo == FLAG_OPEN) {
+            setupEditTextFocusListener(et_zalo) { viewModel.checkZalo(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupFacebook() {
-        et_facebook.visibility = if (sConfigData?.enableFacebook == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_facebook.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_facebook.visibility = if (sConfigData?.enableFacebook == FLAG_OPEN) {
+            setupEditTextFocusListener(et_facebook) { viewModel.checkFacebook(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupWhatsApp() {
-        et_whats_app.visibility = if (sConfigData?.enableWhatsApp == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_whats_app.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_whats_app.visibility = if (sConfigData?.enableWhatsApp == FLAG_OPEN) {
+            setupEditTextFocusListener(et_whats_app) { viewModel.checkWhatsApp(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
 
     private fun setupTelegram() {
-        et_telegram.visibility = if (sConfigData?.enableTelegram == FLAG_OPEN) View.VISIBLE else View.GONE
-        et_telegram.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        et_telegram.visibility = if (sConfigData?.enableTelegram == FLAG_OPEN) {
+            setupEditTextFocusListener(et_telegram) { viewModel.checkTelegram(it) }
+            View.VISIBLE
+        } else View.GONE
     }
 
     private fun setupValidCode() {
         if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
             et_verification_code.visibility = View.VISIBLE
             updateValidCode()
+            setupEditTextFocusListener(et_verification_code) { viewModel.checkValidCode(it) }
         } else {
             et_verification_code.visibility = View.GONE
         }
@@ -214,11 +175,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         et_verification_code.setVerificationCodeBtnOnClickListener(View.OnClickListener {
             updateValidCode()
         })
-
-        et_verification_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
     }
 
     private fun setupSmsValidCode() {
@@ -227,6 +183,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             //手機驗證碼開啟，必定需要手機號欄位輸入
             et_phone.visibility = View.VISIBLE
             block_sms_valid_code.visibility = View.VISIBLE
+            setupEditTextFocusListener(et_sms_valid_code) { viewModel.checkSecurityCode(it) }
         } else {
             block_sms_valid_code.visibility = View.GONE
         }
@@ -234,16 +191,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         btn_send_sms.setOnClickListener {
             sendSms()
         }
-
-        et_sms_valid_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
     }
 
     private fun setupAgreementButton() {
         cb_agreement.setOnClickListener {
-            checkInputData()
+            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+            cb_agreement.buttonTintList = null
+            viewModel.checkAgreement(cb_agreement.isChecked)
         }
     }
 
@@ -255,9 +209,46 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupRegisterButton() {
         btn_register.setOnClickListener {
-            if (checkInputData()) {
-                register()
-            }
+            val inviteCode = et_recommend_code.getText()
+            val userName = et_member_account.getText()
+            val loginPassword = et_login_password.getText()
+            val confirmPassword = et_confirm_password.getText()
+            val fullName = et_full_name.getText()
+            val fundPwd = et_withdrawal_pwd.getText()
+            val qq = et_qq.getText()
+            val phone = et_phone.getText()
+            val email = et_mail.getText()
+            val weChat = et_we_chat.getText()
+            val zalo = et_zalo.getText()
+            val facebook = et_facebook.getText()
+            val whatsApp = et_whats_app.getText()
+            val telegram = et_telegram.getText()
+            val smsCode = et_sms_valid_code.getText()
+            val validCode = et_verification_code.getText()
+            val agreementChecked = cb_agreement.isChecked
+            val deviceSn = JPushInterface.getRegistrationID(applicationContext) //極光推播
+            Timber.d("極光推播: RegistrationID = $deviceSn")
+
+            viewModel.registerSubmit(
+                inviteCode,
+                userName,
+                loginPassword,
+                confirmPassword,
+                fullName,
+                fundPwd,
+                qq,
+                phone,
+                email,
+                weChat,
+                zalo,
+                facebook,
+                whatsApp,
+                telegram,
+                smsCode,
+                validCode,
+                agreementChecked,
+                deviceSn
+            )
         }
     }
 
@@ -272,74 +263,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun updateValidCode() {
-        val data = viewModel.validCodeResult.value?.validCodeData
-        viewModel.getValidCode(data?.identity)
+        //TODO review structure
+        viewModel.getValidCode()
         et_verification_code.setText(null)
-    }
-
-    private fun checkAccountExist(account: String) {
-        mIsExistAccount = false
-        et_member_account.setError(getString(R.string.desc_register_checking_account))
-        viewModel.checkAccountExist(account)
-    }
-
-    private fun register() {
-        loading()
-
-        val inviteCode = et_recommend_code.getText()
-        val userName = et_member_account.getText()
-        val loginPassword = et_login_password.getText()
-        val fullName = et_full_name.getText()
-        val fundPwd = et_withdrawal_pwd.getText()
-        val qq = et_qq.getText()
-        val phone = et_phone.getText()
-        val email = et_mail.getText()
-        val weChat = et_we_chat.getText()
-        val zalo = et_zalo.getText()
-        val facebook = et_facebook.getText()
-        val whatsApp = et_whats_app.getText()
-        val telegram = et_telegram.getText()
-        val smsCode = et_sms_valid_code.getText()
-        val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
-        val validCode = et_verification_code.getText()
-        val deviceSn = JPushInterface.getRegistrationID(applicationContext) //極光推播
-        Timber.d("極光推播: RegistrationID = $deviceSn")
-
-        val registerRequest = RegisterRequest(
-            userName = userName,
-            password = MD5Util.MD5Encode(loginPassword),
-            loginSrc = LOGIN_SRC,
-            deviceSn = deviceSn,
-            inviteCode = inviteCode
-        ).apply {
-            if (sConfigData?.enableFullName == FLAG_OPEN)
-                this.fullName = fullName
-            if (sConfigData?.enableFundPwd == FLAG_OPEN)
-                this.fundPwd = MD5Util.MD5Encode(fundPwd)
-            if (sConfigData?.enableQQ == FLAG_OPEN)
-                this.qq = qq
-            if (sConfigData?.enablePhone == FLAG_OPEN)
-                this.phone = phone
-            if (sConfigData?.enableEmail == FLAG_OPEN)
-                this.email = email
-            if (sConfigData?.enableWechat == FLAG_OPEN)
-                this.wechat = weChat
-            if (sConfigData?.enableZalo == FLAG_OPEN)
-                this.zalo = zalo
-            if (sConfigData?.enableFacebook == FLAG_OPEN)
-                this.facebook = facebook
-            if (sConfigData?.enableWhatsApp == FLAG_OPEN)
-                this.whatsapp = whatsApp
-            if (sConfigData?.enableTelegram == FLAG_OPEN)
-                this.telegram = telegram
-            if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
-                this.securityCode = smsCode
-            if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
-                this.validCodeIdentity = validCodeIdentity
-                this.validCode = validCode
-            }
-        }
-        viewModel.register(registerRequest)
     }
 
     private fun setupGoToLoginButton() {
@@ -354,9 +280,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun initObserve() {
-        viewModel.registerFormState.observe(this, Observer {
-            updateUiWithResult(it)
-        })
 
         viewModel.registerResult.observe(this, Observer {
             updateUiWithResult(it)
@@ -370,41 +293,43 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             updateUiWithResult(it)
         })
 
-        viewModel.checkAccountResult.observe(this, Observer {
-            updateUiWithResult(it)
-        })
-
         viewModel.loginForGuestResult.observe(this, Observer {
             updateUiWithResult(it)
         })
-    }
 
-    private fun updateUiWithResult(state: RegisterFormState) {
-        et_recommend_code.setError(state.inviteCodeError)
-        et_member_account.setError(state.memberAccountError)
-        et_login_password.setError(state.loginPasswordError)
-        et_confirm_password.setError(state.confirmPasswordError)
-        et_full_name.setError(state.fullNameError)
-        et_withdrawal_pwd.setError(state.fundPwdError)
-        et_qq.setError(state.qqError)
-        et_phone.setError(state.phoneError)
-        et_mail.setError(state.emailError)
-        et_we_chat.setError(state.weChatError)
-        et_zalo.setError(state.zaloError)
-        et_facebook.setError(state.facebookError)
-        et_whats_app.setError(state.whatsAppError)
-        et_telegram.setError(state.telegramError)
-        et_sms_valid_code.setError(state.securityCodeError)
-        et_verification_code.setError(state.validCodeError)
-        btn_register.isEnabled = state.isDataValid
+        viewModel.agreementChecked.observe(this, {
+            if (it?.not() == true) {
+                cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorRedDark))
+                cb_agreement.buttonTintList = ContextCompat.getColorStateList(this, R.color.colorRedDark)
+            } else {
+                cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+                cb_agreement.buttonTintList = null
+            }
+        })
 
-        if (state.checkAgreement) {
-            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-            cb_agreement.buttonTintList = null
-        } else {
-            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorRedDark))
-            cb_agreement.buttonTintList = ContextCompat.getColorStateList(this, R.color.colorRedDark)
+        /**
+         * 輸入欄位判斷後錯誤提示
+         */
+        viewModel.apply {
+            inviteCodeMsg.observe(this@RegisterActivity, { et_recommend_code.setError(it) })
+            memberAccountMsg.observe(this@RegisterActivity, { et_member_account.setError(it) })
+            loginPasswordMsg.observe(this@RegisterActivity, { et_login_password.setError(it) })
+            confirmPasswordMsg.observe(this@RegisterActivity, { et_confirm_password.setError(it) })
+            fullNameMsg.observe(this@RegisterActivity, { et_full_name.setError(it) })
+            fundPwdMsg.observe(this@RegisterActivity, { et_withdrawal_pwd.setError(it) })
+            qqMsg.observe(this@RegisterActivity, { et_qq.setError(it) })
+            phoneMsg.observe(this@RegisterActivity, { et_phone.setError(it) })
+            emailMsg.observe(this@RegisterActivity, { et_mail.setError(it) })
+            weChatMsg.observe(this@RegisterActivity, { et_we_chat.setError(it) })
+            zaloMsg.observe(this@RegisterActivity, { et_zalo.setError(it) })
+            facebookMsg.observe(this@RegisterActivity, { et_facebook.setError(it) })
+            whatsAppMsg.observe(this@RegisterActivity, { et_whats_app.setError(it) })
+            telegramMsg.observe(this@RegisterActivity, { et_telegram.setError(it) })
+            securityCodeMsg.observe(this@RegisterActivity, { et_sms_valid_code.setError(it) })
+            validCodeMsg.observe(this@RegisterActivity, { et_verification_code.setError(it) })
+            registerEnable.observe(this@RegisterActivity, { it?.let { btn_register.isEnabled = it } })
         }
+
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
@@ -436,11 +361,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             smsResult?.msg?.let { showErrorPromptDialog(getString(R.string.prompt), it) {} }
             showSmeTimer300()
         }
-    }
-
-    private fun updateUiWithResult(checkAccountResult: CheckAccountResult?) {
-        mIsExistAccount = checkAccountResult?.isExist ?: false //若回傳資料為 null 也當作帳號未註冊
-        checkInputData()
     }
 
     //發送簡訊後，倒數五分鐘

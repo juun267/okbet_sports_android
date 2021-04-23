@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
 import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
+import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
@@ -45,6 +47,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private var oddsType: OddsType = OddsType.EU
+
+
+    private var keyboard: KeyBoardUtil? = null
 
 
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
@@ -78,6 +83,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private fun initUI() {
         iv_close.setOnClickListener { dismiss() }
         tv_clean.setOnClickListener { viewModel.removeBetInfoAll() }
+
+        tv_close.setOnClickListener {
+            keyboard?.hideKeyboard()
+        }
+
         tv_add_more.setOnClickListener { dismiss() }
         tv_bet.setOnClickListener(object : OnForbidClickListener() {
             override fun forbidClick(view: View?) {
@@ -129,6 +139,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 )
             )
         }
+
+        keyboard = KeyBoardUtil(kv_keyboard, ll_keyboard)
+
     }
 
 
@@ -336,6 +349,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         changeBetButtonClickable(parlayOddList.find {
             !it.sendOutStatus
         } == null)
+    }
+
+    override fun onShowKeyboard(editText: EditText) {
+        keyboard?.showKeyboard(editText)
     }
 
 

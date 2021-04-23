@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.util.TextUtil
 
 class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
@@ -123,35 +124,16 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
         setupViewByUserInfo(userInfo)
         updateUserLevelBlock()
         updateUserGrowthBar(userInfo)
-        updateNextLevelTips()
-    }
-
-    private fun updateNextLevelTips() {
-        if (verifyMaxLevel()) {
-            tv_next_level_tips.text = getString(R.string.level_max)
-            return
-        }
-        getNextLevel()?.let { nextLevel ->
-            tv_next_level_tips.text = "${getString(nextLevel.levelRequirement.level)}  ${nextLevel.levelRequirement.levelName}"
-        }
     }
 
     private fun updateUserGrowthBar(userInfo: UserInfoData) {
         if (verifyMaxLevel()) {
-            pb_user_growth.apply {
-                max = 1
-                progress = 1
-            }
             tv_requirement_amount.text = getString(R.string.level_max)
             return
         }
         val growthRequirement = getUpgradeGrowthRequirement()
         val userGrowth = userInfo.growth?.toInt() ?: 0
         val nextLevelRequirement = (growthRequirement - userGrowth).let { if (it < 0) 0 else it }.toLong()
-        pb_user_growth.apply {
-            max = growthRequirement
-            progress = userGrowth
-        }
         tv_requirement_amount.text = String.format(getString(R.string.next_level_tips), nextLevelRequirement)
     }
 
@@ -170,7 +152,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
     private fun setupViewByUserInfo(userInfo: UserInfoData) {
         userInfo.let { user ->
-            tv_greet.text = if (user.fullName.isNullOrEmpty()) user.nickName else user.fullName
+            tv_greet.text = if (user.nickName.isNotEmpty()) user.nickName else (TextUtil.maskUserName(user.userName))
         }
     }
 
@@ -190,6 +172,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
             tv_vip_name.text = levelRequirement.levelName
             iv_vip.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, levelRequirement.levelTitleIcon))
             updateLevelBar(ordinal)
+            banner_vip_level.bannerCurrentItem = ordinal
         }
     }
 
@@ -228,6 +211,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
                 tvLevelName?.text = cardInfo.levelName
                 tvGrowthRequirement?.text = getGrowthRequirementTips(cardInfo.levelId, cardInfo.growthRequirement)
             }
+            bannerCurrentItem = userVipLevel?.ordinal?.plus(1) ?: 0
         }
     }
 

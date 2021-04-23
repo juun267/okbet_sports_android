@@ -55,8 +55,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
                 },
-                { matchOdd, oddString, odd ->
-                    viewModel.updateMatchBetList(matchOdd, oddString, odd)
+                { _, odd ->
+                    viewModel.updateMatchBetList(odd)
                 }
             )
 
@@ -269,7 +269,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                             matchClockCO.matchTime
                                         }
                                         SportType.BASKETBALL.code -> {
-                                            matchClockCO.remainingTime
+                                            matchClockCO.remainingTimeInPeriod
                                         }
                                         else -> null
                                     }
@@ -289,7 +289,12 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                     @Suppress("NAME_SHADOWING")
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                        oddTypeSocketMapEntry.value.toMutableList()
+                        oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
+                            odd?.isSelected =
+                                viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                        }
                     }
 
                     val leagueOdds = leagueAdapter.data
@@ -440,8 +445,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         val action =
             GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
                 args.sportType,
-                matchId,
-                "EU"
+                matchId
             )
 
         findNavController().navigate(action)
@@ -450,8 +454,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun navOddsDetailLive(matchId: String) {
         val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
             args.sportType,
-            matchId,
-            "EU"
+            matchId
         )
 
         findNavController().navigate(action)

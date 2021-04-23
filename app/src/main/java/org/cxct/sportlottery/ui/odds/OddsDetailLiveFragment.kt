@@ -44,9 +44,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
-    private var gameType: String? = null
+    private var mSportCode: String? = null
     private var matchId: String? = null
-    private var oddsType: String? = null
 
     private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
 
@@ -55,13 +54,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var oddsGameCardAdapter: OddsGameCardAdapter? = null
 
+    private var sport = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        gameType = args.sportType.code
+        mSportCode = args.sportType.code
         matchId = args.matchId
-        oddsType = args.oddsType
     }
 
     override fun onCreateView(
@@ -174,6 +173,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         receiver.matchClock.observe(viewLifecycleOwner, Observer {
             oddsGameCardAdapter?.updateGameCard(it?.matchClockCO)
         })
+
+        receiver.producerUp.observe(viewLifecycleOwner, Observer {
+            if (it == null) return@Observer
+            service.unsubscribeAllHallChannel()
+            matchOddList.forEach { matchOddList ->
+                subscribeHallChannel(sport, matchOddList?.id)
+            }
+        })
     }
 
 
@@ -181,7 +188,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment)
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
+            sportCode = mSportCode
+        }
 
         dataBinding.rvDetail.apply {
             adapter = oddsDetailListAdapter
@@ -246,7 +255,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             hideLoading()
             unsubscribeAllHallChannel()
 
-            var sport = ""
             it.peekContent()?.let { oddsListResult ->
                 if (oddsListResult.success) {
                     oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
@@ -281,8 +289,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun getData() {
-        gameType?.let { gameType ->
-            viewModel.getPlayCateList(gameType)
+        mSportCode?.let { mSportCode ->
+            viewModel.getPlayCateList(mSportCode)
         }
 
         matchId?.let { matchId ->
@@ -291,13 +299,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.getOddsList(args.sportType.code, MatchType.IN_PLAY.postValue)
         loading()
-    }
-
-
-    fun refreshData(gameType: String?, matchId: String?) {
-        this.gameType = gameType
-        this.matchId = matchId
-        getData()
     }
 
 
@@ -379,7 +380,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
 
-                live_web_preload.visibility = View.INVISIBLE
+                live_web_preload?.visibility = View.INVISIBLE
                 view?.visibility = View.VISIBLE
             }
 

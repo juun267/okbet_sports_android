@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.dialog_app_download.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -22,6 +23,7 @@ class AppDownloadDialog(
 ) : AlertDialog(activity) {
 
     private val mRxPermissions = RxPermissions(activity)
+    private var mFileUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +47,10 @@ class AppDownloadDialog(
         }
 
         btn_download.setOnClickListener {
-            doInternalDownload()
+            if (btn_download.text == context.getString(R.string.update_new))
+                doInternalDownload()
+            else
+                doUpdate(mFileUrl)
         }
 
         block_progress_bar.visibility = View.GONE
@@ -70,10 +75,15 @@ class AppDownloadDialog(
                         }
 
                         override fun onFinish(fileUrl: String) {
-                            doUpdate(fileUrl)
+                            btn_download.isEnabled = true
+                            btn_download.setText(R.string.install)
+                            block_bottom_bar.visibility = View.VISIBLE
+                            mFileUrl = fileUrl
                         }
 
                         override fun onError() {
+                            btn_download.isEnabled = true
+                            btn_download.setText(R.string.update_new)
                             block_bottom_bar.visibility = View.VISIBLE
                             block_progress_bar.visibility = View.GONE
                             ToastUtil.showToastInCenter(context, context.getString(R.string.download_fail))
@@ -87,7 +97,7 @@ class AppDownloadDialog(
     }
 
     //安裝更新
-    private fun doUpdate(fileUrl: String) {
+    private fun doUpdate(fileUrl: String?) {
         try {
             AppUpdateManager.install(context, fileUrl)
         } catch (e: Exception) {

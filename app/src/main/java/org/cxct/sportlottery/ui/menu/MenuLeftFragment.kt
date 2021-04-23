@@ -8,8 +8,13 @@ import androidx.annotation.IdRes
 import kotlinx.android.synthetic.main.fragment_menu.btn_close
 import kotlinx.android.synthetic.main.fragment_menu_left.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 
 /**
  * 遊戲左側功能選單
@@ -45,23 +50,13 @@ class MenuLeftFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class)
     }
 
     private fun initObserve() {
-        viewModel.sportMenuResult.observe(viewLifecycleOwner, { sportMenuResult ->
-            val countInPlay =
-                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
-            val countToday =
-                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
-            val countEarly =
-                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
-            val countParlay =
-                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
-            val countOutright =
-                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+        viewModel.sportMenuResult.observe(viewLifecycleOwner, {
+            updateUI(it)
+        })
 
-            menu_in_play.setCount(countInPlay.toString())
-            menu_date_row_today.setCount(countToday.toString())
-            menu_early.setCount(countEarly.toString())
-            menu_parlay.setCount(countParlay.toString())
-            menu_champion.setCount(countOutright.toString())
+        //第三方遊戲清單
+        viewModel.gameCateDataList.observe(viewLifecycleOwner, {
+            updateUI(it)
         })
     }
 
@@ -151,6 +146,40 @@ class MenuLeftFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class)
             mMenuLeftListener?.onClick(menu_fish_game.id)
             mDownMenuListener?.onClick(menu_fish_game)
         }
+    }
+
+    private fun updateUI(sportMenuResult: SportMenuResult?) {
+        val countInPlay =
+            sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+        val countToday =
+            sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+        val countEarly =
+            sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+        val countParlay =
+            sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+        val countOutright =
+            sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+
+        menu_in_play.setCount(countInPlay.toString())
+        menu_date_row_today.setCount(countToday.toString())
+        menu_early.setCount(countEarly.toString())
+        menu_parlay.setCount(countParlay.toString())
+        menu_champion.setCount(countOutright.toString())
+    }
+
+    private fun updateUI(gameCateList: List<GameCateData>?) {
+        val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
+        val lotteryCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val liveCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val pokerCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val slotCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.DZ }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val fishingCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.BY }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+
+        menu_cg_lottery.visibility = if (isShowThirdGame && lotteryCount > 0) View.VISIBLE else View.GONE
+        menu_live_game.visibility = if (isShowThirdGame && liveCount > 0) View.VISIBLE else View.GONE
+        menu_poker_game.visibility = if (isShowThirdGame && pokerCount > 0) View.VISIBLE else View.GONE
+        menu_slot_game.visibility = if (isShowThirdGame && slotCount > 0) View.VISIBLE else View.GONE
+        menu_fish_game.visibility = if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
     }
 
 

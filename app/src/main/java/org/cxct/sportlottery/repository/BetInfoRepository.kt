@@ -40,9 +40,16 @@ class BetInfoRepository {
         result.body()?.success.let {
             result.body()?.betInfoData.let { data ->
                 if (data != null) {
+                    if (_isParlayPage.value == true) {
+                        data.matchOdds.forEach {
+                            removeSameMatchIdItem(it.matchId)
+                        }
+                    }
                     for (i in data.matchOdds.indices) {
                         betList.add(BetInfoListData(data.matchOdds[i], data.parlayOdds[i]).apply { matchType = oddsList[0].matchType })
                     }
+
+
                 }
             }
         }
@@ -101,6 +108,14 @@ class BetInfoRepository {
         matchOddList.clear()
         parlayOddList.clear()
         _betInfoList.postValue(betList)
+    }
+
+
+    private fun removeSameMatchIdItem(matchId: String) {
+        val item = betList.find { betInfo ->
+            betInfo.matchOdd.matchId == matchId
+        }
+        removeItem(item?.matchOdd?.oddsId)
     }
 
 

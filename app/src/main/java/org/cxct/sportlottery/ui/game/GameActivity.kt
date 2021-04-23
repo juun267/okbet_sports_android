@@ -300,39 +300,47 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
-                mNavController.popBackStack(R.id.gameV3Fragment, false)
+            R.id.gameLeagueFragment -> {
+                val action =
+                    GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
+                mNavController.navigate(action)
+            }
+            R.id.gameOutrightFragment -> {
+                val action =
+                    GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
+            }
+            R.id.oddsDetailFragment -> {
+                val action =
+                    OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(matchType)
+                mNavController.navigate(action)
+            }
+            R.id.oddsDetailLiveFragment -> {
+                val action =
+                    OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
             }
         }
     }
 
     override fun onBackPressed() {
-        if (mNavController.currentDestination?.id == R.id.gameLeagueFragment) {
-            mNavController.navigateUp()
-            return
-        }
+        when (mNavController.currentDestination?.id) {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
+                mNavController.navigateUp()
+            }
 
-        if (mNavController.currentDestination?.id == R.id.gameOutrightFragment) {
-            mNavController.navigateUp()
-            return
-        }
+            R.id.gameV3Fragment -> {
+                tabLayout.getTabAt(0)?.select()
+            }
 
-        if (mNavController.currentDestination?.id == R.id.oddsDetailFragment) {
-            mNavController.navigateUp()
-            return
+            else -> {
+                super.onBackPressed()
+            }
         }
-
-        if (mNavController.currentDestination?.id == R.id.oddsDetailLiveFragment) {
-            mNavController.navigateUp()
-            return
-        }
-
-        if (mNavController.currentDestination?.id != R.id.homeFragment && supportFragmentManager.backStackEntryCount == 0) {
-            tabLayout.getTabAt(0)?.select()
-            return
-        }
-
-        super.onBackPressed()
     }
 
     private fun initObserve() {
@@ -534,23 +542,24 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         val action = when (mNavController.currentDestination?.id) {
             R.id.gameV3Fragment -> {
                 GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.gameLeagueFragment -> {
                 GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailLiveFragment -> {
                 OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailFragment -> {
-                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
-                    sportType, matchId, "EU"
-                )
+                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(sportType, matchId)
             }
             else -> null
         }
@@ -564,22 +573,26 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         val action = when (mNavController.currentDestination?.id) {
             R.id.gameV3Fragment -> {
                 GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.gameLeagueFragment -> {
                 GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailFragment -> {
                 OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailLiveFragment -> {
                 OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentSelf(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             else -> null

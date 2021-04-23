@@ -20,7 +20,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.9"
+        versionName "1.0.11"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -216,6 +216,9 @@ dependencies {
 
     //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'
+
+    //DateTimePicker
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
 }
 
 multiLanguages {

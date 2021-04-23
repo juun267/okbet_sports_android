@@ -23,6 +23,14 @@ fun getOdds(matchOdd: MatchOdd, oddsType: OddsType): Double {
 }
 
 
+fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.MatchOdd, oddsType: OddsType): Double {
+    return when (oddsType) {
+        OddsType.EU -> matchOdd.odds
+        OddsType.HK -> matchOdd.hkOdds
+    }
+}
+
+
 fun getOdds(parlayOdd: ParlayOdd, oddsType: OddsType): Double {
     return when (oddsType) {
         OddsType.EU -> parlayOdd.odds

@@ -78,11 +78,11 @@
     <string name="error_recommend_code">推荐码不存在</string>
     <string name="member_account">会员账号</string>
     <string name="hint_member_account">长度需4–16个字符含英数</string>
-    <string name="error_member_account">需为4~16个英数组合</string>
+    <string name="error_member_account">账号为4~16位数字字母组合</string>
     <string name="desc_register_checking_account">账号检查中</string>
     <string name="error_register_id_exist">已有此账户名</string>
     <string name="hint_register_password">长度需6–20个字符含英数</string>
-    <string name="error_register_password">需为6~20个英数组合</string>
+    <string name="error_register_password">密码为6~20位数字字母组合</string>
     <string name="error_password_format">需使用英数组合的密码</string>
     <string name="error_password_empty">密码不得为空</string>
     <string name="confirm_password">确认密码</string>
@@ -95,7 +95,7 @@
     <string name="hint_phone_number">请输入手机号码</string>
     <string name="error_phone_number">手机号码格式错误</string>
     <string name="qq_number">QQ号码</string>
-    <string name="hint_qq_number">请输入QQ号码</string>
+    <string name="hint_qq_number">请输入QQ账号</string>
     <string name="error_qq_number">QQ账号格式错误</string>
     <string name="e_mail">邮箱</string>
     <string name="hint_e_mail">请输入邮箱</string>
@@ -117,7 +117,7 @@
     <string name="error_telegram">Telegram账号格式错误</string>
     <string name="real_name">真实姓名</string>
     <string name="hint_real_name">姓名须与银行户口一致</string>
-    <string name="verification_code">注册验证码</string>
+    <string name="verification_code">验证码</string>
     <string name="verification_code_by_sms">短信验证码</string>
     <string name="hint_verification_code">请输入验证码</string>
     <string name="error_verification_code">注册验证码错误</string>
@@ -295,6 +295,7 @@
     <!-- Modify Profile Info page-->
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2-6字</string>
+    <string name="error_nickname">昵称为2~6个中英文组合</string>
     <string name="error_nickname_empty">昵称不能为空</string>
 
     <!-- Setting password page-->
@@ -322,6 +323,7 @@
     <string name="current_versionIs_the_latest_version">当前版本为最新版</string>
     <string name="external_download">外部下载</string>
     <string name="update_new">更新</string>
+    <string name="install">安装</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
@@ -424,6 +426,8 @@
     <!--odds detail-->
     <string name="odds_detail_more">更多</string>
     <string name="odds_detail_less">显示更少</string>
+    <string name="odds_detail_cs_other">其他比分</string>
+
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
@@ -516,10 +520,6 @@
 
 
 
-
-
-
-
     <!--  Withdraw  -->
     <string name="bank_card">银行卡</string>
     <string name="crypto">虚拟币</string>
@@ -540,6 +540,7 @@
     <string name="please_complete_profile_info">完善个人资料</string>
     <string name="please_setting_bank_card">请先设置银行卡</string>
     <string name="please_setting_crypto">请先设置虚拟币</string>
+    <string name="please_setting_money_card">请先设置银行卡/虚拟币</string>
     <string name="go_to_setting">前往设置</string>
     <string name="choose_gap_type">选择支付账号</string>
     <!--  prompt message  -->
@@ -585,6 +586,7 @@
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_create_name_empty">开户名为必填栏位</string>
+    <string name="error_create_name">姓名为2-20个中文组合</string>
     <string name="error_bank_card_number">银行卡号格式有错误</string>
     <string name="error_bank_card_number_empty">银行卡号为必填栏位</string>
     <string name="error_network_point">您输入的开户网点格式有错误</string>
@@ -635,7 +637,7 @@
     <string name="record_recharge">充值纪录</string>
     <string name="record_withdrawal">提款记录</string>
     <string name="record_red_envelope">红包纪录</string>
-    <string name="record_conversion">转换纪录</string>
+    <string name="record_conversion">转换记录</string>
     <string name="record_reward">打賞紀錄</string>
 
     <string name="recharge_state_success">成功</string>
@@ -794,4 +796,16 @@
     <string name="submit_time">提交时间:</string>
     <string name="feedback_time">反馈时间:</string>
     <string name="not_reply_yet">尚未反馈</string>
+
+    <!--keyboard-->
+    <string name="keyboard_code_delete">-999</string>
+    <string name="keyboard_code_insert_0">48</string>
+    <string name="keyboard_code_insert_00">-48</string>
+    <string name="keyboard_code_plus_100">-100</string>
+    <string name="keyboard_code_plus_1000">-1000</string>
+    <string name="keyboard_code_plus_10000">-10000</string>
+
+    <!-- Main page-->
+    <string name="main_footer_desc">拥有欧洲马耳他博彩管理局（MGA）、英国GC监督委员会（Gambling Commission）和菲律宾政府博彩委员会（PAGCOR）颁发的合法执照。\n注册于英属维尔京群岛，是受国际博彩协会认可的合法博彩公司。进行注册并娱乐前，请确保您年满18周岁！</string>
+
 </resources>
