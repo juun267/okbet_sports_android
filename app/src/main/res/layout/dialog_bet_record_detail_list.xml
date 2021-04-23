@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="spUsage">
 
     <data>
 
@@ -35,42 +36,39 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite1">
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/bet_detail"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textSize16sp"
                     android:background="@color/colorWhite"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:textStyle="bold"
                     android:padding="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/bet_detail"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/textSize16sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/img_close"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_close"
-                        app:tint="@color/colorGrayLight" />
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_close"
+                    android:layout_width="34dp"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_title"
+                    app:tint="@color/colorGrayLight" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/colorWhite6"
                     app:layout_constraintBottom_toTopOf="@id/refresh"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
                 <com.scwang.smart.refresh.layout.SmartRefreshLayout
                     android:id="@+id/refresh"
@@ -78,7 +76,7 @@
                     android:layout_height="match_parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
                     app:srlDragRate="0.3"
                     app:srlEnableLoadMore="true"
                     app:srlEnablePureScrollMode="true">
@@ -106,7 +104,7 @@
                                 android:id="@+id/text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
+                                android:layout_marginStart="20dp"
                                 android:text="@string/bet_time"
                                 android:textColor="@color/colorGray"
                                 android:textSize="@dimen/textSize14sp"
@@ -189,9 +187,9 @@
                                 android:id="@+id/tv_status_money"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{(row.status == 0 || row.status == 1) ? @string/nothing : (row.status == 2 || row.status == 3) ? String.format(@string/plus_symbol, TextUtil.format(row.win)): (row.status == 4 || row.status == 5) ? String.format(@string/minus_symbol, TextUtil.format(row.win)): @string/draw_or_cancel}"
-                                android:textColor="@{(row.status == 0 || row.status == 1 || row.status == 6 || row.status == 7) ?  @color/colorGrayDark : (row.status == 2 || row.status == 3) ? @color/green : @color/red2}"
                                 android:textSize="@dimen/textSize14sp"
+                                app:betStatus="@{row.status}"
+                                app:betStatusMoney="@{row.win}"
                                 app:layout_constraintBottom_toBottomOf="@+id/text_view4"
                                 app:layout_constraintEnd_toStartOf="@id/tv_status"
                                 app:layout_constraintHorizontal_bias="0"
@@ -224,17 +222,35 @@
                             android:background="@color/colorWhite3"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/tv_bet_title"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingHorizontal="8dp"
                                 android:paddingVertical="8dp"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/textSize14sp"
-                                android:text="@{row.matchOdds.size() > 1 ? String.format(@string/bet_item, TextUtil.replaceParlayByC(row.parlayType)) : row.matchOdds.size() == 1 ? String.format(@string/bet_item, row.matchOdds[0].playCateName):null}"
-                                android:textColor="@color/colorBlackLight"
-                                tools:text="投注项目 - 3串4" />
+                                android:gravity="top"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="30dp"
+                                    android:textStyle="bold"
+                                    android:textSize="@dimen/textSize14sp"
+                                    android:textColor="@color/colorBlackLight"
+                                    android:text="@string/bet_item" />
+
+                                <TextView
+                                    android:id="@+id/tv_bet_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="30dp"
+                                    android:textStyle="bold"
+                                    android:textSize="@dimen/textSize14sp"
+                                    android:text="@{row.matchOdds.size() > 1 ? TextUtil.replaceParlayByC(row.parlayType) : row.matchOdds.size() == 1 ? row.matchOdds[0].playCateName:null}"
+                                    android:textColor="@color/colorBlackLight"
+                                    tools:text="土耳其足球超级联赛-谁排名更高-费内巴切vs加拉塔萨雷" />
+
+                            </LinearLayout>
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_detail"
