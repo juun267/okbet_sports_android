@@ -71,7 +71,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         //在線充值成功
         viewModel.onlinePaySubmit.observe(this.viewLifecycleOwner, {
-            et_recharge_online_amount.setText("")
+            resetEvent()
         })
     }
 
