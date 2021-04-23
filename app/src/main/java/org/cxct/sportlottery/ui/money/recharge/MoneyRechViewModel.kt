@@ -480,6 +480,8 @@ class MoneyRechViewModel(
             return false
         if (!hashCodeErrorMsg.value.isNullOrEmpty())
             return false
+        if (!voucherPathErrorMsg.value?.peekContent().isNullOrEmpty())
+            return false
 
         return true
     }
