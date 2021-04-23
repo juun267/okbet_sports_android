@@ -1,0 +1,12 @@
+{
+	"dictionary_version": "1.0.12",
+	"short_version": "1",
+    "platform": [
+        {
+            "app_code": "spplat1",
+            "appid": "com.happysport.sl.test",
+            "app_name": "1bo sports",
+            "jpush_appKey": "65670407e46038b18ee836ed"
+        }
+    ]
+}
