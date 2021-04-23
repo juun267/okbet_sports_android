@@ -24,8 +24,8 @@
 
     <org.cxct.sportlottery.ui.game.v3.OddButton
         android:id="@+id/outright_odd_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

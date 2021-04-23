@@ -286,9 +286,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.SINGLE_OT_2.type -> LayoutType.SINGLE_2_ITEM.layout
             GameType.SINGLE_SEG_2.type -> LayoutType.SINGLE_2_ITEM.layout
 
-
-
-            else -> 0
+            else -> LayoutType.ONE_LIST.layout
 
         }
 
@@ -667,9 +665,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 tvOdds.isSelected = odd.isSelect ?: false
                                 itemView.setOnClickListener {
                                     if (odd.isSelect != true) {
-                                        if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
-                                            return@setOnClickListener
-                                        }
                                         onOddClickListener.getBetInfoList(odd)
                                     } else {
                                         onOddClickListener.removeBetInfoItem(odd)

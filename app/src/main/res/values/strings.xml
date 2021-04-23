@@ -323,6 +323,7 @@
     <string name="current_versionIs_the_latest_version">当前版本为最新版</string>
     <string name="external_download">外部下载</string>
     <string name="update_new">更新</string>
+    <string name="install">安装</string>
 
     <!--  information center  -->
     <string name="inbox">收件箱 (%1$d)</string>
@@ -512,10 +513,6 @@
     <string name="hint_remark">备注：%1$s</string>
 
 
-
-
-
-
     <!--  Withdraw  -->
     <string name="bank_card">银行卡</string>
     <string name="crypto">虚拟币</string>
@@ -536,6 +533,7 @@
     <string name="please_complete_profile_info">完善个人资料</string>
     <string name="please_setting_bank_card">请先设置银行卡</string>
     <string name="please_setting_crypto">请先设置虚拟币</string>
+    <string name="please_setting_money_card">请先设置银行卡/虚拟币</string>
     <string name="go_to_setting">前往设置</string>
     <string name="choose_gap_type">选择支付账号</string>
     <!--  prompt message  -->
@@ -791,6 +789,14 @@
     <string name="submit_time">提交时间:</string>
     <string name="feedback_time">反馈时间:</string>
     <string name="not_reply_yet">尚未反馈</string>
+
+    <!--keyboard-->
+    <string name="keyboard_code_delete">-999</string>
+    <string name="keyboard_code_insert_0">48</string>
+    <string name="keyboard_code_insert_00">-48</string>
+    <string name="keyboard_code_plus_100">-100</string>
+    <string name="keyboard_code_plus_1000">-1000</string>
+    <string name="keyboard_code_plus_10000">-10000</string>
 
     <!-- Main page-->
     <string name="main_footer_desc">拥有欧洲马耳他博彩管理局（MGA）、英国GC监督委员会（Gambling Commission）和菲律宾政府博彩委员会（PAGCOR）颁发的合法执照。\n注册于英属维尔京群岛，是受国际博彩协会认可的合法博彩公司。进行注册并娱乐前，请确保您年满18周岁！</string>

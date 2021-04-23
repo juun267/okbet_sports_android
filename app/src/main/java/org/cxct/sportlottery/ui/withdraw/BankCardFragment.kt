@@ -197,21 +197,20 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun setupClearButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
-        setupView.let { view ->
-            view.afterTextChanged {
-                view.clearIsShow = it.isNotEmpty()
-                checkFun.invoke(it)
-            }
+        setupView.setEditTextOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus)
+                checkFun.invoke(setupView.getText())
         }
     }
 
+
     private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
-        setupView.let { view ->
-            view.afterTextChanged {
-                checkFun(it)
-            }
+        setupView.setEditTextOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus)
+                checkFun(setupView.getText())
         }
     }
+
 
     private fun setupClickEvent() {
         tabClickEvent()
@@ -322,8 +321,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun setCryptoProtocol(protocol: MoneyRechCfg.DetailList) {
-        sv_protocol.selectedText = protocol.contract
+    private fun setCryptoProtocol(protocol: MoneyRechCfg.DetailList?) {
+        protocol?.contract?.let { sv_protocol.selectedText = it }
     }
 
     private fun setupObserve() {
@@ -347,7 +346,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.addCryptoCardList.observe(this.viewLifecycleOwner, {
             protocolAdapter.dataList = it
             val modifyMoneyCardDetail = it.find { list -> list.contract == args.editBankCard?.bankName }
-            setCryptoProtocol(modifyMoneyCardDetail ?: it.first())
+            setCryptoProtocol(modifyMoneyCardDetail ?: it.firstOrNull())
         })
 
 

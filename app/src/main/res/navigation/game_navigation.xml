@@ -189,6 +189,15 @@
                 android:name="oddsType"
                 app:argType="string" />
         </action>
+
+        <action
+            android:id="@+id/action_gameLeagueFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
     </fragment>
 
     <fragment
@@ -202,6 +211,15 @@
         <argument
             android:name="eventId"
             app:argType="string" />
+
+        <action
+            android:id="@+id/action_gameOutrightFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
     </fragment>
 
     <fragment
@@ -259,6 +277,15 @@
                 android:name="oddsType"
                 app:argType="string" />
         </action>
+
+        <action
+            android:id="@+id/action_oddsDetailFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
     </fragment>
 
     <fragment
@@ -296,6 +323,7 @@
                 android:name="oddsType"
                 app:argType="string" />
         </action>
+
         <action
             android:id="@+id/action_oddsDetailLiveFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
@@ -314,6 +342,15 @@
             <argument
                 android:name="oddsType"
                 app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
     </fragment>
 

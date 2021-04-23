@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import org.cxct.sportlottery.util.MetricsUtil
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 
 const val DURATION: Long = 300
-
+const val MOVE_DISTANCE = 2
+const val CLICK_DRAG_TOLERANCE = 10
 
 class DragFloatActionButton : LinearLayout {
 
@@ -35,6 +37,8 @@ class DragFloatActionButton : LinearLayout {
     private var lastX: Int = 0
     private var lastY: Int = 0
 
+    private var downX = 0f
+    private var downY = 0f
 
     private var isDrag: Boolean = false
 
@@ -42,12 +46,17 @@ class DragFloatActionButton : LinearLayout {
     var actionUpListener: ActionUpListener? = null
 
 
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val rawX = event!!.rawX.toInt()
         val rawY = event.rawY.toInt()
-        when (event.action and MotionEvent.ACTION_MASK) {
+        when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+
+                downX = event.rawX
+                downY = event.rawY
+
                 isPressed = true
                 isDrag = false
                 parent.requestDisallowInterceptTouchEvent(true)
@@ -67,7 +76,7 @@ class DragFloatActionButton : LinearLayout {
                 val distance = sqrt((dx * dx + dy * dy).toDouble()).toInt()
                 if (distance == 0) {
                     isDrag = false
-                } else {
+                } else if(distance > MOVE_DISTANCE){
                     var x = x + dx
                     var y = y + dy
                     x = if (x < 0) 0F else if (x > parentWidth - width) (parentWidth - width).toFloat() else x
@@ -80,12 +89,37 @@ class DragFloatActionButton : LinearLayout {
                 }
             }
             MotionEvent.ACTION_UP -> if (!isNotDrag()) {
-                isPressed = false
-                if (rawX >= parentWidth / 2) {
-                    animate().setInterpolator(DecelerateInterpolator())
-                        .setDuration(DURATION)
-                        .xBy(parentWidth - width - x - defaultPositionX)
-                        .setListener(object : Animator.AnimatorListener {
+
+                val upDX: Float = event.rawX - downX
+                val upDY: Float = event.rawY - downY
+
+                return if (abs(upDX) < CLICK_DRAG_TOLERANCE && abs(upDY) < CLICK_DRAG_TOLERANCE) { // A click
+                    performClick()
+                } else {
+                    isPressed = false
+                    if (rawX >= parentWidth / 2) {
+                        animate().setInterpolator(DecelerateInterpolator())
+                            .setDuration(DURATION)
+                            .xBy(parentWidth - width - x - defaultPositionX)
+                            .setListener(object : Animator.AnimatorListener {
+                                override fun onAnimationStart(animation: Animator?) {
+                                }
+
+                                override fun onAnimationEnd(animation: Animator?) {
+                                    actionUpListener?.getPosition()
+                                }
+
+                                override fun onAnimationCancel(animation: Animator?) {
+                                }
+
+                                override fun onAnimationRepeat(animation: Animator?) {
+                                }
+                            })
+                            .start()
+                    } else {
+                        val oa = ObjectAnimator.ofFloat(this, "x", x, defaultPositionX)
+                        oa.interpolator = DecelerateInterpolator()
+                        oa.addListener(object : Animator.AnimatorListener {
                             override fun onAnimationStart(animation: Animator?) {
                             }
 
@@ -99,27 +133,14 @@ class DragFloatActionButton : LinearLayout {
                             override fun onAnimationRepeat(animation: Animator?) {
                             }
                         })
-                        .start()
-                } else {
-                    val oa = ObjectAnimator.ofFloat(this, "x", x, defaultPositionX)
-                    oa.interpolator = DecelerateInterpolator()
-                    oa.addListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(animation: Animator?) {
-                        }
-
-                        override fun onAnimationEnd(animation: Animator?) {
-                            actionUpListener?.getPosition()
-                        }
-
-                        override fun onAnimationCancel(animation: Animator?) {
-                        }
-
-                        override fun onAnimationRepeat(animation: Animator?) {
-                        }
-                    })
-                    oa.duration = DURATION
-                    oa.start()
+                        oa.duration = DURATION
+                        oa.start()
+                    }
+                    true
                 }
+
+            } else {
+                return super.onTouchEvent(event)
             }
         }
         return !isNotDrag() || super.onTouchEvent(event)

@@ -327,7 +327,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
                         startActivity(Intent(this, BankActivity::class.java))
                     }).apply {
                         setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_setting_bank_card)
+                        setTipsContent(R.string.please_setting_money_card)
                         show(supportFragmentManager, "")
                     }
                 } else {
