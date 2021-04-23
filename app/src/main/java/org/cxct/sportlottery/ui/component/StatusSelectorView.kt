@@ -49,7 +49,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         }
 
     var selectedTag: String? = ""
-        get() = if (tv_selected.tag == null) null else tv_selected.tag.toString()
+        get() = tv_selected.tag?.toString()
         set(value) {
             field = value
             tv_selected.tag = value
