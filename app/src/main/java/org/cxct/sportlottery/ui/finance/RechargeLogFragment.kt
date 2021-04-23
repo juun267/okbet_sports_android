@@ -114,7 +114,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
         selector_method_status.dataList = rechargeChannelList
         selector_order_status.dataList = rechargeStateList
-        Log.e(">>>", "onViewCreated")
 
         viewModel.isLoading.observe(this.viewLifecycleOwner, {
             if (it) {
