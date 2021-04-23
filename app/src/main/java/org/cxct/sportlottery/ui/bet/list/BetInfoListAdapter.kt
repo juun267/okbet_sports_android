@@ -320,6 +320,14 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         moreTextColor = R.color.colorWhite,
                         moreClickable = false
                     )
+
+                    binding.betInfoAction.tv_bet.apply {
+                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_unselected)
+                        setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        isClickable = false
+                        text = context.getString(R.string.bet_info_list_bet)
+                    }
+
                 }
 
                 BetStatus.ACTIVATED.code -> {
@@ -334,6 +342,14 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         moreTextColor = R.color.colorGray,
                         moreClickable = true
                     )
+
+                    binding.betInfoAction.tv_bet.apply {
+                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
+                        setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        isClickable = true
+                        text = context.getString(R.string.bet_info_list_bet)
+                    }
+
                     setChangeOdds(
                         binding.betInfoAction.tv_bet,
                         binding.betInfoDetail.tvOdds,
