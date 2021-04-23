@@ -55,40 +55,6 @@ class FinanceViewModel(
     val recordType: LiveData<String>
         get() = _recordType
 
-    val withdrawStateList = androidContext.resources.getStringArray(R.array.withdraw_state_array).map {
-        when (it) {
-            androidContext.getString(R.string.withdraw_log_state_processing) -> {
-                StatusSheetData(CheckStatus.PROCESSING.code.toString(), it)
-            }
-            androidContext.getString(R.string.withdraw_log_state_pass) -> {
-                StatusSheetData(CheckStatus.PASS.code.toString(), it)
-            }
-            androidContext.getString(R.string.withdraw_log_state_un_pass) -> {
-                StatusSheetData(CheckStatus.UN_PASS.code.toString(), it)
-            }
-            else -> {
-                StatusSheetData(null, it).apply { isChecked = true }
-            }
-        }
-    }
-
-    val withdrawTypeList = androidContext.resources.getStringArray(R.array.withdraw_type_array).map {
-        when (it) {
-            androidContext.getString(R.string.withdraw_log_type_bank_trans) -> {
-                StatusSheetData(UWType.BANK_TRANSFER.type, it)
-            }
-            androidContext.getString(R.string.withdraw_log_type_admin) -> {
-                StatusSheetData(UWType.ADMIN_SUB_MONEY.type, it)
-            }
-            androidContext.getString(R.string.withdraw_log_crypto_transfer) -> {
-                StatusSheetData(UWType.CRYPTO.type, it)
-            }
-            else -> {
-                StatusSheetData(null, it).apply { isChecked = true }
-            }
-        }
-    }
-
     val withdrawLogDetail: LiveData<org.cxct.sportlottery.network.withdraw.list.Row>
         get() = _withdrawLogDetail
 
@@ -148,7 +114,11 @@ class FinanceViewModel(
         _isLoading.postValue(false)
     }
 
-    fun getUserRechargeList(isFirstFetch: Boolean, startTime: String? = TimeUtil.getDefaultTimeStamp().startTime, endTime: String? = TimeUtil.getDefaultTimeStamp().endTime, status: String ?= null, rechType: String ?= null) {
+    fun getUserRechargeList(isFirstFetch: Boolean,
+                            startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+                            endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+                            status: String ?= null,
+                            rechType: String ?= null) {
         if (!isFirstFetch && isFinalPage.value == true) return
         loading()
 
@@ -212,20 +182,18 @@ class FinanceViewModel(
         isFirstFetch: Boolean,
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        checkStatus: String ?= null,
+        uwType: String ?= null
     ) {
-        if (isFinalPage.value == true) return
+        if (!isFirstFetch && isFinalPage.value == true) return
         loading()
-        val checkStatus = withdrawStateList.find {
-            it.isChecked
-        }?.code?.toIntOrNull()
-
-        val uwType = withdrawTypeList.find {
-            it.isChecked
-        }?.code
-
+        val filter = { item: String? -> if (item == allTag) null else item }
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(checkStatus = checkStatus, uwType = uwType, startTime = startTime, endTime = endTime))
+                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(checkStatus = filter(checkStatus)?.toIntOrNull(),
+                                                                                  uwType = filter(uwType),
+                                                                                  startTime = startTime,
+                                                                                  endTime = endTime))
             }
 
             result.apply {

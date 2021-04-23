@@ -101,14 +101,11 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupSearch(view: View) {
         view.date_range_selector.setOnClickSearchListener {
-            Log.e(">>>", "search")
             viewModel.getUserRechargeList(true,
                                           date_range_selector.startTime.toString(),
                                           date_range_selector.endTime.toString(),
                                           selector_order_status.selectedTag,
                                           selector_method_status.selectedTag)
-
-
         }
     }
 
@@ -130,8 +127,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
             if (it?.success == true) {
                 val list = it.rows ?: listOf()
-                Log.e(">>>", "size = ${list.size}")
-
                 rechargeLogAdapter.data = list
                 setupNoRecordView(list.isEmpty())
             }
