@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.base
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.common.DragFloatActionButton
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.MetricsUtil
 import kotlin.reflect.KClass
 
 const val SP_NAME = "button_position"
 const val POSITION_X = "position_x"
 const val POSITION_Y = "position_y"
+const val FIRST_BET = "first_bet"
 
 abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T>) :
     BaseSocketActivity<T>(clazz) {
@@ -39,17 +41,27 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
     }
 
     private fun getPositionX(): Float? {
-        return mSharedPreferences?.getFloat(POSITION_X, -1f)
+        return mSharedPreferences?.getFloat(POSITION_X, 6.dp.toFloat())
     }
 
+    //14 bottom margin
+    //48 button size
     private fun getPositionY(): Float? {
-        return mSharedPreferences?.getFloat(POSITION_Y, -1f)
+        return mSharedPreferences?.getFloat(POSITION_Y, (MetricsUtil.getScreenHeight() - 14.dp - 48.dp - MetricsUtil.getStatusBarHeight()).toFloat())
+    }
+
+    private fun saveFirstBetFlag(boolean: Boolean) {
+        mSharedPreferences?.edit()
+            ?.putBoolean(FIRST_BET, boolean)
+            ?.apply()
+    }
+
+    private fun getFirstBetFlag(): Boolean? {
+        return mSharedPreferences?.getBoolean(FIRST_BET, true)
     }
 
     private var oddListDialog: DialogFragment? = null
     private var floatButtonView: View? = null
-
-    private var firstBet: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +80,7 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
 
-            if (it.size == 0) firstBet = true
+            if (it.size == 0) saveFirstBetFlag(true)
 
             when {
                 it.isNullOrEmpty() -> {
@@ -79,8 +91,8 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                 }
                 oddListDialog is BetInfoListDialog -> {
                     updateOddButton(true, it.size)
-                    if (firstBet && it.size == 1) {
-                        firstBet = false
+                    if (getFirstBetFlag() == true && it.size == 1) {
+                        saveFirstBetFlag(false)
                         oddListDialog?.show(
                             supportFragmentManager,
                             BaseOddButtonActivity::class.java.simpleName

@@ -163,7 +163,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     in label_slot.top until label_fishing.top -> {
                         selectTab(tab_slot)
                     }
-                    in label_fishing.top until over_scroll_view.top -> {
+                    in label_fishing.top until view_footer.top -> {
                         selectTab(tab_fishing)
                     }
                 }
@@ -173,11 +173,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         //為了讓滑動切換 tab 效果能到最後一項，需動態變更 over_scroll_view 高度，來補足滑動距離
         scroll_view.post {
             try {
-                val distanceY = over_scroll_view.bottom - label_fishing.top
+                val distanceY = view_footer.bottom - label_fishing.top
                 val paddingHeight = scroll_view.height - distanceY
 
                 if (paddingHeight > 0)
-                    over_scroll_view.minimumHeight = paddingHeight
+                    view_footer.minimumHeight = paddingHeight
             } catch (e: Exception) {
                 e.printStackTrace()
             }

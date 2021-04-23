@@ -18,8 +18,8 @@ class AvatarRepository(private val androidContext: Context, private val userInfo
     val editIconUrlResult: LiveData<Event<IconUrlResult?>>
         get() = _editIconUrlResult
 
-    private val _voucherUrlResult = MutableLiveData<String>()
-    val voucherUrlResult: LiveData<String?>
+    private val _voucherUrlResult = MutableLiveData<Event<String>>()
+    val voucherUrlResult: LiveData<Event<String>>
         get() = _voucherUrlResult
 
     //UploadImage API 在另一個伺服器，上傳成功後得到的 url，再透過 editIconUrl API 去更新，下次登入的 LoginData 裡面的 iconUrl 才會更新
@@ -63,7 +63,7 @@ class AvatarRepository(private val androidContext: Context, private val userInfo
                 result.success -> {
                     val path = result.imgData?.path ?: ""
                     val iconUrl = sConfigData?.resServerHost + path
-                    _voucherUrlResult.postValue(iconUrl)
+                    _voucherUrlResult.postValue(Event(iconUrl))
 
                 }
             }

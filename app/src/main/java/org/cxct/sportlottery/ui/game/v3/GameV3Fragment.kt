@@ -86,12 +86,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
                 },
                 { matchOdd ->
-                    matchOdd.matchInfo?.id?.let {
-                        navOddsDetailLive(it)
+                    when (args.matchType) {
+                        MatchType.IN_PLAY -> {
+                            matchOdd.matchInfo?.id?.let {
+                                navOddsDetailLive(it)
+                            }
+                        }
+                        MatchType.AT_START -> {
+                            matchOdd.matchInfo?.id?.let {
+                                navOddsDetail(it)
+                            }
+                        }
+                        else -> {
+                        }
                     }
                 },
-                { matchOdd, oddString, odd ->
-                    viewModel.updateMatchBetList(matchOdd, oddString, odd)
+                { _, odd ->
+                    viewModel.updateMatchBetList(odd)
                 }
             )
 
@@ -445,6 +456,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
+            hideLoading()
 
             game_no_record.apply {
                 setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
@@ -534,7 +546,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                         matchClockCO.matchTime
                                     }
                                     SportType.BASKETBALL.code -> {
-                                        matchClockCO.remainingTime
+                                        matchClockCO.remainingTimeInPeriod
                                     }
                                     else -> null
                                 }
@@ -553,7 +565,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     @Suppress("NAME_SHADOWING")
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                        oddTypeSocketMapEntry.value.toMutableList()
+                        oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
+                            odd?.isSelected =
+                                viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                        }
                     }
 
                     val leagueOdds = leagueAdapter.data
@@ -795,7 +812,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
                 sportType,
                 matchId,
-                "EU"
+            )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun navOddsDetail(matchId: String) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        sportType?.let {
+            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                sportType,
+                matchId
             )
 
             findNavController().navigate(action)

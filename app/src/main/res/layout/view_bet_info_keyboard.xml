@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_keyboard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorWhite"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:ignore="SpUsage">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorWhite2">
+
+        <TextView
+            android:id="@+id/tv_match_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="70dp"
+            android:layout_toStartOf="@+id/tv_close"
+            android:letterSpacing="0.1"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            tools:text="让球 - 皇家马德里 +0/0.5 @ 1.85" />
+
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:letterSpacing="0.1"
+            android:text="@string/bottom_sheet_close"
+            android:textColor="@color/colorGrayLight"
+            android:textSize="@dimen/textSize14sp" />
+
+    </RelativeLayout>
+
+    <org.cxct.sportlottery.ui.common.CustomKeyBoardView
+        android:id="@+id/kv_keyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/colorWhite"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyBackground="@drawable/bg_frame_6dp_white" />
+
+</LinearLayout>

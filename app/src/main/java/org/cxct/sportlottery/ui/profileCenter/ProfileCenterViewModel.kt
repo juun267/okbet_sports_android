@@ -33,10 +33,14 @@ class ProfileCenterViewModel(
 
     val withdrawSystemOperation =
         withdrawRepository.withdrawSystemOperation
+    val rechargeSystemOperation =
+        withdrawRepository.rechargeSystemOperation
     val needToUpdateWithdrawPassword =
         withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
     val settingNeedToUpdateWithdrawPassword =
         withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToCompleteProfileInfo =
+        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToCompleteProfileInfo =
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
@@ -69,6 +73,14 @@ class ProfileCenterViewModel(
         viewModelScope.launch {
             doNetwork(androidContext) {
                 withdrawRepository.checkWithdrawSystem()
+            }
+        }
+    }
+    //充值功能是否啟用
+    fun checkRechargeSystem() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkRechargeSystem()
             }
         }
     }

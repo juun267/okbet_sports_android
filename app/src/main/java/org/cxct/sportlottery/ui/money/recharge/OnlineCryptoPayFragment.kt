@@ -114,19 +114,24 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         updateMoneyRange()
         refreshCurrencyType(CurrentCurrency)
 
-        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0")
+        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000")
+
+        if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0)  //返利
+            tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), "0.000")
+        else
+            tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
     }
 
     private fun initButton() {
         btn_submit.setOnClickListener {
             val depositMoney = if (et_recharge_account.getText().isNotEmpty()) {
-                et_recharge_account.getText().toInt()
+                et_recharge_account.getText()
             } else {
-                0
+                ""
             }
 
-            var payee = txv_currency.text.toString()
-            var payeeName = txv_account.text.toString()
+            val payee = txv_currency.text.toString()
+            val payeeName = txv_account.text.toString()
             viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, payee, payeeName)
         }
 
@@ -206,6 +211,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     mAccountBottomSheetList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         refreshAccount(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = accountBtsAdapter
@@ -246,13 +252,26 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                 getString(R.string.hint_rate),
                 ArithUtil.toMoneyFormat(selectRechCfgs?.exchangeRate)
             )
+
             //手續費率/返利
-            tv_fee_rate.visibility = View.VISIBLE
-            if (selectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利
-                tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee?.times(100).toString()) + "%"
-            } else {
-                tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), abs(selectRechCfgs?.rebateFee ?: 0.0).times(100).toString()) + "%"
+            when{
+                selectRechCfgs?.rebateFee ==  0.0 || selectRechCfgs?.rebateFee == null -> {
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), 0) + "%"
+                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
+                }
+                selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), selectRechCfgs?.rebateFee?.times(100).toString()) + "%"
+                }
+                else ->{
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.mul(abs(selectRechCfgs?.rebateFee ?: 0.0), 100.0)) + "%"
+                }
             }
+
+            //備註
+            tv_hint.text = selectRechCfgs?.remark
+
+            //充值個數限制
+            updateMoneyRange()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -294,7 +313,6 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     return@afterTextChanged
                 }
 
-                tv_fee_amount.visibility = View.VISIBLE
                 checkRechargeAccount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_recharge_money.text =
@@ -320,11 +338,8 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     }
 
                     if(mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null){
-                        tv_fee_rate.visibility = View.GONE
-                        tv_fee_amount.visibility = View.GONE
-                    }else{
-                        tv_fee_rate.visibility = View.VISIBLE
-                        tv_fee_amount.visibility = View.VISIBLE
+                        tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), 0) + "%"
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                     }
                 }
             }

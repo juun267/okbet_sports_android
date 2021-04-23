@@ -81,11 +81,11 @@
                 app:layout_constraintGuide_percent="0.91" />
 
             <TextView
+                android:id="@+id/tv_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:gravity="center"
-                android:text="其他比分"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -121,7 +121,7 @@
                     android:paddingEnd="24dp"
                     android:paddingBottom="12dp"
                     android:src="@drawable/ic_lock_odd"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </RelativeLayout>
 

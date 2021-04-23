@@ -123,7 +123,6 @@ class GameViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
-    private val _oddsListGameHallLiveResult = MutableLiveData<OddsListResult?>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
@@ -592,60 +591,14 @@ class GameViewModel(
         _outrightOddsListResult.postValue(Event(result))
     }
 
-    fun updateMatchBetList(
-        matchOdd: MatchOdd,
-        oddString: String,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
-    ) {
-        val isOutright = matchType == MatchType.OUTRIGHT
-        val result =
-            if (matchType == MatchType.IN_PLAY) _oddsListGameHallResult.value?.peekContent() else _oddsListResult.value?.peekContent()
-        val match =
-            result?.oddsListData?.leagueOdds?.find { leagueOdd ->
-                leagueOdd.matchOdds.contains(
-                    matchOdd
-                )
-            }?.matchOdds?.find {
-                it.odds[oddString]?.contains(odd) ?: false
-            }?.odds?.get(oddString)
-                ?.find { it == odd }
-        if (betInfoRepository._isParlayPage.value == true) {
-            val isBetMatchId =
-                betInfoRepository.betList.find { it.matchOdd.matchId == matchOdd.matchInfo?.id }
-            val isBetOddId = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
-            when {
-                isBetMatchId == null -> {
-                    match?.isSelected = true
-                    getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                        matchType = this@GameViewModel.matchType
-                    }))
-                }
-                isBetOddId != null -> {
-                    match?.isSelected = false
-                    odd.id?.let { removeBetInfoItem(it) }
-                }
-                else -> {
-                    return
-                }
-            }
+    fun updateMatchBetList(odd: org.cxct.sportlottery.network.odds.list.Odd) {
+        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+        if (betItem == null) {
+            getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
+                matchType = this@GameViewModel.matchType
+            }))
         } else {
-            val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
-            if (betItem == null) {
-                match?.isSelected = true
-                getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                    matchType = this@GameViewModel.matchType
-                }))
-            } else {
-                match?.isSelected = false
-                odd.id?.let { removeBetInfoItem(it) }
-            }
-        }
-
-        if (matchType == MatchType.IN_PLAY) {
-            _oddsListGameHallResult.value = Event(result)
-            _oddsListGameHallLiveResult.value = result
-        } else {
-            _oddsListResult.value = Event(result)
+            odd.id?.let { removeBetInfoItem(it) }
         }
     }
 
@@ -1010,7 +963,7 @@ class GameViewModel(
         else Timber.e("不執行 betInfo request")
     }
 
-    private fun removeOddByMsg(result: BaseResult){
+    private fun removeOddByMsg(result: BaseResult) {
         if (result.code == HttpError.BET_INFO_CLOSE.code) {
             val array = JsonMapUtil.toList(JSONArray(result.msg))
             array.forEach {
@@ -1031,7 +984,7 @@ class GameViewModel(
             }
             result?.success?.let {
                 if (it) {
-                    betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
+                    betInfoRepository.getCurrentBetInfoList()
                 } else {
                     removeOddByMsg(result)
                 }
@@ -1042,7 +995,7 @@ class GameViewModel(
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
 
-        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT) {
+        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
             return
         }
 

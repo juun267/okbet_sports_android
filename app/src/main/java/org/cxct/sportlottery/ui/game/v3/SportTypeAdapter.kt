@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sport_type.view.*
 import org.cxct.sportlottery.R
@@ -94,6 +95,15 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 SportType.VOLLEYBALL.code -> {
                     itemView.sport_type_img.setImageResource(R.drawable.selector_gametype_row_vb)
                 }
+            }
+
+            if (item.isSelected) {
+                itemView.sport_type_img.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        itemView.context,
+                        R.anim.rotate_sport
+                    )
+                )
             }
         }
 

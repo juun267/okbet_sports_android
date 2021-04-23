@@ -149,7 +149,11 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
 
             //過濾後冠軍資料
             showOutrightData.observe(this@ResultsSettlementActivity, Observer {
-                outrightResultDiffAdapter.submitList(it)
+                if (it.isEmpty()) {
+                    outrightResultDiffAdapter.submitList(listOf(OutrightResultData(OutrightType.NO_DATA)))
+                } else {
+                    outrightResultDiffAdapter.submitList(it)
+                }
             })
         }
     }

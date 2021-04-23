@@ -22,7 +22,7 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             OutrightType.OUTRIGHT.ordinal -> {
                 OutrightViewHolder.from(parent)
             }
-            else -> OutrightViewHolder.from(parent)
+            else -> NoDataViewHolder.from(parent)
         }
     }
 
@@ -111,6 +111,19 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
                 tv_content.text = outrightData?.playCateName
 
                 tv_winner.text = outrightData?.playName
+            }
+        }
+    }
+
+    //無資料
+    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(parent: ViewGroup): NoDataViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_game_no_record, parent, false)
+
+                return NoDataViewHolder(view)
             }
         }
     }
