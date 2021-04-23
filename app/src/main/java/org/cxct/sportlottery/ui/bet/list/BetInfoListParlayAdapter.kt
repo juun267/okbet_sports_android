@@ -98,8 +98,8 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 }
                 var win = it.toDouble() * getOdds(parlayOdd, oddsType)
 
-                if(oddsType == OddsType.EU){
-                    win -= quota
+                if (oddsType == OddsType.EU) {
+                    win -= quota * parlayOdd.num
                 }
 
                 winQuotaList[position] = win
