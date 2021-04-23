@@ -542,23 +542,24 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         val action = when (mNavController.currentDestination?.id) {
             R.id.gameV3Fragment -> {
                 GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.gameLeagueFragment -> {
                 GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailLiveFragment -> {
                 OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailFragment -> {
-                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
-                    sportType, matchId, "EU"
-                )
+                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(sportType, matchId)
             }
             else -> null
         }
@@ -572,22 +573,26 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         val action = when (mNavController.currentDestination?.id) {
             R.id.gameV3Fragment -> {
                 GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.gameLeagueFragment -> {
                 GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailFragment -> {
                 OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             R.id.oddsDetailLiveFragment -> {
                 OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentSelf(
-                    sportType, matchId, "EU"
+                    sportType,
+                    matchId
                 )
             }
             else -> null

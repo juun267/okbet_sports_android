@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -39,7 +40,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     var matchId: String? = null
     private var mSportCode: String? = null
-    private var oddsType: String? = null
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
@@ -51,7 +51,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         mSportCode = args.sportType.code
         matchId = args.matchId
-        oddsType = args.oddsType
     }
 
     override fun onCreateView(
@@ -124,7 +123,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply { 
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
             sportCode = mSportCode
         }
 
@@ -232,12 +231,14 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            if (it.size > 0) {
+            if (it.isNotEmpty()) {
                 oddsDetailListAdapter?.oddsDetailDataList?.clear()
                 oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
                 oddsDetailListAdapter?.notifyDataSetChanged()
 
                 dataBinding.tabCat.getTabAt(0)?.select()
+            } else {
+                navGameInPlay()
             }
         })
 
@@ -287,6 +288,13 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     fun back() {
         findNavController().navigateUp()
+    }
+
+    private fun navGameInPlay() {
+        val action =
+            OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY)
+
+        findNavController().navigate(action)
     }
 
     override fun getBetInfoList(odd: Odd) {
