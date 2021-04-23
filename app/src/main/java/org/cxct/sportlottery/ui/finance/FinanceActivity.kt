@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.activity_finance.*
 import kotlinx.android.synthetic.main.appbar_finance.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
@@ -20,6 +21,8 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_finance)
+
+        setupToolbarBack()
 
         viewModel.recordType.observe(this, Observer {
             setupToolbarTitle(it)
@@ -57,6 +60,13 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
     private fun setupToolbarTitle(title: String) {
         tv_toolbar_title.text = title
 
+    }
+
+    private fun setupToolbarBack() {
+        btn_toolbar_back.setOnClickListener {
+            if (financeFragment.childFragmentManager.backStackEntryCount > 0) navController.navigateUp()
+            else finish()
+        }
     }
 
     private fun navRechargeLogFragment(type: String) {
