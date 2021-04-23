@@ -47,7 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="21dp"
             android:gravity="center"
-            android:lineSpacingExtra="1.83dp"
+            android:lineSpacingMultiplier="1.3"
+
             android:maxLines="2"
             android:minHeight="44dp"
             android:text="@string/lottery_description"
