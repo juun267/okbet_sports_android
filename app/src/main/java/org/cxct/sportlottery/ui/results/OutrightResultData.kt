@@ -15,7 +15,7 @@ data class OutrightResultData(
     val outrightData: Result? = null,
 ) {
     var seasonShow: Boolean = false //聯賽過濾顯示, 顯示:true , 不顯示:false
-    var seasonExpanded: Boolean = false
+    var seasonExpanded: Boolean = true
 }
 
-enum class OutrightType { TITLE, OUTRIGHT }
+enum class OutrightType { TITLE, OUTRIGHT, NO_DATA }
