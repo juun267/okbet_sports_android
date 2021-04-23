@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -20,6 +19,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.FileUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class RegisterViewModel(
@@ -28,104 +28,75 @@ class RegisterViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-    val registerFormState: LiveData<RegisterFormState>
-        get() = _registerFormState
     val registerResult: LiveData<LoginResult>
         get() = _registerResult
+    val inviteCodeMsg: LiveData<String?>
+        get() = _inviteCodeMsg
+    val memberAccountMsg: LiveData<String?>
+        get() = _memberAccountMsg
+    val loginPasswordMsg: LiveData<String?>
+        get() = _loginPasswordMsg
+    val confirmPasswordMsg: LiveData<String?>
+        get() = _confirmPasswordMsg
+    val fullNameMsg: LiveData<String?>
+        get() = _fullNameMsg
+    val fundPwdMsg: LiveData<String?>
+        get() = _fundPwdMsg
+    val qqMsg: LiveData<String?>
+        get() = _qqMsg
+    val phoneMsg: LiveData<String?>
+        get() = _phoneMsg
+    val emailMsg: LiveData<String?>
+        get() = _emailMsg
+    val weChatMsg: LiveData<String?>
+        get() = _weChatMsg
+    val zaloMsg: LiveData<String?>
+        get() = _zaloMsg
+    val facebookMsg: LiveData<String?>
+        get() = _facebookMsg
+    val whatsAppMsg: LiveData<String?>
+        get() = _whatsAppMsg
+    val telegramMsg: LiveData<String?>
+        get() = _telegramMsg
+    val securityCodeMsg: LiveData<String?>
+        get() = _securityCodeMsg
+    val validCodeMsg: LiveData<String?>
+        get() = _validCodeMsg
+    val registerEnable: LiveData<Boolean>
+        get() = _registerEnable
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
     val smsResult: LiveData<SmsResult?>
         get() = _smsResult
-    val checkAccountResult: LiveData<CheckAccountResult?>
-        get() = _checkAccountResult
     val loginForGuestResult: LiveData<LoginResult>
         get() = _loginForGuestResult
 
-    private val _registerFormState = MutableLiveData<RegisterFormState>()
+    val agreementChecked: LiveData<Boolean?>
+        get() = _agreementChecked
+
     private val _registerResult = MutableLiveData<LoginResult>()
+    private val _inviteCodeMsg = MutableLiveData<String?>()
+    private val _memberAccountMsg = MutableLiveData<String?>()
+    private val _loginPasswordMsg = MutableLiveData<String?>()
+    private val _confirmPasswordMsg = MutableLiveData<String?>()
+    private val _fullNameMsg = MutableLiveData<String?>()
+    private val _fundPwdMsg = MutableLiveData<String?>()
+    private val _qqMsg = MutableLiveData<String?>()
+    private val _phoneMsg = MutableLiveData<String?>()
+    private val _emailMsg = MutableLiveData<String?>()
+    private val _weChatMsg = MutableLiveData<String?>()
+    private val _zaloMsg = MutableLiveData<String?>()
+    private val _facebookMsg = MutableLiveData<String?>()
+    private val _whatsAppMsg = MutableLiveData<String?>()
+    private val _telegramMsg = MutableLiveData<String?>()
+    private val _securityCodeMsg = MutableLiveData<String?>()
+    private val _validCodeMsg = MutableLiveData<String?>()
+    private val _registerEnable = MutableLiveData<Boolean>()
+
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _smsResult = MutableLiveData<SmsResult?>()
-    private val _checkAccountResult = MutableLiveData<CheckAccountResult?>()
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
-
-    fun checkInputData(
-        context: Context,
-        inviteCode: String?,
-        memberAccount: String?,
-        isExistAccount: Boolean = false, //判斷是帳號是否註冊過
-        loginPassword: String?,
-        confirmPassword: String?,
-        fullName: String?,
-        fundPwd: String?,
-        qq: String?,
-        phone: String?,
-        email: String?,
-        weChat: String?,
-        zalo: String?,
-        facebook: String?,
-        whatsApp: String?,
-        telegram: String?,
-        validCode: String?,
-        securityCode: String?,
-        checkAgreement: Boolean
-    ): Boolean {
-        val inviteCodeError: String? = checkInviteCode(context, inviteCode)
-        val memberAccountError = checkMemberAccount(context, memberAccount, isExistAccount)
-        val loginPasswordError = checkLoginPassword(context, loginPassword)
-        val confirmPasswordError = checkConfirmPassword(context, loginPassword, confirmPassword)
-        val fullNameError = checkFullName(context, fullName)
-        val fundPwdError = checkFundPwd(context, fundPwd)
-        val qqError = checkQQ(context, qq)
-        val phoneError = checkPhone(context, phone)
-        val emailError = checkEmail(context, email)
-        val weChatError = checkWeChat(context, weChat)
-        val zaloError = checkZalo(context, zalo)
-        val facebookError = checkFacebook(context, facebook)
-        val whatsAppError = checkWhatsApp(context, whatsApp)
-        val telegramError = checkTelegram(context, telegram)
-        val validCodeError = checkValidCode(context, validCode)
-        val securityCodeError = checkSecurityCode(context, securityCode)
-        val isDataValid = (sConfigData?.enableInviteCode != FLAG_OPEN || inviteCodeError == null) &&
-                memberAccountError == null &&
-                loginPasswordError == null &&
-                confirmPasswordError == null &&
-                (sConfigData?.enableFullName != FLAG_OPEN || fullNameError == null) &&
-                (sConfigData?.enableFundPwd != FLAG_OPEN || fundPwdError == null) &&
-                (sConfigData?.enableQQ != FLAG_OPEN || qqError == null) &&
-                (sConfigData?.enablePhone != FLAG_OPEN || phoneError == null) &&
-                (sConfigData?.enableEmail != FLAG_OPEN || emailError == null) &&
-                (sConfigData?.enableWechat != FLAG_OPEN || weChatError == null) &&
-                (sConfigData?.enableZalo != FLAG_OPEN || zaloError == null) &&
-                (sConfigData?.enableFacebook != FLAG_OPEN || facebookError == null) &&
-                (sConfigData?.enableWhatsApp != FLAG_OPEN || whatsAppError == null) &&
-                (sConfigData?.enableTelegram != FLAG_OPEN || telegramError == null) &&
-                (sConfigData?.enableSmsValidCode != FLAG_OPEN || securityCodeError == null) &&
-                (sConfigData?.enableRegValidCode != FLAG_OPEN || validCodeError == null) &&
-                checkAgreement
-
-        _registerFormState.value = RegisterFormState(
-            inviteCodeError = inviteCodeError,
-            memberAccountError = memberAccountError,
-            loginPasswordError = loginPasswordError,
-            confirmPasswordError = confirmPasswordError,
-            fullNameError = fullNameError,
-            fundPwdError = fundPwdError,
-            qqError = qqError,
-            phoneError = phoneError,
-            emailError = emailError,
-            weChatError = weChatError,
-            zaloError = zaloError,
-            facebookError = facebookError,
-            whatsAppError = whatsAppError,
-            telegramError = telegramError,
-            securityCodeError = securityCodeError,
-            validCodeError = validCodeError,
-            checkAgreement = checkAgreement,
-            isDataValid = isDataValid
-        )
-
-        return isDataValid
-    }
+    private val _agreementChecked = MutableLiveData<Boolean?>()
 
     fun getAgreementContent(context: Context): Spanned {
         //TODO 添加多國語系 開戶協議 檔案路徑 mapping
@@ -141,143 +112,163 @@ class RegisterViewModel(
         return HtmlCompat.fromHtml(htmlString, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
-    private fun checkInviteCode(context: Context, inviteCode: String?): String? {
-        return when {
+    /**
+     * 檢查輸入欄位
+     */
+
+    fun checkInviteCode(inviteCode: String?) {
+        _inviteCodeMsg.value = when {
             inviteCode.isNullOrBlank() -> {
                 if (sConfigData?.enableInviteCode != FLAG_OPEN)
                     null
                 else
-                    context.getString(R.string.error_input_empty)
+                    androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyInviteCode(inviteCode) -> context.getString(R.string.error_recommend_code)
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> androidContext.getString(R.string.error_recommend_code)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkMemberAccount(context: Context, account: String?, isExistAccount: Boolean): String? {
-        return when {
-            account.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            isExistAccount -> context.getString(R.string.error_register_id_exist)
+    private fun checkMemberAccount(account: String?, isExistAccount: Boolean) {
+        _memberAccountMsg.value = when {
+            account.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            isExistAccount -> androidContext.getString(R.string.error_register_id_exist)
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
-                context.getString(R.string.error_member_account)
+                androidContext.getString(R.string.error_member_account)
             }
-            !VerifyConstUtil.verifyAccount(account) -> context.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyAccount(account) -> androidContext.getString(R.string.error_member_account)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkLoginPassword(context: Context, password: String?): String? {
-        return when {
-            password.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> context.getString(R.string.error_password_format)
-            password.length !in 6..20 -> context.getString(R.string.error_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> context.getString(R.string.error_incompatible_format)
+    fun checkLoginPassword(password: String?) {
+        _loginPasswordMsg.value = when {
+            password.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwdFormat(password) -> androidContext.getString(R.string.error_register_password)
+            password.length !in 6..20 -> androidContext.getString(R.string.error_register_password)
+            !VerifyConstUtil.verifyPwd(password) -> androidContext.getString(R.string.error_register_password)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkConfirmPassword(context: Context, password: String?, confirmPassword: String?): String? {
-        return when {
-            password.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            password != confirmPassword -> context.getString(R.string.error_confirm_password)
+    fun checkConfirmPassword(password: String?, confirmPassword: String?) {
+        _confirmPasswordMsg.value = when {
+            password.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            password != confirmPassword -> androidContext.getString(R.string.error_confirm_password)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkFullName(context: Context, fullName: String?): String? {
-        return when {
-            fullName.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName ?: "") -> context.getString(R.string.error_incompatible_format)
+    fun checkFullName(fullName: String?) {
+        _fullNameMsg.value = when {
+            fullName.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_incompatible_format)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkFundPwd(context: Context, fundPwd: String?): String? {
-        return when {
-            fundPwd.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPayPwd(fundPwd) -> context.getString(R.string.error_withdrawal_pwd)
+    fun checkFundPwd(fundPwd: String?) {
+        _fundPwdMsg.value = when {
+            fundPwd.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPayPwd(fundPwd) -> androidContext.getString(R.string.error_withdrawal_pwd)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkQQ(context: Context, qq: String?): String? {
-        return when {
-            qq.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyQQ(qq) -> context.getString(R.string.error_qq_number)
+    fun checkQQ(qq: String?) {
+        _qqMsg.value = when {
+            qq.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyQQ(qq) -> androidContext.getString(R.string.error_qq_number)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkPhone(context: Context, phone: String?): String? {
-        return when {
-            phone.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPhone(phone) -> context.getString(R.string.error_phone_number)
+    fun checkPhone(phone: String?) {
+        _phoneMsg.value = when {
+            phone.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPhone(phone) -> androidContext.getString(R.string.error_phone_number)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkEmail(context: Context, email: String?): String? {
-        return when {
-            email.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyMail(email) -> context.getString(R.string.error_e_mail)
+    fun checkEmail(email: String?) {
+        _emailMsg.value = when {
+            email.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyMail(email) -> androidContext.getString(R.string.error_e_mail)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkWeChat(context: Context, weChat: String?): String? {
-        return when {
-            weChat.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyWeChat(weChat) -> context.getString(R.string.error_we_chat_number)
+    fun checkWeChat(weChat: String?) {
+        _weChatMsg.value = when {
+            weChat.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyWeChat(weChat) -> androidContext.getString(R.string.error_we_chat_number)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkZalo(context: Context, zalo: String?): String? {
-        return when {
-            zalo.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyZalo(zalo) -> context.getString(R.string.error_zalo)
+    fun checkZalo(zalo: String?) {
+        _zaloMsg.value = when {
+            zalo.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyZalo(zalo) -> androidContext.getString(R.string.error_zalo)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkFacebook(context: Context, facebook: String?): String? {
-        return when {
-            facebook.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFacebook(facebook) -> context.getString(R.string.error_facebook)
+    fun checkFacebook(facebook: String?) {
+        _facebookMsg.value = when {
+            facebook.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyFacebook(facebook) -> androidContext.getString(R.string.error_facebook)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkWhatsApp(context: Context, whatsApp: String?): String? {
-        return when {
-            whatsApp.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyWhatsApp(whatsApp) -> context.getString(R.string.error_whats_app)
+    fun checkWhatsApp(whatsApp: String?) {
+        _whatsAppMsg.value = when {
+            whatsApp.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyWhatsApp(whatsApp) -> androidContext.getString(R.string.error_whats_app)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkTelegram(context: Context, telegram: String?): String? {
-        return when {
-            telegram.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyTelegram(telegram) -> context.getString(R.string.error_telegram)
+    fun checkTelegram(telegram: String?) {
+        _telegramMsg.value = when {
+            telegram.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyTelegram(telegram) -> androidContext.getString(R.string.error_telegram)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkSecurityCode(context: Context, securityCode: String?): String? {
-        return when {
-            securityCode.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifySecurityCode(securityCode) -> context.getString(R.string.error_verification_code_by_sms)
+    fun checkSecurityCode(securityCode: String?) {
+        _securityCodeMsg.value = when {
+            securityCode.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifySecurityCode(securityCode) -> androidContext.getString(R.string.error_verification_code_by_sms)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
-    private fun checkValidCode(context: Context, validCode: String?): String? {
-        return when {
-            validCode.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyValidCode(validCode) -> context.getString(R.string.error_verification_code)
+    fun checkValidCode(validCode: String?) {
+        _validCodeMsg.value = when {
+            validCode.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> androidContext.getString(R.string.error_verification_code)
             else -> null
         }
+        focusChangeCheckAllInputComplete()
     }
 
     fun sendSms(phone: String) {
@@ -291,13 +282,121 @@ class RegisterViewModel(
         }
     }
 
-    fun getValidCode(identity: String?) {
+    fun getValidCode() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
+                OneBoSportApi.indexService.getValidCode(ValidCodeRequest(validCodeResult.value?.validCodeData?.identity))
             }
             _validCodeResult.postValue(result)
         }
+    }
+
+    fun checkAgreement(checked: Boolean?) {
+        if (checked == false) {
+            _agreementChecked.value = false
+        } else {
+            _agreementChecked.value = null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    //檢查是否所有欄位都填寫完畢
+    private fun checkAllInput(
+        inviteCode: String,
+        userName: String,
+        loginPassword: String,
+        confirmPassword: String,
+        fullName: String,
+        fundPwd: String,
+        qq: String,
+        phone: String,
+        email: String,
+        weChat: String,
+        zalo: String,
+        facebook: String,
+        whatsApp: String,
+        telegram: String,
+        smsCode: String,
+        validCode: String,
+        agreementChecked: Boolean,
+    ) {
+        if (sConfigData?.enableInviteCode == FLAG_OPEN)
+            checkInviteCode(inviteCode)
+
+        checkMemberAccount(userName, false)
+        checkLoginPassword(loginPassword)
+        checkConfirmPassword(loginPassword, confirmPassword)
+
+        if (sConfigData?.enableFullName == FLAG_OPEN)
+            checkFullName(fullName)
+        if (sConfigData?.enableFundPwd == FLAG_OPEN)
+            checkFundPwd(fundPwd)
+        if (sConfigData?.enableQQ == FLAG_OPEN)
+            checkQQ(qq)
+        if (sConfigData?.enablePhone == FLAG_OPEN)
+            checkPhone(phone)
+        if (sConfigData?.enableEmail == FLAG_OPEN)
+            checkEmail(email)
+        if (sConfigData?.enableWechat == FLAG_OPEN)
+            checkWeChat(weChat)
+        if (sConfigData?.enableZalo == FLAG_OPEN)
+            checkZalo(zalo)
+        if (sConfigData?.enableFacebook == FLAG_OPEN)
+            checkFacebook(facebook)
+        if (sConfigData?.enableWhatsApp == FLAG_OPEN)
+            checkWhatsApp(whatsApp)
+        if (sConfigData?.enableTelegram == FLAG_OPEN)
+            checkTelegram(telegram)
+        if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
+            checkSecurityCode(smsCode)
+        if (sConfigData?.enableRegValidCode == FLAG_OPEN)
+            checkValidCode(validCode)
+
+        checkAgreement(agreementChecked)
+    }
+
+    private fun focusChangeCheckAllInputComplete() {
+        _registerEnable.value = checkAllInputComplete()
+    }
+
+
+    private fun checkAllInputComplete(): Boolean {
+        if (sConfigData?.enableInviteCode == FLAG_OPEN && inviteCodeMsg.value != null)
+            return false
+        if (memberAccountMsg.value != null)
+            return false
+        if (loginPasswordMsg.value != null)
+            return false
+        if (confirmPasswordMsg.value != null)
+            return false
+        if (sConfigData?.enableFullName == FLAG_OPEN && fullNameMsg.value != null)
+            return false
+        if (sConfigData?.enableFundPwd == FLAG_OPEN && fundPwdMsg.value != null)
+            return false
+        if (sConfigData?.enableQQ == FLAG_OPEN && qqMsg.value != null)
+            return false
+        if (sConfigData?.enablePhone == FLAG_OPEN && phoneMsg.value != null)
+            return false
+        if (sConfigData?.enableEmail == FLAG_OPEN && emailMsg.value != null)
+            return false
+        if (sConfigData?.enableWechat == FLAG_OPEN && weChatMsg.value != null)
+            return false
+        if (sConfigData?.enableZalo == FLAG_OPEN && zaloMsg.value != null)
+            return false
+        if (sConfigData?.enableFacebook == FLAG_OPEN && facebookMsg.value != null)
+            return false
+        if (sConfigData?.enableWhatsApp == FLAG_OPEN && whatsAppMsg.value != null)
+            return false
+        if (sConfigData?.enableTelegram == FLAG_OPEN && telegramMsg.value != null)
+            return false
+        if (sConfigData?.enableSmsValidCode == FLAG_OPEN && securityCodeMsg.value != null)
+            return false
+        if (sConfigData?.enableRegValidCode == FLAG_OPEN && validCodeMsg.value != null)
+            return false
+        if (agreementChecked.value == false)
+            return false
+
+        return true
     }
 
     fun loginAsGuest() {
@@ -311,15 +410,114 @@ class RegisterViewModel(
     }
 
     fun checkAccountExist(account: String) {
+        _memberAccountMsg.value = androidContext.getString(R.string.desc_register_checking_account)
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.checkAccountExist(account)
             }
-            _checkAccountResult.postValue(result)
+            checkMemberAccount(account, result?.isExist ?: false)
         }
     }
 
-    fun register(registerRequest: RegisterRequest) {
+    fun registerSubmit(
+        inviteCode: String,
+        userName: String,
+        loginPassword: String,
+        confirmPassword: String,
+        fullName: String,
+        fundPwd: String,
+        qq: String,
+        phone: String,
+        email: String,
+        weChat: String,
+        zalo: String,
+        facebook: String,
+        whatsApp: String,
+        telegram: String,
+        smsCode: String,
+        validCode: String,
+        agreementChecked: Boolean,
+        deviceSn: String
+    ) {
+        checkAllInput(
+            inviteCode,
+            userName,
+            loginPassword,
+            confirmPassword,
+            fullName,
+            fundPwd,
+            qq,
+            phone,
+            email,
+            weChat,
+            zalo,
+            facebook,
+            whatsApp,
+            telegram,
+            smsCode,
+            validCode,
+            agreementChecked
+        )
+        if (checkAllInputComplete()) {
+            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn))
+        }
+    }
+
+    private fun createRegisterRequest(
+        inviteCode: String,
+        userName: String,
+        loginPassword: String,
+        fullName: String,
+        fundPwd: String,
+        qq: String,
+        phone: String,
+        email: String,
+        weChat: String,
+        zalo: String,
+        facebook: String,
+        whatsApp: String,
+        telegram: String,
+        smsCode: String,
+        validCode: String,
+        deviceSn: String
+    ): RegisterRequest {
+        return RegisterRequest(
+            userName = userName,
+            password = MD5Util.MD5Encode(loginPassword),
+            loginSrc = LOGIN_SRC,
+            deviceSn = deviceSn,
+            inviteCode = inviteCode
+        ).apply {
+            if (sConfigData?.enableFullName == FLAG_OPEN)
+                this.fullName = fullName
+            if (sConfigData?.enableFundPwd == FLAG_OPEN)
+                this.fundPwd = MD5Util.MD5Encode(fundPwd)
+            if (sConfigData?.enableQQ == FLAG_OPEN)
+                this.qq = qq
+            if (sConfigData?.enablePhone == FLAG_OPEN)
+                this.phone = phone
+            if (sConfigData?.enableEmail == FLAG_OPEN)
+                this.email = email
+            if (sConfigData?.enableWechat == FLAG_OPEN)
+                this.wechat = weChat
+            if (sConfigData?.enableZalo == FLAG_OPEN)
+                this.zalo = zalo
+            if (sConfigData?.enableFacebook == FLAG_OPEN)
+                this.facebook = facebook
+            if (sConfigData?.enableWhatsApp == FLAG_OPEN)
+                this.whatsapp = whatsApp
+            if (sConfigData?.enableTelegram == FLAG_OPEN)
+                this.telegram = telegram
+            if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
+                this.securityCode = smsCode
+            if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
+                this.validCodeIdentity = validCodeResult.value?.validCodeData?.identity
+                this.validCode = validCode
+            }
+        }
+    }
+
+    private fun register(registerRequest: RegisterRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 loginRepository.register(registerRequest)

@@ -388,7 +388,7 @@ class WithdrawViewModel(
         _createNameErrorMsg.value = when {
             createName.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyCreateName(createName) -> {
-                androidContext.getString(R.string.error_incompatible_format)
+                androidContext.getString(R.string.error_create_name)
             }
             else -> ""
         }

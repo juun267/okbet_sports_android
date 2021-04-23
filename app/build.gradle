@@ -216,6 +216,9 @@ dependencies {
 
     //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'
+
+    //DateTimePicker
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
 }
 
 multiLanguages {

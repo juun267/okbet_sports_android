@@ -136,8 +136,8 @@
 
     <org.cxct.sportlottery.ui.game.v3.OddButton
         android:id="@+id/match_odd_column2_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toEndOf="@id/match_odd_block"
@@ -145,8 +145,8 @@
 
     <org.cxct.sportlottery.ui.game.v3.OddButton
         android:id="@+id/match_odd_column1_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toStartOf="@id/match_odd_column2_home"
@@ -183,8 +183,8 @@
 
     <org.cxct.sportlottery.ui.game.v3.OddButton
         android:id="@+id/match_odd_column2_away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toEndOf="@id/match_odd_block"
@@ -192,8 +192,8 @@
 
     <org.cxct.sportlottery.ui.game.v3.OddButton
         android:id="@+id/match_odd_column1_away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toStartOf="@id/match_odd_column2_away"
