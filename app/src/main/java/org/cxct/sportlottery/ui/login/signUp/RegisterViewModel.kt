@@ -137,7 +137,7 @@ class RegisterViewModel(
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
                 androidContext.getString(R.string.error_member_account)
             }
-            !VerifyConstUtil.verifyAccount(account) -> androidContext.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyAccount(account) -> androidContext.getString(R.string.error_member_account)
             else -> null
         }
         focusChangeCheckAllInputComplete()
@@ -146,9 +146,9 @@ class RegisterViewModel(
     fun checkLoginPassword(password: String?) {
         _loginPasswordMsg.value = when {
             password.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> androidContext.getString(R.string.error_password_format)
+            !VerifyConstUtil.verifyPwdFormat(password) -> androidContext.getString(R.string.error_register_password)
             password.length !in 6..20 -> androidContext.getString(R.string.error_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> androidContext.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyPwd(password) -> androidContext.getString(R.string.error_register_password)
             else -> null
         }
         focusChangeCheckAllInputComplete()
