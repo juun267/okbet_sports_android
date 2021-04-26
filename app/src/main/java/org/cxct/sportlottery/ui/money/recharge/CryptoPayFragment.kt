@@ -220,9 +220,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun initTimePicker() {
         val yesterday = Calendar.getInstance()
-        yesterday.add(Calendar.DAY_OF_MONTH, -7)
+        yesterday.add(Calendar.DAY_OF_MONTH, -30)
         val tomorrow = Calendar.getInstance()
-        tomorrow.add(Calendar.DAY_OF_MONTH, +7)
+        tomorrow.add(Calendar.DAY_OF_MONTH, +30)
         dateTimePicker = TimePickerBuilder(activity,
             OnTimeSelectListener { date, _ ->
                 try {
