@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="@{gameViewModel.oddsDetailResult.oddsDetailData.league.name}"
+                    android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.league.name}"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize15sp"
                     tools:text="英格兰超级联赛" />

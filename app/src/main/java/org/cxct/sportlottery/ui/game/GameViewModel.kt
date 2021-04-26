@@ -192,8 +192,8 @@ class GameViewModel(
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
 
-    private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
-    val oddsDetailResult: LiveData<OddsDetailResult?>
+    private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>>()
+    val oddsDetailResult: LiveData<Event<OddsDetailResult?>>
         get() = _oddsDetailResult
 
     private val _playCateListResult = MutableLiveData<Event<PlayCateListResult?>>()
@@ -1121,7 +1121,7 @@ class GameViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
             }
-            _oddsDetailResult.postValue(result)
+            _oddsDetailResult.postValue(Event(result))
             result?.success?.let {
                 val list: ArrayList<OddsDetailListData> = ArrayList()
                 if (it) {
@@ -1170,7 +1170,6 @@ class GameViewModel(
     }
 
     fun removeOddsDetailPageValue() {
-        _oddsDetailResult.postValue(null)
         _oddsDetailList.postValue(ArrayList())
     }
 
