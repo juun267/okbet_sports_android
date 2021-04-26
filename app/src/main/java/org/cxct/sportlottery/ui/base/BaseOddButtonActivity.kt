@@ -23,6 +23,7 @@ const val SP_NAME = "button_position"
 const val POSITION_X = "position_x"
 const val POSITION_Y = "position_y"
 const val FIRST_BET = "first_bet"
+const val FIRST_BET_FOR_PARLAY = "first_bet_for_parlay"
 
 abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T>) :
     BaseSocketActivity<T>(clazz) {
@@ -58,8 +59,18 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
             ?.apply()
     }
 
+    private fun saveFirstBetFlagForParlay(boolean: Boolean) {
+        mSharedPreferences?.edit()
+            ?.putBoolean(FIRST_BET_FOR_PARLAY, boolean)
+            ?.apply()
+    }
+
     private fun getFirstBetFlag(): Boolean? {
         return mSharedPreferences?.getBoolean(FIRST_BET, true)
+    }
+
+    private fun getFirstBetFlagForParlay(): Boolean? {
+        return mSharedPreferences?.getBoolean(FIRST_BET_FOR_PARLAY, true)
     }
 
     private var oddListDialog: DialogFragment? = null
@@ -83,6 +94,7 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         viewModel.betInfoRepository.betInfoList.observe(this, {
 
             if (it.size == 0) saveFirstBetFlag(true)
+            if (it.size == 0 || it.size == 1) saveFirstBetFlagForParlay(true)
 
             when {
                 it.isNullOrEmpty() -> {
@@ -90,21 +102,29 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                 }
                 oddListDialog is BetInfoListParlayDialog -> {
                     updateOddButton(true, 1)
+                    if (getFirstBetFlagForParlay() == true && it.size == 2) {
+                        saveFirstBetFlagForParlay(false)
+                        showBetListDialog()
+                    }
                 }
                 oddListDialog is BetInfoListDialog -> {
                     updateOddButton(true, it.size)
                     if (getFirstBetFlag() == true && it.size == 1) {
                         saveFirstBetFlag(false)
-                        if (oddListDialog?.isAdded == false) {
-                            oddListDialog?.show(
-                                supportFragmentManager,
-                                BaseOddButtonActivity::class.java.simpleName
-                            )
-                        }
+                        showBetListDialog()
                     }
                 }
             }
         })
+    }
+
+    private fun showBetListDialog() {
+        if (oddListDialog?.isAdded == false) {
+            oddListDialog?.show(
+                supportFragmentManager,
+                BaseOddButtonActivity::class.java.simpleName
+            )
+        }
     }
 
     private fun updateOddButton(visible: Boolean, count: Int?) {
@@ -156,10 +176,10 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         contentView.addView(floatButtonView)
     }
 
-    private fun checkVisibleView(){
-        floatButtonView?.visibility = if(javaClass.simpleName == GameActivity::class.java.simpleName){
+    private fun checkVisibleView() {
+        floatButtonView?.visibility = if (javaClass.simpleName == GameActivity::class.java.simpleName) {
             View.VISIBLE
-        }else{
+        } else {
             View.GONE
         }
     }
