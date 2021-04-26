@@ -5,14 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
-    android:divider="@drawable/divider_color_white6"
     android:orientation="vertical"
     android:showDividers="middle|end">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divider_color_white6"
         android:orientation="horizontal"
         android:showDividers="middle">
 
@@ -28,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,13 +52,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_home_vs"
                 app:layout_constraintTop_toTopOf="@id/tv_home_name"
                 tools:text="赫尔辛格" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite6" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -75,7 +78,7 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="1-0" />
 
@@ -87,7 +90,7 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
@@ -99,7 +102,7 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
 
@@ -111,16 +114,20 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="3-0" />
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorWhite6" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divider_color_white6"
         android:orientation="horizontal"
         android:showDividers="middle">
 
@@ -154,6 +161,11 @@
                 tools:text="15/12 01:00" />
         </LinearLayout>
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite6" />
+
         <TextView
             android:id="@+id/empty"
             android:layout_width="0dp"
@@ -163,4 +175,11 @@
             app:layout_constraintStart_toEndOf="@+id/line2"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorWhite6" />
+
 </LinearLayout>

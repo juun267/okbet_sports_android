@@ -69,39 +69,50 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             is MatchViewHolder -> {
                 holder.apply {
                     bind(gameType, rvDataList, matchItemClickListener)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is FtDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData?.matchStatusList)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is BkDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is TnDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is BmDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is VbDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is DetailItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchDetailData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
         }
+    }
+
+    private fun setupBottomLine(position: Int, bottomLine: View) {
+        bottomLine.visibility = if (position + 1 <= itemCount && getItemViewType(position + 1) == ListType.TITLE.ordinal) View.GONE else View.VISIBLE
     }
 
     class MatchTitleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -174,6 +185,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 return MatchViewHolder(view)
             }
         }
+
+        val bottomLine = itemView.findViewById<View>(R.id.bottom_line)
 
         fun bind(gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
             setupView(itemView, item)
@@ -285,6 +298,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
+        val bottomLine = itemView.findViewById<View>(R.id.bottom_line)
+
         fun bind(data: List<MatchStatus>?) {
             setupFtDetailFirstItem(data)
         }
@@ -331,6 +346,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 return BkDetailFirstItemViewHolder(view)
             }
         }
+
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupBkDetailFirstItem(detailData)
@@ -395,6 +412,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 return TnDetailFirstItemViewHolder(view)
             }
         }
+
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupTnDetailFirstItem(detailData)
@@ -475,6 +494,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+
         fun bind(detailData: Match?) {
             setupBmDetailFirstItem(detailData)
         }
@@ -554,6 +575,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+
         fun bind(detailData: Match?) {
             setupBmDetailFirstItem(detailData)
         }
@@ -631,6 +654,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 return DetailItemViewHolder(view)
             }
         }
+
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
 
         fun bind(detailData: MatchResultPlayList?) {
             setupDetailItem(detailData)
