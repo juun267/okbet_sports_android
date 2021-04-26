@@ -268,13 +268,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getSportMenu()
+        viewModel.getMatchTypeList(args.matchType, true)
         loading()
     }
 
     private fun initObserve() {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {
+            it.peekContent()?.let {
                 when (args.matchType) {
                     MatchType.IN_PLAY -> {
                         updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
@@ -300,8 +300,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
                     }
                 }
-
-                viewModel.getGameHallList(args.matchType, true)
             }
         })
 
@@ -332,9 +330,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
-            hideLoading()
-
             it.getContentIfNotHandled()?.let { oddsListResult ->
+                hideLoading()
+
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
@@ -370,10 +368,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, Observer {
-            hideLoading()
-            clearSearchView()
-
             it.getContentIfNotHandled()?.let { leagueListResult ->
+                hideLoading()
+                clearSearchView()
+
                 if (leagueListResult.success) {
                     val rows = leagueListResult.rows ?: listOf()
 
@@ -399,10 +397,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, Observer {
-            hideLoading()
-            clearSearchView()
-
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
+                hideLoading()
+                clearSearchView()
+
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
 
@@ -460,7 +458,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {
-            hideLoading()
+            if (it) {
+                hideLoading()
+            }
 
             game_no_record.apply {
                 setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))

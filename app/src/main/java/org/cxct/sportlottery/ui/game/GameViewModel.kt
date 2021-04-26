@@ -342,6 +342,51 @@ class GameViewModel(
         }
     }
 
+    fun getMatchTypeList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
+        val now = TimeUtil.getNowTimeStamp()
+        val todayStart = TimeUtil.getTodayStartTimeStamp()
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                sportMenuRepository.getSportMenu(
+                    now.toString(),
+                    todayStart.toString()
+                )
+            }
+
+            val asStartCount = result?.sportMenuData?.atStart?.num ?: 0
+            _asStartCount.postValue(asStartCount)
+            _allFootballCount.postValue(getParlayCount(SportType.FOOTBALL, result))
+            _allBasketballCount.postValue(getParlayCount(SportType.BASKETBALL, result))
+            _allTennisCount.postValue(getParlayCount(SportType.TENNIS, result))
+            _allBadmintonCount.postValue(getParlayCount(SportType.BADMINTON, result))
+            _allVolleyballCount.postValue(getParlayCount(SportType.VOLLEYBALL, result))
+
+            result?.let {
+                if (it.sportMenuData != null)
+                    initSportMenuSelectedState(it.sportMenuData)
+                it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.today?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.early?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.parlay?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
+                    item.sortNum
+                }
+                _sportMenuResult.value = Event(it)
+
+                getGameHallList(matchType, isReloadDate, date)
+            }
+        }
+    }
+
     fun getGameHallList(matchType: MatchType, sportCode: String?, isLeftMenu: Boolean = false) {
         when (matchType) {
             MatchType.IN_PLAY -> {
