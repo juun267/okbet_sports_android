@@ -200,8 +200,8 @@ class GameViewModel(
     val playCateListResult: LiveData<Event<PlayCateListResult?>>
         get() = _playCateListResult
 
-    private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
-    val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
+    private val _oddsDetailList = MutableLiveData<Event<ArrayList<OddsDetailListData>>>()
+    val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
@@ -1163,19 +1163,9 @@ class GameViewModel(
                         )
                     }
 
-                    _oddsDetailList.postValue(list)
+                    _oddsDetailList.postValue(Event(list))
                 }
             }
-        }
-    }
-
-    fun removeOddsDetailPageValue() {
-        _oddsDetailList.postValue(ArrayList())
-    }
-
-    fun checkInBetInfo(matchId: String): Boolean {
-        return betInfoRepository.betList.any {
-            it.matchOdd.matchId == matchId
         }
     }
 

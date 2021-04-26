@@ -221,10 +221,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            if (it.size > 0) {
-                oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-                oddsDetailListAdapter?.notifyDataSetChanged()
+            it.getContentIfNotHandled()?.let {
+                if (it.size > 0) {
+                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
+                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
+                    oddsDetailListAdapter?.notifyDataSetChanged()
+                }
             }
         })
 

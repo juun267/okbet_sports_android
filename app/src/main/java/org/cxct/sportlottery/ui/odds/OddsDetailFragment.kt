@@ -235,14 +235,16 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            if (it.isNotEmpty()) {
-                oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-                oddsDetailListAdapter?.notifyDataSetChanged()
+            it.getContentIfNotHandled()?.let {
+                if (it.isNotEmpty()) {
+                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
+                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
+                    oddsDetailListAdapter?.notifyDataSetChanged()
 
-                dataBinding.tabCat.getTabAt(0)?.select()
-            } else {
-                navGameInPlay()
+                    dataBinding.tabCat.getTabAt(0)?.select()
+                } else {
+                    navGameInPlay()
+                }
             }
         })
 
