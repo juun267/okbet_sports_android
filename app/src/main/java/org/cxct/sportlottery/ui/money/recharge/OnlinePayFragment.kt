@@ -300,19 +300,19 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         val title = mMoneyPayWay?.title
 
         if (rechCfgsList.size > 1)
-            rechCfgsList.forEach { _ ->
+            rechCfgsList.forEach { it ->
                 val selectBank =
                     CustomImageAdapter.SelectBank(
-                        title + count++,
+                        viewModel.getOnlinePayTypeName(it.onlineType) + count++,
                         typeIcon
                     )
                 payRoadSpannerList.add(selectBank)
             }
         else
-            rechCfgsList.forEach { _ ->
+            rechCfgsList.forEach { it ->
                 val selectBank =
                     CustomImageAdapter.SelectBank(
-                        title + count++,
+                        viewModel.getOnlinePayTypeName(it.onlineType) + count,
                         typeIcon
                     )
                 payRoadSpannerList.add(selectBank)

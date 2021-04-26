@@ -519,12 +519,23 @@ class MoneyRechViewModel(
         }
     }
 
-    //充值帳戶選單名稱
+    //在線充值帳戶選單名稱
+    fun getOnlinePayTypeName(onlineType: Int?): String {
+        return when (onlineType) {//在线充值类型：1-网银在线充值、2-支付宝在线充值、3-微信在线充值、4-qq在线充值、5-出款、6、信用卡在线充值、7-百度钱包、8-京东钱包
+            1 -> androidContext.resources.getString(R.string.online_bank)
+            2 -> androidContext.resources.getString(R.string.online_alipay)
+            3 -> androidContext.resources.getString(R.string.online_weixin)
+            4 -> androidContext.resources.getString(R.string.online_qq)
+            6 -> androidContext.resources.getString(R.string.online_credit_card)
+            else -> ""
+        }
+    }
+    //轉帳充值帳戶選單名稱
     fun getPayTypeName(rechType: String?): String {
         return when (rechType) {
-            "alipay" -> androidContext.resources.getString(R.string.online_alipay)
-            "weixin" -> androidContext.resources.getString(R.string.online_weixin)
-            "cft" -> androidContext.resources.getString(R.string.online_cft)
+            "alipay" -> androidContext.resources.getString(R.string.title_alipay)
+            "weixin" -> androidContext.resources.getString(R.string.title_weixin)
+            "cft" -> androidContext.resources.getString(R.string.title_cft)
             else -> ""
         }
     }
