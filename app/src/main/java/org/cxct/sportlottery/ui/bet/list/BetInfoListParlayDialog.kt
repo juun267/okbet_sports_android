@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -188,6 +189,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 }
             }
             matchOddAdapter.matchOddList = it
+
+            changeBetButtonClickable(!checkGameType())
+
         })
 
         viewModel.parlayList.observe(this.viewLifecycleOwner, {
@@ -355,9 +359,15 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     override fun sendOutStatus(parlayOddList: MutableList<ParlayOdd>) {
-        changeBetButtonClickable(parlayOddList.find {
+
+
+        changeBetButtonClickable(if (checkGameType()) false else parlayOddList.find {
             !it.sendOutStatus
         } == null)
+
+//        changeBetButtonClickable(parlayOddList.find {
+//            !it.sendOutStatus
+//        } == null)
     }
 
     override fun onShowKeyboard(editText: EditText) {
@@ -376,6 +386,13 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 true
             }
+        }
+    }
+
+
+    private fun checkGameType(): Boolean {
+        return matchOddAdapter.matchOddList.any {
+            it.gameType != matchOddAdapter.matchOddList[0].gameType
         }
     }
 
