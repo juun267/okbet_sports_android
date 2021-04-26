@@ -108,7 +108,7 @@ class GameViewModel(
     val curDatePosition: LiveData<Int>
         get() = _curDatePosition
 
-    val matchTypeCardForParlay: LiveData<Event<MatchType>>
+    val matchTypeCardForParlay: LiveData<Event<Pair<MatchType, SportType?>>?>
         get() = _matchTypeCardForParlay
 
     val isNoHistory: LiveData<Boolean>
@@ -137,7 +137,7 @@ class GameViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curDatePosition = MutableLiveData<Int>()
     private val _asStartCount = MutableLiveData<Int>()
-    private val _matchTypeCardForParlay = MutableLiveData<Event<MatchType>>()
+    private val _matchTypeCardForParlay = MutableLiveData<Event<Pair<MatchType, SportType?>>?>()
     private val _isNoHistory = MutableLiveData<Boolean>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
@@ -320,6 +320,50 @@ class GameViewModel(
         }
     }
 
+    private fun updateSportMenuSelectedState(sportMenuData: SportMenuData) {
+        val matchType = _matchTypeCardForParlay.value?.peekContent()?.first
+        val sportType = _matchTypeCardForParlay.value?.peekContent()?.second
+
+        sportType?.let {
+            when (matchType) {
+                MatchType.IN_PLAY -> {
+                    sportMenuData.menu.inPlay.items.map { sport ->
+                        sport.isSelected = (sport.code == sportType.code)
+                    }
+                }
+                MatchType.TODAY -> {
+                    sportMenuData.menu.today.items.map { sport ->
+                        sport.isSelected = (sport.code == sportType.code)
+                    }
+                }
+                MatchType.EARLY -> {
+                    sportMenuData.menu.early.items.map { sport ->
+                        sport.isSelected = (sport.code == sportType.code)
+                    }
+                }
+                MatchType.PARLAY -> {
+                    sportMenuData.menu.parlay.items.map { sport ->
+                        sport.isSelected = (sport.code == sportType.code)
+                    }
+                }
+                MatchType.OUTRIGHT -> {
+                    sportMenuData.menu.outright.items.map { sport ->
+                        sport.isSelected = (sport.code == sportType.code)
+                    }
+                }
+                MatchType.AT_START -> {
+                    sportMenuData.atStart.items.map { sport ->
+                        sport.isSelected = (sport.code == sportType.code)
+                    }
+                }
+                else -> {
+                }
+            }
+        }
+
+        _matchTypeCardForParlay.value = null
+    }
+
     fun getInPlayMatchPreload() {
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -363,8 +407,10 @@ class GameViewModel(
             _allVolleyballCount.postValue(getParlayCount(SportType.VOLLEYBALL, result))
 
             result?.let {
-                if (it.sportMenuData != null)
+                if (it.sportMenuData != null) {
                     initSportMenuSelectedState(it.sportMenuData)
+                    updateSportMenuSelectedState(it.sportMenuData)
+                }
                 it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
                     item.sortNum
                 }
@@ -387,44 +433,14 @@ class GameViewModel(
         }
     }
 
-    fun getGameHallList(matchType: MatchType, sportCode: String?, isLeftMenu: Boolean = false) {
-        when (matchType) {
-            MatchType.IN_PLAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.forEach {
-                    it.isSelected = it.code == sportCode
-                }
-            }
-            MatchType.TODAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.forEach {
-                    it.isSelected = it.code == sportCode
-                }
-            }
-            MatchType.EARLY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.forEach {
-                    it.isSelected = it.code == sportCode
-                }
-            }
-            MatchType.OUTRIGHT -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.forEach {
-                    it.isSelected = it.code == sportCode
-                }
-            }
-            else -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.forEach {
-                    it.isSelected = it.code == sportCode
-                }
-            }
-        }
+    fun getGameHallList(matchType: MatchType, sportType: SportType?, isLeftMenu: Boolean = false) {
         menuEntrance = this.matchType != matchType //標記為卡片或菜單跳轉不同的類別
 
         if (isLeftMenu) {
             _sportMenuResult.postValue(_sportMenuResult.value)
         }
-        _matchTypeCardForParlay.postValue(Event(matchType))
-    }
 
-    fun getGameHallList(matchType: MatchType, sportType: SportType, isLeftMenu: Boolean = false) {
-        getGameHallList(matchType, sportType.code, isLeftMenu)
+        _matchTypeCardForParlay.postValue(Event(matchType to sportType))
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {

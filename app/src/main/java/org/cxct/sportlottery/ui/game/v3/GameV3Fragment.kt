@@ -301,13 +301,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.matchTypeCardForParlay.observe(viewLifecycleOwner, {
-            val matchType = it.getContentIfNotHandled()
-            matchType?.let { matchTypeNotNull ->
-                viewModel.getGameHallList(matchTypeNotNull, true)
-            }
-        })
-
         viewModel.gameCateDataList.observe(this.viewLifecycleOwner, Observer {
             sportTypeAdapter.dataThirdGame = it
         })

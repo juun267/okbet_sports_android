@@ -356,7 +356,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.matchTypeCardForParlay.observe(this, {
-            val matchType = it.getContentIfNotHandled()
+            val matchType = it?.getContentIfNotHandled()?.first
             app_bar_layout.setExpanded(true, false)
             when (matchType) {
                 MatchType.PARLAY -> {

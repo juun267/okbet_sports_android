@@ -198,7 +198,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
-                viewModel.getGameHallList(MatchType.IN_PLAY, select.code)
+                val sportType = when (select.code) {
+                    SportType.FOOTBALL.code -> SportType.FOOTBALL
+                    SportType.BASKETBALL.code -> SportType.BASKETBALL
+                    SportType.TENNIS.code -> SportType.TENNIS
+                    SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                    SportType.BADMINTON.code -> SportType.BADMINTON
+                    else -> null
+                }
+                viewModel.getGameHallList(MatchType.IN_PLAY, sportType)
             }
         })
     }
