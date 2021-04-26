@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:ignore="spUsage"
-    tools:context=".ui.profileCenter.ProfileCenterActivity">
+    tools:context=".ui.profileCenter.ProfileCenterActivity"
+    tools:ignore="spUsage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -110,15 +110,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:paddingEnd="6dp"
-            android:paddingStart="0dp"
             android:gravity="center_vertical"
             android:maxWidth="120dp"
             android:maxLines="1"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
-            app:autoSizeMaxTextSize="16dp"
+            app:autoSizeMaxTextSize="20dp"
             app:autoSizeMinTextSize="2dp"
             app:autoSizeTextType="uniform"
             tools:text="87,547,000.000" />
@@ -127,6 +125,7 @@
             android:id="@+id/tv_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:gravity="center_vertical"
             android:text="@string/bet_info_list_rmb"
             android:textColor="@color/colorWhite"
@@ -136,7 +135,6 @@
             android:id="@+id/btn_refresh_money"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_marginHorizontal="10dp"
             android:background="@null"
             android:contentDescription="@null"
             android:paddingHorizontal="10dp"
