@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
@@ -341,6 +342,22 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
                 if (b) {
                     showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    }
+                } else if (!b) {
+                    startActivity(Intent(this, BankActivity::class.java))
+                }
+            }
+        })
+
+        viewModel.settingNeedToCompleteProfileInfo.observe(this, {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                        startActivity(Intent(this, ProfileActivity::class.java))
+                    }).apply {
+                        setTipsTitle(R.string.withdraw_setting)
+                        setTipsContent(R.string.please_complete_profile_info)
+                        show(supportFragmentManager, "")
                     }
                 } else if (!b) {
                     startActivity(Intent(this, BankActivity::class.java))

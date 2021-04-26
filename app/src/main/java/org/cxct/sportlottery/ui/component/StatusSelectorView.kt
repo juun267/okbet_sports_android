@@ -49,7 +49,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         }
 
     var selectedTag: String? = ""
-        get() = Objects.toString(tv_selected.tag.toString(), "")
+        get() = tv_selected.tag?.toString()
         set(value) {
             field = value
             tv_selected.tag = value
@@ -69,8 +69,11 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         get() = sheetAdapter?.dataList
         set(value) {
             field = value
-
             sheetAdapter?.dataList = value ?: listOf()
+
+            tv_selected.tag = value?.firstOrNull()?.code
+            sheetAdapter?.defaultCheckedCode = value?.firstOrNull()?.code
+
             sheetAdapter?.notifyDataSetChanged()
         }
 

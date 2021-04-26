@@ -387,7 +387,7 @@
     <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s  vs  %s (客)</string>
-    <string name="bet_item">投注项目 - %s</string>
+    <string name="bet_item">投注项目 - </string>
     <string name="nothing">--</string>
     <string name="draw_or_cancel">0.000</string>
 
@@ -420,8 +420,8 @@
 
     <string name="total_bet_amount">总投注额：</string>
     <string name="win_lose">赢 / 输 (RMB)</string>
-    <string name="no_any_bet_record">暂无任何投注纪录</string>
-    <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注纪录呢～</string>
+    <string name="no_any_bet_record">暂无任何投注记录</string>
+    <string name="no_any_record_from_your_choose">您当前的选择暂无任何投注记录呢～</string>
 
     <!--odds detail-->
     <string name="odds_detail_more">更多</string>
@@ -513,6 +513,11 @@
     <string name="title_reupload_pic">重新上传支付截图</string>
     <string name="title_click_upload_pic">请点击上传支付成功截图</string>
     <string name="hint_remark">备注：%1$s</string>
+    <string name="online_alipay">在线支付宝</string>
+    <string name="online_cft">在线财付通</string>
+    <string name="online_weixin">在线微信</string>
+
+
 
 
     <!--  Withdraw  -->
@@ -630,9 +635,9 @@
 
     <!-- finance -->
     <string name="finance">资金明细</string>
-    <string name="record_recharge">充值纪录</string>
+    <string name="record_recharge">充值记录</string>
     <string name="record_withdrawal">提款记录</string>
-    <string name="record_red_envelope">红包纪录</string>
+    <string name="record_red_envelope">红包记录</string>
     <string name="record_conversion">转换记录</string>
     <string name="record_reward">打賞紀錄</string>
 
@@ -687,7 +692,7 @@
     <string name="feedback_toolbar_title">建议反馈</string>
     <string name="feedback_detail">反馈详情</string>
     <string name="feedback_tabName_problem">问题与建议</string>
-    <string name="feedback_tabName_record">反馈纪录</string>
+    <string name="feedback_tabName_record">反馈记录</string>
     <string name="feedback_description">如果您对游戏或者平台有好的建议或者发现Bug可以进行提交，官方客服会在48小时内进行回复。我们会及时修正Bug或参考您的反馈不断优化我们的产品和服务。 (若同样建议或Bug有多人反馈,奖金将会发给最先反馈者,记得发现问题第一时间反馈喔)</string>
     <string name="feedback_description_money">如果建议被采用或者Bug经核实，最高奖励人民币3000元(或其他的等值币种)。</string>
     <string name="feedback_submit_enter">提交建议</string>

@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorWhite">
 
         <TextView
@@ -178,14 +178,15 @@
             android:id="@+id/log_detail_reason"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColorDark"
             android:layout_marginEnd="16dp"
-            android:textSize="@dimen/textSize14sp"
             android:gravity="start"
-            app:layout_constraintBaseline_toBaselineOf="@id/log_detail_reason_subtitle"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/log_detail_reason_subtitle"
-            tools:text="请求第三方接口失败请求第三方接口失败请求第三方接口失败" />
+            app:layout_constraintTop_toTopOf="@+id/log_detail_reason_subtitle"
+            app:layout_constraintBottom_toTopOf="@id/log_detail_divider"
+            tools:text="请求第三方接口失败" />
 
         <View
             android:id="@+id/log_detail_divider"
@@ -193,6 +194,8 @@
             android:layout_height="1dp"
             android:layout_marginTop="17dp"
             android:background="@color/colorWhite6"
+            app:layout_constraintBottom_toTopOf="@id/log_detail_confirm"
+            app:layout_constraintVertical_bias="1"
             app:layout_constraintTop_toBottomOf="@id/log_detail_reason" />
 
         <Button
@@ -204,7 +207,8 @@
             android:textColor="@color/colorBlueDark"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/log_detail_divider" />
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

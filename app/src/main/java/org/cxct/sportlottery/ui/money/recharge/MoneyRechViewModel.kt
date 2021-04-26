@@ -480,6 +480,8 @@ class MoneyRechViewModel(
             return false
         if (!hashCodeErrorMsg.value.isNullOrEmpty())
             return false
+        if (!voucherPathErrorMsg.value?.peekContent().isNullOrEmpty())
+            return false
 
         return true
     }
@@ -514,6 +516,16 @@ class MoneyRechViewModel(
             doNetwork(androidContext) {
                 avatarRepository.uploadVoucher(uploadImgRequest)
             }
+        }
+    }
+
+    //充值帳戶選單名稱
+    fun getPayTypeName(rechType: String?): String {
+        return when (rechType) {
+            "alipay" -> androidContext.resources.getString(R.string.online_alipay)
+            "weixin" -> androidContext.resources.getString(R.string.online_weixin)
+            "cft" -> androidContext.resources.getString(R.string.online_cft)
+            else -> ""
         }
     }
 }

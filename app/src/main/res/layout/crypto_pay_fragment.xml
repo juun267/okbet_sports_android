@@ -69,6 +69,166 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:ems="4"
+                    android:text="@string/title_recharge_account"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/textSize13sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorWhite6" />
+
+                <TextView
+                    android:id="@+id/txv_account"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical|left"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_click_recharge_account"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_arrow_gray" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:id="@+id/content_qr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/img_qr"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    tools:src="@drawable/profile_center_person" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="100dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:text="@string/title_recharge_address"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txv_payee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="TCZVMNd1D42qcweFSahY2NtWW2DCt8KR7GJ" />
+
+                    <TextView
+                        android:id="@+id/txv_remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/textSize12sp"
+                        android:visibility="visible"
+                        tools:text="备注 : " />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_qr_copy"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:maxWidth="76dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/bg_3dp_radius_button"
+                            android:gravity="center"
+                            android:text="@string/btn_copy"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize12sp" />
+
+                        <Button
+                            android:id="@+id/btn_qr_recharge"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:maxWidth="76dp"
+                            android:layout_height="28dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="20dp"
+                            android:background="@drawable/bg_frame_4dp_blue"
+                            android:text="@string/btn_recharge"
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/textSize12sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
         <!-- 充值個數 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
             android:id="@+id/et_recharge_amount"
@@ -190,169 +350,6 @@
             android:textSize="@dimen/textSize12sp" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:ems="4"
-                    android:text="@string/title_recharge_account"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize13sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="14dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/colorWhite6" />
-
-                <TextView
-                    android:id="@+id/txv_account"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="9dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <ImageView
-                    android:id="@+id/iv_click_recharge_account"
-                    android:layout_width="35dp"
-                    android:layout_height="45dp"
-                    android:contentDescription="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_arrow_gray" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:id="@+id/content_qr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:id="@+id/img_qr"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    tools:src="@drawable/profile_center_person" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="100dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_weight="1"
-                        android:gravity="top"
-                        android:text="@string/title_recharge_address"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txv_payee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_weight="1"
-                        android:gravity="top"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="TCZVMNd1D42qcweFSahY2NtWW2DCt8KR7GJ" />
-
-                    <TextView
-                        android:id="@+id/txv_remark"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginVertical="5dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/colorRed"
-                        android:textSize="@dimen/textSize12sp"
-                        android:visibility="visible"
-                        tools:text="备注 : " />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/btn_qr_copy"
-                            style="?android:attr/borderlessButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_weight="1"
-                            android:maxWidth="76dp"
-                            android:layout_height="28dp"
-                            android:background="@drawable/bg_3dp_radius_button"
-                            android:gravity="center"
-                            android:text="@string/btn_copy"
-                            android:textColor="@color/colorGray"
-                            android:textSize="@dimen/textSize12sp" />
-
-                        <Button
-                            android:id="@+id/btn_qr_recharge"
-                            android:layout_width="wrap_content"
-                            android:layout_weight="1"
-                            android:maxWidth="76dp"
-                            android:layout_height="28dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="20dp"
-                            android:background="@drawable/bg_frame_4dp_blue"
-                            android:text="@string/btn_recharge"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="@dimen/textSize12sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -454,7 +451,6 @@
 
 
         </androidx.cardview.widget.CardView>
-
 
         <Button
             android:id="@+id/btn_submit"
