@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.common.DragFloatActionButton
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.OnForbidClickListener
 import kotlin.reflect.KClass
 
 const val SP_NAME = "button_position"
@@ -93,7 +94,7 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                     updateOddButton(true, it.size)
                     if (getFirstBetFlag() == true && it.size == 1) {
                         saveFirstBetFlag(false)
-                        if(oddListDialog?.isAdded == false) {
+                        if (oddListDialog?.isAdded == false) {
                             oddListDialog?.show(
                                 supportFragmentManager,
                                 BaseOddButtonActivity::class.java.simpleName
@@ -133,12 +134,14 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
             .inflate(R.layout.layout_bet_info_list_float_button, contentView, false).apply {
                 ll_bet_float_button.apply {
                     visibility = View.INVISIBLE
-                    setOnClickListener {
-                        oddListDialog?.show(
-                            supportFragmentManager,
-                            BaseOddButtonActivity::class.java.simpleName
-                        )
-                    }
+                    setOnClickListener(object : OnForbidClickListener() {
+                        override fun forbidClick(view: View?) {
+                            oddListDialog?.show(
+                                supportFragmentManager,
+                                BaseOddButtonActivity::class.java.simpleName
+                            )
+                        }
+                    })
                     actionUpListener = DragFloatActionButton.ActionUpListener {
                         savePositionXY(x, y)
                     }
