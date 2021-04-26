@@ -248,7 +248,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     popAllFragment()
                 }
                 viewModel.isParlayPage(tab?.position == 4)
-                viewModel.getSportMenu()
 
                 when (tab?.position) {
                     0 -> {
