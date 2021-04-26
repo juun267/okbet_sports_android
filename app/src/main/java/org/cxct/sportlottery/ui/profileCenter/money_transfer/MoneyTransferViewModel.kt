@@ -38,7 +38,7 @@ class MoneyTransferViewModel(
         IN_PLAT, OUT_PLAT
     }
 
-    val allPlat = "ALL_PLAT"
+    private val allPlat = "ALL_PLAT"
     val platCode = "CG"
 
     val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
@@ -269,11 +269,15 @@ class MoneyTransferViewModel(
 
     fun transfer(outPlat: String?, inPlat: String?, amount: Long?) {
         if (amount == null || outPlat == null || inPlat == null) return
-
         loading()
+        val isReversed = isPlatSwitched.value?.peekContent() ?: false
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
+                if (isReversed) {
+                    OneBoSportApi.thirdGameService.transfer(inPlat, outPlat, amount)
+                } else {
+                    OneBoSportApi.thirdGameService.transfer(outPlat, inPlat, amount)
+                }
             }?.let { result ->
                 hideLoading()
                 _transferResult.value = Event(result)
