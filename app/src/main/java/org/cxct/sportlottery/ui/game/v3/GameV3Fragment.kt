@@ -274,31 +274,29 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initObserve() {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, {
-            it.peekContent()?.let {
-                when (args.matchType) {
-                    MatchType.IN_PLAY -> {
-                        updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
-                    }
+            when (args.matchType) {
+                MatchType.IN_PLAY -> {
+                    updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                }
 
-                    MatchType.TODAY -> {
-                        updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf())
-                    }
+                MatchType.TODAY -> {
+                    updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf())
+                }
 
-                    MatchType.EARLY -> {
-                        updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
-                    }
+                MatchType.EARLY -> {
+                    updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
+                }
 
-                    MatchType.PARLAY -> {
-                        updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
-                    }
+                MatchType.PARLAY -> {
+                    updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
+                }
 
-                    MatchType.OUTRIGHT -> {
-                        updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf())
-                    }
+                MatchType.OUTRIGHT -> {
+                    updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf())
+                }
 
-                    MatchType.AT_START -> {
-                        updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
-                    }
+                MatchType.AT_START -> {
+                    updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
                 }
             }
         })

@@ -51,9 +51,7 @@ class MenuLeftFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class)
 
     private fun initObserve() {
         viewModel.sportMenuResult.observe(viewLifecycleOwner, {
-            it.peekContent()?.let {
-                updateUI(it)
-            }
+            updateUI(it)
         })
 
         //第三方遊戲清單

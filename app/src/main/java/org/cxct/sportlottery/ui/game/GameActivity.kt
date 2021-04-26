@@ -352,10 +352,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.sportMenuResult.observe(this, {
-            it.peekContent()?.let {
-                hideLoading()
-                updateUiWithResult(it)
-            }
+            hideLoading()
+            updateUiWithResult(it)
         })
 
         viewModel.matchTypeCardForParlay.observe(this, {
