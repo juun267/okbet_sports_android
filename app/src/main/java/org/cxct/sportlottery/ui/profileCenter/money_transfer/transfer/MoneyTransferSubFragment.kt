@@ -78,6 +78,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
 
         viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) hideKeyboard()
             et_transfer_money.isEnabled = !it
         }
 

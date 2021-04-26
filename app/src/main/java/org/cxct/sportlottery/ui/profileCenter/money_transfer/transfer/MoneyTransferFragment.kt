@@ -75,9 +75,10 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
 
         viewModel.recycleAllMoneyResult.observe(viewLifecycleOwner) { result ->
             result?.getContentIfNotHandled()?.let {
+                val msg = if (it.success) getString(R.string.money_recycle_succeed) else it.msg
                 showPromptDialog(
                     title = getString(R.string.prompt),
-                    message = it.msg,
+                    message = msg,
                     success = it.success
                 ){}
             }
