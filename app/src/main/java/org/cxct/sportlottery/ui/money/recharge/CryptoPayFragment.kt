@@ -319,6 +319,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     mAccountBottomSheetList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         refreshAccount(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = accountBtsAdapter
