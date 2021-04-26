@@ -101,13 +101,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         unsubscribeAllHallChannel()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        viewModel.removeOddsDetailPageValue()
-    }
-
+    
     private fun setWebView() {
         web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}&lang=${LanguageManager.getSelectLanguage(context).key}")
     }
