@@ -199,8 +199,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            if (it.size == 0) {
-                dismiss()
+            when(it.size){
+                0 -> {dismiss()}
+                1 -> {changeBetButtonClickable(false)}
             }
         })
 
