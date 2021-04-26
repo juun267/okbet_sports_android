@@ -33,7 +33,7 @@ object TimeUtil {
 
     @JvmStatic
     fun stampToDateInOddsDetail(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("MM-dd  HH:mm")
+        val simpleDateFormat = SimpleDateFormat("MM/dd  HH:mm")
         return simpleDateFormat.format(Date(time))
     }
 
