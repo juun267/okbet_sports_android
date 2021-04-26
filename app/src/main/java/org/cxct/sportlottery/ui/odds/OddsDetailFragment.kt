@@ -159,7 +159,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    viewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
+                    viewModel.playCateListResult.value?.peekContent()?.rows?.get(t)?.code?.let {
                         (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(
                             it
                         )
@@ -173,19 +173,21 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.playCateListResult.observe(this.viewLifecycleOwner, { result ->
-            result?.success?.let {
-                if (it) {
-                    dataBinding.tabCat.removeAllTabs()
-                    if (result.rows.isNotEmpty()) {
-                        for (row in result.rows) {
-                            dataBinding.tabCat.addTab(
-                                dataBinding.tabCat.newTab().setText("   ${row.name}   "),
-                                false
-                            )
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                result?.success?.let {
+                    if (it) {
+                        dataBinding.tabCat.removeAllTabs()
+                        if (result.rows.isNotEmpty()) {
+                            for (row in result.rows) {
+                                dataBinding.tabCat.addTab(
+                                    dataBinding.tabCat.newTab().setText("   ${row.name}   "),
+                                    false
+                                )
+                            }
+                        } else {
+                            dataBinding.tabCat.visibility = View.GONE
                         }
-                    } else {
-                        dataBinding.tabCat.visibility = View.GONE
                     }
                 }
             }

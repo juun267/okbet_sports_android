@@ -196,8 +196,8 @@ class GameViewModel(
     val oddsDetailResult: LiveData<OddsDetailResult?>
         get() = _oddsDetailResult
 
-    private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
-    val playCateListResult: LiveData<PlayCateListResult?>
+    private val _playCateListResult = MutableLiveData<Event<PlayCateListResult?>>()
+    val playCateListResult: LiveData<Event<PlayCateListResult?>>
         get() = _playCateListResult
 
     private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
@@ -1170,7 +1170,6 @@ class GameViewModel(
     }
 
     fun removeOddsDetailPageValue() {
-        _playCateListResult.postValue(null)
         _oddsDetailResult.postValue(null)
         _oddsDetailList.postValue(ArrayList())
     }
@@ -1186,7 +1185,7 @@ class GameViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.playCateListService.getPlayCateList(gameType)
             }
-            _playCateListResult.postValue(result)
+            _playCateListResult.postValue(Event(result))
         }
     }
 
