@@ -169,13 +169,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bindToday(data: GameEntity) {
             itemView.apply {
-                /*tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString()
-                tv_score2.text = data.matchStatusCO?.awayTotalScore?.toString()*/
-
                 team1.text = data.match?.homeName
                 team2.text = data.match?.awayName
-
-                /*tv_session.text = data.matchStatusCO?.statusName*/
 
                 when (data.code) {
                     "FT" -> { //足球

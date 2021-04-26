@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -370,9 +369,7 @@ class GameViewModel(
             }
             MatchType.TODAY -> {
                 _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.forEach {
-                    Log.e("Dean", "Before today name = ${it.name}, code = ${it.code} isSelected = ${it.isSelected}")
                     it.isSelected = it.code == sportCode
-                    Log.e("Dean", "After today name = ${it.name}, code = ${it.code} isSelected = ${it.isSelected}")
                 }
             }
             MatchType.EARLY -> {
