@@ -113,10 +113,10 @@ class BackService : Service() {
                                     Timber.d("Stomp connection closed")
                                     resetSubscriptions()
                                     reconnectionNum++
-                                    if (errorFlag && reconnectionNum < 5){
+                                    if (errorFlag && reconnectionNum < 5) {
                                         Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
                                         reconnect()
-                                    }else{
+                                    } else {
                                         sendConnectStatusToActivity(ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT)
                                     }
                                 }
@@ -170,6 +170,10 @@ class BackService : Service() {
     private fun reconnect() {
         disconnect()
         connect()
+    }
+
+    fun doReconnect() {
+        reconnect()
     }
 
     //關閉所有連線通道，釋放資源
