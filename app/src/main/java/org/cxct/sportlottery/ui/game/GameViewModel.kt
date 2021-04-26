@@ -265,11 +265,11 @@ class GameViewModel(
 
             val asStartCount = result?.sportMenuData?.atStart?.num ?: 0
             _asStartCount.postValue(asStartCount)
-            _allFootballCount.postValue(getParlayCount(SportType.FOOTBALL, result))
-            _allBasketballCount.postValue(getParlayCount(SportType.BASKETBALL, result))
-            _allTennisCount.postValue(getParlayCount(SportType.TENNIS, result))
-            _allBadmintonCount.postValue(getParlayCount(SportType.BADMINTON, result))
-            _allVolleyballCount.postValue(getParlayCount(SportType.VOLLEYBALL, result))
+            _allFootballCount.postValue(getTodayCount(SportType.FOOTBALL, result))
+            _allBasketballCount.postValue(getTodayCount(SportType.BASKETBALL, result))
+            _allTennisCount.postValue(getTodayCount(SportType.TENNIS, result))
+            _allBadmintonCount.postValue(getTodayCount(SportType.BADMINTON, result))
+            _allVolleyballCount.postValue(getTodayCount(SportType.VOLLEYBALL, result))
 
             result?.let {
                 if (it.sportMenuData != null)
@@ -294,8 +294,8 @@ class GameViewModel(
         }
     }
 
-    private fun getParlayCount(sportType: SportType, sportMenuResult: SportMenuResult?): Int =
-        sportMenuResult?.sportMenuData?.menu?.parlay?.items?.find {
+    private fun getTodayCount(sportType: SportType, sportMenuResult: SportMenuResult?): Int =
+        sportMenuResult?.sportMenuData?.menu?.today?.items?.find {
             it.code == sportType.code
         }?.num ?: 0
 
@@ -400,11 +400,11 @@ class GameViewModel(
 
             val asStartCount = result?.sportMenuData?.atStart?.num ?: 0
             _asStartCount.postValue(asStartCount)
-            _allFootballCount.postValue(getParlayCount(SportType.FOOTBALL, result))
-            _allBasketballCount.postValue(getParlayCount(SportType.BASKETBALL, result))
-            _allTennisCount.postValue(getParlayCount(SportType.TENNIS, result))
-            _allBadmintonCount.postValue(getParlayCount(SportType.BADMINTON, result))
-            _allVolleyballCount.postValue(getParlayCount(SportType.VOLLEYBALL, result))
+            _allFootballCount.postValue(getTodayCount(SportType.FOOTBALL, result))
+            _allBasketballCount.postValue(getTodayCount(SportType.BASKETBALL, result))
+            _allTennisCount.postValue(getTodayCount(SportType.TENNIS, result))
+            _allBadmintonCount.postValue(getTodayCount(SportType.BADMINTON, result))
+            _allVolleyballCount.postValue(getTodayCount(SportType.VOLLEYBALL, result))
 
             result?.let {
                 if (it.sportMenuData != null) {

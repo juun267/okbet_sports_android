@@ -368,6 +368,9 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 MatchType.IN_PLAY -> {
                     tabLayout.getTabAt(1)?.select()
                 }
+                MatchType.TODAY -> {
+                    tabLayout.getTabAt(2)?.select()
+                }
                 else -> {
                 }
             }
