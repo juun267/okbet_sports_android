@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
 import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
 import org.cxct.sportlottery.ui.common.DragFloatActionButton
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.OnForbidClickListener
@@ -117,9 +118,9 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         super.onResume()
         getInstance(applicationContext)
         setupOddButton()
+        checkVisibleView()
         viewModel.betInfoRepository.getCurrentBetInfoList()
     }
-
 
     private fun setupOddButton() {
         if (floatButtonView != null) {
@@ -153,6 +154,14 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                 }
             }
         contentView.addView(floatButtonView)
+    }
+
+    private fun checkVisibleView(){
+        floatButtonView?.visibility = if(javaClass.simpleName == GameActivity::class.java.simpleName){
+            View.VISIBLE
+        }else{
+            View.GONE
+        }
     }
 
     fun resetButton() {
