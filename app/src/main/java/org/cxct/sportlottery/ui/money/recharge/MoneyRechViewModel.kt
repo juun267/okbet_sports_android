@@ -508,6 +508,7 @@ class MoneyRechViewModel(
         _rechargeOnlineAmountMsg.value = ""
         _hashCodeErrorMsg.value = ""
         _rechargeAccountMsg.value = ""
+        _voucherPathErrorMsg.value = Event("")
     }
 
     //上傳支付截圖

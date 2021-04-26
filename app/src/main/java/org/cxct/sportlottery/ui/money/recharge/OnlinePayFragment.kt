@@ -341,6 +341,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //重置畫面事件
     private fun resetEvent() {
+        clearFocus()
         et_recharge_online_amount.setText("")
+        viewModel.clearnRechargeStatus()
     }
 }
