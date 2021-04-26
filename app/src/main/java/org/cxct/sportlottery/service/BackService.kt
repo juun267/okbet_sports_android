@@ -173,6 +173,8 @@ class BackService : Service() {
     }
 
     fun doReconnect() {
+        errorFlag = false
+        reconnectionNum = 0
         reconnect()
     }
 
