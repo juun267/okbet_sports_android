@@ -10,10 +10,6 @@
             name="data"
             type="org.cxct.sportlottery.network.bet.MatchOdd" />
 
-        <variable
-            name="ot"
-            type="org.cxct.sportlottery.util.OddsTypeUtilKt" />
-
     </data>
 
     <LinearLayout
