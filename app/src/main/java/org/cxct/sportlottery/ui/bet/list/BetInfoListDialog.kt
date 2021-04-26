@@ -62,6 +62,9 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private var keyboard: KeyBoardUtil? = null
 
 
+    private var money: Double = 0.0
+
+
     init {
         setStyle(R.style.Common)
     }
@@ -230,6 +233,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun setMoney(money: Double) {
+        this.money = money
         tv_money.text = getString(R.string.bet_info_current_money, TextUtil.formatMoney(money))
     }
 
@@ -242,6 +246,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
+        if (stake > money) {
+            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            return
+        }
         viewModel.addBet(
             BetAddRequest(
                 listOf(Odd(betInfoListData.matchOdd.oddsId, getOdds(betInfoListData.matchOdd, oddsType))),
@@ -282,7 +290,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         val spreadEnd = matchOdd.spread.length + 2
         val spread = SpannableString("  ${matchOdd.spread}")
-        spread.setSpan(ForegroundColorSpan(colorOrange),0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spread.setSpan(ForegroundColorSpan(colorOrange), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spread.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         val oddsEnd = getOdds(matchOdd, oddsType).toString().length + 3

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetRecordDetailBinding
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
 
@@ -39,8 +40,10 @@ class BetDetailAdapter : ListAdapter<MatchOdd, BetDetailAdapter.ItemViewHolder>(
     class ItemViewHolder private constructor(val binding: ItemBetRecordDetailBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: MatchOdd, oddsType: OddsType) {
             binding.data = data
-            binding.tvOdds.text = if (data.odds > 0) {
-                String.format(binding.root.context.getString(R.string.at_symbol, getOdds(data, oddsType)))
+
+            val odds = getOdds(data, oddsType)
+            binding.tvOdds.text = if (odds > 0) {
+                String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
             } else null
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新

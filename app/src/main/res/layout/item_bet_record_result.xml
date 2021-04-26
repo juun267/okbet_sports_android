@@ -120,9 +120,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:textColor="@color/red2"
+                    android:textColor="@color/colorRed"
                     android:textSize="@dimen/textSize12sp"
-                    app:oddFormat="@{row.matchOdds.get(0).odds}"
                     app:autoSizeMaxTextSize="@dimen/textSize12sp"
                     app:autoSizeMinTextSize="@dimen/textSize8sp"
                     tools:text="\u00404.3" />
