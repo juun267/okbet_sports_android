@@ -113,7 +113,7 @@ class BackService : Service() {
                                     Timber.d("Stomp connection closed")
                                     resetSubscriptions()
                                     reconnectionNum++
-                                    if (errorFlag && reconnectionNum < 5) {
+                                    if (errorFlag && reconnectionNum < 10) {
                                         Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
                                         reconnect()
                                     } else {
