@@ -268,36 +268,40 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getGameHallList(args.matchType, true)
+        viewModel.getSportMenu()
         loading()
     }
 
     private fun initObserve() {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner, {
-            when (args.matchType) {
-                MatchType.IN_PLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
+            it.getContentIfNotHandled()?.let {
+                when (args.matchType) {
+                    MatchType.IN_PLAY -> {
+                        updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                    }
+
+                    MatchType.TODAY -> {
+                        updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf())
+                    }
+
+                    MatchType.EARLY -> {
+                        updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
+                    }
+
+                    MatchType.PARLAY -> {
+                        updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
+                    }
+
+                    MatchType.OUTRIGHT -> {
+                        updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf())
+                    }
+
+                    MatchType.AT_START -> {
+                        updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
+                    }
                 }
 
-                MatchType.TODAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf())
-                }
-
-                MatchType.EARLY -> {
-                    updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
-                }
-
-                MatchType.PARLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
-                }
-
-                MatchType.OUTRIGHT -> {
-                    updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf())
-                }
-
-                MatchType.AT_START -> {
-                    updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
-                }
+                viewModel.getGameHallList(args.matchType, true)
             }
         })
 
