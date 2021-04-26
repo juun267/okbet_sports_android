@@ -289,7 +289,7 @@
     <string name="modify_avatar">修改头像</string>
     <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
     <string name="take_a_picture">拍一张照片</string>
-    <string name="save_avatar_success">头像设置成功</string>
+    <string name="save_avatar_success">头像上传成功</string>
     <string name="no_set_avatar">没有设置头像</string>
 
     <!-- Modify Profile Info page-->
