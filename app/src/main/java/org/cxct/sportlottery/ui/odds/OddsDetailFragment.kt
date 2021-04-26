@@ -314,10 +314,4 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         service.unsubscribeEventChannel(matchId)
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        viewModel.removeOddsDetailPageValue()
-    }
 }
