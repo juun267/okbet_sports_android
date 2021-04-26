@@ -163,7 +163,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             OddState.SMALLER.state -> {
                 changeColorByOdds(tv_close_warning)
                 tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.green))
+                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
                     text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }

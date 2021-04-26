@@ -40,6 +40,8 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TimeUtil.getDefaultTimeStamp
+import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import org.json.JSONArray
 import timber.log.Timber
 import java.util.*
@@ -74,6 +76,10 @@ class GameViewModel(
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadInPlay
+
+    private val _matchPreloadEarly = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadEarly: LiveData<Event<MatchPreloadResult>>
+        get() = _matchPreloadEarly
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
@@ -374,6 +380,20 @@ class GameViewModel(
                 _matchPreloadInPlay.postValue(Event(result))
             }
         }
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                val nowTimeStamp = getTodayTimeRangeParams()
+                OneBoSportApi.matchService.getMatchPreload(
+                    MatchPreloadRequest(
+                        MatchType.TODAY.postValue,
+                        startTime = nowTimeStamp.startTime,
+                        endTime = nowTimeStamp.endTime
+                    )
+                )
+            }?.let { result ->
+                _matchPreloadEarly.postValue(Event(result))
+            }
+        }
     }
 
     fun getMoney() {
@@ -433,11 +453,16 @@ class GameViewModel(
         }
     }
 
-    fun getGameHallList(matchType: MatchType, sportType: SportType?, isLeftMenu: Boolean = false) {
-        menuEntrance = this.matchType != matchType //標記為卡片或菜單跳轉不同的類別
+    fun getGameHallList(
+        matchType: MatchType,
+        sportType: SportType?,
+        isLeftMenu: Boolean = false,
+        isPreloadTable: Boolean = false
+    ) {
+        menuEntrance = (this.matchType != matchType) || isPreloadTable//標記為卡片或菜單跳轉不同的類別
 
         if (isLeftMenu) {
-            _sportMenuResult.postValue(_sportMenuResult.value)
+            _sportMenuResult.value = _sportMenuResult.value
         }
 
         _matchTypeCardForParlay.postValue(Event(matchType to sportType))

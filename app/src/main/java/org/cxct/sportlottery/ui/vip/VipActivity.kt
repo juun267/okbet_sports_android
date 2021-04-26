@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TextUtil
 
 class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
@@ -198,6 +199,9 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
     private fun setupBannerData() {
         banner_vip_level.apply {
+            val layoutParams: android.widget.LinearLayout.LayoutParams? =
+                android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT, (ScreenUtil.getScreenWidth(this@VipActivity) / 2.5).toInt())
+            setLayoutParams(layoutParams)
             setBannerData(R.layout.item_banner_member_level, setupBannerLevelRequirement())
             loadImage { _, model, view, _ ->
                 val tvLevel: TextView? = view?.findViewById(R.id.tv_level)

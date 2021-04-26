@@ -18,7 +18,9 @@
         android:id="@+id/rv_by"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:overScrollMode="never"
+        android:paddingBottom="14dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
         tools:listitem="@layout/content_by_game_rv_left" />

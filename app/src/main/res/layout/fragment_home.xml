@@ -296,6 +296,17 @@
                     app:cvTitle="@string/label_in_play_games"
                     app:cvCount="0" />
 
+                <org.cxct.sportlottery.ui.game.home.gameTable.HomeGameTable
+                    android:id="@+id/drawer_today"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:nestedScrollingEnabled="false"
+                    app:cvTitle="@string/home_tab_today"
+                    app:cvCount="0" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

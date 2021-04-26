@@ -127,6 +127,11 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
+
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            rvAdapter.oddsType = it
+        })
+
     }
 
     private fun initRv() {

@@ -133,12 +133,12 @@ class ProfileActivity : BaseOddButtonActivity<ProfileModel>(ProfileModel::class)
     }
 
     private fun initObserve() {
-        viewModel.editIconUrlResult.observe(this, Observer {
+        viewModel.editIconUrlResult.observe(this, {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
-                ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
+                showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
             else
-                ToastUtil.showToastInCenter(this, iconUrlResult?.msg)
+                iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         })
 
         viewModel.userInfo.observe(this, Observer {
