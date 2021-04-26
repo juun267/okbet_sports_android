@@ -972,6 +972,10 @@ class GameViewModel(
         }
     }
 
+    fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd){
+        betInfoRepository.saveOddsHasChanged(matchOdd)
+    }
+
     fun getBetInfoList(oddsList: List<Odd>) {
         if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT) {
             return
@@ -1151,12 +1155,6 @@ class GameViewModel(
         _playCateListResult.postValue(null)
         _oddsDetailResult.postValue(null)
         _oddsDetailList.postValue(ArrayList())
-    }
-
-    fun checkInBetInfo(matchId: String): Boolean {
-        return betInfoRepository.betList.any {
-            it.matchOdd.matchId == matchId
-        }
     }
 
     fun getPlayCateList(gameType: String) {

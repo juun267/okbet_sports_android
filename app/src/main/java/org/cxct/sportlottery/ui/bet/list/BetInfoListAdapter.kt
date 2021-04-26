@@ -347,7 +347,9 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
                         setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
                         isClickable = true
-                        text = context.getString(R.string.bet_info_list_bet)
+                        text = context.getString(
+                            if(mBetInfoList.oddsHasChanged)R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
+                        )
                     }
 
                     setChangeOdds(
@@ -424,6 +426,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         fun onAddMoreClick(betInfoList: BetInfoListData)
         fun onRegisterClick()
         fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd)
+        fun saveOddsHasChanged(matchOdd: MatchOdd)
     }
 
 
@@ -436,6 +439,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
                     text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
+                onItemClickListener.saveOddsHasChanged(matchOdd)
             }
 
             OddState.SMALLER.state -> {
@@ -445,6 +449,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
                     text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
+                onItemClickListener.saveOddsHasChanged(matchOdd)
             }
         }
 
@@ -476,12 +481,12 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
 
     private fun changeColorByOdds(tv_bet: TextView, tv_close_warning: TextView) {
-        tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.colorRed))
         tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
         tv_close_warning.apply {
             visibility = View.VISIBLE
             text = context.getString(R.string.bet_info_list_game_odds_changed)
         }
     }
+
 
 }
