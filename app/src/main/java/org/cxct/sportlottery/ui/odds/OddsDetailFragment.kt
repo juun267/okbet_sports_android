@@ -131,6 +131,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
+        tv_more.visibility = View.GONE
         tv_more.setOnClickListener {
             parentFragmentManager.let {
                 matchId?.let { id ->
@@ -244,6 +245,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             it?.size?.let { count ->
                 if (count - 1 == 0) {
                     tv_more.visibility = View.GONE
+                } else {
+                    tv_more.visibility = View.VISIBLE
                 }
             }
         })

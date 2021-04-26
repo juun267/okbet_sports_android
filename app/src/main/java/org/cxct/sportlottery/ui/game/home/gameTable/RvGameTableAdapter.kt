@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.home_game_table_header.view.*
 import kotlinx.android.synthetic.main.home_game_table_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
@@ -28,7 +29,6 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_header, viewGroup, false)
                 HeaderViewHolder(layout)
             }
-
             else -> {
                 val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_item, viewGroup, false)
                 ItemViewHolder(layout)
@@ -49,7 +49,12 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val data = mDataList[position]
             when (viewHolder) {
                 is HeaderViewHolder -> viewHolder.bind(data)
-                is ItemViewHolder -> viewHolder.bind(data)
+                is ItemViewHolder -> {
+                    when (data.matchType) {
+                        MatchType.IN_PLAY -> viewHolder.bindInPlay(data)
+                        MatchType.TODAY -> viewHolder.bindToday(data)
+                    }
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -117,7 +122,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var timer: Timer? = null
 
-        fun bind(data: GameEntity) {
+        fun bindInPlay(data: GameEntity) {
             itemView.apply {
                 tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString()
                 tv_score2.text = data.matchStatusCO?.awayTotalScore?.toString()
@@ -158,6 +163,58 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 card_footer.setOnClickListener {
                     mOnSelectFooterListener?.onClick(data)
+                }
+            }
+        }
+
+        fun bindToday(data: GameEntity) {
+            itemView.apply {
+                /*tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString()
+                tv_score2.text = data.matchStatusCO?.awayTotalScore?.toString()*/
+
+                team1.text = data.match?.homeName
+                team2.text = data.match?.awayName
+
+                /*tv_session.text = data.matchStatusCO?.statusName*/
+
+                when (data.code) {
+                    "FT" -> { //足球
+                        showStartTime(data.match?.startTime)
+                    }
+                    "BK" -> { //籃球
+                        showStartTime(data.match?.startTime)
+                    }
+                }
+
+                if (data.itemType == ItemType.FOOTER) {
+                    line_item.visibility = View.GONE
+                    card_footer.visibility = View.VISIBLE
+                    line_footer.visibility = if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
+                } else {
+                    line_item.visibility = View.VISIBLE
+                    card_footer.visibility = View.GONE
+                    line_footer.visibility = View.GONE
+                }
+
+                tv_footer_title.text = String.format(context.getString(R.string.label_all_something_in_play), data.name)
+                tv_footer_count.text = data.num.toString()
+
+                card_item.setOnClickListener {
+                    if (data.match != null)
+                        mOnSelectItemListener?.onClick(data)
+                }
+
+                card_footer.setOnClickListener {
+                    mOnSelectFooterListener?.onClick(data)
+                }
+            }
+        }
+
+        private fun showStartTime(startTime: Long?) {
+            itemView.apply {
+                startTime?.let {
+                    tv_session.text = TimeUtil.timeFormat(it, "MM/dd")
+                    tv_time.text = TimeUtil.timeFormat(it, "HH:mm")
                 }
             }
         }
