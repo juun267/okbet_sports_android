@@ -117,7 +117,6 @@
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
             android:maxWidth="180dp"
-            android:maxLines="1"
             app:autoSizeMaxTextSize="20dp"
             app:autoSizeMinTextSize="2dp"
             tools:text="87,547,000.000" />
