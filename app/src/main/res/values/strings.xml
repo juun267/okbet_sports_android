@@ -21,6 +21,7 @@
     <string name="unknown_error">未知错误</string>
     <string name="error_reading_file">档案读取错误</string>
     <string name="message_guest_no_permission">试玩账号无权访问，请先注册</string>
+    <string name="message_socket_connect">网路连接超时,请重新连线</string>
 
 
     <!--network message-->
