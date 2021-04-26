@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Handler
 import android.text.Editable
 import android.text.TextUtils
@@ -31,7 +30,6 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import java.lang.Exception
 
-const val NOT_INPLAY: Int = 0
 const val INPLAY: Int = 1
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
