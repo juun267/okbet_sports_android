@@ -4,9 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -28,7 +25,6 @@ import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
 import org.cxct.sportlottery.util.VerifyConstUtil
-import timber.log.Timber
 
 class MoneyRechViewModel(
     private val androidContext: Context,
@@ -56,15 +52,25 @@ class MoneyRechViewModel(
         get() = _transferPayList
     private var _transferPayList = MutableLiveData<MutableList<MoneyPayWayData>>()
 
-    //Submit後API回傳
-    val apiResult: LiveData<MoneyAddResult>
-        get() = _apiResult
-    private var _apiResult = MutableLiveData<MoneyAddResult>()
+    //轉帳充值後API回傳
+    val transferPayResult: LiveData<MoneyAddResult>
+        get() = _transferPayResult
+    private var _transferPayResult = MutableLiveData<MoneyAddResult>()
 
-    //在線充值提交申請
-    val onlinePaySubmit: LiveData<Long>
-        get() = _onlinePaySubmit
-    private var _onlinePaySubmit = MutableLiveData<Long>()
+    //在線充值提交申請API回傳
+    val onlinePayResult: LiveData<Long>
+        get() = _onlinePayResult
+    private var _onlinePayResult = MutableLiveData<Long>()
+
+    //虛擬幣在線充值提交申請API回傳
+    val onlinePayCryptoResult: LiveData<Long>
+        get() = _onlinePayCryptoResult
+    private var _onlinePayCryptoResult = MutableLiveData<Long>()
+
+    //虛擬幣轉帳充值後API回傳
+    val cryptoPayResult: LiveData<MoneyAddResult>
+        get() = _cryptoPayResult
+    private var _cryptoPayResult = MutableLiveData<MoneyAddResult>()
 
     //充值金額錯誤訊息
     val rechargeAmountMsg: LiveData<String>
@@ -185,7 +191,7 @@ class MoneyRechViewModel(
         }
     }
 
-    //轉帳支付充值
+    //轉帳支付 - 一般充值
     private fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
         if (checkTransferPayInput()) {
             viewModelScope.launch {
@@ -193,12 +199,12 @@ class MoneyRechViewModel(
                     moneyRepository.rechargeAdd(moneyAddRequest)
                 }.let {
                     it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
-                    _apiResult.value = it
+                    _transferPayResult.value = it
                 }
             }
         }
     }
-    //虛擬幣的充值 最後顯示的RMB要自己換算
+    //轉帳支付 - 虛擬幣充值 最後顯示的RMB要自己換算
     private fun rechargeAdd(moneyAddRequest: MoneyAddRequest, rechargeMoney:String) {
         if (checkTransferPayInput()) {
             viewModelScope.launch {
@@ -206,13 +212,13 @@ class MoneyRechViewModel(
                     moneyRepository.rechargeAdd(moneyAddRequest)
                 }.let {
                     it?.result = rechargeMoney//金額帶入result
-                    _apiResult.value = it
+                    _cryptoPayResult.value = it
                 }
             }
         }
     }
 
-    //在線支付
+    //在線支付 - 一般充值
     fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: String, bankCode: String?) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
@@ -226,11 +232,11 @@ class MoneyRechViewModel(
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
 
-            _onlinePaySubmit.value = depositMoney.toLong() //金額帶入result
+            _onlinePayResult.value = depositMoney.toLong() //金額帶入result
         }
     }
 
-    //在線支付 - 虛擬幣 //TODO Bill 確認API參數
+    //在線支付 - 虛擬幣充值
     fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: String, payee: String?,payeeName: String?) {
         checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
@@ -245,7 +251,7 @@ class MoneyRechViewModel(
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
 
-            _onlinePaySubmit.value = depositMoney.toLong() //金額帶入result
+            _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(), (mSelectRechCfgs?.exchangeRate ?: 0.0)).toLong() //金額帶入result
         }
     }
 

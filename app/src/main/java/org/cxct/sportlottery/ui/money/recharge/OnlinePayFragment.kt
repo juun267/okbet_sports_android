@@ -70,7 +70,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         })
 
         //在線充值成功
-        viewModel.onlinePaySubmit.observe(this.viewLifecycleOwner, {
+        viewModel.onlinePayResult.observe(this.viewLifecycleOwner, {
             resetEvent()
         })
     }
@@ -297,7 +297,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         var count = 1
 
         payRoadSpannerList = mutableListOf()
-        val title = mMoneyPayWay?.title
 
         if (rechCfgsList.size > 1)
             rechCfgsList.forEach { it ->

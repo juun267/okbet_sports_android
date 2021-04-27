@@ -173,7 +173,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             txv_wallet_money.text = (ArithUtil.toMoneyFormat(it?.money)) + " RMB"
         })
 
-        viewModel.apiResult.observe(viewLifecycleOwner,  {
+        viewModel.transferPayResult.observe(viewLifecycleOwner,  {
             if (it.success) {
                 resetEvent()
                 getBankType(0)

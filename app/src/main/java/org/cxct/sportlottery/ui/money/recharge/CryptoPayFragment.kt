@@ -184,7 +184,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             et_transaction_id.setError(it)
         })
         //API回傳結果
-        viewModel.apiResult.observe(viewLifecycleOwner, {
+        viewModel.cryptoPayResult.observe(viewLifecycleOwner, {
             if (it.success) {
                 resetEvent()
             }

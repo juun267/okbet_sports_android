@@ -486,6 +486,7 @@
     <string name="btn_service">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
+    <string name="txv_crypto_pay">虚拟币转账</string>
     <string name="error_recharge_amount">充值金额格式或数值错误</string>
     <string name="error_recharge_account">充值个数或数值错误</string>
     <string name="error_recharge_amount_empty">充值金额为必填栏位</string>
