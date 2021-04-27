@@ -44,7 +44,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
-    private var mCloseOddsDetail = true
 
     private var mSportMenuResult: SportMenuResult? = null
     private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
@@ -457,13 +456,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.isParlayPage(false)
     }
 
-    private fun popAllFragment() {
-        val manager = supportFragmentManager
-        for (i in 0 until manager.backStackEntryCount) {
-            supportFragmentManager.popBackStack()
-        }
-    }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
@@ -534,8 +526,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
         }
-
-        mCloseOddsDetail = true
     }
 
     private fun navOddsDetailFragment(sportType: SportType, matchId: String) {
