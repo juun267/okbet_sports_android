@@ -111,14 +111,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:gravity="center_vertical"
-            android:maxWidth="120dp"
-            android:maxLines="1"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
+            android:maxWidth="180dp"
             app:autoSizeMaxTextSize="20dp"
             app:autoSizeMinTextSize="2dp"
-            app:autoSizeTextType="uniform"
             tools:text="87,547,000.000" />
 
         <TextView
@@ -129,7 +127,7 @@
             android:gravity="center_vertical"
             android:text="@string/bet_info_list_rmb"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <ImageButton
             android:id="@+id/btn_refresh_money"
