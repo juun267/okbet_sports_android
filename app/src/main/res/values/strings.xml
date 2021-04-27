@@ -497,7 +497,7 @@
     <string name="title_currency">协议/币种</string>
     <string name="title_choose_currency">选择协议/币种</string>
     <string name="txv_recharge_count">充值个数</string>
-    <string name="edt_hint_crypto_pay_count">限额最低%1$s个，最高%2$s个</string>
+    <string name="edt_hint_crypto_pay_count">限额 %1$s ~ %2$s 个</string>
     <string name="hint_rate">・汇率：%1$s</string>
     <string name="title_transaction_id">区块链交易ID</string>
     <string name="hint_transaction_id">请输入您的区块链ID</string>
@@ -515,9 +515,16 @@
     <string name="title_reupload_pic">重新上传支付截图</string>
     <string name="title_click_upload_pic">请点击上传支付成功截图</string>
     <string name="hint_remark">备注：%1$s</string>
+
+    <string name="title_alipay">支付宝</string>
+    <string name="title_cft">财付通</string>
+    <string name="title_weixin">微信</string>
+
+    <string name="online_bank">在线网银</string>
     <string name="online_alipay">在线支付宝</string>
-    <string name="online_cft">在线财付通</string>
     <string name="online_weixin">在线微信</string>
+    <string name="online_qq">在线QQ</string>
+    <string name="online_credit_card">在线信用卡</string>
 
 
 

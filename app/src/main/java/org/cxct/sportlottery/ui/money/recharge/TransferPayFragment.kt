@@ -289,6 +289,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setDate(TimeUtil.toCalendar(Date()))
             .setTimeSelectChangeListener {  }
             .setType(booleanArrayOf(true, true, true, true, true, false))
+            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setSubmitColor(resources.getColor(R.color.colorGrayLight))
+            .setCancelColor(resources.getColor(R.color.colorGrayLight))
             .isDialog(true)
             .addOnCancelClickListener { }
             .build() as TimePickerView

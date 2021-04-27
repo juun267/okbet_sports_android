@@ -368,5 +368,6 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
     private fun resetEvent() {
         clearFocus()
         et_recharge_account.setText("")
+        viewModel.clearnRechargeStatus()
     }
 }
