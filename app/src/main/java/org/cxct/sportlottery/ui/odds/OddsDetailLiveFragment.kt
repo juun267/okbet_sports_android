@@ -101,13 +101,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         unsubscribeAllHallChannel()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        viewModel.removeOddsDetailPageValue()
-    }
-
+    
     private fun setWebView() {
         web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}&lang=${LanguageManager.getSelectLanguage(context).key}")
     }
@@ -202,35 +196,37 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     @SuppressLint("SetTextI18n")
     private fun observeData() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                    result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                        val strVerse = getString(R.string.verse_)
+                        val strMatch = "$home${strVerse}$away"
+                        val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+                        val startPosition = strMatch.indexOf(strVerse)
+                        val endPosition = startPosition + strVerse.length
+                        val style = SpannableStringBuilder(strMatch)
+                        style.setSpan(
+                            ForegroundColorSpan(color),
+                            startPosition,
+                            endPosition,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
 
-            it?.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                it.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                    val strVerse = getString(R.string.verse_)
-                    val strMatch = "$home${strVerse}$away"
-                    val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
-                    val startPosition = strMatch.indexOf(strVerse)
-                    val endPosition = startPosition + strVerse.length
-                    val style = SpannableStringBuilder(strMatch)
-                    style.setSpan(
-                        ForegroundColorSpan(color),
-                        startPosition,
-                        endPosition,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                        oddsDetailListAdapter?.homeName = home
+                        oddsDetailListAdapter?.awayName = away
 
-                    oddsDetailListAdapter?.homeName = home
-                    oddsDetailListAdapter?.awayName = away
-
+                    }
                 }
             }
-
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            if (it.size > 0) {
-                oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-                oddsDetailListAdapter?.notifyDataSetChanged()
+            it.getContentIfNotHandled()?.let {
+                if (it.size > 0) {
+                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
+                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
+                    oddsDetailListAdapter?.notifyDataSetChanged()
+                }
             }
         })
 

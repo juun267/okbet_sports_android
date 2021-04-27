@@ -191,16 +191,16 @@ class GameViewModel(
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
 
-    private val _oddsDetailResult = MutableLiveData<OddsDetailResult?>()
-    val oddsDetailResult: LiveData<OddsDetailResult?>
+    private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>>()
+    val oddsDetailResult: LiveData<Event<OddsDetailResult?>>
         get() = _oddsDetailResult
 
-    private val _playCateListResult = MutableLiveData<PlayCateListResult?>()
-    val playCateListResult: LiveData<PlayCateListResult?>
+    private val _playCateListResult = MutableLiveData<Event<PlayCateListResult?>>()
+    val playCateListResult: LiveData<Event<PlayCateListResult?>>
         get() = _playCateListResult
 
-    private val _oddsDetailList = MutableLiveData<ArrayList<OddsDetailListData>>()
-    val oddsDetailList: LiveData<ArrayList<OddsDetailListData>>
+    private val _oddsDetailList = MutableLiveData<Event<ArrayList<OddsDetailListData>>>()
+    val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
@@ -822,7 +822,13 @@ class GameViewModel(
                 dateRow.add(Date("", TimeUtil.getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
-                TimeUtil.getFutureDate(7).forEach {
+                dateRow.add(
+                    Date(
+                        androidContext.getString(R.string.date_row_all),
+                        TimeUtil.getParlayAllTimeRangeParams()
+                    )
+                )
+                TimeUtil.getFutureDate(6).forEach {
                     dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
                 }
                 dateRow.add(
@@ -1135,7 +1141,7 @@ class GameViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
             }
-            _oddsDetailResult.postValue(result)
+            _oddsDetailResult.postValue(Event(result))
             result?.success?.let {
                 val list: ArrayList<OddsDetailListData> = ArrayList()
                 if (it) {
@@ -1177,16 +1183,10 @@ class GameViewModel(
                         )
                     }
 
-                    _oddsDetailList.postValue(list)
+                    _oddsDetailList.postValue(Event(list))
                 }
             }
         }
-    }
-
-    fun removeOddsDetailPageValue() {
-        _playCateListResult.postValue(null)
-        _oddsDetailResult.postValue(null)
-        _oddsDetailList.postValue(ArrayList())
     }
 
     fun getPlayCateList(gameType: String) {
@@ -1194,7 +1194,7 @@ class GameViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.playCateListService.getPlayCateList(gameType)
             }
-            _playCateListResult.postValue(result)
+            _playCateListResult.postValue(Event(result))
         }
     }
 

@@ -159,7 +159,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    viewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
+                    viewModel.playCateListResult.value?.peekContent()?.rows?.get(t)?.code?.let {
                         (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(
                             it
                         )
@@ -173,73 +173,78 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.playCateListResult.observe(this.viewLifecycleOwner, { result ->
-            result?.success?.let {
-                if (it) {
-                    dataBinding.tabCat.removeAllTabs()
-                    if (result.rows.isNotEmpty()) {
-                        for (row in result.rows) {
-                            dataBinding.tabCat.addTab(
-                                dataBinding.tabCat.newTab().setText("   ${row.name}   "),
-                                false
-                            )
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                result?.success?.let {
+                    if (it) {
+                        dataBinding.tabCat.removeAllTabs()
+                        if (result.rows.isNotEmpty()) {
+                            for (row in result.rows) {
+                                dataBinding.tabCat.addTab(
+                                    dataBinding.tabCat.newTab().setText("   ${row.name}   "),
+                                    false
+                                )
+                            }
+                        } else {
+                            dataBinding.tabCat.visibility = View.GONE
                         }
-                    } else {
-                        dataBinding.tabCat.visibility = View.GONE
                     }
                 }
             }
         })
 
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
-            it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
-                val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
-                val startPosition = strTime.length - TIME_LENGTH
-                val endPosition = strTime.length
-                val style = SpannableStringBuilder(strTime)
-                style.setSpan(
-                    ForegroundColorSpan(color),
-                    startPosition,
-                    endPosition,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                dataBinding.tvTime.text = style
-            }
-
-            it?.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                it.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                    val strVerse = getString(R.string.verse_)
-                    val strMatch = "$home${strVerse}$away"
-                    val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
-                    val startPosition = strMatch.indexOf(strVerse)
-                    val endPosition = startPosition + strVerse.length
-                    val style = SpannableStringBuilder(strMatch)
+            it.getContentIfNotHandled()?.let { result ->
+                result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
+                    val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
+                    val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
+                    val startPosition = strTime.length - TIME_LENGTH
+                    val endPosition = strTime.length
+                    val style = SpannableStringBuilder(strTime)
                     style.setSpan(
                         ForegroundColorSpan(color),
                         startPosition,
                         endPosition,
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
-                    dataBinding.tvMatch.text = style
+                    dataBinding.tvTime.text = style
+                }
 
-                    oddsDetailListAdapter?.homeName = home
-                    oddsDetailListAdapter?.awayName = away
+                result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                    result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                        val strVerse = getString(R.string.verse_)
+                        val strMatch = "$home${strVerse}$away"
+                        val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+                        val startPosition = strMatch.indexOf(strVerse)
+                        val endPosition = startPosition + strVerse.length
+                        val style = SpannableStringBuilder(strMatch)
+                        style.setSpan(
+                            ForegroundColorSpan(color),
+                            startPosition,
+                            endPosition,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        dataBinding.tvMatch.text = style
 
+                        oddsDetailListAdapter?.homeName = home
+                        oddsDetailListAdapter?.awayName = away
+
+                    }
                 }
             }
-
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            if (it.isNotEmpty()) {
-                oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-                oddsDetailListAdapter?.notifyDataSetChanged()
+            it.getContentIfNotHandled()?.let {
+                if (it.isNotEmpty()) {
+                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
+                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
+                    oddsDetailListAdapter?.notifyDataSetChanged()
 
-                dataBinding.tabCat.getTabAt(0)?.select()
-            } else {
-                navGameInPlay()
+                    dataBinding.tabCat.getTabAt(0)?.select()
+                } else {
+                    navGameInPlay()
+                }
             }
         })
 
@@ -313,11 +318,5 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onStop()
 
         service.unsubscribeEventChannel(matchId)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        viewModel.removeOddsDetailPageValue()
     }
 }
