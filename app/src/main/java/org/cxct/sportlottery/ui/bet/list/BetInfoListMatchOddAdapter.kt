@@ -118,23 +118,31 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                     )
                 } else matchOdd.playCateName
 
-            when (matchOdd.status) {
-                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
-                    binding.tvCloseWarning.apply {
-                        visibility = View.VISIBLE
-                        text = context.getString(R.string.bet_info_list_game_closed)
-                    }
-                    (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 0.dp
-                }
 
-                BetStatus.ACTIVATED.code -> {
-                    binding.tvCloseWarning.visibility = View.GONE
-                    setChangeOdds(
+            if(matchOdd.gameType == matchOddList[0].gameType) {
+                when (matchOdd.status) {
+                    BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                        binding.tvCloseWarning.apply {
+                            visibility = View.VISIBLE
+                            text = context.getString(R.string.bet_info_list_game_closed)
+                        }
+                        (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 0.dp
+                    }
+
+                    BetStatus.ACTIVATED.code -> {
+                        binding.tvCloseWarning.visibility = View.GONE
+                        setChangeOdds(
                             binding.betInfoDetail.tvOdds,
                             binding.tvCloseWarning,
                             matchOdd,
-                    )
-                    (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp
+                        )
+                        (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp
+                    }
+                }
+            }else{
+                binding.tvCloseWarning.apply {
+                    visibility = View.VISIBLE
+                    text = context.getString(R.string.bet_info_different_game_type)
                 }
             }
             binding.executePendingBindings()

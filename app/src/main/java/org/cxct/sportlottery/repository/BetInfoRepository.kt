@@ -119,4 +119,12 @@ class BetInfoRepository {
     }
 
 
+    fun saveOddsHasChanged(matchOdd: MatchOdd) {
+        val hasChanged = betList.find {
+            it.matchOdd.oddsId == matchOdd.oddsId
+        }
+        hasChanged?.oddsHasChanged = true
+    }
+
+
 }
