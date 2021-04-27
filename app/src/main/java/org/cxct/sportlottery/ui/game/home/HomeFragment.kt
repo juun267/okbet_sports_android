@@ -70,23 +70,23 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initEvent() {
         card_football.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.FOOTBALL)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.FOOTBALL)
         }
 
         card_basketball.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.BASKETBALL)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.BASKETBALL)
         }
 
         card_tennis.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.TENNIS)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.TENNIS)
         }
 
         card_badminton.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.BADMINTON)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.BADMINTON)
         }
 
         card_volleyball.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.VOLLEYBALL)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.VOLLEYBALL)
         }
 
         card_game_soon.setOnClickListener {
@@ -207,7 +207,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
-                viewModel.getGameHallList(MatchType.IN_PLAY, select.code, isPreloadTable = true)
+                val sportType = when (select.code) {
+                    SportType.FOOTBALL.code -> SportType.FOOTBALL
+                    SportType.BASKETBALL.code -> SportType.BASKETBALL
+                    SportType.TENNIS.code -> SportType.TENNIS
+                    SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                    SportType.BADMINTON.code -> SportType.BADMINTON
+                    else -> null
+                }
+                viewModel.getGameHallList(MatchType.IN_PLAY, sportType, isPreloadTable = true)
             }
         })
     }
@@ -226,7 +234,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_today.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
-                viewModel.getGameHallList(MatchType.TODAY, select.code, isPreloadTable = true)
+                val sportType = when (select.code) {
+                    SportType.FOOTBALL.code -> SportType.FOOTBALL
+                    SportType.BASKETBALL.code -> SportType.BASKETBALL
+                    SportType.TENNIS.code -> SportType.TENNIS
+                    SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                    SportType.BADMINTON.code -> SportType.BADMINTON
+                    else -> null
+                }
+                viewModel.getGameHallList(MatchType.TODAY, sportType, isPreloadTable = true)
             }
         })
     }
