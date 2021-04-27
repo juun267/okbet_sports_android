@@ -104,6 +104,9 @@ object Constants {
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
     const val INDEX_PROMOTENOTICE = "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
 
+    //parlay limit
+    const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
+
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
 
