@@ -104,7 +104,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                 //顯示彈窗
                 val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
                 with(customAlertDialog) {
-                    setTitle("提示")
+                    setTitle(resources.getString(R.string.prompt))
                     setMessage(apiResult.msg)
                     setNegativeButtonText(null)
                 }.let {
@@ -143,7 +143,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                 //顯示彈窗
                 val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
                 with(customAlertDialog) {
-                    setTitle("提示")
+                    setTitle(resources.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
                 }.let {
