@@ -334,6 +334,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
+        receiver.orderSettlement.observe(this, {
+            //TODO Dean : add notification by NotificationView
+        })
+
         viewModel.isLogin.observe(this, {
             updateUiWithLogin(it)
             getAnnouncement()
@@ -381,7 +385,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.systemDelete.observe(this, {
             if (it) {
-                showErrorPromptDialog(getString(R.string.prompt),getString(R.string.bet_info_system_close_incompatible_item)){}
+                showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_system_close_incompatible_item)) {}
             }
         })
 
@@ -452,7 +456,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.getSportMenu()
     }
 
-    private fun defaultPage(){
+    private fun defaultPage() {
         viewModel.isParlayPage(false)
     }
 
