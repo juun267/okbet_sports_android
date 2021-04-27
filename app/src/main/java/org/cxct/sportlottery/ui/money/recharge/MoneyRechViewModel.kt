@@ -57,15 +57,15 @@ class MoneyRechViewModel(
         get() = _transferPayResult
     private var _transferPayResult = MutableLiveData<MoneyAddResult>()
 
-    //在線充值提交申請
-    val onlinePaySubmit: LiveData<Long>
-        get() = _onlinePaySubmit
-    private var _onlinePaySubmit = MutableLiveData<Long>()
+    //在線充值提交申請API回傳
+    val onlinePayResult: LiveData<Long>
+        get() = _onlinePayResult
+    private var _onlinePayResult = MutableLiveData<Long>()
 
-    //虛擬幣在線充值提交申請
-    val onlinePayCryptoSubmit: LiveData<Long>
-        get() = _onlinePayCryptoSubmit
-    private var _onlinePayCryptoSubmit = MutableLiveData<Long>()
+    //虛擬幣在線充值提交申請API回傳
+    val onlinePayCryptoResult: LiveData<Long>
+        get() = _onlinePayCryptoResult
+    private var _onlinePayCryptoResult = MutableLiveData<Long>()
 
     //虛擬幣轉帳充值後API回傳
     val cryptoPayResult: LiveData<MoneyAddResult>
@@ -232,7 +232,7 @@ class MoneyRechViewModel(
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
 
-            _onlinePaySubmit.value = depositMoney.toLong() //金額帶入result
+            _onlinePayResult.value = depositMoney.toLong() //金額帶入result
         }
     }
 
@@ -251,7 +251,7 @@ class MoneyRechViewModel(
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
 
-            _onlinePayCryptoSubmit.value = ArithUtil.mul(depositMoney.toDouble(), (mSelectRechCfgs?.exchangeRate ?: 0.0)).toLong() //金額帶入result
+            _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(), (mSelectRechCfgs?.exchangeRate ?: 0.0)).toLong() //金額帶入result
         }
     }
 

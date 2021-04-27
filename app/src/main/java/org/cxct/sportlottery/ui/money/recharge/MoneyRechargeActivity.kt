@@ -174,7 +174,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
         })
 
         //在線支付 - 提交申請
-        viewModel.onlinePaySubmit.observe(this@MoneyRechargeActivity, Observer {
+        viewModel.onlinePayResult.observe(this@MoneyRechargeActivity, Observer {
             val payWay = this.getString(R.string.txv_online_pay)
 
             //顯示成功彈窗
@@ -202,7 +202,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
         })
 
         //在線支付 - 虛擬幣
-        viewModel.onlinePayCryptoSubmit.observe(this@MoneyRechargeActivity, Observer {
+        viewModel.onlinePayCryptoResult.observe(this@MoneyRechargeActivity, Observer {
             val payWay = this.getString(R.string.txv_crypto_pay)
 
             //顯示成功彈窗

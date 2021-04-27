@@ -70,7 +70,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         })
 
         //在線充值成功
-        viewModel.onlinePaySubmit.observe(this.viewLifecycleOwner, {
+        viewModel.onlinePayResult.observe(this.viewLifecycleOwner, {
             resetEvent()
         })
     }
