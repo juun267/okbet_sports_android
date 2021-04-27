@@ -32,6 +32,8 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
 
     var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
 
+    var cryptoResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
+
     private val CYRPTOPAY_INDEX = 11 //11-虚拟币支付
 
 
@@ -92,13 +94,11 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
             }
         })
 
-        viewModel.apiResult.observe(this@MoneyRechargeActivity, Observer {
+        //轉帳支付 - 銀行 微信 支付寶...
+        viewModel.transferPayResult.observe(this@MoneyRechargeActivity, Observer {
             apiResult = it ?: return@Observer
 
-            val payWay = if (btn_transfer_pay.isSelected)
-                this.getString(R.string.txv_transfer_pay)
-            else
-                this.getString(R.string.txv_online_pay)
+            val payWay = this.getString(R.string.txv_transfer_pay)
 
             if (!apiResult.success) {
                 //顯示彈窗
@@ -133,8 +133,47 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                 moneySubmitDialog.show(supportFragmentManager, "")
             }
         })
+        //轉帳支付 - 虛擬幣
+        viewModel.cryptoPayResult.observe(this@MoneyRechargeActivity, Observer {
+            cryptoResult = it ?: return@Observer
 
-        //在線支付提交申請
+            val payWay = this.getString(R.string.txv_crypto_pay)
+
+            if (!cryptoResult.success) {
+                //顯示彈窗
+                val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
+                with(customAlertDialog) {
+                    setTitle("提示")
+                    setMessage(cryptoResult.msg)
+                    setNegativeButtonText(null)
+                }.let {
+                    customAlertDialog.show()
+                }
+            } else {
+                //顯示成功彈窗
+                val moneySubmitDialog = MoneySubmitDialog(
+                    payWay,
+                    (cryptoResult.result ?: 0).toString(),
+                    MoneySubmitDialog.MoneySubmitDialogListener({
+                        finish()
+                        startActivity(Intent(this, FinanceActivity::class.java).apply {
+                            putExtra(
+                                RechargeViewLog,
+                                getString(R.string.record_recharge)
+                            )
+                        })
+                    }, {
+                        showPromptDialog(
+                            getString(R.string.prompt),
+                            getString(R.string.content_coming_soon)
+                        ) {}
+                    })
+                )
+                moneySubmitDialog.show(supportFragmentManager, "")
+            }
+        })
+
+        //在線支付 - 提交申請
         viewModel.onlinePaySubmit.observe(this@MoneyRechargeActivity, Observer {
             val payWay = this.getString(R.string.txv_online_pay)
 
@@ -159,9 +198,38 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
             )
 
             moneySubmitDialog.show(supportFragmentManager, "")
+            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
         })
 
+        //在線支付 - 虛擬幣
+        viewModel.onlinePayCryptoSubmit.observe(this@MoneyRechargeActivity, Observer {
+            val payWay = this.getString(R.string.txv_crypto_pay)
+
+            //顯示成功彈窗
+            val moneySubmitDialog = MoneySubmitDialog(
+                payWay,
+                it.toString(),
+                MoneySubmitDialog.MoneySubmitDialogListener({
+                    finish()
+                    startActivity(Intent(this, FinanceActivity::class.java).apply {
+                        putExtra(
+                            RechargeViewLog,
+                            getString(R.string.record_recharge)
+                        )
+                    })
+                }, {
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.content_coming_soon)
+                    ) {}
+                })
+            )
+
+            moneySubmitDialog.show(supportFragmentManager, "")
+            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
+        })
     }
+
 
     private fun initButton() {
         btn_transfer_pay.setOnClickListener {

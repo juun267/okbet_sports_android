@@ -102,8 +102,8 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         })
 
         //在線充值成功
-        viewModel.onlinePaySubmit.observe(this.viewLifecycleOwner, {
-            et_recharge_account.setText("")
+        viewModel.onlinePayCryptoSubmit.observe(this.viewLifecycleOwner, {
+            resetEvent()
         })
     }
 

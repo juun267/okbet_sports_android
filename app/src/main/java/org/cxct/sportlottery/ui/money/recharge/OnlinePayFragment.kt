@@ -297,7 +297,6 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         var count = 1
 
         payRoadSpannerList = mutableListOf()
-        val title = mMoneyPayWay?.title
 
         if (rechCfgsList.size > 1)
             rechCfgsList.forEach { it ->
