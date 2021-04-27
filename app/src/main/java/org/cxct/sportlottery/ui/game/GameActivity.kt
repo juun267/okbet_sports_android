@@ -350,21 +350,27 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.matchTypeCardForParlay.observe(this, {
             val matchType = it?.getContentIfNotHandled()?.first
+
             app_bar_layout.setExpanded(true, false)
+
             when (matchType) {
-                MatchType.PARLAY -> {
-                    tabLayout.getTabAt(4)?.select()
-                }
-                MatchType.AT_START -> {
-                    toAtStart()
-                }
                 MatchType.IN_PLAY -> {
                     tabLayout.getTabAt(1)?.select()
                 }
                 MatchType.TODAY -> {
                     tabLayout.getTabAt(2)?.select()
                 }
-                else -> {
+                MatchType.EARLY -> {
+                    tabLayout.getTabAt(3)?.select()
+                }
+                MatchType.PARLAY -> {
+                    tabLayout.getTabAt(4)?.select()
+                }
+                MatchType.OUTRIGHT -> {
+                    tabLayout.getTabAt(5)?.select()
+                }
+                MatchType.AT_START -> {
+                    toAtStart()
                 }
             }
         })
