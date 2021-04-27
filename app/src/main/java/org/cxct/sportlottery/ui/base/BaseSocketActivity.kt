@@ -5,6 +5,7 @@ import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import androidx.lifecycle.Observer
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -54,8 +55,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         receiver.serviceConnectStatus.observe(this, Observer { status ->
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
-                    //TODO : 待PM確認Socket重連行為
-                    showErrorPromptDialog("Socket 重連次數超過上限 請重新啟動App (測試文字, 待產品規劃行為及文案)") {}
+                    showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService.doReconnect() }
                 }
                 else -> {
                     //do nothing

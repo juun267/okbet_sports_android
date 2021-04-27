@@ -21,6 +21,7 @@
     <string name="unknown_error">未知错误</string>
     <string name="error_reading_file">档案读取错误</string>
     <string name="message_guest_no_permission">试玩账号无权访问，请先注册</string>
+    <string name="message_socket_connect">网路连接超时,请重新连线</string>
 
 
     <!--network message-->
@@ -269,6 +270,7 @@
     <string name="recharge">充值</string>
     <string name="more_service">更多服务</string>
     <string name="account_transfer">额度转换</string>
+    <string name="money_recycle_succeed">额度回收成功</string>
     <string name="news_center">消息中心</string>
     <string name="help_center">帮助中心</string>
     <string name="fund_detail">资金明细</string>
@@ -289,7 +291,7 @@
     <string name="modify_avatar">修改头像</string>
     <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
     <string name="take_a_picture">拍一张照片</string>
-    <string name="save_avatar_success">头像设置成功</string>
+    <string name="save_avatar_success">头像上传成功</string>
     <string name="no_set_avatar">没有设置头像</string>
 
     <!-- Modify Profile Info page-->
@@ -766,7 +768,7 @@
     <string name="qp">棋牌</string>
     <string name="dz">电子</string>
     <string name="by">捕鱼</string>
-    <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容， 致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
+    <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容，\n致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
     <string name="sport_bet_record">体育投注记录</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
