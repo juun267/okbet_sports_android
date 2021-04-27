@@ -184,7 +184,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             et_transaction_id.setError(it)
         })
         //API回傳結果
-        viewModel.apiResult.observe(viewLifecycleOwner, {
+        viewModel.cryptoPayResult.observe(viewLifecycleOwner, {
             if (it.success) {
                 resetEvent()
             }
@@ -220,9 +220,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun initTimePicker() {
         val yesterday = Calendar.getInstance()
-        yesterday.add(Calendar.DAY_OF_MONTH, -7)
+        yesterday.add(Calendar.DAY_OF_MONTH, -30)
         val tomorrow = Calendar.getInstance()
-        tomorrow.add(Calendar.DAY_OF_MONTH, +7)
+        tomorrow.add(Calendar.DAY_OF_MONTH, +30)
         dateTimePicker = TimePickerBuilder(activity,
             OnTimeSelectListener { date, _ ->
                 try {
@@ -236,6 +236,9 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .setDate(TimeUtil.toCalendar(Date()))
             .setTimeSelectChangeListener {  }
             .setType(booleanArrayOf(true, true, true, true, true, false))
+            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setSubmitColor(resources.getColor(R.color.colorGrayLight))
+            .setCancelColor(resources.getColor(R.color.colorGrayLight))
             .isDialog(true)
             .addOnCancelClickListener { }
             .build() as TimePickerView
@@ -319,6 +322,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     mAccountBottomSheetList,
                     BankBtsAdapter.BankAdapterListener { _, position ->
                         refreshAccount(position)
+                        resetEvent()
                         dismiss()
                     })
                 lv_bank_item.adapter = accountBtsAdapter

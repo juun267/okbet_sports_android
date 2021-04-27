@@ -44,7 +44,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
-    private var mCloseOddsDetail = true
 
     private var mSportMenuResult: SportMenuResult? = null
     private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
@@ -243,53 +242,44 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tabLayout.clearOnTabSelectedListeners()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
-                if (mCloseOddsDetail) {
-                    popAllFragment()
-                }
-                viewModel.isParlayPage(tab?.position == 4)
-
-                when (tab?.position) {
-                    0 -> {
-                        mNavController.popBackStack(R.id.homeFragment, false)
-                    }
-                    1 -> {
-                        navGameFragment(MatchType.IN_PLAY)
-                    }
-                    2 -> {
-                        navGameFragment(MatchType.TODAY)
-                    }
-                    3 -> {
-                        navGameFragment(MatchType.EARLY)
-                    }
-                    4 -> {
-                        navGameFragment(MatchType.PARLAY)
-                    }
-                    5 -> {
-                        navGameFragment(MatchType.OUTRIGHT)
-                    }
-                }
+                selectTab(tab?.position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                popAllFragment()
-                if (tab?.position == 0) {
-                    val tabView = tabLayout.getTabAt(0)?.customView
-                    tabView?.tv_title?.isSelected = true
-                    tabView?.tv_number?.isSelected = true
-                    mNavController.popBackStack(R.id.homeFragment, false)
-                }
+                selectTab(tab?.position)
             }
         })
     }
 
+    private fun selectTab(position: Int?) {
+        viewModel.isParlayPage(position == 4)
+
+        when (position) {
+            0 -> {
+                mNavController.popBackStack(R.id.homeFragment, false)
+            }
+            1 -> {
+                navGameFragment(MatchType.IN_PLAY)
+            }
+            2 -> {
+                navGameFragment(MatchType.TODAY)
+            }
+            3 -> {
+                navGameFragment(MatchType.EARLY)
+            }
+            4 -> {
+                navGameFragment(MatchType.PARLAY)
+            }
+            5 -> {
+                navGameFragment(MatchType.OUTRIGHT)
+            }
+        }
+    }
+
     private fun navGameFragment(matchType: MatchType) {
-
-        viewModel.sportMenuSelectFirstItem(matchType)
-
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
@@ -359,22 +349,28 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.matchTypeCardForParlay.observe(this, {
-            val matchType = it.getContentIfNotHandled()
+            val matchType = it?.getContentIfNotHandled()?.first
+
             app_bar_layout.setExpanded(true, false)
+
             when (matchType) {
-                MatchType.PARLAY -> {
-                    tabLayout.getTabAt(4)?.select()
-                }
-                MatchType.AT_START -> {
-                    toAtStart()
-                }
                 MatchType.IN_PLAY -> {
                     tabLayout.getTabAt(1)?.select()
                 }
                 MatchType.TODAY -> {
                     tabLayout.getTabAt(2)?.select()
                 }
-                else -> {
+                MatchType.EARLY -> {
+                    tabLayout.getTabAt(3)?.select()
+                }
+                MatchType.PARLAY -> {
+                    tabLayout.getTabAt(4)?.select()
+                }
+                MatchType.OUTRIGHT -> {
+                    tabLayout.getTabAt(5)?.select()
+                }
+                MatchType.AT_START -> {
+                    toAtStart()
                 }
             }
         })
@@ -460,13 +456,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.isParlayPage(false)
     }
 
-    private fun popAllFragment() {
-        val manager = supportFragmentManager
-        for (i in 0 until manager.backStackEntryCount) {
-            supportFragmentManager.popBackStack()
-        }
-    }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
@@ -537,8 +526,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
         }
-
-        mCloseOddsDetail = true
     }
 
     private fun navOddsDetailFragment(sportType: SportType, matchId: String) {

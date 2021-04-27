@@ -1,15 +1,15 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_money_submit.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.ArithUtil
 
-class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogListener: MoneySubmitDialogListener) : BaseDialog<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogListener: MoneySubmitDialogListener)  : DialogFragment() {
     val _payWay = payWay
     val _payMoney = payMoney
 
@@ -18,6 +18,10 @@ class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogList
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        dialog?.setCanceledOnTouchOutside(true)
         return inflater.inflate(R.layout.dialog_money_submit, container, false)
     }
 
