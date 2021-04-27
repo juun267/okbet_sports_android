@@ -1,11 +1,10 @@
 package org.cxct.sportlottery.network.index.playquotacom.t
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class T(
+data class PlayQuotaComData(
     @Json(name = "OUTRIGHT@BK")
     val oUTRIGHTBK: OUTRIGHTBK,
     @Json(name = "OUTRIGHT@FT")
