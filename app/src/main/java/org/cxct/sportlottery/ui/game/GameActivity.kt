@@ -242,47 +242,41 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tabLayout.clearOnTabSelectedListeners()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
-                if (mCloseOddsDetail) {
-                    popAllFragment()
-                }
-                viewModel.isParlayPage(tab?.position == 4)
-
-                when (tab?.position) {
-                    0 -> {
-                        mNavController.popBackStack(R.id.homeFragment, false)
-                    }
-                    1 -> {
-                        navGameFragment(MatchType.IN_PLAY)
-                    }
-                    2 -> {
-                        navGameFragment(MatchType.TODAY)
-                    }
-                    3 -> {
-                        navGameFragment(MatchType.EARLY)
-                    }
-                    4 -> {
-                        navGameFragment(MatchType.PARLAY)
-                    }
-                    5 -> {
-                        navGameFragment(MatchType.OUTRIGHT)
-                    }
-                }
+                selectTab(tab?.position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                popAllFragment()
-                if (tab?.position == 0) {
-                    val tabView = tabLayout.getTabAt(0)?.customView
-                    tabView?.tv_title?.isSelected = true
-                    tabView?.tv_number?.isSelected = true
-                    mNavController.popBackStack(R.id.homeFragment, false)
-                }
+                selectTab(tab?.position)
             }
         })
+    }
+
+    private fun selectTab(position: Int?) {
+        viewModel.isParlayPage(position == 4)
+
+        when (position) {
+            0 -> {
+                mNavController.popBackStack(R.id.homeFragment, false)
+            }
+            1 -> {
+                navGameFragment(MatchType.IN_PLAY)
+            }
+            2 -> {
+                navGameFragment(MatchType.TODAY)
+            }
+            3 -> {
+                navGameFragment(MatchType.EARLY)
+            }
+            4 -> {
+                navGameFragment(MatchType.PARLAY)
+            }
+            5 -> {
+                navGameFragment(MatchType.OUTRIGHT)
+            }
+        }
     }
 
     private fun navGameFragment(matchType: MatchType) {
