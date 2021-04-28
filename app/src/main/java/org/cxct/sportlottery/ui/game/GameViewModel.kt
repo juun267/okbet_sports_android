@@ -589,17 +589,6 @@ class GameViewModel(
         }
     }
 
-    fun updateMatchBetList(odd: org.cxct.sportlottery.network.odds.list.Odd) {
-        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
-        if (betItem == null) {
-            getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                matchType = this@GameViewModel.matchType
-            }))
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
     fun updateMatchBetList(
         matchType: MatchType,
         sportType: SportType,
