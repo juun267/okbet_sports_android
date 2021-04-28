@@ -372,7 +372,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column1.text.toString()
+                                        itemView.match_play_type_column1.text.toString(),
+                                        item.matchInfo?.homeName ?: ""
                                     )
                                 }
                             }
@@ -384,7 +385,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column1.text.toString()
+                                        itemView.match_play_type_column1.text.toString(),
+                                        item.matchInfo?.homeName ?: ""
                                     )
                                 }
                             }
@@ -505,7 +507,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column1.text.toString()
+                                        itemView.match_play_type_column1.text.toString(),
+                                        item.matchInfo?.awayName ?: ""
                                     )
                                 }
                             }
@@ -517,7 +520,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column1.text.toString()
+                                        itemView.match_play_type_column1.text.toString(),
+                                        item.matchInfo?.awayName ?: ""
                                     )
                                 }
                             }
@@ -649,7 +653,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column2.text.toString()
+                                        itemView.match_play_type_column2.text.toString(),
+                                        item.matchInfo?.homeName ?: ""
                                     )
                                 }
                             }
@@ -661,7 +666,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column2.text.toString()
+                                        itemView.match_play_type_column2.text.toString(),
+                                        item.matchInfo?.homeName ?: ""
                                     )
                                 }
                             }
@@ -793,7 +799,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column2.text.toString()
+                                        itemView.match_play_type_column2.text.toString(),
+                                        item.matchInfo?.awayName ?: ""
                                     )
                                 }
                             }
@@ -805,7 +812,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     leagueOddListener?.onClickBet(
                                         item,
                                         odd,
-                                        itemView.match_play_type_column2.text.toString()
+                                        itemView.match_play_type_column2.text.toString(),
+                                        item.matchInfo?.awayName ?: ""
                                     )
                                 }
                             }
@@ -981,7 +989,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             leagueOddListener?.onClickBet(
                                 item,
                                 odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title)
+                                itemView.context.getString(R.string.ou_hdp_1x2_title),
+                                item.matchInfo?.homeName ?: ""
                             )
                         }
                     }
@@ -1039,7 +1048,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             leagueOddListener?.onClickBet(
                                 item,
                                 odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title)
+                                itemView.context.getString(R.string.ou_hdp_1x2_title),
+                                itemView.context.getString(R.string.x12_x_play_name)
                             )
                         }
                     }
@@ -1114,7 +1124,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             leagueOddListener?.onClickBet(
                                 item,
                                 odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title)
+                                itemView.context.getString(R.string.ou_hdp_1x2_title),
+                                item.matchInfo?.awayName ?: ""
                             )
                         }
                     } else if (oddList1X2 != null && oddList1X2.size >= 3) {
@@ -1122,7 +1133,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             leagueOddListener?.onClickBet(
                                 item,
                                 odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title)
+                                itemView.context.getString(R.string.ou_hdp_1x2_title),
+                                item.matchInfo?.awayName ?: ""
                             )
                         }
                     }

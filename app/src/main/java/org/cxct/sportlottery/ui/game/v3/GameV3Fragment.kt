@@ -103,8 +103,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchOdd, odd, playCateName, _ ->
-                    addOddsDialog(matchOdd, odd, playCateName)
+                { matchOdd, odd, playCateName, playName ->
+                    addOddsDialog(matchOdd, odd, playCateName, playName)
                 }
             )
 
@@ -841,7 +841,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun addOddsDialog(matchOdd: MatchOdd, odd: Odd, playCateName: String) {
+    private fun addOddsDialog(
+        matchOdd: MatchOdd,
+        odd: Odd,
+        playCateName: String,
+        playName: String
+    ) {
         val sportType =
             when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
                 SportType.FOOTBALL.code -> SportType.FOOTBALL
@@ -857,7 +862,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 args.matchType,
                 sportType,
                 playCateName,
-                "",
+                playName,
                 matchOdd,
                 odd
             )

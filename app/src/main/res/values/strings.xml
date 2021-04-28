@@ -413,6 +413,7 @@
     <string name="ou_hdp_hdp_title_tennis">让盘</string>
     <string name="ou_hdp_hdp_title_v_b">让分</string>
     <string name="ou_hdp_1x2_title">独赢</string>
+    <string name="x12_x_play_name">和局</string>
     <string name="detail_outright_upper_bar_title">冠军</string>
     <string name="no_history">暂无任何内容</string>
     <string name="no_history_content">您当前的选择暂无任何内容呢～</string>
@@ -518,8 +519,6 @@
     <string name="online_alipay">在线支付宝</string>
     <string name="online_cft">在线财付通</string>
     <string name="online_weixin">在线微信</string>
-
-
 
 
     <!--  Withdraw  -->
