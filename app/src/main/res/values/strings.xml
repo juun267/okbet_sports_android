@@ -39,6 +39,10 @@
     <string name="error_incompatible_format">您输入的字元不符</string>
     <string name="error_wx_incompatible_format">微信ID格式错误</string>
 
+    <!--notification-->
+    <string name="congratulation_win">恭喜您 注單尾碼:%1$s 中獎:%2$s</string>
+    <string name="warning_cancel">提醒您 注單尾碼:%s 已被取消</string>
+
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>

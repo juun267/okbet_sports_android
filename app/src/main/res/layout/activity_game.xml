@@ -31,7 +31,16 @@
                     <include layout="@layout/view_toolbar_main" />
 
                     <!-- 公告輪播跑馬燈 -->
-                    <include layout="@layout/view_message" />
+                    <RelativeLayout
+                        android:id="@+id/cl_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <include layout="@layout/view_message" />
+                        <org.cxct.sportlottery.ui.common.NotificationView
+                            android:id="@+id/view_notification"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
 
                     <!-- 遊戲類別列表 -->
                     <LinearLayout

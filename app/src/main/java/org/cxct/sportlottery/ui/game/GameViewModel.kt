@@ -31,6 +31,9 @@ import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
+import org.cxct.sportlottery.network.service.order_settlement.SportBet
+import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -119,6 +122,9 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
+    val settlementNotificationMsg: LiveData<Event<SportBet>>
+        get() = _settlementNotificationMsg
+
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     val betInfoList = betInfoRepository.betInfoList
@@ -144,6 +150,7 @@ class GameViewModel(
     private val _asStartCount = MutableLiveData<Int>()
     private val _matchTypeCardForParlay = MutableLiveData<Event<Pair<MatchType, SportType?>>?>()
     private val _isNoHistory = MutableLiveData<Boolean>()
+    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -1009,7 +1016,7 @@ class GameViewModel(
         }
     }
 
-    fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd){
+    fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd) {
         betInfoRepository.saveOddsHasChanged(matchOdd)
     }
 
@@ -1304,5 +1311,15 @@ class GameViewModel(
         }
 
         _leagueListSearchResult.postValue(searchResult ?: listOf())
+    }
+
+    fun getSettlementNotification(event: OrderSettlementEvent?) {
+        event?.sportBet?.let {
+            when (it.status) {
+                Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
+                    _settlementNotificationMsg.value = Event(it)
+                }
+            }
+        }
     }
 }
