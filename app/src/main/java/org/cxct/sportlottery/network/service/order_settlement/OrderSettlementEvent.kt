@@ -65,3 +65,9 @@ data class MatchOdds(
     val status: Int?, //状态 0：未确认，1：未结算，2：赢，3：赢半，4：输，5：输半，6：和，7：已取消 //statusNameMap
     val mtsSelections: String?,
 )
+
+enum class Status(val statusName: String, val code: Int) {
+    WIN("赢", 2),
+    WIN_HALF("赢半", 3),
+    CANCEL("已取消", 7)
+}

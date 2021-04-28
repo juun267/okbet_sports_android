@@ -13,6 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_left.view.*
@@ -335,7 +336,12 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private fun initObserve() {
         receiver.orderSettlement.observe(this, {
-            //TODO Dean : add notification by NotificationView
+            viewModel.getSettlementNotification(it)
+        })
+
+        viewModel.settlementNotificationMsg.observe(this, {
+            val message = it.getContentIfNotHandled()
+            message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
         })
 
         viewModel.isLogin.observe(this, {
