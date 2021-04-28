@@ -11,26 +11,46 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
+import org.cxct.sportlottery.network.service.order_settlement.Status
 
 class NotificationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
-    private lateinit var rootLayout: ConstraintLayout
-    private lateinit var ivIcon: ImageView
-    private lateinit var tvMessage: TextView
-    var showTime: Long = 3000 //訊息顯示時間
-    var delayTime: Long = 1000 //訊息間間隔時間
+    private val rootLayout: ConstraintLayout by lazy { findViewById(R.id.cl_root) }
+    private val ivIcon: ImageView by lazy { findViewById(R.id.iv_broadcast_icon) }
+    private val tvMessage: TextView by lazy { findViewById(R.id.tv_notification) }
+
+    companion object {
+        private const val SHOW_TIME: Long = 3000 //訊息顯示持續時間
+        private const val DELAY_TIME: Long = 1000 //訊息間間隔時間
+        private const val ANIMATION_DURATION: Long = 1000 //動畫所需時間
+    }
+
     private val notificationList = mutableListOf<NotificationData>()
-    private val animationListener = object : Animation.AnimationListener {
+
+    //動畫開始時顯示, 結束後隱藏
+    private val animationStartListener = object : Animation.AnimationListener {
         override fun onAnimationStart(animation: Animation?) {
+            rootLayout.visibility = View.VISIBLE
         }
 
         override fun onAnimationEnd(animation: Animation?) {
-            rootLayout.visibility = View.INVISIBLE
-            postDelayed(notificationRunnable, delayTime)
         }
 
         override fun onAnimationRepeat(animation: Animation?) {
         }
     }
+    private val animationEndListener = object : Animation.AnimationListener {
+        override fun onAnimationStart(animation: Animation?) {
+        }
+
+        override fun onAnimationEnd(animation: Animation?) {
+            rootLayout.visibility = View.INVISIBLE
+            postDelayed(notificationRunnable, DELAY_TIME)
+        }
+
+        override fun onAnimationRepeat(animation: Animation?) {
+        }
+    }
+
     private val notificationRunnable = Runnable {
         if (notificationList.size == 0) {
             handlerRunning = false
@@ -39,9 +59,9 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
         handlerRunning = true
 
         getNotification()
-        postDelayed({ hideAnimation() }, showTime)
+        postDelayed({ hideAnimation() }, SHOW_TIME)
     }
-    var handlerRunning: Boolean = false
+    var handlerRunning: Boolean = false //通知訊息是否正在顯示
 
 
     data class NotificationData(val orderNo: String?, val grossWin: Double?, val status: Int?)
@@ -49,10 +69,6 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
     init {
         View.inflate(context, R.layout.view_notification, this)
         apply {
-            rootLayout = findViewById(R.id.cl_root)
-            ivIcon = findViewById(R.id.iv_broadcast_icon)
-            tvMessage = findViewById(R.id.tv_notification)
-
             rootLayout.apply {
                 visibility = View.INVISIBLE
             }
@@ -66,13 +82,13 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
 
         try {
             when (notification?.status) {
-                2, 3 -> {
+                Status.WIN.code, Status.WIN_HALF.code -> {
                     rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlue))
                     ivIcon.setImageResource(R.drawable.ic_good_news)
                     tvMessage.text = String.format(context.getString(R.string.congratulation_win), tailOrderNo, notification.grossWin?.toString() ?: run { "" })
                     this.requestLayout()
                 }
-                7 -> {
+                Status.CANCEL.code -> {
                     rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
                     ivIcon.setImageResource(R.drawable.ic_warnning_news)
                     tvMessage.text = String.format(context.getString(R.string.warning_cancel), tailOrderNo)
@@ -93,14 +109,14 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     private fun showAnimation() {
-        val startAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_top_to_bottom_enter).apply { duration = 1000 }
-        rootLayout.visibility = View.VISIBLE
+        val startAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_top_to_bottom_enter).apply { duration = ANIMATION_DURATION }
+        startAnimation.setAnimationListener(animationStartListener)
         rootLayout.startAnimation(startAnimation)
     }
 
     private fun hideAnimation() {
-        val exitAnimation = AnimationUtils.loadAnimation(context, R.anim.push_bottom_to_top_exit).apply { duration = 1000 }
-        exitAnimation.setAnimationListener(animationListener)
+        val exitAnimation = AnimationUtils.loadAnimation(context, R.anim.push_bottom_to_top_exit).apply { duration = ANIMATION_DURATION }
+        exitAnimation.setAnimationListener(animationEndListener)
         rootLayout.startAnimation(exitAnimation)
 
     }
