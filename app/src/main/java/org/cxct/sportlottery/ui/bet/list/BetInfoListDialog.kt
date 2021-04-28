@@ -123,7 +123,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
-    private fun subscribeChannel(list: MutableList<BetInfoListData>){
+    private fun subscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
                 service.subscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)

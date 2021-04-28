@@ -227,7 +227,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
-                navOddsDetailFragment(select.code, select.match?.id, "EU")
+                navOddsDetailFragment(MatchType.TODAY, select.code, select.match?.id, "EU")
 
             }
         })
@@ -269,7 +269,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun navOddsDetailFragment(sportTypeCode: String?, matchId: String?, oddsType: String?) {
+    private fun navOddsDetailFragment(matchType:MatchType, sportTypeCode: String?, matchId: String?, oddsType: String?) {
         val sportType = when (sportTypeCode) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
             SportType.FOOTBALL.code -> SportType.FOOTBALL
@@ -283,7 +283,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 matchId?.let {
                     val action =
                         HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                            sportType, matchId, oddsType
+                            matchType, sportType, matchId, oddsType
                         )
                     findNavController().navigate(action)
                 }

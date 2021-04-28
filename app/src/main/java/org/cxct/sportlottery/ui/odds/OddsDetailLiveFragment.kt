@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -44,6 +45,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var mSportCode: String? = null
     private var matchId: String? = null
+    private var matchOdd: MatchOdd? = null
 
     private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
 
@@ -192,6 +194,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun observeData() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
+                matchOdd = result.oddsDetailData?.matchOdd
                 result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                     result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                         oddsDetailListAdapter?.homeName = home
@@ -213,10 +216,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.setBetInfoList(it)
-        })
-
-        viewModel.betInfoRepository.isParlayPage.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
@@ -283,8 +282,21 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
 
-    override fun getBetInfoList(odd: Odd) {
-        viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
+    override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
+        matchOdd?.let { matchOdd ->
+            mSportCode?.let { gameType ->
+                odd.name?.let { playName ->
+                    viewModel.addToBetInfoList(
+                        matchType = MatchType.IN_PLAY,
+                        gameType = gameType,
+                        playCateName = oddsDetail.name,
+                        playName = playName,
+                        matchOdd = matchOdd,
+                        odd = odd
+                    )
+                }
+            }
+        }
     }
 
 

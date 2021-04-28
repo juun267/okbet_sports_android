@@ -14,11 +14,10 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 
 
 class TypeGroupItemAdapter(
-    private val oddsList: List<Odd>,
+    private val oddsDetail: OddsDetailListData,
     private val groupItemCount: Int,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?,
     private val oddsType: OddsType
 ) :
     RecyclerView.Adapter<TypeGroupItemAdapter.ViewHolder>() {
@@ -30,12 +29,12 @@ class TypeGroupItemAdapter(
 
 
     override fun getItemCount(): Int {
-        return oddsList.size
+        return oddsDetail.oddArrayList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsList[position], position)
+        holder.bindModel(oddsDetail.oddArrayList[position], position)
     }
 
 
@@ -46,7 +45,7 @@ class TypeGroupItemAdapter(
 
         fun bindModel(odd: Odd, position: Int) {
 
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null)
 
             tvSpread.text = odd.spread
 
@@ -55,7 +54,7 @@ class TypeGroupItemAdapter(
             if (groupItemCount == 2) {
                 if (position % groupItemCount != 0) {
 
-                    if (position != oddsList.size - 1) {
+                    if (position != oddsDetail.oddArrayList.size - 1) {
                         val params: RecyclerView.LayoutParams = itemView.layoutParams as RecyclerView.LayoutParams
                         params.setMargins(0, 0, 0, 2)
                         itemView.layoutParams = params
@@ -69,7 +68,7 @@ class TypeGroupItemAdapter(
             if (groupItemCount == 3) {
                 when {
                     position % groupItemCount == 2 -> {
-                        if (position != oddsList.size - 1) {
+                        if (position != oddsDetail.oddArrayList.size - 1) {
                             val params: RecyclerView.LayoutParams = itemView.layoutParams as RecyclerView.LayoutParams
                             params.setMargins(0, 0, 0, 2)
                             itemView.layoutParams = params

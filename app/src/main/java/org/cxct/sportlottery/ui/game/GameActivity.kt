@@ -499,7 +499,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.TODAY, sportType, matchId)
                     }
                 }
             }
@@ -509,7 +509,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.EARLY, sportType, matchId)
                     }
                 }
             }
@@ -519,7 +519,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.PARLAY, sportType, matchId)
                     }
                 }
             }
@@ -529,7 +529,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.AT_START, sportType, matchId)
                     }
                 }
             }
@@ -538,16 +538,18 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun navOddsDetailFragment(sportType: SportType, matchId: String) {
+    private fun navOddsDetailFragment(matchType: MatchType, sportType: SportType, matchId: String) {
         val action = when (mNavController.currentDestination?.id) {
             R.id.gameV3Fragment -> {
                 GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                    matchType,
                     sportType,
                     matchId
                 )
             }
             R.id.gameLeagueFragment -> {
                 GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                    matchType,
                     sportType,
                     matchId
                 )
@@ -559,7 +561,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 )
             }
             R.id.oddsDetailFragment -> {
-                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(sportType, matchId)
+                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(sportType, matchId, matchType)
             }
             else -> null
         }
