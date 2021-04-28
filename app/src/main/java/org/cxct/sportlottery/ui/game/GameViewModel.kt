@@ -40,7 +40,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.TimeUtil.getDefaultTimeStamp
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import org.json.JSONArray
 import timber.log.Timber
@@ -56,7 +55,7 @@ class GameViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val thirdGameRepository: ThirdGameRepository
+    private val thirdGameRepository: ThirdGameRepository,
 ) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {

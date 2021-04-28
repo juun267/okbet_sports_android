@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
+import org.cxct.sportlottery.network.Constants.PLAYQUOTACOM_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
@@ -228,6 +229,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(THIRD_REBATES) -> {
                     response = getMockJsonData(request, "vip_third_rebates.mock")
+                }
+                path.contains(PLAYQUOTACOM_LIST) -> {
+                    response = getMockJsonData(request, "playquotacom_list.mock")
                 }
             }
         }
