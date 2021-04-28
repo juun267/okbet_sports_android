@@ -199,18 +199,18 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             it.getContentIfNotHandled()?.let { result ->
                 result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                     result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                        val strVerse = getString(R.string.verse_)
-                        val strMatch = "$home${strVerse}$away"
-                        val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
-                        val startPosition = strMatch.indexOf(strVerse)
-                        val endPosition = startPosition + strVerse.length
-                        val style = SpannableStringBuilder(strMatch)
-                        style.setSpan(
-                            ForegroundColorSpan(color),
-                            startPosition,
-                            endPosition,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
+//                        val strVerse = getString(R.string.verse_)
+//                        val strMatch = "$home${strVerse}$away"
+//                        val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+//                        val startPosition = strMatch.indexOf(strVerse)
+//                        val endPosition = startPosition + strVerse.length
+//                        val style = SpannableStringBuilder(strMatch)
+//                        style.setSpan(
+//                            ForegroundColorSpan(color),
+//                            startPosition,
+//                            endPosition,
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//                        )
 
                         oddsDetailListAdapter?.homeName = home
                         oddsDetailListAdapter?.awayName = away
@@ -221,10 +221,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {
-                if (it.size > 0) {
+            it.getContentIfNotHandled()?.let { list ->
+                if (list.size > 0) {
                     oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
+                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(list)
                     oddsDetailListAdapter?.notifyDataSetChanged()
                 }
             }
@@ -251,7 +251,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             hideLoading()
             unsubscribeAllHallChannel()
 
-            it.peekContent()?.let { oddsListResult ->
+            it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
                     oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
                         LeagueOdd.matchOdds.forEach { MatchOdd ->
