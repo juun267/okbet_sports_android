@@ -250,14 +250,22 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
             return
         }
-        viewModel.addBet(
-            BetAddRequest(
-                listOf(Odd(betInfoListData.matchOdd.oddsId, getOdds(betInfoListData.matchOdd, oddsType))),
-                listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
-                1,
-                oddsType.code
-            ), betInfoListData.matchType
-        )
+
+        betInfoListData.parlayOdds?.let {
+            viewModel.addBet(
+                BetAddRequest(
+                    listOf(
+                        Odd(
+                            betInfoListData.matchOdd.oddsId,
+                            getOdds(betInfoListData.matchOdd, oddsType)
+                        )
+                    ),
+                    listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+                    1,
+                    oddsType.code
+                ), betInfoListData.matchType
+            )
+        }
     }
 
 
