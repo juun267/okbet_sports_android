@@ -55,7 +55,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
                 },
-                { _, odd ->
+                { _, odd, _ ->
                     viewModel.updateMatchBetList(odd)
                 }
             )

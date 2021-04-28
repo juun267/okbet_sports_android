@@ -10,9 +10,9 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.results.GameType
 import retrofit2.Response
 
+const val BET_INFO_MAX_COUNT = 10
 
 class BetInfoRepository {
 
@@ -113,13 +113,15 @@ class BetInfoRepository {
 
     fun add(
         matchType: MatchType,
-        gameType: GameType,
+        gameType: String,
         playCateName: String,
         playName: String,
         matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
-        val m = MatchOdd(
+        if (betList.size >= BET_INFO_MAX_COUNT) return
+
+        val betInfoMatchOdd = MatchOdd(
             awayName = matchOdd.matchInfo?.awayName ?: "",
             homeName = matchOdd.matchInfo?.homeName ?: "",
             inplay = if (matchType == MatchType.IN_PLAY) 1 else 0,
@@ -138,12 +140,13 @@ class BetInfoRepository {
             spread = odd.spread ?: "",
             startTime = matchOdd.matchInfo?.startTime?.toLong() ?: 0,
             status = odd.status,
-            gameType = gameType.key,
+            gameType = gameType,
             homeScore = matchOdd.matchInfo?.homeScore ?: 0,
             awayScore = matchOdd.matchInfo?.awayScore ?: 0
         )
 
-        betList.add(BetInfoListData(m, null))
+        betList.add(BetInfoListData(betInfoMatchOdd, null))
+        _betInfoList.postValue(betList)
     }
 
     private fun removeSameMatchIdItem(matchId: String) {
