@@ -66,8 +66,8 @@ data class MatchOdds(
     val mtsSelections: String?,
 )
 
-enum class Status(val statusName: String, val code: Int) {
-    WIN("赢", 2),
-    WIN_HALF("赢半", 3),
-    CANCEL("已取消", 7)
+enum class Status(val code: Int) {
+    WIN(2), //赢
+    WIN_HALF(3),//赢半
+    CANCEL(7)//已取消
 }
