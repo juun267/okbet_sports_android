@@ -583,19 +583,6 @@ class GameViewModel(
         }
     }
 
-    fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
-        val isBet =
-            betInfoRepository.betInfoList.value?.any { it.matchOdd.oddsId == winner.id } ?: false
-
-        if (!isBet) {
-            getBetInfoList(listOf(Odd(winner.id ?: "", winner.odds).apply {
-                matchType = this@GameViewModel.matchType
-            }))
-        } else {
-            winner.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
     fun updateMatchBetList(
         matchType: MatchType,
         sportType: SportType,
