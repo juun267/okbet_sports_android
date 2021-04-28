@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.*
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.util.TextUtil
+import kotlin.math.abs
 
 class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
@@ -34,7 +37,7 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner, {
             wd_log_detail_trans_num.text = it.orderNo ?: ""
             wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
             wd_log_detail_status.text = it.withdrawState ?: ""
@@ -45,10 +48,9 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_amount.text = getString(R.string.finance_rmb, nonNullDisplayMoney)
             }
 
-            it.displayFee?.let { nonNullDisplayFee ->
-                wd_log_detail_handle_fee.text = getString(R.string.finance_rmb, nonNullDisplayFee)
-
-                wd_log_detail_handle_fee_subtitle.text = if ((it.fee?:0.0) > 0.0)
+            it.fee?.let { fee ->
+                wd_log_detail_handle_fee.text = getString(R.string.finance_rmb, TextUtil.format(abs(fee)))
+                wd_log_detail_handle_fee_subtitle.text = if ((it.fee) > 0.0)
                     getString(R.string.log_detail_rebate_money)
                 else
                     getString(R.string.log_detail_handle_fee)
