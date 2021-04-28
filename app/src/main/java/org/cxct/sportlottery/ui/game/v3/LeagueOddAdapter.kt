@@ -1197,7 +1197,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 class LeagueOddListener(
     val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerPlayType: (item: MatchOdd) -> Unit,
-    val clickListenerBet: (matchOdd: MatchOdd, odd: Odd, playCateName: String) -> Unit
+    val clickListenerBet: (matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String) -> Unit
 ) {
     fun onClickLive(item: MatchOdd) =
         clickListenerLive(item)
@@ -1205,6 +1205,6 @@ class LeagueOddListener(
     fun onClickPlayType(item: MatchOdd) =
         clickListenerPlayType(item)
 
-    fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String = "") =
-        clickListenerBet(matchOdd, odd, playCateName)
+    fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String = "", playName: String = "") =
+        clickListenerBet(matchOdd, odd, playCateName, playName)
 }

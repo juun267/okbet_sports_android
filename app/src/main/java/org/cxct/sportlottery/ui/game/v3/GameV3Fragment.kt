@@ -103,7 +103,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchOdd, odd, playCateName ->
+                { matchOdd, odd, playCateName, _ ->
                     addOddsDialog(matchOdd, odd, playCateName)
                 }
             )
