@@ -20,6 +20,7 @@ data class Odd(
 ) {
     var isSelected :Boolean? = false
     var oddState: Int = OddState.SAME.state
+    var outrightCateName: String? = ""
 }
 
 //socket進來的新賠率較大或較小

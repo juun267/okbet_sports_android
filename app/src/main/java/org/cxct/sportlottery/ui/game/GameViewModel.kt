@@ -544,11 +544,10 @@ class GameViewModel(
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
                     it.odds.forEach { mapSubTitleOdd ->
+                        val dynamicMarket = matchOdd.dynamicMarkets[mapSubTitleOdd.key]
 
                         //add subtitle
                         if (!matchOdd.displayList.contains(mapSubTitleOdd.key)) {
-                            val dynamicMarket = matchOdd.dynamicMarkets[mapSubTitleOdd.key]
-
                             dynamicMarket?.let {
                                 when (LanguageManager.getSelectLanguage(androidContext)) {
                                     LanguageManager.Language.ZH -> {
@@ -563,6 +562,15 @@ class GameViewModel(
 
                         //add odd
                         mapSubTitleOdd.value.forEach { odd ->
+                            odd?.outrightCateName =
+                                when (LanguageManager.getSelectLanguage(androidContext)) {
+                                    LanguageManager.Language.ZH -> {
+                                        dynamicMarket?.zh
+                                    }
+                                    else -> {
+                                        dynamicMarket?.en
+                                    }
+                                }
                             odd?.let { it1 -> matchOdd.displayList.add(it1) }
                         }
                     }
