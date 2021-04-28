@@ -63,15 +63,6 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
         })
     }
 
-    private val sheetAdapter by lazy { SheetAdapter(viewModel.allPlatTag, SheetAdapter.ItemCheckedListener { isChecked, data ->
-        if (isChecked) {
-            status_selector.selectedText = data.showName
-            status_selector.selectedTag = data.firmType
-            status_selector.dismiss()
-        }
-    })
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -84,14 +75,9 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView()
         initRv()
         initOnclick()
         initObserver()
-    }
-
-    private fun initView() {
-//        status_selector.setAdapter(sheetAdapter)
     }
 
     private fun initRv() {
@@ -122,7 +108,6 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
         }
 
         viewModel.thirdGamesResult.observe(viewLifecycleOwner) {
-//            sheetAdapter.dataList = it ?: listOf()
             status_selector.dataList = it ?: listOf()
         }
 
