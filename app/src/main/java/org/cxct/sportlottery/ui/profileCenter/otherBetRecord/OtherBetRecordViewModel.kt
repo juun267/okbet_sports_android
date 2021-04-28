@@ -95,7 +95,7 @@ class OtherBetRecordViewModel(
             recordDataList.clear()
         }
 
-        val filter = { firm: String? -> if (firm == allPlatTag) null else firm }
+        val filter = { firm: String? -> if (firm == allPlatTag || firm.isNullOrEmpty()) null else firm }
 
         viewModelScope.launch {
             doNetwork(androidContext) {
