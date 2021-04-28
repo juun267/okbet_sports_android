@@ -21,6 +21,7 @@
     <string name="unknown_error">未知错误</string>
     <string name="error_reading_file">档案读取错误</string>
     <string name="message_guest_no_permission">试玩账号无权访问，请先注册</string>
+    <string name="message_socket_connect">网路连接超时,请重新连线</string>
 
 
     <!--network message-->
@@ -290,7 +291,7 @@
     <string name="modify_avatar">修改头像</string>
     <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
     <string name="take_a_picture">拍一张照片</string>
-    <string name="save_avatar_success">头像设置成功</string>
+    <string name="save_avatar_success">头像上传成功</string>
     <string name="no_set_avatar">没有设置头像</string>
 
     <!-- Modify Profile Info page-->
@@ -632,6 +633,7 @@
     <string name="bet_info_system_close_incompatible_item">您选择的部分玩法不适用于串关规则的玩法,系统已帮您自动取消</string>
     <string name="bet_info_list_clean">一键清空</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
+    <string name="bet_info_different_game_type">不同球种不可进行串关</string>
 
 
     <!-- finance -->

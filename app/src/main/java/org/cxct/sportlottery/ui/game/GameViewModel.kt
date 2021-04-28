@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -32,7 +31,6 @@ import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -42,6 +40,8 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TimeUtil.getDefaultTimeStamp
+import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import org.json.JSONArray
 import timber.log.Timber
 import java.util.*
@@ -76,6 +76,10 @@ class GameViewModel(
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadInPlay
+
+    private val _matchPreloadEarly = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadEarly: LiveData<Event<MatchPreloadResult>>
+        get() = _matchPreloadEarly
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
@@ -333,6 +337,16 @@ class GameViewModel(
                 _matchPreloadInPlay.postValue(Event(result))
             }
         }
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                val nowTimeStamp = getTodayTimeRangeParams()
+                OneBoSportApi.matchService.getMatchPreload(
+                    MatchPreloadRequest(MatchType.TODAY.postValue, startTime = nowTimeStamp.startTime, endTime = nowTimeStamp.endTime)
+                )
+            }?.let { result ->
+                _matchPreloadEarly.postValue(Event(result))
+            }
+        }
     }
 
     fun getMoney() {
@@ -345,7 +359,7 @@ class GameViewModel(
         }
     }
 
-    fun getGameHallList(matchType: MatchType, sportCode: String?, isLeftMenu: Boolean = false) {
+    fun getGameHallList(matchType: MatchType, sportCode: String?, isLeftMenu: Boolean = false, isPreloadTable: Boolean = false) {
         when (matchType) {
             MatchType.IN_PLAY -> {
                 _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.forEach {
@@ -373,10 +387,10 @@ class GameViewModel(
                 }
             }
         }
-        menuEntrance = this.matchType != matchType //標記為卡片或菜單跳轉不同的類別
+        menuEntrance = (this.matchType != matchType) || isPreloadTable//標記為卡片或菜單跳轉不同的類別
 
         if (isLeftMenu) {
-            _sportMenuResult.postValue(_sportMenuResult.value)
+            _sportMenuResult.value = _sportMenuResult.value
         }
         _matchTypeCardForParlay.postValue(Event(matchType))
     }
@@ -972,9 +986,12 @@ class GameViewModel(
         }
     }
 
-    fun getBetInfoList(oddsList: List<Odd>) {
+    fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd){
+        betInfoRepository.saveOddsHasChanged(matchOdd)
+    }
 
-        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT) {
+    fun getBetInfoList(oddsList: List<Odd>) {
+        if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT) {
             return
         }
 
@@ -995,7 +1012,7 @@ class GameViewModel(
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
 
-        if (betInfoRepository.betList.size > BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
+        if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
             return
         }
 
@@ -1152,12 +1169,6 @@ class GameViewModel(
         _playCateListResult.postValue(null)
         _oddsDetailResult.postValue(null)
         _oddsDetailList.postValue(ArrayList())
-    }
-
-    fun checkInBetInfo(matchId: String): Boolean {
-        return betInfoRepository.betList.any {
-            it.matchOdd.matchId == matchId
-        }
     }
 
     fun getPlayCateList(gameType: String) {

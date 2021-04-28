@@ -449,11 +449,15 @@
                 <com.stx.xhb.androidx.XBanner
                     android:id="@+id/banner_vip_level"
                     android:layout_width="match_parent"
-                    android:layout_height="134dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:isAutoPlay="false"
                     app:isClipChildrenMode="true"
+                    app:clipChildrenLeftMargin="45dp"
+                    app:clipChildrenRightMargin="45dp"
+                    app:pointContainerLeftRightPadding="20dp"
                     app:isHandLoop="false"
+                    app:showIndicatorInCenter="false"
                     app:pageChangeDuration="800"
                     app:pointsVisibility="false" />
                 <!--  Vip Level Description  -->

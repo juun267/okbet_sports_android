@@ -188,6 +188,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 }
             }
             matchOddAdapter.matchOddList = it
+
+            changeBetButtonClickable(!checkGameType())
+
         })
 
         viewModel.parlayList.observe(this.viewLifecycleOwner, {
@@ -195,8 +198,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            if (it.size == 0) {
-                dismiss()
+            when(it.size){
+                0 -> {dismiss()}
+                1 -> {changeBetButtonClickable(false)}
             }
         })
 
@@ -340,7 +344,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     override fun onOddChange() {
         if (tv_bet.isClickable) {
             tv_bet.apply {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected_red)
                 setTextColor(ContextCompat.getColor(tv_bet.context, R.color.white))
                 text = getString(R.string.bet_info_list_odds_change)
             }
@@ -355,7 +358,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     override fun sendOutStatus(parlayOddList: MutableList<ParlayOdd>) {
-        changeBetButtonClickable(parlayOddList.find {
+        changeBetButtonClickable(if (checkGameType()) false else parlayOddList.find {
             !it.sendOutStatus
         } == null)
     }
@@ -376,6 +379,13 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 true
             }
+        }
+    }
+
+
+    private fun checkGameType(): Boolean {
+        return matchOddAdapter.matchOddList.any {
+            it.gameType != matchOddAdapter.matchOddList[0].gameType
         }
     }
 

@@ -310,6 +310,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         keyboard?.showKeyboard(editText)
     }
 
+    override fun saveOddsHasChanged(matchOdd: MatchOdd) {
+        viewModel.saveOddsHasChanged(matchOdd)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
