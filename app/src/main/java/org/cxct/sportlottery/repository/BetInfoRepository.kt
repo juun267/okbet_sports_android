@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.bet.list.INPLAY
 import retrofit2.Response
 
 const val BET_INFO_MAX_COUNT = 10
@@ -121,32 +122,37 @@ class BetInfoRepository {
     ) {
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
-        val betInfoMatchOdd = MatchOdd(
-            awayName = matchOdd.matchInfo?.awayName ?: "",
-            homeName = matchOdd.matchInfo?.homeName ?: "",
-            inplay = if (matchType == MatchType.IN_PLAY) 1 else 0,
-            leagueId = "",
-            leagueName = "",
-            matchId = matchOdd.matchInfo?.id ?: "",
-            odds = odd.odds ?: 0.0,
-            hkOdds = odd.hkOdds ?: 0.0,
-            oddsId = odd.id ?: "",
-            playCateId = 0,
-            playCateName = playCateName,
-            playCode = "",
-            playId = 0,
-            playName = playName,
-            producerId = odd.producerId ?: 0,
-            spread = odd.spread ?: "",
-            startTime = matchOdd.matchInfo?.startTime?.toLong() ?: 0,
-            status = odd.status,
-            gameType = gameType,
-            homeScore = matchOdd.matchInfo?.homeScore ?: 0,
-            awayScore = matchOdd.matchInfo?.awayScore ?: 0
-        )
+        matchOdd.matchInfo?.id?.let { matchId ->
+            odd.producerId?.let { producerId ->
+                val betInfoMatchOdd = MatchOdd(
+                    awayName = matchOdd.matchInfo.awayName,
+                    homeName = matchOdd.matchInfo.homeName,
+                    inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
+                    leagueId = "",
+                    leagueName = "",
+                    matchId = matchId,
+                    odds = odd.odds ?: 0.0,
+                    hkOdds = odd.hkOdds ?: 0.0,
+                    oddsId = odd.id ?: "",
+                    playCateId = 0,
+                    playCateName = playCateName,
+                    playCode = "",
+                    playId = 0,
+                    playName = playName,
+                    producerId = producerId,
+                    spread = odd.spread ?: "",
+                    startTime = matchOdd.matchInfo.startTime.toLong(),
+                    status = odd.status,
+                    gameType = gameType,
+                    homeScore = matchOdd.matchInfo.homeScore ?: 0,
+                    awayScore = matchOdd.matchInfo.awayScore ?: 0
+                )
 
-        betList.add(BetInfoListData(betInfoMatchOdd, null))
-        _betInfoList.postValue(betList)
+                betList.add(BetInfoListData(betInfoMatchOdd, null))
+                _betInfoList.postValue(betList)
+            }
+        }
+
     }
 
     private fun removeSameMatchIdItem(matchId: String) {
