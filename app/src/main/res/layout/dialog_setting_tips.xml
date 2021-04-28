@@ -51,7 +51,7 @@
                 android:layout_marginTop="37dp"
                 android:layout_marginBottom="22dp"
                 android:text="@string/please_setting_bank_card"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp" />
 
             <View

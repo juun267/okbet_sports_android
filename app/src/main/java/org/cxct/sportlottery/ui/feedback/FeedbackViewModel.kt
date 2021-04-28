@@ -7,11 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.SheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -69,12 +67,6 @@ class FeedbackViewModel(
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
-
-    val statusList = listOf(
-        SheetData(allStatusTag, androidContext.getString(R.string.all_status)),
-        SheetData("0", androidContext.getString(R.string.feedback_not_reply_yet)),
-        SheetData("1", androidContext.getString(R.string.feedback_already_reply))
-    )
 
     companion object {
         private const val PAGE_SIZE = 20 //預設每次載入20筆資料

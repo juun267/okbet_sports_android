@@ -292,6 +292,11 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
+
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    }
+                    /*
                     SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
                     }).apply {
@@ -299,6 +304,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
                         setTipsContent(R.string.please_setting_withdraw_password)
                         show(supportFragmentManager, "")
                     }
+                    */
                 } else {
                     viewModel.checkProfileInfoComplete()
                 }
