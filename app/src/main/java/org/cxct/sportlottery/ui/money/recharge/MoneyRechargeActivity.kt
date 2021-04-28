@@ -279,6 +279,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     private fun changePage() {
         when (currentTab) {
             RechargeType.TRANSFER_PAY -> {
+                btn_transfer_pay.isChecked = true
                 bankTypeAdapter?.data = transferPayList
                 switchFragment(
                     getPayFragment(transferPayList[0]),
@@ -286,6 +287,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                 )
             }
             RechargeType.ONLINE_PAY -> {
+                btn_online_pay.isChecked =true
                 bankTypeAdapter?.data = onlinePayList
                 switchFragment(
                     getPayFragment(onlinePayList[0]),
