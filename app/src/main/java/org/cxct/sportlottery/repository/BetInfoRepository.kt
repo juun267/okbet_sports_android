@@ -152,7 +152,48 @@ class BetInfoRepository {
                 _betInfoList.postValue(betList)
             }
         }
+    }
 
+    fun add(
+        matchType: MatchType,
+        gameType: String,
+        playCateName: String,
+        playName: String,
+        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
+        odd: org.cxct.sportlottery.network.odds.list.Odd
+    ) {
+        if (betList.size >= BET_INFO_MAX_COUNT) return
+
+        odd.producerId?.let { producerId ->
+            val betInfoMatchOdd = MatchOdd(
+                awayName = matchOdd.matchInfo.awayName ?: "",
+                homeName = matchOdd.matchInfo.homeName ?: "",
+                inplay = 0,
+                leagueId = "",
+                leagueName = "",
+                matchId = matchOdd.matchInfo.id,
+                odds = odd.odds ?: 0.0,
+                hkOdds = odd.hkOdds ?: 0.0,
+                oddsId = odd.id ?: "",
+                playCateId = 0,
+                playCateName = playCateName,
+                playCode = "",
+                playId = 0,
+                playName = playName,
+                producerId = producerId,
+                spread = odd.spread ?: "",
+                startTime = matchOdd.matchInfo.startTime.toLong(),
+                status = odd.status,
+                gameType = gameType,
+                homeScore = 0,
+                awayScore = 0
+            )
+
+            betList.add(BetInfoListData(betInfoMatchOdd, null).apply {
+                this.matchType = matchType
+            })
+            _betInfoList.postValue(betList)
+        }
     }
 
     private fun removeSameMatchIdItem(matchId: String) {
