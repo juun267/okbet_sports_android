@@ -73,7 +73,6 @@
             android:id="@+id/btn_withdraw_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
             android:text="@string/withdraw_all"
             android:textColor="@color/colorBlueDark"
             android:textSize="@dimen/textSize13sp" />

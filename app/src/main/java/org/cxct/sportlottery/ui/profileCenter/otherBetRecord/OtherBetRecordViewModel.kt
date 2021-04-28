@@ -30,10 +30,13 @@ class OtherBetRecordViewModel(
 
     val allPlatTag = "ALL_PLAT"
 
+    private val filter = { firm: String? -> if (firm == allPlatTag || firm.isNullOrEmpty()) null else firm }
+
     companion object {
         private const val PAGE_SIZE = 20
 
     }
+
 
     val loading: LiveData<Boolean> //使用者餘額
         get() = _loading
@@ -95,8 +98,6 @@ class OtherBetRecordViewModel(
             recordDataList.clear()
         }
 
-        val filter = { firm: String? -> if (firm == allPlatTag) null else firm }
-
         viewModelScope.launch {
             doNetwork(androidContext) {
                 recordRequest = OtherBetHistoryRequest(
@@ -118,12 +119,14 @@ class OtherBetRecordViewModel(
         }
     }
 
-    fun querySecondOrders(today: String? = null) {
+    fun querySecondOrders(firmType: String?= null, today: String? = null) {
         querySecondOrders(startTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).startTime },
-            endTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime })
+            endTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime },
+                          firmType = firmType
+        )
     }
 
-    fun querySecondOrders(page: Int? = 1, startTime: String? = null, endTime: String? = null, firmType: String? = null) {
+    private fun querySecondOrders(page: Int? = 1, startTime: String? = null, endTime: String? = null, firmType: String? = null) {
         loading()
         if (page == 1) {
             nowPage = 1
@@ -135,7 +138,7 @@ class OtherBetRecordViewModel(
                     page, PAGE_SIZE,
                     startTime = startTime,
                     endTime = endTime,
-                    firmType = firmType
+                    firmType = filter(firmType)
                 )
 
                 recordRequest.let { OneBoSportApi.thirdGameService.querySecondOrders(it) }
