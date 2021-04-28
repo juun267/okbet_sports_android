@@ -157,8 +157,8 @@ class BetInfoRepository {
     fun add(
         matchType: MatchType,
         gameType: String,
-        playCateName: String,
-        playName: String,
+        playCateName: String?,
+        playName: String?,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
@@ -176,10 +176,10 @@ class BetInfoRepository {
                 hkOdds = odd.hkOdds ?: 0.0,
                 oddsId = odd.id ?: "",
                 playCateId = 0,
-                playCateName = playCateName,
+                playCateName = playCateName ?: "",
                 playCode = "",
                 playId = 0,
-                playName = playName,
+                playName = playName ?: "",
                 producerId = producerId,
                 spread = odd.spread ?: "",
                 startTime = matchOdd.matchInfo.startTime.toLong(),

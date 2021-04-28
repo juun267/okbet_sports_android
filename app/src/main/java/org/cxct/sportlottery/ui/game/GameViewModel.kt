@@ -634,8 +634,8 @@ class GameViewModel(
     fun updateMatchBetList(
         matchType: MatchType,
         sportType: SportType,
-        playCateName: String,
-        playName: String,
+        playCateName: String?,
+        playName: String?,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
