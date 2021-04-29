@@ -252,6 +252,7 @@ class BetInfoRepository {
 
     fun addInBetInfo(
         matchType: MatchType,
+        sportType: SportType,
         gameType: String,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
@@ -288,9 +289,12 @@ class BetInfoRepository {
                                 awayScore = matchOdd.matchInfo.awayScore ?: 0
                             )
 
-                            betList.add(BetInfoListData(betInfoMatchOdd, null))
+                            val mList = mutableListOf<MatchOdd>()
+                            mList.add(betInfoMatchOdd)
+                            betList.add(BetInfoListData(betInfoMatchOdd, getParlayOdd(matchType, sportType, mList)[0]).apply {
+                                this.matchType = matchType
+                            })
                             _betInfoList.postValue(betList)
-
                         }
                     }
                 }

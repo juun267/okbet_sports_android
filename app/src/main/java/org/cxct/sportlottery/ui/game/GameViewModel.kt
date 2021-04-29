@@ -1095,13 +1095,14 @@ class GameViewModel(
 
     fun addInBetInfo(
         matchType: MatchType,
+        sportType: SportType,
         gameType: String,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
     ) {
         betInfoRepository.addInBetInfo(
-            matchType, gameType, playCateName, matchOdd, odd
+            matchType, sportType, gameType, playCateName, matchOdd, odd
         )
     }
 

@@ -307,6 +307,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             mSportCode?.let { gameType ->
                 viewModel.addInBetInfo(
                     matchType = MatchType.IN_PLAY,
+                    args.sportType,
                     gameType = gameType,
                     playCateName = oddsDetail.name,
                     matchOdd = matchOdd,
