@@ -67,7 +67,6 @@ class OddButton @JvmOverloads constructor(
     }
 
     private var runnable: Runnable? = null
-    private var runningFlag: Boolean = false
 
     init {
         init(attrs)
