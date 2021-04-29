@@ -224,36 +224,33 @@ class BetInfoRepository {
                 odd.odds?.let { odds ->
                     odd.hkOdds?.let { hkOdds ->
                         odd.producerId?.let { producerId ->
-                            odd.status?.let { status ->
-                                odd.name?.let { playName ->
-                                    val betInfoMatchOdd = MatchOdd(
-                                        awayName = matchOdd.matchInfo.awayName,
-                                        homeName = matchOdd.matchInfo.homeName,
-                                        inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
-                                        leagueId = "",
-                                        leagueName = "",
-                                        matchId = matchId,
-                                        odds = odds,
-                                        hkOdds = hkOdds,
-                                        oddsId = oddsId,
-                                        playCateId = 0,
-                                        playCateName = playCateName,
-                                        playCode = "",
-                                        playId = 0,
-                                        playName = playName,
-                                        producerId = producerId,
-                                        spread = odd.spread ?: "",
-                                        startTime = matchOdd.matchInfo.startTime.toLong(),
-                                        status = status,
-                                        gameType = gameType,
-                                        homeScore = matchOdd.matchInfo.homeScore ?: 0,
-                                        awayScore = matchOdd.matchInfo.awayScore ?: 0
-                                    )
+                            val betInfoMatchOdd = MatchOdd(
+                                awayName = matchOdd.matchInfo.awayName,
+                                homeName = matchOdd.matchInfo.homeName,
+                                inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
+                                leagueId = "",
+                                leagueName = "",
+                                matchId = matchId,
+                                odds = odds,
+                                hkOdds = hkOdds,
+                                oddsId = oddsId,
+                                playCateId = 0,
+                                playCateName = playCateName,
+                                playCode = "",
+                                playId = 0,
+                                playName = odd.name ?: "",
+                                producerId = producerId,
+                                spread = odd.spread ?: "",
+                                startTime = matchOdd.matchInfo.startTime.toLong(),
+                                status = odd.status,
+                                gameType = gameType,
+                                homeScore = matchOdd.matchInfo.homeScore ?: 0,
+                                awayScore = matchOdd.matchInfo.awayScore ?: 0
+                            )
 
-                                    betList.add(BetInfoListData(betInfoMatchOdd, null))
-                                    _betInfoList.postValue(betList)
-                                }
-                            }
+                            betList.add(BetInfoListData(betInfoMatchOdd, null))
+                            _betInfoList.postValue(betList)
+
                         }
                     }
                 }

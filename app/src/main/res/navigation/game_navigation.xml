@@ -54,9 +54,6 @@
                 android:name="matchId"
                 app:argType="string" />
 
-            <argument
-                android:name="oddsType"
-                app:argType="string" />
         </action>
 
     </fragment>
