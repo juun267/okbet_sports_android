@@ -208,7 +208,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                                 odd.status = oddSocketNonNull.status
 
-                                outrightOddAdapter.notifyItemChanged(odds.indexOf(odd))
+                                outrightOddAdapter.notifyItemChanged(outrightOddAdapter.data.indexOf(odd))
                             }
                         }
                     }

@@ -12,7 +12,6 @@ import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
-import java.lang.Exception
 
 
 class OddButton @JvmOverloads constructor(
@@ -68,6 +67,7 @@ class OddButton @JvmOverloads constructor(
     }
 
     private var runnable: Runnable? = null
+    private var runningFlag: Boolean = false
 
     init {
         init(attrs)
@@ -184,7 +184,13 @@ class OddButton @JvmOverloads constructor(
 
                 isActivated = true
             }
-            else -> return
+            else -> {
+                odd_button.background =
+                    ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
+
+                isActivated = false
+                return
+            }
         }
 
         runnable = Runnable {
@@ -195,11 +201,22 @@ class OddButton @JvmOverloads constructor(
 
             onOddStatusChangedListener?.onOddStateChangedFinish()
         }
+        runnable?.let {
+            if (!mHandler.hasCallbacks(it))
+                mHandler.postDelayed(
+                    it, 3000
+                )
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
 
         runnable?.let {
-            mHandler.postDelayed(
-                it, 3000
-            )
+            if (!mHandler.hasCallbacks(it))
+                mHandler.postDelayed(
+                    it, 3000
+                )
         }
     }
 
