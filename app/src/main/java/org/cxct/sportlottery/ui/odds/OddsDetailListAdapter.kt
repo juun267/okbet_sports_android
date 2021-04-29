@@ -1,15 +1,14 @@
 package org.cxct.sportlottery.ui.odds
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_odds_detail_list_single.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
@@ -20,7 +19,6 @@ import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import java.util.*
 import kotlin.collections.ArrayList
 
 const val DEFAULT_ITEM_VISIBLE_POSITION = 4
@@ -144,9 +142,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         when {
             checkKey(type, GameType.HDP.value) -> {
 
-                when(sportCode){
+                when (sportCode) {
                     SportType.FOOTBALL.code,
-                    SportType.BASKETBALL.code ->  return GameType.HDP.type
+                    SportType.BASKETBALL.code -> return GameType.HDP.type
                     else -> return GameType.HDP_ONE_LIST.type
                 }
 
@@ -643,6 +641,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun forCS(oddsDetail: OddsDetailListData) {
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
+            val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
+            val vCover = itemView.findViewById<ImageView>(R.id.iv_disable_cover)
+            val tvOther = itemView.findViewById<TextView>(R.id.tv_other)
+            val rlOdds = itemView.findViewById<RelativeLayout>(R.id.rl_odds)
+
             val homeList: MutableList<Odd> = mutableListOf()
             val drawList = ArrayList<Odd>()
             val awayList: MutableList<Odd> = mutableListOf()
@@ -662,10 +665,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                             awayList.add(odd)
                         }
                     } else {
-
-                        val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
-                        val vCover = itemView.findViewById<ImageView>(R.id.iv_disable_cover)
-                        val tvOther = itemView.findViewById<TextView>(R.id.tv_other)
 
                         tvOther.text = itemView.context.getString(R.string.odds_detail_cs_other)
 
@@ -739,8 +738,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             if (drawList.size == 0) {
                 rvDraw.visibility = View.GONE
+                val param = rlOdds.layoutParams as ConstraintLayout.LayoutParams
+                param.endToEnd = R.id.guideline_cs_other_2_list
+                rlOdds.layoutParams = param
             }
-
         }
 
         private fun forSingle(oddsDetail: OddsDetailListData) {

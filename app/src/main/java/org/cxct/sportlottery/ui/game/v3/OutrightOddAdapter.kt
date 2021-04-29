@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.itemview_outright_oddv3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -82,6 +83,12 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.outright_odd_name.text = item.spread
 
             itemView.outright_odd_btn.apply {
+
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        item.oddState = OddState.SAME.state
+                    }
+                }
                 playType = PlayType.OUTRIGHT
 
                 visibility = if (item.odds == null) {

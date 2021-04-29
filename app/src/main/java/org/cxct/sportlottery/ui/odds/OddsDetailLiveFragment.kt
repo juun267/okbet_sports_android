@@ -1,19 +1,16 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
 import android.os.Message
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -36,6 +33,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
 
 
 @Suppress("DEPRECATION")
@@ -56,12 +54,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var sport = ""
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mSportCode = args.sportType.code
         matchId = args.matchId
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,29 +89,32 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         setupWebView(web_view)
     }
 
+
     override fun onStart() {
         super.onStart()
-
         getData()
         setWebView()
     }
 
+
     override fun onStop() {
         super.onStop()
-
         unsubscribeAllHallChannel()
+        service.unsubscribeAllEventChannel()
     }
-    
+
+
     private fun setWebView() {
         web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}&lang=${LanguageManager.getSelectLanguage(context).key}")
     }
+
 
     private fun initRecyclerView() {
         rv_game_card.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         oddsGameCardAdapter = OddsGameCardAdapter(this@OddsDetailLiveFragment.matchId, OddsGameCardAdapter.ItemClickListener {
             it.let {
-                this@OddsDetailLiveFragment.matchId = it.id
+                matchId = it.id
                 getData()
                 setWebView()
             }
@@ -125,34 +128,22 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             if (it == null) return@Observer
         })
 
-        receiver.oddsChange.observe(viewLifecycleOwner, Observer {
+        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             val newList = arrayListOf<OddsDetailListData>()
             it.odds?.forEach { map ->
                 val key = map.key
                 val value = map.value
                 val filteredOddList = mutableListOf<Odd>()
-
-                value.forEach { odd ->
-                    if (odd != null) {
-                        val detailOdd = Odd(
-                            null,
-                            odd.id,
-                            null,
-                            odd.odds,
-                            odd.hkOdds,
-                            odd.producerId,
-                            odd.spread,
-                            odd.status
-                        )
-                        filteredOddList.add(detailOdd)
-                    }
+                value.odds?.forEach { odd ->
+                    if (odd != null)
+                        filteredOddList.add(odd)
                 }
                 newList.add(
                     OddsDetailListData(
                         key,
-                        mutableListOf(),
-                        "",
+                        TextUtil.split(value.typeCodes),
+                        value.name,
                         filteredOddList
                     )
                 )
@@ -171,9 +162,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         receiver.producerUp.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             service.unsubscribeAllHallChannel()
+            service.unsubscribeAllEventChannel()
+
             matchOddList.forEach { matchOddList ->
                 subscribeHallChannel(sport, matchOddList?.id)
             }
+
+            service.subscribeEventChannel(matchId)
         })
     }
 
@@ -199,32 +194,18 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             it.getContentIfNotHandled()?.let { result ->
                 result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                     result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                        val strVerse = getString(R.string.verse_)
-                        val strMatch = "$home${strVerse}$away"
-                        val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
-                        val startPosition = strMatch.indexOf(strVerse)
-                        val endPosition = startPosition + strVerse.length
-                        val style = SpannableStringBuilder(strMatch)
-                        style.setSpan(
-                            ForegroundColorSpan(color),
-                            startPosition,
-                            endPosition,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-
                         oddsDetailListAdapter?.homeName = home
                         oddsDetailListAdapter?.awayName = away
-
                     }
                 }
             }
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {
-                if (it.size > 0) {
+            it.getContentIfNotHandled()?.let { list ->
+                if (list.size > 0) {
                     oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
+                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(list)
                     oddsDetailListAdapter?.notifyDataSetChanged()
                 }
             }
@@ -251,7 +232,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             hideLoading()
             unsubscribeAllHallChannel()
 
-            it.peekContent()?.let { oddsListResult ->
+            it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
                     oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
                         LeagueOdd.matchOdds.forEach { MatchOdd ->
@@ -275,14 +256,17 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     }
 
+
     private fun subscribeHallChannel(code: String, match: String?) {
         service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match)
     }
+
 
     private fun unsubscribeAllHallChannel() {
         //離開畫面時取消訂閱所有賽事
         service.unsubscribeAllHallChannel()
     }
+
 
     private fun getData() {
         mSportCode?.let { mSportCode ->
@@ -291,6 +275,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         matchId?.let { matchId ->
             viewModel.getOddsDetailByMatchId(matchId)
+            service.subscribeEventChannel(matchId)
         }
 
         viewModel.getOddsList(args.sportType.code, MatchType.IN_PLAY.postValue)
@@ -311,6 +296,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     fun back() {
         findNavController().navigateUp()
     }
+
 
     private fun setupWebView(webView: WebView) {
         if (BuildConfig.DEBUG)
@@ -407,4 +393,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
 
     }
+
+
 }
