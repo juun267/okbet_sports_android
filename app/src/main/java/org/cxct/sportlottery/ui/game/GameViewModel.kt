@@ -677,7 +677,7 @@ class GameViewModel(
         val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            val gameTypeString = when (sportType) {
+            val gameType = when (sportType) {
                 SportType.FOOTBALL -> {
                     androidContext.getString(GameType.FT.string)
                 }
@@ -695,7 +695,15 @@ class GameViewModel(
                 }
             }
 
-            betInfoRepository.add(matchType, gameTypeString, playCateName, playName, matchOdd, odd)
+            betInfoRepository.add(
+                matchType,
+                sportType,
+                gameType,
+                playCateName,
+                playName,
+                matchOdd,
+                odd
+            )
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }

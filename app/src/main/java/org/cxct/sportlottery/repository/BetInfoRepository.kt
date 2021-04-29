@@ -9,8 +9,12 @@ import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
+import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
+import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import retrofit2.Response
 
 const val BET_INFO_MAX_COUNT = 10
@@ -35,6 +39,8 @@ class BetInfoRepository {
     var betList: MutableList<BetInfoListData> = mutableListOf()
     var matchOddList: MutableList<MatchOdd> = mutableListOf()
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
+
+    var playQuotaComData: PlayQuotaComData? = null
 
 
     suspend fun getBetInfo(oddsList: List<Odd>): Response<BetInfoResult> {
@@ -114,6 +120,7 @@ class BetInfoRepository {
 
     fun add(
         matchType: MatchType,
+        sportType: SportType,
         gameType: String,
         playCateName: String,
         playName: String,
@@ -152,8 +159,12 @@ class BetInfoRepository {
                                 awayScore = matchOdd.matchInfo.awayScore ?: 0
                             )
 
-                            betList.add(BetInfoListData(betInfoMatchOdd, null))
-                            _betInfoList.postValue(betList)
+                            matchOddList.add(betInfoMatchOdd)
+
+                            parlayOddList.clear()
+                            parlayOddList.addAll(getParlayOdd(matchType, sportType, matchOddList))
+
+                            //TODO to origin get bet info list back logic
                         }
                     }
                 }
@@ -207,6 +218,72 @@ class BetInfoRepository {
                     }
                 }
             }
+        }
+    }
+
+    private fun getParlayOdd(
+        matchType: MatchType,
+        sportType: SportType,
+        matchOddList: MutableList<MatchOdd>
+    ): List<ParlayOdd> {
+
+        val playQuota: PlayQuota? = when (matchType) {
+            MatchType.OUTRIGHT -> {
+                when (sportType) {
+                    SportType.FOOTBALL -> playQuotaComData?.oUTRIGHTFT
+                    SportType.BASKETBALL -> playQuotaComData?.oUTRIGHTBK
+                    SportType.TENNIS -> playQuotaComData?.oUTRIGHTTN
+                    SportType.VOLLEYBALL -> playQuotaComData?.oUTRIGHTVB
+                    SportType.BADMINTON -> null
+                }
+            }
+
+            MatchType.PARLAY -> {
+                when (sportType) {
+                    SportType.FOOTBALL -> playQuotaComData?.pARLAYFT
+                    SportType.BASKETBALL -> playQuotaComData?.pARLAYBK
+                    SportType.TENNIS -> playQuotaComData?.pARLAYTN
+                    SportType.VOLLEYBALL -> playQuotaComData?.pARLAYVB
+                    SportType.BADMINTON -> playQuotaComData?.pARLAYBM
+                }
+            }
+            else -> {
+                when (sportType) {
+                    SportType.FOOTBALL -> playQuotaComData?.sINGLEFT
+                    SportType.BASKETBALL -> playQuotaComData?.sINGLEBK
+                    SportType.TENNIS -> playQuotaComData?.sINGLETN
+                    SportType.VOLLEYBALL -> playQuotaComData?.sINGLEVB
+                    SportType.BADMINTON -> playQuotaComData?.sINGLEBM
+                }
+            }
+        }
+
+        val oddsList = matchOddList.map {
+            it.odds.toBigDecimal()
+        }
+
+        val oddsIndexList = oddsList.map {
+            oddsList.indexOf(it)
+        }
+
+        val parlayComList = ParlayLimitUtil.getCom(oddsIndexList.toIntArray())
+
+        val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
+            oddsList,
+            parlayComList,
+            playQuota?.max?.toBigDecimal(),
+            playQuota?.min?.toBigDecimal()
+        )
+
+        return parlayBetLimitMap.map {
+            ParlayOdd(
+                parlayType = it.key,
+                max = it.value.max.toInt(),
+                min = it.value.min.toInt(),
+                num = it.value.num,
+                odds = it.value.odds.toDouble(),
+                hkOdds = it.value.hdOdds.toDouble(),
+            )
         }
     }
 
