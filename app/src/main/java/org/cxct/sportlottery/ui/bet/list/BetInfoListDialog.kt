@@ -123,7 +123,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
-    private fun subscribeChannel(list: MutableList<BetInfoListData>){
+    private fun subscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
                 service.subscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
@@ -207,17 +207,19 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             it.odds?.forEach { map ->
                 val value = map.value
                 value.forEach { odd ->
-                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
-                        null,
-                        odd?.id,
-                        null,
-                        odd?.odds,
-                        odd?.hkOdds,
-                        odd?.producerId,
-                        odd?.spread,
-                        odd?.status,
-                    )
-                    newList.add(newOdd)
+                    odd?.let {
+                        val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                            null,
+                            odd.id,
+                            null,
+                            odd.odds,
+                            odd.hkOdds,
+                            odd.producerId,
+                            odd.spread,
+                            odd.status,
+                        )
+                        newList.add(newOdd)
+                    }
                 }
             }
             betInfoListAdapter.updatedBetInfoList = newList

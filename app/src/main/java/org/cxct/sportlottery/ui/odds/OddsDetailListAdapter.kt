@@ -33,15 +33,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     var oddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
 
 
-    var curMatchId: String? = null
-
-
     var homeName: String? = null
 
 
     var awayName: String? = null
 
+
     var sportCode: String? = null
+
+
+    private lateinit var code: String
+
 
     var updatedOddsDetailDataList = ArrayList<OddsDetailListData>()
         set(value) {
@@ -63,13 +65,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         notifyDataSetChanged()
     }
 
-
-    fun setCurrentMatchId(mid: String?) {
-        curMatchId = mid
-    }
-
-
-    private lateinit var code: String
 
     enum class LayoutType(val layout: Int) {
         HDP(R.layout.content_odds_detail_list_hdp),
@@ -620,7 +615,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     oddsDetail,
                     onOddClickListener,
                     betInfoList,
-                    curMatchId,
                     object : TypeOneListAdapter.OnMoreClickListener {
                         override fun click() {
                             for (i in oddsDetail.oddArrayList.indices) {
@@ -684,7 +678,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 tvOdds.isSelected = odd.isSelect ?: false
                                 itemView.setOnClickListener {
                                     if (odd.isSelect != true) {
-                                        onOddClickListener.getBetInfoList(odd)
+                                        onOddClickListener.getBetInfoList(odd, oddsDetail)
                                     } else {
                                         onOddClickListener.removeBetInfoItem(odd)
                                     }
@@ -722,17 +716,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             rvHome.apply {
-                adapter = TypeCSAdapter(homeList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvDraw.apply {
-                adapter = TypeCSAdapter(drawList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeCSAdapter(oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvAway.apply {
-                adapter = TypeCSAdapter(awayList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeCSAdapter(oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
@@ -752,7 +746,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeSingleAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 3)
             }
         }
@@ -764,7 +758,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeSingleAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
 
@@ -777,7 +771,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeOnlyOddHDPAdapter(oddsDetail, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeOnlyOddHDPAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
@@ -790,7 +784,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeHDPAdapter(oddsDetail, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeHDPAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
@@ -798,7 +792,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun twoSides(oddsDetail: OddsDetailListData) {
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeTwoSidesAdapter(oddsDetail.oddArrayList, onOddClickListener, betInfoList, curMatchId, oddsType)
+                adapter = TypeTwoSidesAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }

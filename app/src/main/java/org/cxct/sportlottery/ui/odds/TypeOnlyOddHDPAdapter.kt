@@ -13,7 +13,6 @@ class TypeOnlyOddHDPAdapter(
     private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeOnlyOddHDPAdapter.ViewHolder>() {
 
@@ -35,7 +34,7 @@ class TypeOnlyOddHDPAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_END, oddsType, oddsDetail.gameType)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_END, oddsType, oddsDetail.gameType)
         }
     }
 

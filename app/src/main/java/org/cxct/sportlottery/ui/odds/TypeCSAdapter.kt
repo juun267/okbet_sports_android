@@ -11,9 +11,10 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
 class TypeCSAdapter(
-    private val oddsList: List<Odd>, private val onOddClickListener: OnOddClickListener,
+    private val oddsDetail: OddsDetailListData,
+    private val oddsList: List<Odd>,
+    private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?,
     private val oddsType: OddsType
 ) :
     RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
@@ -37,7 +38,7 @@ class TypeCSAdapter(
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null)
 
             //波坦玩法在顯示上面 spread 位置內容用 name 取代
             itemView.findViewById<TextView>(R.id.tv_spread).text = odd.name

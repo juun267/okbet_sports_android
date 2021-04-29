@@ -10,10 +10,9 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
 class TypeSingleAdapter (
-    private val oddsList: List<Odd>,
+    private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeSingleAdapter.ViewHolder>() {
 
@@ -24,18 +23,18 @@ class TypeSingleAdapter (
 
 
     override fun getItemCount(): Int {
-        return oddsList.size
+        return oddsDetail.oddArrayList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsList[position])
+        holder.bindModel(oddsDetail.oddArrayList[position])
     }
 
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_CENTER, oddsType, null)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_CENTER, oddsType, null)
         }
     }
 

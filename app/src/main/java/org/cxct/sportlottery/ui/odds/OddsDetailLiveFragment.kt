@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -44,6 +45,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var mSportCode: String? = null
     private var matchId: String? = null
+    private var matchOdd: MatchOdd? = null
 
     private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
 
@@ -53,6 +55,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private var oddsGameCardAdapter: OddsGameCardAdapter? = null
 
     private var sport = ""
+
+    private var curHomeScore = 0
+    private var curAwayScore = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,8 +156,20 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
 
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+
             oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
+
+            it?.matchStatusCO?.let { ms ->
+                if(ms.matchId == this.matchId){
+                    ms.homeScore?.let { h ->
+                        ms.awayScore?.let { a ->
+                            curHomeScore = h
+                            curAwayScore = a
+                        }
+                    }
+                }
+            }
         })
 
         receiver.matchClock.observe(viewLifecycleOwner, Observer {
@@ -192,6 +209,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun observeData() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
+                matchOdd = result.oddsDetailData?.matchOdd
                 result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                     result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                         oddsDetailListAdapter?.homeName = home
@@ -215,10 +233,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.betInfoRepository.isParlayPage.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
-        })
-
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
@@ -234,6 +248,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
+                    matchOddList.clear()
                     oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
                         LeagueOdd.matchOdds.forEach { MatchOdd ->
                             matchOddList.add(MatchOdd.matchInfo)
@@ -283,8 +298,22 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
 
-    override fun getBetInfoList(odd: Odd) {
-        viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
+    override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
+        matchOdd?.let { matchOdd ->
+
+            matchOdd.matchInfo.homeScore = curHomeScore
+            matchOdd.matchInfo.awayScore = curAwayScore
+
+            mSportCode?.let { gameType ->
+                viewModel.addInBetInfo(
+                    matchType = MatchType.IN_PLAY,
+                    gameType = gameType,
+                    playCateName = oddsDetail.name,
+                    matchOdd = matchOdd,
+                    odd = odd
+                )
+            }
+        }
     }
 
 

@@ -736,7 +736,7 @@ class GameViewModel(
                 }
             }
 
-            betInfoRepository.add(
+            betInfoRepository.addInBetInfo(
                 matchType,
                 sportType,
                 gameTypeString,
@@ -1092,6 +1092,18 @@ class GameViewModel(
         }
     }
 
+
+    fun addInBetInfo(
+        matchType: MatchType,
+        gameType: String,
+        playCateName: String,
+        matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
+        odd: org.cxct.sportlottery.network.odds.detail.Odd
+    ) {
+        betInfoRepository.addInBetInfo(
+            matchType, gameType, playCateName, matchOdd, odd
+        )
+    }
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
         if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
