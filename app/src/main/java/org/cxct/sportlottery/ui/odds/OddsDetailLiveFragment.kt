@@ -56,6 +56,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var sport = ""
 
+    private var curHomeScore = 0
+    private var curAwayScore = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,8 +156,20 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             oddsDetailListAdapter?.updatedOddsDetailDataList = newList
         })
 
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+
             oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
+
+            it?.matchStatusCO?.let { ms ->
+                if(ms.matchId == this.matchId){
+                    ms.homeScore?.let { h ->
+                        ms.awayScore?.let { a ->
+                            curHomeScore = h
+                            curAwayScore = a
+                        }
+                    }
+                }
+            }
         })
 
         receiver.matchClock.observe(viewLifecycleOwner, Observer {
@@ -233,6 +248,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
+                    matchOddList.clear()
                     oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
                         LeagueOdd.matchOdds.forEach { MatchOdd ->
                             matchOddList.add(MatchOdd.matchInfo)
@@ -284,6 +300,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
+
+            matchOdd.matchInfo.homeScore = curHomeScore
+            matchOdd.matchInfo.awayScore = curAwayScore
+
             mSportCode?.let { gameType ->
                 viewModel.addInBetInfo(
                     matchType = MatchType.IN_PLAY,
