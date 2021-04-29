@@ -695,7 +695,7 @@ class GameViewModel(
                 }
             }
 
-            betInfoRepository.add(
+            betInfoRepository.addInBetInfo(
                 matchType,
                 sportType,
                 gameType,
@@ -1178,94 +1178,6 @@ class GameViewModel(
         }
         betInfoRepository._betInfoList.postValue(newBetList)
     }
-
-
-//    fun getBetInfoListForParlay(isUpdate: Boolean) {
-//
-//        if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
-//            return
-//        }
-//
-//        val sendList: MutableList<Odd> = mutableListOf()
-//        betInfoRepository.betList.let { list ->
-//
-//            //以matchId分組 key為matchOdd(object)
-//            val groupList = list.groupBy { data ->
-//                list.find { d ->
-//                    data.matchOdd.matchId == d.matchOdd.matchId
-//                }
-//            }
-//
-//            run loop@{
-//                groupList.forEach {
-//                    if (it.value.size > 1) {
-//                        _systemDelete.postValue(true)
-//                        return@loop
-//                    }
-//                }
-//            }
-//
-//            //各別取第一項做為串關項目送出
-//            groupList.keys.forEach {
-//                it?.matchOdd?.let { matchOdd ->
-//                    sendList.add(Odd(matchOdd.oddsId, matchOdd.odds))
-//                }
-//            }
-//        }
-//
-//        viewModelScope.launch {
-//            val result = doNetwork(androidContext) {
-//                betInfoRepository.getBetInfoList(sendList)
-//            }
-//            result?.success?.let { success ->
-//
-//                if (success) {
-//
-//                    //回傳成功 兩個list不一定數量相等 各別載入列表
-//                    if (isUpdate) {
-//                        _newMatchOddList.postValue(betInfoRepository.matchOddList)
-//                    } else {
-//                        _matchOddList.postValue(betInfoRepository.matchOddList)
-//                    }
-//
-//                    //將串起來的數量賠率移至第一項
-//                    val pOdd = betInfoRepository.parlayOddList.find {
-//                        betInfoRepository.matchOddList.size.toString() + "C1" == it.parlayType
-//                    }
-//
-//                    betInfoRepository.parlayOddList.remove(pOdd)
-//
-//                    pOdd?.let { po ->
-//                        betInfoRepository.parlayOddList.add(0, po)
-//                    }
-//
-//                    _parlayList.postValue(betInfoRepository.parlayOddList)
-//
-//                    //載入串關注單後比對一般注單
-//                    val newBetList: MutableList<BetInfoListData> = mutableListOf()
-//                    betInfoRepository.matchOddList.let { mList ->
-//                        for (i in mList.indices) {
-//                            betInfoRepository.betList.let { bList ->
-//                                val oid = mList[i].oddsId
-//                                val item = bList.find {
-//                                    it.matchOdd.oddsId == oid
-//                                }
-//                                item?.let {
-//                                    newBetList.add(it)
-//                                }
-//                            }
-//                        }
-//                        betInfoRepository.betList.clear()
-//                        betInfoRepository.betList.addAll(newBetList)
-//                    }
-//                    betInfoRepository._betInfoList.postValue(newBetList)
-//                } else {
-//                    removeOddByMsg(result)
-//                }
-//            }
-//            _betInfoResult.postValue(Event(result))
-//        }
-//    }
 
     fun removeBetInfoItem(oddId: String?) {
         betInfoRepository.removeItem(oddId)
