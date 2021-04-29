@@ -20,7 +20,6 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.profileCenter.SettingTipsDialog
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
@@ -261,22 +260,17 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
      * @param assignType 是否指定跳轉新增型態(銀行卡, 虛擬幣)
      */
     private fun jumpToMoneyCardSetting(assignType: Boolean = false, transferType: TransferType? = null) {
-        SettingTipsDialog(requireContext(), SettingTipsDialog.SettingTipsDialogListener {
+        val content = when (transferType) {
+                TransferType.CRYPTO -> {
+                    getString(R.string.please_setting_crypto)
+                }
+                else -> {
+                    getString(R.string.please_setting_bank_card)
+                }
+            }
+        showPromptDialog(getString(R.string.withdraw_setting),  content) {
             this@WithdrawFragment.activity?.finish()
             startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
-        }).apply {
-            setTipsTitle(R.string.withdraw_setting)
-            setTipsContent(
-                when (transferType) {
-                    TransferType.CRYPTO -> {
-                        R.string.please_setting_crypto
-                    }
-                    else -> {
-                        R.string.please_setting_bank_card
-                    }
-                }
-            )
-            show(this@WithdrawFragment.parentFragmentManager, "")
         }
     }
 

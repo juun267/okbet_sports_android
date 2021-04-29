@@ -25,7 +25,7 @@ data class Row(
     @Json(name = "checkStatus")
     val checkStatus: Int?,
     @Json(name = "fee")
-    val fee: Double?,
+    val fee: Double ?= 0.0,
     @Json(name = "id")
     val id: Long,
     @Json(name = "operatorTime")
@@ -48,5 +48,4 @@ data class Row(
     var withdrawState: String? = null
     var withdrawType: String? = null
     var displayMoney: String? = null
-    var displayFee: String? = null
 }
