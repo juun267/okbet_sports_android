@@ -22,6 +22,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -42,6 +43,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     var matchId: String? = null
     private var mSportCode: String? = null
+    private var matchOdd: MatchOdd? = null
 
     private lateinit var dataBinding: FragmentOddsDetailBinding
 
@@ -50,7 +52,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         mSportCode = args.sportType.code
         matchId = args.matchId
     }
@@ -197,6 +198,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
+
+                matchOdd = result.oddsDetailData?.matchOdd
+
                 result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                     val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
                     val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
@@ -265,10 +269,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             oddsDetailListAdapter?.setBetInfoList(it)
         })
 
-        viewModel.betInfoRepository.isParlayPage.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
-        })
-
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
@@ -310,8 +310,18 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
 
-    override fun getBetInfoList(odd: Odd) {
-        viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
+    override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
+        matchOdd?.let { matchOdd ->
+            mSportCode?.let { gameType ->
+                viewModel.addInBetInfo(
+                    matchType = args.matchType,
+                    gameType = gameType,
+                    playCateName = oddsDetail.name,
+                    matchOdd = matchOdd,
+                    odd = odd
+                )
+            }
+        }
     }
 
 

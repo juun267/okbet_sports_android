@@ -446,6 +446,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun navOddsDetail(matchId: String) {
         val action =
             GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                args.matchType,
                 args.sportType,
                 matchId
             )
