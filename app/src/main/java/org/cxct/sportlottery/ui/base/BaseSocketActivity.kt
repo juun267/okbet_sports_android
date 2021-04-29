@@ -55,6 +55,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         receiver.serviceConnectStatus.observe(this, Observer { status ->
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
+                    hideLoading()
                     showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService.doReconnect() }
                 }
                 else -> {
