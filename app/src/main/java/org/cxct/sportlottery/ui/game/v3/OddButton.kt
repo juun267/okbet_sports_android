@@ -187,12 +187,11 @@ class OddButton @JvmOverloads constructor(
                 return
             }
         }
-        onOddStatusChangedListener?.onOddStateChangedFinish()
 
         runnable = Runnable {
             odd_button.background =
                 ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
-
+            onOddStatusChangedListener?.onOddStateChangedFinish()
             isActivated = false
         }
         runnable?.let {
@@ -217,7 +216,7 @@ class OddButton @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         odd_button.background =
             ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
-
+        onOddStatusChangedListener?.onOddStateChangedFinish()
         isActivated = false
         super.onDetachedFromWindow()
 
