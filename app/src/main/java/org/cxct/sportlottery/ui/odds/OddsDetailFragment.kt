@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Spannable
@@ -27,6 +28,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+
 
 @Suppress("DEPRECATION")
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
@@ -76,12 +78,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         observeSocketData()
     }
 
+
     override fun onStart() {
         super.onStart()
-
-        service.subscribeEventChannel(matchId)
         getData()
     }
+
 
     private fun observeSocketData() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
@@ -139,8 +141,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     OddsDetailMoreFragment.newInstance(
                         id,
                         object : OddsDetailMoreFragment.ChangeGameListener {
-                            override fun refreshData(matchId: String) {
-                                this@OddsDetailFragment.matchId = matchId
+                            override fun refreshData(mid: String) {
+                                matchId = mid
                                 getData()
                             }
                         }).apply {
@@ -175,8 +177,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun observeData() {
         viewModel.playCateListResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                result?.success?.let {
-                    if (it) {
+                result.success.let { success ->
+                    if (success) {
                         dataBinding.tabCat.removeAllTabs()
                         if (result.rows.isNotEmpty()) {
                             for (row in result.rows) {
@@ -290,6 +292,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         matchId?.let { matchId ->
             viewModel.getOddsDetailByMatchId(matchId)
+            service.subscribeEventChannel(matchId)
         }
     }
 
@@ -298,12 +301,14 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         findNavController().navigateUp()
     }
 
+
     private fun navGameInPlay() {
         val action =
             OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY)
 
         findNavController().navigate(action)
     }
+
 
     override fun getBetInfoList(odd: Odd) {
         viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
@@ -314,9 +319,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.removeBetInfoItem(odd.id)
     }
 
+
     override fun onStop() {
         super.onStop()
 
         service.unsubscribeEventChannel(matchId)
     }
+
+
 }
