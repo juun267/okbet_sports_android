@@ -142,76 +142,79 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
 
-                    val odds = outrightOddAdapter.data.filterIsInstance<Odd>()
-                    val oddsType = outrightOddAdapter.oddsType
+                    outrightOddAdapter.data.forEachIndexed { index: Int, odd: Any ->
+                        if (odd is Odd) {
+                            val oddsType = outrightOddAdapter.oddsType
 
-                    odds.forEach { odd ->
-                        oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
-                            oddTypeSocketMapEntry.value.onEach { odd ->
-                                odd?.isSelected =
-                                    viewModel.betInfoRepository.betList.any { betInfoListData ->
-                                        betInfoListData.matchOdd.oddsId == odd?.id
-                                    }
-                            }
-
-                            val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
-                                oddSocket?.id == odd.id
-                            }
-
-                            oddSocket?.let { oddSocketNonNull ->
-                                when (oddsType) {
-                                    OddsType.EU -> {
-                                        odd.odds?.let { oddValue ->
-                                            oddSocketNonNull.odds?.let { oddSocketValue ->
-                                                when {
-                                                    oddValue > oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SMALLER.state
-                                                    }
-                                                    oddValue < oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.LARGER.state
-                                                    }
-                                                    oddValue == oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SAME.state
-                                                    }
-                                                }
-                                            }
+                            oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
+                                oddTypeSocketMapEntry.value.onEach { odd ->
+                                    odd?.isSelected =
+                                        viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                            betInfoListData.matchOdd.oddsId == odd?.id
                                         }
-                                    }
-
-                                    OddsType.HK -> {
-                                        odd.hkOdds?.let { oddValue ->
-                                            oddSocketNonNull.hkOdds?.let { oddSocketValue ->
-                                                when {
-                                                    oddValue > oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SMALLER.state
-                                                    }
-                                                    oddValue < oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.LARGER.state
-                                                    }
-                                                    oddValue == oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SAME.state
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
                                 }
 
-                                odd.odds = oddSocketNonNull.odds
-                                odd.hkOdds = oddSocketNonNull.hkOdds
+                                val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
+                                    oddSocket?.id == odd.id
+                                }
 
-                                odd.status = oddSocketNonNull.status
+                                oddSocket?.let { oddSocketNonNull ->
+                                    when (oddsType) {
+                                        OddsType.EU -> {
+                                            odd.odds?.let { oddValue ->
+                                                oddSocketNonNull.odds?.let { oddSocketValue ->
+                                                    when {
+                                                        oddValue > oddSocketValue -> {
+                                                            odd.oddState =
+                                                                OddState.SMALLER.state
+                                                        }
+                                                        oddValue < oddSocketValue -> {
+                                                            odd.oddState =
+                                                                OddState.LARGER.state
+                                                        }
+                                                        oddValue == oddSocketValue -> {
+                                                            odd.oddState =
+                                                                OddState.SAME.state
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
 
-                                outrightOddAdapter.notifyItemChanged(outrightOddAdapter.data.indexOf(odd))
+                                        OddsType.HK -> {
+                                            odd.hkOdds?.let { oddValue ->
+                                                oddSocketNonNull.hkOdds?.let { oddSocketValue ->
+                                                    when {
+                                                        oddValue > oddSocketValue -> {
+                                                            odd.oddState =
+                                                                OddState.SMALLER.state
+                                                        }
+                                                        oddValue < oddSocketValue -> {
+                                                            odd.oddState =
+                                                                OddState.LARGER.state
+                                                        }
+                                                        oddValue == oddSocketValue -> {
+                                                            odd.oddState =
+                                                                OddState.SAME.state
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    odd.odds = oddSocketNonNull.odds
+                                    odd.hkOdds = oddSocketNonNull.hkOdds
+
+                                    odd.status = oddSocketNonNull.status
+
+                                    outrightOddAdapter.notifyItemChanged(index)
+                                }
                             }
+
                         }
                     }
+
                 }
             }
         })
