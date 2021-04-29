@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -97,6 +98,31 @@ class BetInfoRepository {
         return result
     }
 
+    fun addInBetInfoParlay(){
+        matchOddList.clear()
+        parlayOddList.clear()
+
+        betList.forEach {
+            matchOddList.add(it.matchOdd)
+        }
+
+        betList.forEach {
+            it.parlayOdds?.let { parlay ->
+                parlayOddList.add(parlay) }
+        }
+
+        val sportType = when (matchOddList[0].gameType) {
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            SportType.TENNIS.code -> SportType.TENNIS
+            else -> null
+        }
+        sportType?.let {
+            parlayOddList.addAll(getParlayOdd(MatchType.PARLAY, it, matchOddList))
+        }
+    }
 
     fun getCurrentBetInfoList() {
         _betInfoList.postValue(betList)
@@ -159,12 +185,12 @@ class BetInfoRepository {
                                 awayScore = matchOdd.matchInfo.awayScore ?: 0
                             )
 
-                            matchOddList.add(betInfoMatchOdd)
-
-                            parlayOddList.clear()
-                            parlayOddList.addAll(getParlayOdd(matchType, sportType, matchOddList))
-
-                            //TODO to origin get bet info list back logic
+                            val mList = mutableListOf<MatchOdd>()
+                            mList.add(betInfoMatchOdd)
+                            betList.add(BetInfoListData(betInfoMatchOdd, getParlayOdd(matchType, sportType, mList)[0]).apply {
+                                this.matchType = matchType
+                            })
+                            _betInfoList.postValue(betList)
                         }
                     }
                 }
@@ -174,6 +200,7 @@ class BetInfoRepository {
 
     fun add(
         matchType: MatchType,
+        sportType: SportType,
         gameType: String,
         playCateName: String?,
         playName: String?,
@@ -211,7 +238,9 @@ class BetInfoRepository {
                             awayScore = 0
                         )
 
-                        betList.add(BetInfoListData(betInfoMatchOdd, null).apply {
+                        val mList = mutableListOf<MatchOdd>()
+                        mList.add(betInfoMatchOdd)
+                        betList.add(BetInfoListData(betInfoMatchOdd, getParlayOdd(matchType, sportType, mList)[0]).apply {
                             this.matchType = matchType
                         })
                         _betInfoList.postValue(betList)
@@ -234,7 +263,7 @@ class BetInfoRepository {
                     SportType.BASKETBALL -> playQuotaComData?.oUTRIGHTBK
                     SportType.TENNIS -> playQuotaComData?.oUTRIGHTTN
                     SportType.VOLLEYBALL -> playQuotaComData?.oUTRIGHTVB
-                    SportType.BADMINTON -> null
+                    SportType.BADMINTON -> playQuotaComData?.oUTRIGHTBM
                 }
             }
 
@@ -286,6 +315,7 @@ class BetInfoRepository {
             )
         }
     }
+
 
     private fun removeSameMatchIdItem(matchId: String) {
         val item = betList.find { betInfo ->
