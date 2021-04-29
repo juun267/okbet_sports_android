@@ -220,7 +220,10 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             val matchOdd = mBetInfoList.matchOdd
             val parlayOdd = mBetInfoList.parlayOdds
             binding.matchOdd = matchOdd
-            binding.parlayOdd = parlayOdd
+            parlayOdd?.let {
+                binding.parlayOdd = parlayOdd
+            }
+
             binding.betInfoDetail.apply {
                 when (mBetInfoList.matchType) {
                     MatchType.OUTRIGHT -> {
@@ -240,8 +243,12 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     }
                 }
             }
-
-            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
+            parlayOdd?.let {
+                binding.etBet.hint = String.format(
+                    binding.root.context.getString(R.string.bet_info_list_hint),
+                    TextUtil.formatForBetHint(parlayOdd.max)
+                )
+            }
             binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(mBetInfoList) }
@@ -263,7 +270,9 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 } else matchOdd.playCateName
 
             binding.etBet.setText(mBetInfoList.input)
-            check(binding.etBet.text.toString(), matchOdd, parlayOdd)
+            parlayOdd?.let {
+                check(binding.etBet.text.toString(), matchOdd, parlayOdd)
+            }
 
             /* check input focus */
             if (position == focusPosition) {
@@ -274,7 +283,9 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             /* set listener */
             val tw = object : TextWatcher {
                 override fun afterTextChanged(it: Editable?) {
-                    check(it.toString(), matchOdd, parlayOdd)
+                    parlayOdd?.let {
+                        check(it.toString(), matchOdd, parlayOdd)
+                    }
                     if (TextUtils.isEmpty(it)) {
                         betInfoList[position].input = ""
                     } else {

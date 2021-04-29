@@ -42,6 +42,7 @@ import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import org.json.JSONArray
@@ -625,11 +626,10 @@ class GameViewModel(
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
                     it.odds.forEach { mapSubTitleOdd ->
+                        val dynamicMarket = matchOdd.dynamicMarkets[mapSubTitleOdd.key]
 
                         //add subtitle
                         if (!matchOdd.displayList.contains(mapSubTitleOdd.key)) {
-                            val dynamicMarket = matchOdd.dynamicMarkets[mapSubTitleOdd.key]
-
                             dynamicMarket?.let {
                                 when (LanguageManager.getSelectLanguage(androidContext)) {
                                     LanguageManager.Language.ZH -> {
@@ -644,6 +644,15 @@ class GameViewModel(
 
                         //add odd
                         mapSubTitleOdd.value.forEach { odd ->
+                            odd?.outrightCateName =
+                                when (LanguageManager.getSelectLanguage(androidContext)) {
+                                    LanguageManager.Language.ZH -> {
+                                        dynamicMarket?.zh
+                                    }
+                                    else -> {
+                                        dynamicMarket?.en
+                                    }
+                                }
                             odd?.let { it1 -> matchOdd.displayList.add(it1) }
                         }
                     }
@@ -657,42 +666,76 @@ class GameViewModel(
         }
     }
 
-    fun updateOutrightOddsSelectedState(winner: org.cxct.sportlottery.network.odds.list.Odd) {
-        val result = _outrightOddsListResult.value?.peekContent()
+    fun updateMatchBetList(
+        matchType: MatchType,
+        sportType: SportType,
+        playCateName: String,
+        playName: String,
+        matchOdd: MatchOdd,
+        odd: org.cxct.sportlottery.network.odds.list.Odd
+    ) {
+        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
 
-        val list =
-            result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
-                0
-            )?.displayList
+        if (betItem == null) {
+            val gameTypeString = when (sportType) {
+                SportType.FOOTBALL -> {
+                    androidContext.getString(GameType.FT.string)
+                }
+                SportType.BASKETBALL -> {
+                    androidContext.getString(GameType.BK.string)
+                }
+                SportType.TENNIS -> {
+                    androidContext.getString(GameType.TN.string)
+                }
+                SportType.BADMINTON -> {
+                    androidContext.getString(GameType.BM.string)
+                }
+                SportType.VOLLEYBALL -> {
+                    androidContext.getString(GameType.VB.string)
+                }
+            }
 
-        val isBet =
-            betInfoRepository.betInfoList.value?.any { it.matchOdd.oddsId == winner.id } ?: false
-
-        val odd = list?.find {
-            it is org.cxct.sportlottery.network.odds.list.Odd && it == winner
-        } as org.cxct.sportlottery.network.odds.list.Odd
-
-        if (!isBet) {
-            odd.isSelected = true
-
-            getBetInfoList(listOf(Odd(winner.id ?: "", winner.odds).apply {
-                matchType = this@GameViewModel.matchType
-            }))
+            betInfoRepository.add(matchType, gameTypeString, playCateName, playName, matchOdd, odd)
         } else {
-            odd.isSelected = false
-
-            winner.id?.let { removeBetInfoItem(it) }
+            odd.id?.let { removeBetInfoItem(it) }
         }
-
-        _outrightOddsListResult.postValue(Event(result))
     }
 
-    fun updateMatchBetList(odd: org.cxct.sportlottery.network.odds.list.Odd) {
+    fun updateMatchBetList(
+        matchType: MatchType,
+        sportType: SportType,
+        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
+        odd: org.cxct.sportlottery.network.odds.list.Odd
+    ) {
         val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+
         if (betItem == null) {
-            getBetInfoList(listOf(Odd(odd.id ?: "", odd.odds ?: 0.0).apply {
-                matchType = this@GameViewModel.matchType
-            }))
+            val gameTypeString = when (sportType) {
+                SportType.FOOTBALL -> {
+                    androidContext.getString(GameType.FT.string)
+                }
+                SportType.BASKETBALL -> {
+                    androidContext.getString(GameType.BK.string)
+                }
+                SportType.TENNIS -> {
+                    androidContext.getString(GameType.TN.string)
+                }
+                SportType.BADMINTON -> {
+                    androidContext.getString(GameType.BM.string)
+                }
+                SportType.VOLLEYBALL -> {
+                    androidContext.getString(GameType.VB.string)
+                }
+            }
+
+            betInfoRepository.add(
+                matchType,
+                gameTypeString,
+                odd.outrightCateName,
+                odd.spread,
+                matchOdd,
+                odd
+            )
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
