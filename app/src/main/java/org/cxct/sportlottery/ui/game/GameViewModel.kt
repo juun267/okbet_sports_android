@@ -695,7 +695,7 @@ class GameViewModel(
                 }
             }
 
-            betInfoRepository.add(matchType, gameTypeString, playCateName, playName, matchOdd, odd)
+            betInfoRepository.addInBetInfo(matchType, gameTypeString, playCateName, playName, matchOdd, odd)
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
@@ -728,7 +728,7 @@ class GameViewModel(
                 }
             }
 
-            betInfoRepository.add(
+            betInfoRepository.addInBetInfo(
                 matchType,
                 gameTypeString,
                 odd.outrightCateName,
@@ -1083,16 +1083,15 @@ class GameViewModel(
         }
     }
 
-    fun addToBetInfoList(
+    fun addInBetInfo(
         matchType: MatchType,
         gameType: String,
         playCateName: String,
-        playName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
     ) {
-        betInfoRepository.add(
-            matchType, gameType, playCateName, playName, matchOdd, odd
+        betInfoRepository.addInBetInfo(
+            matchType, gameType, playCateName, matchOdd, odd
         )
     }
 

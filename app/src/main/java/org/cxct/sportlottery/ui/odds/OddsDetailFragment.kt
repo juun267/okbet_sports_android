@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -314,19 +313,15 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
             mSportCode?.let { gameType ->
-                odd.name?.let { playName ->
-                    viewModel.addToBetInfoList(
-                        matchType = args.matchType,
-                        gameType = gameType,
-                        playCateName = oddsDetail.name,
-                        playName = playName,
-                        matchOdd = matchOdd,
-                        odd = odd
-                    )
-                }
+                viewModel.addInBetInfo(
+                    matchType = args.matchType,
+                    gameType = gameType,
+                    playCateName = oddsDetail.name,
+                    matchOdd = matchOdd,
+                    odd = odd
+                )
             }
         }
-
     }
 
 
