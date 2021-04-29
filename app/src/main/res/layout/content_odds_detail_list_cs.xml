@@ -74,11 +74,18 @@
             android:layout_height="61dp">
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
+                android:id="@+id/guideline_cs_other_3_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.91" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_cs_other_2_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.828" />
 
             <TextView
                 android:id="@+id/tv_other"
@@ -98,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/guideline"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_cs_other_3_list"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
