@@ -184,21 +184,16 @@ class OddButton @JvmOverloads constructor(
                 isActivated = true
             }
             else -> {
-                odd_button.background =
-                    ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
-
-                isActivated = false
                 return
             }
         }
+        onOddStatusChangedListener?.onOddStateChangedFinish()
 
         runnable = Runnable {
             odd_button.background =
                 ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
 
             isActivated = false
-
-            onOddStatusChangedListener?.onOddStateChangedFinish()
         }
         runnable?.let {
             if (!mHandler.hasCallbacks(it))
@@ -220,6 +215,10 @@ class OddButton @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
+        odd_button.background =
+            ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
+
+        isActivated = false
         super.onDetachedFromWindow()
 
         runnable?.let {
