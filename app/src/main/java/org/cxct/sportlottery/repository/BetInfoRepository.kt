@@ -87,7 +87,6 @@ class BetInfoRepository {
     fun addInBetInfo(
         matchType: MatchType,
         sportType: SportType,
-        gameType: String,
         playCateName: String,
         playName: String,
         matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
@@ -96,7 +95,7 @@ class BetInfoRepository {
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
-            matchType, gameType, playCateName, playName, matchOdd, odd
+            matchType, sportType.code, playCateName, playName, matchOdd, odd
         )
 
         betInfoMatchOdd?.let {
@@ -116,7 +115,6 @@ class BetInfoRepository {
     fun addInBetInfo(
         matchType: MatchType,
         sportType: SportType,
-        gameType: String,
         playCateName: String?,
         playName: String?,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
@@ -125,7 +123,7 @@ class BetInfoRepository {
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
-            gameType, playCateName, playName, matchOdd, odd
+            sportType.code, playCateName, playName, matchOdd, odd
         )
 
         betInfoMatchOdd?.let {
@@ -145,7 +143,6 @@ class BetInfoRepository {
     fun addInBetInfo(
         matchType: MatchType,
         sportType: SportType,
-        gameType: String,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
@@ -153,7 +150,7 @@ class BetInfoRepository {
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
-            matchType, gameType, playCateName, matchOdd, odd
+            matchType, sportType.code, playCateName, matchOdd, odd
         )
 
         betInfoMatchOdd?.let {
