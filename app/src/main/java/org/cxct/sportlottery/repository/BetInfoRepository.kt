@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
+import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import retrofit2.Response
 
@@ -155,46 +156,21 @@ class BetInfoRepository {
     ) {
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
-        matchOdd.matchInfo?.id?.let { matchId ->
-            odd.id?.let { oddsId ->
-                odd.odds?.let { odds ->
-                    odd.hkOdds?.let { hkOdds ->
-                        odd.producerId?.let { producerId ->
+        val betInfoMatchOdd = MatchOddUtil.transfer(
+            matchType, gameType, playCateName, playName, matchOdd, odd
+        )
 
-                            val betInfoMatchOdd = MatchOdd(
-                                awayName = matchOdd.matchInfo.awayName,
-                                homeName = matchOdd.matchInfo.homeName,
-                                inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
-                                leagueId = "",
-                                leagueName = "",
-                                matchId = matchId,
-                                odds = odds,
-                                hkOdds = hkOdds,
-                                oddsId = oddsId,
-                                playCateId = 0,
-                                playCateName = playCateName,
-                                playCode = "",
-                                playId = 0,
-                                playName = playName,
-                                producerId = producerId,
-                                spread = odd.spread ?: "",
-                                startTime = matchOdd.matchInfo.startTime.toLong(),
-                                status = odd.status,
-                                gameType = gameType,
-                                homeScore = matchOdd.matchInfo.homeScore ?: 0,
-                                awayScore = matchOdd.matchInfo.awayScore ?: 0
-                            )
-
-                            val mList = mutableListOf<MatchOdd>()
-                            mList.add(betInfoMatchOdd)
-                            betList.add(BetInfoListData(betInfoMatchOdd, getParlayOdd(matchType, sportType, mList)[0]).apply {
-                                this.matchType = matchType
-                            })
-                            _betInfoList.postValue(betList)
-                        }
-                    }
+        betInfoMatchOdd?.let {
+            betList.add(
+                BetInfoListData(
+                    betInfoMatchOdd,
+                    getParlayOdd(matchType, sportType, mutableListOf(it)).first()
+                ).apply {
+                    this.matchType = matchType
                 }
-            }
+            )
+
+            _betInfoList.postValue(betList)
         }
     }
 
@@ -209,44 +185,21 @@ class BetInfoRepository {
     ) {
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
-        odd.id?.let { oddsId ->
-            odd.odds?.let { odds ->
-                odd.hkOdds?.let { hkOdds ->
-                    odd.producerId?.let { producerId ->
+        val betInfoMatchOdd = MatchOddUtil.transfer(
+            gameType, playCateName, playName, matchOdd, odd
+        )
 
-                        val betInfoMatchOdd = MatchOdd(
-                            awayName = matchOdd.matchInfo.awayName ?: "",
-                            homeName = matchOdd.matchInfo.homeName ?: "",
-                            inplay = 0,
-                            leagueId = "",
-                            leagueName = "",
-                            matchId = matchOdd.matchInfo.id,
-                            odds = odds,
-                            hkOdds = hkOdds,
-                            oddsId = oddsId,
-                            playCateId = 0,
-                            playCateName = playCateName ?: "",
-                            playCode = "",
-                            playId = 0,
-                            playName = playName ?: "",
-                            producerId = producerId,
-                            spread = odd.spread ?: "",
-                            startTime = matchOdd.matchInfo.startTime,
-                            status = odd.status,
-                            gameType = gameType,
-                            homeScore = 0,
-                            awayScore = 0
-                        )
-
-                        val mList = mutableListOf<MatchOdd>()
-                        mList.add(betInfoMatchOdd)
-                        betList.add(BetInfoListData(betInfoMatchOdd, getParlayOdd(matchType, sportType, mList)[0]).apply {
-                            this.matchType = matchType
-                        })
-                        _betInfoList.postValue(betList)
-                    }
+        betInfoMatchOdd?.let {
+            betList.add(
+                BetInfoListData(
+                    betInfoMatchOdd,
+                    getParlayOdd(matchType, sportType, mutableListOf(it)).first()
+                ).apply {
+                    this.matchType = matchType
                 }
-            }
+            )
+
+            _betInfoList.postValue(betList)
         }
     }
 
@@ -260,45 +213,21 @@ class BetInfoRepository {
     ) {
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
-        matchOdd.matchInfo.id.let { matchId ->
-            odd.id?.let { oddsId ->
-                odd.odds?.let { odds ->
-                    odd.hkOdds?.let { hkOdds ->
-                        odd.producerId?.let { producerId ->
-                            val betInfoMatchOdd = MatchOdd(
-                                awayName = matchOdd.matchInfo.awayName,
-                                homeName = matchOdd.matchInfo.homeName,
-                                inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
-                                leagueId = "",
-                                leagueName = "",
-                                matchId = matchId,
-                                odds = odds,
-                                hkOdds = hkOdds,
-                                oddsId = oddsId,
-                                playCateId = 0,
-                                playCateName = playCateName,
-                                playCode = "",
-                                playId = 0,
-                                playName = odd.name ?: "",
-                                producerId = producerId,
-                                spread = odd.spread ?: "",
-                                startTime = matchOdd.matchInfo.startTime.toLong(),
-                                status = odd.status,
-                                gameType = gameType,
-                                homeScore = matchOdd.matchInfo.homeScore ?: 0,
-                                awayScore = matchOdd.matchInfo.awayScore ?: 0
-                            )
+        val betInfoMatchOdd = MatchOddUtil.transfer(
+            matchType, gameType, playCateName, matchOdd, odd
+        )
 
-                            val mList = mutableListOf<MatchOdd>()
-                            mList.add(betInfoMatchOdd)
-                            betList.add(BetInfoListData(betInfoMatchOdd, getParlayOdd(matchType, sportType, mList)[0]).apply {
-                                this.matchType = matchType
-                            })
-                            _betInfoList.postValue(betList)
-                        }
-                    }
+        betInfoMatchOdd?.let {
+            betList.add(
+                BetInfoListData(
+                    betInfoMatchOdd,
+                    getParlayOdd(matchType, sportType, mutableListOf(it)).first()
+                ).apply {
+                    this.matchType = matchType
                 }
-            }
+            )
+
+            _betInfoList.postValue(betList)
         }
     }
 
