@@ -48,9 +48,9 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_amount.text = getString(R.string.finance_rmb, nonNullDisplayMoney)
             }
 
-            it.fee?.let { fee ->
+            (it.fee?:0.0).let { fee ->
                 wd_log_detail_handle_fee.text = getString(R.string.finance_rmb, TextUtil.format(abs(fee)))
-                wd_log_detail_handle_fee_subtitle.text = if ((it.fee) > 0.0)
+                wd_log_detail_handle_fee_subtitle.text = if ((fee) > 0.0)
                     getString(R.string.log_detail_rebate_money)
                 else
                     getString(R.string.log_detail_handle_fee)

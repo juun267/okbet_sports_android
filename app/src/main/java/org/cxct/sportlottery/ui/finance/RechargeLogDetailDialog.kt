@@ -45,9 +45,9 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
             log_detail_reason.text = it.reason ?: ""
 
 
-            it.rebateMoney?.let { nonNullDisplayFee ->
+            (it.rebateMoney?:0.0).let { nonNullDisplayFee ->
                 log_detail_rebate.text = getString(R.string.finance_rmb, TextUtil.format(abs(nonNullDisplayFee)))
-                log_detail_rebate_subtitle.text = if ((it.rebateMoney) > 0.0)
+                log_detail_rebate_subtitle.text = if (nonNullDisplayFee > 0.0)
                     getString(R.string.log_detail_rebate_money)
                 else
                     getString(R.string.log_detail_handle_fee)

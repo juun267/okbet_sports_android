@@ -236,7 +236,6 @@ class FinanceViewModel(
                 }
 
                 it.displayMoney = TextUtil.formatMoney(it.applyMoney?:0.0)
-//                it.displayFee = TextUtil.formatMoney(it.fee?:0.0)
             }
 
             result?.total?.let {

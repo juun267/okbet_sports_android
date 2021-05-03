@@ -25,7 +25,7 @@ data class Row(
     @Json(name = "checkStatus")
     val checkStatus: Int?,
     @Json(name = "fee")
-    val fee: Double ?= 0.0,
+    val fee: Double?,
     @Json(name = "id")
     val id: Long,
     @Json(name = "operatorTime")

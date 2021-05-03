@@ -39,7 +39,7 @@ data class Row(
     @Json(name = "payerName")
     val payerName: String,
     @Json(name = "rebateMoney")
-    val rebateMoney: Double?=0.0,
+    val rebateMoney: Double?,
     @Json(name = "rechLevel")
     val rechLevel: String,
     @Json(name = "rechMoney")
