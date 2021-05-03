@@ -1063,7 +1063,7 @@ class GameViewModel(
         }
     }
 
-    fun addInBetInfo(
+    fun updateMatchBetList(
         matchType: MatchType,
         sportType: SportType,
         gameType: String,
@@ -1071,9 +1071,15 @@ class GameViewModel(
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
     ) {
-        betInfoRepository.addInBetInfo(
-            matchType, sportType, gameType, playCateName, matchOdd, odd
-        )
+        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+
+        if (betItem == null) {
+            betInfoRepository.addInBetInfo(
+                matchType, sportType, gameType, playCateName, matchOdd, odd
+            )
+        } else {
+            odd.id?.let { removeBetInfoItem(it) }
+        }
     }
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {

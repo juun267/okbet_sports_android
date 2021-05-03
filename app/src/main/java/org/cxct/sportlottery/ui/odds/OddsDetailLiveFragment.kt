@@ -305,7 +305,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             matchOdd.matchInfo.awayScore = curAwayScore
 
             mSportCode?.let { gameType ->
-                viewModel.addInBetInfo(
+                viewModel.updateMatchBetList(
                     matchType = MatchType.IN_PLAY,
                     args.sportType,
                     gameType = gameType,
