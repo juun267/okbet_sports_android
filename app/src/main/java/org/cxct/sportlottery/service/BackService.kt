@@ -91,6 +91,7 @@ class BackService : Service() {
     private fun connect() {
         try {
             Timber.i(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
+            resetSubscriptions()
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
                 .newBuilder()
@@ -100,7 +101,6 @@ class BackService : Service() {
             mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, URL_SOCKET_HOST_AND_PORT, null, httpClient)
             mStompClient?.let { stompClient ->
                 stompClient.withClientHeartbeat(HEART_BEAT_RATE).withServerHeartbeat(HEART_BEAT_RATE)
-                resetSubscriptions()
 
                 val lifecycleDisposable =
                     stompClient.lifecycle()
@@ -111,7 +111,6 @@ class BackService : Service() {
                                 LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("Stomp connection closed")
-                                    resetSubscriptions()
                                     reconnectionNum++
                                     if (errorFlag && reconnectionNum < 10) {
                                         Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")

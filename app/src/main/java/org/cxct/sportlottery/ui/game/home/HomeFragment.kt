@@ -22,12 +22,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
-import org.cxct.sportlottery.ui.game.v3.GameLeagueFragmentDirections
-import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 
