@@ -53,10 +53,8 @@ class BetInfoRepository {
             matchOddList.clear()
             parlayOddList.clear()
 
-            betList.forEach { betInfoListData ->
-                matchOddList.add(betInfoListData.matchOdd)
-            }
-
+            //切換串關後只保留串關項目
+            matchOddList.addAll(sendList)
             parlayOddList.addAll(getParlayOdd(MatchType.PARLAY, it, sendList))
         }
     }
@@ -96,6 +94,11 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
+
+            if (matchType == MatchType.PARLAY) {
+                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            }
+
             betList.add(
                 BetInfoListData(
                     betInfoMatchOdd,
@@ -124,6 +127,11 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
+
+            if (matchType == MatchType.PARLAY) {
+                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            }
+
             betList.add(
                 BetInfoListData(
                     betInfoMatchOdd,
@@ -151,6 +159,11 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
+
+            if (matchType == MatchType.PARLAY) {
+                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            }
+
             betList.add(
                 BetInfoListData(
                     betInfoMatchOdd,
