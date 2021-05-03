@@ -8,6 +8,6 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 data class PlayQuotaChangeEvent(
     @Json(name = "eventType")
     override val eventType: String? = EventType.PLAY_QUOTA_CHANGE.value,
-    @Json(name = "t")
+    @Json(name = "playQuotaComMap")
     val playQuotaComData: PlayQuotaComData
 ) : ServiceEventType
