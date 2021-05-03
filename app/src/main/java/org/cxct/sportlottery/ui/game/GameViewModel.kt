@@ -126,6 +126,9 @@ class GameViewModel(
     val settlementNotificationMsg: LiveData<Event<SportBet>>
         get() = _settlementNotificationMsg
 
+    val errorPromptMessage: LiveData<Event<String>>
+        get() = _errorPromptMessage
+
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     val betInfoList = betInfoRepository.betInfoList
@@ -152,6 +155,7 @@ class GameViewModel(
     private val _matchTypeCardForParlay = MutableLiveData<Event<Pair<MatchType, SportType?>>?>()
     private val _isNoHistory = MutableLiveData<Boolean>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
+    private val _errorPromptMessage = MutableLiveData<Event<String>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -466,6 +470,9 @@ class GameViewModel(
         isLeftMenu: Boolean = false,
         isPreloadTable: Boolean = false
     ) {
+        if (!haveGameHall(sportType)) {
+            return
+        }
         menuEntrance = (this.matchType != matchType) || isPreloadTable//標記為卡片或菜單跳轉不同的類別
 
         if (isLeftMenu) {
@@ -473,6 +480,42 @@ class GameViewModel(
         }
 
         _matchTypeCardForParlay.postValue(Event(matchType to sportType))
+    }
+
+    //判斷是否可以跳轉
+    private fun haveGameHall(sportType: SportType?): Boolean {
+        val errorPromptMessage: String
+
+        return when (sportType) {
+            SportType.FOOTBALL -> {
+                errorPromptMessage = androidContext.getString(R.string.message_no_game)
+                (allFootballCount.value ?: 0) > 0
+            }
+            SportType.BASKETBALL -> {
+                errorPromptMessage = androidContext.getString(R.string.message_no_game)
+                (allBasketballCount.value ?: 0) > 0
+            }
+            SportType.BADMINTON -> {
+                errorPromptMessage = androidContext.getString(R.string.message_no_game)
+                (allBadmintonCount.value ?: 0) > 0
+            }
+            SportType.TENNIS -> {
+                errorPromptMessage = androidContext.getString(R.string.message_no_game)
+                (allTennisCount.value ?: 0) > 0
+            }
+            SportType.VOLLEYBALL -> {
+                errorPromptMessage = androidContext.getString(R.string.message_no_game)
+                (allVolleyballCount.value ?: 0) > 0
+            }
+            null -> {
+                errorPromptMessage = androidContext.getString(R.string.message_no_at_start)
+                (asStartCount.value ?: 0) > 0
+            }
+        }.apply {
+            if (!this) {
+                _errorPromptMessage.value = Event(errorPromptMessage)
+            }
+        }
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
