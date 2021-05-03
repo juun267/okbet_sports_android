@@ -96,6 +96,11 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
+
+            if (matchType == MatchType.PARLAY) {
+                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            }
+
             betList.add(
                 BetInfoListData(
                     betInfoMatchOdd,
@@ -124,6 +129,11 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
+
+            if (matchType == MatchType.PARLAY) {
+                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            }
+
             betList.add(
                 BetInfoListData(
                     betInfoMatchOdd,
@@ -151,6 +161,11 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
+
+            if (matchType == MatchType.PARLAY) {
+                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            }
+
             betList.add(
                 BetInfoListData(
                     betInfoMatchOdd,
