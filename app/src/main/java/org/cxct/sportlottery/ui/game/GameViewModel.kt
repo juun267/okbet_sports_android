@@ -666,90 +666,6 @@ class GameViewModel(
         }
     }
 
-    fun updateMatchBetList(
-        matchType: MatchType,
-        sportType: SportType,
-        playCateName: String,
-        playName: String,
-        matchOdd: MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
-    ) {
-        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
-
-        if (betItem == null) {
-            val gameType = when (sportType) {
-                SportType.FOOTBALL -> {
-                    androidContext.getString(GameType.FT.string)
-                }
-                SportType.BASKETBALL -> {
-                    androidContext.getString(GameType.BK.string)
-                }
-                SportType.TENNIS -> {
-                    androidContext.getString(GameType.TN.string)
-                }
-                SportType.BADMINTON -> {
-                    androidContext.getString(GameType.BM.string)
-                }
-                SportType.VOLLEYBALL -> {
-                    androidContext.getString(GameType.VB.string)
-                }
-            }
-
-            betInfoRepository.addInBetInfo(
-                matchType,
-                sportType,
-                gameType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
-    fun updateMatchBetList(
-        matchType: MatchType,
-        sportType: SportType,
-        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
-    ) {
-        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
-
-        if (betItem == null) {
-            val gameTypeString = when (sportType) {
-                SportType.FOOTBALL -> {
-                    androidContext.getString(GameType.FT.string)
-                }
-                SportType.BASKETBALL -> {
-                    androidContext.getString(GameType.BK.string)
-                }
-                SportType.TENNIS -> {
-                    androidContext.getString(GameType.TN.string)
-                }
-                SportType.BADMINTON -> {
-                    androidContext.getString(GameType.BM.string)
-                }
-                SportType.VOLLEYBALL -> {
-                    androidContext.getString(GameType.VB.string)
-                }
-            }
-
-            betInfoRepository.addInBetInfo(
-                matchType,
-                sportType,
-                gameTypeString,
-                odd.outrightCateName,
-                odd.spread,
-                matchOdd,
-                odd
-            )
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
     private fun updateSportSelectedState(matchType: MatchType, item: Item) {
         val result = _sportMenuResult.value
 
@@ -1061,6 +977,90 @@ class GameViewModel(
 
     fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd) {
         betInfoRepository.saveOddsHasChanged(matchOdd)
+    }
+
+    fun updateMatchBetList(
+        matchType: MatchType,
+        sportType: SportType,
+        playCateName: String,
+        playName: String,
+        matchOdd: MatchOdd,
+        odd: org.cxct.sportlottery.network.odds.list.Odd
+    ) {
+        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+
+        if (betItem == null) {
+            val gameType = when (sportType) {
+                SportType.FOOTBALL -> {
+                    androidContext.getString(GameType.FT.string)
+                }
+                SportType.BASKETBALL -> {
+                    androidContext.getString(GameType.BK.string)
+                }
+                SportType.TENNIS -> {
+                    androidContext.getString(GameType.TN.string)
+                }
+                SportType.BADMINTON -> {
+                    androidContext.getString(GameType.BM.string)
+                }
+                SportType.VOLLEYBALL -> {
+                    androidContext.getString(GameType.VB.string)
+                }
+            }
+
+            betInfoRepository.addInBetInfo(
+                matchType,
+                sportType,
+                gameType,
+                playCateName,
+                playName,
+                matchOdd,
+                odd
+            )
+        } else {
+            odd.id?.let { removeBetInfoItem(it) }
+        }
+    }
+
+    fun updateMatchBetList(
+        matchType: MatchType,
+        sportType: SportType,
+        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
+        odd: org.cxct.sportlottery.network.odds.list.Odd
+    ) {
+        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+
+        if (betItem == null) {
+            val gameTypeString = when (sportType) {
+                SportType.FOOTBALL -> {
+                    androidContext.getString(GameType.FT.string)
+                }
+                SportType.BASKETBALL -> {
+                    androidContext.getString(GameType.BK.string)
+                }
+                SportType.TENNIS -> {
+                    androidContext.getString(GameType.TN.string)
+                }
+                SportType.BADMINTON -> {
+                    androidContext.getString(GameType.BM.string)
+                }
+                SportType.VOLLEYBALL -> {
+                    androidContext.getString(GameType.VB.string)
+                }
+            }
+
+            betInfoRepository.addInBetInfo(
+                matchType,
+                sportType,
+                gameTypeString,
+                odd.outrightCateName,
+                odd.spread,
+                matchOdd,
+                odd
+            )
+        } else {
+            odd.id?.let { removeBetInfoItem(it) }
+        }
     }
 
     fun addInBetInfo(
