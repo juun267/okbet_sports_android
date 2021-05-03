@@ -2,6 +2,7 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -38,20 +39,8 @@ class BetInfoRepository {
     var playQuotaComData: PlayQuotaComData? = null
 
 
-    fun addInBetInfoParlay(){
-        matchOddList.clear()
-        parlayOddList.clear()
-
-        betList.forEach {
-            matchOddList.add(it.matchOdd)
-        }
-
-        betList.forEach {
-            it.parlayOdds?.let { parlay ->
-                parlayOddList.add(parlay) }
-        }
-
-        val sportType = when (matchOddList[0].gameType) {
+    fun addInBetInfoParlay(sendList: MutableList<MatchOdd>) {
+        val sportType = when (betList[0].matchOdd.gameType) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
             SportType.FOOTBALL.code -> SportType.FOOTBALL
             SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
@@ -59,8 +48,16 @@ class BetInfoRepository {
             SportType.TENNIS.code -> SportType.TENNIS
             else -> null
         }
+
         sportType?.let {
-            parlayOddList.addAll(getParlayOdd(MatchType.PARLAY, it, matchOddList))
+            matchOddList.clear()
+            parlayOddList.clear()
+
+            betList.forEach { betInfoListData ->
+                matchOddList.add(betInfoListData.matchOdd)
+            }
+
+            parlayOddList.addAll(getParlayOdd(MatchType.PARLAY, it, sendList))
         }
     }
 

@@ -1048,7 +1048,7 @@ class GameViewModel(
             return
         }
 
-        val sendList: MutableList<Odd> = mutableListOf()
+        val sendList: MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd> = mutableListOf()
         betInfoRepository.betList.let { list ->
 
             //以matchId分組 key為matchOdd(object)
@@ -1070,12 +1070,12 @@ class GameViewModel(
             //各別取第一項做為串關項目送出
             groupList.keys.forEach {
                 it?.matchOdd?.let { matchOdd ->
-                    sendList.add(Odd(matchOdd.oddsId, matchOdd.odds))
+                    sendList.add(matchOdd)
                 }
             }
         }
 
-        betInfoRepository.addInBetInfoParlay()
+        betInfoRepository.addInBetInfoParlay(sendList)
 
         //回傳成功 兩個list不一定數量相等 各別載入列表
         if (isUpdate) {
