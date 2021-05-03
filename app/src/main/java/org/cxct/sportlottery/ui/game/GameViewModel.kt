@@ -470,8 +470,9 @@ class GameViewModel(
         isLeftMenu: Boolean = false,
         isPreloadTable: Boolean = false
     ) {
-        if (!haveGameHall(sportType)) {
-            return
+        if (sportType == null) {
+            if (!haveAtStart())
+                return
         }
         menuEntrance = (this.matchType != matchType) || isPreloadTable//標記為卡片或菜單跳轉不同的類別
 
@@ -482,40 +483,12 @@ class GameViewModel(
         _matchTypeCardForParlay.postValue(Event(matchType to sportType))
     }
 
-    //判斷是否可以跳轉
-    private fun haveGameHall(sportType: SportType?): Boolean {
-        val errorPromptMessage: String
-
-        return when (sportType) {
-            SportType.FOOTBALL -> {
-                errorPromptMessage = androidContext.getString(R.string.message_no_game)
-                (allFootballCount.value ?: 0) > 0
-            }
-            SportType.BASKETBALL -> {
-                errorPromptMessage = androidContext.getString(R.string.message_no_game)
-                (allBasketballCount.value ?: 0) > 0
-            }
-            SportType.BADMINTON -> {
-                errorPromptMessage = androidContext.getString(R.string.message_no_game)
-                (allBadmintonCount.value ?: 0) > 0
-            }
-            SportType.TENNIS -> {
-                errorPromptMessage = androidContext.getString(R.string.message_no_game)
-                (allTennisCount.value ?: 0) > 0
-            }
-            SportType.VOLLEYBALL -> {
-                errorPromptMessage = androidContext.getString(R.string.message_no_game)
-                (allVolleyballCount.value ?: 0) > 0
-            }
-            null -> {
-                errorPromptMessage = androidContext.getString(R.string.message_no_at_start)
-                (asStartCount.value ?: 0) > 0
-            }
-        }.apply {
-            if (!this) {
-                _errorPromptMessage.value = Event(errorPromptMessage)
-            }
-        }
+    //判斷即將開賽是否可以跳轉
+    private fun haveAtStart(): Boolean {
+        val haveGame = (asStartCount.value ?: 0) > 0
+        if (!haveGame)
+            _errorPromptMessage.value = Event(androidContext.getString(R.string.message_no_at_start))
+        return haveGame
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
