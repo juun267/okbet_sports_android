@@ -9,7 +9,8 @@ import kotlinx.android.synthetic.main.dialog_log_recharge_detail.*
 import kotlinx.android.synthetic.main.dialog_log_recharge_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
+import kotlin.math.abs
 
 class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
@@ -44,10 +45,9 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
             log_detail_reason.text = it.reason ?: ""
 
 
-            it.rebateMoney?.let { nonNullDisplayFee ->
-                log_detail_rebate.text = getString(R.string.finance_rmb, ArithUtil.toMoneyFormat(nonNullDisplayFee))
-
-                log_detail_rebate_subtitle.text = if ((it.rebateMoney) > 0.0)
+            (it.rebateMoney?:0.0).let { nonNullDisplayFee ->
+                log_detail_rebate.text = getString(R.string.finance_rmb, TextUtil.format(abs(nonNullDisplayFee)))
+                log_detail_rebate_subtitle.text = if (nonNullDisplayFee > 0.0)
                     getString(R.string.log_detail_rebate_money)
                 else
                     getString(R.string.log_detail_handle_fee)
