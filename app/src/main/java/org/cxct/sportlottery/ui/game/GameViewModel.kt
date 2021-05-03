@@ -990,28 +990,9 @@ class GameViewModel(
         val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            val gameType = when (sportType) {
-                SportType.FOOTBALL -> {
-                    androidContext.getString(GameType.FT.string)
-                }
-                SportType.BASKETBALL -> {
-                    androidContext.getString(GameType.BK.string)
-                }
-                SportType.TENNIS -> {
-                    androidContext.getString(GameType.TN.string)
-                }
-                SportType.BADMINTON -> {
-                    androidContext.getString(GameType.BM.string)
-                }
-                SportType.VOLLEYBALL -> {
-                    androidContext.getString(GameType.VB.string)
-                }
-            }
-
             betInfoRepository.addInBetInfo(
                 matchType,
                 sportType,
-                gameType,
                 playCateName,
                 playName,
                 matchOdd,
@@ -1031,28 +1012,9 @@ class GameViewModel(
         val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            val gameTypeString = when (sportType) {
-                SportType.FOOTBALL -> {
-                    androidContext.getString(GameType.FT.string)
-                }
-                SportType.BASKETBALL -> {
-                    androidContext.getString(GameType.BK.string)
-                }
-                SportType.TENNIS -> {
-                    androidContext.getString(GameType.TN.string)
-                }
-                SportType.BADMINTON -> {
-                    androidContext.getString(GameType.BM.string)
-                }
-                SportType.VOLLEYBALL -> {
-                    androidContext.getString(GameType.VB.string)
-                }
-            }
-
             betInfoRepository.addInBetInfo(
                 matchType,
                 sportType,
-                gameTypeString,
                 odd.outrightCateName,
                 odd.spread,
                 matchOdd,
@@ -1066,7 +1028,6 @@ class GameViewModel(
     fun updateMatchBetList(
         matchType: MatchType,
         sportType: SportType,
-        gameType: String,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
@@ -1075,7 +1036,7 @@ class GameViewModel(
 
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
-                matchType, sportType, gameType, playCateName, matchOdd, odd
+                matchType, sportType, playCateName, matchOdd, odd
             )
         } else {
             odd.id?.let { removeBetInfoItem(it) }
