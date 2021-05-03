@@ -539,6 +539,7 @@
     <string name="bank_card">银行卡</string>
     <string name="crypto">虚拟币</string>
     <string name="currency_protocol">协议/币种</string>
+    <string name="select_crypto_address">选择地址</string>
     <string name="withdraw_number">提款个数</string>
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>
