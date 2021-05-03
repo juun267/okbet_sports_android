@@ -1059,39 +1059,9 @@ class GameViewModel(
         else Timber.e("不執行 betInfo request")
     }
 
-    private fun removeOddByMsg(result: BaseResult) {
-        if (result.code == HttpError.BET_INFO_CLOSE.code) {
-            val array = JsonMapUtil.toList(JSONArray(result.msg))
-            array.forEach {
-                betInfoRepository.removeItem(it as String)
-            }
-        }
-    }
-
     fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd) {
         betInfoRepository.saveOddsHasChanged(matchOdd)
     }
-
-    fun getBetInfoList(oddsList: List<Odd>) {
-        if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT) {
-            return
-        }
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                betInfoRepository.getBetInfo(oddsList)
-            }
-            result?.success?.let {
-                if (it) {
-                    betInfoRepository.getCurrentBetInfoList()
-                } else {
-                    removeOddByMsg(result)
-                }
-                _betInfoResult.postValue(Event(result))
-            }
-        }
-    }
-
 
     fun addInBetInfo(
         matchType: MatchType,
