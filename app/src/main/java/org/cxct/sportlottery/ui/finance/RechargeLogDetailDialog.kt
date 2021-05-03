@@ -36,7 +36,7 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, {
             log_detail_trans_num.text = it.orderNo
             log_detail_time.text = it.rechDateAndTime ?: ""
             log_detail_type.text = it.rechTypeDisplay ?: ""

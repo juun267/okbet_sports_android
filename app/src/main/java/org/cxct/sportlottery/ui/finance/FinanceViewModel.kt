@@ -159,6 +159,7 @@ class FinanceViewModel(
                     RechType.WEIXIN.type -> androidContext.getString(R.string.recharge_channel_weixin)
                     RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
                     RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
+                    RechType.CRYPTO.type -> androidContext.getString(R.string.recharge_channel_crypto)
                     else -> ""
                 }
 
