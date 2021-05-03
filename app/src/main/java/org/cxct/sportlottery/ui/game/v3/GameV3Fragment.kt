@@ -95,8 +95,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         MatchType.AT_START -> {
                             matchOdd.matchInfo?.id?.let {
-                                navOddsDetail(it)
-                                viewModel.setOddsDetailMoreList(data[0].matchOdds)
+                                viewModel.setOddsDetailMoreList(
+                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList() ?: listOf<MatchOdd>()
+                                )
                             }
                         }
                         else -> {
