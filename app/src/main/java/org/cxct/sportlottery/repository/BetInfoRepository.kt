@@ -2,7 +2,6 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -19,7 +18,9 @@ const val BET_INFO_MAX_COUNT = 10
 class BetInfoRepository {
 
     //每個畫面都要觀察
-    val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>()
+    private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>().apply {
+        value = mutableListOf()
+    }
     val betInfoList: LiveData<MutableList<BetInfoListData>>
         get() = _betInfoList
 
@@ -32,7 +33,6 @@ class BetInfoRepository {
     val removeItem: LiveData<String>
         get() = _removeItem
 
-    var betList: MutableList<BetInfoListData> = mutableListOf()
     var matchOddList: MutableList<MatchOdd> = mutableListOf()
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
 
@@ -40,6 +40,8 @@ class BetInfoRepository {
 
 
     fun addInBetInfoParlay(sendList: MutableList<MatchOdd>) {
+        val betList = _betInfoList.value ?: mutableListOf()
+
         val sportType = when (betList[0].matchOdd.gameType) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
             SportType.FOOTBALL.code -> SportType.FOOTBALL
@@ -60,11 +62,15 @@ class BetInfoRepository {
     }
 
     fun getCurrentBetInfoList() {
+        val betList = _betInfoList.value ?: mutableListOf()
+
         _betInfoList.postValue(betList)
     }
 
 
     fun removeItem(oddId: String?) {
+        val betList = _betInfoList.value ?: mutableListOf()
+
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
         _removeItem.postValue(item?.matchOdd?.matchId)
@@ -73,6 +79,8 @@ class BetInfoRepository {
 
 
     fun clear() {
+        val betList = _betInfoList.value ?: mutableListOf()
+
         betList.clear()
         matchOddList.clear()
         parlayOddList.clear()
@@ -87,6 +95,8 @@ class BetInfoRepository {
         matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
+        val betList = _betInfoList.value ?: mutableListOf()
+
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
@@ -120,6 +130,8 @@ class BetInfoRepository {
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
+        val betList = _betInfoList.value ?: mutableListOf()
+
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
@@ -152,6 +164,8 @@ class BetInfoRepository {
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
     ) {
+        val betList = _betInfoList.value ?: mutableListOf()
+
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
@@ -246,9 +260,14 @@ class BetInfoRepository {
 
 
     fun saveOddsHasChanged(matchOdd: MatchOdd) {
-        val hasChanged = betList.find {
+        val hasChanged = _betInfoList.value?.find {
             it.matchOdd.oddsId == matchOdd.oddsId
         }
         hasChanged?.oddsHasChanged = true
+    }
+
+    //Temp
+    fun updateBetInfoList(newBetList: MutableList<BetInfoListData>) {
+        _betInfoList.postValue(newBetList)
     }
 }

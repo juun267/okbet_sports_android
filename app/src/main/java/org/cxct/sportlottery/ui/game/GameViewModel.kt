@@ -237,7 +237,7 @@ class GameViewModel(
 
     private fun cleanOutrightBetOrder() {
         val listWithOutOutright = mutableListOf<String>()
-        betInfoRepository.betList.forEach {
+        betInfoRepository.betInfoList.value?.forEach {
             if (it.matchType == MatchType.OUTRIGHT) {
                 listWithOutOutright.add(it.matchOdd.oddsId)
             }
@@ -945,7 +945,7 @@ class GameViewModel(
 
     private fun updateMatchOddStatus(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         newList.forEach { newItem ->
-            betInfoRepository.betList.forEach {
+            betInfoRepository.betInfoList.value?.forEach {
                 try {
                     if (newItem.id == it.matchOdd.oddsId) {
                         newItem.odds?.let { newOdds -> it.matchOdd.odds = newOdds }
@@ -956,7 +956,7 @@ class GameViewModel(
                 }
             }
         }
-        val sendRequest = betInfoRepository.betList.find {
+        val sendRequest = betInfoRepository.betInfoList.value?.find {
             it.matchOdd.status == 1 || it.matchOdd.status == 2
         }
         if (sendRequest == null)
@@ -967,7 +967,7 @@ class GameViewModel(
 
     private fun updateBetInfoListByMatchOddChange(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         updateMatchOddStatus(newList)
-        val sendRequest = betInfoRepository.betList.find {
+        val sendRequest = betInfoRepository.betInfoList.value?.find {
             it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code
         }
         if (sendRequest == null)
@@ -987,7 +987,7 @@ class GameViewModel(
         matchOdd: MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
-        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+        val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
@@ -1009,7 +1009,7 @@ class GameViewModel(
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
-        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+        val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
@@ -1032,7 +1032,7 @@ class GameViewModel(
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
     ) {
-        val betItem = betInfoRepository.betList.find { it.matchOdd.oddsId == odd.id }
+        val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
@@ -1044,12 +1044,14 @@ class GameViewModel(
     }
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
-        if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
+        val betList = betInfoList.value ?: mutableListOf()
+
+        if (betList.size >= BET_INFO_MAX_COUNT || betList.size == 0) {
             return
         }
 
         val sendList: MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd> = mutableListOf()
-        betInfoRepository.betList.let { list ->
+        betList.let { list ->
 
             //以matchId分組 key為matchOdd(object)
             val groupList = list.groupBy { data ->
@@ -1101,7 +1103,7 @@ class GameViewModel(
         val newBetList: MutableList<BetInfoListData> = mutableListOf()
         betInfoRepository.matchOddList.let { mList ->
             for (i in mList.indices) {
-                betInfoRepository.betList.let { bList ->
+                betList.let { bList ->
                     val oid = mList[i].oddsId
                     val item = bList.find {
                         it.matchOdd.oddsId == oid
@@ -1111,10 +1113,10 @@ class GameViewModel(
                     }
                 }
             }
-            betInfoRepository.betList.clear()
-            betInfoRepository.betList.addAll(newBetList)
+            betList.clear()
+            betList.addAll(newBetList)
         }
-        betInfoRepository._betInfoList.postValue(newBetList)
+        betInfoRepository.updateBetInfoList(newBetList)
     }
 
     fun removeBetInfoItem(oddId: String?) {
@@ -1123,7 +1125,7 @@ class GameViewModel(
 
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
-        if (betInfoRepository.betList.size != 0) {
+        if (betInfoRepository.betInfoList.value?.size != 0) {
             getBetInfoListForParlay(false)
         }
     }
@@ -1231,8 +1233,7 @@ class GameViewModel(
                 removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
             }
         } else {
-            betInfoRepository.betList.clear()
-            betInfoRepository._betInfoList.postValue(betInfoRepository.betList)
+            betInfoRepository.clear()
         }
     }
 
