@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
@@ -28,7 +27,6 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import java.lang.Exception
 
 const val INPLAY: Int = 1
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
@@ -66,6 +64,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             field = value
             notifyDataSetChanged()
         }
+
+    private val mHandler = Handler()
 
 
     private fun updateItemDataFromSocket(matchOdd: MatchOdd, updatedBetInfoList: MutableList<Odd>) {
@@ -116,7 +116,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         updateItemDataFromSocket(betInfoList[position].matchOdd, updatedBetInfoList)
-        holder.bind(betInfoList[position], position)
+        holder.bind(position)
     }
 
 
@@ -204,7 +204,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
 
-        fun bind(mBetInfoList: BetInfoListData, position: Int) {
+        fun bind(position: Int) {
 
             /* fix focus */
             if (binding.etBet.tag is TextWatcher) {
@@ -212,16 +212,16 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             }
             binding.etBet.onFocusChangeListener = null
 
-
-            val matchOdd = mBetInfoList.matchOdd
-            val parlayOdd = mBetInfoList.parlayOdds
+            val data = betInfoList[position]
+            val matchOdd = data.matchOdd
+            val parlayOdd = data.parlayOdds
             binding.matchOdd = matchOdd
             parlayOdd?.let {
                 binding.parlayOdd = parlayOdd
             }
 
             binding.betInfoDetail.apply {
-                when (mBetInfoList.matchType) {
+                when (data.matchType) {
                     MatchType.OUTRIGHT -> {
                         tvOddsSpread.visibility = View.GONE
                         tvMatch.visibility = View.GONE
@@ -247,7 +247,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             }
             binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
-            binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(mBetInfoList) }
+            binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(data) }
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
             val strVerse = context.getString(R.string.verse_lower)
@@ -265,7 +265,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     )
                 } else matchOdd.playCateName
 
-            binding.etBet.setText(mBetInfoList.input)
+            binding.etBet.setText(data.input)
             parlayOdd?.let {
                 check(binding.etBet.text.toString(), matchOdd, parlayOdd)
             }
@@ -349,17 +349,11 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
                         isClickable = true
                         text = context.getString(
-                            if(mBetInfoList.oddsHasChanged)R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
+                            if (data.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
                         )
                     }
 
-                    setChangeOdds(
-                        binding.betInfoAction.tv_bet,
-                        binding.betInfoDetail.tvOdds,
-                        binding.tvCloseWarning,
-                        matchOdd,
-                        inputError
-                    )
+                    setChangeOdds(position, matchOdd)
                 }
             }
             binding.executePendingBindings()
@@ -367,6 +361,64 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
             setupBetButton()
             setupRegisterButton()
+        }
+
+        private fun setChangeOdds(position: Int, matchOdd: MatchOdd) {
+            when (matchOdd.oddState) {
+                OddState.LARGER.state, OddState.SMALLER.state -> {
+                    binding.betInfoAction.tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
+                    binding.tvOddChange.visibility = View.VISIBLE
+
+                    binding.betInfoDetail.tvOdds.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.orangeRed))
+                        setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+                    }
+                    onItemClickListener.saveOddsHasChanged(matchOdd)
+
+                    //先清除前一次任務
+                    matchOdd.changeOddsTask?.let { mHandler.removeCallbacks(it) }
+                    val changeOddsTask = Runnable {
+                        matchOdd.changeOddsTask = null
+                        matchOdd.oddState = OddState.SAME.state
+                        notifyItemChanged(position)
+                    }
+
+                    //三秒後 恢復 Odd 狀態
+                    mHandler.postDelayed(changeOddsTask, CHANGING_ITEM_BG_COLOR_DURATION)
+                    matchOdd.changeOddsTask = changeOddsTask
+                }
+
+                else -> {
+                    //若有 賠率變更 任務還未執行完，就不刷新
+                    if (matchOdd.changeOddsTask != null)
+                        return
+
+                    when (inputError) {
+                        true -> {
+                            binding.betInfoAction.tv_bet.apply {
+                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_unselected)
+                                setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
+                                isClickable = false
+                            }
+                        }
+                        false -> {
+                            binding.betInfoAction.tv_bet.apply {
+                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orangelight)
+                                setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
+                                isClickable = true
+                            }
+                        }
+                    }
+
+                    binding.tvOddChange.visibility = View.GONE
+
+                    binding.betInfoDetail.tvOdds.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+                        setTextColor(ContextCompat.getColor(context, R.color.colorOrange))
+                    }
+                }
+            }
         }
 
         private fun setupRegisterButton() {
@@ -429,65 +481,5 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd)
         fun saveOddsHasChanged(matchOdd: MatchOdd)
     }
-
-
-    private fun setChangeOdds(tv_bet: TextView, tv_odds: TextView, tv_close_warning: TextView, matchOdd: MatchOdd, error: Boolean) {
-        when (matchOdd.oddState) {
-            OddState.LARGER.state -> {
-                changeColorByOdds(tv_bet, tv_close_warning)
-                tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
-                    text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
-                }
-                onItemClickListener.saveOddsHasChanged(matchOdd)
-            }
-
-            OddState.SMALLER.state -> {
-                changeColorByOdds(tv_bet, tv_close_warning)
-                tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
-                    text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
-                }
-                onItemClickListener.saveOddsHasChanged(matchOdd)
-            }
-        }
-
-        Handler().postDelayed({
-            when (error) {
-                true -> {
-                    tv_bet.apply {
-                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_unselected)
-                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
-                        isClickable = false
-                    }
-                }
-                false -> {
-                    tv_bet.apply {
-                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orangelight)
-                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
-                        isClickable = true
-                    }
-                }
-            }
-            tv_close_warning.visibility = View.GONE
-            tv_odds.apply {
-                setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.transparent))
-                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorOrange))
-            }
-        }, CHANGING_ITEM_BG_COLOR_DURATION)
-
-    }
-
-
-    private fun changeColorByOdds(tv_bet: TextView, tv_close_warning: TextView) {
-        tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
-        tv_close_warning.apply {
-            visibility = View.VISIBLE
-            text = context.getString(R.string.bet_info_list_game_odds_changed)
-        }
-    }
-
 
 }
