@@ -158,6 +158,8 @@
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all_something_in_play">所有 %s 滚球</string>
 
+    <string name="message_no_at_start">目前没有即将开赛的赛事</string>
+
 
     <string name="champion">冠军</string>
     <string name="league">联赛</string>
@@ -344,6 +346,7 @@
     <string name="info_center_promot">当前 %1$d/%2$d  每页 %3$d 笔   共 %4$d 条</string>
 
     <!--bet record-->
+    <string name="choose_bet_state">选择注单状态</string>
     <string name="please_choose_bet_state">请选择注单状态</string>
     <string name="please_choose_start_date">请选择开始日期</string>
     <string name="please_choose_end_date">请选择结束日期</string>
@@ -359,6 +362,7 @@
     <string name="total_bet_money_colon">总投注额：</string>
     <string name="status">状态</string>
     <string name="status_colon">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态：</string>
+    <string name="rebates">返&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;水：</string>
     <string name="bet_record">投注记录</string>
     <string name="select_all">全选</string>
     <string name="all_order">全部注单</string>
@@ -537,6 +541,7 @@
     <string name="bank_card">银行卡</string>
     <string name="crypto">虚拟币</string>
     <string name="currency_protocol">协议/币种</string>
+    <string name="select_crypto_address">选择地址</string>
     <string name="withdraw_number">提款个数</string>
     <string name="now_balance">当前余额</string>
     <string name="withdraw">提款</string>

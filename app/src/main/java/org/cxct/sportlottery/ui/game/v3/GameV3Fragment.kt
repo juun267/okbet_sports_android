@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.v3
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +95,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         MatchType.AT_START -> {
                             matchOdd.matchInfo?.id?.let {
-                                navOddsDetail(it)
+                                viewModel.setOddsDetailMoreList(
+                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList() ?: listOf<MatchOdd>()
+                                )
                             }
                         }
                         else -> {
@@ -564,7 +565,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                         oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
                             odd?.isSelected =
-                                viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                         }
