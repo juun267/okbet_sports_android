@@ -26,33 +26,27 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
-        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
             iv_scroll_to_top.apply {
-                when {
-                    firstVisibleItemPosition > 0 && alpha == 0f -> {
+                when (recyclerView.canScrollVertically(-1)) {
+                    true -> {
                         visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                visibility = View.GONE
+                        animate().alpha(1f).setDuration(1000).setListener(null)
+                            when (btn_read_letters.isChecked) {
+                                true -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.READ)
+                                false -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.UNREAD)
                             }
-                        })
+                    }
+                    false -> {
+                        animate().alpha(0f).setDuration(1000)
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    visibility = View.GONE
+                                }
+                            })
                     }
                 }
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let {
-                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                when (btn_read_letters.isSelected) {
-                    true -> viewModel.getUserMsgList(false, adapter.itemCount, InfoCenterViewModel.DataType.READ)
-                    false -> viewModel.getUserMsgList(false, adapter.itemCount, InfoCenterViewModel.DataType.UNREAD)
-                }
-                scrollToTopControl(firstVisibleItemPosition)
             }
         }
     }
@@ -67,7 +61,6 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
                 if (btn_unread_letters.isSelected) {
                     viewModel.setDataRead(data.id.toString())
                 }
-
             }
         })
     }
@@ -132,6 +125,7 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
                     adapter.data = userMsgList//重新載入
                 }
             }
+            viewModel.getResult()
         })
         //已讀總筆數
         viewModel.totalReadMsgCount.observe(this@InfoCenterActivity, Observer {
@@ -150,6 +144,7 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
                     adapter.data = userMsgList//重新載入
                 }
             }
+            viewModel.getResult()
         })
         //未讀總筆數
         viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, {

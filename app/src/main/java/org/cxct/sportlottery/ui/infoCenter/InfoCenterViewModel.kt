@@ -11,6 +11,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import timber.log.Timber
 
 class InfoCenterViewModel(
     private val androidContext: Context,
@@ -82,7 +83,6 @@ class InfoCenterViewModel(
             }
             mIsReadNextRequestPage = 1
         }
-
         when (dataType) {
             DataType.UNREAD -> {
                 if (mNeedMoreLoadingUnRead) {
@@ -101,7 +101,10 @@ class InfoCenterViewModel(
                             (mCurrentTotalCount + (result?.infoCenterData?.size
                                 ?: 0)) < result?.total ?: 0
                         mUnReadNextRequestPage++
+                        getResult()
                     }
+                }else{
+                    getResult()
                 }
             }
             DataType.READ -> {
@@ -121,11 +124,16 @@ class InfoCenterViewModel(
                             (mCurrentTotalCount + (result?.infoCenterData?.size
                                 ?: 0)) < result?.total ?: 0
                         mIsReadNextRequestPage++
+                        getResult()
                     }
+                }else{
+                    getResult()
                 }
             }
         }
+    }
 
+    fun getResult(){
         mIsGettingData = false
         _isLoading.value = false
     }
@@ -151,6 +159,7 @@ class InfoCenterViewModel(
                 }
             }
             _isLoading.value = false
+            getResult()
         }
     }
 
