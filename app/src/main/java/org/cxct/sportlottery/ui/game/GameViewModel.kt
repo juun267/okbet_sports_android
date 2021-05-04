@@ -1039,61 +1039,7 @@ class GameViewModel(
     }
 
     fun getBetInfoListForParlay(isUpdate: Boolean) {
-        val betList = betInfoList.value ?: mutableListOf()
-
-        if (betList.size >= BET_INFO_MAX_COUNT || betList.size == 0) {
-            return
-        }
-
-        val sendList: MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd> = mutableListOf()
-        betList.let { list ->
-
-            //以matchId分組 key為matchOdd(object)
-            val groupList = list.groupBy { data ->
-                list.find { d ->
-                    data.matchOdd.matchId == d.matchOdd.matchId
-                }
-            }
-
-            run loop@{
-                groupList.forEach {
-                    if (it.value.size > 1) {
-                        _systemDelete.postValue(true)
-                        return@loop
-                    }
-                }
-            }
-
-            //各別取第一項做為串關項目送出
-            groupList.keys.forEach {
-                it?.matchOdd?.let { matchOdd ->
-                    sendList.add(matchOdd)
-                }
-            }
-        }
-
-        betInfoRepository.addInBetInfoParlay(sendList, isUpdate)
-
-        betInfoRepository.updateParlayOddOrder()
-
-        //載入串關注單後比對一般注單
-        val newBetList: MutableList<BetInfoListData> = mutableListOf()
-        betInfoRepository.matchOddList.value?.let { mList ->
-            for (i in mList.indices) {
-                betList.let { bList ->
-                    val oid = mList[i].oddsId
-                    val item = bList.find {
-                        it.matchOdd.oddsId == oid
-                    }
-                    item?.let {
-                        newBetList.add(it)
-                    }
-                }
-            }
-            betList.clear()
-            betList.addAll(newBetList)
-        }
-        betInfoRepository.updateBetInfoList(newBetList)
+        betInfoRepository.addInBetInfoParlay(isUpdate)
     }
 
     fun removeBetInfoItem(oddId: String?) {
