@@ -125,7 +125,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         val calendarPastMonth = TimeUtil.getTodayEndTimeCalendar()
         calendarPastMonth.add(Calendar.DATE, -30)
         bottomSheetView.calendar.setSelectableDateRange(calendarPastMonth, calendarToday)
-        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(7).first, TimeUtil.getCalendarForDates(7).second)
+        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(6).first, TimeUtil.getCalendarForDates(6).second)
     }
 
 }
