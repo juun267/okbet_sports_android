@@ -5,19 +5,19 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SINGLETN(
+data class ParlayBK(
     @Json(name = "code")
-    val code: String,
+    override val code: String,
     @Json(name = "gameType")
-    val gameType: String,
+    override val gameType: String,
     @Json(name = "id")
-    val id: Int,
+    override val id: Int,
     @Json(name = "max")
-    val max: Int,
+    override val max: Int,
     @Json(name = "min")
-    val min: Int,
+    override val min: Int,
     @Json(name = "name")
-    val name: String,
+    override val name: String,
     @Json(name = "platformId")
-    val platformId: Int
-)
+    override val platformId: Int
+) : PlayQuota

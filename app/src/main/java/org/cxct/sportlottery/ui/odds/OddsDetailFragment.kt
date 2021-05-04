@@ -312,15 +312,13 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
-            mSportCode?.let { gameType ->
-                viewModel.addInBetInfo(
-                    matchType = args.matchType,
-                    gameType = gameType,
-                    playCateName = oddsDetail.name,
-                    matchOdd = matchOdd,
-                    odd = odd
-                )
-            }
+            viewModel.updateMatchBetList(
+                matchType = args.matchType,
+                args.sportType,
+                playCateName = oddsDetail.name,
+                matchOdd = matchOdd,
+                odd = odd
+            )
         }
     }
 

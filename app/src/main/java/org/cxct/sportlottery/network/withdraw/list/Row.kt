@@ -48,5 +48,4 @@ data class Row(
     var withdrawState: String? = null
     var withdrawType: String? = null
     var displayMoney: String? = null
-    var displayFee: String? = null
 }

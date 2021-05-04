@@ -161,7 +161,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
 
             it?.matchStatusCO?.let { ms ->
-                if(ms.matchId == this.matchId){
+                if (ms.matchId == this.matchId) {
                     ms.homeScore?.let { h ->
                         ms.awayScore?.let { a ->
                             curHomeScore = h
@@ -303,16 +303,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             matchOdd.matchInfo.homeScore = curHomeScore
             matchOdd.matchInfo.awayScore = curAwayScore
+            viewModel.updateMatchBetList(
+                matchType = MatchType.IN_PLAY,
+                args.sportType,
+                playCateName = oddsDetail.name,
+                matchOdd = matchOdd,
+                odd = odd
+            )
 
-            mSportCode?.let { gameType ->
-                viewModel.addInBetInfo(
-                    matchType = MatchType.IN_PLAY,
-                    gameType = gameType,
-                    playCateName = oddsDetail.name,
-                    matchOdd = matchOdd,
-                    odd = odd
-                )
-            }
         }
     }
 
