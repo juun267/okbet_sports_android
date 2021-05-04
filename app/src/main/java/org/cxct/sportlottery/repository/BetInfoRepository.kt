@@ -24,6 +24,13 @@ class BetInfoRepository {
     val betInfoList: LiveData<MutableList<BetInfoListData>>
         get() = _betInfoList
 
+    private val _matchOddList = MutableLiveData<MutableList<MatchOdd>>()
+    val matchOddList: LiveData<MutableList<MatchOdd>>
+        get() = _matchOddList
+
+    private val _newMatchOddList = MutableLiveData<MutableList<MatchOdd>>()
+    val newMatchOddList: LiveData<MutableList<MatchOdd>>
+        get() = _newMatchOddList
 
     val _isParlayPage = MutableLiveData<Boolean>()
     val isParlayPage: LiveData<Boolean>
@@ -33,13 +40,12 @@ class BetInfoRepository {
     val removeItem: LiveData<String>
         get() = _removeItem
 
-    var matchOddList: MutableList<MatchOdd> = mutableListOf()
     var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
 
     var playQuotaComData: PlayQuotaComData? = null
 
 
-    fun addInBetInfoParlay(sendList: MutableList<MatchOdd>) {
+    fun addInBetInfoParlay(sendList: MutableList<MatchOdd>, isUpdate: Boolean) {
         val betList = _betInfoList.value ?: mutableListOf()
 
         val sportType = when (betList[0].matchOdd.gameType) {
@@ -52,12 +58,16 @@ class BetInfoRepository {
         }
 
         sportType?.let {
-            matchOddList.clear()
             parlayOddList.clear()
 
             //切換串關後只保留串關項目
-            matchOddList.addAll(sendList)
             parlayOddList.addAll(getParlayOdd(MatchType.PARLAY, it, sendList))
+
+            if (isUpdate) {
+                _newMatchOddList.postValue(sendList)
+            } else {
+                _matchOddList.postValue(sendList)
+            }
         }
     }
 
@@ -82,8 +92,10 @@ class BetInfoRepository {
         val betList = _betInfoList.value ?: mutableListOf()
 
         betList.clear()
-        matchOddList.clear()
+        _matchOddList.value?.clear()
+        _newMatchOddList.value?.clear()
         parlayOddList.clear()
+        
         _betInfoList.postValue(betList)
     }
 
