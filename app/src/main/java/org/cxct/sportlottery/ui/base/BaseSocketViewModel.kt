@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.base
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -18,5 +19,9 @@ abstract class BaseSocketViewModel(
                 loginRepository.checkToken()
             }
         }
+    }
+
+    fun updatePlayQuota(playQuotaComData: PlayQuotaComData) {
+        betInfoRepository.playQuotaComData = playQuotaComData
     }
 }

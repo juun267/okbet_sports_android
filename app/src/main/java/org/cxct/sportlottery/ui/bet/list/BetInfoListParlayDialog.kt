@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -163,23 +164,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, {
-            val updatedBetInfoList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-            it.forEach { odd ->
-                val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
-                    odd.oddsId,
-                    odd.odds,
-                    odd.hkOdds,
-                    odd.producerId,
-                    odd.spread,
-                    odd.status,
-                )
-                newOdd.oddState = odd.oddState
-                updatedBetInfoList.add(newOdd)
-            }
-            matchOddAdapter.updatedBetInfoList = updatedBetInfoList
-        })
-
         viewModel.matchOddList.observe(this.viewLifecycleOwner, {
             if (!isSubScribe) {
                 isSubScribe = true
@@ -234,10 +218,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-        viewModel.updateOddList.observe(this.viewLifecycleOwner, {
-            matchOddAdapter.updatedBetInfoList = it
-        })
-
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             oddsType = it
             matchOddAdapter.oddsType = it
@@ -283,7 +263,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun getParlayList() {
-        viewModel.getBetInfoListForParlay(false)
+        viewModel.getBetInfoListForParlay(null)
     }
 
 
@@ -362,6 +342,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             !it.sendOutStatus
         } == null)
     }
+
 
     override fun onShowKeyboard(editText: EditText) {
         keyboard?.showKeyboard(editText)
