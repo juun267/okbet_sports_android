@@ -80,7 +80,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_amount))
             }
             TransferType.CRYPTO -> {
-                tv_channel_select.text = getString(R.string.currency_protocol)
+                tv_channel_select.text = getString(R.string.select_crypto_address)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_number))
             }
         }

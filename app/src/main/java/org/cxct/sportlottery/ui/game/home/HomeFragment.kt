@@ -151,6 +151,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 updateTodayUI(result)
             }
         })
+
+        viewModel.errorPromptMessage.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+
+        })
     }
 
     private fun observeSocketData() {
