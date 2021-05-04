@@ -32,6 +32,10 @@ class BetInfoRepository {
     val newMatchOddList: LiveData<MutableList<MatchOdd>>
         get() = _newMatchOddList
 
+    private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
+    val parlayList: LiveData<MutableList<ParlayOdd>>
+        get() = _parlayList
+
     val _isParlayPage = MutableLiveData<Boolean>()
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
@@ -39,8 +43,6 @@ class BetInfoRepository {
     private val _removeItem = MutableLiveData<String>()
     val removeItem: LiveData<String>
         get() = _removeItem
-
-    var parlayOddList: MutableList<ParlayOdd> = mutableListOf()
 
     var playQuotaComData: PlayQuotaComData? = null
 
@@ -58,10 +60,7 @@ class BetInfoRepository {
         }
 
         sportType?.let {
-            parlayOddList.clear()
-
-            //切換串關後只保留串關項目
-            parlayOddList.addAll(getParlayOdd(MatchType.PARLAY, it, sendList))
+            _parlayList.value = getParlayOdd(MatchType.PARLAY, it, sendList).toMutableList()
 
             if (isUpdate) {
                 _newMatchOddList.value = sendList
@@ -69,6 +68,20 @@ class BetInfoRepository {
                 _matchOddList.value = sendList
             }
         }
+
+        //將串起來的數量賠率移至第一項
+        val parlayOddList = _parlayList.value ?: mutableListOf()
+        val pOdd = parlayOddList.find {
+            matchOddList.value?.size.toString() + "C1" == it.parlayType
+        }
+
+        parlayOddList.remove(pOdd)
+
+        pOdd?.let { po ->
+            parlayOddList.add(0, po)
+        }
+
+        _parlayList.value = parlayOddList
     }
 
     fun getCurrentBetInfoList() {
@@ -94,8 +107,8 @@ class BetInfoRepository {
         betList.clear()
         _matchOddList.value?.clear()
         _newMatchOddList.value?.clear()
-        parlayOddList.clear()
-        
+        _parlayList.value?.clear()
+
         _betInfoList.postValue(betList)
     }
 

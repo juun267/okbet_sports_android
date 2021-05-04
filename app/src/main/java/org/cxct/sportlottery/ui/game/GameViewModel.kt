@@ -190,9 +190,8 @@ class GameViewModel(
     val newMatchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = betInfoRepository.newMatchOddList
 
-    private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
     val parlayList: LiveData<MutableList<ParlayOdd>>
-        get() = _parlayList
+        get() = betInfoRepository.parlayList
 
     private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>>()
     val oddsDetailResult: LiveData<Event<OddsDetailResult?>>
@@ -1074,19 +1073,6 @@ class GameViewModel(
         }
 
         betInfoRepository.addInBetInfoParlay(sendList, isUpdate)
-
-        //將串起來的數量賠率移至第一項
-        val pOdd = betInfoRepository.parlayOddList.find {
-            betInfoRepository.matchOddList.value?.size.toString() + "C1" == it.parlayType
-        }
-
-        betInfoRepository.parlayOddList.remove(pOdd)
-
-        pOdd?.let { po ->
-            betInfoRepository.parlayOddList.add(0, po)
-        }
-
-        _parlayList.postValue(betInfoRepository.parlayOddList)
 
         //載入串關注單後比對一般注單
         val newBetList: MutableList<BetInfoListData> = mutableListOf()
