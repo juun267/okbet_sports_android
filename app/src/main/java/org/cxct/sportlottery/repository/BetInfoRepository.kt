@@ -28,10 +28,6 @@ class BetInfoRepository {
     val matchOddList: LiveData<MutableList<MatchOdd>>
         get() = _matchOddList
 
-    private val _newMatchOddList = MutableLiveData<MutableList<MatchOdd>>()
-    val newMatchOddList: LiveData<MutableList<MatchOdd>>
-        get() = _newMatchOddList
-
     private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
@@ -47,8 +43,12 @@ class BetInfoRepository {
     var playQuotaComData: PlayQuotaComData? = null
 
 
-    fun addInBetInfoParlay(sendList: MutableList<MatchOdd>) {
+    fun addInBetInfoParlay() {
         val betList = _betInfoList.value ?: mutableListOf()
+
+        if (betList.size >= org.cxct.sportlottery.ui.game.BET_INFO_MAX_COUNT || betList.size == 0) {
+            return
+        }
 
         val sportType = when (betList[0].matchOdd.gameType) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
@@ -60,15 +60,39 @@ class BetInfoRepository {
         }
 
         sportType?.let {
-            _parlayList.value = getParlayOdd(MatchType.PARLAY, it, sendList).toMutableList()
-            _matchOddList.value = sendList
+            val groupList = groupBetInfoByMatchId()
+
+            _matchOddList.value = groupList
+
+            _parlayList.value = updateParlayOddOrder(
+                getParlayOdd(MatchType.PARLAY, it, groupList).toMutableList()
+            )
+
+            betList.filter { betInfoListData ->
+                _matchOddList.value?.any { matchOdd ->
+                    matchOdd.oddsId == betInfoListData.matchOdd.oddsId
+                } ?: false
+            }
+            _betInfoList.value = betList
         }
     }
 
-    fun updateParlayOddOrder() {
-        //將串起來的數量賠率移至第一項
-        val parlayOddList = _parlayList.value ?: mutableListOf()
+    private fun groupBetInfoByMatchId(): MutableList<MatchOdd> {
+        val betList = _betInfoList.value ?: mutableListOf()
 
+        val groupList = betList.groupBy { data ->
+            betList.find { d ->
+                data.matchOdd.matchId == d.matchOdd.matchId
+            }
+        }
+
+        return groupList.mapNotNull {
+            it.key?.matchOdd
+        }.toMutableList()
+    }
+
+    private fun updateParlayOddOrder(parlayOddList: MutableList<ParlayOdd>): MutableList<ParlayOdd> {
+        //將串起來的數量賠率移至第一項
         val pOdd = parlayOddList.find {
             matchOddList.value?.size.toString() + "C1" == it.parlayType
         }
@@ -79,7 +103,7 @@ class BetInfoRepository {
             parlayOddList.add(0, po)
         }
 
-        _parlayList.value = parlayOddList
+        return parlayOddList
     }
 
     fun getCurrentBetInfoList() {
@@ -104,7 +128,6 @@ class BetInfoRepository {
 
         betList.clear()
         _matchOddList.value?.clear()
-        _newMatchOddList.value?.clear()
         _parlayList.value?.clear()
 
         _betInfoList.postValue(betList)
@@ -287,10 +310,5 @@ class BetInfoRepository {
             it.matchOdd.oddsId == matchOdd.oddsId
         }
         hasChanged?.oddsHasChanged = true
-    }
-
-    //Temp
-    fun updateBetInfoList(newBetList: MutableList<BetInfoListData>) {
-        _betInfoList.postValue(newBetList)
     }
 }

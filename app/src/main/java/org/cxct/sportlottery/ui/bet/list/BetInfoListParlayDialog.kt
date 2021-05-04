@@ -263,7 +263,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun getParlayList() {
-        viewModel.getBetInfoListForParlay(null)
+        viewModel.getBetInfoListForParlay()
     }
 
 
