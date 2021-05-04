@@ -47,7 +47,7 @@ class BetInfoRepository {
     var playQuotaComData: PlayQuotaComData? = null
 
 
-    fun addInBetInfoParlay(sendList: MutableList<MatchOdd>, isUpdate: Boolean) {
+    fun addInBetInfoParlay(sendList: MutableList<MatchOdd>) {
         val betList = _betInfoList.value ?: mutableListOf()
 
         val sportType = when (betList[0].matchOdd.gameType) {
@@ -61,12 +61,7 @@ class BetInfoRepository {
 
         sportType?.let {
             _parlayList.value = getParlayOdd(MatchType.PARLAY, it, sendList).toMutableList()
-
-            if (isUpdate) {
-                _newMatchOddList.value = sendList
-            } else {
-                _matchOddList.value = sendList
-            }
+            _matchOddList.value = sendList
         }
     }
 

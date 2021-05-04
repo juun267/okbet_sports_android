@@ -921,10 +921,9 @@ class GameViewModel(
         updateBetInfoListByMatchOddChange(newList)
     }
 
-
     private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         //判斷當前有沒有關閉的賠率
-        val sendRequest = betInfoRepository.matchOddList.find {
+        val sendRequest = betInfoRepository.matchOddList.value?.find {
             it.status == BetStatus.LOCKED.code || it.status == BetStatus.DEACTIVATED.code
         }
         if (sendRequest == null)
@@ -1070,7 +1069,7 @@ class GameViewModel(
         betInfoRepository.addInBetInfoParlay(sendList)
 
         newListFromSocket?.let { list ->
-            betInfoRepository.matchOddList.forEach {
+            betInfoRepository.matchOddList.value?.forEach {
                 updateItem(it, list)
             }
         }
