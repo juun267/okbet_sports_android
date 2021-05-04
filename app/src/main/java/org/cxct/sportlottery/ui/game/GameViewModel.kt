@@ -1074,6 +1074,8 @@ class GameViewModel(
 
         betInfoRepository.addInBetInfoParlay(sendList, isUpdate)
 
+        betInfoRepository.updateParlayOddOrder()
+
         //載入串關注單後比對一般注單
         val newBetList: MutableList<BetInfoListData> = mutableListOf()
         betInfoRepository.matchOddList.value?.let { mList ->

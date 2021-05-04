@@ -68,9 +68,12 @@ class BetInfoRepository {
                 _matchOddList.value = sendList
             }
         }
+    }
 
+    fun updateParlayOddOrder() {
         //將串起來的數量賠率移至第一項
         val parlayOddList = _parlayList.value ?: mutableListOf()
+
         val pOdd = parlayOddList.find {
             matchOddList.value?.size.toString() + "C1" == it.parlayType
         }
