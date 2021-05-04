@@ -311,4 +311,52 @@ class BetInfoRepository {
         }
         hasChanged?.oddsHasChanged = true
     }
+
+    private fun notifyBetInfoChanged() {
+        val updateBetInfoList = _betInfoList.value
+
+        if (updateBetInfoList.isNullOrEmpty()) return
+
+        val sportType = when (updateBetInfoList[0].matchOdd.gameType) {
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            SportType.TENNIS.code -> SportType.TENNIS
+            else -> null
+        }
+
+        when (_isParlayPage.value) {
+            true -> {
+                sportType?.let {
+                    matchOddList.value?.let {
+                        _parlayList.value =
+                            getParlayOdd(MatchType.PARLAY, sportType, it).toMutableList()
+                    }
+                }
+            }
+            false -> {
+                val newList = mutableListOf<BetInfoListData>()
+
+                updateBetInfoList.forEach { betInfoListData ->
+                    betInfoListData.matchType?.let { matchType ->
+                        sportType?.let {
+
+                            val newBetInfoListData = BetInfoListData(
+                                betInfoListData.matchOdd,
+                                getParlayOdd(
+                                    matchType,
+                                    sportType,
+                                    mutableListOf(betInfoListData.matchOdd)
+                                ).first()
+                            )
+
+                            newList.add(newBetInfoListData)
+                        }
+                    }
+                }
+                _betInfoList.value = newList
+            }
+        }
+    }
 }
