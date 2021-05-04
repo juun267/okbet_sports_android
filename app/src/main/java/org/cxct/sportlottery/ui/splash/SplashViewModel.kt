@@ -169,6 +169,7 @@ class SplashViewModel(
             }
             result?.let {
                 playQuotaComRepository.postPlayQuotaCom(it)
+                betInfoRepository.playQuotaComData = it.playQuotaComData
             }
         }
     }

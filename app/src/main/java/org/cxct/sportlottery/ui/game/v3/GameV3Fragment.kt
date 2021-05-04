@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.v3
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +21,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -94,15 +95,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         MatchType.AT_START -> {
                             matchOdd.matchInfo?.id?.let {
-                                navOddsDetail(it)
+                                viewModel.setOddsDetailMoreList(
+                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList() ?: listOf<MatchOdd>()
+                                )
                             }
                         }
                         else -> {
                         }
                     }
                 },
-                { _, odd ->
-                    viewModel.updateMatchBetList(odd)
+                { matchOdd, odd, playCateName, playName ->
+                    addOddsDialog(matchOdd, odd, playCateName, playName)
                 }
             )
 
@@ -562,7 +565,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                         oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
                             odd?.isSelected =
-                                viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                         }
@@ -826,11 +829,40 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         sportType?.let {
             val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                args.matchType,
                 sportType,
                 matchId
             )
 
             findNavController().navigate(action)
+        }
+    }
+
+    private fun addOddsDialog(
+        matchOdd: MatchOdd,
+        odd: Odd,
+        playCateName: String,
+        playName: String
+    ) {
+        val sportType =
+            when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
+                SportType.FOOTBALL.code -> SportType.FOOTBALL
+                SportType.BASKETBALL.code -> SportType.BASKETBALL
+                SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                SportType.BADMINTON.code -> SportType.BADMINTON
+                SportType.TENNIS.code -> SportType.TENNIS
+                else -> null
+            }
+
+        sportType?.let {
+            viewModel.updateMatchBetList(
+                args.matchType,
+                sportType,
+                playCateName,
+                playName,
+                matchOdd,
+                odd
+            )
         }
     }
 

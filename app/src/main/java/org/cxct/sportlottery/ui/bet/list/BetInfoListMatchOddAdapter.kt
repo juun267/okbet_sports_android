@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Context
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,52 +33,11 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
         }
 
 
-    var updatedBetInfoList: MutableList<Odd> = mutableListOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-
     var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-
-
-    private fun updateItemDataFromSocket(matchOdd: MatchOdd, updatedBetInfoList: MutableList<Odd>) {
-        for (newItem in updatedBetInfoList) {
-            //null check後還是會crash 先以不crash為主
-            try {
-                newItem.id.let {
-                    if (it == matchOdd.oddsId) {
-                        matchOdd.oddState = getOddState(getOdds(matchOdd, oddsType), newItem)
-                        newItem.odds?.let { odds -> matchOdd.odds = odds }
-                        newItem.hkOdds?.let { hkOdds -> matchOdd.hkOdds = hkOdds }
-                        newItem.status.let { status -> matchOdd.status = status }
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-
-    private fun getOddState(oldItemOdd: Double, it: Odd): Int {
-        val odds = when (oddsType) {
-            OddsType.EU -> it.odds
-            OddsType.HK -> it.hkOdds
-        }
-        val newOdd = odds ?: 0.0
-        return when {
-            newOdd == oldItemOdd -> OddState.SAME.state
-            newOdd > oldItemOdd -> OddState.LARGER.state
-            newOdd < oldItemOdd -> OddState.SMALLER.state
-            else -> OddState.SAME.state
-        }
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -93,7 +53,6 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        updateItemDataFromSocket(matchOddList[position], updatedBetInfoList)
         holder.bind(matchOddList[position], position)
     }
 
@@ -196,5 +155,6 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             text = context.getString(R.string.bet_info_list_game_odds_changed)
         }
     }
+
 
 }

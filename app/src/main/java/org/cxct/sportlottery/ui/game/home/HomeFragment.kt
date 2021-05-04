@@ -22,12 +22,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
-import org.cxct.sportlottery.ui.game.v3.GameLeagueFragmentDirections
-import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 
@@ -154,6 +151,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 updateTodayUI(result)
             }
         })
+
+        viewModel.errorPromptMessage.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+
+        })
     }
 
     private fun observeSocketData() {
@@ -227,7 +229,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
-                navOddsDetailFragment(select.code, select.match?.id, "EU")
+                navOddsDetailFragment(MatchType.TODAY, select.code, select.match?.id)
 
             }
         })
@@ -269,7 +271,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun navOddsDetailFragment(sportTypeCode: String?, matchId: String?, oddsType: String?) {
+    private fun navOddsDetailFragment(matchType:MatchType, sportTypeCode: String?, matchId: String?) {
         val sportType = when (sportTypeCode) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
             SportType.FOOTBALL.code -> SportType.FOOTBALL
@@ -279,15 +281,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             else -> null
         }
         sportType?.let {
-            oddsType?.let {
                 matchId?.let {
                     val action =
                         HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                            sportType, matchId, oddsType
+                            matchType, sportType, matchId
                         )
                     findNavController().navigate(action)
                 }
-            }
         }
     }
 }

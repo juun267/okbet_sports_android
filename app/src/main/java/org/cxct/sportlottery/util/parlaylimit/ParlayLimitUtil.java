@@ -6,38 +6,34 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- */
-public class main {
 
-    public static void main(String[] args) {
+public class ParlayLimitUtil {
 
-        // 最大中獎金額 最大投注限額api
-        BigDecimal max = new BigDecimal(10000);
-        // 最小下注额 最大投注限額api
-        BigDecimal min = new BigDecimal(10);
-        // 賠率列表
-        List<BigDecimal> oddsList = initOddsList();
-        // 賠率index
-        int[] oddsIndex = new int[]{0, 1, 2, 3};
-
-        // 取得組合(類型、數量、組合列表)
-        List<ParlayCom> parlayComList = getCom(oddsIndex);
-        // 打印賠率組合
-//        parlayComPrintln(parlayComList);
-
-        // 得到串关限额 排序各端請自理
-        Map<String, ParlayBetLimit> parlayBetLimitMap = getParlayLimit(oddsList, parlayComList, max, min);
-        System.out.println(parlayBetLimitMap);
-
-
-    }
+//    public static void main(String[] args) {
+//        // 最大中獎金額 最大投注限額api
+//        BigDecimal max = new BigDecimal(10000);
+//        // 最小下注额 最大投注限額api
+//        BigDecimal min = new BigDecimal(10);
+//        // 賠率列表
+//        List<BigDecimal> oddsList = initOddsList();
+//        // 賠率index
+//        int[] oddsIndex = new int[]{0, 1, 2, 3};
+//
+//        // 取得組合(類型、數量、組合列表)
+//        List<ParlayCom> parlayComList = getCom(oddsIndex);
+//        // 打印賠率組合
+////        parlayComPrintln(parlayComList);
+//
+//        // 得到串关限额 排序各端請自理
+//        Map<String, ParlayBetLimit> parlayBetLimitMap = getParlayLimit(oddsList, parlayComList, max, min);
+//        System.out.println(parlayBetLimitMap);
+//    }
 
     /**
      * 得到串关限额
@@ -47,7 +43,7 @@ public class main {
      * @param max
      * @param min
      */
-    private static Map<String, ParlayBetLimit> getParlayLimit(List<BigDecimal> oddsList, List<ParlayCom> parlayComList, BigDecimal max, BigDecimal min) {
+    public static Map<String, ParlayBetLimit> getParlayLimit(List<BigDecimal> oddsList, List<ParlayCom> parlayComList, BigDecimal max, BigDecimal min) {
         Map<String, ParlayBetLimit> result = new LinkedHashMap<>();
 
         for (ParlayCom parlayCom : parlayComList) {
@@ -118,6 +114,16 @@ public class main {
     @SuppressLint("NewApi")
     public static List<ParlayCom> getCom(int[] matchIdArray) {
 
+        List<ParlayCom> parlayComSOList = new ArrayList<>();
+        if(matchIdArray.length==1){
+            ParlayCom parlayCom = new ParlayCom();
+            parlayCom.setNum(1);
+            parlayCom.setParlayType("1C1");
+            parlayCom.setComList(Collections.singletonList(matchIdArray));
+            parlayComSOList.add(parlayCom);
+            return parlayComSOList;
+        }
+
         List<int[]> all = new ArrayList<>();
         for (int i = 2; i <= matchIdArray.length; i++) {
             all.addAll(combine(matchIdArray, i));
@@ -131,7 +137,7 @@ public class main {
                 return oldx;
             });
         }
-        List<ParlayCom> parlayComSOList = new ArrayList<>();
+
         //N串1场景
         map.forEach((key, list) -> {
             ParlayCom parlayCom = new ParlayCom();
@@ -147,7 +153,6 @@ public class main {
         nParlayM.setParlayType(matchIdArray.length + "C" + all.size());
         parlayComSOList.add(nParlayM);
         return parlayComSOList;
-
     }
 
 

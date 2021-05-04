@@ -46,6 +46,7 @@ class BackService : Service() {
         const val URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
+        private const val RECONNECT_LIMIT = 10 //斷線後重連次數限制
     }
 
     private var mToken = ""
@@ -91,6 +92,7 @@ class BackService : Service() {
     private fun connect() {
         try {
             Timber.i(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
+            resetSubscriptions()
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
                 .newBuilder()
@@ -100,7 +102,6 @@ class BackService : Service() {
             mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, URL_SOCKET_HOST_AND_PORT, null, httpClient)
             mStompClient?.let { stompClient ->
                 stompClient.withClientHeartbeat(HEART_BEAT_RATE).withServerHeartbeat(HEART_BEAT_RATE)
-                resetSubscriptions()
 
                 val lifecycleDisposable =
                     stompClient.lifecycle()
@@ -111,9 +112,8 @@ class BackService : Service() {
                                 LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("Stomp connection closed")
-                                    resetSubscriptions()
                                     reconnectionNum++
-                                    if (errorFlag && reconnectionNum < 10) {
+                                    if (errorFlag && reconnectionNum < RECONNECT_LIMIT) {
                                         Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
                                         reconnect()
                                     } else {
