@@ -565,7 +565,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                         oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
                             odd?.isSelected =
-                                viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                         }

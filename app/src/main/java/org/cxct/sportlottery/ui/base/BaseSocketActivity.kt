@@ -63,6 +63,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 }
             }
         })
+
+        receiver.playQuotaChange.observe(this, {
+            it?.playQuotaComData?.let { playQuotaComData ->
+                viewModel.updatePlayQuota(playQuotaComData)
+            }
+        })
     }
 
     override fun onStart() {
