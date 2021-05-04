@@ -100,7 +100,7 @@ fun TextView.setRecordStatusColor(status: Int?) {
 
 
 @BindingAdapter("moneyFormat")
-fun TextView.setMoneyFormat(money: Double?) {
+fun TextView.setMoneyFormat(money: Double ?= 0.0) {
     money?.let {
         text = TextUtil.format(it)
     }

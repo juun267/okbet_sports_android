@@ -128,6 +128,9 @@ class GameViewModel(
     val settlementNotificationMsg: LiveData<Event<SportBet>>
         get() = _settlementNotificationMsg
 
+    val errorPromptMessage: LiveData<Event<String>>
+        get() = _errorPromptMessage
+
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     val betInfoList = betInfoRepository.betInfoList
@@ -154,6 +157,7 @@ class GameViewModel(
     private val _matchTypeCardForParlay = MutableLiveData<Event<Pair<MatchType, SportType?>>?>()
     private val _isNoHistory = MutableLiveData<Boolean>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
+    private val _errorPromptMessage = MutableLiveData<Event<String>>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -468,6 +472,10 @@ class GameViewModel(
         isLeftMenu: Boolean = false,
         isPreloadTable: Boolean = false
     ) {
+        if (sportType == null) {
+            if (!haveAtStart())
+                return
+        }
         menuEntrance = (this.matchType != matchType) || isPreloadTable//標記為卡片或菜單跳轉不同的類別
 
         if (isLeftMenu) {
@@ -475,6 +483,14 @@ class GameViewModel(
         }
 
         _matchTypeCardForParlay.postValue(Event(matchType to sportType))
+    }
+
+    //判斷即將開賽是否可以跳轉
+    private fun haveAtStart(): Boolean {
+        val haveGame = (asStartCount.value ?: 0) > 0
+        if (!haveGame)
+            _errorPromptMessage.value = Event(androidContext.getString(R.string.message_no_at_start))
+        return haveGame
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {

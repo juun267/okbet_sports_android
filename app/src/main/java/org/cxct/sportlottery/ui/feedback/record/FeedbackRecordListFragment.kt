@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,14 +19,17 @@ import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
+import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
-import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.SheetAdapter
 import java.util.*
 
 class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+    private val statusList by lazy {
+        listOf(StatusSheetData(viewModel.allStatusTag, context?.getString(R.string.all_status)), StatusSheetData("0", context?.getString(R.string.feedback_not_reply_yet)), StatusSheetData("1", context?.getString(R.string.feedback_already_reply)))
+    }
 
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
             iv_scroll_to_top.apply {
                 when {
@@ -54,14 +56,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 scrollToTopControl(firstVisibleItemPosition)
             }
         }
-    }
-    private val sheetAdapter by lazy { SheetAdapter(viewModel.allStatusTag, SheetAdapter.ItemCheckedListener { isChecked, data ->
-        if (isChecked) {
-            status_selector.selectedText = data.showName
-            status_selector.selectedTag = data.firmType
-            status_selector.dismiss()
-        }
-    })
     }
 
     val adapter by lazy {
@@ -93,8 +87,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     }
 
     private fun initView() {
-        sheetAdapter.dataList = viewModel.statusList
-        status_selector.setAdapter(sheetAdapter)
+        status_selector.dataList = statusList
     }
 
     private fun initButton() {
@@ -115,8 +108,8 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     }
 
     private fun initObserve() {
-        viewModel.feedbackList.observe(this.viewLifecycleOwner, Observer {
-            val listData = it ?: return@Observer
+        viewModel.feedbackList.observe(this.viewLifecycleOwner, {
+            val listData = it ?: return@observe
             adapter?.data = listData
 
             if (listData.size == 0) {
@@ -127,7 +120,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 rv_pay_type.visibility = View.VISIBLE
             }
         })
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner,  {
             adapter?.isFinalPage = true
         })
     }

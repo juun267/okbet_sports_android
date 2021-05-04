@@ -98,35 +98,61 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun goToSportGame(sportType: SportType) {
-        //規則：看當前在哪種類型賽事，再跳轉到對應類型下的球類賽事
-        //若此類型賽事無該種球類比賽，則一律跳轉到“串關”類型的球類賽事
+        //規則：
+        //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
+        //2. 若此當前頁籤無該種球類比賽，則跳轉到"今日"頁籤下的對應球類賽事
+        //3. 若"今日"也沒有則跳到"串關"
+        //4. 若扔沒有則顯示無賽事的圖片
+
+        val todayItemList = mSportMenuResult?.sportMenuData?.menu?.today?.items ?: listOf()
+        val todayItem = todayItemList.firstOrNull { it.code == sportType.code }
         val matchType = when (tabLayout.selectedTabPosition) {
             1 -> { //滾球盤
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.inPlay?.items ?: listOf()
                 val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.IN_PLAY else MatchType.PARLAY
+                when {
+                    targetItem != null -> MatchType.IN_PLAY
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
 
-            2 -> { //今日賽事
-                val itemList = mSportMenuResult?.sportMenuData?.menu?.today?.items ?: listOf()
-                val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.TODAY else MatchType.PARLAY
+            2 -> { //今日
+                when {
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
 
             3 -> { //早盤
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.early?.items ?: listOf()
                 val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.EARLY else MatchType.PARLAY
+                when {
+                    targetItem != null -> MatchType.EARLY
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
+            }
+
+            4 -> { //串關
+                MatchType.PARLAY
             }
 
             5 -> { //冠軍
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.outright?.items ?: listOf()
                 val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.OUTRIGHT else MatchType.PARLAY
+                when {
+                    targetItem != null -> MatchType.OUTRIGHT
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
 
-            else -> { //全部 //串關
-                MatchType.PARLAY
+            else -> { //全部
+                when {
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
         }
         viewModel.getGameHallList(matchType, sportType, true)

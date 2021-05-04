@@ -9,7 +9,6 @@ import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.SettingTipsDialog
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
@@ -73,12 +72,8 @@ open class ThirdGameActivity : WebActivity() {
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_setting_withdraw_password)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -89,12 +84,8 @@ open class ThirdGameActivity : WebActivity() {
         viewModel.needToCompleteProfileInfo.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
                         startActivity(Intent(this, ProfileActivity::class.java))
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_complete_profile_info)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     viewModel.checkBankCardPermissions()
@@ -105,12 +96,8 @@ open class ThirdGameActivity : WebActivity() {
         viewModel.needToBindBankCard.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_bank_card)) {
                         startActivity(Intent(this, BankActivity::class.java))
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_setting_bank_card)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     startActivity(Intent(this, WithdrawActivity::class.java))
