@@ -74,9 +74,6 @@ class MoneyTransferViewModel(
     val recordOutPlatSheetList: LiveData<List<StatusSheetData>>
         get() = _recordOutPlatSheetList
 
-    val isPlatSwitched: LiveData<Event<Boolean>>
-        get() = _isPlatSwitched
-
     val recycleAllMoneyResult: LiveData<Event<BlankResult?>>
         get() = _recycleAllMoneyResult
 
@@ -103,7 +100,6 @@ class MoneyTransferViewModel(
     private val _recordInPlatSheetList = MutableLiveData<List<StatusSheetData>>()
     private val _recordOutPlatSheetList = MutableLiveData<List<StatusSheetData>>()
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
-    private val _isPlatSwitched = MutableLiveData<Event<Boolean>>()
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
     private val _userMoney = MutableLiveData<Double?>()
@@ -131,10 +127,6 @@ class MoneyTransferViewModel(
 
     fun setToolbarName(name: String) {
         _toolbarName.value = name
-    }
-
-    fun switchPlat() {
-        _isPlatSwitched.value = Event(!(isPlatSwitched.value?.peekContent() ?: false))
     }
 
     private var thirdGameMap = mutableMapOf<String?, String?>()
@@ -267,10 +259,9 @@ class MoneyTransferViewModel(
         }
     }
 
-    fun transfer(outPlat: String?, inPlat: String?, amount: Long?) {
+    fun transfer(isReversed: Boolean, outPlat: String?, inPlat: String?, amount: Long?) {
         if (amount == null || outPlat == null || inPlat == null) return
         loading()
-        val isReversed = isPlatSwitched.value?.peekContent() ?: false
         viewModelScope.launch {
             doNetwork(androidContext) {
                 if (isReversed) {
