@@ -41,6 +41,12 @@ class BetInfoRepository {
         get() = _removeItem
 
     var playQuotaComData: PlayQuotaComData? = null
+        set(value) {
+            field = value
+            field?.let {
+                notifyBetInfoChanged()
+            }
+        }
 
 
     fun addInBetInfoParlay() {
