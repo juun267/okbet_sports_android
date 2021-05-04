@@ -233,7 +233,7 @@ class GameViewModel(
         if (boolean) {
             //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
             cleanOutrightBetOrder()
-            getBetInfoListForParlay()
+            getBetInfoListForParlay(null)
         }
     }
 
@@ -912,13 +912,13 @@ class GameViewModel(
     }
 
 
-    private fun updateBetInfoListByMatchOddChange(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
+    private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         //判斷當前有沒有關閉的賠率
         val sendRequest = betInfoRepository.matchOddList.find {
             it.status == BetStatus.LOCKED.code || it.status == BetStatus.DEACTIVATED.code
         }
         if (sendRequest == null)
-            getBetInfoListForParlay(newList)
+            getBetInfoListForParlay(newListFromSocket)
         else Timber.e("不執行 betInfo 計算")
     }
 
@@ -1023,7 +1023,7 @@ class GameViewModel(
         }
     }
 
-    fun getBetInfoListForParlay() {
+    fun getBetInfoListForParlay(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>?) {
         if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
             return
         }
@@ -1057,78 +1057,12 @@ class GameViewModel(
 
         betInfoRepository.addInBetInfoParlay(sendList)
 
-        _matchOddList.postValue(betInfoRepository.matchOddList)
-
-        //將串起來的數量賠率移至第一項
-        val pOdd = betInfoRepository.parlayOddList.find {
-            betInfoRepository.matchOddList.size.toString() + "C1" == it.parlayType
-        }
-
-        betInfoRepository.parlayOddList.remove(pOdd)
-
-        pOdd?.let { po ->
-            betInfoRepository.parlayOddList.add(0, po)
-        }
-
-        _parlayList.postValue(betInfoRepository.parlayOddList)
-
-        //載入串關注單後比對一般注單
-        val newBetList: MutableList<BetInfoListData> = mutableListOf()
-        betInfoRepository.matchOddList.let { mList ->
-            for (i in mList.indices) {
-                betInfoRepository.betList.let { bList ->
-                    val oid = mList[i].oddsId
-                    val item = bList.find {
-                        it.matchOdd.oddsId == oid
-                    }
-                    item?.let {
-                        newBetList.add(it)
-                    }
-                }
-            }
-            betInfoRepository.betList.clear()
-            betInfoRepository.betList.addAll(newBetList)
-        }
-        betInfoRepository._betInfoList.postValue(newBetList)
-    }
-
-    private fun getBetInfoListForParlay(newList: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
-        if (betInfoRepository.betList.size >= BET_INFO_MAX_COUNT || betInfoRepository.betList.size == 0) {
-            return
-        }
-
-        val sendList: MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd> = mutableListOf()
-        betInfoRepository.betList.let { list ->
-
-            //以matchId分組 key為matchOdd(object)
-            val groupList = list.groupBy { data ->
-                list.find { d ->
-                    data.matchOdd.matchId == d.matchOdd.matchId
-                }
-            }
-
-            run loop@{
-                groupList.forEach {
-                    if (it.value.size > 1) {
-                        _systemDelete.postValue(true)
-                        return@loop
-                    }
-                }
-            }
-
-            //各別取第一項做為串關項目送出
-            groupList.keys.forEach {
-                it?.matchOdd?.let { matchOdd ->
-                    sendList.add(matchOdd)
-                }
+        newListFromSocket?.let { list ->
+            betInfoRepository.matchOddList.forEach {
+                updateItem(it, list)
             }
         }
 
-        betInfoRepository.addInBetInfoParlay(sendList)
-
-        betInfoRepository.matchOddList.forEach {
-            updateItem(it, newList)
-        }
 
         _matchOddList.postValue(betInfoRepository.matchOddList)
 
@@ -1172,7 +1106,7 @@ class GameViewModel(
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
         if (betInfoRepository.betList.size != 0) {
-            getBetInfoListForParlay()
+            getBetInfoListForParlay(null)
         }
     }
 

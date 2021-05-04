@@ -164,23 +164,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-//        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, {
-//            val updatedBetInfoList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-//            it.forEach { odd ->
-//                val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
-//                    odd.oddsId,
-//                    odd.odds,
-//                    odd.hkOdds,
-//                    odd.producerId,
-//                    odd.spread,
-//                    odd.status,
-//                )
-//                newOdd.oddState = odd.oddState
-//                updatedBetInfoList.add(newOdd)
-//            }
-//            matchOddAdapter.updatedBetInfoList = updatedBetInfoList
-//        })
-
         viewModel.matchOddList.observe(this.viewLifecycleOwner, {
             if (!isSubScribe) {
                 isSubScribe = true
@@ -280,7 +263,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     private fun getParlayList() {
-        viewModel.getBetInfoListForParlay()
+        viewModel.getBetInfoListForParlay(null)
     }
 
 
