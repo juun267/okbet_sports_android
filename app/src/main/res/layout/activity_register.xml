@@ -300,7 +300,7 @@
                     android:id="@+id/btn_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/desc_have_account"
+                    android:text="@string/have_account"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize12sp" />
 
