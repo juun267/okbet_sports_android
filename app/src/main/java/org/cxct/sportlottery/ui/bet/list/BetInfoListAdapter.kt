@@ -48,12 +48,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
 
-    var updatedBetInfoList: MutableList<Odd> = mutableListOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     var isNeedRegister: Boolean = false
         set(value) {
             field = value
@@ -66,40 +60,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             field = value
             notifyDataSetChanged()
         }
-
-
-    private fun updateItemDataFromSocket(matchOdd: MatchOdd, updatedBetInfoList: MutableList<Odd>) {
-        for (newItem in updatedBetInfoList) {
-            //null check後還是會crash 先以不crash為主
-            try {
-                newItem.id.let {
-                    if (it == matchOdd.oddsId) {
-                        matchOdd.oddState = getOddState(getOdds(matchOdd, oddsType), newItem)
-                        newItem.odds?.let { odds -> matchOdd.odds = odds }
-                        newItem.hkOdds?.let { hkOdds -> matchOdd.hkOdds = hkOdds }
-                        newItem.status?.let { status -> matchOdd.status = status }
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-
-    private fun getOddState(oldItemOdd: Double, it: Odd): Int {
-        val odds = when (oddsType) {
-            OddsType.EU -> it.odds
-            OddsType.HK -> it.hkOdds
-        }
-        val newOdd = odds ?: 0.0
-        return when {
-            newOdd == oldItemOdd -> OddState.SAME.state
-            newOdd > oldItemOdd -> OddState.LARGER.state
-            newOdd < oldItemOdd -> OddState.SMALLER.state
-            else -> OddState.SAME.state
-        }
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -115,7 +75,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        updateItemDataFromSocket(betInfoList[position].matchOdd, updatedBetInfoList)
         holder.bind(betInfoList[position], position)
     }
 
@@ -401,21 +360,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         onItemClickListener.onBetClick(betInfoList[position], stake)
                     }
                 })
-            }
-        }
-    }
-
-
-    fun modify(list: MutableList<BetInfoListData>, position: Int) {
-        if (betInfoList.size == 0) {
-            betInfoList.addAll(list)
-            notifyDataSetChanged()
-        } else if (list.size < betInfoList.size) {
-            with(betInfoList) {
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(0, betInfoList.size)
-                clear()
-                addAll(list)
             }
         }
     }

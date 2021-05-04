@@ -230,7 +230,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            viewModel.updateMatchOdd(it)
+            viewModel.updateMatchOddForParlay(it)
         })
 
         receiver.globalStop.observe(viewLifecycleOwner, Observer {
