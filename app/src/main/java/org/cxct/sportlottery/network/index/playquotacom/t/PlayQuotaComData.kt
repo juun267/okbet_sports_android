@@ -6,31 +6,33 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class PlayQuotaComData(
     @Json(name = "OUTRIGHT@BK")
-    val oUTRIGHTBK: OUTRIGHTBK,
+    val oUTRIGHTBK: OutrightBK,
+    @Json(name = "OUTRIGHT@BM")
+    val oUTRIGHTBM: OutrightBM,
     @Json(name = "OUTRIGHT@FT")
-    val oUTRIGHTFT: OUTRIGHTFT,
+    val oUTRIGHTFT: OutrightFT,
     @Json(name = "OUTRIGHT@TN")
-    val oUTRIGHTTN: OUTRIGHTTN,
+    val oUTRIGHTTN: OutrightTN,
     @Json(name = "OUTRIGHT@VB")
-    val oUTRIGHTVB: OUTRIGHTVB,
+    val oUTRIGHTVB: OutrightVB,
     @Json(name = "PARLAY@BK")
-    val pARLAYBK: PARLAYBK,
+    val pARLAYBK: ParlayBK,
     @Json(name = "PARLAY@BM")
-    val pARLAYBM: PARLAYBM,
+    val pARLAYBM: ParlayBM,
     @Json(name = "PARLAY@FT")
-    val pARLAYFT: PARLAYFT,
+    val pARLAYFT: ParlayFT,
     @Json(name = "PARLAY@TN")
-    val pARLAYTN: PARLAYTN,
+    val pARLAYTN: ParlayTN,
     @Json(name = "PARLAY@VB")
-    val pARLAYVB: PARLAYVB,
+    val pARLAYVB: ParlayVB,
     @Json(name = "SINGLE@BK")
-    val sINGLEBK: SINGLEBK,
+    val sINGLEBK: SingleBK,
     @Json(name = "SINGLE@BM")
-    val sINGLEBM: SINGLEBM,
+    val sINGLEBM: SingleBM,
     @Json(name = "SINGLE@FT")
-    val sINGLEFT: SINGLEFT,
+    val sINGLEFT: SingleFT,
     @Json(name = "SINGLE@TN")
-    val sINGLETN: SINGLETN,
+    val sINGLETN: SingleTN,
     @Json(name = "SINGLE@VB")
-    val sINGLEVB: SINGLEVB
+    val sINGLEVB: SingleVB
 )
