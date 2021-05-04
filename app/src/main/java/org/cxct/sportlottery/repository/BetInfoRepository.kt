@@ -64,9 +64,9 @@ class BetInfoRepository {
             parlayOddList.addAll(getParlayOdd(MatchType.PARLAY, it, sendList))
 
             if (isUpdate) {
-                _newMatchOddList.postValue(sendList)
+                _newMatchOddList.value = sendList
             } else {
-                _matchOddList.postValue(sendList)
+                _matchOddList.value = sendList
             }
         }
     }
