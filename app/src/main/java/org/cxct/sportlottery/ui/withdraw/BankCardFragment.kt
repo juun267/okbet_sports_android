@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,24 +57,17 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bank_card, container, false).apply {
-
             setupInitData(this)
-
             setupTitle()
-
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
-
             initView()
-
             setupEvent()
-
             setupObserve()
-
             setupBankList()
         }
     }
@@ -120,7 +114,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         showHideTab()
         sv_protocol.setAdapter(protocolAdapter)
 
-        viewModel.getCryptoBindList(args.editBankCard)
+//        Log.e(">>>", "args.editBankCard = ${args.editBankCard}")
+//        viewModel.getCryptoBindList(args.editBankCard)
 
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
@@ -341,6 +336,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
+            viewModel.getCryptoBindList(args.editBankCard)
         })
 
         viewModel.addCryptoCardList.observe(this.viewLifecycleOwner, {
@@ -350,7 +346,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
 
 
-        viewModel.bankAddResult.observe(this.viewLifecycleOwner, Observer { result ->
+        viewModel.bankAddResult.observe(this.viewLifecycleOwner, { result ->
             if (result.success) {
                 if (mBankCardStatus) {
                     val promptMessage = when (transferType) {
@@ -374,8 +370,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         })
 
-        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, Observer
-        { result ->
+        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, { result ->
             if (result.success) {
                 val promptMessage = when (transferType) {
                     TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
@@ -389,31 +384,31 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         //錯誤訊息
         //開戶名
-        viewModel.createNameErrorMsg.observe(this.viewLifecycleOwner, Observer
+        viewModel.createNameErrorMsg.observe(this.viewLifecycleOwner,
         {
             et_create_name.setError(it ?: "")
         })
 
         //銀行卡號
-        viewModel.bankCardNumberMsg.observe(this.viewLifecycleOwner, Observer
+        viewModel.bankCardNumberMsg.observe(this.viewLifecycleOwner,
         {
             et_bank_card_number.setError(it ?: "")
         })
 
         //開戶網點
-        viewModel.networkPointMsg.observe(this.viewLifecycleOwner, Observer
+        viewModel.networkPointMsg.observe(this.viewLifecycleOwner,
         {
             et_network_point.setError(it ?: "")
         })
 
         //錢包地址
-        viewModel.walletAddressMsg.observe(this.viewLifecycleOwner, Observer
+        viewModel.walletAddressMsg.observe(this.viewLifecycleOwner,
         {
             et_wallet.setError(it ?: "")
         })
 
         //提款密碼
-        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer
+        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner,
         {
             et_withdrawal_password.setError(it ?: "")
         })
@@ -438,6 +433,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
             val view = layoutInflater.inflate(R.layout.item_listview_bank_card, parent, false)
             view.tag = holder
             view.apply {
+                holder.imgCheck = img_check_bank
                 holder.tvBank = tv_bank_card
                 holder.ivBankIcon = iv_bank_icon
                 holder.llSelectBankCard = ll_select_bank_card
@@ -457,10 +453,14 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
             /*val viewHolder = ViewHolder()*/
             tvBank?.text = data.name
             ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.name ?: ""))
-            if (position == selectedPosition)
-                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.blue2))
-            else
-                llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            if (position == selectedPosition) {
+                imgCheck?.visibility = View.VISIBLE
+                this.llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
+            }
+            else {
+                imgCheck?.visibility = View.GONE
+                llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+            }
             llSelectBankCard?.setOnClickListener {
                 if (selectedPosition != position) {
                     //                data.isSelected = !data.isSelected
@@ -486,7 +486,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
 
     fun initSelectStatus() {
         selectedPosition = 0
-        if (dataList.size > 0) {
+        if (dataList.isNotEmpty()) {
             listener.onSelect(dataList[0])
         }
         notifyDataSetChanged()
@@ -494,6 +494,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
 }
 
 class ListViewHolder {
+    var imgCheck: ImageView ?= null
     var tvBank: TextView? = null
     var ivBankIcon: ImageView? = null
     var llSelectBankCard: LinearLayout? = null
@@ -519,7 +520,6 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
             notifyDataSetChanged()
         }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ThirdGamesItemViewHolder.form(parent)
     }
@@ -542,7 +542,9 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
             val itemChecked = dataCheckedList[position]
             itemView.apply {
                 checkbox_item.text = data.contract
-                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.colorWhite6) else ContextCompat.getDrawable(context, android.R.color.white)
+                linear_layout.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.colorWhite6) else ContextCompat.getDrawable(context, R.color.colorWhite)
+                img_check.visibility = if (itemChecked) View.VISIBLE else View.GONE
+
                 checkbox_item.setOnClickListener {
                     if (selectedPosition != position) {
                         selectedListener.onSelected(data)

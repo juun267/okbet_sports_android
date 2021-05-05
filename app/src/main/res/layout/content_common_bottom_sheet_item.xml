@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.AppCompatCheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/checkbox_item"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:button="@null"
-    android:gravity="center"
-    android:paddingVertical="12dp"
-    android:textColor="@color/colorBlackLight"
-    android:textSize="@dimen/textSize12sp"
-    android:textStyle="bold"
-    tools:text="平台名稱" />
+    android:id="@+id/linear_layout"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="20dp"
+    android:orientation="horizontal">
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkbox_item"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:button="@null"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
+        tools:text="平台名稱" />
+
+    <ImageView
+        android:id="@+id/img_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_check"/>
+
+</LinearLayout>

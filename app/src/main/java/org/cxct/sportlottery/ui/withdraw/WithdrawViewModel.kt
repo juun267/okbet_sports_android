@@ -647,7 +647,7 @@ class WithdrawViewModel(
         val cryptoCanBind = checkCryptoCanBind()
         val modifyMoneyChannel = modifyMoneyCard?.bankName
 
-        val cryptoCanBindList: MutableList<MoneyRechCfg.DetailList> = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.toMutableList() ?: mutableListOf()
+        val cryptoCanBindList = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.toMutableList() ?: mutableListOf()
 
         cryptoCanBind.forEach { canBindData ->
             if (canBindData.canBind == false) {
