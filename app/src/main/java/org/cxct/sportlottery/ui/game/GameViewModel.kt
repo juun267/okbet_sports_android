@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.error.BetAddError
+import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
@@ -39,14 +39,11 @@ import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
-import org.json.JSONArray
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
@@ -1138,6 +1135,45 @@ class GameViewModel(
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(matchType, result)
+                } else {
+                    result?.let {
+                        val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+
+                        errorData?.forEach { betAddErrorData ->
+                            val oddId = betAddErrorData.id
+
+                            when (result.code) {
+                                BetAddError.MATCH_NOT_EXIST.code -> {
+                                    //for display
+                                    BetAddError.MATCH_NOT_EXIST.string
+                                }
+                                BetAddError.ODDS_NOT_EXIST.code -> {
+                                    //for display
+                                    BetAddError.ODDS_NOT_EXIST.string
+                                }
+                                BetAddError.MATCH_INVALID_STATUS.code -> {
+                                    //for display
+                                    BetAddError.MATCH_INVALID_STATUS.string
+                                }
+                                BetAddError.ODDS_LOCKED.code -> {
+                                    //for display
+                                    BetAddError.ODDS_LOCKED.string
+                                }
+                                BetAddError.PARLAY_UN_SUPPORT.code -> {
+                                    //for display
+                                    BetAddError.PARLAY_UN_SUPPORT.string
+                                }
+                                BetAddError.ODDS_ID_NOT_ALLOW_BET.code -> {
+                                    //for display
+                                    BetAddError.ODDS_ID_NOT_ALLOW_BET.string
+                                }
+                                BetAddError.ODDS_HAVE_CHANGED.code -> {
+                                    //update odds
+                                    betAddErrorData.odds
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
