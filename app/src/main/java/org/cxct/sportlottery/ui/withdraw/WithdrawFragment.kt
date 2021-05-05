@@ -354,7 +354,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
     private fun setView(holder: ListViewHolder, data: BankCardList, position: Int, listener: BankCardAdapterListener) {
         holder.apply {
             imgCheck?.visibility = if (position == selectedPosition) View.VISIBLE else View.GONE
-            tvBank?.text = data.bankName
+            tvBank?.text = tvBank?.context?.getString(R.string.selected_bank_card)?.let { String.format(it, data.bankName, data.cardNo) }
             val cardIcon = when (data.transferType) {
                 TransferType.BANK -> getBankIconByBankName(data.bankName)
                 TransferType.CRYPTO -> getCryptoIconByCryptoName(data.transferType.type)
