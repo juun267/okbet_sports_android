@@ -74,7 +74,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        updateItemDataFromSocket(betInfoList[position].matchOdd, updatedBetInfoList)
         holder.bind(position)
     }
 
