@@ -359,7 +359,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.executePendingBindings()
 
 
-            setupBetButton()
+            setupBetButton(data)
             setupRegisterButton()
         }
 
@@ -423,34 +423,23 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
         private fun setupRegisterButton() {
             binding.betInfoAction.tv_register.apply {
-                visibility = if (isNeedRegister) {
-                    View.VISIBLE
-                } else {
-                    View.INVISIBLE
-                }
-
-                setOnClickListener {
-                    onItemClickListener.onRegisterClick()
-                }
+                visibility = if (isNeedRegister) View.VISIBLE else View.INVISIBLE
+                setOnClickListener { onItemClickListener.onRegisterClick() }
             }
         }
 
-        private fun setupBetButton() {
+        private fun setupBetButton(data: BetInfoListData) {
             binding.betInfoAction.tv_bet.apply {
-                visibility = if (isNeedRegister) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
-                }
+                visibility = if (isNeedRegister) View.INVISIBLE else View.VISIBLE
 
                 setOnClickListener(object : OnForbidClickListener() {
                     override fun forbidClick(view: View?) {
-                        val stake = if (TextUtils.isEmpty(binding.etBet.text.toString())) {
+                        val stake = if (binding.etBet.text.toString().isEmpty()) {
                             0.0
                         } else {
                             binding.etBet.text.toString().toDouble()
                         }
-                        onItemClickListener.onBetClick(betInfoList[position], stake)
+                        onItemClickListener.onBetClick(data, stake)
                     }
                 })
             }
