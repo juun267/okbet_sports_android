@@ -392,6 +392,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
                 setOnClickListener(object : OnForbidClickListener() {
                     override fun forbidClick(view: View?) {
+                        if (data.matchOdd.status == BetStatus.LOCKED.code || data.matchOdd.status == BetStatus.DEACTIVATED.code) return
                         val stake = if (binding.etBet.text.toString().isEmpty()) {
                             0.0
                         } else {
