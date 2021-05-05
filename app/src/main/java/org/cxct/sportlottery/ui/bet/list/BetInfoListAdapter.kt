@@ -279,8 +279,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             /* set listener */
             val tw = object : TextWatcher {
                 override fun afterTextChanged(it: Editable?) {
-                    parlayOdd?.let {
-                        check(it.toString(), matchOdd, parlayOdd)
+                    parlayOdd?.let { pOdd ->
+                        check(it.toString(), matchOdd, pOdd)
                     }
                     if (TextUtils.isEmpty(it)) {
                         betInfoList[position].input = ""
