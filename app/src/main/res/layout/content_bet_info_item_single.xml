@@ -100,6 +100,23 @@
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize13sp"
             android:visibility="gone"
+            tools:visibility="visible"
+            app:drawableStartCompat="@drawable/ic_warning_white"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tv_odd_change"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:background="@color/colorRed"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:text="@string/bet_info_list_game_odds_changed"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSize13sp"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:drawableStartCompat="@drawable/ic_warning_white"
             tools:ignore="RtlSymmetry" />
 
