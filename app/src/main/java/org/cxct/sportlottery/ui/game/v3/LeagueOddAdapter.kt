@@ -312,17 +312,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                oddStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListHDP?.get(0)?.oddState
+                this@ViewHolderHdpOu.setupOddState(
+                    this, when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            oddListHDP?.get(0)
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            oddList1x2?.get(0)
+                        }
+                        else -> {
+                            null
+                        }
                     }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddList1x2?.get(0)?.oddState
-                    }
-                    else -> {
-                        null
-                    }
-                }
+                )
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
@@ -447,17 +449,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                oddStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListHDP?.get(1)?.oddState
+                this@ViewHolderHdpOu.setupOddState(
+                    this, when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            oddListHDP?.get(1)
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            oddList1x2?.get(1)
+                        }
+                        else -> {
+                            null
+                        }
                     }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddList1x2?.get(1)?.oddState
-                    }
-                    else -> {
-                        null
-                    }
-                }
+                )
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
@@ -589,17 +593,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                oddStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListOU?.get(0)?.oddState
+                this@ViewHolderHdpOu.setupOddState(
+                    this, when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            oddListOU?.get(0)
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            oddListHDP?.get(0)
+                        }
+                        else -> {
+                            null
+                        }
                     }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddListHDP?.get(0)?.oddState
-                    }
-                    else -> {
-                        null
-                    }
-                }
+                )
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
@@ -735,17 +741,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                oddStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListOU?.get(1)?.oddState
+                this@ViewHolderHdpOu.setupOddState(
+                    this, when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            oddListOU?.get(1)
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            oddListHDP?.get(1)
+                        }
+                        else -> {
+                            null
+                        }
                     }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddListHDP?.get(1)?.oddState
-                    }
-                    else -> {
-                        null
-                    }
-                }
+                )
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
