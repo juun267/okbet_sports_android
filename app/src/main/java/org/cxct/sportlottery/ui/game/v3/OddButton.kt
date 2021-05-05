@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.v3
 
 import android.content.Context
-import android.os.Handler
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,7 +11,6 @@ import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
-
 
 class OddButton @JvmOverloads constructor(
     context: Context,
@@ -51,6 +49,7 @@ class OddButton @JvmOverloads constructor(
             }
         }
 
+
     var oddStatus: Int? = null
         set(value) {
             field = value
@@ -61,12 +60,6 @@ class OddButton @JvmOverloads constructor(
         }
 
     var onOddStatusChangedListener: OnOddStatusChangedListener? = null
-
-    private val mHandler by lazy {
-        Handler()
-    }
-
-    private var runnable: Runnable? = null
 
     init {
         init(attrs)
@@ -184,44 +177,12 @@ class OddButton @JvmOverloads constructor(
                 isActivated = true
             }
             else -> {
-                return
+                odd_button.background =
+                    ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
+
+                isActivated = false
             }
-        }
-
-        runnable = Runnable {
-            odd_button.background =
-                ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
-            onOddStatusChangedListener?.onOddStateChangedFinish()
-            isActivated = false
-        }
-        runnable?.let {
-            if (!mHandler.hasCallbacks(it))
-                mHandler.postDelayed(
-                    it, 3000
-                )
-        }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        runnable?.let {
-            if (!mHandler.hasCallbacks(it))
-                mHandler.postDelayed(
-                    it, 3000
-                )
-        }
-    }
-
-    override fun onDetachedFromWindow() {
-        odd_button.background =
-            ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
-        onOddStatusChangedListener?.onOddStateChangedFinish()
-        isActivated = false
-        super.onDetachedFromWindow()
-
-        runnable?.let {
-            mHandler.removeCallbacks(it)
         }
     }
 }
+
