@@ -292,12 +292,8 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_setting_withdraw_password)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -308,12 +304,8 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToCompleteProfileInfo.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
                         startActivity(Intent(this, ProfileActivity::class.java))
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_complete_profile_info)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     viewModel.checkBankCardPermissions()
@@ -324,12 +316,8 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToBindBankCard.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_money_card)) {
                         startActivity(Intent(this, BankActivity::class.java))
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_setting_money_card)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     startActivity(Intent(this, WithdrawActivity::class.java))
@@ -352,12 +340,8 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.settingNeedToCompleteProfileInfo.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
                         startActivity(Intent(this, ProfileActivity::class.java))
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_complete_profile_info)
-                        show(supportFragmentManager, "")
                     }
                 } else if (!b) {
                     startActivity(Intent(this, BankActivity::class.java))
@@ -365,12 +349,12 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             }
         })
 
-        viewModel.editIconUrlResult.observe(this, Observer {
+        viewModel.editIconUrlResult.observe(this, {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
-                ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
+                showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
             else
-                ToastUtil.showToastInCenter(this, iconUrlResult?.msg)
+                iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         })
     }
 

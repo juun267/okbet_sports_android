@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.BitmapUtil
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
 import java.util.*
@@ -90,6 +91,23 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupConfirmPassword() {
         setupEditTextFocusListener(et_confirm_password) { viewModel.checkConfirmPassword(et_login_password.getText(), it) }
+
+        //20210427 紀錄：當確認密碼下方的 label 都被關時，要動態調整 MarginBottom 高度，為了符合排版要求
+        if (sConfigData?.enableFullName != FLAG_OPEN &&
+            sConfigData?.enableFundPwd != FLAG_OPEN &&
+            sConfigData?.enableQQ != FLAG_OPEN &&
+            sConfigData?.enablePhone != FLAG_OPEN &&
+            sConfigData?.enableEmail != FLAG_OPEN &&
+            sConfigData?.enableWechat != FLAG_OPEN &&
+            sConfigData?.enableZalo != FLAG_OPEN &&
+            sConfigData?.enableFacebook != FLAG_OPEN &&
+            sConfigData?.enableWhatsApp != FLAG_OPEN &&
+            sConfigData?.enableTelegram != FLAG_OPEN &&
+            sConfigData?.enableTelegram != FLAG_OPEN &&
+            sConfigData?.enableRegValidCode != FLAG_OPEN &&
+            sConfigData?.enableSmsValidCode != FLAG_OPEN
+        )
+            et_confirm_password.setMarginBottom(10.dp)
     }
 
     private fun setupFullName() {
@@ -154,7 +172,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             View.VISIBLE
         } else View.GONE
     }
-
 
     private fun setupTelegram() {
         et_telegram.visibility = if (sConfigData?.enableTelegram == FLAG_OPEN) {

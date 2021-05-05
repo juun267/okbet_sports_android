@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.activity_finance.*
 import kotlinx.android.synthetic.main.appbar_finance.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
@@ -63,7 +64,8 @@ class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel
 
     private fun setupToolbarBack() {
         btn_toolbar_back.setOnClickListener {
-            finish()
+            if (financeFragment.childFragmentManager.backStackEntryCount > 0) navController.navigateUp()
+            else finish()
         }
     }
 

@@ -90,7 +90,6 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
         layout_total.tv_total.text = getString(R.string.total_bet_amount)
         status_selector.setCloseBtnText(getString(R.string.cancel_select))
         status_selector.dataList = betStatusList
-        status_selector.selectedTag = betStatusList.firstOrNull()?.code
     }
 
     private fun initOnclick() {
@@ -128,6 +127,11 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
+
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            rvAdapter.oddsType = it
+        })
+
     }
 
     private fun initRv() {

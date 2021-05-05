@@ -118,7 +118,7 @@ class RegisterViewModel(
 
     fun checkInviteCode(inviteCode: String?) {
         _inviteCodeMsg.value = when {
-            inviteCode.isNullOrBlank() -> {
+            inviteCode.isNullOrEmpty() -> {
                 if (sConfigData?.enableInviteCode != FLAG_OPEN)
                     null
                 else
@@ -132,7 +132,7 @@ class RegisterViewModel(
 
     private fun checkMemberAccount(account: String?, isExistAccount: Boolean) {
         _memberAccountMsg.value = when {
-            account.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            account.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             isExistAccount -> androidContext.getString(R.string.error_register_id_exist)
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
                 androidContext.getString(R.string.error_member_account)
@@ -145,7 +145,7 @@ class RegisterViewModel(
 
     fun checkLoginPassword(password: String?) {
         _loginPasswordMsg.value = when {
-            password.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPwdFormat(password) -> androidContext.getString(R.string.error_register_password)
             password.length !in 6..20 -> androidContext.getString(R.string.error_register_password)
             !VerifyConstUtil.verifyPwd(password) -> androidContext.getString(R.string.error_register_password)
@@ -156,7 +156,7 @@ class RegisterViewModel(
 
     fun checkConfirmPassword(password: String?, confirmPassword: String?) {
         _confirmPasswordMsg.value = when {
-            password.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             password != confirmPassword -> androidContext.getString(R.string.error_confirm_password)
             else -> null
         }
@@ -165,7 +165,7 @@ class RegisterViewModel(
 
     fun checkFullName(fullName: String?) {
         _fullNameMsg.value = when {
-            fullName.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            fullName.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_incompatible_format)
             else -> null
         }
@@ -174,7 +174,7 @@ class RegisterViewModel(
 
     fun checkFundPwd(fundPwd: String?) {
         _fundPwdMsg.value = when {
-            fundPwd.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            fundPwd.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPayPwd(fundPwd) -> androidContext.getString(R.string.error_withdrawal_pwd)
             else -> null
         }
@@ -183,7 +183,7 @@ class RegisterViewModel(
 
     fun checkQQ(qq: String?) {
         _qqMsg.value = when {
-            qq.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            qq.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyQQ(qq) -> androidContext.getString(R.string.error_qq_number)
             else -> null
         }
@@ -192,7 +192,7 @@ class RegisterViewModel(
 
     fun checkPhone(phone: String?) {
         _phoneMsg.value = when {
-            phone.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            phone.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phone) -> androidContext.getString(R.string.error_phone_number)
             else -> null
         }
@@ -201,7 +201,7 @@ class RegisterViewModel(
 
     fun checkEmail(email: String?) {
         _emailMsg.value = when {
-            email.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            email.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyMail(email) -> androidContext.getString(R.string.error_e_mail)
             else -> null
         }
@@ -210,7 +210,7 @@ class RegisterViewModel(
 
     fun checkWeChat(weChat: String?) {
         _weChatMsg.value = when {
-            weChat.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            weChat.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWeChat(weChat) -> androidContext.getString(R.string.error_we_chat_number)
             else -> null
         }
@@ -219,7 +219,7 @@ class RegisterViewModel(
 
     fun checkZalo(zalo: String?) {
         _zaloMsg.value = when {
-            zalo.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            zalo.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyZalo(zalo) -> androidContext.getString(R.string.error_zalo)
             else -> null
         }
@@ -228,7 +228,7 @@ class RegisterViewModel(
 
     fun checkFacebook(facebook: String?) {
         _facebookMsg.value = when {
-            facebook.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            facebook.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyFacebook(facebook) -> androidContext.getString(R.string.error_facebook)
             else -> null
         }
@@ -237,7 +237,7 @@ class RegisterViewModel(
 
     fun checkWhatsApp(whatsApp: String?) {
         _whatsAppMsg.value = when {
-            whatsApp.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            whatsApp.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWhatsApp(whatsApp) -> androidContext.getString(R.string.error_whats_app)
             else -> null
         }
@@ -246,7 +246,7 @@ class RegisterViewModel(
 
     fun checkTelegram(telegram: String?) {
         _telegramMsg.value = when {
-            telegram.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            telegram.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyTelegram(telegram) -> androidContext.getString(R.string.error_telegram)
             else -> null
         }
@@ -255,7 +255,7 @@ class RegisterViewModel(
 
     fun checkSecurityCode(securityCode: String?) {
         _securityCodeMsg.value = when {
-            securityCode.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            securityCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifySecurityCode(securityCode) -> androidContext.getString(R.string.error_verification_code_by_sms)
             else -> null
         }
@@ -264,7 +264,7 @@ class RegisterViewModel(
 
     fun checkValidCode(validCode: String?) {
         _validCodeMsg.value = when {
-            validCode.isNullOrBlank() -> androidContext.getString(R.string.error_input_empty)
+            validCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyValidCode(validCode) -> androidContext.getString(R.string.error_verification_code)
             else -> null
         }

@@ -33,7 +33,7 @@ object TimeUtil {
 
     @JvmStatic
     fun stampToDateInOddsDetail(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("MM-dd  HH:mm")
+        val simpleDateFormat = SimpleDateFormat("MM/dd  HH:mm")
         return simpleDateFormat.format(Date(time))
     }
 
@@ -141,8 +141,8 @@ object TimeUtil {
     }
 
     fun getDefaultTimeStamp(): TimeRangeParams {
-        val minusDay = ymdFormat.format(getCalendarForDates(7).first.time)
-        val today = ymdFormat.format(getCalendarForDates(7).second.time)
+        val minusDay = ymdFormat.format(getCalendarForDates(6).first.time)
+        val today = ymdFormat.format(getCalendarForDates(6).second.time)
         val startTimeStamp = ymdhmsFormat.parse("$minusDay 00:00:00")?.time
         val endTimeStamp = ymdhmsFormat.parse("$today 23:59:59")?.time
 

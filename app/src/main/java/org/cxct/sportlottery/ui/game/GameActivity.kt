@@ -13,6 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_left.view.*
@@ -44,7 +45,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
-    private var mCloseOddsDetail = true
 
     private var mSportMenuResult: SportMenuResult? = null
     private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
@@ -98,35 +98,61 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun goToSportGame(sportType: SportType) {
-        //規則：看當前在哪種類型賽事，再跳轉到對應類型下的球類賽事
-        //若此類型賽事無該種球類比賽，則一律跳轉到“串關”類型的球類賽事
+        //規則：
+        //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
+        //2. 若此當前頁籤無該種球類比賽，則跳轉到"今日"頁籤下的對應球類賽事
+        //3. 若"今日"也沒有則跳到"串關"
+        //4. 若扔沒有則顯示無賽事的圖片
+
+        val todayItemList = mSportMenuResult?.sportMenuData?.menu?.today?.items ?: listOf()
+        val todayItem = todayItemList.firstOrNull { it.code == sportType.code }
         val matchType = when (tabLayout.selectedTabPosition) {
             1 -> { //滾球盤
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.inPlay?.items ?: listOf()
                 val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.IN_PLAY else MatchType.PARLAY
+                when {
+                    targetItem != null -> MatchType.IN_PLAY
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
 
-            2 -> { //今日賽事
-                val itemList = mSportMenuResult?.sportMenuData?.menu?.today?.items ?: listOf()
-                val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.TODAY else MatchType.PARLAY
+            2 -> { //今日
+                when {
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
 
             3 -> { //早盤
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.early?.items ?: listOf()
                 val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.EARLY else MatchType.PARLAY
+                when {
+                    targetItem != null -> MatchType.EARLY
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
+            }
+
+            4 -> { //串關
+                MatchType.PARLAY
             }
 
             5 -> { //冠軍
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.outright?.items ?: listOf()
                 val targetItem = itemList.firstOrNull { it.code == sportType.code }
-                if (targetItem != null) MatchType.OUTRIGHT else MatchType.PARLAY
+                when {
+                    targetItem != null -> MatchType.OUTRIGHT
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
 
-            else -> { //全部 //串關
-                MatchType.PARLAY
+            else -> { //全部
+                when {
+                    todayItem != null -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
             }
         }
         viewModel.getGameHallList(matchType, sportType, true)
@@ -243,53 +269,44 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tabLayout.clearOnTabSelectedListeners()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
-                if (mCloseOddsDetail) {
-                    popAllFragment()
-                }
-                viewModel.isParlayPage(tab?.position == 4)
-
-                when (tab?.position) {
-                    0 -> {
-                        mNavController.popBackStack(R.id.homeFragment, false)
-                    }
-                    1 -> {
-                        navGameFragment(MatchType.IN_PLAY)
-                    }
-                    2 -> {
-                        navGameFragment(MatchType.TODAY)
-                    }
-                    3 -> {
-                        navGameFragment(MatchType.EARLY)
-                    }
-                    4 -> {
-                        navGameFragment(MatchType.PARLAY)
-                    }
-                    5 -> {
-                        navGameFragment(MatchType.OUTRIGHT)
-                    }
-                }
+                selectTab(tab?.position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                popAllFragment()
-                if (tab?.position == 0) {
-                    val tabView = tabLayout.getTabAt(0)?.customView
-                    tabView?.tv_title?.isSelected = true
-                    tabView?.tv_number?.isSelected = true
-                    mNavController.popBackStack(R.id.homeFragment, false)
-                }
+                selectTab(tab?.position)
             }
         })
     }
 
+    private fun selectTab(position: Int?) {
+        viewModel.isParlayPage(position == 4)
+
+        when (position) {
+            0 -> {
+                mNavController.popBackStack(R.id.homeFragment, false)
+            }
+            1 -> {
+                navGameFragment(MatchType.IN_PLAY)
+            }
+            2 -> {
+                navGameFragment(MatchType.TODAY)
+            }
+            3 -> {
+                navGameFragment(MatchType.EARLY)
+            }
+            4 -> {
+                navGameFragment(MatchType.PARLAY)
+            }
+            5 -> {
+                navGameFragment(MatchType.OUTRIGHT)
+            }
+        }
+    }
+
     private fun navGameFragment(matchType: MatchType) {
-
-        viewModel.sportMenuSelectFirstItem(matchType)
-
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
@@ -344,6 +361,15 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
+        receiver.orderSettlement.observe(this, {
+            viewModel.getSettlementNotification(it)
+        })
+
+        viewModel.settlementNotificationMsg.observe(this, {
+            val message = it.getContentIfNotHandled()
+            message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
+        })
+
         viewModel.isLogin.observe(this, {
             updateUiWithLogin(it)
             getAnnouncement()
@@ -359,19 +385,28 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.matchTypeCardForParlay.observe(this, {
-            val matchType = it.getContentIfNotHandled()
+            val matchType = it?.getContentIfNotHandled()?.first
+
             app_bar_layout.setExpanded(true, false)
+
             when (matchType) {
-                MatchType.PARLAY -> {
-                    tabLayout.getTabAt(4)?.select()
-                }
-                MatchType.AT_START -> {
-                    toAtStart()
-                }
                 MatchType.IN_PLAY -> {
                     tabLayout.getTabAt(1)?.select()
                 }
-                else -> {
+                MatchType.TODAY -> {
+                    tabLayout.getTabAt(2)?.select()
+                }
+                MatchType.EARLY -> {
+                    tabLayout.getTabAt(3)?.select()
+                }
+                MatchType.PARLAY -> {
+                    tabLayout.getTabAt(4)?.select()
+                }
+                MatchType.OUTRIGHT -> {
+                    tabLayout.getTabAt(5)?.select()
+                }
+                MatchType.AT_START -> {
+                    toAtStart()
                 }
             }
         })
@@ -382,7 +417,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.systemDelete.observe(this, {
             if (it) {
-                showErrorPromptDialog(getString(R.string.prompt),getString(R.string.bet_info_system_close_incompatible_item)){}
+                showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_system_close_incompatible_item)) {}
             }
         })
 
@@ -453,15 +488,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         viewModel.getSportMenu()
     }
 
-    private fun defaultPage(){
+    private fun defaultPage() {
         viewModel.isParlayPage(false)
-    }
-
-    private fun popAllFragment() {
-        val manager = supportFragmentManager
-        for (i in 0 until manager.backStackEntryCount) {
-            supportFragmentManager.popBackStack()
-        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -497,7 +525,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.TODAY, sportType, matchId)
                     }
                 }
             }
@@ -507,7 +535,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.EARLY, sportType, matchId)
                     }
                 }
             }
@@ -517,7 +545,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.PARLAY, sportType, matchId)
                     }
                 }
             }
@@ -527,27 +555,27 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
                 sportType?.let {
                     matchId?.let {
-                        navOddsDetailFragment(sportType, matchId)
+                        navOddsDetailFragment(MatchType.AT_START, sportType, matchId)
                     }
                 }
             }
 
             MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
         }
-
-        mCloseOddsDetail = true
     }
 
-    private fun navOddsDetailFragment(sportType: SportType, matchId: String) {
+    private fun navOddsDetailFragment(matchType: MatchType, sportType: SportType, matchId: String) {
         val action = when (mNavController.currentDestination?.id) {
             R.id.gameV3Fragment -> {
                 GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                    matchType,
                     sportType,
                     matchId
                 )
             }
             R.id.gameLeagueFragment -> {
                 GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                    matchType,
                     sportType,
                     matchId
                 )
@@ -559,7 +587,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 )
             }
             R.id.oddsDetailFragment -> {
-                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(sportType, matchId)
+                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(sportType, matchId, matchType)
             }
             else -> null
         }

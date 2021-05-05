@@ -16,6 +16,9 @@ import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
+import org.cxct.sportlottery.ui.component.StatusSheetData
+import org.cxct.sportlottery.ui.finance.df.RechType
+import org.cxct.sportlottery.ui.finance.df.Status
 
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
@@ -43,7 +46,11 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
+                viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(),
+                                              date_range_selector.endTime.toString(),
+                                              selector_order_status.selectedTag,
+                                              selector_method_status.selectedTag)
+
                 scrollToTopControl(firstVisibleItemPosition)
             }
         }
@@ -67,8 +74,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
-            this.selector_method_status.dataList = viewModel.rechargeChannelList
-            this.selector_order_status.dataList = viewModel.rechargeStateList
 
             this.iv_scroll_to_top.setOnClickListener {
                 rvlist.smoothScrollToPosition(0)
@@ -96,12 +101,19 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private fun setupSearch(view: View) {
         view.date_range_selector.setOnClickSearchListener {
-            viewModel.getUserRechargeList(true, date_range_selector.startTime.toString(), date_range_selector.endTime.toString())
+            viewModel.getUserRechargeList(true,
+                                          date_range_selector.startTime.toString(),
+                                          date_range_selector.endTime.toString(),
+                                          selector_order_status.selectedTag,
+                                          selector_method_status.selectedTag)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        selector_method_status.dataList = rechargeChannelList
+        selector_order_status.dataList = rechargeStateList
 
         viewModel.isLoading.observe(this.viewLifecycleOwner, {
             if (it) {
@@ -111,23 +123,22 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             }
         })
 
-        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it?.success == true) {
-                val list = it.rows ?: listOf()
-
-                rechargeLogAdapter.data = list
-                setupNoRecordView(list.isEmpty())
+        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, {
+            it?.apply {
+                rechargeLogAdapter.data = it
+                setupNoRecordView(it.isEmpty())
             }
         })
 
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
-            if (logDetailDialog.dialog?.isShowing != true) {
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, {
 
+            if (logDetailDialog.dialog?.isShowing != true) {
                 logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
             }
+
         })
 
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
             rechargeLogAdapter.isFinalPage = it
         })
 
@@ -141,5 +152,56 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             view_no_record.visibility = View.GONE
         }
     }
+
+    private val rechargeChannelList by lazy { this.resources.getStringArray(R.array.recharge_channel_array).map {
+        when (it) {
+            getString(R.string.recharge_channel_online) -> {
+                StatusSheetData(RechType.ONLINE_PAYMENT.type, it)
+            }
+            getString(R.string.recharge_channel_bank) -> {
+                StatusSheetData(RechType.BANK_TRANSFER.type, it)
+            }
+            getString(R.string.recharge_channel_alipay) -> {
+                StatusSheetData(RechType.ALIPAY.type, it)
+            }
+            getString(R.string.recharge_channel_weixin) -> {
+                StatusSheetData(RechType.WEIXIN.type, it)
+            }
+            getString(R.string.recharge_channel_cft) -> {
+                StatusSheetData(RechType.CFT.type, it)
+            }
+            getString(R.string.recharge_channel_admin) -> {
+                StatusSheetData(RechType.ADMIN_ADD_MONEY.type, it)
+            }
+            getString(R.string.recharge_channel_crypto) -> {
+                StatusSheetData(RechType.CRYPTO.type, it)
+            }
+            else -> {
+                StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
+            }
+        }
+    }
+    }
+
+    private val rechargeStateList by lazy {
+        this.resources.getStringArray(R.array.recharge_state_array).map {
+            when (it) {
+                getString(R.string.recharge_state_processing) -> {
+                    StatusSheetData(Status.PROCESSING.code.toString(), it)
+                }
+                getString(R.string.recharge_state_success) -> {
+                    StatusSheetData(Status.SUCCESS.code.toString(), it)
+
+                }
+                getString(R.string.recharge_state_failed) -> {
+                    StatusSheetData(Status.FAILED.code.toString(), it)
+                }
+                else -> {
+                    StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
+                }
+            }
+        }
+    }
+
 }
 

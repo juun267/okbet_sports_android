@@ -17,6 +17,8 @@ import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -55,8 +57,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
                 },
-                { _, odd ->
-                    viewModel.updateMatchBetList(odd)
+                { matchOdd, odd, playCateName, playName ->
+                    addOddsDialog(matchOdd, odd, playCateName, playName)
                 }
             )
 
@@ -291,7 +293,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                         oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
                             odd?.isSelected =
-                                viewModel.betInfoRepository.betList.any { betInfoListData ->
+                                viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                         }
@@ -444,6 +446,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun navOddsDetail(matchId: String) {
         val action =
             GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                args.matchType,
                 args.sportType,
                 matchId
             )
@@ -458,6 +461,22 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         )
 
         findNavController().navigate(action)
+    }
+
+    private fun addOddsDialog(
+        matchOdd: MatchOdd,
+        odd: Odd,
+        playCateName: String,
+        playName: String
+    ) {
+        viewModel.updateMatchBetList(
+            args.matchType,
+            args.sportType,
+            playCateName,
+            playName,
+            matchOdd,
+            odd
+        )
     }
 
     override fun onStop() {

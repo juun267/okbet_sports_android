@@ -80,10 +80,6 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         rv_record.adapter = rvAdapter
         rv_record.addOnScrollListener(recyclerViewOnScrollListener)
         selector_transfer_status.dataList = viewModel.statusList
-
-        selector_in_plat.selectedTag = viewModel.platCode
-        selector_out_plat.selectedTag = viewModel.platCode
-
     }
 
     private fun initOnclick() {
@@ -92,7 +88,11 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         date_search_bar.setOnClickSearchListener {
-            viewModel.queryTransfers(startTime = date_search_bar.startTime.toString(), endTime = date_search_bar.endTime.toString(), firmTypeIn = selector_in_plat.selectedTag, firmTypeOut = selector_out_plat.selectedTag, status = selector_transfer_status.selectedTag)
+            viewModel.queryTransfers(startTime = date_search_bar.startTime.toString(),
+                                     endTime = date_search_bar.endTime.toString(),
+                                     firmTypeIn = selector_in_plat.selectedTag,
+                                     firmTypeOut = selector_out_plat.selectedTag,
+                                     status = selector_transfer_status.selectedTag)
         }
 
         selector_out_plat.setOnItemSelectedListener {

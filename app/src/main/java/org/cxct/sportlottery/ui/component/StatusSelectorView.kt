@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.component
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +15,11 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.content_bottom_sheet_other_bet_record_item.view.*
+import kotlinx.android.synthetic.main.content_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.MetricsUtil.convertDpToPixel
-import java.util.*
 
 class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
 
@@ -49,7 +47,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         }
 
     var selectedTag: String? = ""
-        get() = Objects.toString(tv_selected.tag.toString(), "")
+        get() = tv_selected.tag?.toString()
         set(value) {
             field = value
             tv_selected.tag = value
@@ -69,8 +67,11 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         get() = sheetAdapter?.dataList
         set(value) {
             field = value
-
             sheetAdapter?.dataList = value ?: listOf()
+
+            tv_selected.tag = value?.firstOrNull()?.code
+            sheetAdapter?.defaultCheckedCode = value?.firstOrNull()?.code
+
             sheetAdapter?.notifyDataSetChanged()
         }
 

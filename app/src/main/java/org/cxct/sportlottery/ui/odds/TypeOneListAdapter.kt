@@ -19,7 +19,6 @@ class TypeOneListAdapter(
     private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?,
     private val onMoreClickListener: OnMoreClickListener,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -68,7 +67,7 @@ class TypeOneListAdapter(
         fun bindModel(originOdd: Odd) {
             nameChangeColor = false
             setData(
-                originOdd, onOddClickListener, betInfoList, curMatchId,
+                oddsDetail, originOdd, onOddClickListener, betInfoList,
                 if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
             )
         }

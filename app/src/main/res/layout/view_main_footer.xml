@@ -1,100 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingHorizontal="16dp"
     android:paddingTop="26dp"
     android:paddingBottom="30dp">
 
     <ImageView
-        android:id="@+id/logo_ag"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="12dp"
+        android:id="@+id/third_part_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="11dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@null"
-        android:src="@drawable/third_part_logo_ag"
+        android:src="@drawable/third_part_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/logo_ibo"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="20dp"
-        android:contentDescription="@null"
-        android:src="@drawable/third_part_logo_ibo"
-        app:layout_constraintStart_toEndOf="@id/logo_ag"
-        app:layout_constraintTop_toTopOf="@id/logo_ag" />
-
-    <ImageView
-        android:id="@+id/logo_cg"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="20dp"
-        android:contentDescription="@null"
-        android:src="@drawable/third_part_logo_cg"
-        app:layout_constraintStart_toEndOf="@id/logo_ibo"
-        app:layout_constraintTop_toTopOf="@id/logo_ag" />
-
-    <ImageView
-        android:id="@+id/logo_ky"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="20dp"
-        android:contentDescription="@null"
-        android:src="@drawable/third_part_logo_ky"
-        app:layout_constraintStart_toEndOf="@id/logo_cg"
-        app:layout_constraintTop_toTopOf="@id/logo_ag" />
-
-    <ImageView
-        android:id="@+id/logo_cq_9"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginTop="17dp"
-        android:contentDescription="@null"
-        android:src="@drawable/third_part_logo_cq_9"
-        app:layout_constraintStart_toStartOf="@id/logo_ag"
-        app:layout_constraintTop_toBottomOf="@id/logo_ag" />
-
-    <ImageView
-        android:id="@+id/logo_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="17dp"
-        android:contentDescription="@null"
-        android:src="@drawable/third_part_logo_bg"
-        app:layout_constraintStart_toEndOf="@id/logo_cq_9"
-        app:layout_constraintTop_toBottomOf="@id/logo_ag" />
-
-    <ImageView
-        android:id="@+id/logo_leg"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="17dp"
-        android:contentDescription="@null"
-        android:src="@drawable/third_part_logo_leg"
-        app:layout_constraintStart_toEndOf="@id/logo_bg"
-        app:layout_constraintTop_toBottomOf="@id/logo_ag" />
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="29.5dp"
-        android:background="@color/colorWhite6"
-        app:layout_constraintTop_toBottomOf="@id/logo_cq_9" />
+        android:layout_marginVertical="29.5dp"
+        android:background="@color/colorWhite6" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29.5dp"
-        android:layout_marginHorizontal="15dp"
+        android:layout_marginHorizontal="14dp"
         android:text="@string/main_footer_desc"
         android:textColor="@color/colorGrayLight"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintTop_toBottomOf="@id/line" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

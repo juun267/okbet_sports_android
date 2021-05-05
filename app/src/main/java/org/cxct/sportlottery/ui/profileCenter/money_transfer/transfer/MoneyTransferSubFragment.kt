@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,20 +9,20 @@ import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 
 
 class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
+    private var isPlatReversed = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setToolbarName(getString(R.string.transfer_info))
@@ -38,11 +39,9 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
     private fun initView() {
+        moveAnim(isPlatReversed)
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
-
-        out_account.selectedTag = viewModel.platCode
-        in_account.selectedTag = gameDataArg.gameData.code
 
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
@@ -54,19 +53,15 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         iv_spin.setOnClickListener {
             iv_spin.startAnimation(rotateAnimation)
-            viewModel.switchPlat()
+            isPlatReversed = !isPlatReversed
+            moveAnim(isPlatReversed)
         }
 
         layout_balance.btn_refresh.setOnClickListener {
             viewModel.getMoney()
         }
         btn_transfer.setOnClickListener {
-            val isReversed = viewModel.isPlatSwitched.value?.peekContent() ?: false
-            if (!isReversed) {
-                viewModel.transfer(out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
-            } else {
-                viewModel.transfer(in_account.selectedTag, out_account.selectedTag, et_transfer_money.getText().toLongOrNull())
-            }
+            viewModel.transfer(isPlatReversed, out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
         }
 
         out_account.setOnItemSelectedListener {
@@ -86,6 +81,11 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             }
         }
 
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) hideKeyboard()
+            et_transfer_money.isEnabled = !it
+        }
+
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.apply {
                 layout_balance.tv_account_balance.text = TextUtil.format(it)
@@ -94,10 +94,12 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.subInPlatSheetList.observe(viewLifecycleOwner) {
             in_account.dataList = it
+            in_account.selectedTag = gameDataArg.gameData.code
         }
 
         viewModel.subOutPlatSheetList.observe(viewLifecycleOwner) {
             out_account.dataList = it
+            out_account.selectedTag = viewModel.platCode
         }
 
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->
@@ -115,11 +117,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 }
             }
         }
-        viewModel.isPlatSwitched.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { isReversed ->
-                moveAnim(isReversed)
-            }
-        }
     }
 
     private fun moveAnim(isReversed: Boolean) {
@@ -133,27 +130,22 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 in_account.bottomSheetTitleText = getString(R.string.out_account)
                 out_account.bottomSheetTitleText = getString(R.string.in_account)
                 clone(constraint_layout)
-                connect(R.id.ll_in, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, getDp(10))
-                connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_in, ConstraintSet.BOTTOM, getDp(10))
-                connect(R.id.ll_out, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, getDp(10))
+                connect(R.id.ll_in, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_in, ConstraintSet.BOTTOM, 10.dp)
+                connect(R.id.ll_out, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             } else {
                 tv_title_in.text = getString(R.string.in_account)
                 tv_title_out.text = getString(R.string.out_account)
                 in_account.bottomSheetTitleText = getString(R.string.in_account)
                 out_account.bottomSheetTitleText = getString(R.string.out_account)
                 clone(constraint_layout)
-                connect(R.id.ll_out, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, getDp(10))
-                connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_out, ConstraintSet.BOTTOM, getDp(10))
-                connect(R.id.ll_in, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, getDp(10))
+                connect(R.id.ll_out, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_out, ConstraintSet.BOTTOM, 10.dp)
+                connect(R.id.ll_in, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             }
         }
         constraintSet.applyTo(constraint_layout)
 
-    }
-
-    private fun getDp(inputValue: Int): Int {
-        val d = context?.resources?.displayMetrics?.density?:0.0f
-        return (inputValue * d).toInt() // margin in pixels
     }
 
 }

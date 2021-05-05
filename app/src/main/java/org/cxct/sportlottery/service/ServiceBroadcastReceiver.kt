@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
+import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
@@ -65,6 +66,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val serviceConnectStatus: LiveData<ServiceConnectStatus>
         get() = _serviceConnectStatus
 
+    val playQuotaChange: LiveData<PlayQuotaChangeEvent?>
+        get() = _playQuotaChange
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -78,6 +82,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
+    private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -125,6 +130,10 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     EventType.SYS_MAINTENANCE -> {
                         val data = ServiceMessage.getSysMaintenance(jObjStr)
                         _sysMaintenance.value = data
+                    }
+                    EventType.PLAY_QUOTA_CHANGE -> {
+                        val data = ServiceMessage.getPlayQuotaChange(jObjStr)
+                        _playQuotaChange.value = data
                     }
 
                     //用户私人频道

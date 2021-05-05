@@ -67,23 +67,23 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initEvent() {
         card_football.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.FOOTBALL)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.FOOTBALL)
         }
 
         card_basketball.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.BASKETBALL)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.BASKETBALL)
         }
 
         card_tennis.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.TENNIS)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.TENNIS)
         }
 
         card_badminton.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.BADMINTON)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.BADMINTON)
         }
 
         card_volleyball.setOnClickListener {
-            viewModel.getGameHallList(MatchType.PARLAY, SportType.VOLLEYBALL)
+            viewModel.getGameHallList(MatchType.TODAY, SportType.VOLLEYBALL)
         }
 
         card_game_soon.setOnClickListener {
@@ -137,13 +137,24 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun initObserve() {
         //第三方遊戲清單
         viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
-            updateUI(it)
+            updateInPlayUI(it)
         })
 
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { result ->
-                updateUI(result)
+                updateInPlayUI(result)
             }
+        })
+
+        viewModel.matchPreloadEarly.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                updateTodayUI(result)
+            }
+        })
+
+        viewModel.errorPromptMessage.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+
         })
     }
 
@@ -161,7 +172,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.getInPlayMatchPreload()
     }
 
-    private fun updateUI(gameCateList: List<GameCateData>?) {
+    private fun updateInPlayUI(gameCateList: List<GameCateData>?) {
         val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
         val lotteryCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size } ?: 0
         val liveCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size } ?: 0
@@ -176,7 +187,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         card_fishing.visibility = if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
     }
 
-    private fun updateUI(result: MatchPreloadResult) {
+    private fun updateInPlayUI(result: MatchPreloadResult) {
         unsubscribeAllHallChannel() //先清除之前訂閱項目
 
         //訂閱所有滾球賽事
@@ -186,9 +197,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        val inPlayCount = result.matchPreloadData?.num?: 0
+        val inPlayCount = result.matchPreloadData?.num ?: 0
         drawer_in_play.setCount(inPlayCount.toString())
-        drawer_in_play.setRvGameData(result.matchPreloadData)
+        drawer_in_play.setRvGameData(result.matchPreloadData?.apply { matchType = MatchType.IN_PLAY })
         drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
@@ -198,7 +209,42 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
-                viewModel.getGameHallList(MatchType.IN_PLAY, select.code)
+                val sportType = when (select.code) {
+                    SportType.FOOTBALL.code -> SportType.FOOTBALL
+                    SportType.BASKETBALL.code -> SportType.BASKETBALL
+                    SportType.TENNIS.code -> SportType.TENNIS
+                    SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                    SportType.BADMINTON.code -> SportType.BADMINTON
+                    else -> null
+                }
+                viewModel.getGameHallList(MatchType.IN_PLAY, sportType, isPreloadTable = true)
+            }
+        })
+    }
+
+    private fun updateTodayUI(result: MatchPreloadResult) {
+        val todayCount = result.matchPreloadData?.num ?: 0
+        drawer_today.setCount(todayCount.toString())
+        drawer_today.setRvGameData(result.matchPreloadData?.apply { matchType = MatchType.TODAY })
+        drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
+            override fun onClick(select: GameEntity) {
+                scroll_view.smoothScrollTo(0, 0)
+                navOddsDetailFragment(MatchType.TODAY, select.code, select.match?.id)
+
+            }
+        })
+        drawer_today.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
+            override fun onClick(select: GameEntity) {
+                scroll_view.smoothScrollTo(0, 0)
+                val sportType = when (select.code) {
+                    SportType.FOOTBALL.code -> SportType.FOOTBALL
+                    SportType.BASKETBALL.code -> SportType.BASKETBALL
+                    SportType.TENNIS.code -> SportType.TENNIS
+                    SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+                    SportType.BADMINTON.code -> SportType.BADMINTON
+                    else -> null
+                }
+                viewModel.getGameHallList(MatchType.TODAY, sportType, isPreloadTable = true)
             }
         })
     }
@@ -222,6 +268,26 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 findNavController().navigate(action)
             }
+        }
+    }
+
+    private fun navOddsDetailFragment(matchType:MatchType, sportTypeCode: String?, matchId: String?) {
+        val sportType = when (sportTypeCode) {
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            SportType.TENNIS.code -> SportType.TENNIS
+            else -> null
+        }
+        sportType?.let {
+                matchId?.let {
+                    val action =
+                        HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
+                            matchType, sportType, matchId
+                        )
+                    findNavController().navigate(action)
+                }
         }
     }
 }

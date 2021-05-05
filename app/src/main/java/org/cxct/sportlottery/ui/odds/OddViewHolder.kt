@@ -30,7 +30,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
     private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
 
-   var nameChangeColor: Boolean = true
+    var nameChangeColor: Boolean = true
 
     private fun checkKey(type: String, value: String): Boolean {
         return type == value || type.contains(value)
@@ -38,10 +38,10 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
     fun setData(
+        oddsDetail: OddsDetailListData,
         odd: Odd,
         onOddClickListener: OnOddClickListener,
         betInfoList: MutableList<BetInfoListData>,
-        curMatchId: String?,
         spreadType: Int,
         oddsType: OddsType,
         gameType: String?
@@ -75,7 +75,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvName?.let { it.isSelected = odd.isSelect ?: false }
                 itemView.setOnClickListener {
                     if (odd.isSelect != true) {
-                        onOddClickListener.getBetInfoList(odd)
+                        onOddClickListener.getBetInfoList(odd, oddsDetail)
                     } else {
                         onOddClickListener.removeBetInfoItem(odd)
                     }

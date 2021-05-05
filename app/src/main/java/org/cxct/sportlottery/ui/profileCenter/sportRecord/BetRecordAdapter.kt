@@ -13,13 +13,21 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetRecordResultBinding
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 
 class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
         ITEM, FOOTER, NO_DATA
     }
+
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -58,7 +66,7 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
         when (holder) {
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, clickListener)
+                holder.bind(data.row, clickListener, oddsType)
             }
 
             is FooterViewHolder -> {
@@ -78,13 +86,18 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     }
 
     class ItemViewHolder private constructor(val binding: ItemBetRecordResultBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row, clickListener: ItemClickListener) {
+        fun bind(data: Row, clickListener: ItemClickListener, oddsType: OddsType) {
             binding.row = data
             binding.clickListener = clickListener
             binding.textUtil = TextUtil
 
-            binding.llRowsContent.visibility = if (data.parlayType == "1C1") View.VISIBLE else View.GONE
-            binding.tvParlayType.visibility = if (data.parlayType == "1C1") View.GONE else View.VISIBLE
+            binding.llRowsContent.visibility = if (data.parlayType == "1C1" || data.parlayType == "OUTRIGHT") View.VISIBLE else View.GONE
+            binding.tvParlayType.visibility = if (data.parlayType == "1C1" || data.parlayType == "OUTRIGHT") View.GONE else View.VISIBLE
+
+            val odds = getOdds(data.matchOdds[0], oddsType)
+            binding.tvOdds.text = if (odds > 0) {
+                String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
+            } else null
 
             binding.executePendingBindings()
 

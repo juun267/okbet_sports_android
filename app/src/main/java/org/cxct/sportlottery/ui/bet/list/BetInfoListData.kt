@@ -6,9 +6,10 @@ import org.cxct.sportlottery.network.common.MatchType
 
 class BetInfoListData(
     val matchOdd: MatchOdd,
-    val parlayOdds: ParlayOdd
+    val parlayOdds: ParlayOdd?
 ) {
     var matchType: MatchType? = null
     var input: String? = null
+    var oddsHasChanged = false
 }
 

@@ -53,7 +53,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bind(item, withdrawLogListener)
             }
             is NoDataViewHolder -> {
-                holder.bind(isFinalPage)
+                holder.bind(isFinalPage, data.isNotEmpty())
             }
         }
     }
@@ -106,8 +106,8 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(isFinalPage: Boolean) {
-            itemView.visibility = if (isFinalPage) {
+        fun bind(isFinalPage: Boolean, hasData: Boolean) {
+            itemView.visibility = if (isFinalPage && hasData) {
                 View.VISIBLE
             } else {
                 View.GONE

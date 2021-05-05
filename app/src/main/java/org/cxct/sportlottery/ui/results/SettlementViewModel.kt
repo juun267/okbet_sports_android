@@ -304,7 +304,7 @@ class SettlementViewModel(
                         ListType.TITLE -> {
                             nowLeagueItem = matchResultData
                             matchResultData.leagueShow = gameLeagueSet.contains(matchResultData.titleData?.name) &&
-                                    (gameKeyWord.isEmpty() || (matchResultData.titleData?.name?.toLowerCase()?.contains(gameKeyWord) == true))
+                                    (gameKeyWord.isEmpty() || (matchResultData.titleData?.name?.toLowerCase()?.contains(gameKeyWord.toLowerCase()) == true))
 
                         }
                         ListType.MATCH -> {
@@ -324,7 +324,7 @@ class SettlementViewModel(
                         OutrightType.TITLE -> {
                             nowOutrightItem = outrightResultData
                             outrightResultData.seasonShow = gameLeagueSet.contains(outrightResultData.seasonData?.name) &&
-                                    (gameKeyWord.isEmpty() || (outrightResultData.seasonData?.name?.toLowerCase()?.contains(gameKeyWord) == true))
+                                    (gameKeyWord.isEmpty() || (outrightResultData.seasonData?.name?.toLowerCase()?.contains(gameKeyWord.toLowerCase()) == true))
                         }
                         OutrightType.OUTRIGHT -> {
                             if (filterOutrightByKeyWord(outrightResultData, gameKeyWord)) {

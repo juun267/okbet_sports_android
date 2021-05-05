@@ -35,7 +35,7 @@ class RvQPAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 HeaderViewHolder(layout)
             }
             else -> {
-                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_live_game_rv, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.content_qp_game_rv, viewGroup, false)
                 ItemViewHolder(layout)
             }
         }
