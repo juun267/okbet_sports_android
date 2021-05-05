@@ -120,11 +120,11 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
         //已讀訊息清單
         viewModel.userReadMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer
-            if(currentPage == BEEN_READ){
+            if (currentPage == BEEN_READ) {
                 if (adapter.data.isNotEmpty()) {
                     adapter.addData(userMsgList)//上拉加載
                 } else {
-                    if ((it.isEmpty() || it.isNullOrEmpty())) {
+                    if (it.isNullOrEmpty()) {
                         image_no_message.visibility = View.VISIBLE
                     } else {
                         image_no_message.visibility = View.GONE
