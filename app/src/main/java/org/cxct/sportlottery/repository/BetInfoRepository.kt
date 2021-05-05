@@ -331,16 +331,14 @@ class BetInfoRepository {
     }
 
 
-    private fun notifyBetInfoChanged() {
+    fun notifyBetInfoChanged() {
         val updateBetInfoList = _betInfoList.value
 
         if (updateBetInfoList.isNullOrEmpty()) return
 
         when (_isParlayPage.value) {
             true -> {
-
                 val sportType = getSportType(updateBetInfoList[0].matchOdd.gameType)
-
                 sportType?.let {
                     matchOddList.value?.let {
                         _parlayList.value =
@@ -348,9 +346,9 @@ class BetInfoRepository {
                     }
                 }
             }
+
             false -> {
                 val newList = mutableListOf<BetInfoListData>()
-
                 updateBetInfoList.forEach { betInfoListData ->
                     betInfoListData.matchType?.let { matchType ->
                         val sportType = getSportType(betInfoListData.matchOdd.gameType)
@@ -363,7 +361,9 @@ class BetInfoRepository {
                                     mutableListOf(betInfoListData.matchOdd)
                                 ).first()
                             )
-
+                            newBetInfoListData.matchType = betInfoListData.matchType
+                            newBetInfoListData.input = betInfoListData.input
+                            newBetInfoListData.oddsHasChanged = betInfoListData.oddsHasChanged
                             newList.add(newBetInfoListData)
                         }
                     }
