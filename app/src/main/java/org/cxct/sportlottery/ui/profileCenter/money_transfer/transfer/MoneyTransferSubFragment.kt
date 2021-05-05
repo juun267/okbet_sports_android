@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.util.TextUtil
 class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
+    private var isPlatReversed = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setToolbarName(getString(R.string.transfer_info))
@@ -37,6 +39,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
     private fun initView() {
+        moveAnim(isPlatReversed)
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
 
@@ -50,14 +53,15 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         iv_spin.setOnClickListener {
             iv_spin.startAnimation(rotateAnimation)
-            viewModel.switchPlat()
+            isPlatReversed = !isPlatReversed
+            moveAnim(isPlatReversed)
         }
 
         layout_balance.btn_refresh.setOnClickListener {
             viewModel.getMoney()
         }
         btn_transfer.setOnClickListener {
-            viewModel.transfer(out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
+            viewModel.transfer(isPlatReversed, out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
         }
 
         out_account.setOnItemSelectedListener {
@@ -111,11 +115,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 if (it.success) {
                     view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                 }
-            }
-        }
-        viewModel.isPlatSwitched.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { isReversed ->
-                moveAnim(isReversed)
             }
         }
     }
