@@ -142,13 +142,12 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
         viewModel.userUnreadMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer
             if (currentPage == YET_READ) {
-                if (adapter.data.isNotEmpty()) {
-                    //修改成set ,add在repository就整理好(為了處理已讀訊息的問題)
-                    adapter.data = userMsgList as MutableList<InfoCenterData>//上拉加載
-                } else {
-                    if (it.isEmpty() || it.isNullOrEmpty()) {
+                when(userMsgList.isNullOrEmpty()){
+                    true ->{
                         image_no_message.visibility = View.VISIBLE
-                    } else {
+                        adapter.data = mutableListOf()
+                    }
+                    false ->{
                         image_no_message.visibility = View.GONE
                         adapter.data = userMsgList as MutableList<InfoCenterData> //重新載入
                     }

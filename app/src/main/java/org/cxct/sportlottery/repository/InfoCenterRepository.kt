@@ -57,12 +57,15 @@ class InfoCenterRepository {
                             infoCenterData.isRead == MsgType.NOTICE_UNREAD.code
                         } as MutableList<InfoCenterData>
 
-                        if (!_unreadList.value.isNullOrEmpty())
-                            moreUnreadList = _unreadList.value as MutableList<InfoCenterData>
+                        if(infoCenterRequest.page !=1 ){
+                            if (!_unreadList.value.isNullOrEmpty())
+                                moreUnreadList = _unreadList.value as MutableList<InfoCenterData>
+                        }
 
                         newUnreadNoticeList.forEach { infoCenterData ->
                             moreUnreadList.add(infoCenterData)
                         }
+
                         _unreadList.value = moreUnreadList
 
                         _unreadNoticeList.postValue(it.infoCenterData.filter { infoCenterData ->
