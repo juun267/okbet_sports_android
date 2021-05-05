@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_money_recharge.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -124,10 +126,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                             )
                         })
                     }, {
-                        showPromptDialog(
-                            getString(R.string.prompt),
-                            getString(R.string.content_coming_soon)
-                        ) {}
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                     })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
@@ -164,10 +163,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                             )
                         })
                     }, {
-                        showPromptDialog(
-                            getString(R.string.prompt),
-                            getString(R.string.content_coming_soon)
-                        ) {}
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                     })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
@@ -191,10 +187,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                         )
                     })
                 }, {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.content_coming_soon)
-                    ) {}
+                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                 })
             )
 
@@ -219,10 +212,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                         )
                     })
                 }, {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.content_coming_soon)
-                    ) {}
+                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                 })
             )
 
