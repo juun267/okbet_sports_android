@@ -449,7 +449,6 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
 
     private fun setupView(holder: ListViewHolder, data: MoneyRechCfg.Bank, position: Int) {
         holder.apply {
-            /*val viewHolder = ViewHolder()*/
             tvBank?.text = data.name
             ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.name ?: ""))
             if (position == selectedPosition) {
@@ -462,7 +461,6 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
             }
             llSelectBankCard?.setOnClickListener {
                 if (selectedPosition != position) {
-                    //                data.isSelected = !data.isSelected
                     selectedPosition = position
                     notifyDataSetChanged()
                     listener.onSelect(data)
