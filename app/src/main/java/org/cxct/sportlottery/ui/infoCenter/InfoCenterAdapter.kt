@@ -81,7 +81,7 @@ class InfoCenterAdapter(private val clickListener: ItemClickListener) : Recycler
         }
     }
 
-    fun addData(newDataList: MutableList<InfoCenterData>) {
+    fun addData(newDataList: List<InfoCenterData>) {
         data.addAll(data.size - 1, newDataList)
         notifyDataSetChanged()
     }

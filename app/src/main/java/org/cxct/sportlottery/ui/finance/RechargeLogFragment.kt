@@ -123,22 +123,22 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             }
         })
 
-        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, Observer {
-            if (it?.success == true) {
-                val list = it.rows ?: listOf()
-                rechargeLogAdapter.data = list
-                setupNoRecordView(list.isEmpty())
+        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, {
+            it?.apply {
+                rechargeLogAdapter.data = it
+                setupNoRecordView(it.isEmpty())
             }
         })
 
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, Observer {
-            if (logDetailDialog.dialog?.isShowing != true) {
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, {
 
+            if (logDetailDialog.dialog?.isShowing != true) {
                 logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
             }
+
         })
 
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner, Observer {
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
             rechargeLogAdapter.isFinalPage = it
         })
 

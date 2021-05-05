@@ -46,6 +46,9 @@ public class ParlayLimitUtil {
     public static Map<String, ParlayBetLimit> getParlayLimit(List<BigDecimal> oddsList, List<ParlayCom> parlayComList, BigDecimal max, BigDecimal min) {
         Map<String, ParlayBetLimit> result = new LinkedHashMap<>();
 
+        max = max != null ? max : BigDecimal.valueOf(999);
+        min = min != null ? min : BigDecimal.ONE;
+
         for (ParlayCom parlayCom : parlayComList) {
             ParlayBetLimit parlayBetLimit = new ParlayBetLimit();
 
@@ -115,7 +118,7 @@ public class ParlayLimitUtil {
     public static List<ParlayCom> getCom(int[] matchIdArray) {
 
         List<ParlayCom> parlayComSOList = new ArrayList<>();
-        if(matchIdArray.length==1){
+        if (matchIdArray.length == 1) {
             ParlayCom parlayCom = new ParlayCom();
             parlayCom.setNum(1);
             parlayCom.setParlayType("1C1");

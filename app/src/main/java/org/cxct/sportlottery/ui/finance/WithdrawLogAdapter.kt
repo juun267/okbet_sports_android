@@ -53,7 +53,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bind(item, withdrawLogListener)
             }
             is NoDataViewHolder -> {
-                holder.bind(isFinalPage, data.size > 0)
+                holder.bind(isFinalPage, data.isNotEmpty())
             }
         }
     }
