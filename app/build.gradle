@@ -131,6 +131,16 @@ android {
             variant.getPackageApplication().outputDirectory = new File(project.buildDir.absolutePath + "/outputs/releaseAPK")
         }
     }
+
+    variantFilter { variant ->
+        //如果不是從 fastlane 執行的，會接到預設值 gradle 裡 (gradle.properties)
+        if (fastlane_executor != 'fastlane') {
+            def names = variant.flavors*.name
+            if (names.contains("fastlane")) {
+                setIgnore(true)
+            }
+        }
+    }
 }
 
 ext {

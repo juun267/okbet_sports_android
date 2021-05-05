@@ -47,7 +47,8 @@ platform :android do
           "fastlane_jpush_provider" => platform_info["appid"] + ".DataProvider",
           "fastlane_jpush_permission" => platform_info["appid"] + ".permission.JPUSH_MESSAGE", 
           "fastlane_security_config" => "@xml/test_network_security_config", 
-          "fastlane_res_src_dir" => "src/platform/#{platform_info["app_code"]}/res"
+          "fastlane_res_src_dir" => "src/platform/#{platform_info["app_code"]}/res",
+          "fastlane_executor" => "fastlane"
         })
 
         go_gradle(properties: properties)
