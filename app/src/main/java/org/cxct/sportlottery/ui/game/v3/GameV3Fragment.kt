@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
@@ -344,18 +343,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             data = leagueOdds
                             this.sportType = sportType
                         }
-
-                        when {
-                            (leagueOdds.isEmpty() && itemDecorationCount > 0) -> {
-                                removeItemDecorationAt(0)
-                            }
-
-                            (leagueOdds.isNotEmpty() && itemDecorationCount == 0) -> {
-                                addItemDecoration(
-                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                                )
-                            }
-                        }
                     }
                 }
             }
@@ -372,18 +359,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     game_list.apply {
                         adapter = countryAdapter.apply {
                             data = rows
-                        }
-
-                        when {
-                            (rows.isEmpty() && itemDecorationCount > 0) -> {
-                                removeItemDecorationAt(0)
-                            }
-
-                            (rows.isNotEmpty() && itemDecorationCount == 0) -> {
-                                addItemDecoration(
-                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                                )
-                            }
                         }
                     }
                 }
@@ -402,18 +377,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         adapter = outrightCountryAdapter.apply {
                             data = rows
                         }
-
-                        when {
-                            (rows.isEmpty() && itemDecorationCount > 0) -> {
-                                removeItemDecorationAt(0)
-                            }
-
-                            (rows.isNotEmpty() && itemDecorationCount == 0) -> {
-                                addItemDecoration(
-                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                                )
-                            }
-                        }
                     }
                 }
             }
@@ -421,34 +384,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, Observer {
             countryAdapter.data = it
-
-            when {
-                (it.isEmpty() && game_list.itemDecorationCount > 0) -> {
-                    game_list.removeItemDecorationAt(0)
-                }
-
-                (it.isNotEmpty() && game_list.itemDecorationCount == 0) -> {
-                    game_list.addItemDecoration(
-                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                    )
-                }
-            }
         })
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
             outrightCountryAdapter.data = it
-
-            when {
-                (it.isEmpty() && game_list.itemDecorationCount > 0) -> {
-                    game_list.removeItemDecorationAt(0)
-                }
-
-                (it.isNotEmpty() && game_list.itemDecorationCount == 0) -> {
-                    game_list.addItemDecoration(
-                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                    )
-                }
-            }
         })
 
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {

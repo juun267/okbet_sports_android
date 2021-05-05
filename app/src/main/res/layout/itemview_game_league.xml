@@ -72,4 +72,10 @@
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e2e2e2"
+        app:layout_constraintTop_toBottomOf="@id/league_border" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
