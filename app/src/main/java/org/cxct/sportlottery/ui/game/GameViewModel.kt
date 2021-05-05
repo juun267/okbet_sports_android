@@ -1088,17 +1088,6 @@ class GameViewModel(
         }
     }
 
-    private fun getSportType(gameType: String): SportType? {
-        return when (gameType) {
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            SportType.TENNIS.code -> SportType.TENNIS
-            else -> null
-        }
-    }
-
     fun getBetInfoListForParlay() {
         betInfoRepository.addInBetInfoParlay()
     }

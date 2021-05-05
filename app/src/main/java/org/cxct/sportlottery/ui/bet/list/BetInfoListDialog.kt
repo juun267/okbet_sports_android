@@ -10,7 +10,6 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -260,7 +259,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                             getOdds(betInfoListData.matchOdd, oddsType)
                         )
                     ),
-                    listOf(Stake(betInfoListData.parlayOdds!!.parlayType, stake)),
+                    listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
                     1,
                     oddsType.code
                 ), betInfoListData.matchType

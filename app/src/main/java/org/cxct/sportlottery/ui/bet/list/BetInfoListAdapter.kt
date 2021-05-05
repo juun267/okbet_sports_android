@@ -20,7 +20,6 @@ import org.cxct.sportlottery.databinding.ContentBetInfoItemSingleBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -28,7 +27,6 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import java.lang.Exception
 
 const val INPLAY: Int = 1
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
