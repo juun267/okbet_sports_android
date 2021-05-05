@@ -983,7 +983,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     oddList1X2[0]?.status
                 }
 
-                oddStatus = oddList1X2?.get(0)?.oddState
+                this@ViewHolder1x2.setupOddState(this, oddList1X2?.get(0))
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
@@ -1036,11 +1036,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> null
                 }
 
-                oddStatus = if (oddList1X2 != null && oddList1X2.size >= 3) {
-                    oddList1X2[1]?.oddState
-                } else {
-                    null
-                }
+                this@ViewHolder1x2.setupOddState(
+                    this, if (oddList1X2 != null && oddList1X2.size >= 3) {
+                        oddList1X2[1]
+                    } else {
+                        null
+                    }
+                )
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
@@ -1102,13 +1104,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                oddStatus = if (oddList1X2 != null && oddList1X2.size == 2) {
-                    oddList1X2[1]?.oddState
-                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
-                    oddList1X2[2]?.oddState
-                } else {
-                    null
-                }
+                this@ViewHolder1x2.setupOddState(
+                    this, if (oddList1X2 != null && oddList1X2.size == 2) {
+                        oddList1X2[1]
+                    } else if (oddList1X2 != null && oddList1X2.size >= 3) {
+                        oddList1X2[2]
+                    } else {
+                        null
+                    }
+                )
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
