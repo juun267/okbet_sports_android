@@ -104,6 +104,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private fun setupCountryExpand(item: Row) {
             itemView.country_league_expand.setExpanded(item.isExpand, false)
+            updateArrowExpand()
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)
