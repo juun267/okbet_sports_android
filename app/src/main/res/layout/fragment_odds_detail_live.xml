@@ -92,9 +92,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
+                    android:nestedScrollingEnabled="false"
                     android:clipToPadding="false"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
