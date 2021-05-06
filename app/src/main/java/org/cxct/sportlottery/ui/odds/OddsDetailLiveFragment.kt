@@ -34,7 +34,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 
 
 @Suppress("DEPRECATION")
@@ -131,25 +130,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun observeSocketData() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList = arrayListOf<OddsDetailListData>()
-            it.odds?.forEach { map ->
-                val key = map.key
-                val value = map.value
-                val filteredOddList = mutableListOf<Odd>()
-                value.odds?.forEach { odd ->
-                    if (odd != null)
-                        filteredOddList.add(odd)
-                }
-                newList.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        filteredOddList
-                    )
-                )
-            }
-            oddsDetailListAdapter?.updatedOddsDetailDataList = newList
+            viewModel.updateOddForOddsDetail(it)
         })
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {

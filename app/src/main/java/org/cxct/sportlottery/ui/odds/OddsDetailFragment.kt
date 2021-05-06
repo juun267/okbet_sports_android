@@ -89,28 +89,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun observeSocketData() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
-            val newList = arrayListOf<OddsDetailListData>()
-
-            it.odds?.forEach { map ->
-                val key = map.key
-                val value = map.value
-                val filteredOddList = mutableListOf<Odd>()
-                value.odds?.forEach { odd ->
-                    if (odd != null)
-                        filteredOddList.add(odd)
-                }
-                newList.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        filteredOddList
-                    )
-                )
-            }
-
-            oddsDetailListAdapter?.updatedOddsDetailDataList = newList
+            viewModel.updateOddForOddsDetail(it)
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, Observer {
@@ -188,6 +167,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                     false
                                 )
                             }
+                            dataBinding.tabCat.getTabAt(0)?.select()
                         } else {
                             dataBinding.tabCat.visibility = View.GONE
                         }
@@ -244,7 +224,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             it.getContentIfNotHandled()?.let { list ->
                 if (list.isNotEmpty()) {
                     oddsDetailListAdapter?.oddsDetailDataList = list
-                    dataBinding.tabCat.getTabAt(0)?.select()
                 } else {
                     navGameInPlay()
                 }

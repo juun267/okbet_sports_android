@@ -13,7 +13,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -51,13 +50,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     private lateinit var code: String
-
-
-    var updatedOddsDetailDataList = ArrayList<OddsDetailListData>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
 
     var oddsType: OddsType = OddsType.EU
@@ -137,7 +129,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         val type = oddsDetailDataList[position].gameType
 
         when {
-            checkKey(type, GameType.HDP.value) -> {
+            TextUtil.compareWithGameKey(type, GameType.HDP.value) -> {
 
                 when (sportCode) {
                     SportType.FOOTBALL.code,
@@ -154,28 +146,28 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == GameType.OU_2ST.value -> return GameType.OU_2ST.type
 
-            checkKey(type, GameType.CS.value) -> return GameType.CS.type
+            TextUtil.compareWithGameKey(type, GameType.CS.value) -> return GameType.CS.type
 
             type == GameType.FG.value -> return GameType.FG.type
 
             type == GameType.LG.value -> return GameType.LG.type
 
             //先判斷完整字串 再比對部分字串(由長至短)
-            checkKey(type, GameType.DC_OU.value) -> return GameType.DC_OU.type
-            checkKey(type, GameType.DC.value) -> return GameType.DC.type
+            TextUtil.compareWithGameKey(type, GameType.DC_OU.value) -> return GameType.DC_OU.type
+            TextUtil.compareWithGameKey(type, GameType.DC.value) -> return GameType.DC.type
 
-            checkKey(type, GameType.OE.value) -> return GameType.OE.type
+            TextUtil.compareWithGameKey(type, GameType.OE.value) -> return GameType.OE.type
 
-            checkKey(type, GameType.SCO.value) -> return GameType.SCO.type
+            TextUtil.compareWithGameKey(type, GameType.SCO.value) -> return GameType.SCO.type
 
             type == GameType.TG.value -> return GameType.TG.type
 
-            checkKey(type, GameType.TG_.value) -> return GameType.TG_.type
+            TextUtil.compareWithGameKey(type, GameType.TG_.value) -> return GameType.TG_.type
 
             //先判斷完整字串 再比對部分字串(由長至短)
             type == GameType.SINGLE_BTS.value -> return GameType.SINGLE_BTS.type
-            checkKey(type, GameType.OU_BTS.value) -> return GameType.OU_BTS.type
-            checkKey(type, GameType.BTS.value) -> return GameType.BTS.type
+            TextUtil.compareWithGameKey(type, GameType.OU_BTS.value) -> return GameType.OU_BTS.type
+            TextUtil.compareWithGameKey(type, GameType.BTS.value) -> return GameType.BTS.type
 
             type == GameType.GT1ST.value -> return GameType.GT1ST.type
 
@@ -187,7 +179,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             //先判斷完整字串 再比對部分字串(由長至短)
             type == GameType.HWMG_SINGLE.value -> return GameType.HWMG_SINGLE.type
-            checkKey(type, GameType.WM.value) -> return GameType.WM.type
+            TextUtil.compareWithGameKey(type, GameType.WM.value) -> return GameType.WM.type
 
             type == GameType.CLSH.value -> return GameType.CLSH.type
 
@@ -195,19 +187,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == GameType.W3.value -> return GameType.W3.type
 
-            checkKey(type, GameType.TG_OU.value) -> return GameType.TG_OU.type
+            TextUtil.compareWithGameKey(type, GameType.TG_OU.value) -> return GameType.TG_OU.type
 
-            checkKey(type, GameType.C_OU.value) -> return GameType.C_OU.type
+            TextUtil.compareWithGameKey(type, GameType.C_OU.value) -> return GameType.C_OU.type
 
-            checkKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
+            TextUtil.compareWithGameKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
 
-            checkKey(type, GameType.OU_I_OT.value) -> return GameType.OU_I_OT.type
+            TextUtil.compareWithGameKey(type, GameType.OU_I_OT.value) -> return GameType.OU_I_OT.type
 
-            checkKey(type, GameType.OU_SEG.value) -> return GameType.OU_SEG.type
+            TextUtil.compareWithGameKey(type, GameType.OU_SEG.value) -> return GameType.OU_SEG.type
 
-            checkKey(type, GameType.SINGLE_OU.value) -> return GameType.SINGLE_OU.type
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_OU.value) -> return GameType.SINGLE_OU.type
 
-            checkKey(type, GameType.SINGLE_FLG.value) -> return GameType.SINGLE_FLG.type
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_FLG.value) -> return GameType.SINGLE_FLG.type
 
 
             type == GameType.SINGLE.value -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
@@ -216,13 +208,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE.type
             }
 
-            checkKey(type, GameType.SINGLE_1ST.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_1ST.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
                 GameType.SINGLE_1ST_2.type
             } else {
                 GameType.SINGLE_1ST.type
             }
 
-            checkKey(type, GameType.SINGLE_2ST.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_2ST.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
                 GameType.SINGLE_2ST_2.type
             } else {
                 GameType.SINGLE_2ST.type
@@ -234,7 +226,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE_OT.type
             }
 
-            checkKey(type, GameType.SINGLE_SEG.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_SEG.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
                 GameType.SINGLE_SEG_2.type
             } else {
                 GameType.SINGLE_SEG.type
@@ -405,68 +397,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        updateItemDataFromSocket(oddsDetailDataList[position], updatedOddsDetailDataList)
         holder.bindModel(oddsDetailDataList[position], position)
-    }
-
-
-    private fun updateItemDataFromSocket(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>) {
-        val oldOddList = oddsDetail.oddArrayList
-        var newOddList = listOf<Odd>()
-
-        for (item in updatedOddsDetail) {
-            if (item.gameType == oddsDetail.gameType) {
-                newOddList = item.oddArrayList
-                break
-            }
-        }
-
-        oldOddList.forEach { oldOddData ->
-            newOddList.forEach { newOddData ->
-                if (oldOddData.id == newOddData.id) {
-
-                    //如果是球員 忽略名字替換
-                    if (!checkKey(oddsDetail.gameType, GameType.SCO.value)) {
-                        if (newOddData.name?.isNotEmpty() == true) {
-                            oldOddData.name = newOddData.name
-                        }
-                    }
-
-                    if (newOddData.extInfo?.isNotEmpty() == true) {
-                        oldOddData.extInfo = newOddData.extInfo
-                    }
-
-                    oldOddData.spread = newOddData.spread
-
-                    //先判斷大小
-                    oldOddData.oddState = getOddState(getOdds(oldOddData, oddsType), newOddData)
-
-                    //再帶入新的賠率
-                    oldOddData.odds = newOddData.odds
-                    oldOddData.hkOdds = newOddData.hkOdds
-
-                    oldOddData.status = newOddData.status
-                    oldOddData.producerId = newOddData.producerId
-                }
-            }
-        }
-    }
-
-
-    private fun getOddState(oldItemOdd: Double, it: Odd): Int {
-
-        val odds = when (oddsType) {
-            OddsType.EU -> it.odds
-            OddsType.HK -> it.hkOdds
-        }
-        val newOdd = odds ?: 0.0
-
-        return when {
-            newOdd == oldItemOdd -> OddState.SAME.state
-            newOdd > oldItemOdd -> OddState.LARGER.state
-            newOdd < oldItemOdd -> OddState.SMALLER.state
-            else -> OddState.SAME.state
-        }
     }
 
 
@@ -474,12 +405,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         this.code = code
         notifyDataSetChanged()
     }
-
-
-    private fun checkKey(type: String, value: String): Boolean {
-        return type == value || type.contains(value)
-    }
-
+    
 
     inner class ViewHolder(itemView: View, var viewType: Int) : RecyclerView.ViewHolder(itemView) {
 
