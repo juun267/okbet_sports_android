@@ -605,11 +605,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                                 tvOdds.isSelected = odd.isSelect ?: false
                                 itemView.setOnClickListener {
-                                    if (odd.isSelect != true) {
                                         onOddClickListener.getBetInfoList(odd, oddsDetail)
-                                    } else {
-                                        onOddClickListener.removeBetInfoItem(odd)
-                                    }
                                 }
                             }
                             BetStatus.LOCKED.code -> {
