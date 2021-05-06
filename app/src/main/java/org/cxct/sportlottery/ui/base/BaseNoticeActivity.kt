@@ -12,6 +12,8 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     BaseOddButtonActivity<T>(clazz) {
 
     private var mNoticeButton: TextView? = null
+    private var noticeCount: Int? = null
+    private var isGuest: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +34,12 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
 
     private fun initNoticeObserve() {
         viewModel.infoCenterRepository.unreadNoticeList.observe(this, Observer {
-            updateNoticeButton(it.size)
+            updateNoticeCount(it.size)
+        })
+
+        viewModel.userInfo.observe(this, {
+            //是否测试用户（0-正常用户，1-游客，2-内部测试）
+            updateUserIdentity(it?.testFlag)
         })
 
         receiver.userNotice.observe(this, Observer {
@@ -42,9 +49,24 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
         })
     }
 
-    private fun updateNoticeButton(noticeCount: Int) {
-        mNoticeButton?.visibility = if (noticeCount > 0) View.VISIBLE else View.GONE
-        mNoticeButton?.text = if (noticeCount < 10) noticeCount.toString() else "N"
+    private fun updateNoticeCount(noticeCount: Int) {
+        this.noticeCount = noticeCount
+        updateNoticeButton()
+    }
+
+    private fun updateUserIdentity(isGuest: Long?) {
+        this.isGuest = when (isGuest) {
+            0.toLong() -> false
+            1.toLong() -> true
+            else -> null
+        }
+        updateNoticeButton()
+    }
+
+    private fun updateNoticeButton() {
+
+        mNoticeButton?.visibility = if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE
+        mNoticeButton?.text = if (noticeCount ?: 0 < 10) noticeCount.toString() else "N"
     }
 
 }

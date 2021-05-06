@@ -58,7 +58,7 @@ class GameViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseNoticeViewModel(userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
@@ -127,7 +127,6 @@ class GameViewModel(
     val errorPromptMessage: LiveData<Event<String>>
         get() = _errorPromptMessage
 
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     val betInfoList = betInfoRepository.betInfoList
 
