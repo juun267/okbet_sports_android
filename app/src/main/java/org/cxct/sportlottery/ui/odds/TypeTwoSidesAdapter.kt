@@ -37,7 +37,7 @@ class TypeTwoSidesAdapter(
             nameChangeColor = false
             setData(
                 oddsDetail, odd, onOddClickListener, betInfoList,
-                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
+                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType
             )
         }
     }

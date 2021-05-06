@@ -38,7 +38,7 @@ class TypeCSAdapter(
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
         fun bindModel(odd: Odd) {
-            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_BOTTOM, oddsType)
 
             //波坦玩法在顯示上面 spread 位置內容用 name 取代
             itemView.findViewById<TextView>(R.id.tv_spread).text = odd.name
