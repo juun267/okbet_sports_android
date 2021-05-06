@@ -186,11 +186,18 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun observeData() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                matchOdd = result.oddsDetailData?.matchOdd
-                result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                    result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                        oddsDetailListAdapter?.homeName = home
-                        oddsDetailListAdapter?.awayName = away
+                when (result.success) {
+                    true -> {
+                        matchOdd = result.oddsDetailData?.matchOdd
+                        result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                            result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                                oddsDetailListAdapter?.homeName = home
+                                oddsDetailListAdapter?.awayName = away
+                            }
+                        }
+                    }
+                    false -> {
+                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
             }

@@ -923,7 +923,7 @@ class GameViewModel(
             )
         }
 
-        oddsDetailList.value?.peekContent()?.forEach {
+        _oddsDetailList.value?.peekContent()?.forEach {
             updateItemForOddsDetail(it, newList)
         }
 

@@ -179,44 +179,51 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
 
-                matchOdd = result.oddsDetailData?.matchOdd
+                when(result.success){
+                    true -> {
+                        matchOdd = result.oddsDetailData?.matchOdd
+                        result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
+                            val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
+                            val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
+                            val startPosition = strTime.length - TIME_LENGTH
+                            val endPosition = strTime.length
+                            val style = SpannableStringBuilder(strTime)
+                            style.setSpan(
+                                ForegroundColorSpan(color),
+                                startPosition,
+                                endPosition,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                            dataBinding.tvTime.text = style
+                        }
 
-                result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                    val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
-                    val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
-                    val startPosition = strTime.length - TIME_LENGTH
-                    val endPosition = strTime.length
-                    val style = SpannableStringBuilder(strTime)
-                    style.setSpan(
-                        ForegroundColorSpan(color),
-                        startPosition,
-                        endPosition,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    dataBinding.tvTime.text = style
-                }
+                        result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                            result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                                val strVerse = getString(R.string.verse_)
+                                val strMatch = "$home${strVerse}$away"
+                                val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+                                val startPosition = strMatch.indexOf(strVerse)
+                                val endPosition = startPosition + strVerse.length
+                                val style = SpannableStringBuilder(strMatch)
+                                style.setSpan(
+                                    ForegroundColorSpan(color),
+                                    startPosition,
+                                    endPosition,
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                                dataBinding.tvMatch.text = style
 
-                result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                    result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                        val strVerse = getString(R.string.verse_)
-                        val strMatch = "$home${strVerse}$away"
-                        val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
-                        val startPosition = strMatch.indexOf(strVerse)
-                        val endPosition = startPosition + strVerse.length
-                        val style = SpannableStringBuilder(strMatch)
-                        style.setSpan(
-                            ForegroundColorSpan(color),
-                            startPosition,
-                            endPosition,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                        dataBinding.tvMatch.text = style
-
-                        oddsDetailListAdapter?.homeName = home
-                        oddsDetailListAdapter?.awayName = away
-
+                                oddsDetailListAdapter?.homeName = home
+                                oddsDetailListAdapter?.awayName = away
+                            }
+                        }
+                    }
+                    false -> {
+                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
+
+
             }
         })
 
