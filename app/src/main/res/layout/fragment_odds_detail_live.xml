@@ -14,6 +14,14 @@
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
     </data>
 
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -81,14 +89,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                android:overScrollMode="never"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srlDragRate="0.3"
-                app:srlEnableLoadMore="true"
-                app:srlEnablePureScrollMode="true">
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"
                     android:layout_width="match_parent"
@@ -101,12 +101,10 @@
                     android:overScrollMode="never"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 
-            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </layout>
