@@ -270,7 +270,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getMatchTypeList(args.matchType, true)
+        viewModel.getGameHallList(args.matchType, true)
         loading()
     }
 

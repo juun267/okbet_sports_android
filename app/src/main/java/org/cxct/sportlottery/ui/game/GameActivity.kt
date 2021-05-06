@@ -81,7 +81,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         initToolBar()
         initMenu()
         initRvMarquee()
-        refreshTabLayout(null)
+        initTabLayout()
         initObserve()
 
         queryData()
@@ -225,6 +225,21 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         rv_marquee.adapter = mMarqueeAdapter
     }
 
+    private fun initTabLayout() {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                selectTab(tab?.position)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                selectTab(tab?.position)
+            }
+        })
+    }
+
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
             val countInPlay =
@@ -265,20 +280,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-        tabLayout.clearOnTabSelectedListeners()
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                selectTab(tab?.position)
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                selectTab(tab?.position)
-            }
-        })
     }
 
     private fun selectTab(position: Int?) {
@@ -289,19 +290,24 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 mNavController.popBackStack(R.id.homeFragment, false)
             }
             1 -> {
-                navGameFragment(MatchType.IN_PLAY)
+                viewModel.getSportMenu(MatchType.IN_PLAY)
+                loading()
             }
             2 -> {
-                navGameFragment(MatchType.TODAY)
+                viewModel.getSportMenu(MatchType.TODAY)
+                loading()
             }
             3 -> {
-                navGameFragment(MatchType.EARLY)
+                viewModel.getSportMenu(MatchType.EARLY)
+                loading()
             }
             4 -> {
-                navGameFragment(MatchType.PARLAY)
+                viewModel.getSportMenu(MatchType.PARLAY)
+                loading()
             }
             5 -> {
-                navGameFragment(MatchType.OUTRIGHT)
+                viewModel.getSportMenu(MatchType.OUTRIGHT)
+                loading()
             }
         }
     }
@@ -461,6 +467,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
+
+            sportMenuResult.sportMenuData?.matchType?.let {
+                navGameFragment(it)
+            }
         }
 
         mSportMenuResult = sportMenuResult
