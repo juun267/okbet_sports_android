@@ -9,12 +9,12 @@ import android.widget.BaseAdapter
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_game_type.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_league_type.*
-import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.item_listview_settlement_game_type.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
@@ -89,7 +89,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     }
 
     private fun initEvent() {
-        settlementViewModel.requestListener = object : RequestListener {
+        viewModel.requestListener = object : RequestListener {
             override fun requestIng(loading: Boolean) {
                 if (loading)
                     loading()
@@ -179,8 +179,15 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                         viewModel.getMatchResultList(gameType, null, timeRangeParams)
                     }
                 }
+                dateSelected(date)
             }
         }
+    }
+
+    private fun dateSelected(datePosition: Int) {
+        (rv_date.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+            datePosition, rv_date.width / 2
+        )
     }
 
     private fun initSettleGameTypeBottomSheet() {
