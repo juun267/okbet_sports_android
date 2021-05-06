@@ -4,5 +4,6 @@ data class BetAddErrorData(
     val id: String?,
     val matchId: String?,
     val odds: Double?,
+    val hkOdds: Double?,
     val status: Int?
 )
