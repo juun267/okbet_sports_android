@@ -37,13 +37,13 @@ class GameFilterRow @JvmOverloads constructor(
             field = value
 
             field?.let {
-                game_filter_1x2.visibility = if (it) {
+                game_filter_1x2.visibility = if (it && matchType == IN_PLAY) {
                     View.VISIBLE
                 } else {
                     View.GONE
                 }
 
-                game_filter_ou.visibility = if (it) {
+                game_filter_ou.visibility = if (it && matchType == IN_PLAY) {
                     View.VISIBLE
                 } else {
                     View.GONE
