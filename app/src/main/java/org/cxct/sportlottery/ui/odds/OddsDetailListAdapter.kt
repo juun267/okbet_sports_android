@@ -405,9 +405,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         this.code = code
         notifyDataSetChanged()
     }
-    
 
-    inner class ViewHolder(itemView: View, var viewType: Int) : RecyclerView.ViewHolder(itemView) {
+
+    inner class ViewHolder(itemView: View, var viewType: Int) : OddViewHolder(itemView) {
 
         private fun setVisibility(visible: Boolean) {
             val param = itemView.layoutParams as RecyclerView.LayoutParams
@@ -425,7 +425,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.layoutParams = param
         }
 
-        private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
+        private val tvGameName = itemView.findViewById<TextView>(R.id.tv_game_name)
         private val llItem = itemView.findViewById<LinearLayout>(R.id.ll_item)
         private val ivArrowUp = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
         private val vLine = itemView.findViewById<View>(R.id.v_line)
@@ -443,9 +443,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val type = oddsDetailDataList[position].gameType
 
             if (type.contains(":")) {
-                tvName.text = oddsDetail.name.plus("  ").plus(type.split(":")[1])
+                tvGameName.text = oddsDetail.name.plus("  ").plus(type.split(":")[1])
             } else {
-                tvName.text = oddsDetail.name
+                tvGameName.text = oddsDetail.name
             }
 
             llItem.setOnClickListener {
@@ -511,7 +511,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.TG_.type,
                 GameType.GT1ST.type,
                 GameType.WM.type,
-                GameType.HTFT.type -> oneList(oddsDetail)
+                GameType.HTFT.type -> oneList(oddsDetail, sportCode)
 
             }
 
@@ -529,7 +529,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun oneList(oddsDetail: OddsDetailListData) {
+        private fun oneList(oddsDetail: OddsDetailListData, sportCode: String?) {
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             for (i in oddsDetail.oddArrayList.indices) {
@@ -540,6 +540,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvBet.apply {
                 adapter = TypeOneListAdapter(
+                    sportCode ?: "",
                     oddsDetail,
                     onOddClickListener,
                     betInfoList,
@@ -563,8 +564,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun forCS(oddsDetail: OddsDetailListData) {
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
-            val vCover = itemView.findViewById<ImageView>(R.id.iv_disable_cover)
             val tvOther = itemView.findViewById<TextView>(R.id.tv_other)
             val rlOdds = itemView.findViewById<RelativeLayout>(R.id.rl_odds)
 
@@ -587,39 +586,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                             awayList.add(odd)
                         }
                     } else {
-
                         tvOther.text = itemView.context.getString(R.string.odds_detail_cs_other)
+                        setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_CENTER, oddsType)
 
-                        tvOdds.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-
-                        OddButtonHighLight.set(false, null, tvOdds, null, odd)
-
-                        when (odd.status) {
-                            BetStatus.ACTIVATED.code -> {
-                                itemView.visibility = View.VISIBLE
-                                vCover.visibility = View.GONE
-                                tvOdds.isEnabled = true
-
-                                val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
-                                odd.isSelect = select
-
-                                tvOdds.isSelected = odd.isSelect ?: false
-                                itemView.setOnClickListener {
-                                        onOddClickListener.getBetInfoList(odd, oddsDetail)
-                                }
-                            }
-                            BetStatus.LOCKED.code -> {
-                                itemView.visibility = View.VISIBLE
-                                vCover.visibility = View.VISIBLE
-                                tvOdds.isEnabled = false
-                            }
-                            BetStatus.DEACTIVATED.code -> {
-                                //比照h5照樣顯示（文件為不顯示）
-                                itemView.visibility = View.VISIBLE
-                                vCover.visibility = View.VISIBLE
-                                tvOdds.isEnabled = false
-                            }
-                        }
                     }
                 }
             }
