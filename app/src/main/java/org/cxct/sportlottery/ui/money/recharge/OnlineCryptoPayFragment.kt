@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.btn_submit
@@ -25,7 +26,6 @@ import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import java.util.ArrayList
@@ -41,13 +41,13 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
     //幣種
     private lateinit var currencyBottomSheet: BottomSheetDialog
-    private val mCurrencyBottomSheetList = mutableListOf<CustomImageAdapter.SelectBank>()
-    private lateinit var currencyBtsAdapter: BankBtsAdapter
+    private val mCurrencyBottomSheetList = mutableListOf<BtsRvAdapter.SelectBank>()
+    private lateinit var currencyBtsAdapter: BtsRvAdapter
 
     //充值帳戶
     private lateinit var accountBottomSheet: BottomSheetDialog
-    private val mAccountBottomSheetList = mutableListOf<CustomImageAdapter.SelectBank>()
-    private lateinit var accountBtsAdapter: BankBtsAdapter
+    private val mAccountBottomSheetList = mutableListOf<BtsRvAdapter.SelectBank>()
+    private lateinit var accountBtsAdapter: BtsRvAdapter
 
     private var CurrentCurrency = ""
 
@@ -80,7 +80,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
             filterRechCfgsList =
                 rechCfgsList.groupBy { it.prodName } as HashMap<String?, ArrayList<MoneyRechCfg.RechConfig>>
             filterRechCfgsList.forEach {
-                val selectCurrency = CustomImageAdapter.SelectBank(
+                val selectCurrency = BtsRvAdapter.SelectBank(
                     it.key.toString(),
                     null
                 )
@@ -152,7 +152,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
     private fun getAccountBottomSheetList(prodName: String) {
         mAccountBottomSheetList.clear()
         filterRechCfgsList[prodName]?.forEach {
-            val selectAccount = CustomImageAdapter.SelectBank(
+            val selectAccount = BtsRvAdapter.SelectBank(
                 it.payeeName.toString(),
                 null
             )
@@ -168,20 +168,20 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
             val bottomSheetView =
-                layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, contentView, false)
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_icon_and_tick, contentView, false)
             currencyBottomSheet = BottomSheetDialog(this.requireContext())
             currencyBottomSheet.apply {
                 setContentView(bottomSheetView)
-                currencyBtsAdapter = BankBtsAdapter(
-                    lv_bank_item.context,
+                currencyBtsAdapter = BtsRvAdapter(
                     mCurrencyBottomSheetList,
-                    BankBtsAdapter.BankAdapterListener { bankCard, _ ->
+                    BtsRvAdapter.BankAdapterListener { bankCard, _ ->
                         CurrentCurrency = bankCard.bankName.toString()
                         refreshCurrencyType(CurrentCurrency)
                         resetEvent()
                         dismiss()
                     })
-                lv_bank_item.adapter = currencyBtsAdapter
+                rv_bank_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                rv_bank_item.adapter = currencyBtsAdapter
                 tv_game_type_title.text = String.format(resources.getString(R.string.title_choose_currency))
                 currencyBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
@@ -199,22 +199,22 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                 activity?.window?.decorView?.findViewById(android.R.id.content)
             val accountBottomSheetView =
                 layoutInflater.inflate(
-                    R.layout.dialog_bottom_sheet_bank_card,
+                    R.layout.dialog_bottom_sheet_icon_and_tick,
                     accountContentView,
                     false
                 )
             accountBottomSheet = BottomSheetDialog(this.requireContext())
             accountBottomSheet.apply {
                 setContentView(accountBottomSheetView)
-                accountBtsAdapter = BankBtsAdapter(
-                    lv_bank_item.context,
+                accountBtsAdapter = BtsRvAdapter(
                     mAccountBottomSheetList,
-                    BankBtsAdapter.BankAdapterListener { _, position ->
+                    BtsRvAdapter.BankAdapterListener { _, position ->
                         refreshAccount(position)
                         resetEvent()
                         dismiss()
                     })
-                lv_bank_item.adapter = accountBtsAdapter
+                rv_bank_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                rv_bank_item.adapter = accountBtsAdapter
                 tv_game_type_title.text =
                     String.format(resources.getString(R.string.title_choose_recharge_account))
                 accountBottomSheet.btn_close.setOnClickListener {

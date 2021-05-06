@@ -10,13 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
@@ -33,7 +34,6 @@ import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
@@ -51,13 +51,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
 
-    private val mBottomSheetList = mutableListOf<CustomImageAdapter.SelectBank>()
+    private val mBottomSheetList = mutableListOf<BtsRvAdapter.SelectBank>()
 
     private var rechCfgsList = mutableListOf<MoneyRechCfg.RechConfig>()
 
     private lateinit var bankBottomSheet: BottomSheetDialog
 
-    private lateinit var bankCardAdapter: BankBtsAdapter
+    private lateinit var bankCardAdapter: BtsRvAdapter
 
     private var bankPosition = 0
 
@@ -187,21 +187,23 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
             val bottomSheetView =
-                layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, contentView, false)
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_icon_and_tick, contentView, false)
             bankBottomSheet = BottomSheetDialog(this.requireContext())
             bankBottomSheet.apply {
                 setContentView(bottomSheetView)
-                bankCardAdapter = BankBtsAdapter(
-                    lv_bank_item.context,
+
+                bankCardAdapter = BtsRvAdapter(
                     mBottomSheetList,
-                    BankBtsAdapter.BankAdapterListener { _, position ->
+                    BtsRvAdapter.BankAdapterListener { _, position ->
                         bankPosition = position
                         //更新銀行
                         getBankType(position)
                         resetEvent()
                         dismiss()
                     })
-                lv_bank_item.adapter = bankCardAdapter
+                rv_bank_item.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+                rv_bank_item.adapter = bankCardAdapter
+
 
                 if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_bank))
@@ -242,7 +244,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code) //銀行卡轉帳 顯示銀行名稱，不用加排序數字
             rechCfgsList.forEach {
-                val selectBank = CustomImageAdapter.SelectBank(
+                val selectBank = BtsRvAdapter.SelectBank(
                     it.rechName.toString(),
                     getBankIconByBankName(it.rechName.toString())
                 )
@@ -252,7 +254,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             if (rechCfgsList.size > 1)
                 rechCfgsList.forEach {
                     val selectBank =
-                        CustomImageAdapter.SelectBank(
+                        BtsRvAdapter.SelectBank(
                             viewModel.getPayTypeName(it.rechType) + " " + count++,
                             getBankAccountIcon(it.rechType ?: "")
                         )
@@ -261,7 +263,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             else
                 rechCfgsList.forEach {
                     val selectBank =
-                        CustomImageAdapter.SelectBank(
+                        BtsRvAdapter.SelectBank(
                             viewModel.getPayTypeName(it.rechType) + "",
                             getBankAccountIcon(it.rechType ?: "")
                         )
