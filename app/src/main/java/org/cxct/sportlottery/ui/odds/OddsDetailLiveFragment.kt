@@ -217,16 +217,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { list ->
-                if (list.size > 0) {
-                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(list)
-                    oddsDetailListAdapter?.notifyDataSetChanged()
+                if (list.isNotEmpty()) {
+                    oddsDetailListAdapter?.oddsDetailDataList = list
                 }
             }
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.setBetInfoList(it)
+            oddsDetailListAdapter?.betInfoList = it
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
@@ -280,10 +278,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun getData() {
-        mSportCode?.let { mSportCode ->
-            viewModel.getPlayCateList(mSportCode)
-        }
-
         matchId?.let { matchId ->
             viewModel.getOddsDetailByMatchId(matchId)
             service.subscribeEventChannel(matchId)

@@ -147,7 +147,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 getData()
                             }
                         }).apply {
-                        show(it, "OddsDetailMoreFragment")
+                        show(it, OddsDetailMoreFragment::class.java.simpleName)
                     }
                 }
             }
@@ -241,12 +241,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {
-                if (it.isNotEmpty()) {
-                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-                    oddsDetailListAdapter?.notifyDataSetChanged()
-
+            it.getContentIfNotHandled()?.let { list ->
+                if (list.isNotEmpty()) {
+                    oddsDetailListAdapter?.oddsDetailDataList = list
                     dataBinding.tabCat.getTabAt(0)?.select()
                 } else {
                     navGameInPlay()
@@ -257,16 +254,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddsDetailMoreList.observe(this.viewLifecycleOwner, {
             //扣除當前的賽事
             it?.size?.let { count ->
-                if (count - 1 == 0) {
-                    tv_more.visibility = View.GONE
-                } else {
-                    tv_more.visibility = View.VISIBLE
-                }
+                tv_more.visibility = if (count - 1 == 0) View.GONE else View.VISIBLE
             }
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.setBetInfoList(it)
+            oddsDetailListAdapter?.betInfoList = it
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
@@ -287,12 +280,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun getData() {
         mSportCode?.let { mSportCode ->
-            viewModel.getPlayCateList(mSportCode)
-        }
-
-        matchId?.let { matchId ->
-            viewModel.getOddsDetailByMatchId(matchId)
-            service.subscribeEventChannel(matchId)
+            matchId?.let { matchId ->
+                viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+            }
         }
     }
 

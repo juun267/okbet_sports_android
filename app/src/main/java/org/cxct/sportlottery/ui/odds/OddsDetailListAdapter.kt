@@ -27,10 +27,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
 
-    private var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+    var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
 
     var oddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
 
     var homeName: String? = null
@@ -59,13 +67,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
 
-    fun setBetInfoList(betInfoList: MutableList<BetInfoListData>) {
-        this.betInfoList.clear()
-        this.betInfoList.addAll(betInfoList)
-        notifyDataSetChanged()
-    }
-
-
     enum class LayoutType(val layout: Int) {
         HDP(R.layout.content_odds_detail_list_hdp),
         TWO_SIDES(R.layout.content_odds_detail_list_two_sides),
@@ -74,6 +75,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         SINGLE(R.layout.content_odds_detail_list_single),
         SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item)
     }
+
 
     enum class GameType(val value: String, val type: Int) {
         HDP("HDP", 0),//让球
