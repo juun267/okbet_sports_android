@@ -258,7 +258,7 @@ class GameViewModel(
     }
 
     //獲取體育菜單
-    fun getSportMenu() {
+    fun getSportMenu(matchType: MatchType? = null) {
         val now = TimeUtil.getNowTimeStamp()
         val todayStart = TimeUtil.getTodayStartTimeStamp()
 
@@ -279,8 +279,10 @@ class GameViewModel(
             _allVolleyballCount.postValue(getTodayCount(SportType.VOLLEYBALL, result))
 
             result?.let {
-                if (it.sportMenuData != null)
+                if (it.sportMenuData != null) {
                     initSportMenuSelectedState(it.sportMenuData)
+                    updateSportMenuSelectedState(it.sportMenuData)
+                }
                 it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
                     item.sortNum
                 }
@@ -296,6 +298,9 @@ class GameViewModel(
                 it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
                     item.sortNum
                 }
+
+                it.sportMenuData?.matchType = matchType
+
                 _sportMenuResult.value = it
             }
         }
@@ -404,53 +409,6 @@ class GameViewModel(
                 OneBoSportApi.userService.getMoney()
             }
             _userMoney.postValue(userMoneyResult?.money)
-        }
-    }
-
-    fun getMatchTypeList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
-        val now = TimeUtil.getNowTimeStamp()
-        val todayStart = TimeUtil.getTodayStartTimeStamp()
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                sportMenuRepository.getSportMenu(
-                    now.toString(),
-                    todayStart.toString()
-                )
-            }
-
-            val asStartCount = result?.sportMenuData?.atStart?.num ?: 0
-            _asStartCount.postValue(asStartCount)
-            _allFootballCount.postValue(getTodayCount(SportType.FOOTBALL, result))
-            _allBasketballCount.postValue(getTodayCount(SportType.BASKETBALL, result))
-            _allTennisCount.postValue(getTodayCount(SportType.TENNIS, result))
-            _allBadmintonCount.postValue(getTodayCount(SportType.BADMINTON, result))
-            _allVolleyballCount.postValue(getTodayCount(SportType.VOLLEYBALL, result))
-
-            result?.let {
-                if (it.sportMenuData != null) {
-                    initSportMenuSelectedState(it.sportMenuData)
-                    updateSportMenuSelectedState(it.sportMenuData)
-                }
-                it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.today?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.early?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.parlay?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                _sportMenuResult.value = it
-
-                getGameHallList(matchType, isReloadDate, date)
-            }
         }
     }
 
