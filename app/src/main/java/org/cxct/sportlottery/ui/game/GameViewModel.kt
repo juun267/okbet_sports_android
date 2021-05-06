@@ -262,7 +262,7 @@ class GameViewModel(
     }
 
     //獲取體育菜單
-    fun getSportMenu() {
+    fun getSportMenu(matchType: MatchType? = null) {
         val now = TimeUtil.getNowTimeStamp()
         val todayStart = TimeUtil.getTodayStartTimeStamp()
 
@@ -300,6 +300,9 @@ class GameViewModel(
                 it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
                     item.sortNum
                 }
+
+                it.sportMenuData?.matchType = matchType
+
                 _sportMenuResult.value = it
             }
         }
