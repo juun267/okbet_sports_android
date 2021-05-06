@@ -100,7 +100,7 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
 
                 //TODO Dean : 之後多國語要check要怎麼顯示
                 val calendar = Calendar.getInstance()
-                val dateFormat = SimpleDateFormat("yyyy年MM月dd日 HH:mm")
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
                 tv_date.text = seasonData?.start?.let {
                     calendar.timeInMillis = it.toLong()
                     calendar.time
