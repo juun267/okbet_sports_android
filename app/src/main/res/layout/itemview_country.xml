@@ -61,7 +61,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e2e2e2"
+        android:background="@color/colorWhite6"
         app:layout_constraintTop_toBottomOf="@id/country_border" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
