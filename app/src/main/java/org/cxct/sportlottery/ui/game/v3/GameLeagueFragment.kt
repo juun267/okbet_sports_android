@@ -8,7 +8,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
@@ -162,18 +161,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             data = leagueOdds
                             sportType = args.sportType
                         }
-
-                        when {
-                            (leagueOdds.isEmpty() && itemDecorationCount > 0) -> {
-                                removeItemDecorationAt(0)
-                            }
-
-                            (leagueOdds.isNotEmpty() && itemDecorationCount == 0) -> {
-                                addItemDecoration(
-                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                                )
-                            }
-                        }
                     }
                 }
             }
@@ -181,18 +168,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
             leagueAdapter.data = it
-
-            when {
-                (it.isEmpty() && game_league_odd_list.itemDecorationCount > 0) -> {
-                    game_league_odd_list.removeItemDecorationAt(0)
-                }
-
-                (it.isNotEmpty() && game_league_odd_list.itemDecorationCount == 0) -> {
-                    game_league_odd_list.addItemDecoration(
-                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                    )
-                }
-            }
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {

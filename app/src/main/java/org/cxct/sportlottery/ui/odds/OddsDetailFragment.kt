@@ -89,28 +89,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun observeSocketData() {
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
-            val newList = arrayListOf<OddsDetailListData>()
-
-            it.odds?.forEach { map ->
-                val key = map.key
-                val value = map.value
-                val filteredOddList = mutableListOf<Odd>()
-                value.odds?.forEach { odd ->
-                    if (odd != null)
-                        filteredOddList.add(odd)
-                }
-                newList.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        filteredOddList
-                    )
-                )
-            }
-
-            oddsDetailListAdapter?.updatedOddsDetailDataList = newList
+            viewModel.updateOddForOddsDetail(it)
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, Observer {
@@ -147,7 +126,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 getData()
                             }
                         }).apply {
-                        show(it, "OddsDetailMoreFragment")
+                        show(it, OddsDetailMoreFragment::class.java.simpleName)
                     }
                 }
             }
@@ -188,6 +167,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                     false
                                 )
                             }
+                            dataBinding.tabCat.getTabAt(0)?.select()
                         } else {
                             dataBinding.tabCat.visibility = View.GONE
                         }
@@ -199,55 +179,58 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
 
-                matchOdd = result.oddsDetailData?.matchOdd
+                when(result.success){
+                    true -> {
+                        matchOdd = result.oddsDetailData?.matchOdd
+                        result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
+                            val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
+                            val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
+                            val startPosition = strTime.length - TIME_LENGTH
+                            val endPosition = strTime.length
+                            val style = SpannableStringBuilder(strTime)
+                            style.setSpan(
+                                ForegroundColorSpan(color),
+                                startPosition,
+                                endPosition,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                            dataBinding.tvTime.text = style
+                        }
 
-                result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                    val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
-                    val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
-                    val startPosition = strTime.length - TIME_LENGTH
-                    val endPosition = strTime.length
-                    val style = SpannableStringBuilder(strTime)
-                    style.setSpan(
-                        ForegroundColorSpan(color),
-                        startPosition,
-                        endPosition,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    dataBinding.tvTime.text = style
-                }
+                        result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                            result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                                val strVerse = getString(R.string.verse_)
+                                val strMatch = "$home${strVerse}$away"
+                                val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+                                val startPosition = strMatch.indexOf(strVerse)
+                                val endPosition = startPosition + strVerse.length
+                                val style = SpannableStringBuilder(strMatch)
+                                style.setSpan(
+                                    ForegroundColorSpan(color),
+                                    startPosition,
+                                    endPosition,
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                )
+                                dataBinding.tvMatch.text = style
 
-                result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                    result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                        val strVerse = getString(R.string.verse_)
-                        val strMatch = "$home${strVerse}$away"
-                        val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
-                        val startPosition = strMatch.indexOf(strVerse)
-                        val endPosition = startPosition + strVerse.length
-                        val style = SpannableStringBuilder(strMatch)
-                        style.setSpan(
-                            ForegroundColorSpan(color),
-                            startPosition,
-                            endPosition,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                        dataBinding.tvMatch.text = style
-
-                        oddsDetailListAdapter?.homeName = home
-                        oddsDetailListAdapter?.awayName = away
-
+                                oddsDetailListAdapter?.homeName = home
+                                oddsDetailListAdapter?.awayName = away
+                            }
+                        }
+                    }
+                    false -> {
+                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
+
+
             }
         })
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {
-                if (it.isNotEmpty()) {
-                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-                    oddsDetailListAdapter?.notifyDataSetChanged()
-
-                    dataBinding.tabCat.getTabAt(0)?.select()
+            it.getContentIfNotHandled()?.let { list ->
+                if (list.isNotEmpty()) {
+                    oddsDetailListAdapter?.oddsDetailDataList = list
                 } else {
                     navGameInPlay()
                 }
@@ -257,16 +240,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddsDetailMoreList.observe(this.viewLifecycleOwner, {
             //扣除當前的賽事
             it?.size?.let { count ->
-                if (count - 1 == 0) {
-                    tv_more.visibility = View.GONE
-                } else {
-                    tv_more.visibility = View.VISIBLE
-                }
+                tv_more.visibility = if (count - 1 == 0) View.GONE else View.VISIBLE
             }
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.setBetInfoList(it)
+            oddsDetailListAdapter?.betInfoList = it
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
@@ -287,12 +266,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun getData() {
         mSportCode?.let { mSportCode ->
-            viewModel.getPlayCateList(mSportCode)
-        }
-
-        matchId?.let { matchId ->
-            viewModel.getOddsDetailByMatchId(matchId)
-            service.subscribeEventChannel(matchId)
+            matchId?.let { matchId ->
+                viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+            }
         }
     }
 

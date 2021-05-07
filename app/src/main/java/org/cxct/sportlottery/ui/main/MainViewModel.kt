@@ -30,7 +30,7 @@ class MainViewModel(
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseNoticeViewModel(userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
@@ -40,7 +40,6 @@ class MainViewModel(
         get() = loginRepository.token
 
     val userId = loginRepository.userId
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _promoteNoticeResult = MutableLiveData<Event<MessageListResult>>()
     val promoteNoticeResult: LiveData<Event<MessageListResult>>

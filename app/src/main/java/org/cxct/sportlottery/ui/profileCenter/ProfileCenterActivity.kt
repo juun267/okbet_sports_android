@@ -281,12 +281,13 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.rechargeSystemOperation.observe(this, {
-            val operation = it.getContentIfNotHandled()
-            if (operation == false)
-                showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
-            else
-                startActivity(Intent(this, MoneyRechargeActivity::class.java))
-
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(this, MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
+                }
+            }
         })
 
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {

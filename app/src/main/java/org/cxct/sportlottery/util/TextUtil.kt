@@ -56,4 +56,9 @@ object TextUtil {
     fun maskUserName(userName: String): String {
         return StringBuffer().append(userName.substring(0, 2)).append("***").append(userName.substring(userName.length - 2, userName.length)).toString()
     }
+
+    fun compareWithGameKey(type: String, value: String): Boolean {
+        return type == value || type.contains(value)
+    }
+
 }

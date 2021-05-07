@@ -34,7 +34,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 
 
 @Suppress("DEPRECATION")
@@ -129,31 +128,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun observeSocketData() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-        })
-
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList = arrayListOf<OddsDetailListData>()
-            it.odds?.forEach { map ->
-                val key = map.key
-                val value = map.value
-                val filteredOddList = mutableListOf<Odd>()
-                value.odds?.forEach { odd ->
-                    if (odd != null)
-                        filteredOddList.add(odd)
-                }
-                newList.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        filteredOddList
-                    )
-                )
-            }
-            oddsDetailListAdapter?.updatedOddsDetailDataList = newList
+            viewModel.updateOddForOddsDetail(it)
         })
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
@@ -209,11 +186,18 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun observeData() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                matchOdd = result.oddsDetailData?.matchOdd
-                result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                    result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                        oddsDetailListAdapter?.homeName = home
-                        oddsDetailListAdapter?.awayName = away
+                when (result.success) {
+                    true -> {
+                        matchOdd = result.oddsDetailData?.matchOdd
+                        result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                            result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                                oddsDetailListAdapter?.homeName = home
+                                oddsDetailListAdapter?.awayName = away
+                            }
+                        }
+                    }
+                    false -> {
+                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
             }
@@ -221,16 +205,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { list ->
-                if (list.size > 0) {
-                    oddsDetailListAdapter?.oddsDetailDataList?.clear()
-                    oddsDetailListAdapter?.oddsDetailDataList?.addAll(list)
-                    oddsDetailListAdapter?.notifyDataSetChanged()
+                if (list.isNotEmpty()) {
+                    oddsDetailListAdapter?.oddsDetailDataList = list
                 }
             }
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.setBetInfoList(it)
+            oddsDetailListAdapter?.betInfoList = it
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
@@ -284,10 +266,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun getData() {
-        mSportCode?.let { mSportCode ->
-            viewModel.getPlayCateList(mSportCode)
-        }
-
         matchId?.let { matchId ->
             viewModel.getOddsDetailByMatchId(matchId)
             service.subscribeEventChannel(matchId)

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -230,7 +229,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            viewModel.updateMatchOdd(it)
+            viewModel.updateMatchOddForParlay(it)
         })
 
         receiver.globalStop.observe(viewLifecycleOwner, Observer {
