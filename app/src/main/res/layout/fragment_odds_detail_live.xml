@@ -14,99 +14,88 @@
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never">
+        android:background="@color/colorWhite1"
+        android:overScrollMode="never"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite1"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical">
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
+                <View
                     android:id="@+id/ll_back"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/bg_semicircle"
                     android:onClick="@{() -> view.back()}"
-                    android:gravity="center">
+                    app:layout_constraintBottom_toBottomOf="@id/rv_game_card"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/rv_game_card" />
 
-                    <ImageView
-                        android:layout_width="23dp"
-                        android:layout_height="23dp"
-                        android:src="@drawable/ic_arrow_left_game_back" />
-
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/ic_arrow_left_game_back"
+                    app:layout_constraintBottom_toBottomOf="@id/ll_back"
+                    app:layout_constraintEnd_toEndOf="@id/ll_back"
+                    app:layout_constraintStart_toStartOf="@id/ll_back"
+                    app:layout_constraintTop_toTopOf="@id/ll_back" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_game_card"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    tools:context="com.example.recyclerview_demo.dataAdapter.dataAdapter"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ll_back"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="5"
                     tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/content_odds_detail_game_card"
                     tools:orientation="horizontal" />
 
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="292dp">
-
-                <WebView
-                    android:id="@+id/web_view"
+                <LinearLayout
+                    android:id="@+id/web_view_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="invisible" />
+                    android:layout_height="292dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/rv_game_card">
 
-                <ImageView
-                    android:id="@+id/live_web_preload"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/loading_live_web" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                android:overScrollMode="never"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srlDragRate="0.3"
-                app:srlEnableLoadMore="true"
-                app:srlEnablePureScrollMode="true">
+                    <WebView
+                        android:id="@+id/web_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
+                    android:layout_height="wrap_content"
                     android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingStart="6dp"
                     android:paddingTop="6dp"
+                    android:paddingEnd="6dp"
                     android:paddingBottom="6dp"
-                    android:overScrollMode="never"
+                    app:layout_constraintTop_toBottomOf="@id/web_view_layout"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 
-            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.core.widget.NestedScrollView>
 
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </layout>
