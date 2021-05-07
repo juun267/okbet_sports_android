@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import org.cxct.sportlottery.R
@@ -14,7 +15,6 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.CustomImageAdapter
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
 import java.math.RoundingMode
@@ -26,21 +26,21 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
 
-    private val mBankList: MutableList<CustomImageAdapter.SelectBank> by lazy {
+    private val mBankList: MutableList<BtsRvAdapter.SelectBank> by lazy {
         mutableListOf()
     }
 
     private var rechCfgsList: List<MoneyRechCfg.RechConfig> = mutableListOf()
 
-    private var payRoadSpannerList = mutableListOf<CustomImageAdapter.SelectBank>()
+    private var payRoadSpannerList = mutableListOf<BtsRvAdapter.SelectBank>()
 
     private lateinit var payGapBottomSheet: BottomSheetDialog
 
     private lateinit var bankBottomSheet: BottomSheetDialog
 
-    private lateinit var payGapAdapter: BankBtsAdapter
+    private lateinit var payGapAdapter: BtsRvAdapter
 
-    private lateinit var bankCardAdapter: BankBtsAdapter
+    private lateinit var bankCardAdapter: BtsRvAdapter
 
     private var bankPosition = 0
 
@@ -140,7 +140,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         mBankList.clear()
         rechCfgsList?.banks?.forEach {
             val data =
-                CustomImageAdapter.SelectBank(
+                BtsRvAdapter.SelectBank(
                     it.bankName,
                     MoneyManager.getBankIconByBankName(it.bankName.toString())
                 )
@@ -222,19 +222,19 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 activity?.window?.decorView?.findViewById(android.R.id.content)
 
             val bottomSheetView =
-                layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, contentView, false)
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_icon_and_tick, contentView, false)
             payGapBottomSheet = BottomSheetDialog(this.requireContext())
             payGapBottomSheet.apply {
                 setContentView(bottomSheetView)
-                payGapAdapter = BankBtsAdapter(
-                    lv_bank_item.context,
+                payGapAdapter = BtsRvAdapter(
                     payRoadSpannerList,
-                    BankBtsAdapter.BankAdapterListener { _, position ->
+                    BtsRvAdapter.BankAdapterListener { _, position ->
                         getPayGap(position)
                         resetEvent()
                         payGapBottomSheet.dismiss()
                     })
-                lv_bank_item.adapter = payGapAdapter
+                rv_bank_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+                rv_bank_item.adapter = payGapAdapter
 
                 if (mMoneyPayWay?.onlineType == OnlineType.ONLINE.type)
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
@@ -258,22 +258,22 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 activity?.window?.decorView?.findViewById(android.R.id.content)
 
             val bottomSheetView =
-                layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, contentView, false)
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_icon_and_tick, contentView, false)
 
             bankBottomSheet = BottomSheetDialog(this.requireContext())
             bankBottomSheet.apply {
                 setContentView(bottomSheetView)
-                bankCardAdapter = BankBtsAdapter(
-                    lv_bank_item.context,
+                bankCardAdapter = BtsRvAdapter(
                     mBankList,
-                    BankBtsAdapter.BankAdapterListener { it, position ->
+                    BtsRvAdapter.BankAdapterListener { it, position ->
                         view.iv_bank_icon.setImageResource(it.bankIcon ?: 0)
                         view.txv_pay_bank.text = it.bankName.toString()
                         bankPosition = position
                         resetEvent()
                         dismiss()
                     })
-                lv_bank_item.adapter = bankCardAdapter
+                rv_bank_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+                rv_bank_item.adapter = bankCardAdapter
                 tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_bank))
                 bankBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
@@ -301,7 +301,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         if (rechCfgsList.size > 1)
             rechCfgsList.forEach { it ->
                 val selectBank =
-                    CustomImageAdapter.SelectBank(
+                    BtsRvAdapter.SelectBank(
                         viewModel.getOnlinePayTypeName(it.onlineType) + count++,
                         typeIcon
                     )
@@ -310,7 +310,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         else
             rechCfgsList.forEach { it ->
                 val selectBank =
-                    CustomImageAdapter.SelectBank(
+                    BtsRvAdapter.SelectBank(
                         viewModel.getOnlinePayTypeName(it.onlineType) + count,
                         typeIcon
                     )

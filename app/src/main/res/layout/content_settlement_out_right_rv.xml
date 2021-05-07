@@ -17,8 +17,7 @@
         android:layout_marginBottom="4dp"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical"
-        tools:context="org.cxct.sportlottery.ui.results.SettlementRvAdapter">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_type"
