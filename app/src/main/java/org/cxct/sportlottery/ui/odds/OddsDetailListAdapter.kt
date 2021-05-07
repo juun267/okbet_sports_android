@@ -624,7 +624,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             if (drawList.size == 0) {
                 rvDraw.visibility = View.GONE
                 val param = tvOdds?.layoutParams as ConstraintLayout.LayoutParams
-                param.endToEnd = R.id.guideline_cs_other_2_list
+                param.startToStart = R.id.guideline_cs_other_2_list
                 tvOdds.layoutParams = param
             }
         }
