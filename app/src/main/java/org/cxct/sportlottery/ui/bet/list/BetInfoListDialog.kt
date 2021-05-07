@@ -133,6 +133,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         }
     }
 
+
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
@@ -170,12 +171,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             it.getContentIfNotHandled()?.let { result ->
                 showPromptDialog(
                     title = getString(R.string.prompt),
-                    message = messageByResultCode(result),
+                    message = messageByResultCode(requireContext(), result),
                     success = result.success
                 ) {
                     changeBetInfoContentByMessage(result)
                 }
-
             }
         })
 
@@ -188,28 +188,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             oddsType = it
             betInfoListAdapter.oddsType = it
         })
-    }
-
-
-    private fun messageByResultCode(result: BetAddResult): String {
-        return if (result.success) {
-            getString(R.string.bet_info_add_bet_success)
-        } else {
-            when (result.code) {
-                BetAddError.MATCH_NOT_EXIST.code,
-                BetAddError.ODDS_NOT_EXIST.code,
-                BetAddError.MATCH_INVALID_STATUS.code,
-                BetAddError.ODDS_LOCKED.code,
-                BetAddError.PARLAY_UN_SUPPORT.code,
-                BetAddError.ODDS_ID_NOT_ALLOW_BET.code,
-                BetAddError.ODDS_HAVE_CHANGED.code -> {
-                    getString(R.string.bet_info_content_has_been_changed)
-                }
-                else -> {
-                    result.msg
-                }
-            }
-        }
     }
 
 
@@ -359,6 +337,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         keyboard?.showKeyboard(editText)
     }
+
 
     override fun saveOddsHasChanged(matchOdd: MatchOdd) {
         viewModel.saveOddsHasChanged(matchOdd)
