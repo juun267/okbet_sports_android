@@ -3,19 +3,15 @@ package org.cxct.sportlottery.ui.game
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.error.BetAddError
-import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
@@ -862,7 +858,7 @@ class GameViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
-    fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent){
+    fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {
         val newList = arrayListOf<OddsDetailListData>()
         matchOdd.odds?.forEach { map ->
             val key = map.key
@@ -886,7 +882,7 @@ class GameViewModel(
             updateItemForOddsDetail(it, newList)
         }
 
-        val list = _oddsDetailList.value?.peekContent()?: arrayListOf()
+        val list = _oddsDetailList.value?.peekContent() ?: arrayListOf()
         _oddsDetailList.postValue(Event(list))
 
     }
@@ -1054,7 +1050,7 @@ class GameViewModel(
         }
     }
 
-    private fun updateItemForOddsDetail(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>){
+    private fun updateItemForOddsDetail(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>) {
         val oldOddList = oddsDetail.oddArrayList
         var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd>()
 
@@ -1084,7 +1080,8 @@ class GameViewModel(
 
                     //先判斷大小
                     oldOddData.oddState = getOddState(
-                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU), newOddData)
+                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU), newOddData
+                    )
 
                     //再帶入新的賠率
                     oldOddData.odds = newOddData.odds
@@ -1134,7 +1131,7 @@ class GameViewModel(
         betInfoRepository.clear()
     }
 
-    private suspend fun getOddsDetail(matchId: String){
+    private suspend fun getOddsDetail(matchId: String) {
         val result = doNetwork(androidContext) {
             OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
         }
@@ -1203,52 +1200,10 @@ class GameViewModel(
     fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
             val result = getBetApi(matchType, betAddRequest)
-            Event(result).let {
-                _betAddResult.postValue(it)
-            }
-
+            _betAddResult.postValue(Event(result))
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(matchType, result)
-                } else {
-                    result?.let {
-                        val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
-
-                        errorData?.forEach { betAddErrorData ->
-                            val oddId = betAddErrorData.id
-
-                            when (result.code) {
-                                BetAddError.MATCH_NOT_EXIST.code -> {
-                                    //for display
-                                    BetAddError.MATCH_NOT_EXIST.string
-                                }
-                                BetAddError.ODDS_NOT_EXIST.code -> {
-                                    //for display
-                                    BetAddError.ODDS_NOT_EXIST.string
-                                }
-                                BetAddError.MATCH_INVALID_STATUS.code -> {
-                                    //for display
-                                    BetAddError.MATCH_INVALID_STATUS.string
-                                }
-                                BetAddError.ODDS_LOCKED.code -> {
-                                    //for display
-                                    BetAddError.ODDS_LOCKED.string
-                                }
-                                BetAddError.PARLAY_UN_SUPPORT.code -> {
-                                    //for display
-                                    BetAddError.PARLAY_UN_SUPPORT.string
-                                }
-                                BetAddError.ODDS_ID_NOT_ALLOW_BET.code -> {
-                                    //for display
-                                    BetAddError.ODDS_ID_NOT_ALLOW_BET.string
-                                }
-                                BetAddError.ODDS_HAVE_CHANGED.code -> {
-                                    //update odds
-                                    betAddErrorData.odds
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

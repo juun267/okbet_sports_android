@@ -25,10 +25,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.BetAddError
+import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
@@ -37,10 +40,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
-import org.cxct.sportlottery.util.KeyBoardUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 
 
 @SuppressLint("SetTextI18n")
@@ -170,9 +170,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             it.getContentIfNotHandled()?.let { result ->
                 showPromptDialog(
                     title = getString(R.string.prompt),
-                    message = if (result.success) getString(R.string.bet_info_add_bet_success) else result.msg,
+                    message = messageByResultCode(result),
                     success = result.success
-                ) {}
+                ) {
+                    changeBetInfoContentByMessage(result)
+                }
 
             }
         })
@@ -186,7 +188,38 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             oddsType = it
             betInfoListAdapter.oddsType = it
         })
+    }
 
+
+    private fun messageByResultCode(result: BetAddResult): String {
+        return if (result.success) {
+            getString(R.string.bet_info_add_bet_success)
+        } else {
+            when (result.code) {
+                BetAddError.MATCH_NOT_EXIST.code,
+                BetAddError.ODDS_NOT_EXIST.code,
+                BetAddError.MATCH_INVALID_STATUS.code,
+                BetAddError.ODDS_LOCKED.code,
+                BetAddError.PARLAY_UN_SUPPORT.code,
+                BetAddError.ODDS_ID_NOT_ALLOW_BET.code,
+                BetAddError.ODDS_HAVE_CHANGED.code -> {
+                    getString(R.string.bet_info_content_has_been_changed)
+                }
+                else -> {
+                    result.msg
+                }
+            }
+        }
+    }
+
+
+    private fun changeBetInfoContentByMessage(result: BetAddResult) {
+        if (!result.success) {
+            val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+
+            //TODO 同socket一樣刷新
+
+        }
     }
 
 

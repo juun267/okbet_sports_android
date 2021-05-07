@@ -790,4 +790,6 @@
     <string name="parlay_un_support">该赛事不支持连串</string>
     <string name="odds_id_not_allow_bet">该赔率玩法不允许下注</string>
     <string name="odds_have_changed">该盘口赔率已经变更,请重新投注</string>
+    <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
+
 </resources>
