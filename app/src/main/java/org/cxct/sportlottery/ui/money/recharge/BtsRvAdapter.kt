@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.money.recharge
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_listview_bank_card_tick.view.*
 import org.cxct.sportlottery.R
@@ -20,12 +21,12 @@ class BtsRvAdapter(private val dataList: MutableList<SelectBank>, private val cl
             else
                 itemView.iv_bank_icon.setImageResource(android.R.color.transparent)
 
-            if (position == selectedPosition){
-                itemView.ll_select_bank_card.setBackgroundColor(itemView.resources.getColor(R.color.blue2))
+            if (adapterPosition == selectedPosition){
+                itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(this.itemView.context,R.color.blue2))
                 itemView.img_tick.visibility = View.VISIBLE
             }
             else{
-                itemView.ll_select_bank_card.setBackgroundColor(itemView.resources.getColor(R.color.white))
+                itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(this.itemView.context,R.color.white))
                 itemView.img_tick.visibility = View.INVISIBLE
             }
 
