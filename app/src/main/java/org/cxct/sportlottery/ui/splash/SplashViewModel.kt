@@ -135,6 +135,7 @@ class SplashViewModel(
                 hostRepository.isNeedGetHost = false
                 setConfig(result)
                 setBaseUrl(baseUrl, retrofit)
+                getPlayQuotaCom()
             } else {
                 Timber.e("==> Check host fail!!! baseUrl = $baseUrl")
                 val listSize = mAppUrlList?.size ?: 0

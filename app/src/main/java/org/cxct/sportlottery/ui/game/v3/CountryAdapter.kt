@@ -3,12 +3,13 @@ package org.cxct.sportlottery.ui.game.v3
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -42,7 +43,12 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
                         this.addItemDecoration(
-                            DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_gray
+                                )
+                            )
                         )
                     }
                 }
@@ -98,6 +104,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private fun setupCountryExpand(item: Row) {
             itemView.country_league_expand.setExpanded(item.isExpand, false)
+            updateArrowExpand()
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)

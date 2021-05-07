@@ -50,6 +50,7 @@ data class MatchOdd(
 
 ){
     var oddState: Int = OddState.SAME.state
+    var changeOddsTask: Runnable? = null //賠率變更，按鈕顏色變換任務
 
     //socket進來的新賠率較大或較小
     enum class OddState(val state : Int) {

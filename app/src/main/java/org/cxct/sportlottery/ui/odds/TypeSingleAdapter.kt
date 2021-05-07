@@ -34,7 +34,7 @@ class TypeSingleAdapter (
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
-            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_CENTER, oddsType, null)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_CENTER, oddsType)
         }
     }
 

@@ -22,8 +22,6 @@
             android:id="@+id/action_homeFragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
@@ -38,8 +36,6 @@
             android:id="@+id/action_homeFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -79,8 +75,6 @@
             android:id="@+id/action_gameV3Fragment_to_gameLeagueFragment"
             app:destination="@id/gameLeagueFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="matchType"
@@ -97,11 +91,7 @@
 
         <action
             android:id="@+id/action_gameV3Fragment_to_gameOutrightFragment"
-            app:destination="@id/gameOutrightFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_right">
+            app:destination="@id/gameOutrightFragment">
             <argument
                 android:name="sportType"
                 app:argType="org.cxct.sportlottery.network.common.SportType" />
@@ -115,8 +105,6 @@
             android:id="@+id/action_gameV3Fragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -136,8 +124,6 @@
             android:id="@+id/action_gameV3Fragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
@@ -169,8 +155,6 @@
             android:id="@+id/action_gameLeagueFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -190,8 +174,6 @@
             android:id="@+id/action_gameLeagueFragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
@@ -255,8 +237,6 @@
             android:id="@+id/action_oddsDetailFragment_self"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
@@ -271,8 +251,6 @@
             android:id="@+id/action_oddsDetailFragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
@@ -309,8 +287,6 @@
             android:id="@+id/action_oddsDetailLiveFragment_self"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
@@ -325,8 +301,6 @@
             android:id="@+id/action_oddsDetailLiveFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_right"
-            app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument

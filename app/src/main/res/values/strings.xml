@@ -96,7 +96,7 @@
     <string name="error_telegram">Telegram账号格式错误</string>
     <string name="real_name">真实姓名</string>
     <string name="hint_real_name">姓名须与银行户口一致</string>
-    <string name="verification_code">验证码</string>
+    <string name="verification_code">注册验证码</string>
     <string name="verification_code_by_sms">短信验证码</string>
     <string name="hint_verification_code">请输入验证码</string>
     <string name="error_verification_code">注册验证码错误</string>
@@ -330,6 +330,9 @@
     <string name="status">状态</string>
     <string name="status_colon">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态：</string>
     <string name="rebates">返&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;水：</string>
+    <string name="remarks">备&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：</string>
+    <string name="remark_by_mts">因系统审核不成立</string>
+    <string name="remark_by_own_source">因机制审核不成立</string>
     <string name="bet_record">投注记录</string>
     <string name="select_all">全选</string>
     <string name="all_order">全部注单</string>
@@ -598,8 +601,8 @@
     <string name="bet_info_list_odds_change">接受变更并投注</string>
     <string name="bet_info_list_hint">限额：%s</string>
     <string name="bet_info_list_bigger_than_zero">投注额必须大于零</string>
-    <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额：%s</string>
-    <string name="bet_info_list_less_than_minimum_limit">投注额小于最低限额：%s</string>
+    <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
+    <string name="bet_info_list_less_than_minimum_limit">投注额小于最低限额</string>
     <string name="bet_info_list">注单</string>
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>

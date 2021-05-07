@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -32,24 +31,18 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     var nameChangeColor: Boolean = true
 
-    private fun checkKey(type: String, value: String): Boolean {
-        return type == value || type.contains(value)
-    }
-
-
     fun setData(
         oddsDetail: OddsDetailListData,
         odd: Odd,
         onOddClickListener: OnOddClickListener,
         betInfoList: MutableList<BetInfoListData>,
         spreadType: Int,
-        oddsType: OddsType,
-        gameType: String?
+        oddsType: OddsType
     ) {
 
-        gameType?.let { type ->
+        oddsDetail.gameType.let { type ->
             when {
-                checkKey(type, OddsDetailListAdapter.GameType.HDP.value) -> showName(false)
+                TextUtil.compareWithGameKey(type, OddsDetailListAdapter.GameType.HDP.value) -> showName(false)
             }
         }
 
@@ -74,11 +67,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 tvSpread?.let { it.isSelected = odd.isSelect ?: false }
                 tvName?.let { it.isSelected = odd.isSelect ?: false }
                 itemView.setOnClickListener {
-                    if (odd.isSelect != true) {
                         onOddClickListener.getBetInfoList(odd, oddsDetail)
-                    } else {
-                        onOddClickListener.removeBetInfoItem(odd)
-                    }
                 }
 
             }
