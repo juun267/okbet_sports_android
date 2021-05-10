@@ -11,12 +11,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
-import kotlinx.android.synthetic.main.view_nav_left.view.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
@@ -27,7 +24,9 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
-import org.cxct.sportlottery.ui.game.v3.*
+import org.cxct.sportlottery.ui.game.v3.GameLeagueFragmentDirections
+import org.cxct.sportlottery.ui.game.v3.GameOutrightFragmentDirections
+import org.cxct.sportlottery.ui.game.v3.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -100,12 +99,15 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun goToSportGame(sportType: SportType) {
         //規則：
         //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
-        //2. 若此當前頁籤無該種球類比賽，則跳轉到"今日"頁籤下的對應球類賽事
-        //3. 若"今日"也沒有則跳到"串關"
-        //4. 若扔沒有則顯示無賽事的圖片
+        //2. 若此當前頁籤無該種球類比賽，則後續導入優先順序為 今日 > 早盤 > 串關
+        //3. 若扔沒有則顯示無賽事的圖片
 
         val todayItemList = mSportMenuResult?.sportMenuData?.menu?.today?.items ?: listOf()
         val todayItem = todayItemList.firstOrNull { it.code == sportType.code }
+
+        val earlyItemList = mSportMenuResult?.sportMenuData?.menu?.early?.items ?: listOf()
+        val earlyItem = earlyItemList.firstOrNull { it.code == sportType.code }
+
         val matchType = when (tabLayout.selectedTabPosition) {
             1 -> { //滾球盤
                 val itemList = mSportMenuResult?.sportMenuData?.menu?.inPlay?.items ?: listOf()
@@ -113,6 +115,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 when {
                     targetItem != null -> MatchType.IN_PLAY
                     todayItem != null -> MatchType.TODAY
+                    earlyItem != null -> MatchType.EARLY
                     else -> MatchType.PARLAY
                 }
             }
@@ -120,6 +123,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             2 -> { //今日
                 when {
                     todayItem != null -> MatchType.TODAY
+                    earlyItem != null -> MatchType.EARLY
                     else -> MatchType.PARLAY
                 }
             }
@@ -144,6 +148,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 when {
                     targetItem != null -> MatchType.OUTRIGHT
                     todayItem != null -> MatchType.TODAY
+                    earlyItem != null -> MatchType.EARLY
                     else -> MatchType.PARLAY
                 }
             }
@@ -151,6 +156,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             else -> { //全部
                 when {
                     todayItem != null -> MatchType.TODAY
+                    earlyItem != null -> MatchType.EARLY
                     else -> MatchType.PARLAY
                 }
             }
