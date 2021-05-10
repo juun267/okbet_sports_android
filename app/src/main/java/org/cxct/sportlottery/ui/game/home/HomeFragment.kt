@@ -67,27 +67,27 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initEvent() {
         card_football.setOnClickListener {
-            viewModel.getGameHallList(MatchType.TODAY, SportType.FOOTBALL)
+//            viewModel.getGameHallList(MatchType.TODAY, SportType.FOOTBALL)
         }
 
         card_basketball.setOnClickListener {
-            viewModel.getGameHallList(MatchType.TODAY, SportType.BASKETBALL)
+//            viewModel.getGameHallList(MatchType.TODAY, SportType.BASKETBALL)
         }
 
         card_tennis.setOnClickListener {
-            viewModel.getGameHallList(MatchType.TODAY, SportType.TENNIS)
+//            viewModel.getGameHallList(MatchType.TODAY, SportType.TENNIS)
         }
 
         card_badminton.setOnClickListener {
-            viewModel.getGameHallList(MatchType.TODAY, SportType.BADMINTON)
+//            viewModel.getGameHallList(MatchType.TODAY, SportType.BADMINTON)
         }
 
         card_volleyball.setOnClickListener {
-            viewModel.getGameHallList(MatchType.TODAY, SportType.VOLLEYBALL)
+//            viewModel.getGameHallList(MatchType.TODAY, SportType.VOLLEYBALL)
         }
 
         card_game_soon.setOnClickListener {
-            viewModel.getGameHallList(MatchType.AT_START, null)
+//            viewModel.getGameHallList(MatchType.AT_START, null)
         }
 
         card_lottery.setOnClickListener {
@@ -217,7 +217,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     SportType.BADMINTON.code -> SportType.BADMINTON
                     else -> null
                 }
-                viewModel.getGameHallList(MatchType.IN_PLAY, sportType, isPreloadTable = true)
+//                viewModel.getGameHallList(MatchType.IN_PLAY, sportType, isPreloadTable = true)
             }
         })
     }
@@ -244,7 +244,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     SportType.BADMINTON.code -> SportType.BADMINTON
                     else -> null
                 }
-                viewModel.getGameHallList(MatchType.TODAY, sportType, isPreloadTable = true)
+//                viewModel.getGameHallList(MatchType.TODAY, sportType, isPreloadTable = true)
             }
         })
     }
