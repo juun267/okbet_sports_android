@@ -114,6 +114,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 override fun onQueryTextChange(newText: String?): Boolean {
                     newText?.let {
                         viewModel.searchMatch(it)
+                        leagueAdapter.searchText = it
                     }
                     return true
                 }

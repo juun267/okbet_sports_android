@@ -201,6 +201,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     newText?.let {
                         viewModel.searchLeague(args.matchType, it)
+                        countryAdapter.searchText = it
                     }
                     return true
                 }
