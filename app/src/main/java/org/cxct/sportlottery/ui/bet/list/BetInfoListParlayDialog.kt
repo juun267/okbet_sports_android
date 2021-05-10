@@ -268,9 +268,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private fun changeBetInfoContentByMessage(result: BetAddResult) {
         if (!result.success) {
             val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
-
-            //TODO 同socket一樣刷新
-
+            errorData?.let { viewModel.updateMatchOddForParlay(it, getBetAddError(result.code)) }
         }
     }
 

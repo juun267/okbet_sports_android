@@ -902,6 +902,33 @@ class GameViewModel(
         updateBetInfoListByMatchOddChange(newList)
     }
 
+    fun updateMatchOddForParlay(betAddErrorDataList: List<BetAddErrorData>, betAddError: BetAddError) {
+        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+        betAddErrorDataList.forEach { betAddErrorData ->
+            betAddErrorData.let { data ->
+                data.status?.let { status ->
+                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                        null,
+                        data.id,
+                        null,
+                        data.odds,
+                        data.hkOdds,
+                        data.producerId,
+                        data.spread,
+                        status,
+                    )
+                    newList.add(newOdd)
+                }
+            }
+        }
+
+        betInfoRepository.matchOddList.value?.forEach {
+            updateItemForBetAddError(it, newList, betAddError)
+        }
+
+        updateBetInfoListByMatchOddChange(newList)
+    }
+
     fun updateMatchOdd(changeEvent: Any) {
         val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
         when (changeEvent) {
