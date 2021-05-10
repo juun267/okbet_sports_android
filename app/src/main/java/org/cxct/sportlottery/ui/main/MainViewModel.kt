@@ -71,7 +71,7 @@ class MainViewModel(
     val needToCompleteProfileInfo =
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
-        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
