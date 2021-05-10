@@ -1,40 +1,31 @@
-package org.cxct.sportlottery.util.parlaylimit;
+package org.cxct.sportlottery.util.parlaylimit
 
-import android.annotation.SuppressLint;
+import android.annotation.SuppressLint
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.util.*
+import java.util.function.Consumer
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-
-public class ParlayLimitUtil {
-
-//    public static void main(String[] args) {
-//        // 最大中獎金額 最大投注限額api
-//        BigDecimal max = new BigDecimal(10000);
-//        // 最小下注额 最大投注限額api
-//        BigDecimal min = new BigDecimal(10);
-//        // 賠率列表
-//        List<BigDecimal> oddsList = initOddsList();
-//        // 賠率index
-//        int[] oddsIndex = new int[]{0, 1, 2, 3};
-//
-//        // 取得組合(類型、數量、組合列表)
-//        List<ParlayCom> parlayComList = getCom(oddsIndex);
-//        // 打印賠率組合
-////        parlayComPrintln(parlayComList);
-//
-//        // 得到串关限额 排序各端請自理
-//        Map<String, ParlayBetLimit> parlayBetLimitMap = getParlayLimit(oddsList, parlayComList, max, min);
-//        System.out.println(parlayBetLimitMap);
-//    }
-
+object ParlayLimitUtil {
+    //    public static void main(String[] args) {
+    //        // 最大中獎金額 最大投注限額api
+    //        BigDecimal max = new BigDecimal(10000);
+    //        // 最小下注额 最大投注限額api
+    //        BigDecimal min = new BigDecimal(10);
+    //        // 賠率列表
+    //        List<BigDecimal> oddsList = initOddsList();
+    //        // 賠率index
+    //        int[] oddsIndex = new int[]{0, 1, 2, 3};
+    //
+    //        // 取得組合(類型、數量、組合列表)
+    //        List<ParlayCom> parlayComList = getCom(oddsIndex);
+    //        // 打印賠率組合
+    ////        parlayComPrintln(parlayComList);
+    //
+    //        // 得到串关限额 排序各端請自理
+    //        Map<String, ParlayBetLimit> parlayBetLimitMap = getParlayLimit(oddsList, parlayComList, max, min);
+    //        System.out.println(parlayBetLimitMap);
+    //    }
     /**
      * 得到串关限额
      *
@@ -43,31 +34,27 @@ public class ParlayLimitUtil {
      * @param max
      * @param min
      */
-    public static Map<String, ParlayBetLimit> getParlayLimit(List<BigDecimal> oddsList, List<ParlayCom> parlayComList, BigDecimal max, BigDecimal min) {
-        Map<String, ParlayBetLimit> result = new LinkedHashMap<>();
-
-        max = max != null ? max : BigDecimal.valueOf(999);
-        min = min != null ? min : BigDecimal.ONE;
-
-        for (ParlayCom parlayCom : parlayComList) {
-            ParlayBetLimit parlayBetLimit = new ParlayBetLimit();
-
-            BigDecimal odds = getTotalOdds(oddsList, parlayCom.getComList());
+    fun getParlayLimit(oddsList: List<BigDecimal?>, parlayComList: List<ParlayCom>, max: BigDecimal?, min: BigDecimal?): Map<String, ParlayBetLimit> {
+        var max = max
+        var min = min
+        val result: MutableMap<String, ParlayBetLimit> = LinkedHashMap()
+        max = max ?: BigDecimal.valueOf(999)
+        min = min ?: BigDecimal.ONE
+        for (parlayCom in parlayComList) {
+            val parlayBetLimit = ParlayBetLimit()
+            val odds = getTotalOdds(oddsList, parlayCom.getComList())
             // 香港盤 可以 odds-num
-            BigDecimal hkOdds = getTotalHkOdds(oddsList, parlayCom.getComList());
+            val hkOdds = getTotalHkOdds(oddsList, parlayCom.getComList())
             // 投注限額 設定值/odds
-            BigDecimal maxPayLimit = max.divide(odds, 0, RoundingMode.DOWN);
-
-            parlayBetLimit.setOdds(odds);
-            parlayBetLimit.setHdOdds(hkOdds);
-            parlayBetLimit.setMax(maxPayLimit);
-            parlayBetLimit.setMin(min);
-            parlayBetLimit.setNum(parlayCom.getNum());
-
-            result.put(parlayCom.getParlayType(), parlayBetLimit);
-
+            val maxPayLimit = max!!.divide(odds, 0, RoundingMode.DOWN)
+            parlayBetLimit.odds = odds
+            parlayBetLimit.hdOdds = hkOdds
+            parlayBetLimit.max = maxPayLimit
+            parlayBetLimit.min = min
+            parlayBetLimit.num = parlayCom.num
+            result[parlayCom.parlayType] = parlayBetLimit
         }
-        return result;
+        return result
     }
 
     /**
@@ -76,36 +63,31 @@ public class ParlayLimitUtil {
      * @param oddsList
      * @return
      */
-    public static BigDecimal getTotalOdds(List<BigDecimal> oddsList, List<int[]> comList) {
-        BigDecimal totalOdds = BigDecimal.ZERO;
+    private fun getTotalOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
+        var totalOdds = BigDecimal.ZERO
 
         // 取出每種排列組合 [0,1] [0,2] [0,1,2,3]
-        for (int[] oddsIndexArray : comList) {
-            BigDecimal odd = BigDecimal.ONE;
-            for (int index : oddsIndexArray) {
+        for (oddsIndexArray in comList) {
+            var odd = BigDecimal.ONE
+            for (index in oddsIndexArray) {
                 //  賠率相乘
-                odd = odd.multiply(oddsList.get(index));
+                odd = odd.multiply(oddsList[index])
             }
-            totalOdds = totalOdds.add(odd);
+            totalOdds = totalOdds.add(odd)
         }
-
-        return totalOdds;
+        return totalOdds
     }
 
-
-    private static BigDecimal getTotalHkOdds(List<BigDecimal> oddsList, List<int[]> comList) {
-        BigDecimal totalOdds = BigDecimal.ZERO;
-
-        for (int[] oddsIndexArray : comList) {
-            BigDecimal odd = BigDecimal.ONE;
-            for (int index : oddsIndexArray) {
-                odd = odd.multiply(oddsList.get(index));
+    private fun getTotalHkOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
+        var totalOdds = BigDecimal.ZERO
+        for (oddsIndexArray in comList) {
+            var odd = BigDecimal.ONE
+            for (index in oddsIndexArray) {
+                odd = odd.multiply(oddsList[index])
             }
-            totalOdds = totalOdds.add(OddsLadder.oddsEuToHk(odd));
+            totalOdds = totalOdds.add(OddsLadder.oddsEuToHk(odd))
         }
-
-        return totalOdds;
-
+        return totalOdds
     }
 
     /**
@@ -115,49 +97,62 @@ public class ParlayLimitUtil {
      * @return
      */
     @SuppressLint("NewApi")
-    public static List<ParlayCom> getCom(int[] matchIdArray) {
-
-        List<ParlayCom> parlayComSOList = new ArrayList<>();
-        if (matchIdArray.length == 1) {
-            ParlayCom parlayCom = new ParlayCom();
-            parlayCom.setNum(1);
-            parlayCom.setParlayType("1C1");
-            parlayCom.setComList(Collections.singletonList(matchIdArray));
-            parlayComSOList.add(parlayCom);
-            return parlayComSOList;
+    fun getCom(matchIdArray: IntArray): List<ParlayCom> {
+        val parlayComSOList: MutableList<ParlayCom> = ArrayList()
+        if (matchIdArray.size == 1) {
+            val parlayCom = ParlayCom()
+            parlayCom.num = 1
+            parlayCom.parlayType = "1C1"
+            parlayCom.setComList(listOf(matchIdArray))
+            parlayComSOList.add(parlayCom)
+            return parlayComSOList
         }
-
-        List<int[]> all = new ArrayList<>();
-        for (int i = 2; i <= matchIdArray.length; i++) {
-            all.addAll(combine(matchIdArray, i));
+        val all: MutableList<IntArray> = ArrayList()
+        for (i in 2..matchIdArray.size) {
+            all.addAll(combine(matchIdArray, i))
         }
-        Map<Integer, List<int[]>> map = new HashMap<>();
-        for (int[] item : all) {
-            List<int[]> list = new ArrayList<>();
-            list.add(item);
-            map.merge(item.length, list, (oldx, newx) -> {
-                oldx.add(item);
-                return oldx;
-            });
+        val map: MutableMap<Int, MutableList<IntArray>> = HashMap()
+        for (item in all) {
+            val list: MutableList<IntArray> = ArrayList()
+            list.add(item)
+            for (i in list.indices) {
+                val oldValue = map[item.size]
+                if (oldValue == null) {
+                    map[item.size] = list
+                } else {
+                    if (map.containsKey(item.size)) {
+                        oldValue.addAll(list)
+                        map[item.size] = oldValue
+                    } else {
+                        map[item.size] = list
+                    }
+                }
+            }
         }
 
         //N串1场景
-        map.forEach((key, list) -> {
-            ParlayCom parlayCom = new ParlayCom();
-            parlayCom.setNum(list.size());
-            parlayCom.setParlayType(list.get(0).length + "C1");
-            parlayCom.setComList(list);
-            parlayComSOList.add(parlayCom);
-        });
-        //N串M场景
-        ParlayCom nParlayM = new ParlayCom();
-        nParlayM.setNum(all.size());
-        nParlayM.setComList(all);
-        nParlayM.setParlayType(matchIdArray.length + "C" + all.size());
-        parlayComSOList.add(nParlayM);
-        return parlayComSOList;
-    }
+        val keyList: Set<Int> = map.keys
+        for (key in keyList) {
+            val list: List<IntArray> = map[key]!!
+            val parlayCom = ParlayCom()
+            parlayCom.num = list.size
+            parlayCom.parlayType = list[0].size.toString() + "C1"
+            parlayCom.setComList(list)
+            parlayComSOList.add(parlayCom)
+        }
 
+        parlayComSOList.sortBy {
+            it.parlayType.split("C")[1].toInt()
+        }
+
+        //N串M场景
+        val nParlayM = ParlayCom()
+        nParlayM.num = all.size
+        nParlayM.setComList(all)
+        nParlayM.parlayType = matchIdArray.size.toString() + "C" + all.size
+        parlayComSOList.add(nParlayM)
+        return parlayComSOList
+    }
 
     /**
      * 組合公式 C n取m
@@ -166,40 +161,40 @@ public class ParlayLimitUtil {
      * @param m      取幾
      * @return
      */
-    public static List<int[]> combine(int[] source, int m) {
-        List<int[]> result = new ArrayList<>();
+    private fun combine(source: IntArray, m: Int): MutableList<IntArray> {
+        var result: MutableList<IntArray> = ArrayList()
         if (m == 1) {
-            for (int i = 0; i < source.length; i++) {
-                result.add(new int[]{source[i]});
+            for (i in source.indices) {
+                result.add(intArrayOf(source[i]))
             }
-        } else if (source.length == m) {
-            result.add(source);
+        } else if (source.size == m) {
+            result.add(source)
         } else {
-            int[] psource = new int[source.length - 1];
-            for (int i = 0; i < psource.length; i++) {
-                psource[i] = source[i];
+            val pSource = IntArray(source.size - 1)
+            for (i in pSource.indices) {
+                pSource[i] = source[i]
             }
-            result = combine(psource, m);
-            List<int[]> tmp = combine(psource, m - 1);
-            for (int i = 0; i < tmp.size(); i++) {
-                int[] rs = new int[m];
-                for (int j = 0; j < m - 1; j++) {
-                    rs[j] = tmp.get(i)[j];
+            result = combine(pSource, m)
+            val tmp: List<IntArray> = combine(pSource, m - 1)
+            for (i in tmp.indices) {
+                val rs = IntArray(m)
+                for (j in 0 until m - 1) {
+                    rs[j] = tmp[i][j]
                 }
-                rs[m - 1] = source[source.length - 1];
-                result.add(rs);
+                rs[m - 1] = source[source.size - 1]
+                result.add(rs)
             }
         }
-        return result;
+        return result
     }
 
-    private static List<BigDecimal> initOddsList() {
-        ArrayList<BigDecimal> oddsList = new ArrayList<>();
-        oddsList.add(new BigDecimal("2.23"));
-        oddsList.add(new BigDecimal("1.6"));
-        oddsList.add(new BigDecimal("1.7"));
-        oddsList.add(new BigDecimal("1.85"));
-        return oddsList;
+    private fun initOddsList(): List<BigDecimal> {
+        val oddsList = ArrayList<BigDecimal>()
+        oddsList.add(BigDecimal("2.23"))
+        oddsList.add(BigDecimal("1.6"))
+        oddsList.add(BigDecimal("1.7"))
+        oddsList.add(BigDecimal("1.85"))
+        return oddsList
     }
 
     /**
@@ -208,16 +203,13 @@ public class ParlayLimitUtil {
      * @param parlayComList
      */
     @SuppressLint("NewApi")
-    private static void parlayComPrintln(List<ParlayCom> parlayComList) {
-        for (ParlayCom parlayCom : parlayComList) {
-            System.out.println("parlayType: " + parlayCom.getParlayType());
-            System.out.println("num: " + parlayCom.getNum());
-            System.out.println("comList: ");
-            parlayCom.getComList().forEach(i -> {
-                System.out.println(Arrays.toString(i));
-            });
-            System.out.println("-----------------");
+    private fun parlayComPrintln(parlayComList: List<ParlayCom>) {
+        for (parlayCom in parlayComList) {
+            println("parlayType: " + parlayCom.parlayType)
+            println("num: " + parlayCom.num)
+            println("comList: ")
+            parlayCom.getComList().forEach(Consumer { i: IntArray? -> println(Arrays.toString(i)) })
+            println("-----------------")
         }
     }
-
 }
