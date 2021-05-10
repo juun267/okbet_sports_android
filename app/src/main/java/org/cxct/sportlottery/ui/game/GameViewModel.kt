@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
@@ -941,6 +943,33 @@ class GameViewModel(
         betInfoRepository.notifyBetInfoChanged()
     }
 
+    fun updateMatchOdd(betAddErrorDataList: List<BetAddErrorData>, betAddError: BetAddError) {
+        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+        betAddErrorDataList.forEach { betAddErrorData ->
+            betAddErrorData.let { data ->
+                data.status?.let { status ->
+                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                        null,
+                        data.id,
+                        null,
+                        data.odds,
+                        data.hkOdds,
+                        data.producerId,
+                        data.spread,
+                        status,
+                    )
+                    newList.add(newOdd)
+                }
+            }
+        }
+
+        betInfoRepository.betInfoList.value?.forEach {
+            updateItemForBetAddError(it.matchOdd, newList, betAddError)
+        }
+        betInfoRepository.notifyBetInfoChanged()
+
+    }
+
     private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         //判斷當前有沒有關閉的賠率
         val sendRequest = betInfoRepository.matchOddList.value?.find {
@@ -967,7 +996,7 @@ class GameViewModel(
         playCateName: String,
         playName: String,
         matchOdd: MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
@@ -989,7 +1018,7 @@ class GameViewModel(
         matchType: MatchType,
         sportType: SportType,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
@@ -1042,6 +1071,13 @@ class GameViewModel(
                         newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                         newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
                         newItem.status.let { status -> oldItem.status = status }
+
+                        //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
+                        if(oldItem.oddState != org.cxct.sportlottery.network.bet.info.MatchOdd.OddState.SAME.state &&
+                            oldItem.status == BetStatus.ACTIVATED.code){
+                            oldItem.betAddError = null
+                        }
+
                     }
                 }
             } catch (e: java.lang.Exception) {
@@ -1090,6 +1126,38 @@ class GameViewModel(
                     oldOddData.status = newOddData.status
                     oldOddData.producerId = newOddData.producerId
                 }
+            }
+        }
+    }
+
+    private fun updateItemForBetAddError(
+        oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
+        newList: List<org.cxct.sportlottery.network.odds.detail.Odd>,
+        betAddError: BetAddError
+    ){
+        for (newItem in newList) {
+
+            //每次都先把字串清空
+            oldItem.betAddError = null
+
+            try {
+                newItem.let {
+                    if (it.id == oldItem.oddsId) {
+                        oldItem.oddState = getOddState(
+                            getOdds(
+                                oldItem,
+                                loginRepository.mOddsType.value ?: OddsType.EU
+                            ), newItem
+                        )
+                        newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
+                        newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                        newItem.status.let { status -> oldItem.status = status }
+
+                        oldItem.betAddError = betAddError
+                    }
+                }
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
             }
         }
     }

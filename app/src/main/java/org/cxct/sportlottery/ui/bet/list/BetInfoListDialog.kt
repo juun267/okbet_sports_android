@@ -30,7 +30,6 @@ import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
@@ -194,9 +193,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private fun changeBetInfoContentByMessage(result: BetAddResult) {
         if (!result.success) {
             val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
-
-            //TODO 同socket一樣刷新
-
+            errorData?.let { viewModel.updateMatchOdd(it, getBetAddError(result.code)) }
         }
     }
 
