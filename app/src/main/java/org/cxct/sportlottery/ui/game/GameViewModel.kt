@@ -247,7 +247,7 @@ class GameViewModel(
                 _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.count { it.code == sportType?.code }
             }
             MatchType.AT_START -> {
-                _sportMenuResult.value?.sportMenuData?.atStart?.items?.count { it.code == sportType?.code }
+                _sportMenuResult.value?.sportMenuData?.atStart?.items?.size
             }
         }
 
