@@ -3,11 +3,9 @@ package org.cxct.sportlottery.ui.game
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
@@ -50,7 +48,6 @@ import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
-const val BET_INFO_MAX_COUNT = 10
 
 class GameViewModel(
     private val androidContext: Context,
@@ -60,7 +57,12 @@ class GameViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
-) : BaseNoticeViewModel(userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseNoticeViewModel(
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
@@ -896,7 +898,7 @@ class GameViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
-    fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent){
+    fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {
         val newList = arrayListOf<OddsDetailListData>()
         matchOdd.odds?.forEach { map ->
             val key = map.key
@@ -920,7 +922,7 @@ class GameViewModel(
             updateItemForOddsDetail(it, newList)
         }
 
-        val list = _oddsDetailList.value?.peekContent()?: arrayListOf()
+        val list = _oddsDetailList.value?.peekContent() ?: arrayListOf()
         _oddsDetailList.postValue(Event(list))
 
     }
@@ -1088,7 +1090,10 @@ class GameViewModel(
         }
     }
 
-    private fun updateItemForOddsDetail(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>){
+    private fun updateItemForOddsDetail(
+        oddsDetail: OddsDetailListData,
+        updatedOddsDetail: ArrayList<OddsDetailListData>
+    ) {
         val oldOddList = oddsDetail.oddArrayList
         var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd>()
 
@@ -1104,7 +1109,11 @@ class GameViewModel(
                 if (oldOddData.id == newOddData.id) {
 
                     //如果是球員 忽略名字替換
-                    if (!TextUtil.compareWithGameKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.SCO.value)) {
+                    if (!TextUtil.compareWithGameKey(
+                            oddsDetail.gameType,
+                            OddsDetailListAdapter.GameType.SCO.value
+                        )
+                    ) {
                         if (newOddData.name?.isNotEmpty() == true) {
                             oldOddData.name = newOddData.name
                         }
@@ -1118,7 +1127,9 @@ class GameViewModel(
 
                     //先判斷大小
                     oldOddData.oddState = getOddState(
-                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU), newOddData)
+                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU),
+                        newOddData
+                    )
 
                     //再帶入新的賠率
                     oldOddData.odds = newOddData.odds
@@ -1168,7 +1179,7 @@ class GameViewModel(
         betInfoRepository.clear()
     }
 
-    private suspend fun getOddsDetail(matchId: String){
+    private suspend fun getOddsDetail(matchId: String) {
         val result = doNetwork(androidContext) {
             OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
         }
