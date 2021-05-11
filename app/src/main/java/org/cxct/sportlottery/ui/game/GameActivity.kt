@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.v3.*
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -57,11 +58,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 R.id.menu_early -> tabLayout.getTabAt(3)?.select()
                 R.id.menu_parlay -> tabLayout.getTabAt(4)?.select()
                 R.id.menu_champion -> tabLayout.getTabAt(5)?.select()
-//                R.id.menu_soccer -> goToSportGame(SportType.FOOTBALL)
-//                R.id.menu_basketball -> goToSportGame(SportType.BASKETBALL)
-//                R.id.menu_tennis -> goToSportGame(SportType.TENNIS)
-//                R.id.menu_badminton -> goToSportGame(SportType.BADMINTON)
-//                R.id.menu_volleyball -> goToSportGame(SportType.VOLLEYBALL)
+                R.id.menu_soccer -> goToSportGame(SportType.FOOTBALL)
+                R.id.menu_basketball -> goToSportGame(SportType.BASKETBALL)
+                R.id.menu_tennis -> goToSportGame(SportType.TENNIS)
+                R.id.menu_badminton -> goToSportGame(SportType.BADMINTON)
+                R.id.menu_volleyball -> goToSportGame(SportType.VOLLEYBALL)
                 R.id.menu_cg_lottery -> goToMainActivity(ThirdGameCategory.CGCP)
                 R.id.menu_live_game -> goToMainActivity(ThirdGameCategory.LIVE)
                 R.id.menu_poker_game -> goToMainActivity(ThirdGameCategory.QP)
@@ -97,66 +98,24 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         rv_marquee.stopAuto()
     }
 
-//    private fun goToSportGame(sportType: SportType) {
+    private fun goToSportGame(sportType: SportType) {
 //        //規則：
 //        //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
 //        //2. 若此當前頁籤無該種球類比賽，則跳轉到"今日"頁籤下的對應球類賽事
 //        //3. 若"今日"也沒有則跳到"串關"
 //        //4. 若扔沒有則顯示無賽事的圖片
-//
-//        val todayItemList = mSportMenuResult?.sportMenuData?.menu?.today?.items ?: listOf()
-//        val todayItem = todayItemList.firstOrNull { it.code == sportType.code }
-//        val matchType = when (tabLayout.selectedTabPosition) {
-//            1 -> { //滾球盤
-//                val itemList = mSportMenuResult?.sportMenuData?.menu?.inPlay?.items ?: listOf()
-//                val targetItem = itemList.firstOrNull { it.code == sportType.code }
-//                when {
-//                    targetItem != null -> MatchType.IN_PLAY
-//                    todayItem != null -> MatchType.TODAY
-//                    else -> MatchType.PARLAY
-//                }
-//            }
-//
-//            2 -> { //今日
-//                when {
-//                    todayItem != null -> MatchType.TODAY
-//                    else -> MatchType.PARLAY
-//                }
-//            }
-//
-//            3 -> { //早盤
-//                val itemList = mSportMenuResult?.sportMenuData?.menu?.early?.items ?: listOf()
-//                val targetItem = itemList.firstOrNull { it.code == sportType.code }
-//                when {
-//                    targetItem != null -> MatchType.EARLY
-//                    todayItem != null -> MatchType.TODAY
-//                    else -> MatchType.PARLAY
-//                }
-//            }
-//
-//            4 -> { //串關
-//                MatchType.PARLAY
-//            }
-//
-//            5 -> { //冠軍
-//                val itemList = mSportMenuResult?.sportMenuData?.menu?.outright?.items ?: listOf()
-//                val targetItem = itemList.firstOrNull { it.code == sportType.code }
-//                when {
-//                    targetItem != null -> MatchType.OUTRIGHT
-//                    todayItem != null -> MatchType.TODAY
-//                    else -> MatchType.PARLAY
-//                }
-//            }
-//
-//            else -> { //全部
-//                when {
-//                    todayItem != null -> MatchType.TODAY
-//                    else -> MatchType.PARLAY
-//                }
-//            }
-//        }
-//        viewModel.getGameHallList(matchType, sportType, true)
-//    }
+
+        val matchType = when (tabLayout.selectedTabPosition) {
+            0, 2 -> MatchType.TODAY
+            1 -> MatchType.IN_PLAY
+            3 -> MatchType.EARLY
+            4 -> MatchType.PARLAY
+            5 -> MatchType.OUTRIGHT
+            else -> MatchType.AT_START
+        }
+
+        viewModel.navSpecialEntrance(SpecialEntranceSource.LEFT_MENU, matchType, sportType)
+    }
 
     private fun goToMainActivity(thirdGameCategory: ThirdGameCategory) {
         val intent = Intent(this, MainActivity::class.java)
