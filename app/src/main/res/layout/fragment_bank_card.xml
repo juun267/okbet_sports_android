@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorWhite1"
+    android:orientation="vertical"
+    tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment">
 
     <LinearLayout
         android:id="@+id/block_transfer_type"
@@ -68,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
+                    android:background="@drawable/bg_square_shape_4dp_white"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingStart="10dp"

@@ -8,13 +8,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@color/colorWhite2"
         android:gravity="center"
         android:paddingStart="20dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp">
+        android:paddingEnd="20dp">
 
         <TextView
             android:id="@+id/tv_game_type_title"
@@ -31,7 +29,7 @@
         <TextView
             android:id="@+id/btn_close"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/bottom_sheet_close"
             android:textColor="@color/colorGrayLight"
             android:textSize="@dimen/textSize14sp"
@@ -43,7 +41,7 @@
     <ListView
         android:id="@+id/lv_bank_item"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="144dp"
         android:divider="@null"
         android:dividerHeight="0dp"
         tools:itemCount="5"
