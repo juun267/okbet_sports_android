@@ -307,10 +307,9 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
                         isClickable = true
                         text = context.getString(
-                            if (data.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
+                            if (data.matchOdd.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
                         )
                     }
-
                     setChangeOdds(position, matchOdd)
                 }
             }

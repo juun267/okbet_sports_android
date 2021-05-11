@@ -315,7 +315,7 @@ class BetInfoRepository {
         val hasChanged = _betInfoList.value?.find {
             it.matchOdd.oddsId == matchOdd.oddsId
         }
-        hasChanged?.oddsHasChanged = true
+        hasChanged?.matchOdd?.oddsHasChanged = true
     }
 
 
@@ -363,7 +363,6 @@ class BetInfoRepository {
                             )
                             newBetInfoListData.matchType = betInfoListData.matchType
                             newBetInfoListData.input = betInfoListData.input
-                            newBetInfoListData.oddsHasChanged = betInfoListData.oddsHasChanged
                             newList.add(newBetInfoListData)
                         }
                     }
